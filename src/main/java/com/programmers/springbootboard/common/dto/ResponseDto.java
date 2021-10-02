@@ -1,19 +1,16 @@
-package kr.ac.hs.oing.common.dto;
+package com.programmers.springbootboard.common.dto;
 
-import lombok.Data;
-
-@Data
-public class ResponseDto {
+public class ResponseDto<T> {
     private int status;
     private String message;
-    private Object data;
+    private T data;
 
     public ResponseDto(ResponseMessage message) {
         this.status = message.status().value();
         this.message = message.name();
     }
 
-    public ResponseDto(ResponseMessage message, Object data) {
+    public ResponseDto(ResponseMessage message, T data) {
         this.status = message.status().value();
         this.message = message.name();
         this.data = data;
@@ -23,8 +20,7 @@ public class ResponseDto {
         return new ResponseDto(message);
     }
 
-    public static ResponseDto of(ResponseMessage message, Object data) {
+    public static <T> ResponseDto of(ResponseMessage message, T data) {
         return new ResponseDto(message, data);
     }
-
 }

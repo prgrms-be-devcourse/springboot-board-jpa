@@ -1,4 +1,4 @@
-package com.programmers.springbootboard.common;
+package com.programmers.springbootboard.common.domain;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -29,4 +29,13 @@ public class BaseEntity<U> {
     @LastModifiedDate
     @Column(name = "last_modified_date")
     private LocalDateTime modifiedDate;
+
+    public void createdId(U id) {
+        this.createdBy = createdBy;
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public void lastModifiedId(U lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
 }

@@ -1,4 +1,4 @@
-package kr.ac.hs.oing.exception;
+package com.programmers.springbootboard.exception;
 
 public class InvalidArgumentException extends IllegalArgumentException {
     public InvalidArgumentException(ErrorMessage message) {

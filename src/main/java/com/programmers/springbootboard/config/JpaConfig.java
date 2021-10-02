@@ -1,4 +1,4 @@
-package com.excmul.config;
+package com.programmers.springbootboard.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
