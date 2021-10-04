@@ -25,4 +25,8 @@ public class Posts {
     public void deletePost(Post post) {
         posts.remove(post);
     }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
 }
