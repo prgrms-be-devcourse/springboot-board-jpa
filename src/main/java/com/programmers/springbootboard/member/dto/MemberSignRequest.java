@@ -1,15 +1,14 @@
 package com.programmers.springbootboard.member.dto;
 
-import com.programmers.springbootboard.member.domain.vo.Age;
-import com.programmers.springbootboard.member.domain.vo.Hobby;
-import com.programmers.springbootboard.member.domain.vo.Name;
+import com.programmers.springbootboard.member.domain.vo.Email;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
 public class MemberSignRequest {
-    private Name name;
-    private Age age;
-    private Hobby hobby;
+    private String email;
+    private String name;
+    private String age;
+    private String hobby;
 }

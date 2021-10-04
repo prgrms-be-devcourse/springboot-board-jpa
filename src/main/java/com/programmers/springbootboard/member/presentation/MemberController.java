@@ -3,6 +3,7 @@ package com.programmers.springbootboard.member.presentation;
 import com.programmers.springbootboard.common.dto.ResponseDto;
 import com.programmers.springbootboard.common.dto.ResponseMessage;
 import com.programmers.springbootboard.member.application.MemberService;
+import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.dto.MemberDetailResponse;
 import com.programmers.springbootboard.member.dto.MemberSignRequest;
 import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
@@ -25,20 +26,20 @@ public class MemberController {
     }
 
     @DeleteMapping("/member")
-    public ResponseEntity<ResponseDto> deleteMember(@RequestBody Long id) {
-        memberService.delete(id);
+    public ResponseEntity<ResponseDto> deleteMember(@RequestBody Email email) {
+        memberService.delete(email);
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.DELETE_SUCCESS));
     }
 
     @PutMapping("/member")
-    public ResponseEntity<ResponseDto> updateMember(@RequestBody Long id, @RequestBody MemberUpdateRequest request) {
-        memberService.update(id, request);
+    public ResponseEntity<ResponseDto> updateMember(@RequestBody MemberUpdateRequest request) {
+        memberService.update(request);
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.UPDATE_SUCCESS));
     }
 
     @GetMapping("/member")
-    public ResponseEntity<ResponseDto> member(@RequestBody Long id) {
-        MemberDetailResponse member = memberService.member(id);
+    public ResponseEntity<ResponseDto> member(@RequestBody Email email) {
+        MemberDetailResponse member = memberService.member(email);
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.INQUIRY_MEMBER_SUCCESS, member));
     }
 

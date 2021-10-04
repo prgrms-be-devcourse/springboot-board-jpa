@@ -3,6 +3,7 @@ package com.programmers.springbootboard.member.application;
 import com.programmers.springbootboard.member.converter.MemberConverter;
 import com.programmers.springbootboard.member.domain.Member;
 import com.programmers.springbootboard.member.domain.vo.Age;
+import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
 import com.programmers.springbootboard.member.dto.MemberDetailResponse;
@@ -41,22 +42,23 @@ class MemberServiceTest {
     @DisplayName("사용자_추가")
     @ParameterizedTest
     @CsvSource({
-            "김동건,18,취미는 없습니다.",
-            "성민수,25,취미는 영어회화입니다",
-            "이희찬,32,코딩이 저의 취미입니다."
+            "wrjs@naver.com,김동건,18,취미는 없습니다.",
+            "wrj@naver.com,성민수,25,취미는 영어회화입니다",
+            "smjdhappy@naver.com,이희찬,32,코딩이 저의 취미입니다."
     })
-    void insert(String inputName, String inputAge, String inputHobby) {
+    void insert(String inputEmail, String inputName, String inputAge, String inputHobby) {
         // given
+        Email email = new Email(inputEmail);
         Name name = new Name(inputName);
         Age age = new Age(inputAge);
         Hobby hobby = new Hobby(inputHobby);
 
-        MemberSignRequest request = memberConverter.toMemberSignRequest(name, age, hobby);
-
-        // then
-        memberService.insert(request);
+        MemberSignRequest request = memberConverter.toMemberSignRequest(email, name, age, hobby);
 
         // when
+        memberService.insert(request);
+
+        // then
         long count = memberRepository.count();
         assertThat(1L).isEqualTo(count);
     }
@@ -65,26 +67,27 @@ class MemberServiceTest {
     @DisplayName("사용자_삭제")
     @ParameterizedTest
     @CsvSource({
-            "김동건,18,취미는 없습니다.",
-            "성민수,25,취미는 영어회화입니다",
-            "이희찬,32,코딩이 저의 취미입니다."
+            "wrjs@naver.com,김동건,18,취미는 없습니다.",
+            "wrj@naver.com,성민수,25,취미는 영어회화입니다",
+            "smjdhappy@naver.com,이희찬,32,코딩이 저의 취미입니다."
     })
-    void delete(String inputName, String inputAge, String inputHobby) {
+    void delete(String inputEmail, String inputName, String inputAge, String inputHobby) {
         //given
+        Email email = new Email(inputEmail);
         Name name = new Name(inputName);
         Age age = new Age(inputAge);
         Hobby hobby = new Hobby(inputHobby);
 
-        MemberSignRequest request = memberConverter.toMemberSignRequest(name, age, hobby);
+        MemberSignRequest request = memberConverter.toMemberSignRequest(email, name, age, hobby);
         memberService.insert(request);
 
         List<Member> all = memberRepository.findAll();
-        Long id = all.get(0).getId();
-
-        // then
-        memberService.delete(id);
+        Email findEmail = all.get(0).getEmail();
 
         // when
+        memberService.delete(findEmail);
+
+        // then
         long count = memberRepository.count();
         assertThat(0L).isEqualTo(count);
     }
@@ -92,32 +95,30 @@ class MemberServiceTest {
     @DisplayName("사용자_수정")
     @ParameterizedTest
     @CsvSource({
-            "김동건,18,취미는 없습니다.",
-            "성민수,25,취미는 영어회화입니다",
-            "이희찬,32,코딩이 저의 취미입니다."
+            "wrjs@naver.com,김동건,18,취미는 없습니다.",
+            "wrj@naver.com,성민수,25,취미는 영어회화입니다",
+            "smjdhappy@naver.com,이희찬,32,코딩이 저의 취미입니다."
     })
-    void update(String inputName, String inputAge, String inputHobby) {
+    void update(String inputEmail, String inputName, String inputAge, String inputHobby) {
         //given
+        Email email = new Email(inputEmail);
         Name name = new Name(inputName);
         Age age = new Age(inputAge);
         Hobby hobby = new Hobby(inputHobby);
 
-        MemberSignRequest request = memberConverter.toMemberSignRequest(name, age, hobby);
+        MemberSignRequest request = memberConverter.toMemberSignRequest(email, name, age, hobby);
         memberService.insert(request);
-
-        List<Member> all = memberRepository.findAll();
-        Long id = all.get(0).getId();
 
         Name updatedName = new Name("강동진");
         Age updatedAge = new Age("20");
         Hobby updatedHobby = new Hobby("없어요 그런거");
 
-        MemberUpdateRequest memberUpdateRequest = memberConverter.toMemberUpdateRequest(updatedName, updatedAge, updatedHobby);
-
-        // then
-        MemberDetailResponse update = memberService.update(id, memberUpdateRequest);
+        MemberUpdateRequest memberUpdateRequest = memberConverter.toMemberUpdateRequest(email, updatedName, updatedAge, updatedHobby);
 
         // when
+        MemberDetailResponse update = memberService.update(memberUpdateRequest);
+
+        // then
         assertThat(updatedName).isEqualTo(update.getName());
         assertThat(updatedAge).isEqualTo(update.getAge());
         assertThat(updatedHobby).isEqualTo(update.getHobby());
@@ -126,26 +127,27 @@ class MemberServiceTest {
     @DisplayName("사용자_조회")
     @ParameterizedTest
     @CsvSource({
-            "김동건,18,취미는 없습니다.",
-            "성민수,25,취미는 영어회화입니다",
-            "이희찬,32,코딩이 저의 취미입니다."
+            "wrjs@naver.com,김동건,18,취미는 없습니다.",
+            "wrj@naver.com,성민수,25,취미는 영어회화입니다",
+            "smjdhappy@naver.com,이희찬,32,코딩이 저의 취미입니다."
     })
-    void member(String inputName, String inputAge, String inputHobby) {
+    void member(String inputEmail, String inputName, String inputAge, String inputHobby) {
         //given
+        Email email = new Email(inputEmail);
         Name name = new Name(inputName);
         Age age = new Age(inputAge);
         Hobby hobby = new Hobby(inputHobby);
 
-        MemberSignRequest request = memberConverter.toMemberSignRequest(name, age, hobby);
+        MemberSignRequest request = memberConverter.toMemberSignRequest(email, name, age, hobby);
         memberService.insert(request);
 
         List<Member> all = memberRepository.findAll();
-        Long id = all.get(0).getId();
-
-        // then
-        MemberDetailResponse memberDetailResponse = memberService.member(id);
+        Email findEmail = all.get(0).getEmail();
 
         // when
+        MemberDetailResponse memberDetailResponse = memberService.member(findEmail);
+
+        // then
         assertThat(name).isEqualTo(memberDetailResponse.getName());
         assertThat(age).isEqualTo(memberDetailResponse.getAge());
         assertThat(hobby).isEqualTo(memberDetailResponse.getHobby());
@@ -156,18 +158,19 @@ class MemberServiceTest {
     void members() {
         // given
         for (int i = 0; i < 3; i++) {
+            Email email = new Email("wrjs" + i + "@naver.com");
             Name name = new Name("김동건");
             Age age = new Age("30");
             Hobby hobby = new Hobby("취미생활이다.");
-            MemberSignRequest request = memberConverter.toMemberSignRequest(name, age, hobby);
+            MemberSignRequest request = memberConverter.toMemberSignRequest(email, name, age, hobby);
             memberService.insert(request);
         }
 
-        // then
+        // when
         List<MemberDetailResponse> members = memberService.members();
         int count = members.size();
 
-        // when
+        // then
         assertThat(3).isEqualTo(count);
     }
 

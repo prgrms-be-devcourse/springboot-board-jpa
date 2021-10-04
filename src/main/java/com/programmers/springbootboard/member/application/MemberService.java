@@ -4,6 +4,7 @@ import com.programmers.springbootboard.exception.ErrorMessage;
 import com.programmers.springbootboard.exception.NotFoundException;
 import com.programmers.springbootboard.member.converter.MemberConverter;
 import com.programmers.springbootboard.member.domain.Member;
+import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.dto.MemberDetailResponse;
 import com.programmers.springbootboard.member.dto.MemberSignRequest;
 import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
@@ -32,8 +33,8 @@ public class MemberService {
     }
 
     @Transactional
-    public void delete(Long id) {
-        Member member = memberRepository.findById(id)
+    public void delete(Email email) {
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
@@ -41,19 +42,19 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberDetailResponse update(Long id, MemberUpdateRequest request) {
-        Member member = memberRepository.findById(id)
+    public MemberDetailResponse update(MemberUpdateRequest request) {
+        Member member = memberRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
         member.update(request);
-        member.lastModifiedId(id);
+        member.lastModifiedId(member.getId());
         return memberConverter.toMemberDetailResponse(member);
     }
 
     @Transactional(readOnly = true)
-    public MemberDetailResponse member(Long id) {
-        Member member = memberRepository.findById(id)
+    public MemberDetailResponse member(Email email) {
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });

@@ -2,6 +2,7 @@ package com.programmers.springbootboard.member.domain;
 
 import com.programmers.springbootboard.common.domain.BaseEntity;
 import com.programmers.springbootboard.member.domain.vo.Age;
+import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
 import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
@@ -18,6 +19,9 @@ public class Member extends BaseEntity<Long> {
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Embedded
+    private Email email;
 
     @Embedded
     private Name name;
@@ -40,6 +44,10 @@ public class Member extends BaseEntity<Long> {
 
     public Long getId() {
         return id;
+    }
+
+    public Email getEmail() {
+        return email;
     }
 
     public Name getName() {
