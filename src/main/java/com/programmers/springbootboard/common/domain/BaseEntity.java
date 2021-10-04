@@ -30,7 +30,7 @@ public class BaseEntity<U> {
     @Column(name = "last_modified_date")
     private LocalDateTime modifiedDate;
 
-    public void createdId(U id) {
+    public void addByInformation(U id) {
         this.createdBy = createdBy;
         this.lastModifiedBy = lastModifiedBy;
     }

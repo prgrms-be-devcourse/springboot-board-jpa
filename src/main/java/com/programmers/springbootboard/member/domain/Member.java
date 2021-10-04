@@ -5,12 +5,14 @@ import com.programmers.springbootboard.member.domain.vo.Age;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
 import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import javax.persistence.*;
 
 @Entity
 @Builder
+@AllArgsConstructor
 public class Member extends BaseEntity<Long> {
     @Id
     @Column(name = "member_id")
@@ -28,13 +30,6 @@ public class Member extends BaseEntity<Long> {
 
     protected Member() {
 
-    }
-
-    public Member(Long id, Name name, Age age, Hobby hobby) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.hobby = hobby;
     }
 
     public void update(MemberUpdateRequest request) {

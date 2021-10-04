@@ -26,8 +26,8 @@ public class MemberService {
 
     @Transactional
     public void insert(MemberSignRequest request) {
-        Member member = memberConverter.of(request);
-        member.createdId(member.getId());
+        Member member = memberConverter.toMember(request);
+        member.addByInformation(member.getId());
         memberRepository.save(member);
     }
 
