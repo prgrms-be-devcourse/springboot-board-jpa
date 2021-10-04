@@ -9,11 +9,9 @@ import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import java.util.regex.Pattern;
 
-
 @Embeddable
 @EqualsAndHashCode
 public class Email {
-
     @Transient
     private static final String EMAIL_VALIDATOR = "^[_a-zA-Z0-9-\\+]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9]+)*(\\.[a-zA-Z]{2,3})$";
 
@@ -38,5 +36,4 @@ public class Email {
     public String getEmail() {
         return email;
     }
-
 }

@@ -1,6 +1,5 @@
 package com.programmers.springbootboard.member.dto;
 
-import com.programmers.springbootboard.member.domain.vo.Email;
 import lombok.Builder;
 import lombok.Data;
 

@@ -31,8 +31,8 @@ public class BaseEntity<U> {
     private LocalDateTime modifiedDate;
 
     public void addByInformation(U id) {
-        this.createdBy = createdBy;
-        this.lastModifiedBy = lastModifiedBy;
+        this.createdBy = id;
+        this.lastModifiedBy = id;
     }
 
     public void lastModifiedId(U lastModifiedBy) {
