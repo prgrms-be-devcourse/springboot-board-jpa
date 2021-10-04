@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Builder
 @Table(name = "member")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 public class Member extends DateEntity {
 
     @Id
@@ -34,12 +33,19 @@ public class Member extends DateEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private final List<Board> boards = new ArrayList<>();
 
+    @Builder
+    public Member(String name, int age, List<String> hobbies) {
+        this.name = name;
+        this.age = age;
+        this.hobbies = new ArrayList<>(hobbies);
+    }
+
     public void addBoard(Board board) {
         board.setMember(this);
     }
 
     public void changeHobbies(List<String> hobbyList) {
-        this.hobbies = List.copyOf(hobbyList);
+        this.hobbies = new ArrayList<>(hobbyList);
     }
 
     public Long getId() {
