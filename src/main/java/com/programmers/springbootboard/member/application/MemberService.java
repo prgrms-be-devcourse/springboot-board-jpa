@@ -25,6 +25,11 @@ public class MemberService {
         this.memberConverter = memberConverter;
     }
 
+    @Transactional(readOnly = true)
+    public boolean existsByEmail(Email email) {
+        return memberRepository.existsByEmail(email);
+    }
+
     @Transactional
     public void insert(MemberSignRequest request) {
         Member member = memberConverter.toMember(request);
@@ -68,4 +73,6 @@ public class MemberService {
                 .map(memberConverter::toMemberDetailResponse)
                 .collect(Collectors.toList());
     }
+
+    
 }

@@ -6,6 +6,7 @@ import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
 import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
+import com.programmers.springbootboard.post.domain.Posts;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -31,6 +32,9 @@ public class Member extends BaseEntity<Long> {
 
     @Embedded
     private Hobby hobby;
+
+    @Embedded
+    private Posts posts;
 
     protected Member() {
 
@@ -60,5 +64,9 @@ public class Member extends BaseEntity<Long> {
 
     public Hobby getHobby() {
         return hobby;
+    }
+
+    public Posts getPosts() {
+        return posts;
     }
 }

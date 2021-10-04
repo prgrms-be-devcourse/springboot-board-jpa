@@ -1,0 +1,57 @@
+package com.programmers.springbootboard.post.domain;
+
+import com.programmers.springbootboard.common.domain.BaseEntity;
+import com.programmers.springbootboard.member.domain.Member;
+import com.programmers.springbootboard.post.domain.vo.Content;
+import com.programmers.springbootboard.post.domain.vo.Title;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+
+import javax.persistence.*;
+
+@Entity
+@Builder
+@EqualsAndHashCode
+@AllArgsConstructor
+public class Post extends BaseEntity<Long> {
+    @Id
+    @Column(name = "post_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Embedded
+    private Title title;
+
+    @Embedded
+    private Content content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_Id")
+    private Member member;
+
+    protected Post() {
+
+    }
+
+    public void update(Title title, Content content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Title getTitle() {
+        return title;
+    }
+
+    public Content getContent() {
+        return content;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+}
