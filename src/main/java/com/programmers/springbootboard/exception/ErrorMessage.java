@@ -32,7 +32,6 @@ public enum ErrorMessage {
         return message;
     }
 
-
     public static ErrorMessage of(String errorMessage) {
         return Arrays.stream(values())
                 .filter(e -> e.message.equals(errorMessage))

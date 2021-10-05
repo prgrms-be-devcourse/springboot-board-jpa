@@ -80,7 +80,7 @@ public class PostService {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_POST);
                 });
         if (!member.getPosts().ownPost(post)) {
-            throw new RuntimeException();
+            throw new NotFoundException(ErrorMessage.NOT_EXIST_POST);
         }
         member.getPosts().deletePost(post);
     }

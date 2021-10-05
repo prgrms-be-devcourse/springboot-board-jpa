@@ -6,7 +6,7 @@
 
 ### 도메인 및 API
 
-> 자세한 내용은 WIKI를 참고해주세요!
+> 자세한 내용은 WIKI를 참고해주세요! [WIKI](https://github.com/DongGeon0908/SpringBoot-Board/wiki)
 
 - MEMBER
     + 회원 가입
