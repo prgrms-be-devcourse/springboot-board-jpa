@@ -13,7 +13,6 @@ public enum ResponseMessage {
     POSTS_INQUIRY_SUCCESS(HttpStatus.OK, "전체 게시글 조회 성공"),
     POST_DELETE_SUCCESS(HttpStatus.OK, "게시글 삭제 성공");
 
-
     private final HttpStatus status;
     private final String message;
 

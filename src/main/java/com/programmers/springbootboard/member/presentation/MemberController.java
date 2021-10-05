@@ -54,5 +54,4 @@ public class MemberController {
         List<MemberDetailResponse> members = memberService.members();
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_INQUIRY_SUCCESS, members));
     }
-
 }

@@ -160,7 +160,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("회원단건조회")
-    void member() throws Exception {
+    void inquiryMember() throws Exception {
         // given
         Email email = new Email("wrjs@naver.com");
 
@@ -188,7 +188,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("회원전체조회")
-    void members() throws Exception {
+    void inquiryMembers() throws Exception {
         // when // then
         mockMvc.perform(get("/api/members")
                         .contentType(MediaType.APPLICATION_JSON))
