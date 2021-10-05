@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -17,14 +19,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<UserDTO>> createUser(@RequestBody UserCreateRequest request) {
+    public ResponseEntity<ApiResponse<UserDTO>> createUser(@Valid @RequestBody UserCreateRequest request) {
         return ResponseEntity.ok(ApiResponse.success(userService.createUser(request)));
     }
 
     @PutMapping("/{name}")
     public ResponseEntity<ApiResponse<UserDTO>> updateUser(
             @PathVariable(name = "name") String name,
-            @RequestBody UserUpdateRequest request) {
+            @Valid @RequestBody UserUpdateRequest request) {
         return ResponseEntity.ok(ApiResponse.success(userService.updateUser(name, request)));
     }
 

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -34,14 +35,14 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<PostDTO>> createPost(@RequestBody PostCreateRequest request) {
+    public ResponseEntity<ApiResponse<PostDTO>> createPost(@Valid @RequestBody PostCreateRequest request) {
         return ResponseEntity.ok(ApiResponse.success(postService.createPost(request)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<PostDTO>> updatePost(
             @PathVariable(name = "id") long id,
-            @RequestBody PostUpdateRequest request) {
+            @Valid @RequestBody PostUpdateRequest request) {
         return ResponseEntity.ok(ApiResponse.success(postService.updatePost(id, request)));
     }
 
