@@ -1,6 +1,6 @@
 package com.devcourse.bbs.repository;
 
-import com.devcourse.bbs.domain.user.Post;
+import com.devcourse.bbs.domain.post.Post;
 import com.devcourse.bbs.domain.user.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
