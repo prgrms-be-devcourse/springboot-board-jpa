@@ -2,11 +2,15 @@ package com.programmers.jpaboard.member.domain;
 
 import com.programmers.jpaboard.DateEntity;
 import com.programmers.jpaboard.board.domian.Board;
+import com.programmers.jpaboard.member.domain.vo.Age;
+import com.programmers.jpaboard.member.domain.vo.Hobby;
+import com.programmers.jpaboard.member.domain.vo.Name;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "member")
@@ -20,32 +24,36 @@ public class Member extends DateEntity {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "name", length = 20)
-    private String name;
+    @Embedded
+    private Name name;
 
-    private int age;
+    @Embedded
+    private Age age;
 
-    @ElementCollection
-    @CollectionTable(name = "hobby", joinColumns = @JoinColumn(name = "member_id"))
-    @Column(name = "hobby")
-    private List<String> hobbies = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "member_id")
+    private List<Hobby> hobbies = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private final List<Board> boards = new ArrayList<>();
 
     @Builder
     public Member(String name, int age, List<String> hobbies) {
-        this.name = name;
-        this.age = age;
-        this.hobbies = new ArrayList<>(hobbies);
+        this.name = new Name(name);
+        this.age = new Age(age);
+        this.hobbies = hobbies.stream()
+                .map(Hobby::new)
+                .collect(Collectors.toList());
     }
 
     public void addBoard(Board board) {
         board.setMember(this);
     }
 
-    public void changeHobbies(List<String> hobbyList) {
-        this.hobbies = new ArrayList<>(hobbyList);
+    public void changeHobbies(List<String> hobbies) {
+        this.hobbies = hobbies.stream()
+                .map(Hobby::new)
+                .collect(Collectors.toList());
     }
 
     public Long getId() {
@@ -53,15 +61,17 @@ public class Member extends DateEntity {
     }
 
     public String getName() {
-        return name;
+        return name.getName();
     }
 
     public int getAge() {
-        return age;
+        return age.getAge();
     }
 
-    public List<String> getHobbies() {
-        return hobbies;
+    public List<String> getHobby() {
+        return hobbies.stream()
+                .map(Hobby::getHobby)
+                .collect(Collectors.toList());
     }
 
     public List<Board> getBoards() {

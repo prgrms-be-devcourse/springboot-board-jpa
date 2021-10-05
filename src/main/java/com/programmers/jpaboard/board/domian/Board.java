@@ -1,18 +1,17 @@
 package com.programmers.jpaboard.board.domian;
 
 import com.programmers.jpaboard.DateEntity;
+import com.programmers.jpaboard.board.domian.vo.Content;
+import com.programmers.jpaboard.board.domian.vo.Title;
 import com.programmers.jpaboard.member.domain.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "board")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 public class Board extends DateEntity {
 
@@ -21,11 +20,11 @@ public class Board extends DateEntity {
     @Column(name = "board_id")
     private Long id;
 
-    @Column(length = 50)
-    private String title;
+    @Embedded
+    private Title title;
 
-    @Lob
-    private String content;
+    @Embedded
+    private Content content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", referencedColumnName = "member_id")
@@ -33,8 +32,8 @@ public class Board extends DateEntity {
 
     @Builder
     public Board(String title, String content) {
-        this.title = title;
-        this.content = content;
+        this.title = new Title(title);
+        this.content = new Content(content);
     }
 
     public void setMember(Member member) {
@@ -50,11 +49,11 @@ public class Board extends DateEntity {
     }
 
     public String getTitle() {
-        return title;
+        return title.getTitle();
     }
 
     public String getContent() {
-        return content;
+        return content.getContent();
     }
 
     public Member getMember() {
