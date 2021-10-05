@@ -48,7 +48,8 @@ public class MemberService {
 
     @Transactional
     public MemberDetailResponse update(MemberUpdateRequest request) {
-        Member member = memberRepository.findByEmail(request.getEmail())
+        Email email = new Email(request.getEmail());
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
@@ -74,5 +75,5 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
-    
+
 }

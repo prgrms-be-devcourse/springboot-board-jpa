@@ -1,0 +1,62 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 회원
+
+=== 회원가입
+
+.Request
+include::{snippets}/member-insert/http-request.adoc[]
+include::{snippets}/member-insert/request-fields.adoc[]
+
+.Response
+include::{snippets}/member-insert/http-response.adoc[]
+include::{snippets}/member-insert/response-fields.adoc[]
+
++
+
+=== 회원삭제
+
+.Request
+include::{snippets}/member-insert/http-request.adoc[]
+include::{snippets}/member-insert/request-fields.adoc[]
+
+.Response
+include::{snippets}/member-insert/http-response.adoc[]
+include::{snippets}/member-insert/response-fields.adoc[]
+
++
+
+=== 회원수정
+
+.Request
+include::{snippets}/member-update/http-request.adoc[]
+include::{snippets}/member-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/member-update/http-response.adoc[]
+include::{snippets}/member-update/response-fields.adoc[]
+
++
+
+=== 회원조회
+
+.Request
+include::{snippets}/member-inquiry/http-request.adoc[]
+include::{snippets}/member-inquiry/request-fields.adoc[]
+
+.Response
+include::{snippets}/member-inquiry/http-response.adoc[]
+include::{snippets}/member-inquiry/response-fields.adoc[]
+
++
+
+=== 전체회원조회
+
+.Request
+include::{snippets}/members-inquiry/http-request.adoc[]
+
+.Response
+include::{snippets}/members-inquiry/http-response.adoc[]
+include::{snippets}/members-inquiry/response-fields.adoc[]

@@ -41,10 +41,10 @@ public class MemberConverter {
 
     public MemberUpdateRequest toMemberUpdateRequest(Email email, Name name, Age age, Hobby hobby) {
         return MemberUpdateRequest.builder()
-                .email(email)
-                .name(name)
-                .age(age)
-                .hobby(hobby)
+                .email(email.getEmail())
+                .name(name.getName())
+                .age(age.toString())
+                .hobby(hobby.getHobby())
                 .build();
     }
 }

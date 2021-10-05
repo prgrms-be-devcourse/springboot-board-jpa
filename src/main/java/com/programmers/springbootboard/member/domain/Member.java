@@ -41,9 +41,9 @@ public class Member extends BaseEntity<Long> {
     }
 
     public void update(MemberUpdateRequest request) {
-        this.name = request.getName();
-        this.age = request.getAge();
-        this.hobby = request.getHobby();
+        this.name = new Name(request.getName());
+        this.age = new Age(request.getAge());
+        this.hobby = new Hobby(request.getHobby());
     }
 
     public Long getId() {

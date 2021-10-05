@@ -69,7 +69,7 @@ class PostServiceTest {
         postService.insert(email, postRequest);
     }
 
-    @DisplayName("게시물_추가")
+    @DisplayName("게시물_수정")
     @ParameterizedTest
     @CsvSource({
             "김동건이당,취미는 없습니다.,1",

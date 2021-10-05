@@ -119,9 +119,9 @@ class MemberServiceTest {
         MemberDetailResponse update = memberService.update(memberUpdateRequest);
 
         // then
-        assertThat(updatedName).isEqualTo(update.getName());
-        assertThat(updatedAge).isEqualTo(update.getAge());
-        assertThat(updatedHobby).isEqualTo(update.getHobby());
+        assertThat(updatedName.getName()).isEqualTo(update.getName());
+        assertThat(updatedAge.toString()).isEqualTo(update.getAge());
+        assertThat(updatedHobby.getHobby()).isEqualTo(update.getHobby());
     }
 
     @DisplayName("사용자_조회")
@@ -148,9 +148,10 @@ class MemberServiceTest {
         MemberDetailResponse memberDetailResponse = memberService.member(findEmail);
 
         // then
-        assertThat(name).isEqualTo(memberDetailResponse.getName());
-        assertThat(age).isEqualTo(memberDetailResponse.getAge());
-        assertThat(hobby).isEqualTo(memberDetailResponse.getHobby());
+        assertThat(name.getName()).isEqualTo(memberDetailResponse.getName());
+        assertThat(age.toString()).isEqualTo(memberDetailResponse.getAge());
+        assertThat(hobby.getHobby()
+        ).isEqualTo(memberDetailResponse.getHobby());
     }
 
     @DisplayName("다수_사용자_수정")
