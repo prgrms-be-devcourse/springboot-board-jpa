@@ -34,8 +34,8 @@ public class BasicUserService implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(UserUpdateRequest request) {
-        User user = userRepository.findByName(request.getName()).orElseThrow(() -> {
+    public UserDTO updateUser(String name, UserUpdateRequest request) {
+        User user = userRepository.findByName(name).orElseThrow(() -> {
             throw new IllegalArgumentException("User with given username not found.");
         });
         user.updateName(request.getName());

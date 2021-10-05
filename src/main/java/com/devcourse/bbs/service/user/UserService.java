@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface UserService {
     Optional<UserDTO> findUserByName(@NonNull String name); // NonNull to everywhere?
     UserDTO createUser(UserCreateRequest request);
-    UserDTO updateUser(UserUpdateRequest request);
+    UserDTO updateUser(String name, UserUpdateRequest request);
     void deleteUser(String name);
 }
