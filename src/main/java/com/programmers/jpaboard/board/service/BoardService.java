@@ -6,6 +6,8 @@ import com.programmers.jpaboard.member.domain.Member;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class BoardService {
 
@@ -19,5 +21,15 @@ public class BoardService {
     public Board saveBoard(Board board, Member member) {
         board.setMember(member);
         return boardRepository.save(board);
+    }
+
+    @Transactional
+    public List<Board> findAll() {
+        return boardRepository.findAll();
+    }
+
+    @Transactional
+    public Board findOne(Long boardId) {
+        return boardRepository.findById(boardId).orElseThrow(() -> new RuntimeException(""));
     }
 }
