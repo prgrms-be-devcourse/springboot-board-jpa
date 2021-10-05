@@ -1,4 +1,4 @@
-package com.devcourse.bbs.repository;
+package com.devcourse.bbs.repository.post;
 
 import com.devcourse.bbs.domain.post.Post;
 import com.devcourse.bbs.domain.user.User;

@@ -5,7 +5,7 @@ import com.devcourse.bbs.controller.bind.PostUpdateRequest;
 import com.devcourse.bbs.domain.post.Post;
 import com.devcourse.bbs.domain.post.PostDTO;
 import com.devcourse.bbs.domain.user.User;
-import com.devcourse.bbs.repository.PostRepository;
+import com.devcourse.bbs.repository.post.PostRepository;
 import com.devcourse.bbs.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @Transactional
