@@ -9,7 +9,8 @@ import java.util.Optional;
 
 public interface PostService {
     PostDTO createPost(PostCreateRequest request);
-    PostDTO updatePost(PostUpdateRequest request);
+    PostDTO updatePost(long postId, PostUpdateRequest request);
     Optional<PostDTO> findPostById(long id);
     List<PostDTO> findPostsByPage(int pageNum, int pageSize);
+    void deletePost(long id);
 }

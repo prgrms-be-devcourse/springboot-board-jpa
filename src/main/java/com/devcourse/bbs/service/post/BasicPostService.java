@@ -39,8 +39,8 @@ public class BasicPostService implements PostService {
     }
 
     @Override
-    public PostDTO updatePost(PostUpdateRequest request) {
-        Post post = postRepository.findById(request.getId()).orElseThrow(() -> {
+    public PostDTO updatePost(long postId, PostUpdateRequest request) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> {
             throw new IllegalArgumentException("Post with given id not found.");
         });
         post.changeTitle(request.getTitle());
@@ -56,5 +56,10 @@ public class BasicPostService implements PostService {
     @Override
     public List<PostDTO> findPostsByPage(int pageNum, int pageSize) {
         return postRepository.findAll(PageRequest.of(pageNum, pageSize)).map(Post::toDTO).toList();
+    }
+
+    @Override
+    public void deletePost(long id) {
+        postRepository.deleteById(id);
     }
 }

@@ -3,10 +3,10 @@ package com.devcourse.bbs.controller;
 import com.devcourse.bbs.controller.bind.ApiResponse;
 import com.devcourse.bbs.controller.bind.PostCreateRequest;
 import com.devcourse.bbs.controller.bind.PostUpdateRequest;
-import com.devcourse.bbs.domain.post.Post;
 import com.devcourse.bbs.domain.post.PostDTO;
 import com.devcourse.bbs.service.post.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +39,15 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<PostDTO>> updatePost(@RequestBody PostUpdateRequest request) {
-        return ResponseEntity.ok(ApiResponse.success(postService.updatePost(request)));
+    public ResponseEntity<ApiResponse<PostDTO>> updatePost(
+            @PathVariable(name = "id") long id,
+            @RequestBody PostUpdateRequest request) {
+        return ResponseEntity.ok(ApiResponse.success(postService.updatePost(id, request)));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePost(@PathVariable(name = "id") long id) {
+        postService.deletePost(id);
     }
 }
