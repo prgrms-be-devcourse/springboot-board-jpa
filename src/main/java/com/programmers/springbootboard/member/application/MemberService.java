@@ -1,7 +1,7 @@
 package com.programmers.springbootboard.member.application;
 
 import com.programmers.springbootboard.exception.ErrorMessage;
-import com.programmers.springbootboard.exception.NotFoundException;
+import com.programmers.springbootboard.exception.error.NotFoundException;
 import com.programmers.springbootboard.member.converter.MemberConverter;
 import com.programmers.springbootboard.member.domain.Member;
 import com.programmers.springbootboard.member.domain.vo.Email;

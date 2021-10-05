@@ -1,5 +1,7 @@
 package com.programmers.springbootboard.exception;
 
+import com.programmers.springbootboard.exception.error.InvalidArgumentException;
+import com.programmers.springbootboard.exception.error.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

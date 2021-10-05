@@ -2,7 +2,7 @@ package com.programmers.springbootboard.member.presentation;
 
 import com.programmers.springbootboard.common.dto.ResponseDto;
 import com.programmers.springbootboard.common.dto.ResponseMessage;
-import com.programmers.springbootboard.exception.DuplicationArgumentException;
+import com.programmers.springbootboard.exception.error.DuplicationArgumentException;
 import com.programmers.springbootboard.exception.ErrorMessage;
 import com.programmers.springbootboard.member.application.MemberService;
 import com.programmers.springbootboard.member.domain.vo.Email;

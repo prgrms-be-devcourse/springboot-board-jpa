@@ -1,7 +1,7 @@
 package com.programmers.springbootboard.post.domain.vo;
 
 import com.programmers.springbootboard.exception.ErrorMessage;
-import com.programmers.springbootboard.exception.InvalidArgumentException;
+import com.programmers.springbootboard.exception.error.InvalidArgumentException;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
