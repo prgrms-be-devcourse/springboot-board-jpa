@@ -19,7 +19,7 @@ public class User extends DateRecordedEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-    @Column(name = "user_name", nullable = false, length = 64)
+    @Column(name = "user_name", nullable = false, unique = true, length = 64)
     private String name;
     @Column(name = "user_age", nullable = false)
     private int age;
