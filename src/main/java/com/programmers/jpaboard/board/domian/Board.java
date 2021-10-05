@@ -4,6 +4,7 @@ import com.programmers.jpaboard.DateEntity;
 import com.programmers.jpaboard.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -11,9 +12,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "board")
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Board extends DateEntity {
 
     @Id
@@ -30,6 +30,12 @@ public class Board extends DateEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", referencedColumnName = "member_id")
     private Member member;
+
+    @Builder
+    public Board(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
     public void setMember(Member member) {
         if (Objects.nonNull(this.member)) {
