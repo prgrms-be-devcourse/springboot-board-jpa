@@ -32,4 +32,14 @@ public class BoardService {
     public Board findOne(Long boardId) {
         return boardRepository.findById(boardId).orElseThrow(() -> new RuntimeException(""));
     }
+
+    @Transactional
+    public Board updateBoard(Long boardId, Board newBoard) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException(""));
+
+        board.update(newBoard.getTitle(), newBoard.getContent());
+
+        return board;
+    }
 }

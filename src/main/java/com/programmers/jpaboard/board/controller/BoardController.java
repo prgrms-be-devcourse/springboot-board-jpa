@@ -3,14 +3,12 @@ package com.programmers.jpaboard.board.controller;
 import com.programmers.jpaboard.board.controller.converter.BoardConverter;
 import com.programmers.jpaboard.board.controller.dto.BoardCreationDto;
 import com.programmers.jpaboard.board.controller.dto.BoardResponseDto;
+import com.programmers.jpaboard.board.controller.dto.BoardUpdateDto;
 import com.programmers.jpaboard.board.domian.Board;
 import com.programmers.jpaboard.board.service.BoardService;
 import com.programmers.jpaboard.member.ApiResponse;
 import com.programmers.jpaboard.member.domain.Member;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +26,7 @@ public class BoardController {
 
     @PostMapping("/boards")
     public ApiResponse<BoardResponseDto> createBoard(BoardCreationDto boardCreationDto, Member member) {
-        Board board = boardConverter.convertBoard(boardCreationDto);
+        Board board = boardConverter.convertBoardByCreation(boardCreationDto);
         Board saved = boardService.saveBoard(board, member);
 
         BoardResponseDto responseDto = boardConverter.convertBoardResponseDto(saved);
@@ -53,4 +51,14 @@ public class BoardController {
         return ApiResponse.ok("Success Board Lookup", responseDto);
     }
 
+
+    @PostMapping("/boards/{boardId}")
+    public ApiResponse<BoardResponseDto> updateBoard(@ModelAttribute BoardUpdateDto boardUpdateDto, @PathVariable Long boardId) {
+        Board board = boardConverter.convertBoardByUpdate(boardUpdateDto);
+
+        Board updatedBoard = boardService.updateBoard(boardId, board);
+        BoardResponseDto responseDto = boardConverter.convertBoardResponseDto(updatedBoard);
+
+        return ApiResponse.ok("Success Board Update", responseDto);
+    }
 }

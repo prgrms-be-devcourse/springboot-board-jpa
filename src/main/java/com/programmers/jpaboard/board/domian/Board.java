@@ -44,6 +44,11 @@ public class Board extends DateEntity {
         member.getBoards().add(this);
     }
 
+    public void update(String title, String content) {
+        this.title = new Title(title);
+        this.content = new Content(content);
+    }
+
     public Long getId() {
         return id;
     }
