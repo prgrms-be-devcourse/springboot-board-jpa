@@ -46,7 +46,7 @@ public class PostService {
                 });
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> {
-                    throw new RuntimeException("");
+                    throw new NotFoundException(ErrorMessage.NOT_EXIST_POST);
                 });
         post.update(new Title(request.getTitle()), new Content(request.getContent()));
         post.lastModifiedId(member.getId());
@@ -56,7 +56,7 @@ public class PostService {
     public PostDetailResponse post(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> {
-                    throw new RuntimeException("");
+                    throw new NotFoundException(ErrorMessage.NOT_EXIST_POST);
                 });
         return postConverter.toPostDetailResponse(post);
     }
@@ -77,7 +77,7 @@ public class PostService {
                 });
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> {
-                    throw new RuntimeException("");
+                    throw new NotFoundException(ErrorMessage.NOT_EXIST_POST);
                 });
         if (!member.getPosts().ownPost(post)) {
             throw new RuntimeException();
