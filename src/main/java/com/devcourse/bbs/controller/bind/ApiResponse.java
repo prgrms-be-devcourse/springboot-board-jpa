@@ -14,7 +14,11 @@ public class ApiResponse<T> {
         return new ApiResponse<>(true, result, "");
     }
 
+    public static <U> ApiResponse<U> fail(U result, String message) {
+        return new ApiResponse<>(false, result, message);
+    }
+
     public static <U> ApiResponse<U> fail(String message) {
-        return new ApiResponse<>(false, null, message);
+        return fail(null, message);
     }
 }
