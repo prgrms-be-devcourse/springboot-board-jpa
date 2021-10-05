@@ -1,12 +1,15 @@
-package com.devcourse.bbs.domain.user;
+package com.devcourse.bbs.domain.post;
 
 import com.devcourse.bbs.domain.DateRecordedEntity;
+import com.devcourse.bbs.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 
+@Table(name = "post")
 @Entity
 @Getter
 @NoArgsConstructor
@@ -22,4 +25,18 @@ public class Post extends DateRecordedEntity {
     @ManyToOne(cascade = CascadeType.PERSIST, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public void changeTitle(@NonNull String title) {
+        if(title.isBlank()) throw new IllegalArgumentException("Title string cannot be blank.");
+        this.title = title;
+    }
+
+    public void changeContent(@NonNull String content) {
+        if(content.isBlank()) throw new IllegalArgumentException("Content string cannot be blank.");
+        this.content = content;
+    }
+
+    public PostDTO toDTO() {
+        return new PostDTO(this);
+    }
 }

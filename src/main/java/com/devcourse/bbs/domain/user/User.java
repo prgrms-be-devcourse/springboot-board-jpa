@@ -1,7 +1,7 @@
 package com.devcourse.bbs.domain.user;
 
 import com.devcourse.bbs.domain.DateRecordedEntity;
-import lombok.AllArgsConstructor;
+import com.devcourse.bbs.domain.post.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -36,5 +36,9 @@ public class User extends DateRecordedEntity {
     public void updateAge(int age) {
         if(age < 0) throw new IllegalArgumentException("Age cannot be negative.");
         this.age = age;
+    }
+
+    public UserDTO toDTO() {
+        return new UserDTO(this);
     }
 }
