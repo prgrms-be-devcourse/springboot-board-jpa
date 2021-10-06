@@ -1,4 +1,4 @@
-package com.programmers.jpaboard.member.controller.converter;
+package com.programmers.jpaboard.member.converter;
 
 import com.programmers.jpaboard.member.controller.dto.MemberCreationDto;
 import com.programmers.jpaboard.member.controller.dto.MemberResponseDto;

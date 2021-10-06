@@ -2,10 +2,12 @@ package com.programmers.jpaboard.member;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class ApiResponse<T> {
     private int code;
     private String message;
@@ -23,5 +25,9 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> ok(String message, T data) {
         return new ApiResponse<>(HttpStatus.OK.value(), message, data);
+    }
+
+    public static <T> ApiResponse<T> fail(int code, String message, T data) {
+        return new ApiResponse<>(code, message, data);
     }
 }
