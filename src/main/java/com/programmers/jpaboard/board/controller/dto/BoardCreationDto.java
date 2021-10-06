@@ -1,14 +1,25 @@
 package com.programmers.jpaboard.board.controller.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class BoardCreationDto {
-    private final String title;
-    private final String content;
+    @NotBlank
+    @Length(min = 1, max = 100)
+    private String title;
 
-    public BoardCreationDto(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
+    @NotBlank
+    @Length(min = 1, max = 100000)
+    private String content;
+
+    @Email
+    private String email;
 }

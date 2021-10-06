@@ -2,18 +2,27 @@ package com.programmers.jpaboard.member.controller.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class MemberCreationDto {
-    private final String name;
-    private final int age;
-    private final List<String> hobbies;
+    @NotBlank
+    @Length(min = 1, max = 10)
+    private String name;
 
-    public MemberCreationDto(String name, int age, List<String> hobbies) {
-        this.name = name;
-        this.age = age;
-        this.hobbies = hobbies;
-    }
+    @Range(min = 10, max = 100)
+    private int age;
+
+    @NotNull
+    private List<String> hobbies;
 }

@@ -1,4 +1,4 @@
-package com.programmers.jpaboard.board.controller.converter;
+package com.programmers.jpaboard.board.converter;
 
 import com.programmers.jpaboard.board.controller.dto.BoardCreationDto;
 import com.programmers.jpaboard.board.controller.dto.BoardResponseDto;

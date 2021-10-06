@@ -1,15 +1,17 @@
 package com.programmers.jpaboard.board.controller;
 
-import com.programmers.jpaboard.board.controller.converter.BoardConverter;
 import com.programmers.jpaboard.board.controller.dto.BoardCreationDto;
 import com.programmers.jpaboard.board.controller.dto.BoardResponseDto;
 import com.programmers.jpaboard.board.controller.dto.BoardUpdateDto;
+import com.programmers.jpaboard.board.converter.BoardConverter;
 import com.programmers.jpaboard.board.domian.Board;
 import com.programmers.jpaboard.board.service.BoardService;
 import com.programmers.jpaboard.member.ApiResponse;
 import com.programmers.jpaboard.member.domain.Member;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +27,7 @@ public class BoardController {
     }
 
     @PostMapping("/boards")
-    public ApiResponse<BoardResponseDto> createBoard(BoardCreationDto boardCreationDto, Member member) {
+    public ApiResponse<BoardResponseDto> createBoard(@Valid @RequestBody BoardCreationDto boardCreationDto, Member member) {
         Board board = boardConverter.convertBoardByCreation(boardCreationDto);
         Board saved = boardService.saveBoard(board, member);
 
@@ -53,7 +55,7 @@ public class BoardController {
 
 
     @PostMapping("/boards/{boardId}")
-    public ApiResponse<BoardResponseDto> updateBoard(@ModelAttribute BoardUpdateDto boardUpdateDto, @PathVariable Long boardId) {
+    public ApiResponse<BoardResponseDto> updateBoard(@Validated @RequestBody BoardUpdateDto boardUpdateDto, @PathVariable Long boardId) {
         Board board = boardConverter.convertBoardByUpdate(boardUpdateDto);
 
         Board updatedBoard = boardService.updateBoard(boardId, board);
