@@ -11,8 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,6 +92,27 @@ class PostRepositoryTest {
         //then
         Optional<Post> actual = postRepository.findById(post.getId());
         assertThat(actual).isEmpty();
+    }
+
+    @Test
+    @DisplayName("작성자에 따라 게시글을 조회할 수 있다")
+    public void testFindByUser() throws Exception {
+        //given
+        User user2 = createUser("Other_user", 33, Hobby.READING);
+        Post post = Post.createPost(new Title("title"), "content", user);
+        Post post2 = Post.createPost(new Title("title2"), "content2", user);
+        Post otherPost = Post.createPost(new Title("Other title"), "Other content", user2);
+
+        userRepository.save(user2);
+
+        //when
+        postRepository.saveAll(List.of(post, post2, otherPost));
+
+        //then
+        Page<Post> userPosts = postRepository.findByUser(user, PageRequest.of(0, 3));
+        Page<Post> user2Posts = postRepository.findByUser(user2, PageRequest.of(0, 3));
+        assertThat(userPosts).hasSize(2);
+        assertThat(user2Posts).hasSize(1);
     }
 
     private User createUser(String name, int age, Hobby hobby) {
