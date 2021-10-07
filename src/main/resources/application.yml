@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:11001/board
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ilyong
+    password: ilyong
+  jpa:
+    generate-ddl: true
+    database: mysql
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        hbm2ddl:
+          query.in_clause_parameter_padding: true
+          auto: create
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
