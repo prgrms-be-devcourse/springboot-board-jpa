@@ -33,7 +33,7 @@ public class Post extends BaseEntity {
   @Column(name = "content", columnDefinition = "TEXT")
   private String content;
 
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 
