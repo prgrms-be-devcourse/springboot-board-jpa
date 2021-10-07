@@ -8,7 +8,7 @@ import java.util.UUID;
 @Table(name = "user")
 @NoArgsConstructor
 @Entity
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue

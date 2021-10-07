@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Table(name = "post")
 @NoArgsConstructor
 @Entity
-public class Post {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue
