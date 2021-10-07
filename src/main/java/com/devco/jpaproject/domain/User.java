@@ -1,10 +1,11 @@
 package com.devco.jpaproject.domain;
 
 import com.devco.jpaproject.domain.common.BaseEntity;
-import com.devco.jpaproject.domain.embedded.Posts;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @EqualsAndHashCode
@@ -25,6 +26,15 @@ public class User extends BaseEntity<Long> {
 
     private String hobby;
 
-    @Embedded
-    private Posts posts;
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
+    public void addPost(Post post){
+        this.posts.add(post);
+    }
+
+    public boolean deletePost(Post post){
+        return posts.remove(post);
+    }
+
 }

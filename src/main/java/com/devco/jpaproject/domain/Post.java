@@ -4,6 +4,7 @@ import com.devco.jpaproject.domain.common.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @EqualsAndHashCode
@@ -33,5 +34,24 @@ public class Post extends BaseEntity<Long> {
     public void updateContent(String content){
         this.content = content;
     }
+
+    /**
+     * 연관관계 편의 매소드
+     */
+    public void setWriter(User writer){
+        if(Objects.nonNull(this.writer)){
+            this.writer.getPosts().remove(this);
+        }
+
+        this.writer = writer;        //양방향
+        writer.getPosts().add(this); //연결을 함
+    }
+
+    public void delete(){
+        if(Objects.nonNull(this.writer)){
+            this.writer.getPosts().remove(this);
+        }
+    }
+
 
 }
