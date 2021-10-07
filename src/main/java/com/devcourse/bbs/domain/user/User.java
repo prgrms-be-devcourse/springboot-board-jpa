@@ -5,11 +5,13 @@ import com.devcourse.bbs.domain.post.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.Hibernate;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -40,5 +42,18 @@ public class User extends DateRecordedEntity {
 
     public UserDTO toDTO() {
         return new UserDTO(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.intValue();
     }
 }

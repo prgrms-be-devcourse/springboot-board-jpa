@@ -5,9 +5,11 @@ import com.devcourse.bbs.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.Hibernate;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Table(name = "post")
 @Entity
@@ -38,5 +40,18 @@ public class Post extends DateRecordedEntity {
 
     public PostDTO toDTO() {
         return new PostDTO(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Post post = (Post) o;
+        return Objects.equals(id, post.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.intValue();
     }
 }
