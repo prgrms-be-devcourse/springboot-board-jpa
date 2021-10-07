@@ -18,14 +18,15 @@ public class User {
     @Column(name = "name", length = 50, nullable = false)
     private String userName;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "hobby", length = 50)
-    private String hobby;
+    private Hobby hobby;
 
     public User(String userName) {
         this.userName = userName;
     }
 
-    public User(String userName, String hobby) {
+    public User(String userName, Hobby hobby) {
         this.userName = userName;
         this.hobby = hobby;
     }
