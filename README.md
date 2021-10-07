@@ -13,18 +13,18 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 ### **2. 엔티티를 구성한다**
 
 - [ ] 회원(User)
-  - [ ] id (PK) (auto increment)
-  - [ ] name
-  - [ ] age
-  - [ ] hobby
-  - [ ] **created_at**
-  - [ ] **created_by**
+  - [x] id (PK) (auto increment)
+  - [x] name
+  - [x] age
+  - [x] hobby
+  - [x] **created_at**
+  - [x] **created_by**
 - [ ] 게시글(Post)
-  - [ ] id (PK) (auto increment)
-  - [ ] title
-  - [ ] content
-  - [ ] **created_at**
-  - [ ] **created_by**
+  - [x] id (PK) (auto increment)
+  - [x] title
+  - [x] content
+  - [x] **created_at**
+  - [x] **created_by**
 - [ ] 회원과 게시글에 대한 연관관계를 설정한다.
   - [ ] 회원과 게시글은 1:N 관계이다.
 - [ ] 게시글 Repository를 구현한다. (PostRepository)
