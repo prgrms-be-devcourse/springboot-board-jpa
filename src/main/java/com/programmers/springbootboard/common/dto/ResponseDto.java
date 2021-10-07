@@ -11,8 +11,7 @@ public class ResponseDto<T> {
     }
 
     public ResponseDto(ResponseMessage message, T data) {
-        this.status = message.status().value();
-        this.message = message.name();
+        this(message);
         this.data = data;
     }
 

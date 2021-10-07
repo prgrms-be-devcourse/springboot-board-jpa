@@ -26,7 +26,7 @@ public class PostController {
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.POST_INSERT_SUCCESS));
     }
 
-    @PutMapping("/post/{id}")
+    @PatchMapping("/post/{id}")
     public ResponseEntity<ResponseDto> updatePost(@PathVariable Long id, @RequestBody PostUpdateRequest request) {
         Email email = new Email(request.getEmail());
         postService.update(email, id, request);
@@ -35,19 +35,19 @@ public class PostController {
 
     @GetMapping("/post/{id}")
     public ResponseEntity<ResponseDto> post(@PathVariable Long id) {
-        PostDetailResponse post = postService.post(id);
+        PostDetailResponse post = postService.findById(id);
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.POST_INQUIRY_SUCCESS, post));
     }
 
     @GetMapping("/posts")
     public ResponseEntity<ResponseDto> posts() {
-        List<PostDetailResponse> posts = postService.posts();
+        List<PostDetailResponse> posts = postService.findAll();
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.POSTS_INQUIRY_SUCCESS, posts));
     }
 
     @DeleteMapping("/post/{id}")
     public ResponseEntity<ResponseDto> deletePost(@PathVariable Long id, @RequestBody Email email) {
-        postService.delete(id, email);
+        postService.deleteByEmail(id, email);
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.POST_DELETE_SUCCESS));
     }
 }

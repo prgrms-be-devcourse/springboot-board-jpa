@@ -24,7 +24,7 @@ public enum ErrorMessage {
         this.message = message;
     }
 
-    public HttpStatus status() {
+    public HttpStatus getStatus() {
         return status;
     }
 

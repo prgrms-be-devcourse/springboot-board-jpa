@@ -5,7 +5,7 @@ public class ErrorResponseDto {
     private String message;
 
     public ErrorResponseDto(ErrorMessage errorMessage) {
-        this.status = errorMessage.status().value();
+        this.status = errorMessage.getStatus().value();
         this.message = errorMessage.name();
     }
 

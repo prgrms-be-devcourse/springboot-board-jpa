@@ -53,16 +53,16 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostDetailResponse post(Long id) {
-        Post post = postRepository.findById(id)
+    public PostDetailResponse findById(Long id) {
+        return postRepository.findById(id)
+                .map(postConverter::toPostDetailResponse)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_POST);
                 });
-        return postConverter.toPostDetailResponse(post);
     }
 
     @Transactional(readOnly = true)
-    public List<PostDetailResponse> posts() {
+    public List<PostDetailResponse> findAll() {
         return postRepository.findAll()
                 .stream()
                 .map(postConverter::toPostDetailResponse)
@@ -70,7 +70,7 @@ public class PostService {
     }
 
     @Transactional
-    public void delete(Long id, Email email) {
+    public void deleteByEmail(Long id, Email email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);

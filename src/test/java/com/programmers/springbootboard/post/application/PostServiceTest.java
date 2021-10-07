@@ -98,14 +98,14 @@ class PostServiceTest {
     @DisplayName("게시물_단건_출력")
     @Test
     void post() {
-        PostDetailResponse post = postService.post(1L);
+        PostDetailResponse post = postService.findById(1L);
         assertThat("wrjs@naver.com").isEqualTo(post.getEmail());
     }
 
     @DisplayName("다수_게시물_출력")
     @Test
     void posts() {
-        List<PostDetailResponse> posts = postService.posts();
+        List<PostDetailResponse> posts = postService.findAll();
         assertThat(1).isEqualTo(posts.size());
     }
 
@@ -117,7 +117,7 @@ class PostServiceTest {
         Email email = new Email("wrjs@naver.com");
 
         // when
-        postService.delete(id, email);
+        postService.deleteByEmail(id, email);
 
         // then
         assertThat(0).isEqualTo(postRepository.findAll().size());

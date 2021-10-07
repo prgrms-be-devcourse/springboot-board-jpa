@@ -4,6 +4,7 @@ import com.programmers.springbootboard.common.dto.ResponseDto;
 import com.programmers.springbootboard.common.dto.ResponseMessage;
 import com.programmers.springbootboard.exception.error.DuplicationArgumentException;
 import com.programmers.springbootboard.exception.ErrorMessage;
+import com.programmers.springbootboard.exception.error.NotFoundException;
 import com.programmers.springbootboard.member.application.MemberService;
 import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.dto.MemberDetailResponse;
@@ -33,11 +34,14 @@ public class MemberController {
 
     @DeleteMapping("/member")
     public ResponseEntity<ResponseDto> deleteMember(@RequestBody Email email) {
-        memberService.delete(email);
+        if (memberService.existsByEmail(email)) {
+            throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+        }
+        memberService.deleteByEmail(email);
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_DELETE_SUCCESS));
     }
 
-    @PutMapping("/member")
+    @PatchMapping("/member")
     public ResponseEntity<ResponseDto> updateMember(@RequestBody MemberUpdateRequest request) {
         memberService.update(request);
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_UPDATE_SUCCESS));
@@ -45,13 +49,13 @@ public class MemberController {
 
     @GetMapping("/member")
     public ResponseEntity<ResponseDto> member(@RequestBody Email email) {
-        MemberDetailResponse member = memberService.member(email);
+        MemberDetailResponse member = memberService.findByEmail(email);
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_INQUIRY_SUCCESS, member));
     }
 
     @GetMapping("/members")
     public ResponseEntity<ResponseDto> members() {
-        List<MemberDetailResponse> members = memberService.members();
+        List<MemberDetailResponse> members = memberService.findAll();
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_INQUIRY_SUCCESS, members));
     }
 }

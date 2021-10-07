@@ -33,17 +33,13 @@ public class MemberService {
     @Transactional
     public void insert(MemberSignRequest request) {
         Member member = memberConverter.toMember(request);
-        member.addByInformation(member.getId());
         memberRepository.save(member);
+        member.addByInformation(member.getId());
     }
 
     @Transactional
-    public void delete(Email email) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> {
-                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-                });
-        memberRepository.delete(member);
+    public void deleteByEmail(Email email) {
+        memberRepository.deleteByEmail(email);
     }
 
     @Transactional
@@ -59,19 +55,24 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberDetailResponse member(Email email) {
-        Member member = memberRepository.findByEmail(email)
+    public MemberDetailResponse findByEmail(Email email) {
+        return memberRepository.findByEmail(email)
+                .map(memberConverter::toMemberDetailResponse)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
-        return memberConverter.toMemberDetailResponse(member);
     }
 
     @Transactional(readOnly = true)
-    public List<MemberDetailResponse> members() {
+    public List<MemberDetailResponse> findAll() {
         return memberRepository.findAll()
                 .stream()
                 .map(memberConverter::toMemberDetailResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteAll() {
+        memberRepository.deleteAll();
     }
 }

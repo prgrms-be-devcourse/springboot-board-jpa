@@ -1,7 +1,6 @@
 package com.programmers.springbootboard.member.application;
 
 import com.programmers.springbootboard.member.converter.MemberConverter;
-import com.programmers.springbootboard.member.domain.Member;
 import com.programmers.springbootboard.member.domain.vo.Age;
 import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
@@ -9,7 +8,6 @@ import com.programmers.springbootboard.member.domain.vo.Name;
 import com.programmers.springbootboard.member.dto.MemberDetailResponse;
 import com.programmers.springbootboard.member.dto.MemberSignRequest;
 import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
-import com.programmers.springbootboard.member.infrastructure.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,13 +28,10 @@ class MemberServiceTest {
     @Autowired
     private MemberConverter memberConverter;
 
-    @Autowired
-    private MemberRepository memberRepository;
-
     @BeforeEach
     @DisplayName("초기화")
     void init() {
-        memberRepository.deleteAll();
+        memberService.deleteAll();
     }
 
     @DisplayName("사용자_추가")
@@ -59,7 +54,7 @@ class MemberServiceTest {
         memberService.insert(request);
 
         // then
-        long count = memberRepository.count();
+        long count = memberService.findAll().size();
         assertThat(1L).isEqualTo(count);
     }
 
@@ -81,14 +76,14 @@ class MemberServiceTest {
         MemberSignRequest request = memberConverter.toMemberSignRequest(email, name, age, hobby);
         memberService.insert(request);
 
-        List<Member> all = memberRepository.findAll();
-        Email findEmail = all.get(0).getEmail();
+        List<MemberDetailResponse> members = memberService.findAll();
+        Email findEmail = new Email(members.get(0).getEmail());
 
         // when
-        memberService.delete(findEmail);
+        memberService.deleteByEmail(findEmail);
 
         // then
-        long count = memberRepository.count();
+        int count = memberService.findAll().size();
         assertThat(0L).isEqualTo(count);
     }
 
@@ -141,11 +136,11 @@ class MemberServiceTest {
         MemberSignRequest request = memberConverter.toMemberSignRequest(email, name, age, hobby);
         memberService.insert(request);
 
-        List<Member> all = memberRepository.findAll();
-        Email findEmail = all.get(0).getEmail();
+        List<MemberDetailResponse> members = memberService.findAll();
+        Email findEmail = new Email(members.get(0).getEmail());
 
         // when
-        MemberDetailResponse memberDetailResponse = memberService.member(findEmail);
+        MemberDetailResponse memberDetailResponse = memberService.findByEmail(findEmail);
 
         // then
         assertThat(name.getName()).isEqualTo(memberDetailResponse.getName());
@@ -168,7 +163,7 @@ class MemberServiceTest {
         }
 
         // when
-        List<MemberDetailResponse> members = memberService.members();
+        List<MemberDetailResponse> members = memberService.findAll();
         int count = members.size();
 
         // then
