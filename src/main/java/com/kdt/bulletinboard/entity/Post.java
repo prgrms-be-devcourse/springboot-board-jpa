@@ -13,7 +13,7 @@ import java.util.Objects;
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long postId;
 
