@@ -21,5 +21,9 @@ public class Post extends BaseEntity {
     @Lob
     private String content;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
 }
 
