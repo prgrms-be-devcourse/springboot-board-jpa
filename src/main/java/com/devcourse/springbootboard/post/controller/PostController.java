@@ -5,14 +5,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devcourse.springbootboard.post.dto.PostResponse;
+import com.devcourse.springbootboard.post.dto.PostWriteRequest;
 import com.devcourse.springbootboard.post.service.PostService;
 
 @RestController
-@RequestMapping("/posts/")
+@RequestMapping("/posts")
 public class PostController {
 	private PostService postService;
 
@@ -21,12 +24,17 @@ public class PostController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<PostResponse>> getAll(Pageable pageable) {
+	public ResponseEntity<Page<PostResponse>> getAll(final Pageable pageable) {
 		return ResponseEntity.ok(postService.findPosts(pageable));
 	}
 
-	@GetMapping("{id}")
-	public ResponseEntity<PostResponse> getPost(@PathVariable Long id) {
+	@GetMapping("/{id}")
+	public ResponseEntity<PostResponse> getPost(@PathVariable final Long id) {
 		return ResponseEntity.ok(postService.findPost(id));
+	}
+
+	@PostMapping
+	public ResponseEntity<PostResponse> addPost(@RequestBody final PostWriteRequest postWriteRequest) {
+		return ResponseEntity.ok(postService.savePost(postWriteRequest));
 	}
 }
