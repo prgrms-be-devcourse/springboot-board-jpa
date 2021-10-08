@@ -12,8 +12,8 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Name {
 
-    public static final int MIN_LENGTH = 2;
     public static final int MAX_LENGTH = 20;
+    public static final String NAME_REGEXR = "^[가-힣]{2,20}$";
 
     @Column(name = "name", length = MAX_LENGTH)
     private String name;
