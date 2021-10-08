@@ -18,7 +18,7 @@ import lombok.Getter;
 @Getter
 public class User extends BaseEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "name", nullable = false)
