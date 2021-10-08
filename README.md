@@ -8,26 +8,26 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 
 ### **1. SpringDataJPA 를 설정한다.**
 
-- [ ] datasource : ~~h2~~ or `mysql`
+- [x] datasource : ~~h2~~ or `mysql`
 
 ### **2. 엔티티를 구성한다**
 
-- [ ] 회원(User)
+- [x] 회원(User)
   - [x] id (PK) (auto increment)
   - [x] name
   - [x] age
   - [x] hobby
   - [x] **created_at**
   - [x] **created_by**
-- [ ] 게시글(Post)
+- [x] 게시글(Post)
   - [x] id (PK) (auto increment)
   - [x] title
   - [x] content
   - [x] **created_at**
   - [x] **created_by**
-- [ ] 회원과 게시글에 대한 연관관계를 설정한다.
-  - [ ] 회원과 게시글은 1:N 관계이다.
-- [ ] 게시글 Repository를 구현한다. (PostRepository)
+- [x] 회원과 게시글에 대한 연관관계를 설정한다.
+  - [x] 회원과 게시글은 1:N 관계이다.
+- [x] 게시글 Repository를 구현한다. (PostRepository)
 
 ### **3. API를 구현한다.**
 

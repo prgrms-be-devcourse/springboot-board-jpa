@@ -1,7 +1,6 @@
-package com.prgrms.dlfdyd96.board.user.domain;
+package com.prgrms.dlfdyd96.board.domain;
 
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
