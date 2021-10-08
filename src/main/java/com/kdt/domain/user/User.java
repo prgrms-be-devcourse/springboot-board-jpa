@@ -1,6 +1,6 @@
 package com.kdt.domain.user;
 
-import static lombok.AccessLevel.*;
+import static lombok.AccessLevel.PROTECTED;
 
 import com.kdt.domain.common.BaseEntity;
 import javax.persistence.Column;
@@ -38,4 +38,5 @@ public class User extends BaseEntity {
         this.name = name;
         this.age = age;
     }
+
 }
