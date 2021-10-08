@@ -13,6 +13,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
@@ -44,9 +45,6 @@ class PostServiceTest {
 
     @Mock
     Post post;
-
-    @Mock
-    Pageable pageable;
 
     @Test
     @DisplayName("postDto를 post로 변환하여 저장한다.")
@@ -81,6 +79,22 @@ class PostServiceTest {
 
         //then
         assertThat(findAll.getTotalElements()).isEqualTo(30);
+    }
+
+    @Test
+    @DisplayName("게시물을 Dto로 변환하여 조회한다.")
+    void getPost() {
+        //given
+        given(postRepository.findById(1L)).willReturn(Optional.of(post));
+        given(postConvertor.convertPostToPostDto(post)).willReturn(postDto);
+
+        //when
+        PostDto findPostDto = postService.findOne(1L);
+
+        //then
+        then(postRepository).should().findById(1L);
+        then(postConvertor).should().convertPostToPostDto(post);
+        assertThat(findPostDto).isNotNull();
     }
 
 }

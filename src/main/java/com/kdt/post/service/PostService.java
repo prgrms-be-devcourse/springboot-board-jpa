@@ -25,4 +25,10 @@ public class PostService {
         return postRepository.findAll(pageable).map(postConvertor::convertPostToPostDto);
     }
 
+    public PostDto findOne(Long id) {
+        return postRepository.findById(id)
+                .map(postConvertor::convertPostToPostDto)
+                .orElseThrow(/** todo: 에외 처리 */);
+    }
+
 }

@@ -48,13 +48,10 @@ class PostApiTest {
     @Test
     @DisplayName("게시물 정보를 받아 저장하는 API Test")
     void addPost() throws Exception {
-        //given
         User user = userRepository.save(User.builder().name("tester").age(20).build());
 
         PostDto postDto = givenPostDto(user.getId());
 
-        //when
-        //then
         mockMvc.perform(post(POSTS)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(postDto)))
@@ -77,6 +74,17 @@ class PostApiTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    @DisplayName("게시물 단건 조회")
+    void getPost() throws Exception {
+        User user = userRepository.save(User.builder().name("tester").age(20).build());
+        Post post = postRepository.save(Post.builder().title("제목").content("내용").user(user).build());
+
+        mockMvc.perform(get(POSTS + "/{id}", post.getId()))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
     private PostDto givenPostDto(Long userId) {
         UserDto userDto = new UserDto();
         userDto.setId(userId);
@@ -89,6 +97,5 @@ class PostApiTest {
         postDto.setUserDto(userDto);
         return postDto;
     }
-
 
 }
