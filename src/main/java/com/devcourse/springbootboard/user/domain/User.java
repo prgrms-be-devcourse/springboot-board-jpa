@@ -39,4 +39,10 @@ public class User extends BaseEntity {
 		this.age = age;
 		this.hobby = hobby;
 	}
+
+	public void changeInfo(String name, int age, Hobby hobby) {
+		this.name = name;
+		this.age = age;
+		this.hobby = hobby;
+	}
 }

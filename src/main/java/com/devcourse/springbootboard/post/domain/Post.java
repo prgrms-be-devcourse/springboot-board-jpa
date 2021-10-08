@@ -1,8 +1,10 @@
 package com.devcourse.springbootboard.post.domain;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +35,11 @@ public class Post extends BaseEntity {
 	private String content;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	@JoinColumn(
+		name = "user_id",
+		referencedColumnName = "id",
+		foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
+	)
 	private User user;
 
 	protected Post() {
