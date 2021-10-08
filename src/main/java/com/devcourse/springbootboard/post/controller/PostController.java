@@ -3,6 +3,7 @@ package com.devcourse.springbootboard.post.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,5 +44,10 @@ public class PostController {
 	@PutMapping
 	public ResponseEntity<PostResponse> modifyPost(@RequestBody final PostUpdateRequest postUpdateRequest) {
 		return ResponseEntity.ok(postService.updatePost(postUpdateRequest));
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Long> removePost(@PathVariable final Long id) {
+		return ResponseEntity.ok(postService.deletePost(id));
 	}
 }

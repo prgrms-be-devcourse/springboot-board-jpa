@@ -63,4 +63,14 @@ public class PostService {
 
 		return PostConverter.toPostResponse(post);
 	}
+
+	@Transactional
+	public Long deletePost(Long id) {
+		Post post = postRepository.findById(id)
+			.orElseThrow(() -> new PostNotFoundException(ErrorCode.POST_NOT_FOUND));
+
+		postRepository.delete(post);
+
+		return id;
+	}
 }
