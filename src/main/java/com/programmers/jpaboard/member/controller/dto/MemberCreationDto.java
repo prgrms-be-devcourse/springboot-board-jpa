@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 public class MemberCreationDto {
     @NotBlank
-    @Length(min = Name.MIN_LENGTH, max = Name.MAX_LENGTH)
+    @Pattern(regexp = Name.NAME_REGEXR)
     private String name;
 
     @Range(min = Age.MIN_AGE, max = Age.MAX_AGE)
