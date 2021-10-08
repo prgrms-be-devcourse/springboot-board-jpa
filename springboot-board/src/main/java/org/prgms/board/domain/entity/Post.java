@@ -38,7 +38,8 @@ public class Post extends BaseTime {
     }
 
     @Builder
-    private Post(String title, String content, String author, User user) {
+    private Post(Long id, String title, String content, String author, User user) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.author = author;

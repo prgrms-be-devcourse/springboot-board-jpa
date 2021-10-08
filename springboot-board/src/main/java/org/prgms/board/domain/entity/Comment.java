@@ -34,7 +34,8 @@ public class Comment extends BaseTime {
     }
 
     @Builder
-    private Comment(String content, String author, Post post, User user) {
+    private Comment(Long id, String content, String author, Post post, User user) {
+        this.id = id;
         this.content = content;
         this.author = author;
         this.post = post;
