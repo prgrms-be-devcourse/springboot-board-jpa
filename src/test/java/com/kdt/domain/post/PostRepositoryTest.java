@@ -3,8 +3,10 @@ package com.kdt.domain.post;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kdt.domain.user.User;
+import com.kdt.domain.user.UserRepository;
 import java.util.List;
 import java.util.stream.IntStream;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,9 +21,23 @@ class PostRepositoryTest {
     @Autowired
     PostRepository postRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    User user;
+
     @BeforeEach
     void setUp() {
+        user = userRepository.save(User.builder()
+                .name("user")
+                .age(20)
+                .build());
+    }
+
+    @AfterEach
+    void tearDown() {
         postRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -97,15 +113,7 @@ class PostRepositoryTest {
                 .id(id)
                 .title(title)
                 .content(content)
-                .user(givenUser(1L))
-                .build();
-    }
-
-    private User givenUser(Long id) {
-        return User.builder()
-                .id(id)
-                .name("user")
-                .age(20)
+                .user(user)
                 .build();
     }
 
