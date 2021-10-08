@@ -32,12 +32,12 @@ public class PostApi {
 
     @GetMapping
     public ResponseEntity getPosts(Pageable pageable) {
-        return ResponseEntity.ok(postService.findAll(pageable));
+        return ResponseEntity.ok(ApiResponse.of(postService.findAll(pageable)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getPost(@PathVariable Long id) {
-        return ResponseEntity.ok(postService.findOne(id));
+        return ResponseEntity.ok(ApiResponse.of(postService.findOne(id)));
     }
 
 }
