@@ -6,7 +6,7 @@ import com.programmers.jpaboard.board.controller.dto.BoardUpdateDto;
 import com.programmers.jpaboard.board.converter.BoardConverter;
 import com.programmers.jpaboard.board.domian.Board;
 import com.programmers.jpaboard.board.service.BoardService;
-import com.programmers.jpaboard.member.ApiResponse;
+import com.programmers.jpaboard.common.ApiResponse;
 import com.programmers.jpaboard.member.domain.Member;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +27,16 @@ public class BoardController {
     }
 
     @PostMapping("/boards")
-    public ApiResponse<BoardResponseDto> createBoard(@Valid @RequestBody BoardCreationDto boardCreationDto, Member member) {
+    public ApiResponse<BoardResponseDto> createBoard(@Valid @RequestBody BoardCreationDto boardCreationDto) {
         Board board = boardConverter.convertBoardByCreation(boardCreationDto);
+
+        // Todo: 로그인한 Member를 관리할 수 있게 되면 삭제
+        Member member = Member.builder()
+                .age(10)
+                .name("name")
+                .hobbies(List.of("Table Tennis"))
+                .build();
+
         Board saved = boardService.saveBoard(board, member);
 
         BoardResponseDto responseDto = boardConverter.convertBoardResponseDto(saved);
@@ -56,9 +64,8 @@ public class BoardController {
 
     @PostMapping("/boards/{boardId}")
     public ApiResponse<BoardResponseDto> updateBoard(@Validated @RequestBody BoardUpdateDto boardUpdateDto, @PathVariable Long boardId) {
-        Board board = boardConverter.convertBoardByUpdate(boardUpdateDto);
 
-        Board updatedBoard = boardService.updateBoard(boardId, board);
+        Board updatedBoard = boardService.updateBoard(boardId, boardUpdateDto);
         BoardResponseDto responseDto = boardConverter.convertBoardResponseDto(updatedBoard);
 
         return ApiResponse.ok("Success Board Update", responseDto);

@@ -19,7 +19,4 @@ public class BoardCreationDto {
     @NotBlank
     @Length(min = 1, max = 100000)
     private String content;
-
-    @Email
-    private String email;
 }

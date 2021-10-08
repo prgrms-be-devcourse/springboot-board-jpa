@@ -3,7 +3,7 @@ package com.programmers.jpaboard.board.exhandler.advice;
 import com.programmers.jpaboard.board.exception.BoardNotFoundException;
 import com.programmers.jpaboard.board.exhandler.ErrorResult;
 import com.programmers.jpaboard.board.exhandler.ErrorStatus;
-import com.programmers.jpaboard.member.ApiResponse;
+import com.programmers.jpaboard.common.ApiResponse;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

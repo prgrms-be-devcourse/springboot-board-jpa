@@ -1,6 +1,6 @@
 package com.programmers.jpaboard.member.controller;
 
-import com.programmers.jpaboard.member.ApiResponse;
+import com.programmers.jpaboard.common.ApiResponse;
 import com.programmers.jpaboard.member.controller.dto.MemberCreationDto;
 import com.programmers.jpaboard.member.controller.dto.MemberResponseDto;
 import com.programmers.jpaboard.member.converter.MemberConverter;
