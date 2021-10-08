@@ -2,16 +2,19 @@ package com.kdt.apis;
 
 import static com.kdt.apis.PostApi.POSTS;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kdt.domain.post.Post;
 import com.kdt.domain.post.PostRepository;
 import com.kdt.domain.user.User;
 import com.kdt.domain.user.UserRepository;
 import com.kdt.post.dto.PostDto;
 import com.kdt.user.dto.UserDto;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,6 +61,20 @@ class PostApiTest {
                 .andDo(print())
                 .andExpect(status().isCreated());
 
+    }
+
+    @Test
+    @DisplayName("게시물 페이지 요청")
+    void getPosts() throws Exception {
+        User user = userRepository.save(User.builder().name("tester").age(20).build());
+        IntStream.range(0, 30).forEach(i -> postRepository.save(Post.builder().title("제목 " + i).content("내용").user(user).build()));
+
+        mockMvc.perform(get(POSTS)
+                .param("page", "2")
+                .param("size", "10")
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     private PostDto givenPostDto(Long userId) {

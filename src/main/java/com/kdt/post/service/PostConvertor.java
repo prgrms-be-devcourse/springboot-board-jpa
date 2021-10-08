@@ -26,4 +26,19 @@ public class PostConvertor {
         return user;
     }
 
+    public PostDto convertPostToPostDto(Post post) {
+        PostDto postDto = new PostDto();
+        postDto.setTitle(post.getTitle());
+        postDto.setContent(post.getContent());
+        postDto.setUserDto(convertUserToUserDto(post.getUser()));
+        return postDto;
+    }
+
+    private UserDto convertUserToUserDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
+        userDto.setAge(user.getAge());
+        return userDto;
+    }
 }
