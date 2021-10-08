@@ -9,6 +9,7 @@ import com.devcourse.springbootboard.global.error.exception.ErrorCode;
 import com.devcourse.springbootboard.post.converter.PostConverter;
 import com.devcourse.springbootboard.post.domain.Post;
 import com.devcourse.springbootboard.post.dto.PostResponse;
+import com.devcourse.springbootboard.post.dto.PostUpdateRequest;
 import com.devcourse.springbootboard.post.dto.PostWriteRequest;
 import com.devcourse.springbootboard.post.exception.PostNotFoundException;
 import com.devcourse.springbootboard.post.repository.PostRepository;
@@ -47,5 +48,19 @@ public class PostService {
 		Post post = PostConverter.convertPostWriteRequest(postWriteRequest, foundUser);
 
 		return PostConverter.toPostResponse(postRepository.save(post));
+	}
+
+	@Transactional
+	public PostResponse updatePost(PostUpdateRequest postUpdateRequest) {
+		if (!userRepository.existsById(postUpdateRequest.getUserId())) {
+			throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+		}
+
+		Post post = postRepository.findById(postUpdateRequest.getPostId())
+			.orElseThrow(() -> new PostNotFoundException(ErrorCode.POST_NOT_FOUND));
+
+		post.changeInfo(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
+
+		return PostConverter.toPostResponse(post);
 	}
 }

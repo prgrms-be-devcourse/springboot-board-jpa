@@ -6,11 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devcourse.springbootboard.post.dto.PostResponse;
+import com.devcourse.springbootboard.post.dto.PostUpdateRequest;
 import com.devcourse.springbootboard.post.dto.PostWriteRequest;
 import com.devcourse.springbootboard.post.service.PostService;
 
@@ -36,5 +38,10 @@ public class PostController {
 	@PostMapping
 	public ResponseEntity<PostResponse> addPost(@RequestBody final PostWriteRequest postWriteRequest) {
 		return ResponseEntity.ok(postService.savePost(postWriteRequest));
+	}
+
+	@PutMapping
+	public ResponseEntity<PostResponse> modifyPost(@RequestBody final PostUpdateRequest postUpdateRequest) {
+		return ResponseEntity.ok(postService.updatePost(postUpdateRequest));
 	}
 }
