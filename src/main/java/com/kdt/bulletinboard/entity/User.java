@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Table(name = "user")
@@ -16,7 +15,7 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID userId;
+    private Long id;
 
     @Column(name = "name", length = 50, nullable = false)
     private String userName;
@@ -25,7 +24,7 @@ public class User extends BaseEntity {
     @Column(name = "hobby", length = 50)
     private Hobby hobby;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "id")
     private List<Post> posts;
 
     //연관관계 편의 메서드

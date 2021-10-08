@@ -15,9 +15,9 @@ public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long postId;
+    private Long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", length = 150, nullable = false)
     private String title;
 
     @Lob
@@ -25,7 +25,7 @@ public class Post extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     public void setUser(User user) {
