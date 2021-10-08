@@ -12,7 +12,10 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Name {
 
-    @Column(name = "name", length = 20)
+    public static final int MIN_LENGTH = 2;
+    public static final int MAX_LENGTH = 20;
+
+    @Column(name = "name", length = MAX_LENGTH)
     private String name;
 
     public Name(String name) {

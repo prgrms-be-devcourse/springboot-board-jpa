@@ -16,13 +16,6 @@ public class BoardConverter {
                 .build();
     }
 
-    public Board convertBoardByUpdate(BoardUpdateDto boardUpdateDto) {
-        return Board.builder()
-                .title(boardUpdateDto.getTitle())
-                .content(boardUpdateDto.getContent())
-                .build();
-    }
-
     public BoardResponseDto convertBoardResponseDto(Board board) {
         return BoardResponseDto.builder()
                 .title(board.getTitle())

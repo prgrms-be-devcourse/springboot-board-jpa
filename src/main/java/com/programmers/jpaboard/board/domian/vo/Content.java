@@ -11,6 +11,9 @@ import javax.persistence.Lob;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Content {
+
+    public static final int MAX_LENGTH = 100000;
+
     @Lob
     private String content;
 

@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Hobby {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String hobby;

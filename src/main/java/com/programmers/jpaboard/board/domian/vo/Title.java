@@ -11,7 +11,11 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Title {
-    @Column(length = 50)
+
+    public static final int MIN_LENGTH = 1;
+    public static final int MAX_LENGTH = 100;
+
+    @Column(length = MAX_LENGTH)
     private String title;
 
     public Title(String title) {

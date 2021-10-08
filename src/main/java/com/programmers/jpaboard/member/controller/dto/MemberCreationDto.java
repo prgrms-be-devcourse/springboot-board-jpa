@@ -1,5 +1,7 @@
 package com.programmers.jpaboard.member.controller.dto;
 
+import com.programmers.jpaboard.member.domain.vo.Age;
+import com.programmers.jpaboard.member.domain.vo.Name;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,10 +19,10 @@ import java.util.List;
 @NoArgsConstructor
 public class MemberCreationDto {
     @NotBlank
-    @Length(min = 1, max = 10)
+    @Length(min = Name.MIN_LENGTH, max = Name.MAX_LENGTH)
     private String name;
 
-    @Range(min = 10, max = 100)
+    @Range(min = Age.MIN_AGE, max = Age.MAX_AGE)
     private int age;
 
     @NotNull
