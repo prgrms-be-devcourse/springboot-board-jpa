@@ -1,8 +1,8 @@
 package com.programmers.jpaboard.board.service;
 
+import com.programmers.jpaboard.board.controller.dto.BoardUpdateDto;
 import com.programmers.jpaboard.board.domian.Board;
 import com.programmers.jpaboard.board.exception.BoardNotFoundException;
-import com.programmers.jpaboard.board.exhandler.ErrorStatus;
 import com.programmers.jpaboard.board.repository.BoardRepository;
 import com.programmers.jpaboard.member.domain.Member;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class BoardService {
     }
 
     @Transactional
-    public Board updateBoard(Long boardId, Board newBoard) {
+    public Board updateBoard(Long boardId, BoardUpdateDto newBoard) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException(boardId));
 

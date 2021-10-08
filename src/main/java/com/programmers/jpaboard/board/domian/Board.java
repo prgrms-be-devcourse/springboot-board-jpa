@@ -26,7 +26,7 @@ public class Board extends DateEntity {
     @Embedded
     private Content content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)   // TODO: 로그인한 Member를 관리할 수 있게 되면 cascade 삭제
     @JoinColumn(name = "member_id", referencedColumnName = "member_id")
     private Member member;
 

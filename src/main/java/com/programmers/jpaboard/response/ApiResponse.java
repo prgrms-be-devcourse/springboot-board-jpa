@@ -1,4 +1,4 @@
-package com.programmers.jpaboard.member;
+package com.programmers.jpaboard.response;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;

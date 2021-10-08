@@ -1,6 +1,7 @@
 package com.programmers.jpaboard.member.controller;
 
-import com.programmers.jpaboard.member.ApiResponse;
+import com.programmers.jpaboard.member.controller.status.MemberResponseStatus;
+import com.programmers.jpaboard.response.ApiResponse;
 import com.programmers.jpaboard.member.controller.dto.MemberCreationDto;
 import com.programmers.jpaboard.member.controller.dto.MemberResponseDto;
 import com.programmers.jpaboard.member.converter.MemberConverter;
@@ -25,6 +26,6 @@ public class MemberController {
         Member saved = memberService.saveMember(member);
         MemberResponseDto memberResponseDto = memberConverter.convertMemberResponseDto(saved);
 
-        return ApiResponse.ok("Creation Success", memberResponseDto);
+        return ApiResponse.ok(MemberResponseStatus.MEMBER_CREATION_SUCCESS.getMessage(), memberResponseDto);
     }
 }
