@@ -40,4 +40,9 @@ public class PostApi {
         return ResponseEntity.ok(ApiResponse.of(postService.findOne(id)));
     }
 
+    @PostMapping("/{id}")
+    public ResponseEntity updatePost(@RequestBody PostDto postDto) {
+        return ResponseEntity.status(CREATED).body(ApiResponse.of(postService.update(postDto)));
+    }
+
 }

@@ -13,6 +13,7 @@ import com.kdt.domain.post.PostRepository;
 import com.kdt.domain.user.User;
 import com.kdt.domain.user.UserRepository;
 import com.kdt.post.dto.PostDto;
+import com.kdt.post.service.PostConvertor;
 import com.kdt.user.dto.UserDto;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +40,9 @@ class PostApiTest {
 
     @Autowired
     PostRepository postRepository;
+
+    @Autowired
+    PostConvertor postConvertor;
 
     @BeforeEach
     void setUp() {
@@ -83,6 +87,23 @@ class PostApiTest {
         mockMvc.perform(get(POSTS + "/{id}", post.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("게시물 수정")
+    void updatePost() throws Exception {
+        User user = userRepository.save(User.builder().name("tester").age(20).build());
+        Post post = postRepository.save(Post.builder().title("제목").content("내용").user(user).build());
+
+        PostDto postDto = postConvertor.convertPostToPostDto(post);
+        postDto.setTitle("변경한 제목");
+        postDto.setContent("변경한 내용");
+
+        mockMvc.perform(post(POSTS + "/{id}", post.getId())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(postDto)))
+                .andDo(print())
+                .andExpect(status().isCreated());
     }
 
     private PostDto givenPostDto(Long userId) {

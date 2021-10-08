@@ -4,6 +4,7 @@ import com.kdt.domain.post.Post;
 import com.kdt.domain.user.User;
 import com.kdt.post.dto.PostDto;
 import com.kdt.user.dto.UserDto;
+import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,6 +29,9 @@ public class PostConvertor {
 
     public PostDto convertPostToPostDto(Post post) {
         PostDto postDto = new PostDto();
+        if (Objects.nonNull(post.getId())) {
+            postDto.setId(post.getId());
+        }
         postDto.setTitle(post.getTitle());
         postDto.setContent(post.getContent());
         postDto.setUserDto(convertUserToUserDto(post.getUser()));

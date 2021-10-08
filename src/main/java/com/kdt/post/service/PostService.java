@@ -1,5 +1,6 @@
 package com.kdt.post.service;
 
+import com.kdt.domain.post.Post;
 import com.kdt.domain.post.PostRepository;
 import com.kdt.post.dto.PostDto;
 import lombok.RequiredArgsConstructor;
@@ -31,4 +32,9 @@ public class PostService {
                 .orElseThrow(/** todo: 에외 처리 */);
     }
 
+    @Transactional
+    public Long update(PostDto postDto) {
+        postConvertor.convertPostDtoToPost(postDto);
+        return postDto.getId();
+    }
 }
