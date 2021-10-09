@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -37,13 +38,17 @@ public class Post extends BaseEntity {
         user.getPosts().add(this);
     }
 
-    public Post(String title) {
+    public Post(String title, String createdBy) {
         this.title = title;
+        this.setCratedAt(LocalDateTime.now());
+        this.setCreatedBy(createdBy);
     }
 
-    public Post(String title, String content) {
+    public Post(String title, String content, String createdBy) {
         this.title = title;
         this.content = content;
+        this.setCratedAt(LocalDateTime.now());
+        this.setCreatedBy(createdBy);
     }
 
 }

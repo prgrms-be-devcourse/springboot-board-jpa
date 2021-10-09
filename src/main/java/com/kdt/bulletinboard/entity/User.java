@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -25,20 +27,24 @@ public class User extends BaseEntity {
     private Hobby hobby;
 
     @OneToMany(mappedBy = "id")
-    private List<Post> posts;
+    private List<Post> posts = new ArrayList<>();
 
     //연관관계 편의 메서드
     public void addPost(Post post) {
         post.setUser(this);
     }
 
-    public User(String userName) {
+    public User(String userName, String createBy) {
         this.userName = userName;
+        this.setCratedAt(LocalDateTime.now());
+        this.setCreatedBy(createBy);
     }
 
-    public User(String userName, Hobby hobby) {
+    public User(String userName, Hobby hobby, String createBy) {
         this.userName = userName;
         this.hobby = hobby;
+        this.setCratedAt(LocalDateTime.now());
+        this.setCreatedBy(createBy);
     }
 
 }
