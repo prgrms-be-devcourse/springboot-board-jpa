@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,10 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<PostDTO>> createPost(@Valid @RequestBody PostCreateRequest request) {
-        return ResponseEntity.ok(ApiResponse.success(postService.createPost(request)));
+        PostDTO post = postService.createPost(request);
+        return ResponseEntity
+                .created(URI.create(String.format("/posts/%d", post.getId())))
+                .body(ApiResponse.success(post));
     }
 
     @PutMapping("/{id}")

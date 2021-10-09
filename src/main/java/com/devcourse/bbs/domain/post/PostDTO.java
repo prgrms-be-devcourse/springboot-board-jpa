@@ -3,9 +3,11 @@ package com.devcourse.bbs.domain.post;
 import com.devcourse.bbs.domain.user.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 
 @AllArgsConstructor
 @Builder
+@Getter
 public class PostDTO {
     private final long id;
     private final String title;
