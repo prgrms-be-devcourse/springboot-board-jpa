@@ -15,17 +15,19 @@ import com.devcourse.springbootboard.user.repository.UserRepository;
 
 @Service
 public class UserService {
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
+	private final UserConverter userConverter;
 
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, UserConverter userConverter) {
 		this.userRepository = userRepository;
+		this.userConverter = userConverter;
 	}
 
 	@Transactional
 	public UserResponse saveUser(final UserSignUpRequest userSignUpRequest) {
-		User user = UserConverter.convertUserSignUpRequest(userSignUpRequest);
+		User user = userConverter.convertUserSignUpRequest(userSignUpRequest);
 
-		return UserConverter.toUserResponse(userRepository.save(user));
+		return userConverter.toUserResponse(userRepository.save(user));
 	}
 
 	@Transactional(readOnly = true)
@@ -33,7 +35,7 @@ public class UserService {
 		User user = userRepository.findById(id)
 			.orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
 
-		return UserConverter.toUserResponse(user);
+		return userConverter.toUserResponse(user);
 	}
 
 	@Transactional
@@ -44,7 +46,7 @@ public class UserService {
 		user.changeInfo(userUpdateRequest.getName(), userUpdateRequest.getAge(),
 			new Hobby(userUpdateRequest.getHobby()));
 
-		return UserConverter.toUserResponse(user);
+		return userConverter.toUserResponse(user);
 	}
 
 	@Transactional

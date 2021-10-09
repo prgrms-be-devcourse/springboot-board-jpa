@@ -21,22 +21,25 @@ import com.devcourse.springbootboard.user.repository.UserRepository;
 public class PostService {
 	private final PostRepository postRepository;
 	private final UserRepository userRepository;
+	private final PostConverter postConverter;
 
-	public PostService(PostRepository postRepository, UserRepository userRepository) {
+	public PostService(PostRepository postRepository, UserRepository userRepository,
+		PostConverter postConverter) {
 		this.postRepository = postRepository;
 		this.userRepository = userRepository;
+		this.postConverter = postConverter;
 	}
 
 	@Transactional(readOnly = true)
 	public Page<PostResponse> findPosts(final Pageable pageable) {
 		return postRepository.findAll(pageable)
-			.map(PostConverter::toPostResponse);
+			.map(postConverter::toPostResponse);
 	}
 
 	@Transactional(readOnly = true)
 	public PostResponse findPost(final Long postId) {
 		return postRepository.findById(postId)
-			.map(PostConverter::toPostResponse)
+			.map(postConverter::toPostResponse)
 			.orElseThrow(() -> new PostNotFoundException(ErrorCode.POST_NOT_FOUND));
 	}
 
@@ -45,9 +48,9 @@ public class PostService {
 		User foundUser = userRepository.findById(postWriteRequest.getUserId())
 			.orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
 
-		Post post = PostConverter.convertPostWriteRequest(postWriteRequest, foundUser);
+		Post post = postConverter.convertPostWriteRequest(postWriteRequest, foundUser);
 
-		return PostConverter.toPostResponse(postRepository.save(post));
+		return postConverter.toPostResponse(postRepository.save(post));
 	}
 
 	@Transactional
@@ -61,7 +64,7 @@ public class PostService {
 
 		post.changeInfo(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
 
-		return PostConverter.toPostResponse(post);
+		return postConverter.toPostResponse(post);
 	}
 
 	@Transactional
