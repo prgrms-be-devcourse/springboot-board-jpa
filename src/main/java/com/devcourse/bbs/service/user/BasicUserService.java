@@ -29,7 +29,7 @@ public class BasicUserService implements UserService {
                 .name(request.getName())
                 .age(request.getAge())
                 .hobby(request.getHobby()).build();
-        userRepository.save(user);
+        user = userRepository.save(user);
         return user.toDTO();
     }
 
