@@ -2,6 +2,7 @@ package com.kdt.apis;
 
 import static com.kdt.apis.PostApi.POSTS;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import com.kdt.post.dto.PostDto;
 import com.kdt.post.service.PostService;
@@ -42,7 +43,7 @@ public class PostApi {
 
     @PostMapping("/{id}")
     public ResponseEntity updatePost(@RequestBody PostDto postDto) {
-        return ResponseEntity.status(CREATED).body(ApiResponse.of(postService.update(postDto)));
+        return ResponseEntity.status(NO_CONTENT).body(ApiResponse.of(postService.update(postDto)));
     }
 
 }
