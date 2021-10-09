@@ -34,7 +34,9 @@ public class PostService {
 
     @Transactional
     public Long update(PostDto postDto) {
-        postConvertor.convertPostDtoToPost(postDto);
-        return postDto.getId();
+        return postRepository.findById(postDto.getId())
+                .map(post -> postConvertor.convertPostDtoToPost(postDto))
+                .orElseThrow(/** todo: 에외 처리 */)
+                .getId();
     }
 }

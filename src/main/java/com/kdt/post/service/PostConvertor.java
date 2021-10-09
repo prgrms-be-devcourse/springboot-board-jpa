@@ -12,6 +12,7 @@ public class PostConvertor {
 
     public Post convertPostDtoToPost(PostDto postDto) {
         return Post.builder()
+                .id(postDto.getId())
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
                 .user(convertUserDtoToUser(postDto.getUserDto()))
@@ -29,9 +30,7 @@ public class PostConvertor {
 
     public PostDto convertPostToPostDto(Post post) {
         PostDto postDto = new PostDto();
-        if (Objects.nonNull(post.getId())) {
-            postDto.setId(post.getId());
-        }
+        postDto.setId(post.getId());
         postDto.setTitle(post.getTitle());
         postDto.setContent(post.getContent());
         postDto.setUserDto(convertUserToUserDto(post.getUser()));
