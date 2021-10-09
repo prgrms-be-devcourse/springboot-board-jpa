@@ -1,12 +1,16 @@
 package com.homework.springbootboard.model;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "user")
@@ -26,6 +30,13 @@ public class User extends BaseEntity{
 
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
+
+    @Builder
+    public User(String name, int age, String hobby) {
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+    }
 
     public void addPost(Post post){
         post.setUser(this);
