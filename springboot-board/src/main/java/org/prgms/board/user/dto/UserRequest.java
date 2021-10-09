@@ -9,7 +9,10 @@ public class UserRequest {
     private int age;
     private String hobby;
 
-    public UserRequest() {
+    public UserRequest(String name, int age, String hobby) {
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
     }
 
     public User toEntity() {
