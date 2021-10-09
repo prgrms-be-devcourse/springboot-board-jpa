@@ -34,7 +34,7 @@ public class BasicPostService implements PostService {
                 .user(user)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now()).build();
-        postRepository.save(post);
+        post = postRepository.save(post);
         return post.toDTO();
     }
 
