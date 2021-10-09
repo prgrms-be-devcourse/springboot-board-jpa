@@ -5,6 +5,7 @@ import com.programmers.springbootboard.exception.error.NotFoundException;
 import com.programmers.springbootboard.member.converter.MemberConverter;
 import com.programmers.springbootboard.member.domain.Member;
 import com.programmers.springbootboard.member.domain.vo.Email;
+import com.programmers.springbootboard.member.dto.MemberDeleteResponse;
 import com.programmers.springbootboard.member.dto.MemberDetailResponse;
 import com.programmers.springbootboard.member.dto.MemberSignRequest;
 import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
@@ -31,21 +32,25 @@ public class MemberService {
     }
 
     @Transactional
-    public void insert(MemberSignRequest request) {
+    public MemberDetailResponse insert(MemberSignRequest request) {
         Member member = memberConverter.toMember(request);
         memberRepository.save(member);
         member.addByInformation(member.getId());
+        return memberConverter.toMemberDetailResponse(member);
     }
 
     @Transactional
-    public void deleteByEmail(Email email) {
-        memberRepository.deleteByEmail(email);
+    public MemberDeleteResponse deleteById(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+        });
+        memberRepository.deleteById(id);
+        return memberConverter.toMemberDeleteResponse(member.getId(), member.getEmail());
     }
 
     @Transactional
-    public MemberDetailResponse update(MemberUpdateRequest request) {
-        Email email = new Email(request.getEmail());
-        return memberRepository.findByEmail(email)
+    public MemberDetailResponse update(Long id, MemberUpdateRequest request) {
+        return memberRepository.findById(id)
                 .map(member -> {
                     member.update(request);
                     member.lastModifiedId(member.getId());
@@ -57,8 +62,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberDetailResponse findByEmail(Email email) {
-        return memberRepository.findByEmail(email)
+    public MemberDetailResponse findById(Long id) {
+        return memberRepository.findById(id)
                 .map(memberConverter::toMemberDetailResponse)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
@@ -71,10 +76,5 @@ public class MemberService {
                 .stream()
                 .map(memberConverter::toMemberDetailResponse)
                 .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void deleteAll() {
-        memberRepository.deleteAll();
     }
 }

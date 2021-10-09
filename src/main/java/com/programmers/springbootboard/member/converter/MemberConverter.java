@@ -5,10 +5,7 @@ import com.programmers.springbootboard.member.domain.vo.Age;
 import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
-import com.programmers.springbootboard.member.dto.MemberDetailResponse;
-import com.programmers.springbootboard.member.dto.MemberEmailRequest;
-import com.programmers.springbootboard.member.dto.MemberSignRequest;
-import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
+import com.programmers.springbootboard.member.dto.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,6 +21,7 @@ public class MemberConverter {
 
     public MemberDetailResponse toMemberDetailResponse(Member member) {
         return MemberDetailResponse.builder()
+                .id(member.getId())
                 .email(member.getEmail().getEmail())
                 .name(member.getName().getName())
                 .age(member.getAge().toString())
@@ -42,10 +40,16 @@ public class MemberConverter {
 
     public MemberUpdateRequest toMemberUpdateRequest(Email email, Name name, Age age, Hobby hobby) {
         return MemberUpdateRequest.builder()
-                .email(email.getEmail())
                 .name(name.getName())
                 .age(age.toString())
                 .hobby(hobby.getHobby())
+                .build();
+    }
+
+    public MemberDeleteResponse toMemberDeleteResponse(Long id, Email email) {
+        return MemberDeleteResponse.builder()
+                .id(id)
+                .email(email.getEmail())
                 .build();
     }
 }

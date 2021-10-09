@@ -42,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 public class PostControllerTest {
+    /*
     @Autowired
     private MockMvc mockMvc;
 
@@ -240,4 +241,5 @@ public class PostControllerTest {
                         )
                 ));
     }
+     */
 }

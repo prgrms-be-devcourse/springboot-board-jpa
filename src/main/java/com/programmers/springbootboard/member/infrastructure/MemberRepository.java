@@ -12,7 +12,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     void deleteById(Long id);
 
     @Override
-    Optional<Member> findById(Long aLong);
+    Optional<Member> findById(Long id);
 
     Optional<Member> findByEmail(Email email);
 

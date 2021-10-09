@@ -30,6 +30,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 class PostServiceTest {
+    /*
     @Autowired
     private MemberService memberService;
 
@@ -122,4 +123,5 @@ class PostServiceTest {
         // then
         assertThat(0).isEqualTo(postRepository.findAll().size());
     }
+     */
 }

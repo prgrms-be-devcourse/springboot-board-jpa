@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class MemberEmailRequest {
+@Builder
+public class MemberDeleteResponse {
+    private Long id;
     private String email;
 }
