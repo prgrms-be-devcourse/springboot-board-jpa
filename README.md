@@ -1,8 +1,8 @@
 # Spring Boot Board
 
-## 요구사항
+<br>
 
-### 주요 기능
+## 요구사항
 
 - 회원가입
 - 로그인
@@ -14,6 +14,7 @@
 - 게시물 수정
 - 게시물 삭제
 - TDD
+    - Rest Docs
 
 <br>
 
@@ -38,7 +39,6 @@
 - Docker
 - AWS EC2
 - AWS RDS
-
 
 <br>
 
