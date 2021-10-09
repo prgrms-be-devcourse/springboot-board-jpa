@@ -35,6 +35,6 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponseDto> handleException(Exception exception) {
         ErrorMessage errorMessage = ErrorMessage.of(exception.getMessage());
         ErrorResponseDto response = ErrorResponseDto.of(errorMessage);
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, errorMessage.getStatus());
     }
 }

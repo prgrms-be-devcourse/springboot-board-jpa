@@ -1,6 +1,6 @@
 # Spring Boot JPA로 게시판 구현
 
-> 스프링부트와 JPA로 구현한 게시한 API 
+> 스프링부트와 JPA로 구현한 게시한 API
 
 > MADE BY DONGGEON
 
@@ -34,11 +34,11 @@
 
 - springbootboard
     + common
-      + domain
-      + dto
+        + domain
+        + dto
     + config
     + exception
-      + error
+        + error
     + member
         + application
         + converter

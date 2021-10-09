@@ -8,6 +8,7 @@ import com.programmers.springbootboard.exception.error.NotFoundException;
 import com.programmers.springbootboard.member.application.MemberService;
 import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.dto.MemberDetailResponse;
+import com.programmers.springbootboard.member.dto.MemberEmailRequest;
 import com.programmers.springbootboard.member.dto.MemberSignRequest;
 import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
     @PostMapping("/member")
     public ResponseEntity<ResponseDto> insertMember(@RequestBody MemberSignRequest request) {
@@ -33,7 +37,8 @@ public class MemberController {
     }
 
     @DeleteMapping("/member")
-    public ResponseEntity<ResponseDto> deleteMember(@RequestBody Email email) {
+    public ResponseEntity<ResponseDto> deleteMember(@RequestBody MemberEmailRequest request) {
+        Email email = new Email(request.getEmail());
         if (memberService.existsByEmail(email)) {
             throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
         }
@@ -48,7 +53,8 @@ public class MemberController {
     }
 
     @GetMapping("/member")
-    public ResponseEntity<ResponseDto> member(@RequestBody Email email) {
+    public ResponseEntity<ResponseDto> member(@RequestBody MemberEmailRequest request) {
+        Email email = new Email(request.getEmail());
         MemberDetailResponse member = memberService.findByEmail(email);
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_INQUIRY_SUCCESS, member));
     }

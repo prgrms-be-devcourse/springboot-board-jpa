@@ -6,6 +6,7 @@ import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
 import com.programmers.springbootboard.member.dto.MemberDetailResponse;
+import com.programmers.springbootboard.member.dto.MemberEmailRequest;
 import com.programmers.springbootboard.member.dto.MemberSignRequest;
 import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
 import org.springframework.stereotype.Component;

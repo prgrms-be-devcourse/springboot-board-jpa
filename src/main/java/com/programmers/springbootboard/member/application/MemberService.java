@@ -45,13 +45,15 @@ public class MemberService {
     @Transactional
     public MemberDetailResponse update(MemberUpdateRequest request) {
         Email email = new Email(request.getEmail());
-        Member member = memberRepository.findByEmail(email)
+        return memberRepository.findByEmail(email)
+                .map(member -> {
+                    member.update(request);
+                    member.lastModifiedId(member.getId());
+                    return memberConverter.toMemberDetailResponse(member);
+                })
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
-        member.update(request);
-        member.lastModifiedId(member.getId());
-        return memberConverter.toMemberDetailResponse(member);
     }
 
     @Transactional(readOnly = true)

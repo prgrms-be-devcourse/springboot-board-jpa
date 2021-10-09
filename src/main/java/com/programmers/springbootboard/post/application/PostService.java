@@ -29,13 +29,16 @@ public class PostService {
 
     @Transactional
     public void insert(Email email, PostInsertRequest request) {
-        Member member = memberRepository.findByEmail(email)
+        memberRepository.findByEmail(email)
+                .map(member -> {
+                    Post post = postConverter.toPost(request, member);
+                    member.getPosts().addPost(post);
+                    post.addByInformation(member.getId());
+                    return post;
+                })
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
-        Post post = postConverter.toPost(request, member);
-        member.getPosts().addPost(post);
-        post.addByInformation(member.getId());
     }
 
     @Transactional
@@ -44,13 +47,17 @@ public class PostService {
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
-        Post post = postRepository.findById(id)
+        postRepository.findById(id)
+                .map(post -> {
+                    post.update(new Title(request.getTitle()), new Content(request.getContent()));
+                    post.lastModifiedId(member.getId());
+                    return post;
+                })
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_POST);
                 });
-        post.update(new Title(request.getTitle()), new Content(request.getContent()));
-        post.lastModifiedId(member.getId());
     }
+
 
     @Transactional(readOnly = true)
     public PostDetailResponse findById(Long id) {
