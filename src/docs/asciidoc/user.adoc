@@ -20,8 +20,8 @@ include::{snippets}/UserController/readUser/response-body.adoc[]
 include::{snippets}/UserController/readUser/response-fields.adoc[]
 
 
-== User 생성
 [#user_create]
+== User 생성
 
 사용자를 생성하는 API 입니다.
 

@@ -8,6 +8,8 @@ import com.devcourse.bbs.domain.user.User;
 import com.devcourse.bbs.repository.post.PostRepository;
 import com.devcourse.bbs.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +27,8 @@ public class BasicPostService implements PostService {
 
     @Override
     public PostDTO createPost(PostCreateRequest request) {
-        User user = userRepository.findById(request.getUser()).orElseThrow(() -> {
-            throw new IllegalArgumentException("User with given id not found.");
+        User user = userRepository.findByName(request.getUser()).orElseThrow(() -> {
+            throw new IllegalArgumentException("User with given username not found.");
         });
         Post post = Post.builder()
                 .title(request.getTitle())
@@ -60,6 +62,10 @@ public class BasicPostService implements PostService {
 
     @Override
     public void deletePost(long id) {
-        postRepository.deleteById(id);
+        try {
+            postRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new IllegalArgumentException("Post with given id not found.");
+        }
     }
 }

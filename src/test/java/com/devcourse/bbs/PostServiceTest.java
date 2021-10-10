@@ -29,7 +29,7 @@ class PostServiceTest {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findByName("NAME")).thenReturn(Optional.of(user));
 
         PostRepository postRepository = mock(PostRepository.class);
         Post post = Post.builder()
@@ -43,7 +43,7 @@ class PostServiceTest {
 
         PostService postService = new BasicPostService(userRepository, postRepository);
         PostCreateRequest request = new PostCreateRequest();
-        request.setUser(1L);
+        request.setUser("NAME");
         request.setTitle("TITLE");
         request.setContent("CONTENT");
         postService.createPost(request);

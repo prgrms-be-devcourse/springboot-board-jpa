@@ -56,7 +56,7 @@ class PostControllerTest {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now()).build());
         PostCreateRequest request = new PostCreateRequest();
-        request.setUser(user.getId());
+        request.setUser(user.getName());
         request.setTitle("TITLE");
         request.setContent("CONTENT");
         mockMvc.perform(post("/posts")
@@ -72,7 +72,7 @@ class PostControllerTest {
                         requestFields(
                                 fieldWithPath("title").description("Title text of post"),
                                 fieldWithPath("content").description("Content text of post"),
-                                fieldWithPath("user").description("ID of post's writer")),
+                                fieldWithPath("user").description("Username of post's writer")),
                         responseFields(
                                 apiResponseSuccess,
                                 apiResponseResult,
