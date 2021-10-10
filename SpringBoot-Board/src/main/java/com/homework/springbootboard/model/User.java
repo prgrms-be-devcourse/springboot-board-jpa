@@ -1,9 +1,6 @@
 package com.homework.springbootboard.model;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -31,6 +28,17 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
+
+    @Builder
+    public User(Long id, String name, int age, String hobby,List<Post> postList){
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+        this.postList = postList;
+        setCreatedAt(LocalDateTime.now());
+        setUpdatedAt(LocalDateTime.now());
+    }
 
     @Builder
     public User(String name, int age, String hobby) {
