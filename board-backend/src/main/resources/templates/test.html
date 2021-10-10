@@ -1,0 +1,48 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test</title>
+
+    <style>
+        body {
+            padding:50px 0 0 100px;
+        }
+
+        th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>DB연동 테스트</h1>
+<hr><br>
+
+<table>
+    <tr>
+        <th>id</th>
+        <th>password</th>
+        <th>name</th>
+        <th>age</th>
+        <th>hobby</th>
+        <th>createdAt</th>
+    </tr>
+    <tr th:each="user: ${userList}" th:object="${user}">
+        <td th:text="*{id}"></td>
+        <td th:text="*{password}"></td>
+        <td th:text="*{name}"></td>
+        <td th:text="*{age}"></td>
+        <td th:text="*{hobby}"></td>
+        <td th:text="*{createdAt}"></td>
+    </tr>
+</table>
+
+</body>
+
+</html>
