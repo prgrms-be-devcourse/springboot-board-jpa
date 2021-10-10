@@ -1,8 +1,9 @@
 package com.kdt.post.service;
 
-import com.kdt.domain.post.Post;
 import com.kdt.domain.post.PostRepository;
+import com.kdt.exception.NotFoundException;
 import com.kdt.post.dto.PostDto;
+import java.text.MessageFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,14 +30,14 @@ public class PostService {
     public PostDto findOne(Long id) {
         return postRepository.findById(id)
                 .map(postConvertor::convertPostToPostDto)
-                .orElseThrow(/** todo: 에외 처리 */);
+                .orElseThrow(() -> new NotFoundException(MessageFormat.format("not found id : {0}", id)));
     }
 
     @Transactional
     public Long update(PostDto postDto) {
         return postRepository.findById(postDto.getId())
                 .map(post -> postConvertor.convertPostDtoToPost(postDto))
-                .orElseThrow(/** todo: 에외 처리 */)
+                .orElseThrow(() -> new NotFoundException(MessageFormat.format("not found id : {0}", postDto.getId())))
                 .getId();
     }
 }
