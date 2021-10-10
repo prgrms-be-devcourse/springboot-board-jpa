@@ -62,8 +62,7 @@ java -jar spring-board-0.0.1-SNAPSHOT.jar
 ---
 
 ## 📖 ERD
-<img width="470" alt="스크린샷 2021-10-07 오전 2 21 20" src="https://user-images.githubusercontent.com/58363663/136252902-0698f8af-3c9b-4003-8c38-93ae4846cece.png">
-
+<img width="450" alt="스크린샷 2021-10-10 오후 5 45 22" src="https://user-images.githubusercontent.com/58363663/136688968-5642eef6-a65a-4427-8dd0-4fc052d6ab24.png">
 
 ---
 

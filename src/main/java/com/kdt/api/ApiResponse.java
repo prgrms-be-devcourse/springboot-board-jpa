@@ -1,4 +1,4 @@
-package com.kdt.apis;
+package com.kdt.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
