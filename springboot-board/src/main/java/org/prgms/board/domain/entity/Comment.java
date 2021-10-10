@@ -19,12 +19,9 @@ public class Comment extends BaseTime {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "author", nullable = false)
-    private String author;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private User writer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
@@ -34,12 +31,11 @@ public class Comment extends BaseTime {
     }
 
     @Builder
-    private Comment(Long id, String content, String author, Post post, User user) {
+    private Comment(Long id, String content, Post post, User writer) {
         this.id = id;
         this.content = content;
-        this.author = author;
         this.post = post;
-        this.user = user;
+        this.writer = writer;
     }
 
     public void changeInfo(String content) {

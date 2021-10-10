@@ -32,7 +32,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
-
     @InjectMocks
     private PostService postService;
 
@@ -58,8 +57,7 @@ class PostServiceTest {
                 .id(1L)
                 .title("title")
                 .content("content")
-                .author(user.getName())
-                .user(user)
+                .writer(user)
                 .build();
     }
 
@@ -111,7 +109,7 @@ class PostServiceTest {
         }
         Page page = new PageImpl(posts);
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
-        when(postRepository.findAllByUser(any(Pageable.class), any())).thenReturn(page);
+        when(postRepository.findAllByWriter(any(Pageable.class), any())).thenReturn(page);
 
         Pageable pageable = PageRequest.of(0, 2);
         Page<PostResponse> postResponses = postService.getAllPostByUser(pageable, user.getId());
@@ -126,18 +124,16 @@ class PostServiceTest {
         Comment comment1 = Comment.builder()
                 .id(1L)
                 .content("comment1")
-                .author(user.getName())
                 .post(post)
-                .user(user)
+                .writer(user)
                 .build();
         post.addComment(comment1);
 
         Comment comment2 = Comment.builder()
                 .id(2L)
                 .content("comment2")
-                .author(user.getName())
                 .post(post)
-                .user(user)
+                .writer(user)
                 .build();
         post.addComment(comment2);
 

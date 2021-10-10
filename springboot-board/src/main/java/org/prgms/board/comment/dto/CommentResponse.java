@@ -16,7 +16,7 @@ public class CommentResponse {
     public CommentResponse(Comment entity) {
         this.id = entity.getId();
         this.content = entity.getContent();
-        this.author = entity.getAuthor();
+        this.author = entity.getWriter().getName();
         this.createdDate = entity.getCreatedDate();
         this.updatedDate = entity.getUpdatedDate();
     }

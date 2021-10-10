@@ -23,7 +23,7 @@ public class PostResponse {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.content = entity.getContent();
-        this.author = entity.getAuthor();
+        this.author = entity.getWriter().getName();
         this.createdDate = entity.getCreatedDate();
         this.updatedDate = entity.getUpdatedDate();
         this.comments = entity.getComments().stream()

@@ -27,9 +27,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
-
     @InjectMocks
-    private CommentService commentSevice;
+    private CommentService commentService;
 
     @Mock
     private CommentRepository commentRepository;
@@ -57,16 +56,14 @@ class CommentServiceTest {
                 .id(1L)
                 .title("title")
                 .content("content")
-                .author(user.getName())
-                .user(user)
+                .writer(user)
                 .build();
 
         comment = Comment.builder()
                 .id(1L)
                 .content("comment")
-                .author(user.getName())
                 .post(post)
-                .user(user)
+                .writer(user)
                 .build();
     }
 
@@ -79,7 +76,7 @@ class CommentServiceTest {
         when(postRepository.findById(anyLong())).thenReturn(Optional.of(post));
         when(commentRepository.save(any())).thenReturn(comment);
 
-        Long commentId = commentSevice.addComment(user.getId(), post.getId(), commentRequest);
+        Long commentId = commentService.addComment(user.getId(), post.getId(), commentRequest);
         assertThat(commentId).isEqualTo(comment.getId());
     }
 
@@ -90,9 +87,9 @@ class CommentServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
         when(commentRepository.findById(anyLong())).thenReturn(Optional.of(comment));
 
-        commentSevice.modifyComment(user.getId(), comment.getId(), commentRequest);
+        commentService.modifyComment(user.getId(), comment.getId(), commentRequest);
 
-        CommentResponse retrievedComment = commentSevice.getOneComment(comment.getId());
+        CommentResponse retrievedComment = commentService.getOneComment(comment.getId());
         assertThat(retrievedComment.getContent()).isEqualTo("comment2");
         assertThat(retrievedComment.getAuthor()).isEqualTo("buhee");
     }
@@ -104,7 +101,7 @@ class CommentServiceTest {
         when(commentRepository.findById(anyLong())).thenReturn(Optional.of(comment));
         when(commentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> commentSevice.removeComment(user.getId(), comment.getId()))
+        assertThatThrownBy(() -> commentService.removeComment(user.getId(), comment.getId()))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("해당 댓글을 찾을 수 없습니다.");
     }

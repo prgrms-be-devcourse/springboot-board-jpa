@@ -33,9 +33,8 @@ public class CommentService {
 
         return commentRepository.save(Comment.builder()
                 .content(commentRequest.getContent())
-                .author(user.getName())
                 .post(post)
-                .user(user)
+                .writer(user)
                 .build()).getId();
     }
 
@@ -44,7 +43,7 @@ public class CommentService {
         User user = getUser(userId);
         Comment comment = getComment(commentId);
 
-        if (!user.equals(comment.getUser())) {
+        if (!user.equals(comment.getWriter())) {
             throw new NotMatchException("자신의 댓글만 수정할 수 있습니다.");
         }
 
@@ -57,7 +56,7 @@ public class CommentService {
         User user = getUser(userId);
         Comment comment = getComment(commentId);
 
-        if (!user.equals(comment.getUser())) {
+        if (!user.equals(comment.getWriter())) {
             throw new NotMatchException("자신의 댓글만 삭제할 수 있습니다.");
         }
 

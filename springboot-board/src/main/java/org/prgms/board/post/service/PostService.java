@@ -31,8 +31,7 @@ public class PostService {
         return postRepository.save(Post.builder()
                 .title(postRequest.getTitle())
                 .content(postRequest.getContent())
-                .author(user.getName())
-                .user(user)
+                .writer(user)
                 .build()).getId();
     }
 
@@ -41,7 +40,7 @@ public class PostService {
         User user = getUser(userId);
         Post post = getPost(postId);
 
-        if (!user.equals(post.getUser())) {
+        if (!user.equals(post.getWriter())) {
             throw new NotMatchException("자신의 게시글만 수정할 수 있습니다.");
         }
 
@@ -54,7 +53,7 @@ public class PostService {
         User user = getUser(userId);
         Post post = getPost(postId);
 
-        if (!user.equals(post.getUser())) {
+        if (!user.equals(post.getWriter())) {
             throw new NotMatchException("자신의 게시글만 삭제할 수 있습니다.");
         }
 
@@ -70,7 +69,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public Page<PostResponse> getAllPostByUser(Pageable pageable, Long userId) {
         User user = getUser(userId);
-        return postRepository.findAllByUser(pageable, user)
+        return postRepository.findAllByWriter(pageable, user)
                 .map(PostResponse::new);
     }
 

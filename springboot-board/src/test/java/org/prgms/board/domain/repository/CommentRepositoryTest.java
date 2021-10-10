@@ -41,15 +41,13 @@ public class CommentRepositoryTest {
         Post post = Post.builder()
                 .title("제목")
                 .content("내용")
-                .author(user.getName())
-                .user(user)
+                .writer(user)
                 .build();
 
         Comment comment = Comment.builder()
                 .content("댓글")
-                .author(user.getName())
                 .post(post)
-                .user(user)
+                .writer(user)
                 .build();
         post.addComment(comment);
 

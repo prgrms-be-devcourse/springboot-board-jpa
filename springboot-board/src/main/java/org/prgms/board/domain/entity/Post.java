@@ -24,12 +24,9 @@ public class Post extends BaseTime {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "author", nullable = false)
-    private String author;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private User writer;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
@@ -38,12 +35,11 @@ public class Post extends BaseTime {
     }
 
     @Builder
-    private Post(Long id, String title, String content, String author, User user) {
+    private Post(Long id, String title, String content, User writer) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.author = author;
-        this.user = user;
+        this.writer = writer;
     }
 
     public void changeInfo(String title, String content) {

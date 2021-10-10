@@ -18,7 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Transactional
 class PostRepositoryTest {
-
     @Autowired
     private UserRepository userRepository;
 
@@ -42,8 +41,7 @@ class PostRepositoryTest {
         Post post = Post.builder()
                 .title("제목")
                 .content("내용")
-                .author(user.getName())
-                .user(user)
+                .writer(user)
                 .build();
 
         userId = userRepository.save(user).getId();
@@ -72,7 +70,7 @@ class PostRepositoryTest {
 
         Optional<Post> retrievedPost = postRepository.findById(postId);
         assertThat(retrievedPost.isPresent()).isEqualTo(true);
-        assertThat(retrievedPost.get().getAuthor()).isEqualTo("김부희");
+        assertThat(retrievedPost.get().getWriter().getName()).isEqualTo("김부희");
         assertThat(retrievedPost.get().getTitle()).isEqualTo("제목수정");
         assertThat(retrievedPost.get().getContent()).isEqualTo("내용수정");
     }
@@ -96,8 +94,7 @@ class PostRepositoryTest {
         Post post = Post.builder()
                 .title("제목2")
                 .content("내용2")
-                .author(findUser.getName())
-                .user(findUser)
+                .writer(findUser)
                 .build();
         postRepository.save(post);
 
@@ -112,9 +109,8 @@ class PostRepositoryTest {
 
         Comment comment = Comment.builder()
                 .content("댓글")
-                .author(findUser.getName())
                 .post(findPost)
-                .user(findUser)
+                .writer(findUser)
                 .build();
 
         findPost.addComment(comment);
