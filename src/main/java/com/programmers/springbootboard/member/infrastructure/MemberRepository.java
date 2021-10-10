@@ -21,4 +21,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Override
     void deleteAll();
+
+    @Override
+    long count();
 }

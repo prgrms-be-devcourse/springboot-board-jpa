@@ -82,4 +82,9 @@ public class MemberService {
     public void deleteAll() {
         memberRepository.deleteAll();
     }
+
+    @Transactional(readOnly = true)
+    public long count() {
+        return memberRepository.count();
+    }
 }

@@ -9,7 +9,6 @@ import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
 import com.programmers.springbootboard.member.dto.MemberSignRequest;
 import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
-import com.programmers.springbootboard.member.infrastructure.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -31,11 +30,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+// TODO TEST를 각각 고립시키기
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest
 class MemberControllerTest {
-/*
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -46,15 +47,12 @@ class MemberControllerTest {
     private MemberService memberService;
 
     @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
     private MemberConverter memberConverter;
 
     @BeforeEach
     void init() {
         // given
-        memberRepository.deleteAll();
+        memberService.deleteAll();
         Email email = new Email("wrjs@naver.com");
         Name name = new Name("김동건");
         Age age = new Age("25");
@@ -66,7 +64,7 @@ class MemberControllerTest {
         memberService.insert(request);
 
         // then
-        long count = memberRepository.count();
+        long count = memberService.count();
         assertThat(1L).isEqualTo(count);
     }
 
@@ -83,21 +81,31 @@ class MemberControllerTest {
 
         // when // then
         mockMvc.perform(post("/api/member")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaTypes.HAL_JSON_VALUE)
+                        .accept(MediaTypes.HAL_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(memberSignRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("member-insert",
                         requestFields(
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
-                                fieldWithPath("age").type(JsonFieldType.STRING).description("나이"),
-                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("취미")
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("email"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("age").type(JsonFieldType.STRING).description("age"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
                         ),
                         responseFields(
-                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드"),
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
-                                fieldWithPath("data").type(JsonFieldType.NULL).description("데이터")
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("status"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("message"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("data"),
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("data.email").type(JsonFieldType.STRING).description("email"),
+                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("data.age").type(JsonFieldType.STRING).description("age"),
+                                fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("link[]").type(JsonFieldType.ARRAY).description("hateoas"),
+                                fieldWithPath("link[].rel").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("link[].href").type(JsonFieldType.STRING).description("href"),
+                                fieldWithPath("link[].type").type(JsonFieldType.STRING).description("HTTP Method Type")
                         )
                 ));
     }
@@ -106,22 +114,26 @@ class MemberControllerTest {
     @DisplayName("회원삭제")
     void deleteMember() throws Exception {
         // given
-        Email email = new Email("wrjs@naver.com");
+        Long id = 1L;
 
         // when // then
-        mockMvc.perform(delete("/api/member")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(email)))
+        mockMvc.perform(delete("/api/member/{id}", id)
+                        .contentType(MediaTypes.HAL_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("member-delete",
-                        requestFields(
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
-                        ),
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
-                                fieldWithPath("data").type(JsonFieldType.NULL).description("데이터")
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("status"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("message"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("data"),
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("data.email").type(JsonFieldType.STRING).description("email"),
+                                fieldWithPath("link[]").type(JsonFieldType.ARRAY).description("hateoas"),
+                                fieldWithPath("link[].rel").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("link[].href").type(JsonFieldType.STRING).description("href"),
+                                fieldWithPath("link[].type").type(JsonFieldType.STRING).description("HTTP Method Type")
                         )
                 ));
     }
@@ -137,15 +149,17 @@ class MemberControllerTest {
 
         MemberUpdateRequest memberUpdateRequest = memberConverter.toMemberUpdateRequest(email, name, age, hobby);
 
+        Long id = 1L;
+
         // when // then
-        mockMvc.perform(patch("/api/member")
-                        .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(patch("/api/member/{id}", id)
+                        .contentType(MediaTypes.HAL_JSON_VALUE)
+                        .accept(MediaTypes.HAL_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(memberUpdateRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("member-update",
                         requestFields(
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("age").type(JsonFieldType.STRING).description("나이"),
                                 fieldWithPath("hobby").type(JsonFieldType.STRING).description("취미")
@@ -153,7 +167,16 @@ class MemberControllerTest {
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
-                                fieldWithPath("data").type(JsonFieldType.NULL).description("데이터")
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("data"),
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("data.email").type(JsonFieldType.STRING).description("email"),
+                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("data.age").type(JsonFieldType.STRING).description("age"),
+                                fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("link[]").type(JsonFieldType.ARRAY).description("hateoas"),
+                                fieldWithPath("link[].rel").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("link[].href").type(JsonFieldType.STRING).description("href"),
+                                fieldWithPath("link[].type").type(JsonFieldType.STRING).description("HTTP Method Type")
                         )
                 ));
     }
@@ -162,26 +185,27 @@ class MemberControllerTest {
     @DisplayName("회원단건조회")
     void inquiryMember() throws Exception {
         // given
-        Email email = new Email("wrjs@naver.com");
+        Long id = 1L;
 
         // when // then
-        mockMvc.perform(get("/api/member")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(email)))
+        mockMvc.perform(get("/api/member/{id}", id)
+                        .contentType(MediaTypes.HAL_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("member-inquiry",
-                        requestFields(
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
-                        ),
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
-                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
-                                fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
-                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
-                                fieldWithPath("data.age").type(JsonFieldType.STRING).description("나이"),
-                                fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("취미")
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("data"),
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("data.email").type(JsonFieldType.STRING).description("email"),
+                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("data.age").type(JsonFieldType.STRING).description("age"),
+                                fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("link[]").type(JsonFieldType.ARRAY).description("hateoas"),
+                                fieldWithPath("link[].rel").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("link[].href").type(JsonFieldType.STRING).description("href"),
+                                fieldWithPath("link[].type").type(JsonFieldType.STRING).description("HTTP Method Type")
                         )
                 ));
     }
@@ -190,8 +214,8 @@ class MemberControllerTest {
     @DisplayName("회원전체조회")
     void inquiryMembers() throws Exception {
         // when // then
-        mockMvc.perform(get("/api/members")
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/member")
+                        .contentType(MediaTypes.HAL_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("members-inquiry",
@@ -199,12 +223,17 @@ class MemberControllerTest {
                                 fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
                                 fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("데이터"),
+                                fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("id"),
                                 fieldWithPath("data[].email").type(JsonFieldType.STRING).description("이메일"),
                                 fieldWithPath("data[].name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("data[].age").type(JsonFieldType.STRING).description("나이"),
-                                fieldWithPath("data[].hobby").type(JsonFieldType.STRING).description("취미")
+                                fieldWithPath("data[].hobby").type(JsonFieldType.STRING).description("취미"),
+                                fieldWithPath("link").type(JsonFieldType.OBJECT).description("hateoas"),
+                                fieldWithPath("link.rel").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("link.href").type(JsonFieldType.STRING).description("href"),
+                                fieldWithPath("link.type").type(JsonFieldType.STRING).description("HTTP Method Type")
                         )
                 ));
     }
- */
+
 }
