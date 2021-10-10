@@ -1,11 +1,11 @@
-package com.kdt.apis;
+package com.kdt.api;
 
-import static com.kdt.apis.PostApi.POSTS;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.kdt.api.PostApi.POSTS;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
 import static org.springframework.restdocs.payload.JsonFieldType.NULL;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
@@ -35,7 +35,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -64,7 +63,7 @@ class PostApiTest {
     }
 
     @Test
-    @DisplayName("게시물 정보를 받아 저장하는 API Test")
+    @DisplayName("게시물 저장 요청")
     void addPost() throws Exception {
         User user = userRepository.save(User.builder().name("tester").age(20).build());
 
@@ -94,6 +93,43 @@ class PostApiTest {
                 ));
 
     }
+
+    @Test
+    @DisplayName("게시물 저장 요청 실패 (게시물의 제목과 내용이 없는 경우)")
+    void savePostFailToTitleAndContentIsNull() throws Exception {
+        User user = userRepository.save(User.builder().name("tester").age(20).build());
+
+        PostDto postDto = givenPostDto(user.getId());
+        postDto.setTitle("");
+        postDto.setContent("");
+        mockMvc.perform(post(POSTS)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(postDto)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andDo(document("invalid-save-post",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("id").type(NULL).description("id"),
+                                fieldWithPath("title").type(STRING).description("title"),
+                                fieldWithPath("content").type(STRING).description("content"),
+                                fieldWithPath("user").type(OBJECT).description("user"),
+                                fieldWithPath("user.id").type(NUMBER).description("id"),
+                                fieldWithPath("user.name").type(STRING).description("name"),
+                                fieldWithPath("user.age").type(NUMBER).description("age")
+                        ),
+                        responseFields(
+                                fieldWithPath("errors").type(ARRAY).description("Errors"),
+                                fieldWithPath("errors[].field").type(STRING).description("error field"),
+                                fieldWithPath("errors[].objectName").type(STRING).description("error objectName"),
+                                fieldWithPath("errors[].code").type(STRING).description("error code"),
+                                fieldWithPath("errors[].defaultMessage").type(STRING).description("error defaultMessage"),
+                                fieldWithPath("serverDatetime").type(STRING).description("sever response time")
+                        )
+                ));
+    }
+
 
     @Test
     @DisplayName("게시물 페이지 요청")
@@ -205,7 +241,6 @@ class PostApiTest {
                         )
                 ));
 
-        System.out.println();
     }
 
     private PostDto givenPostDto(Long userId) {

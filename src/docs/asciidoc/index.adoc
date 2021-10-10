@@ -154,3 +154,30 @@ include::{snippets}/update-post/response-body.adoc[]
 
 === [Response Fields]
 include::{snippets}/update-post/response-fields.adoc[]
+
+
+== 게시물 저장 실패
+
+=== [Request URL]
+....
+POST /posts
+Content-Type: application/json;charset=UTF-8
+....
+
+=== [Curl Request]
+include::{snippets}/invalid-save-post/curl-request.adoc[]
+
+=== [Http Request]
+include::{snippets}/invalid-save-post/http-request.adoc[]
+
+=== [Request]
+include::{snippets}/invalid-save-post/request-body.adoc[]
+
+=== [Request Fields]
+include::{snippets}/invalid-save-post/request-fields.adoc[]
+
+=== [Response]
+include::{snippets}/invalid-save-post/response-body.adoc[]
+
+=== [Response Fields]
+include::{snippets}/invalid-save-post/response-fields.adoc[]
