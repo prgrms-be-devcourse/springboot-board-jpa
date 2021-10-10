@@ -13,6 +13,6 @@ public class PostDto {
     private Long id;
     private String title;
     private String content;
-    private User user;
+    private UserDto userDto;
     private LocalDateTime createAt;
 }

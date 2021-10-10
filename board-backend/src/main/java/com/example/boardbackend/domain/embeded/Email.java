@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.regex.Pattern;
 
+@Getter
 @NoArgsConstructor
 @EqualsAndHashCode
 @Embeddable

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserDto {
     private Long id;
-    private Email email;
+    private String email;
     private String password;
     private String name;
     private int age;
