@@ -15,7 +15,7 @@ public class ApiExceptionAdvice {
     @ExceptionHandler(Exception.class)
     public ResponseEntity globalException(Exception e) {
         log.error("Unexpected Exception : {}", e.getMessage());
-        return ResponseEntity.badRequest().body(ErrorResponse.of("Unknown Exception"));
+        return ResponseEntity.badRequest().body(ErrorResponse.of(e.getMessage()));
     }
 
     @ExceptionHandler(NotFoundException.class)
