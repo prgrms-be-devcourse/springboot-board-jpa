@@ -21,7 +21,7 @@ public class Post extends BaseEntity {
     @Lob
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -33,5 +33,13 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
         this.user = user;
+    }
+
+    public void changeTitle(String title) {
+        this.title = title;
+    }
+
+    public void changeContent(String content) {
+        this.content = content;
     }
 }

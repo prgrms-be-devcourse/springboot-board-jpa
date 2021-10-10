@@ -1,13 +1,10 @@
 package com.prgrms.board.domain.user;
 
 import com.prgrms.board.common.BaseEntity;
-import com.prgrms.board.domain.post.Post;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
@@ -26,9 +23,6 @@ public class User extends BaseEntity {
     @Lob
     private String hobby;
 
-    @OneToMany(mappedBy = "user")
-    private List<Post> postList = new ArrayList<>();
-
     protected User() {
     }
 
@@ -43,4 +37,3 @@ public class User extends BaseEntity {
         this.hobby = hobby;
     }
 }
-
