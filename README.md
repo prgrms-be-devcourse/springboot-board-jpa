@@ -33,7 +33,7 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 
 - [ ] 게시글 조회
   - [ ] 페이징 조회 (GET "/posts")
-  - [ ] 단건 조회 (GET "/posts/{id}")
+  - [x] 단건 조회 (GET "/posts/{id}")
 - [ ] 게시글 작성 (POST "/posts")
 - [ ] 게시글 수정 (POST "/posts/{id}")
 

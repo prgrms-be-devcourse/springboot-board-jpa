@@ -24,3 +24,11 @@ include::{snippets}/post-save/http-response.adoc[]
 .Response Fields
 
 include::{snippets}/post-save/response-fields.adoc[]
+
+.Error Response
+
+include::{snippets}/post-save-error/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-save-error/response-fields.adoc[]
