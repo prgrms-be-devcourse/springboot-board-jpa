@@ -10,7 +10,7 @@ import javax.persistence.Transient;
 import java.util.regex.Pattern;
 
 @Embeddable
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "age")
 public class Age {
     @Transient
     private static final String AGE_VALIDATOR = "^100|[1-9]?\\d$";

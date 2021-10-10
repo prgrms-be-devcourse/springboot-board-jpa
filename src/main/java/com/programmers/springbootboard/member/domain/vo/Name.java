@@ -10,7 +10,7 @@ import javax.persistence.Transient;
 import java.util.regex.Pattern;
 
 @Embeddable
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "name")
 public class Name {
 
     @Transient

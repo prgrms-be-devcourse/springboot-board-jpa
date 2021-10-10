@@ -10,7 +10,7 @@ import javax.persistence.Transient;
 import java.util.regex.Pattern;
 
 @Embeddable
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "hobby")
 public class Hobby {
     @Transient
     private static final String HOBBY_VALIDATOR = "^.{1,50}$";

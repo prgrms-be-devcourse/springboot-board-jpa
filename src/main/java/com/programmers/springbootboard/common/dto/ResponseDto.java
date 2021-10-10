@@ -1,7 +1,5 @@
 package com.programmers.springbootboard.common.dto;
 
-import java.util.Collection;
-
 public class ResponseDto<T> {
     private int status;
     private String message;
