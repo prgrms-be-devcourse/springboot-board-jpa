@@ -1,6 +1,5 @@
 package com.devcourse.bbs;
 
-import com.devcourse.bbs.controller.PostController;
 import com.devcourse.bbs.controller.bind.PostCreateRequest;
 import com.devcourse.bbs.controller.bind.PostUpdateRequest;
 import com.devcourse.bbs.domain.post.Post;
@@ -36,8 +35,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 class PostControllerTest {
     @Autowired
     MockMvc mockMvc;
-    @Autowired
-    PostController postController;
     @Autowired
     UserRepository userRepository;
     @Autowired

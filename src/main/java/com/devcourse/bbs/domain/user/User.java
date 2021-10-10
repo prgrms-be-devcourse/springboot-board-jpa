@@ -40,6 +40,11 @@ public class User extends DateRecordedEntity {
         this.age = age;
     }
 
+    public void updateHobby(@NonNull String hobby) {
+        if(hobby.isBlank()) throw new IllegalArgumentException("Hobby cannot be blank.");
+        this.hobby = hobby;
+    }
+
     public UserDTO toDTO() {
         return new UserDTO(this);
     }

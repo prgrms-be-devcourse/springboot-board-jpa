@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/users")
@@ -18,9 +19,19 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
 
+    @GetMapping("/{name}")
+    public ResponseEntity<ApiResponse<UserDTO>> getUser(@PathVariable(name = "name") String name) {
+        return ResponseEntity.ok(ApiResponse.success(userService.findUserByName(name).orElseThrow(() -> {
+            throw new IllegalArgumentException("User with given name not found.");
+        })));
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<UserDTO>> createUser(@Valid @RequestBody UserCreateRequest request) {
-        return ResponseEntity.ok(ApiResponse.success(userService.createUser(request)));
+        UserDTO user = userService.createUser(request);
+        return ResponseEntity
+                .created(URI.create(String.format("/users/%s", user.getName())))
+                .body(ApiResponse.success(user));
     }
 
     @PutMapping("/{name}")

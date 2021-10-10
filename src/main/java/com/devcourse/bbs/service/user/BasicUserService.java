@@ -8,6 +8,7 @@ import com.devcourse.bbs.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -28,7 +29,9 @@ public class BasicUserService implements UserService {
         User user = User.builder()
                 .name(request.getName())
                 .age(request.getAge())
-                .hobby(request.getHobby()).build();
+                .hobby(request.getHobby())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now()).build();
         user = userRepository.save(user);
         return user.toDTO();
     }
@@ -40,6 +43,7 @@ public class BasicUserService implements UserService {
         });
         user.updateName(request.getName());
         user.updateAge(request.getAge());
+        user.updateHobby(request.getHobby());
         return user.toDTO();
     }
 
