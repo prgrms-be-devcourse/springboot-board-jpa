@@ -1,9 +1,6 @@
 package com.programmers.springbootboard.exception;
 
-import com.programmers.springbootboard.exception.error.DuplicationArgumentException;
-import com.programmers.springbootboard.exception.error.InvalidArgumentException;
-import com.programmers.springbootboard.exception.error.NotFoundException;
-import org.springframework.http.HttpStatus;
+import com.programmers.springbootboard.exception.error.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,9 +28,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, errorMessage.getStatus());
     }
 
+    // TODO
+    @ExceptionHandler(InvalidMediaTypeException.class)
+    protected ResponseEntity<ErrorResponseDto> handleInvalidMediaTypeException() {
+        ErrorMessage errorMessage = ErrorMessage.UNSUPPORTED_MEDIA_TYPE;
+        ErrorResponseDto response = ErrorResponseDto.of(errorMessage);
+        return new ResponseEntity<>(response, errorMessage.getStatus());
+    }
+
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponseDto> handleException(Exception exception) {
-        ErrorMessage errorMessage = ErrorMessage.of(exception.getMessage());
+        ErrorMessage errorMessage = ErrorMessage.INTERNAL_SERVER_ERROR;
         ErrorResponseDto response = ErrorResponseDto.of(errorMessage);
         return new ResponseEntity<>(response, errorMessage.getStatus());
     }
