@@ -41,6 +41,7 @@ class UserTest {
                     .createdAt(LocalDateTime.now())
                     .name("name")
                     .age(age)
+                    .hobby(Hobby.SPORTS)
                     .build();
         });
     }
@@ -59,6 +60,8 @@ class UserTest {
         assertThrows(IllegalArgumentException.class, () -> {
             User.builder()
                     .name(name)
+                    .age(27)
+                    .hobby(Hobby.SPORTS)
                     .createdBy("createdBy")
                     .createdAt(LocalDateTime.now())
                     .build();
@@ -66,27 +69,8 @@ class UserTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"함승훈", "함seunghun", "ㅎ_seunghun"
-    })
-    @DisplayName("User name은 영어만 가능하다")
-    public void testUserNameKorean(String name) throws Exception {
-        //given
-
-        //when
-
-        //then
-        assertThrows(IllegalArgumentException.class, () -> {
-            User.builder()
-                    .name(name)
-                    .createdBy("createdBy")
-                    .createdAt(LocalDateTime.now())
-                    .build();
-        });
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"name", "Name", "nAme", "NAME"})
-    @DisplayName("User name은 대소문자를 구분하지 않는다")
+    @ValueSource(strings = {"namE", "Name", "nAme", "NAME"})
+    @DisplayName("User name은 대소문자를 구분한다")
     public void testUserNameCase(String inputName) throws Exception {
         //given 
         String lowerCase = "name";
@@ -96,10 +80,10 @@ class UserTest {
                 .createdBy("createdBy")
                 .createdAt(LocalDateTime.now())
                 .name(inputName)
+                .age(27)
+                .hobby(Hobby.SPORTS)
                 .build();
         //then
-        assertThat(user.getName()).isEqualTo(lowerCase);
-    } 
-    
-    
+        assertThat(user.getName()).isNotEqualTo(lowerCase);
+    }
 }

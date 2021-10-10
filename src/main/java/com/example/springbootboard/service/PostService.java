@@ -5,19 +5,20 @@ import com.example.springbootboard.domain.Title;
 import com.example.springbootboard.domain.User;
 import com.example.springbootboard.dto.RequestCreatePost;
 import com.example.springbootboard.dto.RequestUpdatePost;
+import com.example.springbootboard.dto.ResponsePagePost;
 import com.example.springbootboard.dto.ResponsePost;
 import com.example.springbootboard.repository.PostRepository;
 import com.example.springbootboard.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.List;
-import java.util.stream.Collectors;
 
+
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class PostService {
@@ -25,17 +26,11 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    @Autowired
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-    }
-
     @Transactional
     public Long save(RequestCreatePost request) {
 
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("There is no user. id = {0}", request.getUserId())));
+        User user = request.getRequestUser().toEntity();
+        userRepository.save(user);
 
         Post post = postRepository.save(request.toEntity(user));
 
@@ -43,14 +38,14 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(RequestUpdatePost request) {
+    public Long update(Long id, RequestUpdatePost request) {
 
-        Post post = postRepository.findById(request.getId())
-                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("There is no post. id = {0}", request.getId())));
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("There is no post. id = {0}", id)));
 
         post.update(new Title(request.getTitle()), request.getContent());
 
-        return null;
+        return id;
     }
 
     public ResponsePost findOne(Long postId) {
@@ -62,25 +57,39 @@ public class PostService {
     }
 
 
-    public Page<ResponsePost> findAll(Pageable pageable) {
-
-        return postRepository.findAll(pageable)
+    public ResponsePagePost findAll(Pageable pageable) {
+        Page<ResponsePost> result = postRepository.findAll(pageable)
                 .map(this::toDto);
-    }
 
-    public Page<ResponsePost> findByUser(Long userId, Pageable pageable) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("There is no user. id = {0}", userId)));
-
-        return postRepository.findByUser(user, pageable)
-                .map(this::toDto);
+        return toDto(result);
     }
 
 
+
+    @Transactional
+    public void delete(Long postId) {
+        postRepository.deleteById(postId);
+    }
 
     private ResponsePost toDto(Post post) {
-        return new ResponsePost(post.getId(), post.getTitle().getTitle(), post.getContent());
+        return ResponsePost.builder()
+                .createdAt(post.getCreatedAt())
+                .createdBy(post.getCreatedBy())
+                .id(post.getId())
+                .title(post.getTitle().getTitle())
+                .content(post.getContent())
+                .build();
+    }
+
+    private ResponsePagePost toDto(Page<ResponsePost> result) {
+        return ResponsePagePost.builder()
+                .posts(result.getContent())
+                .page(result.getNumber())
+                .size(result.getNumberOfElements())
+                .first(result.isFirst())
+                .last(result.isLast())
+                .totalElements(result.getTotalElements())
+                .totalPages(result.getTotalPages()).build();
     }
 }
 

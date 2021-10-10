@@ -25,27 +25,28 @@ public class User extends BaseEntity{
     @Column(name = "name", nullable = false, length = 30)
     private String name;
 
-    @Column(name = "age")
+    @Column(name = "age", nullable = false)
     private Integer age;
 
+    @Column(name = "hobby", nullable = false)
     @Enumerated(EnumType.STRING)
     private Hobby hobby;
 
-    private static final String nameRegex = "^(?!.*\\.\\.)(?!.*\\.$)[^\\W][\\w.]{0,29}$";
+    private static final String nameRegex = "^[가-힣a-zA-Z0-9_]{1,30}$";
 
     @Builder
     public User(String name, Integer age, Hobby hobby, String createdBy, LocalDateTime createdAt) {
         super(createdBy, createdAt);
 
-        validate(name, age);
+        validate(name, age, hobby);
 
         this.name = name;
         this.age = age;
         this.hobby = hobby;
     }
 
-    public void change(String name, Integer age, Hobby hobby) {
-        validate(name, age);
+    public void update(String name, Integer age, Hobby hobby) {
+        validate(name, age, hobby);
 
         this.name = name;
         this.age = age;
@@ -53,12 +54,19 @@ public class User extends BaseEntity{
     }
 
 
-    public void validate(String name, Integer age) {
+    public void validate(String name, Integer age, Hobby hobby) {
         validName(name);
         validAge(age);
+        validHobby(hobby);
+    }
+
+    private void validHobby(Hobby hobby) {
+
+        Assert.notNull(hobby, "User hobby should not be null");
     }
 
     public void validName(String name) {
+
         Assert.notNull(name, "User name should not be null");
 
         if (!Pattern.matches(nameRegex, name)) {
@@ -68,8 +76,7 @@ public class User extends BaseEntity{
 
     public void validAge(Integer age) {
 
-        if (age == null)
-            return;
+        Assert.notNull(age, "User age should not be null");
 
         if (age <= 0) {
             throw new IllegalArgumentException(MessageFormat.format("User age should be over 0. age = {0}", age));
