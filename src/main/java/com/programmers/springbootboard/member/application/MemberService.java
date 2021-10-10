@@ -77,4 +77,9 @@ public class MemberService {
                 .map(memberConverter::toMemberDetailResponse)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public void deleteAll() {
+        memberRepository.deleteAll();
+    }
 }

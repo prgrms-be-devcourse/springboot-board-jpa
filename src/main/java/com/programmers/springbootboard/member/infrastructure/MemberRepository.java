@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
+    @Override
     void deleteById(Long id);
 
     @Override
@@ -18,5 +19,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsByEmail(Email email);
 
-    void deleteByEmail(Email email);
+    @Override
+    void deleteAll();
 }
