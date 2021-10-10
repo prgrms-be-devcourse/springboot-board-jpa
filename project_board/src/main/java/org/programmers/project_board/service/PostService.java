@@ -43,4 +43,14 @@ public class PostService {
         return entity.getId();
     }
 
+    @Transactional
+    public Long updatePost(Long id, PostDto postDto) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+
+        post.update(postDto.getTitle(), postDto.getContent());
+        Post entity = postRepository.save(post);
+
+        return entity.getId();
+    }
+
 }

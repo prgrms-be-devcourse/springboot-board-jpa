@@ -2,6 +2,7 @@ package org.programmers.project_board.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 
@@ -24,6 +25,18 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public void setTitle(String title) {
+        Assert.notNull(title, "Title should not be null.");
+        Assert.isTrue(title.length() <= 50, "Title should be less than 50 characters in length.");
+
+        this.title = title;
+    }
+
+    public void update(String title, String content) {
+        setTitle(title);
+        setContent(content);
+    }
 
 }
 
