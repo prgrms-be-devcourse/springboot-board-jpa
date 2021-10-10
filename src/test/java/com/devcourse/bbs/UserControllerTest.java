@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -56,6 +58,8 @@ class UserControllerTest {
                 .andExpect(jsonPath("$['result'].name").value("NAME"))
                 .andExpect(jsonPath("$['result'].id").isNotEmpty())
                 .andDo(document("UserController/createUser",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("name").description("Creating user's unique name."),
                                 fieldWithPath("age").description("Creating user's age."),
@@ -90,6 +94,8 @@ class UserControllerTest {
                 .andExpect(jsonPath("$['result'].name").value("UPDATED_NAME"))
                 .andExpect(jsonPath("$['result'].hobby").value("NO_HOBBY"))
                 .andDo(document("UserController/updateUser",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("name").description("Updating user's name")),
                         requestFields(
@@ -121,6 +127,8 @@ class UserControllerTest {
                 .andExpect(jsonPath("$['result'].age").value(25))
                 .andExpect(jsonPath("$['result'].hobby").value("HOBBY"))
                 .andDo(document("UserController/readUser",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("name").description("User's name to read.")),
                         responseFields(
@@ -148,6 +156,8 @@ class UserControllerTest {
                 .andExpect(jsonPath("$['result'].age").value(25))
                 .andExpect(jsonPath("$['result'].hobby").value("HOBBY"))
                 .andDo(document("UserController/readUser",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("name").description("User's name to read.")),
                         responseFields(

@@ -26,6 +26,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -66,6 +67,8 @@ class PostControllerTest {
                 .andExpect(jsonPath("$['result'].content").value("CONTENT"))
                 .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andDo(document("PostController/createPost",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("title").description("Title text of post"),
                                 fieldWithPath("content").description("Content text of post"),
@@ -105,6 +108,8 @@ class PostControllerTest {
                 .andExpect(jsonPath("$['result'].title").value("UPDATED_TITLE"))
                 .andExpect(jsonPath("$['result'].content").value("UPDATED_CONTENT"))
                 .andDo(document("PostController/updatePost",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("ID of post")),
                         requestFields(
@@ -138,6 +143,8 @@ class PostControllerTest {
         mockMvc.perform(delete("/posts/{id}", post.getId()))
                 .andExpect(status().isNoContent())
                 .andDo(document("PostController/deletePost",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("ID of post"))));
     }
@@ -161,6 +168,8 @@ class PostControllerTest {
                 .andExpect(jsonPath("$['result'].title").value("TITLE"))
                 .andExpect(jsonPath("$['result'].content").value("CONTENT"))
                 .andDo(document("PostController/readPost",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("Id of post.")),
                         responseFields(
@@ -208,6 +217,8 @@ class PostControllerTest {
                 .andExpect(jsonPath("$['result'][0].id").value(post3.getId()))
                 .andDo(
                         document("PostController/readPostsByPage",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
                                 requestParameters(
                                         parameterWithName("page").description("Page number of post pagination."),
                                         parameterWithName("size").description("Page size of post pagination.")),
