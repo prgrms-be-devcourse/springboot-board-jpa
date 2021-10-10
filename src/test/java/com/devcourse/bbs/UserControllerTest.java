@@ -149,24 +149,12 @@ class UserControllerTest {
                 .hobby("HOBBY")
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now()).build());
-        mockMvc.perform(get("/users/{name}", user.getName()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$['result'].id").isNotEmpty())
-                .andExpect(jsonPath("$['result'].name").value("NAME"))
-                .andExpect(jsonPath("$['result'].age").value(25))
-                .andExpect(jsonPath("$['result'].hobby").value("HOBBY"))
-                .andDo(document("UserController/readUser",
+        mockMvc.perform(delete("/users/{name}", user.getName()))
+                .andExpect(status().isNoContent())
+                .andDo(document("UserController/deleteUser",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("name").description("User's name to read.")),
-                        responseFields(
-                                apiResponseSuccess,
-                                apiResponseResult,
-                                apiResponseError,
-                                fieldWithPath("result.id").description("User's id."),
-                                fieldWithPath("result.name").description("User's name."),
-                                fieldWithPath("result.age").description("User's age."),
-                                fieldWithPath("result.hobby").description("User's hobby."))));
+                                parameterWithName("name").description("User's name to delete."))));
     }
 }

@@ -1,0 +1,78 @@
+[#_title]
+= Post API Documentation
+:toc:
+
+Post 서비스 API 문서입니다.
+
+== Post 목록 조회
+페이지 크기, 번호를 이용하여 게시글 목록을 페이지네이션으로 읽는 API 입니다.
+
+====
+GET /posts
+====
+
+=== API 요청
+include::{snippets}/PostController/readPostsByPage/request-parameters.adoc[]
+=== API 응답
+include::{snippets}/PostController/readPostsByPage/response-body.adoc[]
+include::{snippets}/PostController/readPostsByPage/response-fields.adoc[]
+
+== Post 조회
+특정 게시글을 조회하는 API 입니다.
+====
+GET /posts/{id}
+====
+
+=== API 요청
+include::{snippets}/PostController/readPost/path-parameters.adoc[]
+
+=== API 응답
+include::{snippets}/PostController/readPost/response-body.adoc[]
+include::{snippets}/PostController/readPost/response-fields.adoc[]
+
+== Post 생성
+
+게시글을 생성하는 API 입니다. 기존에 생성된 회원의 **식별자(ID)**footnote:[생성하지 않았다면 <<user.adoc#user_create, 이곳>>을 참조하십시오.]가 필요합니다.
+
+====
+POST /posts
+====
+
+=== API 요청
+
+include::{snippets}/PostController/createPost/request-body.adoc[]
+include::{snippets}/PostController/createPost/request-fields.adoc[]
+
+=== API 응답
+
+include::{snippets}/PostController/createPost/response-body.adoc[]
+include::{snippets}/PostController/createPost/response-fields.adoc[]
+
+== Post 변경
+게시글을 갱신하는 API 입니다.
+
+====
+PUT /posts/{id}
+====
+
+=== API 요청
+include::{snippets}/PostController/updatePost/request-body.adoc[]
+include::{snippets}/PostController/updatePost/path-parameters.adoc[]
+include::{snippets}/PostController/updatePost/request-fields.adoc[]
+
+=== API 응답
+include::{snippets}/PostController/updatePost/response-body.adoc[]
+include::{snippets}/PostController/updatePost/response-fields.adoc[]
+
+== POST 삭제
+게시글을 삭제하는 API 입니다.
+
+====
+DELETE /posts/{id}
+====
+
+=== API 요청
+include::{snippets}/PostController/deletePost/path-parameters.adoc[]
+
+=== API 응답
+include::{snippets}/PostController/deletePost/response-body.adoc[]
