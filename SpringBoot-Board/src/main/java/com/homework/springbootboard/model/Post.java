@@ -14,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "post")
-public class Post extends BaseEntity{
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -27,11 +27,11 @@ public class Post extends BaseEntity{
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public void setUser(User user){
-        if(Objects.nonNull(this.user)){
+    public void setUser(User user) {
+        if (Objects.nonNull(this.user)) {
             this.user.getPostList().remove(this);
         }
         this.user = user;
@@ -42,6 +42,5 @@ public class Post extends BaseEntity{
     public Post(String title, String content) {
         this.title = title;
         this.content = content;
-
     }
 }

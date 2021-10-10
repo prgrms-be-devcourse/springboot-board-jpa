@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "user")
-public class User extends BaseEntity{
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -25,7 +25,7 @@ public class User extends BaseEntity{
     @NotNull(message = "Please type age")
     private int age;
 
-    @Pattern(regexp = "[a-zA-Z]",message = "Hobby should be written by English")
+    @Pattern(regexp = "[a-zA-Z]", message = "Hobby should be written by English")
     private String hobby;
 
     @OneToMany(mappedBy = "user")
@@ -38,7 +38,7 @@ public class User extends BaseEntity{
         this.hobby = hobby;
     }
 
-    public void addPost(Post post){
+    public void addPost(Post post) {
         post.setUser(this);
     }
 }
