@@ -1,12 +1,14 @@
 package com.kdt.devboard.post.domain;
 
 import com.kdt.devboard.BaseEntity;
+import com.kdt.devboard.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "post")
@@ -36,6 +38,16 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
+    public void setUser(User user) {
+        if(Objects.nonNull(this.user)){
+            this.user.getPosts().remove(this);
+        }
+        this.user = user;
+        user.getPosts().add(this);
+    }
 
 }

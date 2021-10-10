@@ -48,5 +48,9 @@ public class User extends BaseEntity {
         this.hobby = hobby;
     }
 
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
+
+    public void addPost(Post post) { post.setUser(this); }
 
 }
