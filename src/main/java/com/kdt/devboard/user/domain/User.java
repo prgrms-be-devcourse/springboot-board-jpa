@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,11 +20,15 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
-    @Id
+/*    @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "id", columnDefinition = "BINARY(16)")
-    private UUID id;
+    private UUID id;*/
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
 
     @Column(name = "name", nullable = false, length = 30)
     private String name;
@@ -35,8 +40,9 @@ public class User extends BaseEntity {
     String hobby;
 
     @Builder
-    public User(String createBy, String name, int age, String hobby) {
-        super(createBy);
+    public User(Long id, String createBy, String name, int age, String hobby, LocalDateTime createAt) {
+        super(createBy, createAt);
+        this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;

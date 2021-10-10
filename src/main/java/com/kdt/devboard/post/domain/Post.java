@@ -8,11 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Post extends BaseEntity {
 
     @Id
@@ -27,10 +29,12 @@ public class Post extends BaseEntity {
     private String content;
 
     @Builder
-    public Post(String createBy, String title, String content) {
-        super(createBy);
+    public Post(String createBy, LocalDateTime createAt, Long id, String title, String content, User user) {
+        super(createBy, createAt);
+        this.id = id;
         this.title = title;
         this.content = content;
+        setUser(user);
     }
 
     public void changeInfo(String title, String content) {

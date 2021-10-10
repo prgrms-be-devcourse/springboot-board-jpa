@@ -18,13 +18,12 @@ public class BaseEntity {
     @Column(name = "create_by")
     private String createBy;
 
-    @Column(name = "create_ay")
+    @Column(name = "create_ay",columnDefinition = "TIMESTAMP")
     private LocalDateTime createAt;
 
-    @Builder
-    public BaseEntity(String createBy) {
+    public BaseEntity(String createBy, LocalDateTime createAt) {
         this.createBy = createBy;
-        this.createAt = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
+        this.createAt = createAt;
     }
 
 }
