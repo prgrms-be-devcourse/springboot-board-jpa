@@ -40,4 +40,13 @@ public class Post extends BaseEntity {
         user.addPost(this);
     }
 
+    public Post updatePost(String title, String content) {
+        this.title = title;
+        this.content = content;
+
+        changeUpdatedBy(user.getLoginId());
+
+        return this;
+    }
+
 }
