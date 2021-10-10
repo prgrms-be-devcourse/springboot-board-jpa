@@ -89,3 +89,6 @@ Java 11, Spring Boot, Maven, JPA, Lombok, MySQL, Mockito
 
 wiki에 기술 이슈에 대한 고민과 해결 방법을 포스팅한 블로그 url을 포함한다.
 
+1. AuditingEntityListener 에 대해서
+2. 
+

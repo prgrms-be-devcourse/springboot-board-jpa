@@ -2,17 +2,33 @@ package com.prgrms.dlfdyd96.board.domain;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @MappedSuperclass
-// TODO: updatedAt Entity Listener 추가 (p.133)
+@EntityListeners(AuditingEntityListener.class)
 abstract class BaseEntity {
-  @Column(name = "created_by")
+  @CreatedBy
+  @Column(name = "created_by", updatable = false)
   private String createdBy;
 
-  @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+  @CreatedDate
+  @Column(name = "created_at", columnDefinition = "TIMESTAMP", updatable = false)
   private LocalDateTime createdAt;
+
+  @LastModifiedBy
+  @Column(name = "updated_by")
+  private String updatedBy;
+
+  @LastModifiedDate
+  @Column(name = "updated_at")
+  private LocalDateTime updatedAt;
 }

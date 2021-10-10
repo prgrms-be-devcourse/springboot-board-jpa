@@ -1,0 +1,26 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시판
+
+=== 게시판 등록
+
+==== /posts
+
+.Request
+
+inlcude::{snippets}/post-save/http-request.adoc[]
+
+.Request Fields
+
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-save/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-save/response-fields.adoc[]
