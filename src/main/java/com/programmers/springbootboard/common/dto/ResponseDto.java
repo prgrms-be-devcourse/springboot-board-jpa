@@ -1,7 +1,5 @@
 package com.programmers.springbootboard.common.dto;
 
-import java.net.http.HttpHeaders;
-
 public class ResponseDto<T> {
     private int status;
     private String message;
