@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserConverter {
-
     // Entity -> DTO
-    public UserDto convertToUserDto(User user){
+    public UserDto convertToDto(User user){
         return UserDto.builder()
                 .id(user.getId())
+                .email(user.getEmail())
                 .password(user.getPassword())
                 .name(user.getName())
                 .age(user.getAge())
@@ -20,9 +20,10 @@ public class UserConverter {
     }
 
     // DTO -> Entity
-    public User convertToUserEntity(UserDto userDto){
+    public User convertToEntity(UserDto userDto){
         User user = new User();
         user.setId(userDto.getId());
+        user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         user.setName(userDto.getName());
         user.setAge(userDto.getAge());

@@ -1,5 +1,6 @@
 package com.example.boardbackend.domain;
 
+import com.example.boardbackend.domain.embeded.Email;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,9 @@ public class User extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Embedded
+    private Email email;
+
     @Column(name = "password", nullable = false, length = 45)
     private String password;
 
@@ -22,7 +26,6 @@ public class User extends BaseEntity{
     @Column(name = "age", nullable = false)
     private int age;
 
-    @Lob
-    @Column(name = "hobby", nullable = false)
+    @Column(name = "hobby", nullable = false, length = 45)
     private String hobby;
 }

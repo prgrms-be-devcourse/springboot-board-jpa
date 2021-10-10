@@ -1,9 +1,8 @@
 package com.example.boardbackend.dto;
 
-import com.example.boardbackend.domain.User;
+import com.example.boardbackend.domain.embeded.Email;
 import lombok.*;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter @Setter
@@ -12,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserDto {
     private Long id;
+    private Email email;
     private String password;
     private String name;
     private int age;
