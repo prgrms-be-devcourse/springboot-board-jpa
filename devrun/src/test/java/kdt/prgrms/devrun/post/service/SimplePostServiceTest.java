@@ -24,7 +24,6 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Transactional
 class SimplePostServiceTest {
 
@@ -40,7 +39,7 @@ class SimplePostServiceTest {
     Post post1;
     Post post2;
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
 
         user = User.builder()
