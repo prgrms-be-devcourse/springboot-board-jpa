@@ -4,6 +4,9 @@ import axios from 'axios';
 
 
 function Login() {
+  // Origin
+  const local = 'http://localhost:8080'
+  const deploy = 'http://15.165.69.116:8080'
 
   // State
   const [userInfo, setUserInfo] = useState({
@@ -19,7 +22,7 @@ function Login() {
 
   // Button
   const signUp = () => {
-    axios.post('http://localhost:8080/api/user', userInfo)
+    axios.post(deploy + '/api/user', userInfo)
       .then(
         res => {
           console.log(res)

@@ -21,7 +21,7 @@ public class UserService {
 
     public List<UserDto> findUserAll(){
         return userRepository.findAll().stream()
-                .map(userEntity -> userConverter.convertToDto(userEntity))
+                .map(user -> userConverter.convertToDto(user))
                 .collect(Collectors.toList());
     }
 

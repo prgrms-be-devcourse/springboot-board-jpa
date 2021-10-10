@@ -39,6 +39,8 @@
 - Docker
 - AWS EC2
 - AWS RDS
+- AWS S3
+- AWS CloudFront
 
 <br>
 
