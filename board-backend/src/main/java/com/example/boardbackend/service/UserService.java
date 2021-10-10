@@ -1,9 +1,8 @@
 package com.example.boardbackend.service;
 
-import com.example.boardbackend.converter.UserConverter;
+import com.example.boardbackend.dto.converter.UserConverter;
 import com.example.boardbackend.dto.UserDto;
 import com.example.boardbackend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

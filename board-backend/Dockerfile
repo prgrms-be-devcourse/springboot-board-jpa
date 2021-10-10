@@ -1,16 +1,21 @@
 FROM openjdk:16-jdk-alpine
 
-# 로컬 디렉토리의 jar파일경로를 변수에 저장
-ARG JAR_FILE=build/libs/*.jar
+# myfolder라는 디렉토리 생성 -> 작업 디렉토리로 지정
+WORKDIR /myfolder
 
-# 저장한 경로의 jar 파일을 -> 컨테이너 내 app.jar로 카피
-COPY ${JAR_FILE} app.jar
+# 로컬 디렉토리의 jar 파일명을 변수에 저장
+ARG JAR_FILE="board-backend-0.0.1-SNAPSHOT.jar"
 
-# jdbc 난수 설정을 제거하고 컨테이너 내부 jar 파일 실행
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+# jar파일을 컨테이너 내 /myfolder/로 카피
+COPY ./build/libs/${JAR_FILE} .
+
+# 컨테이너 내부 jar 파일 실행
+ENTRYPOINT ["java", "-jar", "board-backend-0.0.1-SNAPSHOT.jar"]
 
 # 빌드
 # docker build . -t spring_8080
 
 # 실행
-# docker run -d --name con_spring_8080 -p 8080:8080 spring_8080
+# -p : 로컬 8080 포트와 컨테이너의 8080 포트를 마운트
+# -v : 로컬 /build/libs 경로와 컨테이너의 /myfolder 경로를 마운트
+# docker run -d --name con_spring_8080 -p 8080:8080 -v ${PWD}/build/libs/:/myfolder/ spring_8080
