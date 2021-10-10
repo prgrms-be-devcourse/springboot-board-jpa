@@ -7,6 +7,9 @@ public class PostRequest {
     private String title;
     private String content;
 
+    public PostRequest() {
+    }
+
     public PostRequest(String title, String content) {
         this.title = title;
         this.content = content;

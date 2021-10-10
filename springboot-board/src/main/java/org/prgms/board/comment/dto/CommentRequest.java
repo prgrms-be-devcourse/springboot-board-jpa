@@ -6,6 +6,9 @@ import lombok.Getter;
 public class CommentRequest {
     private String content;
 
+    public CommentRequest() {
+    }
+
     public CommentRequest(String content) {
         this.content = content;
     }

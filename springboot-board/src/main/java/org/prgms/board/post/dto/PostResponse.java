@@ -1,6 +1,5 @@
 package org.prgms.board.post.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import org.prgms.board.comment.dto.CommentResponse;
 import org.prgms.board.domain.entity.Post;
@@ -20,7 +19,6 @@ public class PostResponse {
 
     private List<CommentResponse> comments;
 
-    @Builder
     public PostResponse(Post entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
