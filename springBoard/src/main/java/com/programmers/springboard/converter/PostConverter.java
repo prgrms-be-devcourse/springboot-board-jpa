@@ -30,4 +30,20 @@ public class PostConverter {
         return user;
     }
 
+    public PostDto convertPostDto(Post post) {
+        return PostDto.builder()
+                .title(post.getTitle())
+                .content(post.getContent())
+                .userDto(this.convertUserDto(post.getUser()))
+                .createdBy(post.getCreatedBy())
+                .build();
+    }
+
+    public UserDto convertUserDto(User user) {
+        return UserDto.builder()
+                .name(user.getName())
+                .age(user.getAge())
+                .hobby(user.getHobby())
+                .build();
+    }
 }
