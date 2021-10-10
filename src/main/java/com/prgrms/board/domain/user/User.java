@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -31,6 +32,8 @@ public class User extends BaseEntity {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+        setCreatedAt(LocalDateTime.now());
+        setCreatedBy(name);
     }
 
     public void changeHobby(String hobby) {

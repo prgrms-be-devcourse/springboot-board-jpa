@@ -40,6 +40,8 @@ class UserRepositoryTest {
         assertThat(findUser.getName()).isEqualTo(user.getName());
         assertThat(findUser.getAge()).isEqualTo(user.getAge());
         assertThat(findUser.getHobby()).isEqualTo(user.getHobby());
+        assertThat(findUser.getCreatedAt()).isEqualTo(user.getCreatedAt());
+        assertThat(findUser.getCreatedBy()).isEqualTo(user.getCreatedBy());
     }
 
     @DisplayName("회원 조회 테스트")

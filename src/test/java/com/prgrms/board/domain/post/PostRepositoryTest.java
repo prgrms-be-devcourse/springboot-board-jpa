@@ -57,6 +57,8 @@ class PostRepositoryTest {
 
         assertThat(findPost.getTitle()).isEqualTo(post.getTitle());
         assertThat(findPost.getContent()).isEqualTo(post.getContent());
+        assertThat(findPost.getCreatedAt()).isEqualTo(post.getCreatedAt());
+        assertThat(findPost.getCreatedBy()).isEqualTo(post.getCreatedBy());
     }
 
     @DisplayName("게시물 조회 테스트")

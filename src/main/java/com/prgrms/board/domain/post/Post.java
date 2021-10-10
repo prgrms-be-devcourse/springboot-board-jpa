@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -33,6 +34,8 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
         this.user = user;
+        setCreatedAt(LocalDateTime.now());
+        setCreatedBy(user.getName());
     }
 
     public void changeTitle(String title) {
