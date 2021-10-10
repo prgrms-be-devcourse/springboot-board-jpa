@@ -1,5 +1,6 @@
 package com.example.boardbackend.service;
 
+import com.example.boardbackend.domain.User;
 import com.example.boardbackend.dto.converter.UserConverter;
 import com.example.boardbackend.dto.UserDto;
 import com.example.boardbackend.repository.UserRepository;
@@ -23,4 +24,12 @@ public class UserService {
                 .map(userEntity -> userConverter.convertToDto(userEntity))
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public UserDto saveUser(UserDto userDto){
+        User user = userConverter.convertToEntity(userDto);
+        User saved = userRepository.save(user);
+        return userConverter.convertToDto(saved);
+    }
+
 }
