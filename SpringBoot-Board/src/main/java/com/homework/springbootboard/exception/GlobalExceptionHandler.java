@@ -25,29 +25,29 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public final ApiResponse<Object> handleAllExceptions(Exception ex, WebRequest request){
-        ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(),request.getDescription(false));
-        return ApiResponse.fail(ErrorStatus.INTERNAL_SERVER_ERROR,ErrorStatus.INTERNAL_SERVER_ERROR.getStatus().value(), exceptionResponse);
+    public final ApiResponse<Object> handleAllExceptions(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false));
+        return ApiResponse.fail(ErrorStatus.INTERNAL_SERVER_ERROR, ErrorStatus.INTERNAL_SERVER_ERROR.getStatus().value(), exceptionResponse);
     }
 
     @ExceptionHandler(PostNotFoundException.class)
-    public final ApiResponse<Object> handlePostNotFoundException(PostNotFoundException ex, WebRequest request){
-        ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(),request.getDescription(false));
-        return ApiResponse.fail(ErrorStatus.POST_NOT_FOUND,ErrorStatus.POST_NOT_FOUND.getStatus().value(), exceptionResponse);
+    public final ApiResponse<Object> handlePostNotFoundException(PostNotFoundException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false));
+        return ApiResponse.fail(ErrorStatus.POST_NOT_FOUND, ErrorStatus.POST_NOT_FOUND.getStatus().value(), exceptionResponse);
     }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        Map<String,Object> body = new LinkedHashMap<>();
-        body.put("errorStatus",status);
-        body.put("errorCode",status.value());
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("errorStatus", status);
+        body.put("errorCode", status.value());
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
         body.put("errors", errors);
-        body.put("serverDateTime",LocalDateTime.now());
+        body.put("serverDateTime", LocalDateTime.now());
 
         return new ResponseEntity<>(body, headers, status);
     }
