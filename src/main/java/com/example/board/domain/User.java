@@ -36,6 +36,7 @@ public class User extends BaseEntity {
             throw new IllegalArgumentException("올바르지 않은 값입니다");
 
         }
+        this.age=age;
 
 
     }

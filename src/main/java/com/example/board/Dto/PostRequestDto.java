@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class PostDto {
+public class PostRequestDto {
     private String title;
     private String content;
     private UserDto user;
