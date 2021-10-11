@@ -1,5 +1,6 @@
 package com.homework.springbootboard.model;
 
+import com.homework.springbootboard.dto.PostDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,14 +19,14 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "title",nullable = false,length = 100)
+    @Column(name = "title", nullable = false, length = 100)
     private String title;
 
     @Lob
     @Column(name = "content", nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -37,18 +38,13 @@ public class Post extends BaseEntity {
         user.getPostList().add(this);
     }
 
-    public void changeTitle(String title){
-        this.title = title;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public void chnageContent(String content){
-        this.content = content;
-        this.setUpdatedAt(LocalDateTime.now());
+    public void updatePost(PostDto postDto) {
+        this.title = postDto.getTitle();
+        this.content = postDto.getContent();
     }
 
     @Builder
-    public Post(Long id, String title, String content, User user){
+    public Post(Long id, String title, String content, User user) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -58,7 +54,7 @@ public class Post extends BaseEntity {
     }
 
     @Builder
-    public Post(String title, String content,User user) {
+    public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
         this.user = user;
