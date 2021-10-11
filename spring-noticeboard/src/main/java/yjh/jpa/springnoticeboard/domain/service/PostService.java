@@ -8,7 +8,7 @@ import yjh.jpa.springnoticeboard.domain.dto.UserDto;
 
 public interface PostService {
 
-    Long createPost(PostDto postDto);
+    Long createPost(PostDto postDto) throws NotFoundException;
     Page<Object> findAll(Pageable pageable);
     PostDto findPost(Long postId) throws NotFoundException;
     Long updatePost(Long postId, PostDto postDto) throws NotFoundException;
