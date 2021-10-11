@@ -122,11 +122,12 @@ class PostApiTest {
                                 fieldWithPath("user.age").type(NUMBER).description("age")
                         ),
                         responseFields(
-                                fieldWithPath("errors").type(ARRAY).description("Errors"),
-                                fieldWithPath("errors[].field").type(STRING).description("error field"),
-                                fieldWithPath("errors[].objectName").type(STRING).description("error objectName"),
-                                fieldWithPath("errors[].code").type(STRING).description("error code"),
-                                fieldWithPath("errors[].defaultMessage").type(STRING).description("error defaultMessage"),
+                                fieldWithPath("data.errors").type(ARRAY).description("Errors"),
+                                fieldWithPath("data.errors[].field").type(STRING).description("error field"),
+                                fieldWithPath("data.errors[].objectName").type(STRING).description("error objectName"),
+                                fieldWithPath("data.errors[].code").type(STRING).description("error code"),
+                                fieldWithPath("data.errors[].defaultMessage").type(STRING).description("error defaultMessage"),
+                                fieldWithPath("data.message").type(NULL).description("message"),
                                 fieldWithPath("serverDatetime").type(STRING).description("sever response time")
                         )
                 ));
