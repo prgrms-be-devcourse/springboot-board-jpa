@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import './App.css';
 
 import Login from './views/Login';
-import SignUp from './views/SignUp';
 import Mypage from './views/Mypage';
 import Board from './views/Board';
 
@@ -13,8 +12,7 @@ function App() {
     <BrowserRouter>
 
       <Route path="/" component={ Login } exact />
-      <Route path="/signup" component={ SignUp } exact />
-      <Route path="/mypage/:userId" component={ Mypage } exact />
+      <Route path="/mypage" component={ Mypage } exact />
       <Route path="/board" component={ Board } exact />
 
     </BrowserRouter>

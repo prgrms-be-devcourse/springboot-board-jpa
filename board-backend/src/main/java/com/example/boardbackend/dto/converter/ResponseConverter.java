@@ -5,10 +5,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ResponseConverter {
-
     // value -> ResponseDto
     public UserIdResponse convertToUserId(Long id){
         return UserIdResponse.builder().id(id).build();
     }
-
 }

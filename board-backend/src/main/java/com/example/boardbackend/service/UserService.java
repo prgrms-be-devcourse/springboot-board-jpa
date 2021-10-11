@@ -6,6 +6,7 @@ import com.example.boardbackend.dto.converter.DtoConverter;
 import com.example.boardbackend.dto.request.LoginRequest;
 import com.example.boardbackend.dto.UserDto;
 import com.example.boardbackend.repository.UserRepository;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +22,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final DtoConverter dtoConverter;
 
-    public List<UserDto> findUserAll() {
-        return userRepository.findAll().stream()
-                .map(user -> dtoConverter.convertToUserDto(user))
-                .collect(Collectors.toList());
-    }
-
     @Transactional
     public UserDto saveUser(UserDto userDto) {
         User user = dtoConverter.convertToUserEntity(userDto);
@@ -34,10 +29,15 @@ public class UserService {
         return dtoConverter.convertToUserDto(saved);
     }
 
-    public Optional<UserDto> findUserByEmail(LoginRequest loginDto) {
-        Email email = new Email(loginDto.getEmail());
+    public List<UserDto> findUserAll() {
+        return userRepository.findAll().stream()
+                .map(user -> dtoConverter.convertToUserDto(user))
+                .collect(Collectors.toList());
+    }
+
+    public Optional<UserDto> findUserByEmail(String email) {
         // email로 찾기
-        Optional<User> byEmail = userRepository.findByEmail(email);
+        Optional<User> byEmail = userRepository.findByEmail(new Email(email));
         // 가입여부 리턴
         if (byEmail.isEmpty()) {
             return Optional.empty();
@@ -46,5 +46,15 @@ public class UserService {
         }
     }
 
+    public UserDto findUserById(Long id) throws NotFoundException {
+        return userRepository.findById(id)
+                .map(user -> dtoConverter.convertToUserDto(user))
+                .orElseThrow(() -> new NotFoundException("ID값에 해당하는 사용자가 없음"));
+    }
+
+    @Transactional
+    public void deleteUserById(Long id){
+        userRepository.deleteById(id);
+    }
 
 }

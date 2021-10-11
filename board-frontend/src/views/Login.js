@@ -1,4 +1,3 @@
-import { Link, withRouter } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -18,6 +17,11 @@ function Login(props) {
     email: "", password: "", name: "", age: "", hobby: ""
   });
 
+  // Effect
+  useEffect(() => {
+    delete localStorage.userId;
+  }, []);
+
   // Handler
   const loginEmailHandler = (e) => setLoginInfo({ ...loginInfo, email: e.currentTarget.value });
   const loginPasswordHandler = (e) => setLoginInfo({ ...loginInfo, password: e.currentTarget.value });
@@ -36,7 +40,8 @@ function Login(props) {
         if (res.status == 200) {
           alert("로그인 성공, 마이페이지로 이동")
           const userId = res.data.id;
-          props.history.push(`/mypage/${userId}`)
+          localStorage.setItem('userId', userId);
+          props.history.push("/mypage");
         }
       })
       .catch(err => {
@@ -91,4 +96,4 @@ function Login(props) {
   );
 }
 
-export default withRouter(Login);
+export default Login;
