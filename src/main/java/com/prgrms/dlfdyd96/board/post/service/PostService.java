@@ -46,4 +46,14 @@ public class PostService {
         .map(postConverter::convertPostDto)
         .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
   }
+
+  public Long update(Long id, PostDto postDto) throws NotFoundException {
+    Post post = postRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
+
+    post.update(postDto);
+
+    return post.getId();
+
+  }
 }

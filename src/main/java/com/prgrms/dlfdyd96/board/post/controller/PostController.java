@@ -56,4 +56,12 @@ public class PostController {
   public ApiResponse<Long> save(@RequestBody PostDto postDto) {
     return ApiResponse.ok(postService.save(postDto));
   }
+
+  @PutMapping("/posts/{id}")
+  public ApiResponse<Long> update(
+      @PathVariable Long id,
+      @RequestBody PostDto postDto
+  ) throws Exception {
+    return ApiResponse.ok(postService.update(id, postDto));
+  }
 }

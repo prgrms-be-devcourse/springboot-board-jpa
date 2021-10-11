@@ -7,9 +7,11 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.dlfdyd96.board.post.dto.PostDto;
 import com.prgrms.dlfdyd96.board.post.dto.UserDto;
@@ -165,7 +167,7 @@ class PostControllerTest {
   }
 
   @Test
-  @DisplayName("pageable 파라미터(page, size)와 함께 post들을 조회 할 수 있다.")
+  @DisplayName("[GET] '/posts' 테스트")
   void getAllWithPageAndSize() throws Exception {
     // GIVEN
     // WHEN
@@ -219,7 +221,7 @@ class PostControllerTest {
   // TODO: GET /posts  하면 data.pageable.paged : false인 경우 인가? -> service에서 테스트
 
   @Test
-  @DisplayName("단건으로 게시물을 조회할 수 있다.")
+  @DisplayName("[GET] '/posts/{id}' 테스트")
   void getPost() throws Exception {
     // GIVEN
     Long postId = postService.save(
@@ -244,7 +246,7 @@ class PostControllerTest {
   }
 
   @Test
-  @DisplayName("id로 게시물을 조회할 수 없는 경우 NotFoundException을 내뱉는다.")
+  @DisplayName("[GET] '/posts/{id}' not found exception 테스트")
   void getPostException() throws Exception {
     // GIVEN
     Long postId = postService.save(
@@ -269,4 +271,50 @@ class PostControllerTest {
         .andDo(print());
   }
 
+  @Test
+  @DisplayName("[PUT] '/posts/{id} 요청 성공")
+  void updatePost() throws Exception {
+    // GIVEN
+    Long postId = postService.save(
+        PostDto.builder()
+            .title("단건 제목")
+            .content("컨텐츠")
+            .userDto(
+                UserDto.builder()
+                    .name("일용")
+                    .age(26)
+                    .hobby("축구")
+                    .build()
+            )
+            .build()
+    );
+
+    PostDto request = PostDto.builder()
+        .title("단건 제목 - 수정")
+        .content("컨텐츠 - 수정")
+        .build();
+
+    // WHEN
+    // THEN
+    mockMvc.perform(
+        put("/posts/{id}", postId)
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(print())
+        .andDo(document("post-update",
+            requestFields(
+                fieldWithPath("id").type(JsonFieldType.NULL).description("post Id"),
+                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
+                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
+                fieldWithPath("userDto").type(JsonFieldType.NULL).description("user 정보")
+            ),
+            responseFields(
+                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
+                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
+            )
+        ));
+
+  }
 }

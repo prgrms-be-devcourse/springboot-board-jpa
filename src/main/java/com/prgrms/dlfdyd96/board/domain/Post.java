@@ -1,5 +1,6 @@
 package com.prgrms.dlfdyd96.board.domain;
 
+import com.prgrms.dlfdyd96.board.post.dto.PostDto;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -55,5 +56,10 @@ public class Post extends BaseEntity {
 
     this.user = user;
     user.getPosts().add(this);
+  }
+
+  public void update(PostDto postDto) {
+    this.title = postDto.getTitle();
+    this.content = postDto.getContent();
   }
 }
