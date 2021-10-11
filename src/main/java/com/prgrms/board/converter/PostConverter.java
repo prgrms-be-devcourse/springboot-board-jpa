@@ -5,16 +5,12 @@ import com.prgrms.board.domain.user.User;
 import com.prgrms.board.post.dto.PostDto;
 import com.prgrms.board.post.dto.UserDto;
 import org.springframework.stereotype.Component;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
 public class PostConverter {
     public Post convertPost(PostDto postDto) {
-        System.out.println(postDto.getId());
-        System.out.println(postDto.getTitle());
-        System.out.println(postDto.getContent());
         return Post.builder()
                 .id(postDto.getId())
                 .title(postDto.getTitle())
