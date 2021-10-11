@@ -1,15 +1,17 @@
 package com.programmers.springboard.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "posts")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +27,10 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public void setUser(User user) {
-        if (Objects.nonNull(this.user)) {
-            this.user.getPosts().remove(this);
-        }
+    public void update(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
         this.user = user;
-        user.getPosts().add(this);
+        this.setCreatedAt(LocalDateTime.now());
     }
-
 }
