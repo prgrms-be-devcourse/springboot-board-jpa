@@ -37,6 +37,16 @@ public class Post extends BaseEntity {
         user.getPostList().add(this);
     }
 
+    public void changeTitle(String title){
+        this.title = title;
+        this.setUpdatedAt(LocalDateTime.now());
+    }
+
+    public void chnageContent(String content){
+        this.content = content;
+        this.setUpdatedAt(LocalDateTime.now());
+    }
+
     @Builder
     public Post(Long id, String title, String content, User user){
         this.id = id;
