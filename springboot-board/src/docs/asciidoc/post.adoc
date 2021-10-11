@@ -1,0 +1,49 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 게시판 API
+
+=== 게시글 조회
+
+==== /api/posts/{postId}
+
+.Request
+include::{snippets}/post-getOne/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getOne/http-response.adoc[]
+include::{snippets}/post-getOne/response-fields.adoc[]
+
+=== 게시글 등록
+
+==== /api/posts/{userId}
+
+.Request
+include::{snippets}/post-add/http-request.adoc[]
+
+.Response
+include::{snippets}/post-add/http-response.adoc[]
+include::{snippets}/post-add/response-fields.adoc[]
+
+=== 게시글 수정
+
+==== /api/posts/{userId}/{postId}
+
+.Request
+include::{snippets}/post-modify/http-request.adoc[]
+
+.Response
+include::{snippets}/post-modify/http-response.adoc[]
+include::{snippets}/post-modify/response-fields.adoc[]
+
+=== 게시글 삭제
+
+==== /api/posts/{userId}/{postId}
+
+.Request
+include::{snippets}/post-remove/http-request.adoc[]
+
+.Response
+include::{snippets}/post-remove/http-response.adoc[]

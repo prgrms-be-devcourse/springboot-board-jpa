@@ -1,0 +1,38 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 댓글 API
+
+=== 댓글 등록
+
+==== /api/comments/{userId}/{postId}
+
+.Request
+include::{snippets}/comment-add/http-request.adoc[]
+
+.Response
+include::{snippets}/comment-add/http-response.adoc[]
+include::{snippets}/comment-add/response-fields.adoc[]
+
+=== 댓글 수정
+
+==== /api/comments/{userId}/{commentId}
+
+.Request
+include::{snippets}/comment-modify/http-request.adoc[]
+
+.Response
+include::{snippets}/comment-modify/http-response.adoc[]
+include::{snippets}/comment-modify/response-fields.adoc[]
+
+=== 댓글 삭제
+
+==== /api/comments/{userId}/{commentId}
+
+.Request
+include::{snippets}/comment-remove/http-request.adoc[]
+
+.Response
+include::{snippets}/comment-remove/http-response.adoc[]
