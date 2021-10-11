@@ -18,10 +18,10 @@ import static org.hamcrest.Matchers.*;
 
 @SpringBootTest
 @Slf4j
-class PostRepositoryTest {
+class PostJpaRepositoryTest {
 
     @Autowired
-    PostRepository postRepository;
+    PostJpaRepository postRepository;
 
     Post post1;
     Post post2;
