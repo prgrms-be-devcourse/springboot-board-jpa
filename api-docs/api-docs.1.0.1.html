@@ -449,7 +449,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_curl_request">[Curl Request]</a></li>
 <li><a href="#_http_request">[Http Request]</a></li>
-<li><a href="#_request">[Request]</a></li>
 <li><a href="#_request_fields">[Request Fields]</a></li>
 <li><a href="#_response">[Response]</a></li>
 <li><a href="#_response_fields">[Response Fields]</a></li>
@@ -459,7 +458,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_curl_request_2">[Curl Request]</a></li>
 <li><a href="#_http_request_2">[Http Request]</a></li>
-<li><a href="#_request_2">[Request]</a></li>
 <li><a href="#_response_2">[Response]</a></li>
 <li><a href="#_response_fields_2">[Response Fields]</a></li>
 </ul>
@@ -468,7 +466,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_curl_request_3">[Curl Request]</a></li>
 <li><a href="#_http_request_3">[Http Request]</a></li>
-<li><a href="#_request_3">[Request]</a></li>
 <li><a href="#_response_3">[Response]</a></li>
 <li><a href="#_response_fields_3">[Response Fields]</a></li>
 </ul>
@@ -477,7 +474,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_curl_request_4">[Curl Request]</a></li>
 <li><a href="#_http_request_4">[Http Request]</a></li>
-<li><a href="#_request_4">[Request]</a></li>
 <li><a href="#_response_4">[Response]</a></li>
 <li><a href="#_response_fields_4">[Response Fields]</a></li>
 </ul>
@@ -486,7 +482,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_curl_request_5">[Curl Request]</a></li>
 <li><a href="#_http_request_5">[Http Request]</a></li>
-<li><a href="#_request_5">[Request]</a></li>
 <li><a href="#_request_fields_2">[Request Fields]</a></li>
 <li><a href="#_response_5">[Response]</a></li>
 <li><a href="#_response_fields_5">[Response Fields]</a></li>
@@ -596,7 +591,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   "user" : {
     "id" : 1,
     "name" : "tester",
-    "age" : 20
+    "age" : 1995
   }
 }'</code></pre>
 </div>
@@ -608,7 +603,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/v1/posts HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 237
+Content-Length: 239
 Host: localhost:8080
 
 {
@@ -618,24 +613,7 @@ Host: localhost:8080
   "user" : {
     "id" : 1,
     "name" : "tester",
-    "age" : 20
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_request"><a class="link" href="#_request">[Request]</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
-  "id" : null,
-  "title" : "스프링 스터디 모집",
-  "content" : "스프링을 주제로 주 1회 발표하며 공부하실 스터디원을 모집합니다.",
-  "user" : {
-    "id" : 1,
-    "name" : "tester",
-    "age" : 20
+    "age" : 1995
   }
 }</code></pre>
 </div>
@@ -701,7 +679,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
   "data" : 1,
-  "serverDatetime" : "2021-10-11 16:38:15"
+  "serverDatetime" : "2021-10-11 17:03:40"
 }</code></pre>
 </div>
 </div>
@@ -760,14 +738,6 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_request_2"><a class="link" href="#_request_2">[Request]</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs"></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_response_2"><a class="link" href="#_response_2">[Response]</a></h3>
 <div class="listingblock">
 <div class="content">
@@ -780,7 +750,7 @@ Host: localhost:8080</code></pre>
       "user" : {
         "id" : 5,
         "name" : "tester",
-        "age" : 20
+        "age" : 27
       }
     }, {
       "id" : 25,
@@ -789,7 +759,7 @@ Host: localhost:8080</code></pre>
       "user" : {
         "id" : 5,
         "name" : "tester",
-        "age" : 20
+        "age" : 27
       }
     }, {
       "id" : 26,
@@ -798,7 +768,7 @@ Host: localhost:8080</code></pre>
       "user" : {
         "id" : 5,
         "name" : "tester",
-        "age" : 20
+        "age" : 27
       }
     }, {
       "id" : 27,
@@ -807,7 +777,7 @@ Host: localhost:8080</code></pre>
       "user" : {
         "id" : 5,
         "name" : "tester",
-        "age" : 20
+        "age" : 27
       }
     }, {
       "id" : 28,
@@ -816,7 +786,7 @@ Host: localhost:8080</code></pre>
       "user" : {
         "id" : 5,
         "name" : "tester",
-        "age" : 20
+        "age" : 27
       }
     }, {
       "id" : 29,
@@ -825,7 +795,7 @@ Host: localhost:8080</code></pre>
       "user" : {
         "id" : 5,
         "name" : "tester",
-        "age" : 20
+        "age" : 27
       }
     }, {
       "id" : 30,
@@ -834,7 +804,7 @@ Host: localhost:8080</code></pre>
       "user" : {
         "id" : 5,
         "name" : "tester",
-        "age" : 20
+        "age" : 27
       }
     }, {
       "id" : 31,
@@ -843,7 +813,7 @@ Host: localhost:8080</code></pre>
       "user" : {
         "id" : 5,
         "name" : "tester",
-        "age" : 20
+        "age" : 27
       }
     }, {
       "id" : 32,
@@ -852,7 +822,7 @@ Host: localhost:8080</code></pre>
       "user" : {
         "id" : 5,
         "name" : "tester",
-        "age" : 20
+        "age" : 27
       }
     }, {
       "id" : 33,
@@ -861,7 +831,7 @@ Host: localhost:8080</code></pre>
       "user" : {
         "id" : 5,
         "name" : "tester",
-        "age" : 20
+        "age" : 27
       }
     } ],
     "pageable" : {
@@ -876,8 +846,8 @@ Host: localhost:8080</code></pre>
       "paged" : true,
       "unpaged" : false
     },
-    "totalElements" : 30,
     "totalPages" : 3,
+    "totalElements" : 30,
     "last" : true,
     "size" : 10,
     "number" : 2,
@@ -890,7 +860,7 @@ Host: localhost:8080</code></pre>
     "first" : false,
     "empty" : false
   },
-  "serverDatetime" : "2021-10-11 16:38:15"
+  "serverDatetime" : "2021-10-11 17:03:40"
 }</code></pre>
 </div>
 </div>
@@ -1082,14 +1052,6 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_request_3"><a class="link" href="#_request_3">[Request]</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs"></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_response_3"><a class="link" href="#_response_3">[Response]</a></h3>
 <div class="listingblock">
 <div class="content">
@@ -1101,10 +1063,10 @@ Host: localhost:8080</code></pre>
     "user" : {
       "id" : 3,
       "name" : "tester",
-      "age" : 20
+      "age" : 27
     }
   },
-  "serverDatetime" : "2021-10-11 16:38:15"
+  "serverDatetime" : "2021-10-11 17:03:40"
 }</code></pre>
 </div>
 </div>
@@ -1196,7 +1158,7 @@ Host: localhost:8080</code></pre>
   "user" : {
     "id" : 2,
     "name" : "tester",
-    "age" : 20
+    "age" : 27
   }
 }'</code></pre>
 </div>
@@ -1218,24 +1180,7 @@ Host: localhost:8080
   "user" : {
     "id" : 2,
     "name" : "tester",
-    "age" : 20
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_request_4"><a class="link" href="#_request_4">[Request]</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
-  "id" : 2,
-  "title" : "변경한 제목",
-  "content" : "변경한 내용",
-  "user" : {
-    "id" : 2,
-    "name" : "tester",
-    "age" : 20
+    "age" : 27
   }
 }</code></pre>
 </div>
@@ -1247,7 +1192,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
   "data" : 2,
-  "serverDatetime" : "2021-10-11 16:38:15"
+  "serverDatetime" : "2021-10-11 17:03:40"
 }</code></pre>
 </div>
 </div>
@@ -1299,7 +1244,7 @@ Host: localhost:8080
   "user" : {
     "id" : 4,
     "name" : "tester",
-    "age" : 20
+    "age" : 1995
   }
 }'</code></pre>
 </div>
@@ -1311,7 +1256,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/v1/posts HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 121
+Content-Length: 123
 Host: localhost:8080
 
 {
@@ -1321,24 +1266,7 @@ Host: localhost:8080
   "user" : {
     "id" : 4,
     "name" : "tester",
-    "age" : 20
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_request_5"><a class="link" href="#_request_5">[Request]</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
-  "id" : null,
-  "title" : "",
-  "content" : "",
-  "user" : {
-    "id" : 4,
-    "name" : "tester",
-    "age" : 20
+    "age" : 1995
   }
 }</code></pre>
 </div>
@@ -1405,19 +1333,19 @@ Host: localhost:8080
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
   "data" : {
     "errors" : [ {
-      "field" : "content",
+      "field" : "title",
       "objectName" : "postDto",
       "code" : "NotBlank",
       "defaultMessage" : "must not be blank"
     }, {
-      "field" : "title",
+      "field" : "content",
       "objectName" : "postDto",
       "code" : "NotBlank",
       "defaultMessage" : "must not be blank"
     } ],
     "message" : null
   },
-  "serverDatetime" : "2021-10-11 16:38:15"
+  "serverDatetime" : "2021-10-11 17:03:40"
 }</code></pre>
 </div>
 </div>
@@ -1481,7 +1409,7 @@ Host: localhost:8080
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-11 16:37:22 +0900
+Last updated 2021-10-11 17:02:50 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

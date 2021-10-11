@@ -69,9 +69,6 @@ include::{snippets}/save-post/curl-request.adoc[]
 === [Http Request]
 include::{snippets}/save-post/http-request.adoc[]
 
-=== [Request]
-include::{snippets}/save-post/request-body.adoc[]
-
 === [Request Fields]
 include::{snippets}/save-post/request-fields.adoc[]
 
@@ -90,9 +87,6 @@ include::{snippets}/get-posts/curl-request.adoc[]
 === [Http Request]
 include::{snippets}/get-posts/http-request.adoc[]
 
-=== [Request]
-include::{snippets}/get-posts/request-body.adoc[]
-
 === [Response]
 include::{snippets}/get-posts/response-body.adoc[]
 
@@ -106,9 +100,6 @@ include::{snippets}/get-post/curl-request.adoc[]
 
 === [Http Request]
 include::{snippets}/get-post/http-request.adoc[]
-
-=== [Request]
-include::{snippets}/get-post/request-body.adoc[]
 
 === [Response]
 include::{snippets}/get-post/response-body.adoc[]
@@ -125,9 +116,6 @@ include::{snippets}/update-post/curl-request.adoc[]
 === [Http Request]
 include::{snippets}/update-post/http-request.adoc[]
 
-=== [Request]
-include::{snippets}/update-post/request-body.adoc[]
-
 === [Response]
 include::{snippets}/update-post/response-body.adoc[]
 
@@ -143,9 +131,6 @@ include::{snippets}/invalid-save-post/curl-request.adoc[]
 
 === [Http Request]
 include::{snippets}/invalid-save-post/http-request.adoc[]
-
-=== [Request]
-include::{snippets}/invalid-save-post/request-body.adoc[]
 
 === [Request Fields]
 include::{snippets}/invalid-save-post/request-fields.adoc[]
