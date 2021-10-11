@@ -7,7 +7,6 @@ import com.programmers.springboard.dto.PostResponseDto;
 import com.programmers.springboard.model.Post;
 import com.programmers.springboard.repository.PostRepository;
 import javassist.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,11 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PostService {
-    @Autowired
     private PostRepository postRepository;
-
-    @Autowired
     private PostConverter postConverter;
+
+    public PostService(PostRepository postRepository, PostConverter postConverter) {
+        this.postRepository = postRepository;
+        this.postConverter = postConverter;
+    }
 
     @Transactional
     public Long save(PostDto dto) {

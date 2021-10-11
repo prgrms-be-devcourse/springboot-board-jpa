@@ -5,7 +5,6 @@ import com.programmers.springboard.dto.PostDto;
 import com.programmers.springboard.dto.PostResponseDto;
 import com.programmers.springboard.service.PostService;
 import javassist.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 @RestController
 public class PostController {
-    @Autowired
     private PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     @PostMapping("/posts")
     public ApiResponse<Long> save(@RequestBody PostDto postDto) {
