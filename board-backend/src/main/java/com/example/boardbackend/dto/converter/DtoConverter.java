@@ -1,8 +1,10 @@
-package com.example.boardbackend.dto;
+package com.example.boardbackend.dto.converter;
 
 import com.example.boardbackend.domain.Post;
 import com.example.boardbackend.domain.User;
 import com.example.boardbackend.domain.embeded.Email;
+import com.example.boardbackend.dto.PostDto;
+import com.example.boardbackend.dto.UserDto;
 import org.springframework.stereotype.Component;
 
 @Component

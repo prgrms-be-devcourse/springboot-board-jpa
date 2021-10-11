@@ -14,7 +14,7 @@ function App() {
 
       <Route path="/" component={ Login } exact />
       <Route path="/signup" component={ SignUp } exact />
-      <Route path="/mypage" component={ Mypage } exact />
+      <Route path="/mypage/:userId" component={ Mypage } exact />
       <Route path="/board" component={ Board } exact />
 
     </BrowserRouter>

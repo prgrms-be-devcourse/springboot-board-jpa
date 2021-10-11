@@ -3,17 +3,25 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 
-function Login() {
-  // Origin
-  const local = 'http://localhost:8080'
-  const deploy = 'http://15.165.69.116:8080'
+function Login(props) {
+
+  // Select Origin
+  const local = 'http://localhost:8080';
+  const deploy = 'http://15.165.69.116:8080';
+  const origin = local;
 
   // State
+  const [loginInfo, setLoginInfo] = useState({
+    email: "", password: ""
+  });
   const [userInfo, setUserInfo] = useState({
     email: "", password: "", name: "", age: "", hobby: ""
   });
 
   // Handler
+  const loginEmailHandler = (e) => setLoginInfo({ ...loginInfo, email: e.currentTarget.value });
+  const loginPasswordHandler = (e) => setLoginInfo({ ...loginInfo, password: e.currentTarget.value });
+
   const emailHandler = (e) => setUserInfo({ ...userInfo, email: e.currentTarget.value });
   const passwordHandler = (e) => setUserInfo({ ...userInfo, password: e.currentTarget.value });
   const nameHandler = (e) => setUserInfo({ ...userInfo, name: e.currentTarget.value });
@@ -21,13 +29,34 @@ function Login() {
   const hobbyHandler = (e) => setUserInfo({ ...userInfo, hobby: e.currentTarget.value });
 
   // Button
-  const signUp = () => {
-    axios.post(deploy + '/api/user', userInfo)
-      .then(
-        res => {
-          console.log(res)
+  const login = () => {
+    axios.post(origin + '/api/user/login', loginInfo)
+      .then(res => {
+        console.log(res)
+        if (res.status == 200) {
+          alert("로그인 성공, 마이페이지로 이동")
+          const userId = res.data.id;
+          props.history.push(`/mypage/${userId}`)
         }
-      )
+      })
+      .catch(err => {
+        console.log(err)
+        if (err.response.status == 400)
+          alert("가입되지 않은 email");
+        else if (err.response.status == 401)
+          alert("비밀번호가 틀림");
+      });
+  }
+
+  const signUp = () => {
+    axios.post(origin + '/api/user', userInfo).then(
+      res => {
+        console.log(res)
+        if (res.status == 200)
+          alert("회원가입 완료 (id : " + res.data.id + ")");
+        // FIXME : 새로고침 or 입력창 초기화
+      }
+    )
   }
 
   return (
@@ -37,10 +66,10 @@ function Login() {
       <hr /><br />
 
       <div className="div_wrapper">
-        <input type="text" placeholder="email" />
-        <input type="password" placeholder="password" />
+        <input type="text" placeholder="email" onChange={loginEmailHandler} />
+        <input type="password" placeholder="password" onChange={loginPasswordHandler} />
         <br /><br />
-        <button >로그인하기</button>
+        <button onClick={login}>로그인하기</button>
       </div>
 
       <br /><br /><br />

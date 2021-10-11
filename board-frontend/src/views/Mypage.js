@@ -6,6 +6,7 @@ function Mypage() {
     <div >
 
       {/* 마이페이지 구현 */}
+      dd
 
 
     </div>
