@@ -1,11 +1,11 @@
 package org.prgms.board.post.controller;
 
-import org.prgms.board.common.ResponseHandler;
+import org.prgms.board.common.response.ApiResponse;
 import org.prgms.board.post.dto.PostRequest;
+import org.prgms.board.post.dto.PostResponse;
 import org.prgms.board.post.service.PostService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -20,33 +20,33 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAllPost(Pageable pageable, @PathVariable Optional<Long> userId) {
+    public ApiResponse<Page<PostResponse>> getAllPost(Pageable pageable, @PathVariable Optional<Long> userId) {
         if (userId.isPresent()) {
-            return ResponseHandler.generateResponse("Successfully retrieved list!", HttpStatus.OK, postService.getAllPostByUser(pageable, userId.get()));
+            return ApiResponse.toResponse(postService.getAllPostByUser(pageable, userId.get()));
         } else {
-            return ResponseHandler.generateResponse("Successfully retrieved list!", HttpStatus.OK, postService.getAllPost(pageable));
+            return ApiResponse.toResponse(postService.getAllPost(pageable));
         }
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<Object> getOnePost(@PathVariable Long postId) {
-        return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, postService.getOnePost(postId));
+    public ApiResponse<PostResponse> getOnePost(@PathVariable Long postId) {
+        return ApiResponse.toResponse(postService.getOnePost(postId));
     }
 
     @PostMapping("/{userId}")
-    public ResponseEntity<Object> addPost(@PathVariable Long userId, @RequestBody PostRequest postRequest) {
-        return ResponseHandler.generateResponse("Successfully added data!", HttpStatus.OK, postService.addPost(userId, postRequest));
+    public ApiResponse<Long> addPost(@PathVariable Long userId, @RequestBody PostRequest postRequest) {
+        return ApiResponse.toResponse(postService.addPost(userId, postRequest));
     }
 
     @PutMapping("/{userId}/{postId}")
-    public ResponseEntity<Object> modifyPost(@PathVariable Long userId, @PathVariable Long postId, @RequestBody PostRequest postRequest) {
-        return ResponseHandler.generateResponse("Successfully updated data!", HttpStatus.OK, postService.modifyPost(userId, postId, postRequest));
+    public ApiResponse<Long> modifyPost(@PathVariable Long userId, @PathVariable Long postId, @RequestBody PostRequest postRequest) {
+        return ApiResponse.toResponse(postService.modifyPost(userId, postId, postRequest));
     }
 
     @DeleteMapping("/{userId}/{postId}")
-    public ResponseEntity<Object> removePost(@PathVariable Long userId, @PathVariable Long postId) {
+    public ApiResponse<Integer> removePost(@PathVariable Long userId, @PathVariable Long postId) {
         postService.removePost(userId, postId);
-        return ResponseHandler.generateResponse("Successfully removed data!", HttpStatus.OK, null);
+        return ApiResponse.toResponse(1);
     }
 
 }

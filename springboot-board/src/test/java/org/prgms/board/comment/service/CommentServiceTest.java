@@ -9,13 +9,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.prgms.board.comment.dto.CommentRequest;
 import org.prgms.board.comment.dto.CommentResponse;
+import org.prgms.board.common.exception.NotFoundException;
 import org.prgms.board.domain.entity.Comment;
 import org.prgms.board.domain.entity.Post;
 import org.prgms.board.domain.entity.User;
 import org.prgms.board.domain.repository.CommentRepository;
 import org.prgms.board.domain.repository.PostRepository;
 import org.prgms.board.domain.repository.UserRepository;
-import org.prgms.board.exception.NotFoundException;
 
 import java.util.Optional;
 

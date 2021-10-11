@@ -7,9 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.prgms.board.common.exception.NotFoundException;
 import org.prgms.board.domain.entity.User;
 import org.prgms.board.domain.repository.UserRepository;
-import org.prgms.board.exception.NotFoundException;
 import org.prgms.board.user.dto.UserRequest;
 import org.prgms.board.user.dto.UserResponse;
 

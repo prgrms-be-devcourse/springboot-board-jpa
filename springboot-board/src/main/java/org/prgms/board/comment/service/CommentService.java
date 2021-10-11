@@ -2,14 +2,14 @@ package org.prgms.board.comment.service;
 
 import org.prgms.board.comment.dto.CommentRequest;
 import org.prgms.board.comment.dto.CommentResponse;
+import org.prgms.board.common.exception.NotFoundException;
+import org.prgms.board.common.exception.NotMatchException;
 import org.prgms.board.domain.entity.Comment;
 import org.prgms.board.domain.entity.Post;
 import org.prgms.board.domain.entity.User;
 import org.prgms.board.domain.repository.CommentRepository;
 import org.prgms.board.domain.repository.PostRepository;
 import org.prgms.board.domain.repository.UserRepository;
-import org.prgms.board.exception.NotFoundException;
-import org.prgms.board.exception.NotMatchException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

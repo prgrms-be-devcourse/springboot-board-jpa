@@ -72,7 +72,6 @@ class UserControllerTest {
                         fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("취미"),
                         fieldWithPath("data.createdDate").type(JsonFieldType.NULL).description("생성날짜"),
                         fieldWithPath("data.updatedDate").type(JsonFieldType.NULL).description("변경날짜"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")
                     )
                 )
@@ -103,7 +102,6 @@ class UserControllerTest {
                     ),
                     responseFields(
                         fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")
                     )
                 )
@@ -134,7 +132,6 @@ class UserControllerTest {
                     ),
                     responseFields(
                         fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")
                     )
                 )
@@ -152,8 +149,7 @@ class UserControllerTest {
             .andDo(
                 document("user-remove",
                     responseFields(
-                        fieldWithPath("data").type(JsonFieldType.NULL).description("데이터"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+                        fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")
                     )
                 )

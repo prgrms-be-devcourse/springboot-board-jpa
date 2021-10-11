@@ -123,7 +123,6 @@ class PostControllerTest {
                         fieldWithPath("data.comments[].author").type(JsonFieldType.STRING).description("댓글 작성자"),
                         fieldWithPath("data.comments[].createdDate").type(JsonFieldType.NULL).description("댓글 생성날짜"),
                         fieldWithPath("data.comments[].updatedDate").type(JsonFieldType.NULL).description("댓글 변경날짜"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")
                     ))
             );
@@ -152,7 +151,6 @@ class PostControllerTest {
                     ),
                     responseFields(
                         fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")
                     )
                 )
@@ -182,7 +180,6 @@ class PostControllerTest {
                     ),
                     responseFields(
                         fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")
                     )
                 )
@@ -200,8 +197,7 @@ class PostControllerTest {
             .andDo(
                 document("post-remove",
                     responseFields(
-                        fieldWithPath("data").type(JsonFieldType.NULL).description("데이터"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+                        fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")
                     )
                 )

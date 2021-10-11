@@ -1,10 +1,9 @@
 package org.prgms.board.user.controller;
 
-import org.prgms.board.common.ResponseHandler;
+import org.prgms.board.common.response.ApiResponse;
 import org.prgms.board.user.dto.UserRequest;
+import org.prgms.board.user.dto.UserResponse;
 import org.prgms.board.user.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,24 +16,24 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Object> getOne(@PathVariable Long userId) {
-        return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, userService.getOneUser(userId));
+    public ApiResponse<UserResponse> getOne(@PathVariable Long userId) {
+        return ApiResponse.toResponse(userService.getOneUser(userId));
     }
 
     @PostMapping
-    public ResponseEntity<Object> addUser(@RequestBody UserRequest userRequest) {
-        return ResponseHandler.generateResponse("Successfully added data!", HttpStatus.OK, userService.addUser(userRequest));
+    public ApiResponse<Long> addUser(@RequestBody UserRequest userRequest) {
+        return ApiResponse.toResponse(userService.addUser(userRequest));
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<Object> modifyUser(@PathVariable Long userId, @RequestBody UserRequest userRequest) {
-        return ResponseHandler.generateResponse("Successfully updated data!", HttpStatus.OK, userService.modifyUser(userId, userRequest));
+    public ApiResponse<Long> modifyUser(@PathVariable Long userId, @RequestBody UserRequest userRequest) {
+        return ApiResponse.toResponse(userService.modifyUser(userId, userRequest));
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Object> removeUser(@PathVariable Long userId) {
+    public ApiResponse<Integer> removeUser(@PathVariable Long userId) {
         userService.removeUser(userId);
-        return ResponseHandler.generateResponse("Successfully removed data!", HttpStatus.OK, null);
+        return ApiResponse.toResponse(1);
     }
 
 }

@@ -91,7 +91,6 @@ class CommentControllerTest {
                     ),
                     responseFields(
                         fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")
                     )
                 )
@@ -120,7 +119,6 @@ class CommentControllerTest {
                     ),
                     responseFields(
                         fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")
                     )
                 )
@@ -139,8 +137,7 @@ class CommentControllerTest {
             .andDo(
                 document("comment-remove",
                     responseFields(
-                        fieldWithPath("data").type(JsonFieldType.NULL).description("데이터"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+                        fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")
                     )
                 )

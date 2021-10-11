@@ -1,8 +1,8 @@
 package org.prgms.board.user.service;
 
+import org.prgms.board.common.exception.NotFoundException;
 import org.prgms.board.domain.entity.User;
 import org.prgms.board.domain.repository.UserRepository;
-import org.prgms.board.exception.NotFoundException;
 import org.prgms.board.user.dto.UserRequest;
 import org.prgms.board.user.dto.UserResponse;
 import org.springframework.stereotype.Service;

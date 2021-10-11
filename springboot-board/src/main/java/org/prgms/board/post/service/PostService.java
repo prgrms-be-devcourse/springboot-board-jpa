@@ -1,11 +1,11 @@
 package org.prgms.board.post.service;
 
+import org.prgms.board.common.exception.NotFoundException;
+import org.prgms.board.common.exception.NotMatchException;
 import org.prgms.board.domain.entity.Post;
 import org.prgms.board.domain.entity.User;
 import org.prgms.board.domain.repository.PostRepository;
 import org.prgms.board.domain.repository.UserRepository;
-import org.prgms.board.exception.NotFoundException;
-import org.prgms.board.exception.NotMatchException;
 import org.prgms.board.post.dto.PostRequest;
 import org.prgms.board.post.dto.PostResponse;
 import org.springframework.data.domain.Page;
