@@ -1,6 +1,7 @@
 package com.programmers.springboard.service;
 
 import com.programmers.springboard.dto.PostDto;
+import com.programmers.springboard.dto.PostResponseDto;
 import com.programmers.springboard.dto.UserDto;
 import com.programmers.springboard.model.Post;
 import com.programmers.springboard.repository.PostRepository;
@@ -53,10 +54,10 @@ class PostServiceTest {
     @Test
     void findOneTest() throws NotFoundException {
         //When
-        PostDto post = postService.findOne(1L);
+        PostResponseDto post = postService.findOne(1L);
 
         //Then
-        assertThat(post.getId()).isEqualTo(postDto.getId());
+        assertThat(post.getId()).isEqualTo(1L);
 
     }
 
@@ -66,7 +67,7 @@ class PostServiceTest {
         PageRequest page = PageRequest.of(0, 10);
 
         //When
-        Page<PostDto> all = postService.findAll(page);
+        Page<PostResponseDto> all = postService.findAll(page);
 
         //Then
         assertThat(all.getTotalElements()).isEqualTo(3);

@@ -3,6 +3,7 @@ package com.programmers.springboard.service;
 import com.programmers.springboard.config.ErrorMessage;
 import com.programmers.springboard.converter.PostConverter;
 import com.programmers.springboard.dto.PostDto;
+import com.programmers.springboard.dto.PostResponseDto;
 import com.programmers.springboard.model.Post;
 import com.programmers.springboard.repository.PostRepository;
 import javassist.NotFoundException;
@@ -27,15 +28,13 @@ public class PostService {
         return entity.getId();
     }
 
-    @Transactional
-    public PostDto findOne(Long id) throws NotFoundException {
+    public PostResponseDto findOne(Long id) throws NotFoundException {
         return postRepository.findById(id)
                 .map(postConverter::convertPostDto)
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.POSTS_NOT_FOUND.getMessage()));
     }
 
-    @Transactional
-    public Page<PostDto> findAll(Pageable pageable) {
+    public Page<PostResponseDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(postConverter::convertPostDto);
     }
