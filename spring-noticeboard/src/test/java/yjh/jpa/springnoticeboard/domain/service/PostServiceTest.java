@@ -52,17 +52,17 @@ class PostServiceTest {
     @Autowired
     PostRepository postRepository;
 
-    private static User user;
+    private static UserDto userDto;
 
     @BeforeEach
-    void insert(){
-        var userDto = UserDto.builder()
+    void insert() throws NotFoundException {
+        var userDtoB = UserDto.builder()
                 .age(20)
                 .name("유지훈")
                 .hobby("잠자기")
                 .build();
-        Long userId = userService.createUser(userDto);
-        user = userRepository.getById(userId);
+        Long userId = userService.createUser(userDtoB);
+        userDto = userService.findUser(userId);
     }
 
     @AfterEach
@@ -73,10 +73,10 @@ class PostServiceTest {
 
     @Test
     @DisplayName("Post 저장 및 조회 테스트")
-    void createPost() {
+    void createPost() throws NotFoundException {
         //given
         PostDto postDto = PostDto.builder()
-                .user(user)
+                .user(userDto)
                 .title("게시판 제목")
                 .content("블라블라블라")
                 .build();
@@ -84,11 +84,11 @@ class PostServiceTest {
         Long postId = postService.createPost(postDto);
 
         //then
-        User findUser = userRepository.findById(user.getId()).get();
+        User findUser = userRepository.findById(userDto.getId()).get();
         Post findPost = postRepository.findById(findUser.getPosts().get(0).getId()).get();
         assertThat(findPost.getId()).isEqualTo(postId);
         assertThat(findUser.getPosts()).isNotEmpty();
-        assertThat(findUser.getPosts().get(0)).isEqualTo(findPost);
+        assertThat(findUser.getPosts().get(0).getContent()).isEqualTo(findPost.getContent());
     }
 
     @Test
@@ -96,7 +96,7 @@ class PostServiceTest {
     void updatePost() throws NotFoundException {
         //given
         PostDto postDto = PostDto.builder()
-                .user(user)
+                .user(userDto)
                 .title("게시판 제목")
                 .content("블라블라블라")
                 .build();
@@ -114,15 +114,15 @@ class PostServiceTest {
 
     @Test
     @DisplayName("모든 게시글 불러오기")
-    void findAll() {
+    void findAll() throws NotFoundException {
         //given
         PostDto postDto = PostDto.builder()
-                .user(user)
+                .user(userDto)
                 .title("게시판 제목")
                 .content("블라블라블라")
                 .build();
         PostDto postDto2 = PostDto.builder()
-                .user(user)
+                .user(userDto)
                 .title("게시판 제목2")
                 .content("블라블라블라2")
                 .build();
@@ -137,33 +137,32 @@ class PostServiceTest {
     }
 
     @Test
-    @Rollback(false)
     @DisplayName("특정 post 삭제하기")
     void deletePost() throws NotFoundException {
         //given
         PostDto postDto = PostDto.builder()
-                .user(user)
+                .user(userDto)
                 .title("게시판 제목")
                 .content("블라블라블라")
                 .build();
 
-        log.info("user 확인 : {}", user.toString());
-
+//        log.info("user 확인 : {}", userDto.toString());
 
         Long postId = postService.createPost(postDto);
+
         PostDto post = postService.findPost(postId);
-        log.info("처음 insert 할때 {}",post.toString());
-        log.info("user의 post 객체 {}",user.getPosts().get(0).getId());
-        log.info("user의 post 객체 {}",user.getPosts().get(0).getTitle());
-        log.info("user의 post 객체 {}",user.getPosts().get(0).getContent());
 
         //when
-        postService.deletePost(postId,user.getId());
+        var findUser = userRepository.findById(userDto.getId()).orElseThrow(() ->
+                new NotFoundException("회원을 찾을 수 없습니다."));
+        postService.deletePost(postId,userDto.getId());
 
         //then
+
         assertThatThrownBy(()->postService.findPost(postId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("해당 유저를 찾을 수 없습니다.");
+                .hasMessageContaining("게시글을 찾을 수 없습니다.");
+        assertThat(findUser.getPosts().size()).isEqualTo(0);
     }
 
 }
