@@ -1,16 +1,75 @@
-# [미션] Spring Boot JPA로 게시판 구현
+# Spring Boot JPA로 게시판 구현
 
-## 미션 소개 😎
-Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수행해봅시다.
-최종 제출일은 10/19(일)입니다.
+> Spring Boot + JPA + MySQL
 
-## 이곳은 공개 Repo입니다.
-1. 여러분의 포트폴리오로 사용하셔도 됩니다.
-2. 때문에 이 repo를 fork한 뒤
-3. 여러분의 개인 Repo에 작업하며 
-4. 이 Repo에 PR을 보내어 멘토의 코드 리뷰와 피드백을 받으세요.
 
-## Branch 명명 규칙
-1.  여러분 repo는 알아서 해주시고 😀(본인 레포니 main으로 하셔두 되져)
-2.  prgrms-be-devcourse/spring-board 레포로 PR시 branch는 본인 username을 적어주세요 :)  
-base repo : `여기repo` base : `username` ← head repo : `여러분repo` compare : `main`
+
+#### 개발환경
+
+```
+• IDE : IntelliJ 2020.03
+• 개발 언어 : Java 11
+• 프레임워크 : SpringBoot 2.5.5
+• 영속성 프레임워크 : JPA
+• 빌드도구 : Gradle 7.2
+• 데이터베이스 : MySQL 8.0.26
+```
+
+
+
+---
+
+
+
+## 기능 요구 사항
+
+- 사용자 상세 정보 조회, 사용자 추가, 사용자 정보 수정, 삭제 API 구현
+- 모든 게시글 조회, 특정 사용자의 모든 게시글 조회, 특정 게시글 상세 조회, 게시글 등록, 수정, 삭제 API 구현
+
+- 댓글 등록, 수정, 삭제 API 구현
+
+
+
+## API 명세서
+
+#### User(사용자)
+
+|             Action             | Verbs  |     URL Pattern     |
+| :----------------------------: | :----: | :-----------------: |
+|   특정 사용자 정보 조회하기    |  GET   | /api/users/{userId} |
+|        사용자 추가하기         |  POST  |     /api/users      |
+|   특정 사용자 정보 수정하기    |  PUT   | /api/users/{userId} |
+| 특정 사용자 삭제(비활성화)하기 | DELETE | /api/users/{userId} |
+
+
+
+#### Post(게시글)
+
+|               Action               | Verbs  |         URL Pattern          |
+| :--------------------------------: | :----: | :--------------------------: |
+|        모든 게시글 조회하기        |  GET   |          /api/posts          |
+| 특정 사용자의 모든 게시글 조회하기 |  GET   |     /api/posts/{userId}      |
+|     특정 게시글 상세 조회하기      |  GET   |   /api/posts/post/{postId}   |
+|          게시글 등록하기           |  POST  |          /api/posts          |
+|        특정 게시글 수정하기        |  PUT   | /api/posts/{userId}/{postId} |
+|        특정 게시글 삭제하기        | DELETE | /api/posts/{userId}/{postId} |
+
+
+
+#### Comment(댓글)
+
+|       Action       | Verbs  |            URL Pattern             |
+| :----------------: | :----: | :--------------------------------: |
+|   댓글 등록하기    |  POST  |  /api/comments/{userId}/{postId}   |
+| 특정 댓글 수정하기 |  PUT   | /api/comments/{userId}/{commentId} |
+| 특정 댓글 삭제하기 | DELETE | /api/comments/{userId}/{commentId} |
+
+
+
+## ERD
+
+<img src="images/erd.png" alt="erd" style="zoom:50%;" />
+
+
+
+### **REST DOCS**

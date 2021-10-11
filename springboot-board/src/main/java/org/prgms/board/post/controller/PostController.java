@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -21,15 +20,16 @@ public class PostController {
     }
 
     @GetMapping
-    public ApiResponse<Page<PostResponse>> getAllPost(Pageable pageable, @PathVariable Optional<Long> userId) {
-        if (userId.isPresent()) {
-            return ApiResponse.toResponse(postService.getAllPostByUser(pageable, userId.get()));
-        } else {
-            return ApiResponse.toResponse(postService.getAllPost(pageable));
-        }
+    public ApiResponse<Page<PostResponse>> getAllPost(Pageable pageable) {
+        return ApiResponse.toResponse(postService.getAllPost(pageable));
     }
 
-    @GetMapping("/{postId}")
+    @GetMapping("/{userId}")
+    public ApiResponse<Page<PostResponse>> getAllPostByUser(Pageable pageable, @PathVariable Long userId) {
+        return ApiResponse.toResponse(postService.getAllPostByUser(pageable, userId));
+    }
+
+    @GetMapping("/post/{postId}")
     public ApiResponse<PostResponse> getOnePost(@PathVariable Long postId) {
         return ApiResponse.toResponse(postService.getOnePost(postId));
     }
