@@ -1,5 +1,7 @@
 package com.example.board.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +12,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name="post")
-//@SequenceGenerator(name="post_seq",sequenceName = "seq",initialValue = 1,allocationSize = 1)
+
 public class Post extends BaseEntity {
 
     @Id
