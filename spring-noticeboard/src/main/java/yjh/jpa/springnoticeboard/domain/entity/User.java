@@ -33,7 +33,12 @@ public class User extends BaseEntity{
     @Column(name = "hobby", columnDefinition = "varchar(100)")
     private String hobby;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
+
+    public void addPost(Post post){
+        if(posts == null) posts = new ArrayList<>();
+        post.setUser(this);
+    }
 
 }
