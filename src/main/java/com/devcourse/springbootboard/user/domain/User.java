@@ -34,7 +34,8 @@ public class User extends BaseEntity {
 	}
 
 	@Builder
-	public User(String name, int age, Hobby hobby) {
+	public User(Long id, String name, int age, Hobby hobby) {
+		this.id = id;
 		this.name = name;
 		this.age = age;
 		this.hobby = hobby;
