@@ -1,5 +1,6 @@
-package com.kdt.programmers.forum;
+package com.kdt.programmers.forum.tranfer;
 
+import com.kdt.programmers.forum.transfer.PostDto;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

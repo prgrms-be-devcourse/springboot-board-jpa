@@ -1,4 +1,4 @@
-package com.kdt.programmers.forum;
+package com.kdt.programmers.forum.transfer;
 
 import lombok.Getter;
 
