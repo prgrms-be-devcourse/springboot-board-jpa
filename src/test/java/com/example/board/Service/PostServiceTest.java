@@ -133,9 +133,9 @@ class PostServiceTest {
         assertThat(all.getTotalPages(),is(1));
 
     }
-//    @AfterEach
-//    void tearDown() {
-//        postRepository.deleteAll();
-//    }
+    @AfterEach
+    void tearDown() {
+        postRepository.deleteAll();
+    }
 
 }
