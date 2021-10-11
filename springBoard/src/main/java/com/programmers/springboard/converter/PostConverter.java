@@ -1,6 +1,7 @@
 package com.programmers.springboard.converter;
 
 import com.programmers.springboard.dto.PostDto;
+import com.programmers.springboard.dto.PostResponseDto;
 import com.programmers.springboard.dto.UserDto;
 import com.programmers.springboard.model.Post;
 import com.programmers.springboard.model.User;
@@ -30,21 +31,14 @@ public class PostConverter {
         return user;
     }
 
-    public PostDto convertPostDto(Post post) {
-        return PostDto.builder()
+    public PostResponseDto convertPostDto(Post post) {
+        return PostResponseDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .userDto(this.convertUserDto(post.getUser()))
                 .createdBy(post.getCreatedBy())
+                .createdAt(post.getCreatedAt())
                 .build();
     }
 
-    public UserDto convertUserDto(User user) {
-        return UserDto.builder()
-                .name(user.getName())
-                .age(user.getAge())
-                .hobby(user.getHobby())
-                .build();
-    }
 }

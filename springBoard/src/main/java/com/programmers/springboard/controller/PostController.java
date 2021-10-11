@@ -2,6 +2,7 @@ package com.programmers.springboard.controller;
 
 import com.programmers.springboard.config.ApiResponse;
 import com.programmers.springboard.dto.PostDto;
+import com.programmers.springboard.dto.PostResponseDto;
 import com.programmers.springboard.service.PostService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +23,14 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public ApiResponse<PostDto> getOne(@PathVariable Long id) throws NotFoundException {
-        PostDto one = postService.findOne(id);
+    public ApiResponse<PostResponseDto> getOne(@PathVariable Long id) throws NotFoundException {
+        PostResponseDto one = postService.findOne(id);
         return ApiResponse.ok(one);
     }
 
     @GetMapping("/posts")
-    public ApiResponse<Page<PostDto>> getAll(Pageable pageable) {
-        Page<PostDto> all = postService.findAll(pageable);
+    public ApiResponse<Page<PostResponseDto>> getAll(Pageable pageable) {
+        Page<PostResponseDto> all = postService.findAll(pageable);
         return ApiResponse.ok(all);
     }
 
