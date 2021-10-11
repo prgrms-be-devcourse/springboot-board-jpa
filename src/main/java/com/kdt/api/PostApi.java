@@ -30,10 +30,7 @@ public class PostApi {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity addPost(@RequestBody @Valid PostDto postDto, Errors errors) {
-        if (errors.hasErrors()) {
-            return badRequest(errors);
-        }
+    public ResponseEntity addPost(@RequestBody @Valid PostDto postDto) {
         return ResponseEntity.status(CREATED).body(ApiResponse.of(postService.save(postDto)));
     }
 
@@ -48,15 +45,8 @@ public class PostApi {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity updatePost(@RequestBody @Valid PostDto postDto, Errors errors) {
-        if (errors.hasErrors()) {
-            return badRequest(errors);
-        }
+    public ResponseEntity updatePost(@RequestBody @Valid PostDto postDto) {
         return ResponseEntity.status(NO_CONTENT).body(ApiResponse.of(postService.update(postDto)));
-    }
-
-    private ResponseEntity badRequest(Errors errors) {
-        return ResponseEntity.status(BAD_REQUEST).body(ErrorResponse.of(errors));
     }
 
 }
