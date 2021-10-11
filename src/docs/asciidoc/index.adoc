@@ -63,12 +63,6 @@ endif::[]
 
 == 게시물 저장
 
-=== [Request URL]
-....
-POST /posts
-Content-Type: application/json;charset=UTF-8
-....
-
 === [Curl Request]
 include::{snippets}/save-post/curl-request.adoc[]
 
@@ -90,11 +84,6 @@ include::{snippets}/save-post/response-fields.adoc[]
 
 == 게시물 전체 조회
 
-=== [Request URL]
-....
-GET /posts?page=2&size=10
-....
-
 === [Curl Request]
 include::{snippets}/get-posts/curl-request.adoc[]
 
@@ -111,11 +100,6 @@ include::{snippets}/get-posts/response-body.adoc[]
 include::{snippets}/get-posts/response-fields.adoc[]
 
 == 게시물 단건 조회
-
-=== [Request URL]
-....
-GET /posts/1
-....
 
 === [Curl Request]
 include::{snippets}/get-post/curl-request.adoc[]
@@ -135,11 +119,6 @@ include::{snippets}/get-post/response-fields.adoc[]
 
 == 게시물 수정
 
-=== [Request URL]
-....
-POST /posts/1
-....
-
 === [Curl Request]
 include::{snippets}/update-post/curl-request.adoc[]
 
@@ -158,11 +137,6 @@ include::{snippets}/update-post/response-fields.adoc[]
 
 == 게시물 저장 실패
 
-=== [Request URL]
-....
-POST /posts
-Content-Type: application/json;charset=UTF-8
-....
 
 === [Curl Request]
 include::{snippets}/invalid-save-post/curl-request.adoc[]
