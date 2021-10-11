@@ -1,6 +1,7 @@
 package yjh.jpa.springnoticeboard.domain.controller;
 
 import javassist.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import yjh.jpa.springnoticeboard.domain.ApiResponse;
 import yjh.jpa.springnoticeboard.domain.dto.PostDto;
 import yjh.jpa.springnoticeboard.domain.service.PostService;
 
+@Slf4j
 @RestController
 @RequestMapping(path = "/board/posts")
 public class PostController {
@@ -30,12 +32,12 @@ public class PostController {
     }
 
     @PostMapping(path = "")
-    public ApiResponse<Long> insertPost(PostDto postDto) throws NotFoundException {
+    public ApiResponse<Long> insertPost(@RequestBody PostDto postDto) throws NotFoundException {
         Long insert = postService.createPost(postDto);
         return ApiResponse.ok(insert);
     }
 
-    @PutMapping(path = "{postId}")
+    @PatchMapping(path = "{postId}")
     public ApiResponse<Long> updatePost(@PathVariable(name = "postId") Long postId, @RequestBody PostDto postDto) throws NotFoundException {
         Long update = postService.updatePost(postId, postDto);
         return ApiResponse.ok(update);
