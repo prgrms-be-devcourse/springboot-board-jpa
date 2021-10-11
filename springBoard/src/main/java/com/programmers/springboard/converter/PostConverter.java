@@ -32,6 +32,7 @@ public class PostConverter {
 
     public PostDto convertPostDto(Post post) {
         return PostDto.builder()
+                .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .userDto(this.convertUserDto(post.getUser()))
