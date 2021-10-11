@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "user")
 public class User extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Lob
@@ -28,7 +28,8 @@ public class User extends BaseEntity {
     }
 
     @Builder
-    public User(String name, int age, String hobby) {
+    public User(Long id, String name, int age, String hobby) {
+        this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;

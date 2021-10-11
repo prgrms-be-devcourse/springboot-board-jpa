@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "post")
 public class Post extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Lob
@@ -30,7 +30,8 @@ public class Post extends BaseEntity {
     }
 
     @Builder
-    public Post(String title, String content, User user) {
+    public Post(Long id, String title, String content, User user) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.user = user;
