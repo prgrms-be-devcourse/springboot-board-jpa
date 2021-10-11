@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -34,12 +35,12 @@ public class PostController {
     }
 
     @PostMapping("/{userId}")
-    public ApiResponse<Long> addPost(@PathVariable Long userId, @RequestBody PostRequest postRequest) {
+    public ApiResponse<Long> addPost(@PathVariable Long userId, @RequestBody @Valid PostRequest postRequest) {
         return ApiResponse.toResponse(postService.addPost(userId, postRequest));
     }
 
     @PutMapping("/{userId}/{postId}")
-    public ApiResponse<Long> modifyPost(@PathVariable Long userId, @PathVariable Long postId, @RequestBody PostRequest postRequest) {
+    public ApiResponse<Long> modifyPost(@PathVariable Long userId, @PathVariable Long postId, @RequestBody @Valid PostRequest postRequest) {
         return ApiResponse.toResponse(postService.modifyPost(userId, postId, postRequest));
     }
 

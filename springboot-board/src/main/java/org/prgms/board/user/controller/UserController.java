@@ -6,6 +6,8 @@ import org.prgms.board.user.dto.UserResponse;
 import org.prgms.board.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -21,12 +23,12 @@ public class UserController {
     }
 
     @PostMapping
-    public ApiResponse<Long> addUser(@RequestBody UserRequest userRequest) {
+    public ApiResponse<Long> addUser(@RequestBody @Valid UserRequest userRequest) {
         return ApiResponse.toResponse(userService.addUser(userRequest));
     }
 
     @PutMapping("/{userId}")
-    public ApiResponse<Long> modifyUser(@PathVariable Long userId, @RequestBody UserRequest userRequest) {
+    public ApiResponse<Long> modifyUser(@PathVariable Long userId, @RequestBody @Valid UserRequest userRequest) {
         return ApiResponse.toResponse(userService.modifyUser(userId, userRequest));
     }
 

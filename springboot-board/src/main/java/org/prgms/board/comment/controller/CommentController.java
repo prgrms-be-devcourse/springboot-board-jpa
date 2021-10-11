@@ -5,6 +5,8 @@ import org.prgms.board.comment.service.CommentService;
 import org.prgms.board.common.response.ApiResponse;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
@@ -15,12 +17,12 @@ public class CommentController {
     }
 
     @PostMapping("/{userId}/{postId}")
-    public ApiResponse<Long> addComment(@PathVariable Long userId, @PathVariable Long postId, @RequestBody CommentRequest commentRequest) {
+    public ApiResponse<Long> addComment(@PathVariable Long userId, @PathVariable Long postId, @RequestBody @Valid CommentRequest commentRequest) {
         return ApiResponse.toResponse(commentService.addComment(userId, postId, commentRequest));
     }
 
     @PutMapping("/{userId}/{commentId}")
-    public ApiResponse<Long> modifyComment(@PathVariable Long userId, @PathVariable Long commentId, @RequestBody CommentRequest commentRequest) {
+    public ApiResponse<Long> modifyComment(@PathVariable Long userId, @PathVariable Long commentId, @RequestBody @Valid CommentRequest commentRequest) {
         return ApiResponse.toResponse(commentService.modifyComment(userId, commentId, commentRequest));
     }
 
