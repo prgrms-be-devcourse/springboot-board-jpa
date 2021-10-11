@@ -64,7 +64,6 @@ public class MemberService {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
         member.update(request);
-        member.lastModifiedId(member.getId());
         return memberConverter.toMemberDetailResponse(member);
     }
 
@@ -83,6 +82,14 @@ public class MemberService {
                 .stream()
                 .map(memberConverter::toMemberDetailResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Member findByEmail(Email email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+                });
     }
 
     // TODO 필요없는 코드가 test를 위해서??? 수정하기!

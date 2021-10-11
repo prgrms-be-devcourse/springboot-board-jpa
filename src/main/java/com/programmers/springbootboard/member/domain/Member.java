@@ -6,6 +6,7 @@ import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
 import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
+import com.programmers.springbootboard.post.domain.Post;
 import com.programmers.springbootboard.post.domain.Posts;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +45,7 @@ public class Member extends BaseEntity<Long> {
         this.name = new Name(request.getName());
         this.age = new Age(request.getAge());
         this.hobby = new Hobby(request.getHobby());
+        lastModifiedId(this.getId());
     }
 
     public Long getId() {
@@ -68,5 +70,10 @@ public class Member extends BaseEntity<Long> {
 
     public Posts getPosts() {
         return posts;
+    }
+
+    public void addPost(Post post) {
+        this.getPosts().addPost(post);
+        post.addByInformation(this.getId());
     }
 }

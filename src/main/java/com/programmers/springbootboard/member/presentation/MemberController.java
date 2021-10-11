@@ -7,6 +7,7 @@ import com.programmers.springbootboard.exception.ErrorMessage;
 import com.programmers.springbootboard.member.application.MemberService;
 import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.dto.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
 import org.springframework.hateoas.MediaTypes;
@@ -34,12 +35,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(value = "/api/member", produces = MediaTypes.HAL_JSON_VALUE)
+@RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
 
     private WebMvcLinkBuilder getLinkToAddress() {
         return linkTo(MemberController.class);
@@ -68,7 +66,7 @@ public class MemberController {
 
         Links links = Links.of(
                 getLinkToAddress().slash(member.getId()).withSelfRel().withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().withRel("insert").withType(HttpMethod.PUT.name()),
+                getLinkToAddress().withRel("insert").withType(HttpMethod.POST.name()),
                 getLinkToAddress().slash(member.getId()).withRel("get").withType(HttpMethod.GET.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );

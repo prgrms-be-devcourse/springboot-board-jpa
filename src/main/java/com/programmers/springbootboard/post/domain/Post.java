@@ -34,9 +34,10 @@ public class Post extends BaseEntity<Long> {
 
     }
 
-    public void update(Title title, Content content) {
+    public void update(Title title, Content content, Long id) {
         this.title = title;
         this.content = content;
+        lastModifiedId(id);
     }
 
     public Long getId() {

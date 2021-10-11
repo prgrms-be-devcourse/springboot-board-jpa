@@ -5,9 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class PostDetailResponse {
+public class PostDeleteResponse {
     private Long id;
-    private String title;
-    private String content;
     private String email;
 }
