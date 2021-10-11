@@ -30,7 +30,7 @@ public class PostController {
     }
 
     @PostMapping(path = "")
-    public ApiResponse<Long> insertPost(PostDto postDto){
+    public ApiResponse<Long> insertPost(PostDto postDto) throws NotFoundException {
         Long insert = postService.createPost(postDto);
         return ApiResponse.ok(insert);
     }
