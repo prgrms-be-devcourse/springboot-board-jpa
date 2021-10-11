@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yjh.jpa.springnoticeboard.domain.converter.PostMapper;
 import yjh.jpa.springnoticeboard.domain.converter.UserMapper;
+import yjh.jpa.springnoticeboard.domain.converter.UserMapperImpl;
 import yjh.jpa.springnoticeboard.domain.dto.PostDto;
 import yjh.jpa.springnoticeboard.domain.dto.UserDto;
 import yjh.jpa.springnoticeboard.domain.entity.Post;
@@ -37,15 +38,10 @@ public class PostServiceImpl implements PostService{
     public Long createPost(PostDto postDto) throws NotFoundException {
         Post post = PostMapper.INSTANCE.postDtoToEntity(postDto);
         var u = userRepository.findById(postDto.getUser().getId()).orElseThrow(()->new NotFoundException("회워을 찾을 수 없습니다."));
-
-        log.info("유저 정보 가져오기 {} {} {} {}",u.getId(), u.getAge(), u.getName(), u.getHobby());
-        log.info("유저가지는 posts {}", u.getPosts());
         u.addPost(post);
-//        post.setUser(u);
         post.setCreatedBy(postDto.getUser().getName());
         post.setCratedAt(LocalDateTime.now());
-        postRepository.save(post);
-        return post.getId();
+        return postRepository.save(post).getId();
     }
 
     @Transactional(readOnly = true)
