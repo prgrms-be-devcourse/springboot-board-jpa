@@ -1,6 +1,8 @@
 package yjh.jpa.springnoticeboard.domain.service;
 
 import javassist.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +18,11 @@ import yjh.jpa.springnoticeboard.domain.repository.PostRepository;
 import yjh.jpa.springnoticeboard.domain.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class PostServiceImpl implements PostService{
 
@@ -29,9 +34,14 @@ public class PostServiceImpl implements PostService{
 
     @Transactional(readOnly = true)
     @Override
-    public Long createPost(PostDto postDto) {
+    public Long createPost(PostDto postDto) throws NotFoundException {
         Post post = PostMapper.INSTANCE.postDtoToEntity(postDto);
-        post.setUser(postDto.getUser());
+        var u = userRepository.findById(postDto.getUser().getId()).orElseThrow(()->new NotFoundException("회워을 찾을 수 없습니다."));
+
+        log.info("유저 정보 가져오기 {} {} {} {}",u.getId(), u.getAge(), u.getName(), u.getHobby());
+        log.info("유저가지는 posts {}", u.getPosts());
+        u.addPost(post);
+//        post.setUser(u);
         post.setCreatedBy(postDto.getUser().getName());
         post.setCratedAt(LocalDateTime.now());
         postRepository.save(post);
@@ -67,11 +77,10 @@ public class PostServiceImpl implements PostService{
     @Transactional(readOnly = true)
     @Override
     public void deletePost(Long postId, Long userId) throws NotFoundException {
-        UserDto userDto = userRepository.findById(userId)
-                        .map(user -> UserMapper.INSTANCE.userEntityToDto(user))
+        var user = userRepository.findById(userId)
                         .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
         Post post = postRepository.findById(postId).get();
-        userDto.getPosts().remove(post);
+        user.getPosts().remove(post);
         postRepository.deleteById(postId);
     }
 
