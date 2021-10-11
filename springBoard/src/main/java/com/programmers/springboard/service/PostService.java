@@ -1,6 +1,6 @@
 package com.programmers.springboard.service;
 
-import com.programmers.springboard.config.ErrorCode;
+import com.programmers.springboard.config.ErrorMessage;
 import com.programmers.springboard.converter.PostConverter;
 import com.programmers.springboard.dto.PostDto;
 import com.programmers.springboard.model.Post;
@@ -31,7 +31,7 @@ public class PostService {
     public PostDto findOne(Long id) throws NotFoundException {
         return postRepository.findById(id)
                 .map(postConverter::convertPostDto)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.POSTS_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.POSTS_NOT_FOUND.getMessage()));
     }
 
     @Transactional
@@ -42,7 +42,7 @@ public class PostService {
 
     @Transactional
     public Long update(PostDto dto, Long id) throws NotFoundException {
-        var post = postRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorCode.POSTS_NOT_FOUND.getMessage()));
+        var post = postRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.POSTS_NOT_FOUND.getMessage()));
         post.update(dto.getTitle(), dto.getContent(), postConverter.convertUser(dto.getUserDto()));
         return id;
     }
