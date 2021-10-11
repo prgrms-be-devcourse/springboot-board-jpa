@@ -2,12 +2,14 @@ package yjh.jpa.springnoticeboard.domain.service;
 
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yjh.jpa.springnoticeboard.domain.converter.UserMapper;
+import yjh.jpa.springnoticeboard.domain.dto.PostDto;
 import yjh.jpa.springnoticeboard.domain.dto.UserDto;
 import yjh.jpa.springnoticeboard.domain.entity.Post;
 import yjh.jpa.springnoticeboard.domain.entity.User;
@@ -27,7 +29,6 @@ public class UserServiceImpl implements UserService{
     @Transactional(readOnly = true)
     @Override
     public Long createUser(UserDto userDto) {
-        setUserPosts(userDto);
         User user = UserMapper.INSTANCE.userDtoToEntity(userDto);
         user.setCreatedBy("admin");
         user.setCratedAt(LocalDateTime.now());
@@ -75,12 +76,5 @@ public class UserServiceImpl implements UserService{
         userRepository.deleteAll();
     }
 
-
-    private void setUserPosts(UserDto userDto){
-        if(userDto.getPosts() == null){
-            List<Post> list = new ArrayList<>();
-            userDto.setPosts(list);
-        }
-    }
 }
 
