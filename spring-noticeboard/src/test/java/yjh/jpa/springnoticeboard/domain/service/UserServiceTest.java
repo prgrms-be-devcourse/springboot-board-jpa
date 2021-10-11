@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import yjh.jpa.springnoticeboard.domain.converter.PostMapper;
 import yjh.jpa.springnoticeboard.domain.converter.UserMapper;
@@ -40,17 +41,19 @@ class UserServiceTest {
     @Autowired
     UserService userService;
 
-    private static User user;
+    private static UserDto userDto;
 
     @BeforeEach
-    void insert(){
-        UserDto userDto = UserDto.builder()
+    void insert() throws NotFoundException {
+        UserDto userDtoB = UserDto.builder()
+                .id(1L)
                 .age(20)
                 .name("유지훈")
                 .hobby("잠자기")
                 .build();
-        Long userId = userService.createUser(userDto);
-        user = userRepository.getById(userId);
+        Long userId = userService.createUser(userDtoB);
+        userDto = userService.findUser(userId);
+        log.info(" 유저 아이디 {}" , userDto.getId());
     }
 
     @AfterEach
@@ -65,6 +68,7 @@ class UserServiceTest {
     void createUser() throws NotFoundException {
         //given
         UserDto userDto2 = UserDto.builder()
+                .id(2L)
                 .age(23)
                 .name("유지훈2")
                 .hobby("잠자기2")
@@ -84,21 +88,12 @@ class UserServiceTest {
     @DisplayName("사용자 업데이트 기능 테스트")
     void updateUser() throws NotFoundException {
         //given
-        PostDto postDto = PostDto.builder()
-                .user(user)
-                .title("게시판 제목")
-                .content("블라블라블라")
-                .build();
-        Long postId = postService.createPost(postDto);
-        Post post = PostMapper.INSTANCE.postDtoToEntity(postService.findPost(postId));
-
         //when
-        UserDto findUser = userService.findUser(user.getId());
+        UserDto findUser = userService.findUser(userDto.getId());
         findUser.setName("update 유지훈");
         findUser.setHobby("update 취미");
         findUser.setAge(25);
-        findUser.getPosts().add(post);
-        long updateId = userService.updateUser(findUser.getId(), findUser);
+        Long updateId = userService.updateUser(findUser.getId(), findUser);
 
         //then
         UserDto updateUser = userService.findUser(updateId);
@@ -106,28 +101,29 @@ class UserServiceTest {
         log.info("업데이트 사용자 이름 {}",updateUser.getName());
         log.info("업데이트 사용자 취미 {}",updateUser.getHobby());
         log.info("업데이트 사용자 나이 {}",updateUser.getAge());
-        log.info("업데이트 사용자 게시글 갯 수 {}",updateUser.getPosts().size());
     }
 
     @Test
+    @Rollback(value = false)
     @DisplayName("사용자 delete시 관련된 모든객체 삭제 기능 테스트")
     void deleteUser() throws NotFoundException {
         //given
-        PostDto postDto = PostDto.builder()
-                .user(user)
-                .title("게시판 제목")
-                .content("블라블라블라")
-                .build();
-        Long postId = postService.createPost(postDto);
-        Post post = PostMapper.INSTANCE.postDtoToEntity(postService.findPost(postId));
-        var findUser = userService.findUser(user.getId());
-        findUser.getPosts().add(post);
+//        PostDto postDto = PostDto.builder()
+//                .id(1L)
+//                .user(userDto)
+//                .title("게시판 제목")
+//                .content("블라블라블라")
+//                .build();
+//        Long postId = postService.createPost(postDto);
+//        Post post = PostMapper.INSTANCE.postDtoToEntity(postService.findPost(postId));
+        var findUser = userRepository.findById(userDto.getId()).orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
+//        findUser.getPosts().add(post);
 
         //when
-        userService.deleteUser(user.getId());
+        userService.deleteUser(userDto.getId());
 
         //then
-        assertThatThrownBy(()->userService.findUser(user.getId()))
+        assertThatThrownBy(()->userService.findUser(userDto.getId()))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("해당 유저를 찾을 수 없습니다.");
     }
