@@ -15,6 +15,8 @@ import com.programmers.springbootboard.post.dto.PostInsertRequest;
 import com.programmers.springbootboard.post.dto.PostUpdateRequest;
 import com.programmers.springbootboard.post.infrastructure.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PostService {
-    private final MemberService memberService; // 파사드 레이어를 만들어서 써보자!! or memberservice를 사용하는 것은?
+    private final MemberService memberService; // TODO :: 파사드 레이어를 만들어서 써보자!
     private final PostConverter postConverter;
     private final PostRepository postRepository;
 
@@ -37,6 +39,15 @@ public class PostService {
         member.addPost(post);
 
         return postConverter.toPostDetailResponse(post);
+    }
+
+    @Transactional
+    public PostDeleteResponse deleteByEmail(Long id, Email email) {
+        Member member = memberService.findByEmail(email);
+        Post post = member.getPosts().findPostById(id);
+        member.getPosts().deletePost(post);
+
+        return postConverter.toPostDeleteResponse(post.getId(), member.getEmail());
     }
 
     @Transactional
@@ -65,19 +76,13 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostDetailResponse> findAll() {
-        return postRepository.findAll()
-                .stream()
-                .map(postConverter::toPostDetailResponse)
-                .collect(Collectors.toList());
+    public Page<PostDetailResponse> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable)
+                .map(postConverter::toPostDetailResponse);
     }
 
-    @Transactional
-    public PostDeleteResponse deleteByEmail(Long id, Email email) {
-        Member member = memberService.findByEmail(email);
-        Post post = member.getPosts().findPostById(id);
-        member.getPosts().deletePost(post);
-
-        return postConverter.toPostDeleteResponse(post.getId(), member.getEmail());
+    @Transactional(readOnly = true)
+    public long count() {
+        return postRepository.count();
     }
 }

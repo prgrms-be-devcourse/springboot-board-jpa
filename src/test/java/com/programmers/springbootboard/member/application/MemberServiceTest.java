@@ -16,12 +16,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
+// TODO :: 목객체로 테스트 진행, 현재 테스트 코드는 잘못되어있습니다.
 @SpringBootTest
 class MemberServiceTest {
 
@@ -57,7 +57,7 @@ class MemberServiceTest {
         memberService.insert(request);
 
         // then
-        long count = memberService.findAll().size();
+        long count = memberService.count();
         assertThat(1L).isEqualTo(count);
     }
 
@@ -79,14 +79,11 @@ class MemberServiceTest {
         MemberSignRequest request = memberConverter.toMemberSignRequest(email, name, age, hobby);
         memberService.insert(request);
 
-        List<MemberDetailResponse> members = memberService.findAll();
-        Long id = members.get(0).getId();
-
         // when
-        memberService.deleteById(id);
+        memberService.deleteById(1L);
 
         // then
-        int count = memberService.findAll().size();
+        long count = memberService.count();
         assertThat(0L).isEqualTo(count);
     }
 
@@ -141,11 +138,8 @@ class MemberServiceTest {
         MemberSignRequest request = memberConverter.toMemberSignRequest(email, name, age, hobby);
         memberService.insert(request);
 
-        List<MemberDetailResponse> members = memberService.findAll();
-        Long id = members.get(0).getId();
-
         // when
-        MemberDetailResponse memberDetailResponse = memberService.findById(id);
+        MemberDetailResponse memberDetailResponse = memberService.findById(1L);
 
         // then
         assertThat(name.getName()).isEqualTo(memberDetailResponse.getName());
@@ -174,8 +168,7 @@ class MemberServiceTest {
         }
 
         // when
-        List<MemberDetailResponse> members = memberService.findAll();
-        int count = members.size();
+        long count = memberService.count();
 
         // then
         assertThat(3).isEqualTo(count);

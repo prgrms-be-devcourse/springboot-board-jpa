@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    // 중복된 로직을 빼보자!! --> enum으로 진행하자!!! 그럼 exception 코드 불필요한거 지울 수 있음!! exception을 instanceof로 찾아내서 ㄲ
+    // TODO 중복된 로직을 빼보자!! --> enum으로 진행하자!!! 그럼 exception 코드 불필요한거 지울 수 있음!! exception을 instanceof로 찾아내서 ㄲ
     @ExceptionHandler(InvalidArgumentException.class)
     protected ResponseEntity<ErrorResponseDto> handleInvalidArgumentException(InvalidArgumentException exception) {
         // 중복된 로직을 빼보자!!

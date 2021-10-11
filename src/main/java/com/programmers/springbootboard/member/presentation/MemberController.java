@@ -5,6 +5,8 @@ import com.programmers.springbootboard.common.dto.ResponseMessage;
 import com.programmers.springbootboard.member.application.MemberService;
 import com.programmers.springbootboard.member.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
@@ -13,22 +15,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-// 어노테이션프로세서 -> 코드 컴파일할때 교체가능...
-
-// 다음주 점퍼 보여드리기
-// @NonNull과 @Notnull  차이점
-// Controller와 Service 명칭 정하기 찾아오기!! 다음주까지!! 네이밍 규차ㅣㄱ
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 // TODO LINK를 자동화시키자!
-// 헤이티오스를 분리하는건??? 컨트롤러와, 데이터만쏴주고, 헤이티오스를 담당하는 컨트롤러를 만들어서, 링크를 연결
+// 헤이티오스를 분리하는건??? 컨트롤러에서는, 데이터만쏴주고, 헤이티오스를 담당하는 컨트롤러를 만들어서, 링크를 연결
 // 메서드 공통부분 빼기, 어노테이션 인터셉터(스프링 컨테이너 관련)로..(aop도 쓸 필요없다..)
 // 메서드 나누기, 어노테이션 만들기, 어떤 데이터를 넣을지, 리턴 값을 꺼내서 사용?? 찾아보기.. 영준님코드 보기
 // aop 대신 인터셉터 로그 찍어주기!
-
+// 어노테이션프로세서 -> 코드 컴파일할때 교체가능...
 
 @RestController
 @RequestMapping(value = "/api/member", produces = MediaTypes.HAL_JSON_VALUE)
@@ -98,12 +92,11 @@ public class MemberController {
     }
 
     @GetMapping()
-    public ResponseEntity<ResponseDto> members() {
-        List<MemberDetailResponse> members = memberService.findAll();
+    public ResponseEntity<ResponseDto> members(Pageable pageable) {
+        Page<MemberDetailResponse> members = memberService.findAll(pageable);
 
         Link link = getLinkToAddress().withSelfRel().withType(HttpMethod.GET.name());
 
-        // responseDto와 Link를 따로두기 이걸 래핑할 또다른 객체 생성
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_INQUIRY_SUCCESS, members, link));
     }
 }

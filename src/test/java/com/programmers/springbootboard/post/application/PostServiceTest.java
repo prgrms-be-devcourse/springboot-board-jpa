@@ -7,15 +7,12 @@ import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
 import com.programmers.springbootboard.member.dto.MemberSignRequest;
-import com.programmers.springbootboard.member.infrastructure.MemberRepository;
 import com.programmers.springbootboard.post.converter.PostConverter;
-import com.programmers.springbootboard.post.domain.Post;
 import com.programmers.springbootboard.post.domain.vo.Content;
 import com.programmers.springbootboard.post.domain.vo.Title;
 import com.programmers.springbootboard.post.dto.PostDetailResponse;
 import com.programmers.springbootboard.post.dto.PostInsertRequest;
 import com.programmers.springbootboard.post.dto.PostUpdateRequest;
-import com.programmers.springbootboard.post.infrastructure.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,18 +21,17 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
+// TODO :: 목객체로 테스트 진행, 현재 테스트 코드는 잘못되어있습니다.
 @SpringBootTest
 class PostServiceTest {
-    /*
     @Autowired
     private MemberService memberService;
-
-    @Autowired
-    private MemberRepository memberRepository;
 
     @Autowired
     private MemberConverter memberConverter;
@@ -44,16 +40,12 @@ class PostServiceTest {
     private PostService postService;
 
     @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
     private PostConverter postConverter;
 
     @DisplayName("초기화")
     @BeforeEach
     void init() {
-        postRepository.deleteAll();
-        memberRepository.deleteAll();
+        memberService.deleteAll();
         Email email = new Email("wrjs@naver.com");
         Name name = new Name("김동건");
         Age age = new Age("24");
@@ -91,9 +83,12 @@ class PostServiceTest {
         postService.update(email, id, request);
 
         // then
-        Post post = postRepository.findById(id).get();
-        assertThat(title).isEqualTo(post.getTitle());
-        assertThat(content).isEqualTo(post.getContent());
+        PostDetailResponse post = postService.findById(id);
+
+        assertAll("Test Post update",
+                () -> assertEquals(title.getTitle(), post.getTitle(), "Fail To Get Title"),
+                () -> assertEquals(content.getContent(), post.getContent(), "Fail To Get Title")
+        );
     }
 
     @DisplayName("게시물_단건_출력")
@@ -106,8 +101,7 @@ class PostServiceTest {
     @DisplayName("다수_게시물_출력")
     @Test
     void posts() {
-        List<PostDetailResponse> posts = postService.findAll();
-        assertThat(1).isEqualTo(posts.size());
+        assertThat(1).isEqualTo(postService.count());
     }
 
     @DisplayName("게시물_삭제")
@@ -121,7 +115,6 @@ class PostServiceTest {
         postService.deleteByEmail(id, email);
 
         // then
-        assertThat(0).isEqualTo(postRepository.findAll().size());
+        assertThat(0L).isEqualTo(postService.count());
     }
-     */
 }

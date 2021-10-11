@@ -8,6 +8,8 @@ import com.programmers.springbootboard.member.domain.Member;
 import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.dto.*;
 import com.programmers.springbootboard.member.infrastructure.MemberRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class MemberService {
+    //TODO :: 파사드 레이어 진행해보기
     private final MemberRepository memberRepository;
     private final MemberConverter memberConverter;
 
@@ -24,8 +27,6 @@ public class MemberService {
         this.memberConverter = memberConverter;
     }
 
-    // 파사드 레이어 진행해보기
-    // 인서트 내부에서 체크해주자!
     @Transactional
     public MemberDetailResponse insert(MemberSignRequest request) {
         Email email = new Email(request.getEmail());
@@ -74,11 +75,9 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<MemberDetailResponse> findAll() {
-        return memberRepository.findAll()
-                .stream()
-                .map(memberConverter::toMemberDetailResponse)
-                .collect(Collectors.toList());
+    public Page<MemberDetailResponse> findAll(Pageable pageable) {
+        return memberRepository.findAll(pageable)
+                .map(memberConverter::toMemberDetailResponse);
     }
 
     @Transactional(readOnly = true)

@@ -9,17 +9,15 @@ import com.programmers.springbootboard.post.dto.PostDetailResponse;
 import com.programmers.springbootboard.post.dto.PostInsertRequest;
 import com.programmers.springbootboard.post.dto.PostUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Links;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.swing.text.html.parser.Entity;
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -93,13 +91,11 @@ public class PostController {
     }
 
     @GetMapping()
-    public ResponseEntity<ResponseDto> posts() {
-        List<PostDetailResponse> posts = postService.findAll();
+    public ResponseEntity<ResponseDto> posts(Pageable pageable) {
+        Page<PostDetailResponse> posts = postService.findAll(pageable);
 
         Link link = getLinkToAddress().withSelfRel().withType(HttpMethod.GET.name());
 
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.POSTS_INQUIRY_SUCCESS, posts, link));
     }
-
-
 }

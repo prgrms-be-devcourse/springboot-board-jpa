@@ -3,16 +3,15 @@ package com.programmers.springbootboard.common.dto;
 import lombok.NonNull;
 import org.springframework.hateoas.EntityModel;
 
-import java.util.Collection;
-import java.util.Collections;
-
-// 리스폰즈 필드 notnull하게
-
 public class ResponseDto<T> {
+    @NonNull
     private int status;
+    @NonNull
     private String message;
+    @NonNull
     private T data;
-    private T link; // 옵션얼하게 추가할 수 있도록 변경
+    @NonNull
+    private T link; // TODO 옵션얼하게 추가할 수 있도록 변경
 
     public ResponseDto(ResponseMessage message) {
         this.status = message.status().value();

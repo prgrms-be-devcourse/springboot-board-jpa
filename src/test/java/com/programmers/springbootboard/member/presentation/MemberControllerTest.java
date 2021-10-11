@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-// TODO TEST를 각각 고립시키기
+// TODO :: 목객체로 테스트 진행, 현재 테스트 코드는 잘못되어있습니다.
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -222,12 +222,35 @@ class MemberControllerTest {
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
-                                fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("데이터"),
-                                fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("id"),
-                                fieldWithPath("data[].email").type(JsonFieldType.STRING).description("이메일"),
-                                fieldWithPath("data[].name").type(JsonFieldType.STRING).description("이름"),
-                                fieldWithPath("data[].age").type(JsonFieldType.STRING).description("나이"),
-                                fieldWithPath("data[].hobby").type(JsonFieldType.STRING).description("취미"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+                                fieldWithPath("data.content[]").type(JsonFieldType.ARRAY).description("본문"),
+                                fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("data.content[].email").type(JsonFieldType.STRING).description("이메일"),
+                                fieldWithPath("data.content[].name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("data.content[].age").type(JsonFieldType.STRING).description("나이"),
+                                fieldWithPath("data.content[].hobby").type(JsonFieldType.STRING).description("취미"),
+                                fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("pageable"),
+                                fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("pageable.sort"),
+                                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("pageable.sort.sorted"),
+                                fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("pageable.sort.unsorted"),
+                                fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("pageable.sort.empty"),
+                                fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER).description("pageable.pageSize"),
+                                fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER).description("pageable.pageNumber"),
+                                fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("pageable.offset"),
+                                fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("pageable.unpaged"),
+                                fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("pageable.paged"),
+                                fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("last"),
+                                fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
+                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("totalPages"),
+                                fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("first"),
+                                fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements"),
+                                fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("size"),
+                                fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("number"),
+                                fieldWithPath("data.sort").type(JsonFieldType.OBJECT).description("sort"),
+                                fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("sort.sorted"),
+                                fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("sort.unsorted"),
+                                fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("sort.empty"),
+                                fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("empty"),
                                 fieldWithPath("link").type(JsonFieldType.OBJECT).description("hateoas"),
                                 fieldWithPath("link.rel").type(JsonFieldType.STRING).description("title"),
                                 fieldWithPath("link.href").type(JsonFieldType.STRING).description("href"),
