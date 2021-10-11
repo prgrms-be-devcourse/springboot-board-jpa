@@ -16,6 +16,12 @@ JPA를 활용하여 게시글 관련 API 기능을 만들었습니다.
 - 게시글 등록
 
 ---
+## API 문서
+[v1.0.0](https://htmlpreview.github.io/?https://github.com/Programmers-Dev-Single-Project/SpringBoot-Board/blob/main/api-docs/api-docs.1.0.0.html#overview-http-verbs)
+
+[v1.0.1](https://htmlpreview.github.io/?https://github.com/Programmers-Dev-Single-Project/SpringBoot-Board/blob/main/api-docs/api-docs.1.0.1.html#overview-http-verbs)
+
+---
 
 ## ⚙ 개발 환경
 
@@ -57,7 +63,11 @@ java -jar spring-board-0.0.1-SNAPSHOT.jar
 
 ### 📌 **예외 처리**
 
-- 추후 작성 예정
+- 유저 이름이 없는 경우 예외 처리
+- 유저의 출생년도가 잘못된 경우 예외 처리
+- 게시물의 제목과 내용이 없는 경우 예외 처리
+- 게시물의 제목이 50자가 넘는 경우 예외 처리
+- 게시물 등록, 수정시 없는 유저거나 조회되지 않는 유저일 경우 예외처리
 
 ---
 
