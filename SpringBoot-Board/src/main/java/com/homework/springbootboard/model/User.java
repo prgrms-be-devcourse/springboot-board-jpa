@@ -1,10 +1,11 @@
 package com.homework.springbootboard.model;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,20 +18,20 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull(message = "Please type name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull(message = "Please type age")
+    @Column(name = "age", nullable = false)
     private int age;
 
-    @Pattern(regexp = "[a-zA-Z]", message = "Hobby should be written by English")
+    @Column(name = "hobby")
     private String hobby;
 
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
 
     @Builder
-    public User(Long id, String name, int age, String hobby,List<Post> postList){
+    public User(Long id, String name, int age, String hobby, List<Post> postList) {
         this.id = id;
         this.name = name;
         this.age = age;

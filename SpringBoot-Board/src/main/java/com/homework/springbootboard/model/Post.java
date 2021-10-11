@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -20,14 +18,14 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull(message = "Please type title")
+    @Column(name = "title",nullable = false,length = 100)
     private String title;
 
     @Lob
-    @NotNull(message = "Please type content")
+    @Column(name = "content", nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -50,9 +48,10 @@ public class Post extends BaseEntity {
     }
 
     @Builder
-    public Post(String title, String content) {
+    public Post(String title, String content,User user) {
         this.title = title;
         this.content = content;
+        this.user = user;
         this.setCreatedAt(LocalDateTime.now());
         this.setUpdatedAt(LocalDateTime.now());
     }
