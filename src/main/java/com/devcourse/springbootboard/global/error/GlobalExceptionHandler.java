@@ -16,7 +16,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(value = {UserNotFoundException.class})
-	protected ResponseEntity<ErrorResponse> handleUserNotFoundException(PostNotFoundException e) {
+	protected ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException e) {
 		return ErrorResponse.toResponseEntity(e.getErrorCode());
 	}
 }
