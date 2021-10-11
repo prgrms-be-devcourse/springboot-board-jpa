@@ -33,22 +33,22 @@ public class CommentRepositoryTest {
     @BeforeEach
     void setUp() {
         User user = User.builder()
-                .name("김부희")
-                .age(26)
-                .hobby("만들기")
-                .build();
+            .name("김부희")
+            .age(26)
+            .hobby("만들기")
+            .build();
 
         Post post = Post.builder()
-                .title("제목")
-                .content("내용")
-                .writer(user)
-                .build();
+            .title("제목")
+            .content("내용")
+            .writer(user)
+            .build();
 
         Comment comment = Comment.builder()
-                .content("댓글")
-                .post(post)
-                .writer(user)
-                .build();
+            .content("댓글")
+            .post(post)
+            .writer(user)
+            .build();
         post.addComment(comment);
 
         userRepository.save(user).getId();

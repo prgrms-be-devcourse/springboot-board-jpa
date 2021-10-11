@@ -16,12 +16,12 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Object> notFoundException(HttpServletRequest request, Exception ex) {
         return ResponseHandler.generateResponse(
-                ex.getMessage(), HttpStatus.NOT_FOUND, null);
+            ex.getMessage(), HttpStatus.NOT_FOUND, null);
     }
 
     @ExceptionHandler({NotMatchException.class})
     public ResponseEntity<Object> notMatchException(HttpServletRequest request, Exception ex) {
         return ResponseHandler.generateResponse(
-                ex.getMessage(), HttpStatus.BAD_REQUEST, null);
+            ex.getMessage(), HttpStatus.BAD_REQUEST, null);
     }
 }

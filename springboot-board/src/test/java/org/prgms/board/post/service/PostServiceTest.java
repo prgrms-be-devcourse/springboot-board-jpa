@@ -47,18 +47,18 @@ class PostServiceTest {
     @BeforeEach
     void setUp() {
         user = User.builder()
-                .id(1L)
-                .name("buhee")
-                .age(26)
-                .hobby("making")
-                .build();
+            .id(1L)
+            .name("buhee")
+            .age(26)
+            .hobby("making")
+            .build();
 
         post = Post.builder()
-                .id(1L)
-                .title("title")
-                .content("content")
-                .writer(user)
-                .build();
+            .id(1L)
+            .title("title")
+            .content("content")
+            .writer(user)
+            .build();
     }
 
     @DisplayName("게시글 등록 확인")
@@ -96,8 +96,8 @@ class PostServiceTest {
         when(postRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> postService.removePost(user.getId(), post.getId()))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("해당 게시글을 찾을 수 없습니다.");
+            .isInstanceOf(NotFoundException.class)
+            .hasMessageContaining("해당 게시글을 찾을 수 없습니다.");
     }
 
     @DisplayName("특정 사용자의 모든 게시글 조회 확인")
@@ -122,19 +122,19 @@ class PostServiceTest {
     @Test
     void getOnePostTest() {
         Comment comment1 = Comment.builder()
-                .id(1L)
-                .content("comment1")
-                .post(post)
-                .writer(user)
-                .build();
+            .id(1L)
+            .content("comment1")
+            .post(post)
+            .writer(user)
+            .build();
         post.addComment(comment1);
 
         Comment comment2 = Comment.builder()
-                .id(2L)
-                .content("comment2")
-                .post(post)
-                .writer(user)
-                .build();
+            .id(2L)
+            .content("comment2")
+            .post(post)
+            .writer(user)
+            .build();
         post.addComment(comment2);
 
         when(postRepository.findById(anyLong())).thenReturn(Optional.of(post));

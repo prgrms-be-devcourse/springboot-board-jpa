@@ -33,16 +33,16 @@ class PostRepositoryTest {
     @BeforeEach
     void setUp() {
         User user = User.builder()
-                .name("김부희")
-                .age(26)
-                .hobby("만들기")
-                .build();
+            .name("김부희")
+            .age(26)
+            .hobby("만들기")
+            .build();
 
         Post post = Post.builder()
-                .title("제목")
-                .content("내용")
-                .writer(user)
-                .build();
+            .title("제목")
+            .content("내용")
+            .writer(user)
+            .build();
 
         userId = userRepository.save(user).getId();
         postId = postRepository.save(post).getId();
@@ -92,10 +92,10 @@ class PostRepositoryTest {
         User findUser = userRepository.findById(userId).get();
 
         Post post = Post.builder()
-                .title("제목2")
-                .content("내용2")
-                .writer(findUser)
-                .build();
+            .title("제목2")
+            .content("내용2")
+            .writer(findUser)
+            .build();
         postRepository.save(post);
 
         assertThat(postRepository.findAll().size()).isEqualTo(2);
@@ -108,10 +108,10 @@ class PostRepositoryTest {
         Post findPost = postRepository.findById(postId).get();
 
         Comment comment = Comment.builder()
-                .content("댓글")
-                .post(findPost)
-                .writer(findUser)
-                .build();
+            .content("댓글")
+            .post(findPost)
+            .writer(findUser)
+            .build();
 
         findPost.addComment(comment);
         commentRepository.save(comment);

@@ -32,10 +32,10 @@ public class CommentService {
         Post post = getPost(postId);
 
         return commentRepository.save(Comment.builder()
-                .content(commentRequest.getContent())
-                .post(post)
-                .writer(user)
-                .build()).getId();
+            .content(commentRequest.getContent())
+            .post(post)
+            .writer(user)
+            .build()).getId();
     }
 
     @Transactional

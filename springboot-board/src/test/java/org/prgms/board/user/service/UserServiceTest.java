@@ -34,11 +34,11 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         user = User.builder()
-                .id(1L)
-                .name("buhee")
-                .age(26)
-                .hobby("making")
-                .build();
+            .id(1L)
+            .name("buhee")
+            .age(26)
+            .hobby("making")
+            .build();
     }
 
     @DisplayName("사용자 저장 확인")
@@ -70,8 +70,8 @@ class UserServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.removeUser(1L))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("해당 사용자를 찾을 수 없습니다.");
+            .isInstanceOf(NotFoundException.class)
+            .hasMessageContaining("해당 사용자를 찾을 수 없습니다.");
     }
 
     @DisplayName("사용자 상세정보 확인")

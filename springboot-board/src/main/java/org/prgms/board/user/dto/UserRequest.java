@@ -20,9 +20,9 @@ public class UserRequest {
 
     public User toEntity() {
         return User.builder()
-                .name(name)
-                .age(age)
-                .hobby(hobby)
-                .build();
+            .name(name)
+            .age(age)
+            .hobby(hobby)
+            .build();
     }
 }

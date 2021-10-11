@@ -29,10 +29,10 @@ public class PostService {
         User user = getUser(userId);
 
         return postRepository.save(Post.builder()
-                .title(postRequest.getTitle())
-                .content(postRequest.getContent())
-                .writer(user)
-                .build()).getId();
+            .title(postRequest.getTitle())
+            .content(postRequest.getContent())
+            .writer(user)
+            .build()).getId();
     }
 
     @Transactional
@@ -63,14 +63,14 @@ public class PostService {
     @Transactional(readOnly = true)
     public Page<PostResponse> getAllPost(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(PostResponse::new);
+            .map(PostResponse::new);
     }
 
     @Transactional(readOnly = true)
     public Page<PostResponse> getAllPostByUser(Pageable pageable, Long userId) {
         User user = getUser(userId);
         return postRepository.findAllByWriter(pageable, user)
-                .map(PostResponse::new);
+            .map(PostResponse::new);
     }
 
     @Transactional(readOnly = true)

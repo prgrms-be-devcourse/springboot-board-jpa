@@ -27,8 +27,8 @@ public class PostResponse {
         this.createdDate = entity.getCreatedDate();
         this.updatedDate = entity.getUpdatedDate();
         this.comments = entity.getComments().stream()
-                .map(CommentResponse::new)
-                .collect(Collectors.toList());
+            .map(CommentResponse::new)
+            .collect(Collectors.toList());
     }
 
 }

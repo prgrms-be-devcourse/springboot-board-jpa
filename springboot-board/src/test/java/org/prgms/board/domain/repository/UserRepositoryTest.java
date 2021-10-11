@@ -24,10 +24,10 @@ class UserRepositoryTest {
     @BeforeEach
     void setUp() {
         User user = User.builder()
-                .name("김부희")
-                .age(26)
-                .hobby("만들기")
-                .build();
+            .name("김부희")
+            .age(26)
+            .hobby("만들기")
+            .build();
 
         userId = userRepository.save(user).getId();
     }

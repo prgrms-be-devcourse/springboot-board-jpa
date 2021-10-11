@@ -46,25 +46,25 @@ class CommentServiceTest {
     @BeforeEach
     void setUp() {
         user = User.builder()
-                .id(1L)
-                .name("buhee")
-                .age(26)
-                .hobby("making")
-                .build();
+            .id(1L)
+            .name("buhee")
+            .age(26)
+            .hobby("making")
+            .build();
 
         post = Post.builder()
-                .id(1L)
-                .title("title")
-                .content("content")
-                .writer(user)
-                .build();
+            .id(1L)
+            .title("title")
+            .content("content")
+            .writer(user)
+            .build();
 
         comment = Comment.builder()
-                .id(1L)
-                .content("comment")
-                .post(post)
-                .writer(user)
-                .build();
+            .id(1L)
+            .content("comment")
+            .post(post)
+            .writer(user)
+            .build();
     }
 
     @DisplayName("댓글 등록 확인")
@@ -102,7 +102,7 @@ class CommentServiceTest {
         when(commentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> commentService.removeComment(user.getId(), comment.getId()))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("해당 댓글을 찾을 수 없습니다.");
+            .isInstanceOf(NotFoundException.class)
+            .hasMessageContaining("해당 댓글을 찾을 수 없습니다.");
     }
 }
