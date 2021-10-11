@@ -3,6 +3,7 @@ package com.kdt.user.dto;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -17,8 +18,7 @@ public class UserDto {
     @Length(max = 30)
     private String name;
 
-    @Min(0)
-    @Max(150)
+    @Pattern(regexp = "^(19[0-9]{2}|2[0-9]{3})$")
     private int age;
 
 }

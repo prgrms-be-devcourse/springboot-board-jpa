@@ -3,6 +3,7 @@ package com.kdt.domain.user;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.kdt.domain.common.BaseEntity;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +37,11 @@ public class User extends BaseEntity {
     public User(Long id, String name, int age) {
         this.id = id;
         this.name = name;
-        this.age = age;
+        this.age = calculateAge(age);
+    }
+
+    private int calculateAge(int age) {
+        return LocalDate.now().getYear() - age + 1;
     }
 
 }

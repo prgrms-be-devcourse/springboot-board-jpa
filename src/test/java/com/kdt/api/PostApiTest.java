@@ -68,7 +68,7 @@ class PostApiTest {
     @Test
     @DisplayName("게시물 저장 요청")
     void addPost() throws Exception {
-        User user = userRepository.save(User.builder().name("tester").age(20).build());
+        User user = userRepository.save(User.builder().name("tester").age(1995).build());
 
         PostDto postDto = givenPostDto(user.getId());
 
@@ -100,7 +100,7 @@ class PostApiTest {
     @Test
     @DisplayName("게시물 저장 요청 실패 (게시물의 제목과 내용이 없는 경우)")
     void savePostFailToTitleAndContentIsNull() throws Exception {
-        User user = userRepository.save(User.builder().name("tester").age(20).build());
+        User user = userRepository.save(User.builder().name("tester").age(1995).build());
 
         PostDto postDto = givenPostDto(user.getId());
         postDto.setTitle("");
@@ -138,7 +138,7 @@ class PostApiTest {
     @Test
     @DisplayName("게시물 페이지 요청")
     void getPosts() throws Exception {
-        User user = userRepository.save(User.builder().name("tester").age(20).build());
+        User user = userRepository.save(User.builder().name("tester").age(1995).build());
         IntStream.range(0, 30).forEach(i -> postRepository.save(Post.builder().title("제목 " + i).content("내용").user(user).build()));
 
         mockMvc.perform(get(PREFIX + POSTS)
@@ -188,7 +188,7 @@ class PostApiTest {
     @Test
     @DisplayName("게시물 단건 조회")
     void getPost() throws Exception {
-        User user = userRepository.save(User.builder().name("tester").age(20).build());
+        User user = userRepository.save(User.builder().name("tester").age(1995).build());
         Post post = postRepository.save(Post.builder().title("제목").content("내용").user(user).build());
 
         mockMvc.perform(get(PREFIX + POSTS + "/{id}", post.getId()))
@@ -215,7 +215,7 @@ class PostApiTest {
     @Test
     @DisplayName("게시물 수정")
     void updatePost() throws Exception {
-        User user = userRepository.save(User.builder().name("tester").age(20).build());
+        User user = userRepository.save(User.builder().name("tester").age(1995).build());
         Post post = postRepository.save(Post.builder().title("제목").content("내용").user(user).build());
 
         PostDto postDto = postConvertor.convertPostToPostDto(post);
@@ -251,7 +251,7 @@ class PostApiTest {
         UserDto userDto = new UserDto();
         userDto.setId(userId);
         userDto.setName("tester");
-        userDto.setAge(20);
+        userDto.setAge(1995);
 
         PostDto postDto = new PostDto();
         postDto.setTitle("스프링 스터디 모집");

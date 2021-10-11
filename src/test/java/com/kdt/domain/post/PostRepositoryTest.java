@@ -32,7 +32,7 @@ class PostRepositoryTest {
     void setUp() {
         user = userRepository.save(User.builder()
                 .name("user")
-                .age(20)
+                .age(1995)
                 .build());
     }
 
