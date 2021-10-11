@@ -31,10 +31,10 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 
 ### **3. API를 구현한다.**
 
-- [ ] 게시글 조회
-  - [ ] 페이징 조회 (GET "/posts")
+- [x] 게시글 조회
+  - [x] 페이징 조회 (GET "/posts")
   - [x] 단건 조회 (GET "/posts/{id}")
-- [ ] 게시글 작성 (POST "/posts")
+- [x] 게시글 작성 (POST "/posts")
 - [ ] 게시글 수정 (POST "/posts/{id}")
 
 ### 4. REST-DOCS를 이용해서 문서화한다.

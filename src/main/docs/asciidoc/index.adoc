@@ -32,3 +32,19 @@ include::{snippets}/post-save-error/http-response.adoc[]
 .Response Fields
 
 include::{snippets}/post-save-error/response-fields.adoc[]
+
+=== 게시판 조회
+
+==== /posts
+
+.Request
+
+include::{snippets}/post-get-all/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-get-all/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-get-all/response-fields.adoc[]
