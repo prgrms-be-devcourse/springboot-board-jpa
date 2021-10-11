@@ -21,5 +21,4 @@ public class UserDto {
     private int age;
     private String hobby;
 
-    private List<Post> posts;
 }
