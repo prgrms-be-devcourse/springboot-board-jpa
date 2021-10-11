@@ -16,5 +16,5 @@ public class PostDto {
     private String title;
     private String content;
 
-    private User user;
+    private UserDto user;
 }
