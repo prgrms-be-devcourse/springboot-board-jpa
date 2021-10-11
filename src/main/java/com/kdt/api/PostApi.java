@@ -1,6 +1,7 @@
 package com.kdt.api;
 
 import static com.kdt.api.PostApi.POSTS;
+import static com.kdt.api.PostApi.PREFIX;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
@@ -19,9 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(POSTS)
+@RequestMapping(PREFIX + POSTS)
 public class PostApi {
 
+    protected static final String PREFIX = "/api/v1";
     protected static final String POSTS = "/posts";
 
     private final PostService postService;

@@ -1,6 +1,7 @@
 package com.kdt.api;
 
 import static com.kdt.api.PostApi.POSTS;
+import static com.kdt.api.PostApi.PREFIX;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -71,7 +72,7 @@ class PostApiTest {
 
         PostDto postDto = givenPostDto(user.getId());
 
-        mockMvc.perform(post(POSTS)
+        mockMvc.perform(post(PREFIX + POSTS)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(postDto)))
                 .andDo(print())
@@ -104,7 +105,7 @@ class PostApiTest {
         PostDto postDto = givenPostDto(user.getId());
         postDto.setTitle("");
         postDto.setContent("");
-        mockMvc.perform(post(POSTS)
+        mockMvc.perform(post(PREFIX + POSTS)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(postDto)))
                 .andDo(print())
@@ -140,7 +141,7 @@ class PostApiTest {
         User user = userRepository.save(User.builder().name("tester").age(20).build());
         IntStream.range(0, 30).forEach(i -> postRepository.save(Post.builder().title("제목 " + i).content("내용").user(user).build()));
 
-        mockMvc.perform(get(POSTS)
+        mockMvc.perform(get(PREFIX + POSTS)
                 .param("page", "2")
                 .param("size", "10")
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -190,7 +191,7 @@ class PostApiTest {
         User user = userRepository.save(User.builder().name("tester").age(20).build());
         Post post = postRepository.save(Post.builder().title("제목").content("내용").user(user).build());
 
-        mockMvc.perform(get(POSTS + "/{id}", post.getId()))
+        mockMvc.perform(get(PREFIX + POSTS + "/{id}", post.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("get-post",
@@ -221,7 +222,7 @@ class PostApiTest {
         postDto.setTitle("변경한 제목");
         postDto.setContent("변경한 내용");
 
-        mockMvc.perform(post(POSTS + "/{id}", post.getId())
+        mockMvc.perform(post(PREFIX + POSTS + "/{id}", post.getId())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(postDto)))
                 .andDo(print())
