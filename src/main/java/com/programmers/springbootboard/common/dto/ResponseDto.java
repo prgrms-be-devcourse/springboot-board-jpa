@@ -1,10 +1,12 @@
 package com.programmers.springbootboard.common.dto;
 
+import lombok.NonNull;
+
 public class ResponseDto<T> {
     private int status;
     private String message;
     private T data;
-    private T link;
+    private T link; // 옵션얼하게 추가할 수 있도록 변경
 
     public ResponseDto(ResponseMessage message) {
         this.status = message.status().value();
@@ -12,7 +14,7 @@ public class ResponseDto<T> {
     }
 
     public ResponseDto(ResponseMessage message, T data) {
-        this(message);
+        this(message); 
         this.data = data;
     }
 

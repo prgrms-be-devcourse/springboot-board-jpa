@@ -23,17 +23,23 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PostService {
-    private final MemberRepository memberRepository;
+    private final MemberRepository memberRepository; // 파사드 레이어를 만들어서 써보자!! or memberservice를 사용하는 것은?
     private final PostConverter postConverter;
     private final PostRepository postRepository;
+
+    // 컨벤션으로 확고하게 가져가자!!
 
     @Transactional
     public void insert(Email email, PostInsertRequest request) {
         memberRepository.findByEmail(email)
                 .map(member -> {
                     Post post = postConverter.toPost(request, member);
+
+// 사용자 편의 메서드로 묶어주기!! 엔티티에서 동작하게!!
                     member.getPosts().addPost(post);
                     post.addByInformation(member.getId());
+// 사용자 편의 메서드로 묶어주기!! 엔티티에서 동작하게!!
+
                     return post;
                 })
                 .orElseThrow(() -> {
@@ -86,9 +92,13 @@ public class PostService {
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_POST);
                 });
+        
+        // 아래도 결국 비즈니스로직 -> 도메인에서 ㄲ
+        // 밑에 없어도 될듯..---> 이것도 post안에 있는게 좋을듯, 연관관계를 가져갈 거면, 엔티티 그래프 타고 가도록 ㄲ하는게
         if (!member.getPosts().ownPost(post)) {
             throw new NotFoundException(ErrorMessage.NOT_EXIST_POST);
         }
+        // 엔티티에서 post를 찾는 로직을 추가하자!! 여기서 post를 찾을 필요 xxx
         member.getPosts().deletePost(post);
     }
 }

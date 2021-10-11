@@ -2,9 +2,6 @@ package com.programmers.springbootboard.post.presentation;
 
 import com.programmers.springbootboard.common.dto.ResponseDto;
 import com.programmers.springbootboard.common.dto.ResponseMessage;
-import com.programmers.springbootboard.exception.ErrorMessage;
-import com.programmers.springbootboard.exception.error.NotFoundException;
-import com.programmers.springbootboard.member.application.MemberService;
 import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.post.application.PostService;
 import com.programmers.springbootboard.post.dto.PostDetailResponse;

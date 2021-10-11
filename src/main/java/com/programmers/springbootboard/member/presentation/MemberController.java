@@ -17,9 +17,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// 어노테이션프로세서 -> 코드 컴파일할때 교체가능...
+
+// 다음주 점퍼 보여드리기
+// @NonNull과 @Notnull  차이점
+// Controller와 Service 명칭 정하기 찾아오기!! 다음주까지!! 네이밍 규차ㅣㄱ
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 // TODO LINK를 자동화시키자!
+// 헤이티오스를 분리하는건??? 컨트롤러와, 데이터만쏴주고, 헤이티오스를 담당하는 컨트롤러를 만들어서, 링크를 연결
+// 메서드 공통부분 빼기, 어노테이션 인터셉터(스프링 컨테이너 관련)로..(aop도 쓸 필요없다..)
+// 메서드 나누기, 어노테이션 만들기, 어떤 데이터를 넣을지, 리턴 값을 꺼내서 사용?? 찾아보기.. 영준님코드 보기
+// aop 대신 인터셉터 로그 찍어주기!
+
+
 @RestController
 @RequestMapping(value = "/api/member", produces = MediaTypes.HAL_JSON_VALUE)
 public class MemberController {
@@ -35,10 +47,6 @@ public class MemberController {
 
     @PostMapping(consumes = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<ResponseDto> insertMember(@RequestBody MemberSignRequest request) {
-        Email email = new Email(request.getEmail());
-        if (memberService.existsByEmail(email)) {
-            throw new DuplicationArgumentException(ErrorMessage.DUPLICATION_MEMBER_EMAIL);
-        }
         MemberDetailResponse member = memberService.insert(request);
 
         Links links = Links.of(
@@ -49,6 +57,8 @@ public class MemberController {
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
+        // 리뷰에 대한 반박도 필요!!!
+        // responseDto와 Link를 따로두기 이걸 래핑할 또다른 객체 생성
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_SIGN_SUCCESS, member, links));
     }
 

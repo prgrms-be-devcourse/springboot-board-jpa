@@ -12,7 +12,7 @@ import javax.persistence.*;
 
 @Entity
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 @AllArgsConstructor
 public class Post extends BaseEntity<Long> {
     @Id

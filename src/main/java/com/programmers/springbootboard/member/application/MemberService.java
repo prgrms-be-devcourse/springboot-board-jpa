@@ -1,6 +1,7 @@
 package com.programmers.springbootboard.member.application;
 
 import com.programmers.springbootboard.exception.ErrorMessage;
+import com.programmers.springbootboard.exception.error.DuplicationArgumentException;
 import com.programmers.springbootboard.exception.error.NotFoundException;
 import com.programmers.springbootboard.member.converter.MemberConverter;
 import com.programmers.springbootboard.member.domain.Member;
@@ -26,17 +27,24 @@ public class MemberService {
         this.memberConverter = memberConverter;
     }
 
-    @Transactional(readOnly = true)
-    public boolean existsByEmail(Email email) {
-        return memberRepository.existsByEmail(email);
-    }
-
+    // 파사드 레이어 진행해보기
+    // 인서트 내부에서 체크해주자!
     @Transactional
     public MemberDetailResponse insert(MemberSignRequest request) {
+        Email email = new Email(request.getEmail());
+        if (existsByEmail(email)) {
+            throw new DuplicationArgumentException(ErrorMessage.DUPLICATION_MEMBER_EMAIL);
+        }
+
         Member member = memberConverter.toMember(request);
         memberRepository.save(member);
         member.addByInformation(member.getId());
+
         return memberConverter.toMemberDetailResponse(member);
+    }
+
+    private boolean existsByEmail(Email email) {
+        return memberRepository.existsByEmail(email);
     }
 
     @Transactional
@@ -48,17 +56,16 @@ public class MemberService {
         return memberConverter.toMemberDeleteResponse(member.getId(), member.getEmail());
     }
 
+    //역할에 맞는 함수형을 쓰자!
     @Transactional
     public MemberDetailResponse update(Long id, MemberUpdateRequest request) {
-        return memberRepository.findById(id)
-                .map(member -> {
-                    member.update(request);
-                    member.lastModifiedId(member.getId());
-                    return memberConverter.toMemberDetailResponse(member);
-                })
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
+        member.update(request);
+        member.lastModifiedId(member.getId());
+        return memberConverter.toMemberDetailResponse(member);
     }
 
     @Transactional(readOnly = true)
@@ -78,11 +85,13 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
+    // TODO 필요없는 코드가 test를 위해서??? 수정하기!
     @Transactional
     public void deleteAll() {
         memberRepository.deleteAll();
     }
 
+    // 이건 속임수!!! TEST-CODE, 테스터블하게 구성하자!!!
     @Transactional(readOnly = true)
     public long count() {
         return memberRepository.count();
