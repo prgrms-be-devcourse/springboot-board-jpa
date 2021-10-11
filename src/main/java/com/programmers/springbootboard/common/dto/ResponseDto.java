@@ -1,6 +1,12 @@
 package com.programmers.springbootboard.common.dto;
 
 import lombok.NonNull;
+import org.springframework.hateoas.EntityModel;
+
+import java.util.Collection;
+import java.util.Collections;
+
+// 리스폰즈 필드 notnull하게
 
 public class ResponseDto<T> {
     private int status;
@@ -14,7 +20,7 @@ public class ResponseDto<T> {
     }
 
     public ResponseDto(ResponseMessage message, T data) {
-        this(message); 
+        this(message);
         this.data = data;
     }
 
@@ -33,6 +39,10 @@ public class ResponseDto<T> {
 
     public static <T> ResponseDto of(ResponseMessage message, T data, T link) {
         return new ResponseDto(message, data, link);
+    }
+
+    public static <T> ResponseDto of(ResponseMessage message, EntityModel<T> entityModel) {
+        return new ResponseDto(message, entityModel.getContent(), entityModel.getLinks());
     }
 
     public int getStatus() {

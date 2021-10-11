@@ -5,7 +5,6 @@ import com.programmers.springbootboard.exception.error.NotFoundException;
 import com.programmers.springbootboard.member.application.MemberService;
 import com.programmers.springbootboard.member.domain.Member;
 import com.programmers.springbootboard.member.domain.vo.Email;
-import com.programmers.springbootboard.member.infrastructure.MemberRepository;
 import com.programmers.springbootboard.post.converter.PostConverter;
 import com.programmers.springbootboard.post.domain.Post;
 import com.programmers.springbootboard.post.domain.vo.Content;

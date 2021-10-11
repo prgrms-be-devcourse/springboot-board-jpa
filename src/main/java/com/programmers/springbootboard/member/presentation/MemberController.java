@@ -2,14 +2,11 @@ package com.programmers.springbootboard.member.presentation;
 
 import com.programmers.springbootboard.common.dto.ResponseDto;
 import com.programmers.springbootboard.common.dto.ResponseMessage;
-import com.programmers.springbootboard.exception.error.DuplicationArgumentException;
-import com.programmers.springbootboard.exception.ErrorMessage;
 import com.programmers.springbootboard.member.application.MemberService;
-import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Links;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpMethod;
@@ -47,7 +44,7 @@ public class MemberController {
     public ResponseEntity<ResponseDto> insertMember(@RequestBody MemberSignRequest request) {
         MemberDetailResponse member = memberService.insert(request);
 
-        Links links = Links.of(
+        EntityModel<MemberDetailResponse> entityModel = EntityModel.of(member,
                 getLinkToAddress().withSelfRel().withType(HttpMethod.POST.name()),
                 getLinkToAddress().slash(member.getId()).withRel("delete").withType(HttpMethod.DELETE.name()),
                 getLinkToAddress().slash(member.getId()).withRel("update").withType(HttpMethod.PATCH.name()),
@@ -55,51 +52,49 @@ public class MemberController {
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
-        // 리뷰에 대한 반박도 필요!!!
-        // responseDto와 Link를 따로두기 이걸 래핑할 또다른 객체 생성
-        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_SIGN_SUCCESS, member, links));
+        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_SIGN_SUCCESS, entityModel));
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<ResponseDto> deleteMember(@PathVariable Long id) {
         MemberDeleteResponse member = memberService.deleteById(id);
 
-        Links links = Links.of(
+        EntityModel<MemberDeleteResponse> entityModel = EntityModel.of(member,
                 getLinkToAddress().slash(member.getId()).withSelfRel().withType(HttpMethod.DELETE.name()),
                 getLinkToAddress().withRel("insert").withType(HttpMethod.POST.name()),
                 getLinkToAddress().slash(member.getId()).withRel("get").withType(HttpMethod.GET.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
-        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_DELETE_SUCCESS, member, links));
+        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_DELETE_SUCCESS, entityModel));
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<ResponseDto> updateMember(@PathVariable Long id, @RequestBody MemberUpdateRequest request) {
         MemberDetailResponse member = memberService.update(id, request);
 
-        Links links = Links.of(
+        EntityModel<MemberDetailResponse> entityModel = EntityModel.of(member,
                 getLinkToAddress().slash(member.getId()).withSelfRel().withType(HttpMethod.PATCH.name()),
                 getLinkToAddress().slash(member.getId()).withRel("delete").withType(HttpMethod.DELETE.name()),
                 getLinkToAddress().slash(member.getId()).withRel("get").withType(HttpMethod.GET.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
-        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_UPDATE_SUCCESS, member, links));
+        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_UPDATE_SUCCESS, entityModel));
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ResponseDto> member(@PathVariable Long id) {
         MemberDetailResponse member = memberService.findById(id);
 
-        Links links = Links.of(
+        EntityModel<MemberDetailResponse> entityModel = EntityModel.of(member,
                 getLinkToAddress().slash(member.getId()).withSelfRel().withType(HttpMethod.GET.name()),
                 getLinkToAddress().slash(member.getId()).withRel("update").withType(HttpMethod.PATCH.name()),
                 getLinkToAddress().slash(member.getId()).withRel("delete").withType(HttpMethod.DELETE.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
-        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_INQUIRY_SUCCESS, member, links));
+        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_INQUIRY_SUCCESS, entityModel));
     }
 
     @GetMapping()
@@ -108,6 +103,7 @@ public class MemberController {
 
         Link link = getLinkToAddress().withSelfRel().withType(HttpMethod.GET.name());
 
+        // responseDto와 Link를 따로두기 이걸 래핑할 또다른 객체 생성
         return ResponseEntity.ok(ResponseDto.of(ResponseMessage.MEMBER_INQUIRY_SUCCESS, members, link));
     }
 }
