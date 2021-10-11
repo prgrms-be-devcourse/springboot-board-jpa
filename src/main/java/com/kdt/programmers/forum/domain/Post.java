@@ -15,7 +15,7 @@ public class Post extends CreationBaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 60)
     private String title;
 
     @Column(name = "content")
