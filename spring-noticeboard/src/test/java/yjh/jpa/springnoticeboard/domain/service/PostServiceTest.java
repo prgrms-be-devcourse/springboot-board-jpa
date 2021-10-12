@@ -85,9 +85,10 @@ class PostServiceTest {
 
         //then
         PostDto findPost = postService.findPost(postId);
-//        User findUser = userRepository.findById(userDto.getId()).get();
-//        assertThat(findPost.getId()).isEqualTo(postId);
-//        assertThat(UserMapper.INSTANCE.userDtoToEntity(userDto).getPosts()).isNotEmpty();
+        log.info("findpost {} ", findPost.getId());
+        log.info("findpost {} ", findPost.getUser());
+        log.info("findpost {} ", findPost.getContent());
+        log.info("findpost {} ", findPost.getTitle());
         assertThat(findPost.getUser().getId()).isEqualTo(userDto.getId());
         assertThat(findPost.getUser().getAge()).isEqualTo(userDto.getAge());
         assertThat(findPost.getUser().getHobby()).isEqualTo(userDto.getHobby());
