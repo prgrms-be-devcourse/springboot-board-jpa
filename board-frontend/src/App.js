@@ -5,6 +5,8 @@ import './App.css';
 import Login from './views/Login';
 import Mypage from './views/Mypage';
 import Board from './views/Board';
+import Posting from './views/Posting';
+import Post from './views/Post';
 
 
 function App() {
@@ -14,6 +16,8 @@ function App() {
       <Route path="/" component={ Login } exact />
       <Route path="/mypage" component={ Mypage } exact />
       <Route path="/board" component={ Board } exact />
+      <Route path="/posting" component={ Posting } exact />
+      <Route path="/post" component={ Post } exact />
 
     </BrowserRouter>
   );

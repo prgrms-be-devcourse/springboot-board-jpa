@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+@ToString
 @Getter @Setter
 @Builder
 @NoArgsConstructor
@@ -13,6 +14,7 @@ public class PostDto {
     private Long id;
     private String title;
     private String content;
+    private Long view;
     private UserDto userDto;
     private LocalDateTime createAt;
 }

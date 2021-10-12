@@ -7,6 +7,9 @@ import com.example.boardbackend.dto.PostDto;
 import com.example.boardbackend.dto.UserDto;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class DtoConverter {
 
@@ -29,6 +32,7 @@ public class DtoConverter {
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
+                .view(post.getView())
                 .userDto(this.convertToUserDto(post.getUser()))
                 .createAt(post.getCreatedAt())
                 .build();
@@ -55,6 +59,7 @@ public class DtoConverter {
         post.setId(postDto.getId());
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
+        post.setView(postDto.getView());
         post.setUser(this.convertToUserEntity(postDto.getUserDto()));
         post.setCreatedAt(postDto.getCreateAt());
         return post;

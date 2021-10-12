@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter @Setter
 @Entity
@@ -28,4 +30,13 @@ public class User extends BaseEntity{
 
     @Column(name = "hobby", nullable = false, length = 45)
     private String hobby;
+
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Post> posts = new ArrayList<>();
+//
+//
+//    // 연관관계 편의 메소드
+//    public void addPost(Post post) {
+//        post.setUser(this);
+//    }
 }

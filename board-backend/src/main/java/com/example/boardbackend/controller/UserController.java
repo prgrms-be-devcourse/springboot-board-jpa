@@ -23,6 +23,7 @@ public class UserController {
     // 회원가입
     @PostMapping
     public ResponseEntity<UserDto> signUp(@RequestBody UserDto userDto){
+        System.out.println(userDto.toString());
         return ResponseEntity.ok(userService.saveUser(userDto));
     }
 

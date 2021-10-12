@@ -14,6 +14,11 @@ function Board() {
             <h2>게시판</h2>
             <hr /><br />
 
+            <div className="div_right">
+                <Link to="/posting">게시글 작성하기</Link>
+            </div>
+
+
         </div>
     );
 }

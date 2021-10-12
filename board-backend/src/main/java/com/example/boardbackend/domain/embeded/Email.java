@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode
 @Embeddable
 public class Email {
-    @Column(name = "email", nullable = false, length = 45)
+    @Column(name = "email", nullable = false, length = 45, unique = true)
     private String address;
 
     public Email(String address){

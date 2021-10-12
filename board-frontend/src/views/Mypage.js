@@ -28,12 +28,12 @@ function Mypage(props) {
       })
   }, []);
 
-  // Hadler
+  // Button
   const resign = () => {
     axios.delete(origin + "/api/user/" + userInfo.id)
       .then(res => {
         console.log(res);
-        alert("회원탈퇴 완료! 초기화면으로 이동");
+        alert("회원탈퇴 완료. 초기화면으로 이동");
         props.history.push("/");
         return
       })
