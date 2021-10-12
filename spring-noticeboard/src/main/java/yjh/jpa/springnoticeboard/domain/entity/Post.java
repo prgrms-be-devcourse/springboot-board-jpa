@@ -1,5 +1,6 @@
 package yjh.jpa.springnoticeboard.domain.entity;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,9 +39,9 @@ public class Post extends BaseEntity{
         this.user.getPosts().add(this);
     }
 
-    public void setUser(User user) {
+    public void setUser(@NotNull  User user) {
         this.user = user;
-        this.user.getPosts().add(this);
+        user.addPost(this);
     }
 
 }
