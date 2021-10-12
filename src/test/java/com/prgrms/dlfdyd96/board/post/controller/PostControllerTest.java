@@ -152,8 +152,7 @@ class PostControllerTest {
                 fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                 fieldWithPath("userDto").type(JsonFieldType.OBJECT).description("userDto"),
                 fieldWithPath("userDto.id").type(JsonFieldType.NULL).description("userDto.id"),
-                fieldWithPath("userDto.name").type(JsonFieldType.NULL)
-                    .description("userDto.name"),
+                fieldWithPath("userDto.name").type(JsonFieldType.NULL).description("userDto.name"),
                 fieldWithPath("userDto.age").type(JsonFieldType.NUMBER).description("userDto.age"),
                 fieldWithPath("userDto.hobby").type(JsonFieldType.STRING)
                     .description("userDto.hobby")
@@ -178,41 +177,62 @@ class PostControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andDo(print())
-        .andDo(document("post-get-all",
+        .andDo(document("post-get-all", // 문서화
             responseFields(
                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
                 fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("컨텐츠"),
                 fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("id"),
                 fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("제목"),
-                fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("내용"),
-                fieldWithPath("data.content[].userDto").type(JsonFieldType.OBJECT).description("작성자"),
-                fieldWithPath("data.content[].userDto.id").type(JsonFieldType.NUMBER).description("id"),
-                fieldWithPath("data.content[].userDto.name").type(JsonFieldType.STRING).description("이름"),
-                fieldWithPath("data.content[].userDto.age").type(JsonFieldType.NUMBER).description("나이"),
-                fieldWithPath("data.content[].userDto.hobby").type(JsonFieldType.STRING).description("취미"),
-                fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("요청한 pageable 정보"),
+                fieldWithPath("data.content[].content").type(JsonFieldType.STRING)
+                    .description("내용"),
+                fieldWithPath("data.content[].userDto").type(JsonFieldType.OBJECT)
+                    .description("작성자"),
+                fieldWithPath("data.content[].userDto.id").type(JsonFieldType.NUMBER)
+                    .description("id"),
+                fieldWithPath("data.content[].userDto.name").type(JsonFieldType.STRING)
+                    .description("이름"),
+                fieldWithPath("data.content[].userDto.age").type(JsonFieldType.NUMBER)
+                    .description("나이"),
+                fieldWithPath("data.content[].userDto.hobby").type(JsonFieldType.STRING)
+                    .description("취미"),
+                fieldWithPath("data.pageable").type(JsonFieldType.OBJECT)
+                    .description("요청한 pageable 정보"),
                 fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("정렬 정보"),
-                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬 여부"),
-                fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("미정렬 여부"),
-                fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("정렬 정보 빈 값 여부"),
-                fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER).description("요청한 페이지 정보"),
-                fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER).description("요청한 페이지 크기"),
+                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN)
+                    .description("정렬 여부"),
+                fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN)
+                    .description("미정렬 여부"),
+                fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN)
+                    .description("정렬 정보 빈 값 여부"),
+                fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER)
+                    .description("요청한 페이지 정보"),
+                fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER)
+                    .description("요청한 페이지 크기"),
                 fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("??"),
-                fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("페이징 여부"),
-                fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("미페이징 여부"),
-                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 갯수"),
-                fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("데이터 갯수"),
+                fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN)
+                    .description("페이징 여부"),
+                fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN)
+                    .description("미페이징 여부"),
+                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER)
+                    .description("전체 페이지 갯수"),
+                fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER)
+                    .description("데이터 갯수"),
                 fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부"),
-                fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("요청 페이지에서 조회 된 데이터의 갯수"),
+                fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER)
+                    .description("요청 페이지에서 조회 된 데이터의 갯수"),
                 fieldWithPath("data.sort").type(JsonFieldType.OBJECT).description("정렬 정보"),
                 fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬 여부"),
-                fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("미정렬 여부"),
-                fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("정렬 정보 빈 값 여부"),
+                fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN)
+                    .description("미정렬 여부"),
+                fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN)
+                    .description("정렬 정보 빈 값 여부"),
                 fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("현재 페이지 정보"),
                 fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
-                fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("한 페이지 당 몇 개의 목록이 표시 되는지"),
-                fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("페이지가 비어있는지 여부"),
+                fieldWithPath("data.size").type(JsonFieldType.NUMBER)
+                    .description("한 페이지 당 몇 개의 목록이 표시 되는지"),
+                fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN)
+                    .description("페이지가 비어있는지 여부"),
                 fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
             )
         ));
@@ -297,14 +317,15 @@ class PostControllerTest {
     // WHEN
     // THEN
     mockMvc.perform(
-        put("/posts/{id}", postId)
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andDo(print())
+            put("/posts/{id}", postId)
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(print())
         .andDo(document("post-update",
             requestFields(
                 fieldWithPath("id").type(JsonFieldType.NULL).description("post Id"),
+                // TODO: update할 내용이 아닌 경우 Null 처리?
                 fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
                 fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                 fieldWithPath("userDto").type(JsonFieldType.NULL).description("user 정보")

@@ -1,4 +1,4 @@
-package com.prgrms.dlfdyd96.board.util.api;
+package com.prgrms.dlfdyd96.board.common.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;

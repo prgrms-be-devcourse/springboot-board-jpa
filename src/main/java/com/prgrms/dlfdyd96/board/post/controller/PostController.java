@@ -2,12 +2,13 @@ package com.prgrms.dlfdyd96.board.post.controller;
 
 import com.prgrms.dlfdyd96.board.post.dto.PostDto;
 import com.prgrms.dlfdyd96.board.post.service.PostService;
-import com.prgrms.dlfdyd96.board.util.api.ApiResponse;
-import java.util.List;
+import com.prgrms.dlfdyd96.board.common.api.ApiResponse;
 import javassist.NotFoundException;
+import javax.persistence.criteria.CriteriaBuilder.In;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,42 +27,45 @@ public class PostController {
     this.postService = postService;
   }
 
+  // TODO: (Refactoring) controller adviser
   @ExceptionHandler
-  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) // <- 이렇게하면 HTTP Status code : 500 에러 .
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   private ApiResponse<String> exceptionHandler(Exception exception) {
     return ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
   }
 
   @ExceptionHandler(NotFoundException.class)
-  @ResponseStatus(HttpStatus.NOT_FOUND) // <- 이렇게하면 HTTP Status code : 500 에러 .
+  @ResponseStatus(HttpStatus.NOT_FOUND)
   private ApiResponse<String> notFoundHandler(NotFoundException exception) {
     return ApiResponse.fail(HttpStatus.NOT_FOUND.value(), exception.getMessage());
   }
 
+  @PostMapping("/posts")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ApiResponse<Long> create(@RequestBody PostDto postDto) {
+    return ApiResponse.ok(postService.save(postDto));
+  }
+
   @GetMapping("/posts")
-  public ApiResponse<Page<PostDto>> getAll(
-      Pageable pageable
-  ) {
+  public ApiResponse<Page<PostDto>> getAll(Pageable pageable) {
     return ApiResponse.ok(postService.findPosts(pageable));
   }
 
   @GetMapping("/posts/{id}")
-  public ApiResponse<PostDto> getOne(
-      @PathVariable Long id
-  ) throws NotFoundException {
+  public ApiResponse<PostDto> getOne(@PathVariable Long id) throws NotFoundException {
     return ApiResponse.ok(postService.findOne(id));
   }
 
-  @PostMapping("/posts")
-  public ApiResponse<Long> save(@RequestBody PostDto postDto) {
-    return ApiResponse.ok(postService.save(postDto));
+  @PutMapping("/posts/{id}")
+  public ApiResponse<Long> update(@PathVariable Long id, @RequestBody PostDto postDto) throws Exception {
+    return ApiResponse.ok(postService.update(id, postDto));
   }
 
-  @PutMapping("/posts/{id}")
-  public ApiResponse<Long> update(
-      @PathVariable Long id,
-      @RequestBody PostDto postDto
-  ) throws Exception {
-    return ApiResponse.ok(postService.update(id, postDto));
+  @DeleteMapping("/posts/{id}")
+  public ApiResponse<Integer> delete(@PathVariable Long id) throws NotFoundException {
+    postService.delete(id);
+    Integer affectedItem = 1;
+
+    return ApiResponse.ok(affectedItem);
   }
 }

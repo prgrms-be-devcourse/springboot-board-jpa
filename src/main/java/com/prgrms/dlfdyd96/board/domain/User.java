@@ -1,5 +1,6 @@
 package com.prgrms.dlfdyd96.board.domain;
 
+import com.prgrms.dlfdyd96.board.user.dto.UserDto;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -48,5 +49,11 @@ public class User extends BaseEntity {
 
   public void addPost(Post post) {
     post.setUser(this);
+  }
+
+  public void update(UserDto userDto) {
+    this.name = userDto.getName();
+    this.age = userDto.getAge();
+    this.hobby = userDto.getHobby();
   }
 }

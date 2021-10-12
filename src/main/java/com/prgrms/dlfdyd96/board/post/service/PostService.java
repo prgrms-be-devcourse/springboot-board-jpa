@@ -4,7 +4,7 @@ import com.prgrms.dlfdyd96.board.domain.Post;
 import com.prgrms.dlfdyd96.board.post.converter.PostConverter;
 import com.prgrms.dlfdyd96.board.post.dto.PostDto;
 import com.prgrms.dlfdyd96.board.post.repository.PostRepository;
-import java.util.List;
+
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,10 +29,7 @@ public class PostService {
   }
 
   public Long save(PostDto postDto) {
-    // 1. dto -> entity 변환
     Post post = postConverter.convertPost(postDto);
-    // 2. save() 영속화
-    // 3. 결과 반환
     return postRepository.save(post)
         .getId();
   }
@@ -54,6 +51,12 @@ public class PostService {
     post.update(postDto);
 
     return post.getId();
+  }
 
+  public void delete(Long id) throws NotFoundException {
+    Post post = postRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
+    postRepository.delete(post);
   }
 }
+
