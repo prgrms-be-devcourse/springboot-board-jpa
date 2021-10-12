@@ -14,11 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends BaseEntity{
-
-    //validation 추가 해주기
-    //last modified도 만들까??
-    //입력될때 한번에 입력되도록 하는 method 추가하기
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "bigint(20)")
@@ -35,10 +31,5 @@ public class User extends BaseEntity{
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
-
-    public void addPost(Post post){
-        if(posts == null) posts = new ArrayList<>();
-        post.setUser(this);
-    }
 
 }

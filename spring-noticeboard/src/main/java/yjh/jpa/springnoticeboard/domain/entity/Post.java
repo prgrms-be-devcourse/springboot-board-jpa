@@ -31,19 +31,14 @@ public class Post extends BaseEntity{
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    public void updatePost(String title, String content, User user){
+        this.title=title;
+        this.content=content;
+        this.user.getPosts().removeIf(e -> e.getId().equals(this.id));
+        this.user.getPosts().add(this);
+    }
 
     public void setUser(User user) {
-//        if(Objects.nonNull(this.user)){
-////            this.user.getPosts().removeIf(e -> e.getId().equals(user.getId()));
-//            log.info("getPosts 값 출력 {}", user.getPosts());
-//            log.info("getPosts 값 출력 {}", user.getPosts().size());
-//            this.user.getPosts().forEach(e -> {e.getId().equals(user.getId());
-//                e.content=this.content;
-//                e.title=this.title;
-//                e.user=user;
-//            });
-//            return;
-//        }
         this.user = user;
         this.user.getPosts().add(this);
     }
