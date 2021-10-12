@@ -41,4 +41,16 @@ public class PostService {
         return postRepository.findAll(pageable)
             .map(postConverter::convertToPostDto);
     }
+
+    @Transactional
+    public PostDto updatePost(Long postId, PostDto dto) throws NotFoundException {
+        Post entity = postRepository.findById(postId)
+            .orElseThrow(() -> new NotFoundException("post does not exist"));
+
+        entity.setTitle(dto.getTitle());
+        entity.setContent(dto.getContent());
+        postRepository.save(entity);
+
+        return postConverter.convertToPostDto(entity);
+    }
 }

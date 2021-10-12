@@ -45,4 +45,10 @@ public class PostController {
         PostDto post = postService.findPostById(postId);
         return ApiResponse.created(post);
     }
+
+    @PatchMapping("/{postId}")
+    public ApiResponse<PostDto> updatePost(@PathVariable Long postId, @RequestBody PostDto dto) throws NotFoundException {
+        PostDto post = postService.updatePost(postId, dto);
+        return ApiResponse.ok(post);
+    }
 }
