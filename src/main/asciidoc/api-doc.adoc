@@ -1,0 +1,177 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+:site-url: /build/asciidoc/html5/
+
+== 회원 API
+
+=== 회원 등록
+
+==== Request
+
+include::{snippets}/create-user/http-request.adoc[]
+
+==== Request Fields
+
+include::{snippets}/create-user/request-fields.adoc[]
+
+==== Response
+
+include::{snippets}/create-user/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/create-user/response-fields.adoc[]
+
+=== 회원 정보 조회
+
+==== Request
+
+include::{snippets}/get-user/http-request.adoc[]
+
+==== Request Fields
+
+include::{snippets}/get-user/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/get-user/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/get-user/response-fields.adoc[]
+
+=== 회원 정보 수정
+
+==== Request
+
+include::{snippets}/modify-user/http-request.adoc[]
+
+==== Request Fields
+
+include::{snippets}/modify-user/request-fields.adoc[]
+
+==== Response
+
+include::{snippets}/modify-user/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/modify-user/response-fields.adoc[]
+
+=== 회원 탈퇴
+
+==== Request
+
+include::{snippets}/remove-user/http-request.adoc[]
+
+==== Request Path Parameters
+
+include::{snippets}/remove-user/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/remove-user/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/remove-user/response-fields.adoc[]
+
+== 게시판
+
+=== 게시글 페이징 조회
+
+==== Request
+
+include::{snippets}/get-posts/http-request.adoc[]
+
+==== Request Parameters
+
+include::{snippets}/get-posts/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/get-posts/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/get-posts/response-fields.adoc[]
+
+=== 게시글 상세 조회
+
+==== Request
+
+include::{snippets}/get-post/http-request.adoc[]
+
+==== Request Path Parameters
+
+include::{snippets}/get-post/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/get-post/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/get-post/response-fields.adoc[]
+
+=== 게시글 작성
+
+==== Request
+
+include::{snippets}/add-post/http-request.adoc[]
+
+==== Request Fields
+
+include::{snippets}/add-post/request-fields.adoc[]
+
+==== Response
+
+include::{snippets}/add-post/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/add-post/response-fields.adoc[]
+
+=== 게시글 수정
+
+==== Request
+
+include::{snippets}/modify-post/http-request.adoc[]
+
+==== Request Fields
+
+include::{snippets}/modify-post/request-fields.adoc[]
+
+==== Response
+
+include::{snippets}/modify-post/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/modify-post/response-fields.adoc[]
+
+=== 게시글 삭제
+
+==== Request
+
+include::{snippets}/remove-post/http-request.adoc[]
+
+==== Request Path Parameters
+
+include::{snippets}/remove-post/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/remove-post/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/remove-post/response-fields.adoc[]
