@@ -33,6 +33,12 @@ public class PostController {
         return ApiResponse.ok(posts);
     }
 
+    @GetMapping("/{postId}")
+    public ApiResponse<PostDto> getPost(@PathVariable Long postId) throws NotFoundException {
+        PostDto post = postService.findPostById(postId);
+        return ApiResponse.ok(post);
+    }
+
     @PostMapping("")
     public ApiResponse<PostDto> savePost(@RequestBody PostDto dto) throws NotFoundException {
         Long postId = postService.savePost(dto);
