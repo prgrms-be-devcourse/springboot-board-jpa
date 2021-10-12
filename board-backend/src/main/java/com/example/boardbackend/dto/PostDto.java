@@ -16,5 +16,5 @@ public class PostDto {
     private String content;
     private Long view;
     private UserDto userDto;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 }

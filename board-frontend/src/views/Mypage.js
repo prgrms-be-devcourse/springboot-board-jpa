@@ -12,6 +12,7 @@ function Mypage(props) {
 
   // State
   const [userInfo, setUserInfo] = useState({});
+  const [myPostInfo, setMyPostInfo] = useState([]);
 
   // Effect
   useEffect(() => {
@@ -21,10 +22,17 @@ function Mypage(props) {
       props.history.push("/");
       return
     }
+    // userInfo
     axios.get(origin + "/api/user/" + userId)
       .then(res => {
         console.log(res);
         setUserInfo(res.data)
+      })
+    // myPostInfo
+    axios.get(origin + "/api/post/user/" + userId)
+      .then(res => {
+        console.log(res);
+        setMyPostInfo(res.data)
       })
   }, []);
 
@@ -64,6 +72,31 @@ function Mypage(props) {
 
       <h2>내가 쓴 게시물</h2>
       <hr /><br />
+      <div style={{ textAlign: "center" }}>
+        <table>
+          <tr>
+            <th>id(post)</th>
+            <th>title</th>
+            <th>content</th>
+            <th>createdAt</th>
+            <th>createdBy</th>
+            <th></th>
+          </tr>
+          {
+            myPostInfo.map(v =>
+              <tr key={v.id}>
+                <td>{v.id}</td>
+                <td>{v.title}</td>
+                <td>{v.content}</td>
+                <td>{v.createdAt}</td>
+                <td>{v.userDto.email}</td>
+                <td><button>삭제</button></td>
+              </tr>
+            )
+          }
+        </table>
+
+      </div>
 
 
     </div>

@@ -31,7 +31,7 @@ public class User extends BaseEntity{
     @Column(name = "hobby", nullable = false, length = 45)
     private String hobby;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @OneToMany(mappedBy = "user", orphanRemoval = true)
 //    private List<Post> posts = new ArrayList<>();
 //
 //

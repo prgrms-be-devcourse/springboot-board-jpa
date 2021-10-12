@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -22,6 +25,12 @@ public class PostService {
         System.out.println(post.toString());
         Post saved = postRepository.save(post);
         return dtoConverter.convertToPostDto(saved);
+    }
+
+    public List<PostDto> findPostsByCreatedBy(Long createdBy){
+        return postRepository.findByCreatedBy(createdBy).stream()
+                .map(post -> dtoConverter.convertToPostDto(post))
+                .collect(Collectors.toList());
     }
 
 }

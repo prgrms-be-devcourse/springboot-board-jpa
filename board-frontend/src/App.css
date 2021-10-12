@@ -3,7 +3,17 @@ body {
   text-align: center;
 }
 
-th, td {
+table{
+  width:100%;
+}
+
+th{
+  border: 1px solid black;
+  background-color: lightgrey;
+}
+
+
+td {
   border: 1px solid black;
 }
 
