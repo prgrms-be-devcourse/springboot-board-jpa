@@ -1,14 +1,15 @@
 package com.kdt.programmers.forum.transfer;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class PostDto {
-    private final int TITLE_LENGTH_LIMIT = 60;
 
     private Long id;
-    private final String title;
-    private final String content;
+    private String title;
+    private String content;
 
     public PostDto(String title, String content) {
         validateTitle(title);
@@ -31,6 +32,7 @@ public class PostDto {
     }
 
     private void validateTitle(String title) {
+        final int TITLE_LENGTH_LIMIT = 60;
         if (title.length() > TITLE_LENGTH_LIMIT)
             throw new IllegalArgumentException("length of title must be less than " + TITLE_LENGTH_LIMIT);
     }
