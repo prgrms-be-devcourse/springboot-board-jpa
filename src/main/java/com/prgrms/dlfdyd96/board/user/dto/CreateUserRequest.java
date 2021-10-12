@@ -1,18 +1,16 @@
-package com.prgrms.dlfdyd96.board.post.dto;
+package com.prgrms.dlfdyd96.board.user.dto;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
-  private Long id;
+public class CreateUserRequest {
   private String name;
   private int age;
-  private String hobby;
+  private String hobby; // TODO: 1급 객체
 }

@@ -1,10 +1,11 @@
 package com.prgrms.dlfdyd96.board.post.controller;
 
-import com.prgrms.dlfdyd96.board.post.dto.PostDto;
+import com.prgrms.dlfdyd96.board.post.dto.CreatePostRequest;
+import com.prgrms.dlfdyd96.board.post.dto.PostResponse;
+import com.prgrms.dlfdyd96.board.post.dto.UpdatePostRequest;
 import com.prgrms.dlfdyd96.board.post.service.PostService;
 import com.prgrms.dlfdyd96.board.common.api.ApiResponse;
 import javassist.NotFoundException;
-import javax.persistence.criteria.CriteriaBuilder.In;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -42,23 +43,24 @@ public class PostController {
 
   @PostMapping("/posts")
   @ResponseStatus(HttpStatus.CREATED)
-  public ApiResponse<Long> create(@RequestBody PostDto postDto) {
-    return ApiResponse.ok(postService.save(postDto));
+  public ApiResponse<Long> create(@RequestBody CreatePostRequest createPostRequest)
+      throws NotFoundException {
+    return ApiResponse.ok(postService.save(createPostRequest));
   }
 
   @GetMapping("/posts")
-  public ApiResponse<Page<PostDto>> getAll(Pageable pageable) {
+  public ApiResponse<Page<PostResponse>> getAll(Pageable pageable) {
     return ApiResponse.ok(postService.findPosts(pageable));
   }
 
   @GetMapping("/posts/{id}")
-  public ApiResponse<PostDto> getOne(@PathVariable Long id) throws NotFoundException {
+  public ApiResponse<PostResponse> getOne(@PathVariable Long id) throws NotFoundException {
     return ApiResponse.ok(postService.findOne(id));
   }
 
   @PutMapping("/posts/{id}")
-  public ApiResponse<Long> update(@PathVariable Long id, @RequestBody PostDto postDto) throws Exception {
-    return ApiResponse.ok(postService.update(id, postDto));
+  public ApiResponse<Long> update(@PathVariable Long id, @RequestBody UpdatePostRequest updatePostRequest) throws Exception {
+    return ApiResponse.ok(postService.update(id, updatePostRequest));
   }
 
   @DeleteMapping("/posts/{id}")

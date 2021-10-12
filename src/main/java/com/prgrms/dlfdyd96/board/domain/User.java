@@ -1,6 +1,7 @@
 package com.prgrms.dlfdyd96.board.domain;
 
-import com.prgrms.dlfdyd96.board.user.dto.UserDto;
+import com.prgrms.dlfdyd96.board.user.dto.UpdateUserRequest;
+import com.prgrms.dlfdyd96.board.user.dto.UserResponse;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -41,6 +42,7 @@ public class User extends BaseEntity {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Post> posts = new ArrayList<>();
 
+  // TODO: 이건 뭐임?
   private void validate(String name, int age, String hobby) {
     Assert.hasText(name, "Name is not null");
     Assert.hasText(hobby, "Hobby is not null");
@@ -51,8 +53,8 @@ public class User extends BaseEntity {
     post.setUser(this);
   }
 
-  public void update(UserDto userDto) {
-    this.name = userDto.getName();
+  public void update(UpdateUserRequest userDto) {
+    this.name = userDto.getName(); // TODO: NULL 이면 우째?
     this.age = userDto.getAge();
     this.hobby = userDto.getHobby();
   }

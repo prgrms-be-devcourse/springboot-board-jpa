@@ -1,9 +1,6 @@
 package com.prgrms.dlfdyd96.board.post.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.prgrms.dlfdyd96.board.domain.Post;
-import com.prgrms.dlfdyd96.board.post.dto.PostDto;
+import com.prgrms.dlfdyd96.board.post.dto.PostResponse;
 import com.prgrms.dlfdyd96.board.post.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +25,7 @@ class PostServiceTest {
   @DisplayName("entity를 save할 수 있다.")
   void testSave() {
     // GIVEN
-    PostDto postDto = PostDto.builder().
+    PostResponse postDto = PostResponse.builder().
         build();
     // WHEN
 

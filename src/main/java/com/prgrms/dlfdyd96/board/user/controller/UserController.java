@@ -1,10 +1,11 @@
 package com.prgrms.dlfdyd96.board.user.controller;
 
 import com.prgrms.dlfdyd96.board.common.api.ApiResponse;
-import com.prgrms.dlfdyd96.board.user.dto.UserDto;
+import com.prgrms.dlfdyd96.board.user.dto.CreateUserRequest;
+import com.prgrms.dlfdyd96.board.user.dto.UpdateUserRequest;
+import com.prgrms.dlfdyd96.board.user.dto.UserResponse;
 import com.prgrms.dlfdyd96.board.user.service.UserService;
 import javassist.NotFoundException;
-import net.bytebuddy.pool.TypePool.Empty;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -42,22 +43,22 @@ public class UserController {
 
   @PostMapping("/users")
   @ResponseStatus(HttpStatus.CREATED)
-  public ApiResponse<Long> create(@RequestBody UserDto createRequestDto) {
+  public ApiResponse<Long> create(@RequestBody CreateUserRequest createRequestDto) {
     return ApiResponse.ok(userService.save(createRequestDto));
   }
 
   @GetMapping("/users")
-  public ApiResponse<Page<UserDto>> getAll(Pageable pageable) {
+  public ApiResponse<Page<UserResponse>> getAll(Pageable pageable) {
     return ApiResponse.ok(userService.findUsers(pageable));
   }
 
   @GetMapping("/users/{id}")
-  public ApiResponse<UserDto> getOne(@PathVariable Long id) throws NotFoundException {
+  public ApiResponse<UserResponse> getOne(@PathVariable Long id) throws NotFoundException {
     return ApiResponse.ok(userService.findOne(id));
   }
 
   @PutMapping("/users/{id}")
-  public ApiResponse<Long> update(@PathVariable Long id, @RequestBody UserDto updateRequestDto)
+  public ApiResponse<UserResponse> update(@PathVariable Long id, @RequestBody UpdateUserRequest updateRequestDto)
       throws NotFoundException {
     return ApiResponse.ok(userService.update(id, updateRequestDto));
   }

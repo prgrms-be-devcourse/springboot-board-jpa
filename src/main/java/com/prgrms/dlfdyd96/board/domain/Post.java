@@ -1,6 +1,7 @@
 package com.prgrms.dlfdyd96.board.domain;
 
-import com.prgrms.dlfdyd96.board.post.dto.PostDto;
+import com.prgrms.dlfdyd96.board.post.dto.PostResponse;
+import com.prgrms.dlfdyd96.board.post.dto.UpdatePostRequest;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,8 +58,8 @@ public class Post extends BaseEntity {
     user.getPosts().add(this);
   }
 
-  public void update(PostDto postDto) {
-    this.title = postDto.getTitle();
-    this.content = postDto.getContent();
+  public void update(UpdatePostRequest updatePostRequest) {
+    this.title = updatePostRequest.getTitle();
+    this.content = updatePostRequest.getContent();
   }
 }
