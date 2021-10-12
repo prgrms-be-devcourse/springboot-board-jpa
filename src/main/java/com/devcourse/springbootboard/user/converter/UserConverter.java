@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.devcourse.springbootboard.user.domain.Hobby;
 import com.devcourse.springbootboard.user.domain.User;
-import com.devcourse.springbootboard.user.dto.DeleteResponse;
+import com.devcourse.springbootboard.user.dto.UserDeleteResponse;
 import com.devcourse.springbootboard.user.dto.UserResponse;
 import com.devcourse.springbootboard.user.dto.UserSignUpRequest;
 
@@ -27,7 +27,7 @@ public class UserConverter {
 			.build();
 	}
 
-	public DeleteResponse toDeleteResponse(Long id) {
-		return new DeleteResponse(id);
+	public UserDeleteResponse toDeleteResponse(Long id) {
+		return new UserDeleteResponse(id);
 	}
 }

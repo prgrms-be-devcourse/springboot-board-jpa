@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.devcourse.springbootboard.user.dto.UserDeleteResponse;
 import com.devcourse.springbootboard.user.dto.UserResponse;
 import com.devcourse.springbootboard.user.dto.UserSignUpRequest;
 import com.devcourse.springbootboard.user.dto.UserUpdateRequest;
@@ -18,7 +19,7 @@ import com.devcourse.springbootboard.user.service.UserService;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	private UserService userService;
+	private final UserService userService;
 
 	public UserController(UserService userService) {
 		this.userService = userService;
@@ -43,7 +44,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("{id}")
-	public ResponseEntity<Long> removeUser(@PathVariable final Long id) {
+	public ResponseEntity<UserDeleteResponse> removeUser(@PathVariable final Long id) {
 		return ResponseEntity.ok(userService.deleteUser(id));
 	}
 }

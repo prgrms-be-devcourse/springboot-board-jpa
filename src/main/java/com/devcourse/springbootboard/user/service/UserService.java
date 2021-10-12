@@ -7,6 +7,7 @@ import com.devcourse.springbootboard.global.error.exception.ErrorCode;
 import com.devcourse.springbootboard.user.converter.UserConverter;
 import com.devcourse.springbootboard.user.domain.Hobby;
 import com.devcourse.springbootboard.user.domain.User;
+import com.devcourse.springbootboard.user.dto.UserDeleteResponse;
 import com.devcourse.springbootboard.user.dto.UserResponse;
 import com.devcourse.springbootboard.user.dto.UserSignUpRequest;
 import com.devcourse.springbootboard.user.dto.UserUpdateRequest;
@@ -43,19 +44,22 @@ public class UserService {
 		User user = userRepository.findById(id)
 			.orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
 
-		user.changeInfo(userUpdateRequest.getName(), userUpdateRequest.getAge(),
-			new Hobby(userUpdateRequest.getHobby()));
+		user.changeInfo(
+			userUpdateRequest.getName(),
+			userUpdateRequest.getAge(),
+			new Hobby(userUpdateRequest.getHobby())
+		);
 
 		return userConverter.toUserResponse(user);
 	}
 
 	@Transactional
-	public Long deleteUser(Long id) {
+	public UserDeleteResponse deleteUser(Long id) {
 		User user = userRepository.findById(id)
 			.orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
 
 		userRepository.delete(user);
 
-		return id;
+		return userConverter.toDeleteResponse(id);
 	}
 }
