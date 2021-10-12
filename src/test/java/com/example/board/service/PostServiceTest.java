@@ -2,6 +2,7 @@ package com.example.board.service;
 
 import com.example.board.dto.PostDto;
 import com.example.board.repository.PostRepository;
+import javassist.NotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("(Controller에서 전달받은) 게시글을 정상적으로 저장한다.")
-    void savePost() {
+    void savePost() throws NotFoundException {
         PostDto postDto = PostDto.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
