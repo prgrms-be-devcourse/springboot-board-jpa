@@ -3,6 +3,7 @@ package com.devcourse.springbootboard.post.converter;
 import org.springframework.stereotype.Component;
 
 import com.devcourse.springbootboard.post.domain.Post;
+import com.devcourse.springbootboard.post.dto.PostDeleteResponse;
 import com.devcourse.springbootboard.post.dto.PostResponse;
 import com.devcourse.springbootboard.post.dto.PostWriteRequest;
 import com.devcourse.springbootboard.user.domain.User;
@@ -24,5 +25,9 @@ public class PostConverter {
 			.content(postWriteRequest.getContent())
 			.user(user)
 			.build();
+	}
+
+	public PostDeleteResponse toPostDeleteResponse(Long id) {
+		return new PostDeleteResponse(id);
 	}
 }

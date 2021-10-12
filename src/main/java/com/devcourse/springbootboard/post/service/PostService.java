@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devcourse.springbootboard.global.error.exception.ErrorCode;
 import com.devcourse.springbootboard.post.converter.PostConverter;
 import com.devcourse.springbootboard.post.domain.Post;
+import com.devcourse.springbootboard.post.dto.PostDeleteResponse;
 import com.devcourse.springbootboard.post.dto.PostResponse;
 import com.devcourse.springbootboard.post.dto.PostUpdateRequest;
 import com.devcourse.springbootboard.post.dto.PostWriteRequest;
@@ -68,12 +69,12 @@ public class PostService {
 	}
 
 	@Transactional
-	public Long deletePost(Long id) {
+	public PostDeleteResponse deletePost(Long id) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(ErrorCode.POST_NOT_FOUND));
 
 		postRepository.delete(post);
 
-		return id;
+		return postConverter.toPostDeleteResponse(id);
 	}
 }

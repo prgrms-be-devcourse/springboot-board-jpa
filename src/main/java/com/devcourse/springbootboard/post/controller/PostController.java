@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.devcourse.springbootboard.post.dto.PostDeleteResponse;
 import com.devcourse.springbootboard.post.dto.PostResponse;
 import com.devcourse.springbootboard.post.dto.PostUpdateRequest;
 import com.devcourse.springbootboard.post.dto.PostWriteRequest;
@@ -20,7 +21,7 @@ import com.devcourse.springbootboard.post.service.PostService;
 @RestController
 @RequestMapping("/posts")
 public class PostController {
-	private PostService postService;
+	private final PostService postService;
 
 	public PostController(PostService postService) {
 		this.postService = postService;
@@ -47,7 +48,7 @@ public class PostController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Long> removePost(@PathVariable final Long id) {
+	public ResponseEntity<PostDeleteResponse> removePost(@PathVariable final Long id) {
 		return ResponseEntity.ok(postService.deletePost(id));
 	}
 }
