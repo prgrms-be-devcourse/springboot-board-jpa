@@ -84,11 +84,14 @@ class PostServiceTest {
         Long postId = postService.createPost(postDto);
 
         //then
-        User findUser = userRepository.findById(userDto.getId()).get();
         PostDto findPost = postService.findPost(postId);
-        assertThat(findPost.getId()).isEqualTo(postId);
+//        User findUser = userRepository.findById(userDto.getId()).get();
+//        assertThat(findPost.getId()).isEqualTo(postId);
 //        assertThat(UserMapper.INSTANCE.userDtoToEntity(userDto).getPosts()).isNotEmpty();
-        assertThat(UserMapper.INSTANCE.userDtoToEntity(userDto).getPosts().get(0).getContent()).isEqualTo(findPost.getContent());
+        assertThat(findPost.getUser().getId()).isEqualTo(userDto.getId());
+        assertThat(findPost.getUser().getAge()).isEqualTo(userDto.getAge());
+        assertThat(findPost.getUser().getHobby()).isEqualTo(userDto.getHobby());
+        assertThat(findPost.getUser().getName()).isEqualTo(userDto.getName());
     }
 
     @Test
@@ -108,8 +111,10 @@ class PostServiceTest {
         findPost.setContent("업데이트한 블라블라블라");
 
         //then
-        PostDto updatePost = postService.findPost(postId);
-        log.info(updatePost.getTitle(), updatePost.getContent());
+        Long updatePostId = postService.updatePost(postId,findPost);
+        User u = userRepository.findById(userDto.getId()).orElseThrow(()->new NotFoundException("회원 못찾음"));
+        assertThat(u.getPosts().get(0).getTitle()).isEqualTo(findPost.getTitle());
+        assertThat(u.getPosts().get(0).getContent()).isEqualTo(findPost.getContent());
     }
 
     @Test
@@ -147,7 +152,6 @@ class PostServiceTest {
                 .build();
 
 //        log.info("user 확인 : {}", userDto.toString());
-
         Long postId = postService.createPost(postDto);
 
         PostDto post = postService.findPost(postId);
@@ -158,7 +162,6 @@ class PostServiceTest {
         postService.deletePost(postId);
 
         //then
-
         assertThatThrownBy(()->postService.findPost(postId))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("게시글을 찾을 수 없습니다.");

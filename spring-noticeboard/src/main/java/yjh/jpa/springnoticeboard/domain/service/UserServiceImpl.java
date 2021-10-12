@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService{
     @Autowired
     UserRepository userRepository;
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public Long createUser(UserDto userDto) {
         User user = UserMapper.INSTANCE.userDtoToEntity(userDto);
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService{
         return entity.getId();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public Long updateUser(Long userId, UserDto userDto) throws NotFoundException {
         UserDto update = userRepository.findById(userId)
@@ -64,13 +64,13 @@ public class UserServiceImpl implements UserService{
         return userDto;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public void deleteAll() {
         userRepository.deleteAll();

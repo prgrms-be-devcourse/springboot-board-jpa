@@ -33,26 +33,25 @@ public class PostServiceImpl implements PostService{
     @Autowired
     UserRepository userRepository;
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public Long createPost(PostDto postDto) throws NotFoundException {
         Post post = PostMapper.INSTANCE.postDtoToEntity(postDto);
-//        var u = userRepository.findById(postDto.getUser().getId()).orElseThrow(()->new NotFoundException("회워을 찾을 수 없습니다."));
-//        u.addPost(post);
-        post.getUser().addPost(post);
+        var u = userRepository.findById(postDto.getUser().getId()).get();
+        post.setUser(u);
+//        post.getUser().addPost(post);
         post.setCreatedBy(postDto.getUser().getName());
         post.setCratedAt(LocalDateTime.now());
         return postRepository.save(post).getId();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public Long updatePost(Long postId, PostDto postDto) throws NotFoundException {
-        PostDto update = postRepository.findById(postId)
-                .map(post -> PostMapper.INSTANCE.postToDto(post))
+        var user = userRepository.findById(postDto.getUser().getId()).orElseThrow(() -> new NotFoundException("회원을 찾을 수 없음"));
+        Post update = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
-        update.setContent(postDto.getContent());
-        update.setTitle(postDto.getTitle());
+        update.updatePost(postDto.getTitle(),postDto.getContent(),user);
         return update.getId();
     }
 
@@ -66,20 +65,20 @@ public class PostServiceImpl implements PostService{
     @Transactional(readOnly = true)
     @Override
     public PostDto findPost(Long postId) throws NotFoundException {
-        return postRepository.findById(postId)
-                .map(post -> PostMapper.INSTANCE.postToDto(post))
-                .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
+        post.setUser(post.getUser());
+        return  PostMapper.INSTANCE.postToDto(post);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public void deletePost(Long postId) throws NotFoundException {
-        Post post = postRepository.findById(postId).get();
-        post.getUser().getPosts().remove(post);
+        Post post = postRepository.findById(postId).orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
+        post.getUser().getPosts().removeIf(e-> e.getId().equals(postId));
         postRepository.deleteById(postId);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public void deleteAll() {
         postRepository.deleteAll();
