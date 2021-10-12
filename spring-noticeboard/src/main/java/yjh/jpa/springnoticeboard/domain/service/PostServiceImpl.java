@@ -37,8 +37,9 @@ public class PostServiceImpl implements PostService{
     @Override
     public Long createPost(PostDto postDto) throws NotFoundException {
         Post post = PostMapper.INSTANCE.postDtoToEntity(postDto);
-        var u = userRepository.findById(postDto.getUser().getId()).orElseThrow(()->new NotFoundException("회워을 찾을 수 없습니다."));
-        u.addPost(post);
+//        var u = userRepository.findById(postDto.getUser().getId()).orElseThrow(()->new NotFoundException("회워을 찾을 수 없습니다."));
+//        u.addPost(post);
+        post.getUser().addPost(post);
         post.setCreatedBy(postDto.getUser().getName());
         post.setCratedAt(LocalDateTime.now());
         return postRepository.save(post).getId();
@@ -72,11 +73,9 @@ public class PostServiceImpl implements PostService{
 
     @Transactional(readOnly = true)
     @Override
-    public void deletePost(Long postId, Long userId) throws NotFoundException {
-        var user = userRepository.findById(userId)
-                        .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
+    public void deletePost(Long postId) throws NotFoundException {
         Post post = postRepository.findById(postId).get();
-        user.getPosts().remove(post);
+        post.getUser().getPosts().remove(post);
         postRepository.deleteById(postId);
     }
 

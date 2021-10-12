@@ -43,9 +43,9 @@ public class PostController {
         return ApiResponse.ok(update);
     }
 
-    @DeleteMapping(path = "{postId}/{userId}")
-    public void removePost(@PathVariable(name = "postId") Long postId, @PathVariable(name = "userId") Long userId) throws NotFoundException {
-        postService.deletePost(postId, userId);
+    @DeleteMapping(path = "{postId}")
+    public void removePost(@PathVariable(name = "postId") Long postId) throws NotFoundException {
+        postService.deletePost(postId);
     }
 
     @DeleteMapping(path = "")

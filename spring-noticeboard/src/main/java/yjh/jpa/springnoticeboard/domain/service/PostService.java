@@ -12,7 +12,7 @@ public interface PostService {
     Page<Object> findAll(Pageable pageable);
     PostDto findPost(Long postId) throws NotFoundException;
     Long updatePost(Long postId, PostDto postDto) throws NotFoundException;
-    void deletePost(Long postId, Long userId) throws NotFoundException;
+    void deletePost(Long postId) throws NotFoundException;
     void deleteAll();
 
 }

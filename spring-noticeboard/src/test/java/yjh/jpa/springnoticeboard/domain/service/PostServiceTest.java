@@ -85,10 +85,10 @@ class PostServiceTest {
 
         //then
         User findUser = userRepository.findById(userDto.getId()).get();
-        Post findPost = postRepository.findById(findUser.getPosts().get(0).getId()).get();
+        PostDto findPost = postService.findPost(postId);
         assertThat(findPost.getId()).isEqualTo(postId);
-        assertThat(findUser.getPosts()).isNotEmpty();
-        assertThat(findUser.getPosts().get(0).getContent()).isEqualTo(findPost.getContent());
+//        assertThat(UserMapper.INSTANCE.userDtoToEntity(userDto).getPosts()).isNotEmpty();
+        assertThat(UserMapper.INSTANCE.userDtoToEntity(userDto).getPosts().get(0).getContent()).isEqualTo(findPost.getContent());
     }
 
     @Test
@@ -155,7 +155,7 @@ class PostServiceTest {
         //when
         var findUser = userRepository.findById(userDto.getId()).orElseThrow(() ->
                 new NotFoundException("회원을 찾을 수 없습니다."));
-        postService.deletePost(postId,userDto.getId());
+        postService.deletePost(postId);
 
         //then
 
