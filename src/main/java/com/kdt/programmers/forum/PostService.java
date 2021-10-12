@@ -23,10 +23,10 @@ public class PostService {
     }
 
     @Transactional
-    public Long savePost(PostDto dto) {
+    public PostDto savePost(PostDto dto) {
         Post post = postConverter.convertToPost(dto);
         Post entity = postRepository.save(post);
-        return entity.getId();
+        return postConverter.convertToPostDto(entity);
     }
 
     @Transactional

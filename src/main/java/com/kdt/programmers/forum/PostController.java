@@ -40,9 +40,8 @@ public class PostController {
     }
 
     @PostMapping("")
-    public ApiResponse<PostDto> savePost(@RequestBody PostDto dto) throws NotFoundException {
-        Long postId = postService.savePost(dto);
-        PostDto post = postService.findPostById(postId);
+    public ApiResponse<PostDto> savePost(@RequestBody PostDto dto) {
+        PostDto post = postService.savePost(dto);
         return ApiResponse.created(post);
     }
 
