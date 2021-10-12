@@ -10,8 +10,8 @@ import java.util.Objects;
 @Getter
 @Builder
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "posts")
 public class Post extends BaseEntity {
 
@@ -37,13 +37,5 @@ public class Post extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
-
-//    public void setUser(User user) {
-//        if(Objects.nonNull(this.user)){
-//            this.user.getPostList().remove(this);
-//        }
-//        this.user = user;
-//        user.getPostList().add(this);
-//    }
 
 }

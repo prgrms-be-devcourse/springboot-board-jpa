@@ -20,7 +20,7 @@ class PostTest {
     @Autowired
     PostRepository postRepository;
 
-    User user;
+    private User user;
 
     @BeforeEach
     void setUp() {
@@ -93,7 +93,7 @@ class PostTest {
     void read_AllPost() {
         List<Post> allPost = postRepository.findAll();
         System.out.println(allPost.size());
-        allPost.forEach(post -> System.out.println(post.getContent()));
+        allPost.forEach(post -> log.info(post.getContent()));
 
     }
 
@@ -101,12 +101,14 @@ class PostTest {
     @DisplayName("Post 를 수정할 수 있다.")
     void update_post() {
         Optional<Post> post1 = postRepository.findById(1L);
-        post1.ifPresent(selectedPost -> System.out.println("수정 전 Title : "+selectedPost.getTitle()));
+        post1.ifPresent(selectedPost -> System.out.println("**수정 전 Title : "+selectedPost.getTitle()));
         post1.ifPresent(selectedPost -> {
             selectedPost.changeTitle("찬호박 인터뷰");
             postRepository.save(selectedPost);
         });
-        log.info("수정 후 Title : "+postRepository.findById(1L).get().getTitle());
+        log.info("**수정 후 Title : "+postRepository.findById(1L).get().getTitle());
+        List<Post> userPost = postRepository.findByUserName("찬호박");
+        userPost.forEach(post -> log.info(post.getTitle()));
     }
 
     @Test

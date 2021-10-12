@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class PostService {
 
@@ -30,14 +29,14 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundException("Not Found Post ID : " + postDto.getId())).getId();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PostDto findOne(Long id) throws NotFoundException {
         return postRepository.findById(id)
                 .map(postConverter::convertToPostDto)
                 .orElseThrow(() -> new NotFoundException("Not Found Post ID : " + id));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PostDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable).map(postConverter::convertToPostDto);
     }

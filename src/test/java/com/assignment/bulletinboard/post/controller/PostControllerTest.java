@@ -62,7 +62,7 @@ class PostControllerTest {
         Long id = postService.save(postDto);
 
         //Then
-//        assertThat(postId).isEqualTo(id);
+        assertThat(postId).isEqualTo(id);
     }
 
     @Test
