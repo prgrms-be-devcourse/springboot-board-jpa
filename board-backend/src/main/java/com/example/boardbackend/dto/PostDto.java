@@ -5,11 +5,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@ToString
-@Getter @Setter
+@Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class PostDto {
     private Long id;
     private String title;

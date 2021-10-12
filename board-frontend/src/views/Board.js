@@ -6,6 +6,7 @@ import Menu from '../components/Menu';
 
 function Board() {
 
+
     return (
         <div>
 

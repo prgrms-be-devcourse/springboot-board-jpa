@@ -23,8 +23,8 @@ public class UserController {
     // 회원가입
     @PostMapping
     public ResponseEntity<UserDto> signUp(@RequestBody UserDto userDto){
-        System.out.println(userDto.toString());
-        return ResponseEntity.ok(userService.saveUser(userDto));
+        UserDto response = userService.saveUser(userDto);
+        return ResponseEntity.ok(response);
     }
 
     // 로그인
@@ -47,14 +47,15 @@ public class UserController {
         }
         // 검증됨 -> 200 + id 값
         Long findId = userByEmail.get().getId();
-        return ResponseEntity.ok(responseConverter.convertToUserId(findId));
+        UserIdResponse response = responseConverter.convertToUserId(findId);
+        return ResponseEntity.ok(response);
     }
 
     // id로 회원정보 조회
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserInfo(@PathVariable("id") Long id) throws NotFoundException {
-        UserDto userById = userService.findUserById(id);
-        return ResponseEntity.ok(userById);
+        UserDto response = userService.findUserById(id);
+        return ResponseEntity.ok(response);
     }
 
     // 회원탈퇴

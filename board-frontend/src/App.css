@@ -4,17 +4,19 @@ body {
 }
 
 table{
-  width:100%;
+  width:70%;
+  margin:0 auto;
 }
 
 th{
   border: 1px solid black;
   background-color: lightgrey;
+  padding : 10px 10px;
 }
-
 
 td {
   border: 1px solid black;
+  padding : 10px 10px;
 }
 
 .div_menu{
@@ -51,6 +53,15 @@ td {
   text-align: left;
 }
 
+.div_wrapper_post{
+  display: inline-block;
+  width: 500px;
+  border : solid 1px;
+  margin : 10px;
+  padding: 15px;
+  text-align: left;
+}
+
 .div_result{
   border : solid 1px;
   margin : 10px;
@@ -60,4 +71,15 @@ td {
 .div_right{
   float : right;
   font-size: 18px;
+}
+
+.table_post{
+  table-layout: fixed;
+  width:70%;
+  margin:0 auto;
+}
+
+.td_content{
+  padding: 50px 50px;
+  word-wrap :break-word;
 }

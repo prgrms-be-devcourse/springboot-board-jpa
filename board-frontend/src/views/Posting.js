@@ -16,11 +16,6 @@ function Posting(props) {
     // Effect
     useEffect(() => {
         const userId = localStorage.getItem("userId");
-        if (userId == null) {
-            alert("로그인 정보가 없습니다");
-            props.history.push("/");
-            return
-        }
         axios.get(origin + "/api/user/" + userId)
             .then(res => {
                 console.log(res);

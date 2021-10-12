@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Menu from '../components/Menu';
+import { Link } from 'react-router-dom';
 
 
 function Mypage(props) {
@@ -12,16 +13,11 @@ function Mypage(props) {
 
   // State
   const [userInfo, setUserInfo] = useState({});
-  const [myPostInfo, setMyPostInfo] = useState([]);
+  const [myBoard, setMyBoard] = useState([]);
 
   // Effect
   useEffect(() => {
     const userId = localStorage.getItem("userId");
-    if (userId == null) {
-      alert("로그인 정보가 없습니다");
-      props.history.push("/");
-      return
-    }
     // userInfo
     axios.get(origin + "/api/user/" + userId)
       .then(res => {
@@ -32,19 +28,21 @@ function Mypage(props) {
     axios.get(origin + "/api/post/user/" + userId)
       .then(res => {
         console.log(res);
-        setMyPostInfo(res.data)
+        setMyBoard(res.data)
       })
   }, []);
 
   // Button
   const resign = () => {
-    axios.delete(origin + "/api/user/" + userInfo.id)
-      .then(res => {
-        console.log(res);
-        alert("회원탈퇴 완료. 초기화면으로 이동");
-        props.history.push("/");
-        return
-      })
+    if (window.confirm("정말 탈퇴하시겠습니까?")) {
+      axios.delete(origin + "/api/user/" + userInfo.id)
+        .then(res => {
+          console.log(res);
+          alert("회원탈퇴 완료. 초기화면으로 이동");
+          props.history.push("/");
+          return
+        })
+    }
   }
 
   return (
@@ -70,27 +68,23 @@ function Mypage(props) {
 
       <br /><br /><br />
 
-      <h2>내가 쓴 게시물</h2>
+      <h2>내가 작성한 게시물</h2>
       <hr /><br />
       <div style={{ textAlign: "center" }}>
         <table>
           <tr>
             <th>id(post)</th>
-            <th>title</th>
-            <th>content</th>
-            <th>createdAt</th>
-            <th>createdBy</th>
-            <th></th>
+            <th>제목(title)</th>
+            <th>조회수(view)</th>
+            <th>작성자(createdBy)</th>
           </tr>
           {
-            myPostInfo.map(v =>
+            myBoard.map(v =>
               <tr key={v.id}>
                 <td>{v.id}</td>
-                <td>{v.title}</td>
-                <td>{v.content}</td>
-                <td>{v.createdAt}</td>
-                <td>{v.userDto.email}</td>
-                <td><button>삭제</button></td>
+                <td style={{ width: "60%" }}><Link to={`/post/${v.id}`} >{v.title}</Link></td>
+                <td>{v.view}</td>
+                <td>{v.createdBy}</td>
               </tr>
             )
           }

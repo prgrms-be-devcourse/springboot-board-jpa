@@ -15,7 +15,8 @@ public class MvcConfiguration implements WebMvcConfigurer {
                 .allowedMethods(
                         HttpMethod.POST.name(),
                         HttpMethod.GET.name(),
-                        HttpMethod.DELETE.name()
+                        HttpMethod.DELETE.name(),
+                        HttpMethod.PATCH.name()
                 );
     }
 }

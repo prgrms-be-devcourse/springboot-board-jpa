@@ -17,7 +17,7 @@ function App() {
       <Route path="/mypage" component={ Mypage } exact />
       <Route path="/board" component={ Board } exact />
       <Route path="/posting" component={ Posting } exact />
-      <Route path="/post" component={ Post } exact />
+      <Route path="/post/:postId" component={ Post } exact />
 
     </BrowserRouter>
   );

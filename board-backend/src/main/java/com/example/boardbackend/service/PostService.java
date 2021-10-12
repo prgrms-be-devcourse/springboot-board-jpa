@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -31,6 +32,17 @@ public class PostService {
         return postRepository.findByCreatedBy(createdBy).stream()
                 .map(post -> dtoConverter.convertToPostDto(post))
                 .collect(Collectors.toList());
+    }
+
+    public PostDto findPostById(Long id){
+        return dtoConverter.convertToPostDto(postRepository.findById(id).get());
+    }
+
+    @Transactional
+    public Long updateView(Long id, Long newView){
+        Post entity = postRepository.findById(id).get();
+        entity.setView(newView);
+        return postRepository.findById(id).get().getView();
     }
 
 }

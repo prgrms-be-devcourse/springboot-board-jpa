@@ -5,10 +5,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter @Setter
+@Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class UserDto {
     private Long id;
     private String email;
