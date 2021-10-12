@@ -46,14 +46,12 @@ class UserServiceTest {
     @BeforeEach
     void insert() throws NotFoundException {
         UserDto userDtoB = UserDto.builder()
-                .id(1L)
                 .age(20)
                 .name("유지훈")
                 .hobby("잠자기")
                 .build();
         Long userId = userService.createUser(userDtoB);
         userDto = userService.findUser(userId);
-        log.info(" 유저 아이디 {}" , userDto.getId());
     }
 
     @AfterEach
@@ -68,17 +66,17 @@ class UserServiceTest {
     void createUser() throws NotFoundException {
         //given
         UserDto userDto2 = UserDto.builder()
-                .id(2L)
+                .id(1L)
                 .age(23)
                 .name("유지훈2")
                 .hobby("잠자기2")
                 .build();
         //when
-        Long userId =userService.createUser(userDto2);
+        Long id =userService.createUser(userDto2);
 
         //then
-        UserDto findUser = userService.findUser(userId);
-        assertThat(findUser.getId()).isEqualTo(userId);
+        UserDto findUser = userService.findUser(id);
+        assertThat(findUser.getId()).isEqualTo(id);
         assertThat(findUser.getName()).isEqualTo(userDto2.getName());
         assertThat(findUser.getAge()).isEqualTo(userDto2.getAge());
         assertThat(findUser.getHobby()).isEqualTo(userDto2.getHobby());
@@ -108,16 +106,7 @@ class UserServiceTest {
     @DisplayName("사용자 delete시 관련된 모든객체 삭제 기능 테스트")
     void deleteUser() throws NotFoundException {
         //given
-//        PostDto postDto = PostDto.builder()
-//                .id(1L)
-//                .user(userDto)
-//                .title("게시판 제목")
-//                .content("블라블라블라")
-//                .build();
-//        Long postId = postService.createPost(postDto);
-//        Post post = PostMapper.INSTANCE.postDtoToEntity(postService.findPost(postId));
         var findUser = userRepository.findById(userDto.getId()).orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
-//        findUser.getPosts().add(post);
 
         //when
         userService.deleteUser(userDto.getId());
