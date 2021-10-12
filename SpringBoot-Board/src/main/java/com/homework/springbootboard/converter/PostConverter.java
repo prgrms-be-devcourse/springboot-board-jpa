@@ -6,18 +6,16 @@ import com.homework.springbootboard.model.Post;
 import com.homework.springbootboard.model.User;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
-
 
 @Component
 public class PostConverter {
 
-    private Post convertPost(PostDto postDto) {
+    public Post convertPost(PostDto postDto) {
         Post post = Post.builder()
                 .id(postDto.getId())
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
-                .user(this.convertUser(postDto.getUserDto()))
+                .user(convertUser(postDto.getUserDto()))
                 .build();
         return post;
     }
@@ -28,15 +26,12 @@ public class PostConverter {
                 .name(userDto.getName())
                 .age(userDto.getAge())
                 .hobby(userDto.getHobby())
-                .postList(userDto.getPostDtos().stream()
-                        .map(this::convertPost)
-                        .collect(Collectors.toList())
-                )
                 .build();
+
         return user;
     }
 
-    private PostDto convertPostDto(Post post) {
+    public PostDto convertPostDto(Post post) {
         PostDto postDto = PostDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -53,10 +48,6 @@ public class PostConverter {
                 .name(user.getName())
                 .age(user.getAge())
                 .hobby(user.getHobby())
-                .postDtos(user.getPostList().stream()
-                        .map(this::convertPostDto)
-                        .collect(Collectors.toList())
-                )
                 .build();
 
         return userDto;
