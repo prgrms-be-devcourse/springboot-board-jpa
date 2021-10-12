@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import yjh.jpa.springnoticeboard.domain.converter.Converter;
 import yjh.jpa.springnoticeboard.domain.converter.PostMapper;
 import yjh.jpa.springnoticeboard.domain.converter.UserMapper;
 import yjh.jpa.springnoticeboard.domain.converter.UserMapperImpl;
@@ -33,16 +34,29 @@ public class PostServiceImpl implements PostService{
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    Converter converter;
+
     @Transactional
     @Override
     public Long createPost(PostDto postDto) throws NotFoundException {
-        Post post = PostMapper.INSTANCE.postDtoToEntity(postDto);
-        var u = userRepository.findById(postDto.getUser().getId()).get();
-        post.setUser(u);
-//        post.getUser().addPost(post);
-        post.setCreatedBy(postDto.getUser().getName());
+        log.info("postDto {} ", postDto.getId());
+        log.info("postDto {} ", postDto.getUser());
+        log.info("postDto {} ", postDto.getContent());
+        log.info("postDto {} ", postDto.getTitle());
+        var u = userRepository.findById(postDto.getUser().getId()).orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
+        log.info("User {} ", u);
+        Post post = converter.postDtoToEntity(postDto);
+        log.info("post {} ", post.getId());
+        log.info("post {} ", post.getUser());
+        log.info("post {} ", post.getContent());
+        log.info("post {} ", post.getTitle());
+
+        post.setCreatedBy(u.getName());
         post.setCratedAt(LocalDateTime.now());
-        return postRepository.save(post).getId();
+        post.setUser(u);
+        Post newPost = postRepository.save(post);
+        return newPost.getId();
     }
 
     @Transactional
@@ -59,7 +73,7 @@ public class PostServiceImpl implements PostService{
     @Override
     public Page<Object> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(post -> PostMapper.INSTANCE.postToDto(post));
+                .map(post -> converter.postToDto(post));
     }
 
     @Transactional(readOnly = true)
@@ -67,7 +81,7 @@ public class PostServiceImpl implements PostService{
     public PostDto findPost(Long postId) throws NotFoundException {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
         post.setUser(post.getUser());
-        return  PostMapper.INSTANCE.postToDto(post);
+        return  converter.postToDto(post);
     }
 
     @Transactional
