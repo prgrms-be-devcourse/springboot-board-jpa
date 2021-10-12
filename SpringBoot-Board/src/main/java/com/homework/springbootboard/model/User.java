@@ -49,8 +49,4 @@ public class User extends BaseEntity {
         setCreatedAt(LocalDateTime.now());
         setUpdatedAt(LocalDateTime.now());
     }
-
-    public void addPost(Post post) {
-        post.setUser(this);
-    }
 }

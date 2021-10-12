@@ -30,13 +30,13 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public void setUser(User user) {
-        if (Objects.nonNull(this.user)) {
-            this.user.getPostList().remove(this);
-        }
-        this.user = user;
-        user.getPostList().add(this);
-    }
+//    public void setUser(User user) {
+//        if (Objects.nonNull(this.user)) {
+//            this.user.getPostList().remove(this);
+//        }
+//        this.user = user;
+//        user.getPostList().add(this);
+//    }
 
     public void updatePost(PostDto postDto) {
         this.title = postDto.getTitle();
