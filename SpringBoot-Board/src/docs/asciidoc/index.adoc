@@ -1,0 +1,49 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets:  ../../../target/generated-snippets
+endif::[]
+
+== 게시물
+
+=== 게시물 생성
+
+=== /posts/{id}
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+=== 게시물 전체 조회
+=== /posts
+
+.Request
+include::{snippets}/posts-get/http-request.adoc[]
+
+.Response
+include::{snippets}/posts-get/http-response.adoc[]
+include::{snippets}/posts-get/response-fields.adoc[]
+
+=== 게시물 단일 조회
+=== /posts
+
+.Request
+include::{snippets}/post-get/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get/http-response.adoc[]
+include::{snippets}/post-get/response-fields.adoc[]
+
+=== 게시물 수정
+=== /posts/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
