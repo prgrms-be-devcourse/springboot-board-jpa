@@ -5,7 +5,6 @@ import com.kdt.programmers.forum.transfer.PostDto;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,18 +13,24 @@ public class PostController {
 
     private final PostService postService;
 
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
     @ExceptionHandler(NotFoundException.class)
     public ApiResponse<String> notFoundHandler(NotFoundException e) {
-        return ApiResponse.notFound("not found");
+        return ApiResponse.notFound(e.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ApiResponse<String> badRequestException(IllegalArgumentException e) {
-        return ApiResponse.badRequest("bad request");
+        return ApiResponse.badRequest(e.getMessage());
     }
 
-    public PostController(PostService postService) {
-        this.postService = postService;
+    @GetMapping("")
+    public ApiResponse<Page<PostDto>> getPosts(Pageable pageable) {
+        Page<PostDto> posts = postService.findPostsByPage(pageable);
+        return ApiResponse.ok(posts);
     }
 
     @PostMapping("")

@@ -28,4 +28,17 @@ public class PostService {
         Post entity = postRepository.save(post);
         return entity.getId();
     }
+
+    @Transactional
+    public PostDto findPostById(Long id) throws NotFoundException {
+        return postRepository.findById(id)
+            .map(postConverter::convertToPostDto)
+            .orElseThrow(() -> new NotFoundException("post not found"));
+    }
+
+    @Transactional
+    public Page<PostDto> findPostsByPage(Pageable pageable) {
+        return postRepository.findAll(pageable)
+            .map(postConverter::convertToPostDto);
+    }
 }
