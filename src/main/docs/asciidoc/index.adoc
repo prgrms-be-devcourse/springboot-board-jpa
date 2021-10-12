@@ -7,11 +7,11 @@ endif::[]
 
 === 게시판 등록
 
-==== /posts
+==== [POST] /posts
 
 .Request
 
-inlcude::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/http-request.adoc[]
 
 .Request Fields
 
@@ -35,7 +35,7 @@ include::{snippets}/post-save-error/response-fields.adoc[]
 
 === 게시판 조회
 
-==== /posts
+==== [GET] /posts
 
 .Request
 
@@ -48,3 +48,23 @@ include::{snippets}/post-get-all/http-response.adoc[]
 .Response Fields
 
 include::{snippets}/post-get-all/response-fields.adoc[]
+
+=== 게시판 업데이트
+
+==== [PUT] /posts/:id
+
+.Request
+
+include::{snippets}/post-update/http-request.adoc[]
+
+.Request Fields
+
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-update/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-update/response-fields.adoc[]
