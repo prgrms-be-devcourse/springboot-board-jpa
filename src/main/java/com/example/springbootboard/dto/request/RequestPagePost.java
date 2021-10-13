@@ -1,4 +1,4 @@
-package com.example.springbootboard.dto;
+package com.example.springbootboard.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class RequestPagePost {
         this.direction = direction;
     }
     // getter
-    public org.springframework.data.domain.PageRequest of() throws IllegalArgumentException {
+    public org.springframework.data.domain.PageRequest of() {
         return org.springframework.data.domain.PageRequest.of(page -1, size, Sort.Direction.fromString(direction), "createdAt");
     }
 }

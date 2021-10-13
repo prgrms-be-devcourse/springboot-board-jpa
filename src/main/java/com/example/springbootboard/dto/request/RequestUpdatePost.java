@@ -1,4 +1,4 @@
-package com.example.springbootboard.dto;
+package com.example.springbootboard.dto.request;
 
 import com.example.springbootboard.domain.Title;
 import lombok.Builder;
@@ -12,7 +12,6 @@ import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @Getter
-@Setter
 public class RequestUpdatePost {
 
     @Size(min = Title.TITLE_MIN_LENGTH, max = Title.TITLE_MAX_LENGTH, message = "게시물 제목의 길이를 확인해주세요")

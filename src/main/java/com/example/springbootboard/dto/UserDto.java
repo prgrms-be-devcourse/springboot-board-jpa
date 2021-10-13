@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RequestUser {
+public class UserDto {
 
 
     @Pattern(regexp = "^(?!.*\\.\\.)(?!.*\\.$)[^\\W][\\w.]{0,29}$", message = "이름을 확인해주세요")
@@ -29,13 +29,13 @@ public class RequestUser {
     private String hobby;
 
     @Builder
-    public RequestUser(String name, Integer age, String hobby) {
+    public UserDto(String name, Integer age, String hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
     }
 
-    public User toEntity() throws IllegalArgumentException {
+    public User toEntity() {
         return User.builder()
                 .createdAt(LocalDateTime.now())
                 .createdBy(getName())

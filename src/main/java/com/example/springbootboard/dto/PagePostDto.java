@@ -1,25 +1,25 @@
 package com.example.springbootboard.dto;
 
+import com.example.springbootboard.dto.response.PostDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
-public class ResponsePagePost {
+public class PagePostDto {
     private int page;
     private int size;
     private boolean first;
     private boolean last;
     private int totalPages;
     private long totalElements;
-    private List<ResponsePost> posts;
+    private List<PostDto> posts;
 
     @Builder
-    public ResponsePagePost(int page, int size, boolean first, boolean last, int totalPages, long totalElements, List<ResponsePost> posts) {
+    public PagePostDto(int page, int size, boolean first, boolean last, int totalPages, long totalElements, List<PostDto> posts) {
         this.page = page;
         this.size = size;
         this.first = first;
