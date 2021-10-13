@@ -171,7 +171,7 @@ class UserServiceTest {
 
   @Test
   @DisplayName("update 수행 전 없는 id 를 발견한 경우 not found exception을 뱉는다.")
-  void testUpdateException() throws NotFoundException {
+  void testUpdateException() {
     // GIVEN
     Long givenUserId = 0L;
     when(userRepository.findById(givenUserId)).thenReturn(Optional.empty());
@@ -251,7 +251,7 @@ class UserServiceTest {
 
   @Test
   @DisplayName("delete수행 전 없는 id 를 발견한 경우 not found exception을 뱉는다.")
-  void testDeleteException() throws NotFoundException {
+  void testDeleteException() {
     // GIVEN
     Long givenUserId = 0L;
     when(userRepository.findById(givenUserId)).thenReturn(Optional.empty());
@@ -259,7 +259,8 @@ class UserServiceTest {
     // WHEN
     // THEN
     assertThatThrownBy(
-        () -> this.userService.findOne(givenUserId)
+        () -> userService.findOne(givenUserId)
     ).isInstanceOf(NotFoundException.class);
+    verify(userRepository).findById(givenUserId);
   }
 }

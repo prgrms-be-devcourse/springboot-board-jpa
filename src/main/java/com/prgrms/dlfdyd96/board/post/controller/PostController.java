@@ -59,7 +59,7 @@ public class PostController {
   }
 
   @PutMapping("/posts/{id}")
-  public ApiResponse<Long> update(@PathVariable Long id, @RequestBody UpdatePostRequest updatePostRequest) throws Exception {
+  public ApiResponse<PostResponse> update(@PathVariable Long id, @RequestBody UpdatePostRequest updatePostRequest) throws Exception {
     return ApiResponse.ok(postService.update(id, updatePostRequest));
   }
 

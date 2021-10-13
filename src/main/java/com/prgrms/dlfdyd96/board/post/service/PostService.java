@@ -23,7 +23,7 @@ public class PostService {
 
   private final PostRepository postRepository;
   private final PostConverter postConverter;
-  private final UserRepository userRepository;
+  private final UserRepository userRepository; // TODO: UserRepository가 PostService에 있어도 되는 일인가?
 
   public PostService(
       PostRepository postRepository,
@@ -46,7 +46,8 @@ public class PostService {
   }
 
   public Page<PostResponse> findPosts(Pageable pageable) {
-    return postRepository.findAll(pageable).map(postConverter::convertPostResponse);
+    return postRepository.findAll(pageable)
+        .map(postConverter::convertPostResponse);
   }
 
   public PostResponse findOne(Long id) throws NotFoundException {
@@ -55,19 +56,32 @@ public class PostService {
         .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
   }
 
-  public Long update(Long id, UpdatePostRequest updatePostRequest) throws NotFoundException {
+  public PostResponse update(Long id, UpdatePostRequest updatePostRequest)
+      throws NotFoundException {
     Post post = postRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
+
+    // TODO: 게시물 주인인지 확인 작업 필요. (지금은 간단하게 진행) - security 배우면 진행.
+    User user = getUser(updatePostRequest.getUserId());
+    validatePostOwner(post, user);
 
     post.update(updatePostRequest);
 
-    return post.getId();
+    return postConverter.convertPostResponse(post);
   }
 
-  public void delete(Long id) throws NotFoundException {
-    Post post = postRepository.findById(id)
+  public void delete(Long postId) throws NotFoundException {
+    // TODO: 게시물 주인인지 확인 작업 필요. (지금은 안함) - security 배우면 진행.
+    Post post = postRepository.findById(postId)
         .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
+
     postRepository.delete(post);
+  }
+
+  public void validatePostOwner(Post post, User user) throws NotFoundException {
+    Long postId = post.getId();
+    Long userId = user.getId();
+    if (!postId.equals(userId)) throw new NotFoundException("게시물을 찾을 수 없습니다.");
   }
 }
 

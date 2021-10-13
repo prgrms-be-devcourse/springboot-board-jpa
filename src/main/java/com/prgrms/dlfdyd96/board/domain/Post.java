@@ -14,14 +14,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
-@Entity
 @Getter
+@Entity
 @Table(name = "post")
+@AllArgsConstructor
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
@@ -39,7 +42,6 @@ public class Post extends BaseEntity {
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 
-  @Builder
   public Post(String title, String content, User user) {
     Assert.hasText(title, "title is Not null");
     Assert.notNull(user, "user is Not null");
