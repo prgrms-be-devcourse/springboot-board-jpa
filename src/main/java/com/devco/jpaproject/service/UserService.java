@@ -1,10 +1,11 @@
 package com.devco.jpaproject.service;
 
+import com.devco.jpaproject.controller.dto.UserRequestDto;
 import com.devco.jpaproject.controller.dto.UserResponseDto;
 import com.devco.jpaproject.domain.User;
+import com.devco.jpaproject.exception.UserNotFoundException;
 import com.devco.jpaproject.repository.UserRepository;
 import com.devco.jpaproject.service.converter.Converter;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,31 +19,41 @@ public class UserService {
     private final Converter converter;
 
     @Transactional
-    public Long insert(UserResponseDto userDto){
-        User user = converter.toUserEntity(userDto);
+    public Long insert(UserRequestDto dto) {
+        User user = converter.toUserEntity(dto);
         userRepository.save(user);
 
         return user.getId(); // OSIV
     }
 
     @Transactional
-    public void delete(Long id) throws Exception {
+    public void deleteOne(Long id) throws UserNotFoundException {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new Exception("user not found"));
+                .orElseThrow(() -> new UserNotFoundException("userId: " + id + "not found"));
 
         user.delete();
         userRepository.delete(user);
     }
 
-    @Transactional
-    public void deleteAll() {
-        userRepository.deleteAll();
+    @Transactional(readOnly = true)
+    public UserResponseDto findById(Long id) throws UserNotFoundException {
+        return userRepository.findById(id)
+                .map(converter::toUserResponseDto)
+                .orElseThrow(() -> new UserNotFoundException("userId: " + id + "not found"));
     }
 
     @Transactional(readOnly = true)
-    public UserResponseDto findById(Long id) throws NotFoundException {
-        return userRepository.findById(id)
+    public UserResponseDto findByName(String name) throws UserNotFoundException {
+        return userRepository.findByName(name)
                 .map(converter::toUserResponseDto)
-                .orElseThrow(() -> new NotFoundException("user not found"));
+                .orElseThrow(() -> new UserNotFoundException("userName: " + name + "not found"));
+    }
+
+    /**
+     * test용 메소드
+     */
+    @Transactional
+    public void deleteAll() {
+        userRepository.deleteAll();
     }
 }

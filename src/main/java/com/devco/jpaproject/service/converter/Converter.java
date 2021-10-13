@@ -2,6 +2,7 @@ package com.devco.jpaproject.service.converter;
 
 import com.devco.jpaproject.controller.dto.PostRequestDto;
 import com.devco.jpaproject.controller.dto.PostResponseDto;
+import com.devco.jpaproject.controller.dto.UserRequestDto;
 import com.devco.jpaproject.controller.dto.UserResponseDto;
 import com.devco.jpaproject.domain.Post;
 import com.devco.jpaproject.domain.User;
@@ -32,7 +33,7 @@ public class Converter {
                 .content(post.getContent())
                 .title(post.getTitle())
                 .postId(post.getId())
-                .writer(this.toUserResponseDto(post.getWriter()))
+                .writerDto(this.toUserResponseDto(post.getWriter()))
                 .build();
     }
 
@@ -44,7 +45,7 @@ public class Converter {
                 .build();
     }
 
-    public User toUserEntity(UserResponseDto userDto) {
+    public User toUserEntity(UserRequestDto userDto) {
         return User.builder()
                 .age(userDto.getAge())
                 .name(userDto.getName())
