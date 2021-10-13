@@ -15,7 +15,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user")
+    @PostMapping("/user")
     public ApiResponse<Long> insert(@RequestBody UserRequestDto dto){
         Long id = userService.insert(dto);
 
