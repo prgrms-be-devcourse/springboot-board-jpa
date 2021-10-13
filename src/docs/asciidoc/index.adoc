@@ -1,0 +1,58 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시글
+
+=== 게시글 생성
+
+=== /posts
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+
+
+=== 게시글 단건 조회
+
+=== /posts/{postId}
+
+.Request
+include::{snippets}/post-get-one/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get-one/http-response.adoc[]
+
+=== 게시글 페이징 조회
+
+.Request
+=== /posts?page={pageNum}&size={pageSize}&direction={direction}
+include::{snippets}/post-get-all/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get-all/http-response.adoc[]
+
+=== 게시글 수정
+
+=== /posts/{postId}
+
+.Request
+include::{snippets}/post-update/request-fields.adoc[]
+include::{snippets}/post-update/http-request.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+
+=== 게시글 삭제
+
+=== /posts/{postId}
+
+.Request
+include::{snippets}/post-delete/http-request.adoc[]
+
+.Response
+include::{snippets}/post-delete/http-response.adoc[]
