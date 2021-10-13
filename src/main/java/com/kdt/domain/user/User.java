@@ -30,7 +30,7 @@ public class User extends BaseEntity {
     @Column(name = "name", nullable = false, length = 45)
     private String name;
 
-    @Column(name = "age")
+    @Column(name = "age", columnDefinition = "SMALLINT")
     private int age;
 
     @Builder
