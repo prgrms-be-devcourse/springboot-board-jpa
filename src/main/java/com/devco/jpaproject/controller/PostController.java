@@ -1,12 +1,17 @@
 package com.devco.jpaproject.controller;
 
+import com.devco.jpaproject.controller.dto.PostDeleteRequestDto;
 import com.devco.jpaproject.controller.dto.PostRequestDto;
 import com.devco.jpaproject.controller.dto.PostResponseDto;
+import com.devco.jpaproject.exception.PostNotFoundException;
+import com.devco.jpaproject.exception.UserAndPostNotMatchException;
+import com.devco.jpaproject.exception.UserNotFoundException;
 import com.devco.jpaproject.service.PostService;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,16 +35,23 @@ public class PostController {
     }
 
     @GetMapping("/post/{id}")
-    public ApiResponse<PostResponseDto> findById(@PathVariable Long id) throws NotFoundException {
+    public ApiResponse<PostResponseDto> findById(@PathVariable Long id) throws PostNotFoundException {
         var postResponseDto = postService.findById(id);
         return ApiResponse.ok(postResponseDto);
     }
 
     @PostMapping("/post")
-    public ApiResponse<Long> insert(@RequestBody PostRequestDto dto) throws NotFoundException {
+    public ApiResponse<Long> insert(@RequestBody PostRequestDto dto) throws UserNotFoundException {
         Long postId = postService.insert(dto);
 
         return ApiResponse.ok(postId);
+    }
+
+    @DeleteMapping("/post")
+    public ResponseEntity deleteOne(@RequestBody PostDeleteRequestDto dto) throws PostNotFoundException, UserNotFoundException, UserAndPostNotMatchException {
+        postService.deleteOne(dto);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }
