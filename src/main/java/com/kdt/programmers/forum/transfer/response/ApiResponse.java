@@ -1,4 +1,4 @@
-package com.kdt.programmers.forum.transfer;
+package com.kdt.programmers.forum.transfer.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
