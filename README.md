@@ -71,48 +71,48 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 <td style="text-align: left;"><p>Description</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+success+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>success</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>Is successful response</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+status_code+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>status_code</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>status code of response</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+http_method+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>http_method</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>http method of request</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data+</code></p></td>
-<td style="text-align: left;"><p><code>+Object+</code></p></td>
+<td style="text-align: left;"><p><code>data</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
 <td style="text-align: left;"><p>post info</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.title+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.title</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>title of post</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.content+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.content</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>content of post</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.post_id+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>data.post_id</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>post id</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.created_by+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.created_by</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>post created by</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.created_at+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.created_at</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>post created at</p></td>
 </tr>
 </tbody>
@@ -148,163 +148,163 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 <td style="text-align: left;"><p>Description</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+success+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>success</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>Is successful response</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+status_code+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>status_code</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>status code of response</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+http_method+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>http_method</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>http method of request</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data+</code></p></td>
-<td style="text-align: left;"><p><code>+Object+</code></p></td>
+<td style="text-align: left;"><p><code>data</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
 <td style="text-align: left;"><p>data retrieved</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.content+</code></p></td>
-<td style="text-align: left;"><p><code>+Array+</code></p></td>
+<td style="text-align: left;"><p><code>data.content</code></p></td>
+<td style="text-align: left;"><p><code>Array</code></p></td>
 <td style="text-align: left;"><p>posts</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.content[].title+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.content[].title</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>title of post</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.content[].content+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.content[].content</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>content of post</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.content[].post_id+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>data.content[].post_id</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>post id</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.content[].created_by+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.content[].created_by</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>post created by</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.content[].created_at+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.content[].created_at</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>post created at</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.pageable+</code></p></td>
-<td style="text-align: left;"><p><code>+Object+</code></p></td>
+<td style="text-align: left;"><p><code>data.pageable</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
 <td style="text-align: left;"><p>pagable</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.pageable.sort+</code></p></td>
-<td style="text-align: left;"><p><code>+Object+</code></p></td>
+<td style="text-align: left;"><p><code>data.pageable.sort</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
 <td style="text-align: left;"><p>data.pageable.sort</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.pageable.sort.empty+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>data.pageable.sort.empty</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>data.pageable.sort.empty</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.pageable.sort.sorted+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>data.pageable.sort.sorted</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>data.pageable.sort.sorted</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.pageable.sort.unsorted+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>data.pageable.sort.unsorted</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>data.pageable.sort.unsorted</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.pageable.offset+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>data.pageable.offset</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>data.pageable.offset</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.pageable.pageNumber+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>data.pageable.pageNumber</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>data.pageable.pageNumber</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.pageable.pageSize+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>data.pageable.pageSize</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>data.pageable.pageSize</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.pageable.paged+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>data.pageable.paged</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>data.pageable.paged</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.pageable.unpaged+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>data.pageable.unpaged</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>data.pageable.unpaged</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.totalPages+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>data.totalPages</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>data.totalPages</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.totalElements+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>data.totalElements</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>data.totalElements</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.last+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>data.last</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>data.last</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.size+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>data.size</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>data.size</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.number+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>data.number</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>data.number</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.sort+</code></p></td>
-<td style="text-align: left;"><p><code>+Object+</code></p></td>
+<td style="text-align: left;"><p><code>data.sort</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
 <td style="text-align: left;"><p>data.sort</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.sort.empty+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>data.sort.empty</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>data.sort.empty</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.sort.sorted+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>data.sort.sorted</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>data.sort.sorted</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.sort.unsorted+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>data.sort.unsorted</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>data.sort.unsorted</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.numberOfElements+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>data.numberOfElements</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>data.numberOfElements</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.first+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>data.first</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>data.first</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.empty+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>data.empty</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>data.empty</p></td>
 </tr>
 </tbody>
@@ -336,23 +336,23 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 <td style="text-align: left;"><p>Description</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+id+</code></p></td>
-<td style="text-align: left;"><p><code>+Null+</code></p></td>
+<td style="text-align: left;"><p><code>id</code></p></td>
+<td style="text-align: left;"><p><code>Null</code></p></td>
 <td style="text-align: left;"><p>id (IGNORED)</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+title+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>title</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>title</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+content+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>content</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>content</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+username+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>username</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>username</p></td>
 </tr>
 </tbody>
@@ -379,48 +379,48 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 <td style="text-align: left;"><p>Description</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+success+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>success</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>Is successful response</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+status_code+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>status_code</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>status code of response</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+http_method+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>http_method</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>http method of request</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data+</code></p></td>
-<td style="text-align: left;"><p><code>+Object+</code></p></td>
+<td style="text-align: left;"><p><code>data</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
 <td style="text-align: left;"><p>created post info</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.title+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.title</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>title of post</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.content+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.content</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>content of post</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.post_id+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>data.post_id</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>post id</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.created_by+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.created_by</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>post created by</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.created_at+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.created_at</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>post created at</p></td>
 </tr>
 </tbody>
@@ -452,23 +452,23 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 <td style="text-align: left;"><p>Description</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+id+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>id</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>id</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+title+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>title</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>title</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+content+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>content</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>content</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+username+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>username</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>username (IGNORED)</p></td>
 </tr>
 </tbody>
@@ -495,48 +495,48 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 <td style="text-align: left;"><p>Description</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+success+</code></p></td>
-<td style="text-align: left;"><p><code>+Boolean+</code></p></td>
+<td style="text-align: left;"><p><code>success</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
 <td style="text-align: left;"><p>Is successful response</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+status_code+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>status_code</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>status code of response</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+http_method+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>http_method</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>http method of request</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data+</code></p></td>
-<td style="text-align: left;"><p><code>+Object+</code></p></td>
+<td style="text-align: left;"><p><code>data</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
 <td style="text-align: left;"><p>updated post info</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.title+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.title</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>title of post</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.content+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.content</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>content of post</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.post_id+</code></p></td>
-<td style="text-align: left;"><p><code>+Number+</code></p></td>
+<td style="text-align: left;"><p><code>data.post_id</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
 <td style="text-align: left;"><p>post id</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>+data.created_by+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.created_by</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>post created by</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>+data.created_at+</code></p></td>
-<td style="text-align: left;"><p><code>+String+</code></p></td>
+<td style="text-align: left;"><p><code>data.created_at</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
 <td style="text-align: left;"><p>post created at</p></td>
 </tr>
 </tbody>
