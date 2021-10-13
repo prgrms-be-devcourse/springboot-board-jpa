@@ -15,16 +15,12 @@ import org.springframework.data.domain.PageRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//@ExtendWith(MockitoExtension.class)
-//@WebAppConfiguration
 @SpringBootTest
 class PostServiceTest {
 
-    //    @InjectMocks
     @Autowired
     private PostService postService;
 
-    //    @Mock
     @Autowired
     private PostRepository postRepository;
 
