@@ -5,6 +5,8 @@ import org.apache.tomcat.jni.Local;
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="user")
@@ -42,6 +44,14 @@ public class User {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "createdBy") // 연관관계 주인은 order.createBy
+    private List<Post> posts = new ArrayList<>();
+
+    // 연관관계 편의 메소드
+    public void addPost(Post post) {
+        post.setCreatedBy(this);
+    }
+
     // GETTER
     public Long getId() {
         return id;
@@ -67,6 +77,10 @@ public class User {
         return updatedAt;
     }
 
+    public List<Post> getPosts() {
+        return posts;
+    }
+
     // SETTER
 
     public void setName(String name) {
@@ -83,4 +97,5 @@ public class User {
         this.hobby = hobby;
         this.updatedAt = LocalDateTime.now();
     }
+
 }

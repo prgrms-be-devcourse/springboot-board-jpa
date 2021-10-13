@@ -2,6 +2,7 @@ package com.example.springbootboard.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name="post")
@@ -12,7 +13,7 @@ public class Post {
 
     }
 
-    public Post(String title, String content, User createdBy){
+    public Post(String title, String content){
         this.title = title;
         this.content = content;
         this.createdBy = createdBy;
@@ -39,6 +40,15 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     private User createdBy;
+
+    // 연관관계 편의 메소드
+    public void setCreatedBy(User createdBy) {
+        if(Objects.nonNull(this.createdBy)) {
+            this.createdBy.getPosts().remove(this);
+        }
+        this.createdBy = createdBy;
+        createdBy.getPosts().add(this);
+    }
 
     // GETTER
 
@@ -78,8 +88,4 @@ public class Post {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-        this.updatedAt = LocalDateTime.now();
-    }
 }
