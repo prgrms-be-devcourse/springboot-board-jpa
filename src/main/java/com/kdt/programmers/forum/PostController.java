@@ -1,8 +1,10 @@
 package com.kdt.programmers.forum;
 
-import com.kdt.programmers.forum.transfer.ApiResponse;
-import com.kdt.programmers.forum.transfer.ErrorResponse;
+import com.kdt.programmers.forum.transfer.request.PostRequest;
+import com.kdt.programmers.forum.transfer.response.ApiResponse;
+import com.kdt.programmers.forum.transfer.response.ErrorResponse;
 import com.kdt.programmers.forum.transfer.PostDto;
+import com.kdt.programmers.forum.utils.PostConverter;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +17,11 @@ public class PostController {
 
     private final PostService postService;
 
-    public PostController(PostService postService) {
+    private final PostConverter postConverter;
+
+    public PostController(PostService postService, PostConverter postConverter) {
         this.postService = postService;
+        this.postConverter = postConverter;
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -45,13 +50,15 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    public ApiResponse<PostDto> savePost(@RequestBody PostDto dto) {
+    public ApiResponse<PostDto> savePost(@RequestBody PostRequest postRequest) {
+        PostDto dto = postConverter.convertToPostDto(postRequest);
         PostDto post = postService.savePost(dto);
         return ApiResponse.response(post);
     }
 
     @PatchMapping("/{postId}")
-    public ApiResponse<PostDto> updatePost(@PathVariable Long postId, @RequestBody PostDto dto) throws NotFoundException {
+    public ApiResponse<PostDto> updatePost(@PathVariable Long postId, @RequestBody PostRequest postRequest) throws NotFoundException {
+        PostDto dto = postConverter.convertToPostDto(postRequest);
         PostDto post = postService.updatePost(postId, dto);
         return ApiResponse.response(post);
     }
