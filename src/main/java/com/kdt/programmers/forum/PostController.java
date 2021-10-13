@@ -1,6 +1,7 @@
 package com.kdt.programmers.forum;
 
 import com.kdt.programmers.forum.transfer.ApiResponse;
+import com.kdt.programmers.forum.transfer.ErrorResponse;
 import com.kdt.programmers.forum.transfer.PostDto;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
@@ -20,14 +21,14 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
-    public ApiResponse<String> notFoundHandler(NotFoundException e) {
-        return ApiResponse.response(e.getMessage());
+    public ErrorResponse<String> notFoundHandler(NotFoundException e) {
+        return ErrorResponse.response(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
-    public ApiResponse<String> badRequestException(IllegalArgumentException e) {
-        return ApiResponse.response(e.getMessage());
+    public ErrorResponse<String> badRequestException(IllegalArgumentException e) {
+        return ErrorResponse.response(e.getMessage());
     }
 
     @GetMapping("")
