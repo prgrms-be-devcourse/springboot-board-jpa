@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "user")
 @Getter
 @Setter
-public class User {
+public class User extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto 전략으로 기본키를 맵핑할 것이다
     private Long id;
