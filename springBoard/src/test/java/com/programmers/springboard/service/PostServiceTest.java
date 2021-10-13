@@ -6,8 +6,6 @@ import com.programmers.springboard.dto.UserDto;
 import com.programmers.springboard.model.Post;
 import com.programmers.springboard.repository.PostRepository;
 import javassist.NotFoundException;
-import org.hamcrest.MatcherAssert;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,5 +86,13 @@ class PostServiceTest {
         assertThat(post.getTitle()).isEqualTo(postDto.getTitle());
     }
 
+    @Test
+    void deleteTest() throws NotFoundException {
+        //Given
+        Post post = postRepository.findById(1L).get();
+
+        //When
+        postService.delete(post.getId());
+    }
 
 }

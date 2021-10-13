@@ -42,10 +42,15 @@ public class PostService {
 
     @Transactional
     public Long update(PostDto dto, Long id) throws NotFoundException {
-        var post = postRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.POSTS_NOT_FOUND.getMessage()));
+        Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.POSTS_NOT_FOUND.getMessage()));
         post.update(dto.getTitle(), dto.getContent(), postConverter.convertUser(dto.getUserDto()));
         return id;
     }
 
+    @Transactional
+    public void delete(Long id) throws NotFoundException {
+        Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.POSTS_NOT_FOUND.getMessage()));
+        postRepository.delete(post);
+    }
 
 }

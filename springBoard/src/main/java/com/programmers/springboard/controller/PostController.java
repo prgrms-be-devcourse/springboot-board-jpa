@@ -42,4 +42,9 @@ public class PostController {
         Long postId = postService.update(postDto, id);
         return ApiResponse.ok(postId);
     }
+
+    @DeleteMapping("/posts/{id}")
+    public void delete(@PathVariable Long id) throws NotFoundException {
+        postService.delete(id);
+    }
 }
