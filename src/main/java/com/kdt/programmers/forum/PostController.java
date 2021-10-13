@@ -1,5 +1,6 @@
 package com.kdt.programmers.forum;
 
+import com.kdt.programmers.forum.transfer.PageDto;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import com.kdt.programmers.forum.transfer.response.ApiResponse;
 import com.kdt.programmers.forum.transfer.response.ErrorResponse;
@@ -37,9 +38,10 @@ public class PostController {
     }
 
     @GetMapping("")
-    public ApiResponse<Page<PostDto>> getPosts(Pageable pageable) {
+    public ApiResponse<PageDto> getPosts(Pageable pageable) {
         Page<PostDto> posts = postService.findPostsByPage(pageable);
-        return ApiResponse.response(posts);
+        PageDto dto = new PageDto(posts.getContent(), posts.getTotalPages(), posts.getTotalElements());
+        return ApiResponse.response(dto);
     }
 
     @GetMapping("/{postId}")

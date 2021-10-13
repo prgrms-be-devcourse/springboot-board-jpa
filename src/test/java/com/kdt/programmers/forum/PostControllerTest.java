@@ -3,17 +3,23 @@ package com.kdt.programmers.forum;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kdt.programmers.forum.transfer.PostDto;
+import com.kdt.programmers.forum.transfer.request.PostRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -21,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 class PostControllerTest {
 
     @Autowired
@@ -45,15 +52,29 @@ class PostControllerTest {
     @DisplayName("게시글을 저장할 수 있다")
     void savePost() throws Exception {
         // Given
-        PostDto postDto = new PostDto("test title", "");
+        PostRequest postRequest = new PostRequest("test title", "");
 
         // When Then
         mockMvc
             .perform(post("/api/v1/posts")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(postDto)))
+                .content(objectMapper.writeValueAsString(postRequest)))
             .andExpect(status().isCreated())
-            .andDo(print());
+            .andDo(print())
+            .andDo(document("post-save",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("title").type(JsonFieldType.STRING).description("post title"),
+                    fieldWithPath("content").type(JsonFieldType.STRING).description("post content")
+                ),
+                responseFields(
+                    fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
+                    fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
+                    fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
+                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
+                )
+            ));
     }
 
 
