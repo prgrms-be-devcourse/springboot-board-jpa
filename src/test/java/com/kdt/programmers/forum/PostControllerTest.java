@@ -42,7 +42,6 @@ class PostControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
     @BeforeEach
     void clean() {
         postJpaRepository.deleteAll();
@@ -90,7 +89,16 @@ class PostControllerTest {
             .perform(get("/api/v1/posts/{postId}", post.getId())
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andDo(print());
+            .andDo(print())
+            .andDo(document("get-post-by-id",
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
+                    fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
+                    fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
+                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
+                )
+            ));
     }
 
     @Test
@@ -111,7 +119,18 @@ class PostControllerTest {
                 .param("page", PAGE))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.content", hasSize(3)))
-            .andDo(print());
+            .andDo(print())
+            .andDo(document("get-posts-by-page",
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("id"),
+                    fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("title"),
+                    fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("content"),
+                    fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("total pages"),
+                    fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("total elements"),
+                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
+                )
+            ));
 
         // When Then
         final String NEXT_PAGE = "1";
@@ -129,14 +148,28 @@ class PostControllerTest {
     void testUpdatePost() throws Exception {
         // Given
         PostDto post = postService.savePost(new PostDto("test post", ""));
-        PostDto updateDto = new PostDto("updated post", "");
+        PostRequest updateRequest = new PostRequest("updated post", "");
 
         // When Then
         mockMvc
             .perform(patch("/api/v1/posts/{postId}", post.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateDto)))
+                .content(objectMapper.writeValueAsString(updateRequest)))
             .andExpect(status().isOk())
-            .andDo(print());
+            .andDo(print())
+            .andDo(document("update-post",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("title").type(JsonFieldType.STRING).description("post title"),
+                    fieldWithPath("content").type(JsonFieldType.STRING).description("post content")
+                ),
+                responseFields(
+                    fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
+                    fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
+                    fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
+                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
+                )
+            ));
     }
 }
