@@ -25,7 +25,6 @@ public class User extends CreationBaseEntity {
     private String hobby;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
-    @Builder.Default
     private List<Post> posts = new ArrayList<>();
 
     public void addPost(Post post) {
