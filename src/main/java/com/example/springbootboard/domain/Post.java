@@ -1,24 +1,21 @@
 package com.example.springbootboard.domain;
 
-import org.apache.tomcat.jni.Local;
-
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="user")
-public class User {
+@Table(name="post")
+public class Post {
 
     // Default Constructor
-    protected User(){
+    protected Post(){
 
     }
 
-    public User(String name, int age, String hobby) {
-        this.name = name;
-        this.age = age;
-        this.hobby = hobby;
+    public Post(String title, String content, User createdBy){
+        this.title = title;
+        this.content = content;
+        this.createdBy = createdBy;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
@@ -27,14 +24,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 30)
-    private String name;
+    @Column(name = "title", nullable = false, length = 255)
+    private String title;
 
-    @Column(name = "age", nullable = false)
-    private int age;
-
-    @Column(name = "hobby", nullable = true, length = 30)
-    private String hobby;
+    @Lob
+    private String content;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
@@ -42,21 +36,22 @@ public class User {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    private User createdBy;
+
     // GETTER
+
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public String getHobby() {
-        return hobby;
+    public String getContent() {
+        return content;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -67,20 +62,24 @@ public class User {
         return updatedAt;
     }
 
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
     // SETTER
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setContent(String content) {
+        this.content = content;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void setHobby(String hobby) {
-        this.hobby = hobby;
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
         this.updatedAt = LocalDateTime.now();
     }
 }
