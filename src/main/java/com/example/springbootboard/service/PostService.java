@@ -3,10 +3,11 @@ package com.example.springbootboard.service;
 import com.example.springbootboard.domain.Post;
 import com.example.springbootboard.domain.Title;
 import com.example.springbootboard.domain.User;
-import com.example.springbootboard.dto.RequestCreatePost;
-import com.example.springbootboard.dto.RequestUpdatePost;
-import com.example.springbootboard.dto.ResponsePagePost;
-import com.example.springbootboard.dto.ResponsePost;
+import com.example.springbootboard.dto.response.PostDto;
+import com.example.springbootboard.dto.request.RequestCreatePost;
+import com.example.springbootboard.dto.request.RequestUpdatePost;
+import com.example.springbootboard.dto.PagePostDto;
+import com.example.springbootboard.error.exception.EntityNotFoundException;
 import com.example.springbootboard.repository.PostRepository;
 import com.example.springbootboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class PostService {
     @Transactional
     public Long save(RequestCreatePost request) {
 
-        User user = request.getRequestUser().toEntity();
+        User user = request.getUserDto().toEntity();
         userRepository.save(user);
 
         Post post = postRepository.save(request.toEntity(user));
@@ -41,24 +42,24 @@ public class PostService {
     public Long update(Long id, RequestUpdatePost request) {
 
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("There is no post. id = {0}", id)));
+                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("There is no post. id = {0}", id)));
 
         post.update(new Title(request.getTitle()), request.getContent());
 
         return id;
     }
 
-    public ResponsePost findOne(Long postId) {
+    public PostDto findOne(Long postId) {
 
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("There is no post. id = {0}", postId)));
+                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("There is no post. id = {0}", postId)));
 
         return toDto(post);
     }
 
 
-    public ResponsePagePost findAll(Pageable pageable) {
-        Page<ResponsePost> result = postRepository.findAll(pageable)
+    public PagePostDto findAll(Pageable pageable) {
+        Page<PostDto> result = postRepository.findAll(pageable)
                 .map(this::toDto);
 
         return toDto(result);
@@ -71,18 +72,18 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
-    private ResponsePost toDto(Post post) {
-        return ResponsePost.builder()
+    private PostDto toDto(Post post) {
+        return PostDto.builder()
                 .createdAt(post.getCreatedAt())
                 .createdBy(post.getCreatedBy())
-                .id(post.getId())
+                .postId(post.getId())
                 .title(post.getTitle().getTitle())
                 .content(post.getContent())
                 .build();
     }
 
-    private ResponsePagePost toDto(Page<ResponsePost> result) {
-        return ResponsePagePost.builder()
+    private PagePostDto toDto(Page<PostDto> result) {
+        return PagePostDto.builder()
                 .posts(result.getContent())
                 .page(result.getNumber())
                 .size(result.getNumberOfElements())
