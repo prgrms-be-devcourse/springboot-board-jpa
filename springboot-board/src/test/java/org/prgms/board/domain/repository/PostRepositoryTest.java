@@ -1,6 +1,5 @@
 package org.prgms.board.domain.repository;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,13 +45,6 @@ class PostRepositoryTest {
 
         userId = userRepository.save(user).getId();
         postId = postRepository.save(post).getId();
-    }
-
-    @AfterEach
-    void tearDown() {
-        commentRepository.deleteAll();
-        postRepository.deleteAll();
-        userRepository.deleteAll();
     }
 
     @DisplayName("게시글 등록 확인")

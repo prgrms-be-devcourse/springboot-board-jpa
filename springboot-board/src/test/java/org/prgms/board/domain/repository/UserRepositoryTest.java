@@ -1,6 +1,5 @@
 package org.prgms.board.domain.repository;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,11 +29,6 @@ class UserRepositoryTest {
             .build();
 
         userId = userRepository.save(user).getId();
-    }
-
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
     }
 
     @DisplayName("사용자 저장 확인")
