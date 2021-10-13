@@ -2,8 +2,10 @@ package com.example.springbootboard.service;
 
 import com.example.springbootboard.domain.Post;
 import com.example.springbootboard.domain.Title;
-import com.example.springbootboard.domain.User;
 import com.example.springbootboard.dto.*;
+import com.example.springbootboard.dto.request.RequestCreatePost;
+import com.example.springbootboard.dto.request.RequestUpdatePost;
+import com.example.springbootboard.dto.response.PostDto;
 import com.example.springbootboard.repository.PostRepository;
 import com.example.springbootboard.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +15,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,11 +37,11 @@ public class PostServiceTest {
     @Autowired
     UserRepository userRepository;
 
-    RequestUser requestUser = null;
+    UserDto requestUser = null;
 
     @BeforeAll
     void setUp() {
-        requestUser = RequestUser.builder()
+        requestUser = UserDto.builder()
                 .age(27)
                 .name("seunghun")
                 .hobby("SPORTS")
@@ -61,7 +61,7 @@ public class PostServiceTest {
         RequestCreatePost request = RequestCreatePost.builder()
                 .content("content")
                 .title("title")
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .build();
 
         //when
@@ -82,16 +82,16 @@ public class PostServiceTest {
         RequestCreatePost request = RequestCreatePost.builder()
                 .content("content")
                 .title("title")
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .build();
 
         Long postId = postService.save(request);
 
         //when
-        ResponsePost response = postService.findOne(postId);
+        PostDto response = postService.findOne(postId);
 
         //then
-        assertThat(response.getId()).isEqualTo(postId);
+        assertThat(response.getPostId()).isEqualTo(postId);
         assertThat(response.getContent()).isEqualTo(request.getContent());
         assertThat(response.getTitle()).isEqualTo(request.getTitle());
     } 
@@ -103,19 +103,19 @@ public class PostServiceTest {
         RequestCreatePost request1 = RequestCreatePost.builder()
                 .content("content1")
                 .title("title1")
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .build();
 
         RequestCreatePost request2 = RequestCreatePost.builder()
                 .content("content2")
                 .title("title2")
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .build();
 
         RequestCreatePost request3 = RequestCreatePost.builder()
                 .content("content3")
                 .title("title3")
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .build();
 
         PageRequest pageRequest = PageRequest.of(0, 10);
@@ -126,7 +126,7 @@ public class PostServiceTest {
         postService.save(request3);
 
         //then
-        ResponsePagePost actual = postService.findAll(pageRequest);
+        PagePostDto actual = postService.findAll(pageRequest);
         assertThat(actual.getPosts()).hasSize(3);
         log.info("page: {}", actual);
     }
@@ -138,7 +138,7 @@ public class PostServiceTest {
         RequestCreatePost requestCreate = RequestCreatePost.builder()
                 .content("content")
                 .title("title")
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .build();
 
         Long postId = postService.save(requestCreate);

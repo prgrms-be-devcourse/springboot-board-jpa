@@ -1,8 +1,8 @@
 package com.example.springbootboard.controller;
 
-import com.example.springbootboard.dto.RequestCreatePost;
-import com.example.springbootboard.dto.RequestUpdatePost;
-import com.example.springbootboard.dto.RequestUser;
+import com.example.springbootboard.dto.request.RequestCreatePost;
+import com.example.springbootboard.dto.request.RequestUpdatePost;
+import com.example.springbootboard.dto.UserDto;
 import com.example.springbootboard.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -54,11 +53,11 @@ class PostApiControllerTest {
 
     private Validator validator;
 
-    RequestUser requestUser = null;
+    UserDto requestUser = null;
 
     @BeforeAll
     void setUp() {
-        requestUser = RequestUser.builder()
+        requestUser = UserDto.builder()
                 .age(27)
                 .name("seunghun")
                 .hobby("SPORTS")
@@ -70,7 +69,7 @@ class PostApiControllerTest {
 
     @AfterEach
     void restore() {
-        requestUser = RequestUser.builder()
+        requestUser = UserDto.builder()
                 .age(27)
                 .name("seunghun")
                 .hobby("SPORTS")
@@ -82,7 +81,7 @@ class PostApiControllerTest {
     public void testSavePost() throws Exception {
         //given
         RequestCreatePost request = RequestCreatePost.builder()
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .title("나는 전설이다")
                 .content("좀비 세상에서 살아남기")
                 .build();
@@ -117,7 +116,7 @@ class PostApiControllerTest {
     public void testGetOne() throws Exception {
         //given
         RequestCreatePost request = RequestCreatePost.builder()
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .title("나는 전설이다")
                 .content("좀비 세상에서 살아남기")
                 .build();
@@ -132,19 +131,23 @@ class PostApiControllerTest {
         //then
         actions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("title").value("나는 전설이다"))
-                .andExpect(jsonPath("content").value("좀비 세상에서 살아남기"))
+                .andExpect(jsonPath("data.title").value("나는 전설이다"))
+                .andExpect(jsonPath("data.content").value("좀비 세상에서 살아남기"))
                 .andDo(print())
                 .andDo(document("post-get-one",
                         pathParameters(
                             parameterWithName("postId").description("postId")
                         ),
                         responseFields(
-                            fieldWithPath("id").type(NUMBER).description("id"),
-                            fieldWithPath("title").type(STRING).description("title"),
-                            fieldWithPath("content").type(STRING).description("content"),
-                            fieldWithPath("createdAt").type(STRING).description("createdAt"),
-                            fieldWithPath("createdBy").type(STRING).description("createdBy")
+                            fieldWithPath("status").type(STRING).description("status"),
+                            fieldWithPath("data").type(OBJECT).description("data"),
+                            fieldWithPath("data.postId").type(NUMBER).description("postId"),
+                            fieldWithPath("data.title").type(STRING).description("title"),
+                            fieldWithPath("data.content").type(STRING).description("content"),
+                            fieldWithPath("data.createdAt").type(STRING).description("createdAt"),
+                            fieldWithPath("data.createdBy").type(STRING).description("createdBy"),
+                            fieldWithPath("serverDateTime").type(STRING).description("serverDateTime")
+
                         )
                 ));
 
@@ -155,7 +158,7 @@ class PostApiControllerTest {
     public void testGetAll() throws Exception {
         //given
         RequestCreatePost request = RequestCreatePost.builder()
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .title("나는 전설이다")
                 .content("좀비 세상에서 살아남기")
                 .build();
@@ -176,18 +179,21 @@ class PostApiControllerTest {
                 .andDo(print())
                 .andDo(document("post-get-all",
                         responseFields(
-                            fieldWithPath("page").type(NUMBER).description("page"),
-                            fieldWithPath("size").type(NUMBER).description("size"),
-                            fieldWithPath("first").type(BOOLEAN).description("first"),
-                            fieldWithPath("last").type(BOOLEAN).description("last"),
-                            fieldWithPath("totalPages").type(NUMBER).description("totalPages"),
-                            fieldWithPath("totalElements").type(NUMBER).description("totalElements"),
-                            fieldWithPath("posts[]").type(ARRAY).description("posts"),
-                            fieldWithPath("posts[].id").type(NUMBER).description("id"),
-                            fieldWithPath("posts[].title").type(STRING).description("title"),
-                            fieldWithPath("posts[].content").type(STRING).description("content"),
-                            fieldWithPath("posts[].createdAt").type(STRING).description("createdAt"),
-                            fieldWithPath("posts[].createdBy").type(STRING).description("createdBy")
+                            fieldWithPath("status").type(STRING).description("status"),
+                            fieldWithPath("data").type(OBJECT).description("data"),
+                            fieldWithPath("data.page").type(NUMBER).description("page"),
+                            fieldWithPath("data.size").type(NUMBER).description("size"),
+                            fieldWithPath("data.first").type(BOOLEAN).description("first"),
+                            fieldWithPath("data.last").type(BOOLEAN).description("last"),
+                            fieldWithPath("data.totalPages").type(NUMBER).description("totalPages"),
+                            fieldWithPath("data.totalElements").type(NUMBER).description("totalElements"),
+                            fieldWithPath("data.posts[]").type(ARRAY).description("posts"),
+                            fieldWithPath("data.posts[].postId").type(NUMBER).description("postId"),
+                            fieldWithPath("data.posts[].title").type(STRING).description("title"),
+                            fieldWithPath("data.posts[].content").type(STRING).description("content"),
+                            fieldWithPath("data.posts[].createdAt").type(STRING).description("createdAt"),
+                            fieldWithPath("data.posts[].createdBy").type(STRING).description("createdBy"),
+                            fieldWithPath("serverDateTime").type(STRING).description("serverDateTime")
                         )
                 ));
 
@@ -198,7 +204,7 @@ class PostApiControllerTest {
     public void testUpdatePost() throws Exception {
         //given
         RequestCreatePost request = RequestCreatePost.builder()
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .title("나는 전설이다")
                 .content("좀비 세상에서 살아남기")
                 .build();
@@ -236,7 +242,7 @@ class PostApiControllerTest {
     public void testDeletePost() throws Exception {
         //given
         RequestCreatePost request = RequestCreatePost.builder()
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .title("나는 전설이다")
                 .content("좀비 세상에서 살아남기")
                 .build();
@@ -261,7 +267,7 @@ class PostApiControllerTest {
     public void testIllegalArgumentException() throws Exception {
         //given
         RequestCreatePost request = RequestCreatePost.builder()
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .title("나는 전설이다")
                 .content("좀비 세상에서 살아남기")
                 .build();
@@ -281,7 +287,7 @@ class PostApiControllerTest {
                 .content(json));
 
         //then
-        actions.andExpect(status().isNotFound())
+        actions.andExpect(status().isInternalServerError())
                 .andDo(print());
     }
 
@@ -293,7 +299,7 @@ class PostApiControllerTest {
         requestUser.setName(null);
 
         //when
-        Set<ConstraintViolation<RequestUser>> validate = validator.validate(requestUser);
+        Set<ConstraintViolation<UserDto>> validate = validator.validate(requestUser);
 
         //then
         assertThat(validate).isNotEmpty();
@@ -307,7 +313,7 @@ class PostApiControllerTest {
         requestUser.setName("");
 
         //when
-        Set<ConstraintViolation<RequestUser>> validate = validator.validate(requestUser);
+        Set<ConstraintViolation<UserDto>> validate = validator.validate(requestUser);
 
         //then
         assertThat(validate).isNotEmpty();
@@ -321,7 +327,7 @@ class PostApiControllerTest {
         requestUser.setAge(null);
 
         //when
-        Set<ConstraintViolation<RequestUser>> validate = validator.validate(requestUser);
+        Set<ConstraintViolation<UserDto>> validate = validator.validate(requestUser);
 
         //then
         assertThat(validate).isNotEmpty();
@@ -336,7 +342,7 @@ class PostApiControllerTest {
         requestUser.setHobby(null);
 
         //when
-        Set<ConstraintViolation<RequestUser>> validate = validator.validate(requestUser);
+        Set<ConstraintViolation<UserDto>> validate = validator.validate(requestUser);
 
         //then
         assertThat(validate).isNotEmpty();
@@ -348,7 +354,7 @@ class PostApiControllerTest {
     public void testUserDtoNull() throws Exception {
         //given
         RequestCreatePost request = RequestCreatePost.builder()
-                .requestUser(null)
+                .userDto(null)
                 .title("나는 전설이다")
                 .content("좀비 세상에서 살아남기")
                 .build();
@@ -367,7 +373,7 @@ class PostApiControllerTest {
     public void testPostTitleNull() throws Exception {
         //given
         RequestCreatePost request = RequestCreatePost.builder()
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .title(null)
                 .content("좀비 세상에서 살아남기")
                 .build();
@@ -386,7 +392,7 @@ class PostApiControllerTest {
     public void testPostTitleEmptyString() throws Exception {
         //given
         RequestCreatePost request = RequestCreatePost.builder()
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .title("")
                 .content("좀비 세상에서 살아남기")
                 .build();
@@ -405,7 +411,7 @@ class PostApiControllerTest {
     public void testPostTitleOverLimit() throws Exception {
         //given
         RequestCreatePost request = RequestCreatePost.builder()
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .title("A".repeat(41))
                 .content("좀비 세상에서 살아남기")
                 .build();
@@ -424,7 +430,7 @@ class PostApiControllerTest {
     public void testPostContentNull() throws Exception {
         //given
         RequestCreatePost request = RequestCreatePost.builder()
-                .requestUser(requestUser)
+                .userDto(requestUser)
                 .title("나는 전설이다")
                 .content(null)
                 .build();

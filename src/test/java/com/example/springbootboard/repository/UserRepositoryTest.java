@@ -2,8 +2,10 @@ package com.example.springbootboard.repository;
 
 import com.example.springbootboard.domain.Hobby;
 import com.example.springbootboard.domain.User;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -12,11 +14,18 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DataJpaTest
 class UserRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
+
+    @BeforeAll
+    void clean() {
+        userRepository.deleteAll();
+
+    }
 
     @Test
     @DisplayName("User가 저장된다")
