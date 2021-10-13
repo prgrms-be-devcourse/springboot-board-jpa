@@ -123,12 +123,43 @@ class PostApiTest {
                                 fieldWithPath("user.age").type(NUMBER).description("age")
                         ),
                         responseFields(
-                                fieldWithPath("data.errors").type(ARRAY).description("Errors"),
-                                fieldWithPath("data.errors[].field").type(STRING).description("error field"),
-                                fieldWithPath("data.errors[].objectName").type(STRING).description("error objectName"),
-                                fieldWithPath("data.errors[].code").type(STRING).description("error code"),
-                                fieldWithPath("data.errors[].defaultMessage").type(STRING).description("error defaultMessage"),
-                                fieldWithPath("data.message").type(NULL).description("message"),
+                                fieldWithPath("message").type(STRING).description("message"),
+                                fieldWithPath("errors").type(ARRAY).description("Errors"),
+                                fieldWithPath("errors[].resource").type(STRING).description("resource"),
+                                fieldWithPath("errors[].field").type(STRING).description("field"),
+                                fieldWithPath("errors[].code").type(STRING).description("code"),
+                                fieldWithPath("serverDatetime").type(STRING).description("sever response time")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("게시물 저장 요청 실패 (존재하지 않는 회원인 경우)")
+    void savePostFailToNotfoundUser() throws Exception {
+        PostDto postDto = new PostDto();
+        postDto.setTitle("title");
+        postDto.setContent("content");
+
+        mockMvc.perform(post(PREFIX + POSTS)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(postDto)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andDo(document("null-user-save-post",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("id").type(NULL).description("id"),
+                                fieldWithPath("title").type(STRING).description("title"),
+                                fieldWithPath("content").type(STRING).description("content"),
+                                fieldWithPath("user").type(NULL).description("user")
+                        ),
+                        responseFields(
+                                fieldWithPath("message").type(STRING).description("message"),
+                                fieldWithPath("errors").type(ARRAY).description("Errors"),
+                                fieldWithPath("errors[].resource").type(STRING).description("resource"),
+                                fieldWithPath("errors[].field").type(STRING).description("field"),
+                                fieldWithPath("errors[].code").type(STRING).description("code"),
                                 fieldWithPath("serverDatetime").type(STRING).description("sever response time")
                         )
                 ));

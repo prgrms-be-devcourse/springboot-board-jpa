@@ -20,12 +20,9 @@ public class ErrorsSerializer extends JsonSerializer<Errors> {
         for (FieldError error : errors.getFieldErrors()) {
             try {
                 jsonGenerator.writeStartObject();
-
+                jsonGenerator.writeStringField("resource", error.getObjectName());
                 jsonGenerator.writeStringField("field", error.getField());
-                jsonGenerator.writeStringField("objectName", error.getObjectName());
                 jsonGenerator.writeStringField("code", error.getCode());
-                jsonGenerator.writeStringField("defaultMessage", error.getDefaultMessage());
-
                 jsonGenerator.writeEndObject();
             } catch (IOException ioException) {
                 ioException.printStackTrace();

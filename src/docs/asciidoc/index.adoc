@@ -123,7 +123,7 @@ include::{snippets}/update-post/response-body.adoc[]
 include::{snippets}/update-post/response-fields.adoc[]
 
 
-== 게시물 저장 실패
+== 게시물 저장 실패 (입력 오류)
 
 
 === [Curl Request]
@@ -140,3 +140,20 @@ include::{snippets}/invalid-save-post/response-body.adoc[]
 
 === [Response Fields]
 include::{snippets}/invalid-save-post/response-fields.adoc[]
+
+== 게시물 저장 실패 (회원 오류)
+
+=== [Curl Request]
+include::{snippets}/null-user-save-post/curl-request.adoc[]
+
+=== [Http Request]
+include::{snippets}/null-user-save-post/http-request.adoc[]
+
+=== [Request Fields]
+include::{snippets}/null-user-save-post/request-fields.adoc[]
+
+=== [Response]
+include::{snippets}/null-user-save-post/response-body.adoc[]
+
+=== [Response Fields]
+include::{snippets}/null-user-save-post/response-fields.adoc[]

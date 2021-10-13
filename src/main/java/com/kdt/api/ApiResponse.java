@@ -17,7 +17,7 @@ public class ApiResponse<T> {
         this.serverDatetime = LocalDateTime.now();
     }
 
-    public static <T> ApiResponse<T> of(T data) {
+    public static <T> ApiResponse<T> ok(T data) {
         return new ApiResponse<>(data);
     }
 
