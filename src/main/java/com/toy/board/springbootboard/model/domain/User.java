@@ -2,6 +2,7 @@ package com.toy.board.springbootboard.model.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Getter
+@Setter
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,7 +29,7 @@ public class User extends BaseEntity {
     private List<Post> postList;
 
     public void addPost(Post post) {
-        post.setUser(this);
+        postList.add(post);
     }
 
     protected User() {

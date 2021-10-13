@@ -2,6 +2,7 @@ package com.toy.board.springbootboard.model.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -9,6 +10,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "post")
 @Getter
+@Setter
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,7 +22,7 @@ public class Post extends BaseEntity {
     @Lob
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -32,7 +34,7 @@ public class Post extends BaseEntity {
         user.getPostList().add(this);
     }
 
-    protected Post(){
+    protected Post() {
     }
 
     @Builder
