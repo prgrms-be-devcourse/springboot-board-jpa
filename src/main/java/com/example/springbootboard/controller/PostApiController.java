@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RequiredArgsConstructor
-@RequestMapping(value = "/posts", produces = MediaType.APPLICATION_JSON_VALUE+";charset=UTF-8")
+@RequestMapping(value = "/api/v1/posts", produces = MediaType.APPLICATION_JSON_VALUE+";charset=UTF-8")
 @RestController
 public class PostApiController {
 

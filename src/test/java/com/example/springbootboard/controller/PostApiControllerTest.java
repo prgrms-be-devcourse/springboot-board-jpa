@@ -90,7 +90,7 @@ class PostApiControllerTest {
         String json = objectMapper.writeValueAsString(request);
 
         //when
-        ResultActions actions = mockMvc.perform(post("/posts")
+        ResultActions actions = mockMvc.perform(post("/api/v1/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json));
 
@@ -124,7 +124,7 @@ class PostApiControllerTest {
         Long postId = postService.save(request);
 
         //when
-        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/{postId}", postId)
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{postId}", postId)
                 .characterEncoding("utf8")
                 .contentType(MediaType.APPLICATION_JSON));
 
@@ -166,7 +166,7 @@ class PostApiControllerTest {
         Long postId = postService.save(request);
 
         //when
-        ResultActions actions = mockMvc.perform(get("/posts")
+        ResultActions actions = mockMvc.perform(get("/api/v1/posts")
                 .param("page", "0")
                 .param("size", "10")
                 .param("direction", "asc")
@@ -219,7 +219,7 @@ class PostApiControllerTest {
         String json = objectMapper.writeValueAsString(update);
 
         //when
-        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.put("/posts/{postId}", postId)
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.put("/api/v1/posts/{postId}", postId)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json));
 
@@ -250,7 +250,7 @@ class PostApiControllerTest {
         Long postId = postService.save(request);
 
         //when
-        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.delete("/posts/{postId}", postId));
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/v1/posts/{postId}", postId));
 
         //then
         actions.andExpect(status().isNoContent())
@@ -282,7 +282,7 @@ class PostApiControllerTest {
         String json = objectMapper.writeValueAsString(update);
 
         //when
-        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.put("/posts/{postId}", postId + 1)
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.put("/api/v1/posts/{postId}", postId + 1)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json));
 
