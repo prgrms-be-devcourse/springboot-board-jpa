@@ -1,4 +1,4 @@
-package com.programmers.springjpaboard;
+package com.programmers.board;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
