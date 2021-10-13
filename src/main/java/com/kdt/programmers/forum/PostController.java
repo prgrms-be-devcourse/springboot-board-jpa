@@ -5,6 +5,7 @@ import com.kdt.programmers.forum.transfer.PostDto;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,11 +18,13 @@ public class PostController {
         this.postService = postService;
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     public ApiResponse<String> notFoundHandler(NotFoundException e) {
         return ApiResponse.notFound(e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ApiResponse<String> badRequestException(IllegalArgumentException e) {
         return ApiResponse.badRequest(e.getMessage());
@@ -39,6 +42,7 @@ public class PostController {
         return ApiResponse.ok(post);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     public ApiResponse<PostDto> savePost(@RequestBody PostDto dto) {
         PostDto post = postService.savePost(dto);
