@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    active: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/jpa_proj
+    username: root
+    password: root1234!
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    open-in-view: false   # transaction이 끝나면 영속성컨텍스트 또한 닫힌다.(OSIV패턴)
+
+# request body 한글 꺠짐 방지
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
