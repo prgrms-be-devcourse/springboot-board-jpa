@@ -54,7 +54,7 @@ class PostServiceTest {
     @DisplayName("포스트 생성 테스트")
     void testCreatPost() {
         // Given
-        PostRequestDto dto = new PostRequestDto(null, "title", "content", user.getName());
+        PostRequestDto dto = PostRequestDto.builder().title("title").content("content").username(user.getName()).build();
 
         // When
         PostResponseDto response = postService.createPost(dto);

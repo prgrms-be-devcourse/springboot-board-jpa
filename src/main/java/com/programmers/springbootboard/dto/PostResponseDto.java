@@ -2,8 +2,6 @@ package com.programmers.springbootboard.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.programmers.springbootboard.entity.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;

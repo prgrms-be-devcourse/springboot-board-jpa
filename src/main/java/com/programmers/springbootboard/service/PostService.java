@@ -1,6 +1,5 @@
 package com.programmers.springbootboard.service;
 
-import com.programmers.springbootboard.dto.ApiResponse;
 import com.programmers.springbootboard.dto.PostRequestDto;
 import com.programmers.springbootboard.dto.PostResponseDto;
 import com.programmers.springbootboard.entity.Post;
@@ -9,19 +8,16 @@ import com.programmers.springbootboard.handler.NotFoundException;
 import com.programmers.springbootboard.repository.PostRepository;
 import com.programmers.springbootboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
 
     private final PostRepository postRepository;
@@ -29,6 +25,7 @@ public class PostService {
 
     @Transactional
     public PostResponseDto createPost(PostRequestDto dto) {
+        log.info("createPost called with PostRequestDto: " + dto);
         Assert.notNull(dto.getUsername(), "Username must be provided.");
 
         User user = userRepository.findByName(dto.getUsername())
@@ -39,6 +36,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PostResponseDto readPost(Long id) {
+        log.info("readPost called with id: " + id);
         Post post = postRepository.findWithUserById(id)
                 .orElseThrow(() -> new NotFoundException("No Post found with id: " + id));
 
@@ -47,6 +45,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Page<PostResponseDto> readPostPage(Pageable pageable) {
+        log.info("readPostPage called with Pageable offset: " + pageable.getOffset() + ", size: " + pageable.getPageSize());
         Page<Post> postList = postRepository.findAllWithTeam(pageable);
         if (!postList.hasContent()) throw new NotFoundException("No Post found");
 
@@ -55,10 +54,11 @@ public class PostService {
 
     @Transactional
     public PostResponseDto updatePost(PostRequestDto dto) {
+        log.info("updatePost is called with PostRequestDto: " + dto);
         Assert.notNull(dto.getId(), "Post Id must be provided.");
 
         Post post = postRepository.findById(dto.getId())
-                .orElseThrow( () -> new NotFoundException("No Post found with id: " + dto.getId()));
+                .orElseThrow(() -> new NotFoundException("No Post found with id: " + dto.getId()));
 
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());

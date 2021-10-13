@@ -1,6 +1,5 @@
 package com.programmers.springbootboard.repository;
 
-import com.programmers.springbootboard.dto.PostResponseDto;
 import com.programmers.springbootboard.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
