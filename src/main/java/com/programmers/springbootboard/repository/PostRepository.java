@@ -1,18 +1,23 @@
 package com.programmers.springbootboard.repository;
 
+import com.programmers.springbootboard.dto.PostResponseDto;
 import com.programmers.springbootboard.entity.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query("select p from Post p left join p.user u where p.id = :id")
-    Optional<Post> findPostWithUserById(@Param("id")Long id);
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, attributePaths = {"user"})
+    Optional<Post> findWithUserById(Long id);
 
-    @Query("select p from Post p left join p.user u")
-    List<Post> findPostWithUserAll();
+    @Query(
+            value = "select p from Post p left join fetch p.user",
+            countQuery = "select count(p) from Post p"
+    )
+    Page<Post> findAllWithTeam(Pageable pageable);
 }

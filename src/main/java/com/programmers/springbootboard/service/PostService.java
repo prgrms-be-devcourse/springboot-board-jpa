@@ -9,11 +9,16 @@ import com.programmers.springbootboard.handler.NotFoundException;
 import com.programmers.springbootboard.repository.PostRepository;
 import com.programmers.springbootboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,83 +27,42 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public ApiResponse<PostResponseDto> createPost(PostRequestDto dto) {
-        Optional<User> userResult = userRepository.findById(dto.getUserId());
-        if (userResult.isEmpty()) {
-            throw new NotFoundException("User not found with user id: " + dto.getUserId());
-        }
-        User user = userResult.get();
-        Post post = Post.builder().title(dto.getTitle()).content(dto.getContent()).user(user).build();
-        Post savedPost = postRepository.save(post);
-        PostResponseDto postResponseDto = PostResponseDto
-                .builder()
-                .postId(savedPost.getId())
-                .title(savedPost.getTitle())
-                .content(savedPost.getContent())
-                .userId(user.getId())
-                .build();
-        return ApiResponse.<PostResponseDto>builder()
-                .httpMethod("POST")
-                .statusCode(200)
-                .data(postResponseDto)
-                .build();
+    @Transactional
+    public PostResponseDto createPost(PostRequestDto dto) {
+        Assert.notNull(dto.getUsername(), "Username must be provided.");
+
+        User user = userRepository.findByName(dto.getUsername())
+                .orElseThrow(() -> new NotFoundException("No User found with username : " + dto.getUsername()));
+
+        return PostResponseDto.of(postRepository.save(Post.of(dto, user)));
     }
 
-    public ApiResponse<PostResponseDto> readPost(Long id) {
-        Optional<Post> result = postRepository.findPostWithUserById(id);
-        if (result.isEmpty()) {
-            throw new NotFoundException("No Post found with id: " + id);
-        }
-        Post post = result.get();
-        return ApiResponse
-                .<PostResponseDto>builder()
-                .httpMethod("GET")
-                .statusCode(200)
-                .data(converter(post))
-                .build();
+    @Transactional(readOnly = true)
+    public PostResponseDto readPost(Long id) {
+        Post post = postRepository.findWithUserById(id)
+                .orElseThrow(() -> new NotFoundException("No Post found with id: " + id));
+
+        return PostResponseDto.of(post);
     }
 
-    public ApiResponse<List<PostResponseDto>> readAllPost() {
-        List<Post> postList = postRepository.findPostWithUserAll();
-        if (postList.size() == 0) throw new NotFoundException("No Post found");
+    @Transactional(readOnly = true)
+    public Page<PostResponseDto> readPostPage(Pageable pageable) {
+        Page<Post> postList = postRepository.findAllWithTeam(pageable);
+        if (!postList.hasContent()) throw new NotFoundException("No Post found");
 
-        return ApiResponse.<List<PostResponseDto>>builder()
-                .httpMethod("GET")
-                .statusCode(200)
-                .data(postList.stream().map(PostService::converter).toList())
-                .build();
+        return postList.map(PostResponseDto::of);
     }
 
-    public ApiResponse<PostResponseDto> updatePost(PostRequestDto dto) {
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("Post Id is required on Dto.");
-        }
-        Optional<Post> found = postRepository.findById(dto.getId());
-        if (found.isEmpty()) {
-            throw new NotFoundException("No Post found with id: " + dto.getId());
-        }
-        Post post = found.get();
+    @Transactional
+    public PostResponseDto updatePost(PostRequestDto dto) {
+        Assert.notNull(dto.getId(), "Post Id must be provided.");
+
+        Post post = postRepository.findById(dto.getId())
+                .orElseThrow( () -> new NotFoundException("No Post found with id: " + dto.getId()));
+
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
-        PostResponseDto postResponseDto = PostResponseDto.builder()
-                .postId(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .userId(dto.getUserId())
-                .build();
-        return ApiResponse.<PostResponseDto>builder()
-                .statusCode(200)
-                .httpMethod(HttpMethod.POST.toString())
-                .data(postResponseDto)
-                .build();
-    }
 
-    public static PostResponseDto converter(Post post) {
-        return PostResponseDto.builder()
-                .postId(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .userId(post.getUser().getId())
-                .build();
+        return PostResponseDto.of(post);
     }
 }

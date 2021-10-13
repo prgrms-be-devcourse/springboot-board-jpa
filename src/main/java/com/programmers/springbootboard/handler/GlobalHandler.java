@@ -15,11 +15,12 @@ import java.util.Objects;
 @RestControllerAdvice
 public class GlobalHandler {
 
-    @ExceptionHandler(value = {NotFoundException.class})
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(value = {NotFoundException.class, IllegalArgumentException.class})
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ApiResponse<ErrorResponseDto> resourceNotFoundException(Exception e, ServletWebRequest request) {
         return ApiResponse.<ErrorResponseDto>builder()
-                .statusCode(HttpStatus.NOT_FOUND.value())
+                .success(false)
+                .statusCode(HttpStatus.BAD_REQUEST.value())
                 .httpMethod(Objects.requireNonNull(request.getHttpMethod()).toString())
                 .data(ErrorResponseDto.builder().errorMessage(e.getMessage()).build())
                 .build();
@@ -29,6 +30,7 @@ public class GlobalHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiResponse<ErrorResponseDto> internalServerError(Exception e, ServletWebRequest request) {
         return ApiResponse.<ErrorResponseDto>builder()
+                .success(false)
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .httpMethod(Objects.requireNonNull(request.getHttpMethod()).toString())
                 .data(ErrorResponseDto.builder().errorMessage(e.getMessage()).build())

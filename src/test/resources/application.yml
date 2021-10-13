@@ -1,0 +1,30 @@
+spring:
+  jpa:
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        query.in_clause_parameter_padding: true
+        format_sql: true
+        use_sql_commnets: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root1234!
+    url: jdbc:mysql://localhost:3306/board_test
+  profiles:
+    active: test
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace

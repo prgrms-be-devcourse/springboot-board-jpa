@@ -1,5 +1,7 @@
 package com.programmers.springbootboard.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -10,13 +12,11 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@Getter
 public class BaseEntity {
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    @Column(name = "created_at", updatable = false)
     @CreatedDate
+    @JsonProperty(value = "created_at")
     private LocalDateTime createdAt;
-
-    private LocalDateTime createdBy;
-
-
 }
