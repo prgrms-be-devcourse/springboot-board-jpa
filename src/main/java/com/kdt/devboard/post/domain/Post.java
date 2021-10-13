@@ -1,6 +1,6 @@
 package com.kdt.devboard.post.domain;
 
-import com.kdt.devboard.BaseEntity;
+import com.kdt.devboard.Common.BaseEntity;
 import com.kdt.devboard.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,7 +18,7 @@ import java.util.Objects;
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)//ToDo : Mysql 사용시 identity로 변경
+    @GeneratedValue(strategy = GenerationType.SEQUENCE) //ToDo : Mysql 사용시 identity로 변경
     private Long id;
 
     @Column(name = "title", nullable = false)
@@ -29,7 +29,7 @@ public class Post extends BaseEntity {
     private String content;
 
     @Builder
-    public Post(String createBy, LocalDateTime createAt, Long id, String title, String content, User user) {
+    public Post(Long id, String createBy, LocalDateTime createAt, String title, String content, User user) {
         super(createBy, createAt);
         this.id = id;
         this.title = title;
@@ -42,7 +42,7 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

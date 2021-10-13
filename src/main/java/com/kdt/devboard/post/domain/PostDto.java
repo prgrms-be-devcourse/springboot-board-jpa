@@ -3,6 +3,7 @@ package com.kdt.devboard.post.domain;
 import com.kdt.devboard.user.domain.User;
 import com.kdt.devboard.user.domain.UserDto;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,16 @@ public class PostDto {
     private String createBy;
 
     private UserDto userDto;
+
+    @Builder
+    public PostDto(Long id, String title, String content, LocalDateTime createAt, String createBy, UserDto userDto) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.createAt = createAt;
+        this.createBy = createBy;
+        this.userDto = userDto;
+    }
 
     public PostDto(Post entity) {
         this.id = entity.getId();

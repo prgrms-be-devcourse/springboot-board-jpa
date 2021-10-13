@@ -20,6 +20,16 @@ public class UserDto {
     private LocalDateTime createAt;
     private String createBy;
 
+    @Builder
+    public UserDto(Long id, String name, int age, String hobby, LocalDateTime createAt, String createBy) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+        this.createAt = createAt;
+        this.createBy = createBy;
+    }
+
     public UserDto(User entity) {
         this.id = entity.getId();
         this.name = entity.getName();
@@ -39,5 +49,7 @@ public class UserDto {
                 .createBy(this.createBy)
                 .build();
     }
+
+
 
 }
