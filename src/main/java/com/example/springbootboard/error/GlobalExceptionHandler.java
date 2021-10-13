@@ -54,8 +54,18 @@ public class GlobalExceptionHandler {
     }
 
     // Business error
+    @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
         log.error("handleBusinessException", e);
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
+
+        return ResponseEntity.internalServerError().body(errorResponse);
+    }
+
+    // etc runtime exception
+    @ExceptionHandler(RuntimeException.class)
+    protected ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException e) {
+        log.error("handleRuntimeException", e);
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
 
         return ResponseEntity.internalServerError().body(errorResponse);
