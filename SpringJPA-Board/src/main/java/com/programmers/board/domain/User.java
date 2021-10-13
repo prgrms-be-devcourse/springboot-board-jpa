@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -22,4 +24,11 @@ public class User extends BaseEntity{
 
     @Column(name = "hobby")
     private String hobby;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts = new ArrayList<>();
+
+    public void addPost(Post post){
+        post.setUser(this);
+    }
 }
