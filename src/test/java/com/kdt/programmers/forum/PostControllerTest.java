@@ -60,7 +60,7 @@ class PostControllerTest {
                 .content(objectMapper.writeValueAsString(postRequest)))
             .andExpect(status().isCreated())
             .andDo(print())
-            .andDo(document("post-save",
+            .andDo(document("save-post",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 requestFields(
