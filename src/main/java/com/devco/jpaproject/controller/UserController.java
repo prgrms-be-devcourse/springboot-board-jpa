@@ -1,6 +1,7 @@
 package com.devco.jpaproject.controller;
 
 import com.devco.jpaproject.controller.dto.UserRequestDto;
+import com.devco.jpaproject.controller.dto.UserResponseDto;
 import com.devco.jpaproject.exception.UserNotFoundException;
 import com.devco.jpaproject.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,19 @@ public class UserController {
         userService.deleteOne(id);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}")
+    public ApiResponse<UserResponseDto> findById(@PathVariable Long id) throws UserNotFoundException {
+        var userResponseDto = userService.findById(id);
+
+        return ApiResponse.ok(userResponseDto);
+    }
+
+    @GetMapping("/user/{name}")
+    public ApiResponse<UserResponseDto> findByName(@PathVariable String name) throws UserNotFoundException {
+        var userResponseDto = userService.findByName(name);
+
+        return ApiResponse.ok(userResponseDto);
     }
 }

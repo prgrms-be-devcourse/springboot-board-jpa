@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class PostResponseDto {
     @NotNull(message = "writerDto should not be null")
-    private UserRequestDto writerDto;
+    private UserResponseDto writerDto;
 
     @NotNull(message = "post id should not be null")
     private Long postId;
