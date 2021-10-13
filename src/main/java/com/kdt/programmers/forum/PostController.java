@@ -3,7 +3,6 @@ package com.kdt.programmers.forum;
 import com.kdt.programmers.forum.transfer.PageDto;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import com.kdt.programmers.forum.transfer.response.ApiResponse;
-import com.kdt.programmers.forum.transfer.response.ErrorResponse;
 import com.kdt.programmers.forum.transfer.PostDto;
 import com.kdt.programmers.forum.utils.PostConverter;
 import javassist.NotFoundException;
@@ -23,18 +22,6 @@ public class PostController {
     public PostController(PostService postService, PostConverter postConverter) {
         this.postService = postService;
         this.postConverter = postConverter;
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotFoundException.class)
-    public ErrorResponse<String> notFoundHandler(NotFoundException e) {
-        return ErrorResponse.response(e.getMessage());
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ErrorResponse<String> badRequestException(IllegalArgumentException e) {
-        return ErrorResponse.response(e.getMessage());
     }
 
     @GetMapping("")
