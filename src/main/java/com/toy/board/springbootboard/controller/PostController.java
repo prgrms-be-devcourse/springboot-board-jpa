@@ -29,7 +29,7 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public ApiResponse<Long> save(@RequestBody PostDto postDto) {
+    public ApiResponse<Long> save(@RequestBody PostDto postDto) throws NotFoundException {
         return ApiResponse.ok(postService.save(postDto));
     }
 

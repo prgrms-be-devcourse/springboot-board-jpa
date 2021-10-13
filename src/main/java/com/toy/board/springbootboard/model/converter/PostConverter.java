@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class PostConverter {
 
-    public Post convertPost(PostDto postDto){
+    public Post convertPost(PostDto postDto, User user){
         Post post = new Post(
                 postDto.getTitle(),
                 postDto.getContent(),
-                this.convertUser(postDto.getUserDto())
+                user
         );
         post.setCreatedAt(postDto.getCreatedAt());
         post.setCreatedBy(postDto.getCreatedBy());

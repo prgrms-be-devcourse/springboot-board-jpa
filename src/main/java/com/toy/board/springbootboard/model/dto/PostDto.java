@@ -1,5 +1,6 @@
 package com.toy.board.springbootboard.model.dto;
 
+import com.toy.board.springbootboard.model.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,7 +12,7 @@ public class PostDto {
     private long id;
     private String title;
     private String content;
-    private UserDto userDto;
+    private long userId;
     private LocalDateTime createdAt;
     private String createdBy;
 }

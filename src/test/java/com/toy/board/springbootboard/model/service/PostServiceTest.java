@@ -19,11 +19,5 @@ class PostServiceTest {
         this.postService = postService;
         this.postRepository = postRepository;
     }
-    
-//    @BeforeEach
-//    void setUP(){
-//        // Given
-//        PostDto postDto = PostDto.builder()
-//                .id()
-//    }
+
 }
