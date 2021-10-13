@@ -1,10 +1,15 @@
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+
 spring:
   datasource:
-    hikari:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost/board?serverTimezone=UTC
-      username: eden6187
-      password: "!!dnwn556"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/board?serverTimezone=UTC
+    username: eden6187
+    password: "!!dnwn556"
+
   jpa:
     show-sql: true
     generate-ddl: true
@@ -12,4 +17,5 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
-        ddl-auto: create-drop
+      ddl-auto: create-drop
+    open-in-view: false

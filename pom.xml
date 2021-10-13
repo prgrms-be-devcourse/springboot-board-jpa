@@ -62,10 +62,10 @@
 
   <build>
     <plugins>
+
       <plugin>
         <groupId>org.asciidoctor</groupId>
         <artifactId>asciidoctor-maven-plugin</artifactId>
-        <version>1.5.8</version>
         <executions>
           <execution>
             <id>generate-docs</id>
@@ -87,6 +87,7 @@
           </dependency>
         </dependencies>
       </plugin>
+
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>

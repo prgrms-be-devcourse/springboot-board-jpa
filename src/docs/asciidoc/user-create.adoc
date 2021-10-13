@@ -1,0 +1,27 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== User
+=== User 생성
+=== POST /api/v1/users
+
+.Request
+include::{snippets}/user-add/http-request.adoc[]
+include::{snippets}/user-add/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-add/http-response.adoc[]
+include::{snippets}/user-add/response-fields.adoc[]
+
+=== User 이름 중복
+=== POST /api/v1/users
+
+.Request
+include::{snippets}/user-duplicated/http-request.adoc[]
+include::{snippets}/user-duplicated/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-duplicated/http-response.adoc[]
+include::{snippets}/user-duplicated/response-fields.adoc[]
