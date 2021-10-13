@@ -21,37 +21,37 @@ public class PostController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     public ApiResponse<String> notFoundHandler(NotFoundException e) {
-        return ApiResponse.notFound(e.getMessage());
+        return ApiResponse.response(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ApiResponse<String> badRequestException(IllegalArgumentException e) {
-        return ApiResponse.badRequest(e.getMessage());
+        return ApiResponse.response(e.getMessage());
     }
 
     @GetMapping("")
     public ApiResponse<Page<PostDto>> getPosts(Pageable pageable) {
         Page<PostDto> posts = postService.findPostsByPage(pageable);
-        return ApiResponse.ok(posts);
+        return ApiResponse.response(posts);
     }
 
     @GetMapping("/{postId}")
     public ApiResponse<PostDto> getPost(@PathVariable Long postId) throws NotFoundException {
         PostDto post = postService.findPostById(postId);
-        return ApiResponse.ok(post);
+        return ApiResponse.response(post);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     public ApiResponse<PostDto> savePost(@RequestBody PostDto dto) {
         PostDto post = postService.savePost(dto);
-        return ApiResponse.created(post);
+        return ApiResponse.response(post);
     }
 
     @PatchMapping("/{postId}")
     public ApiResponse<PostDto> updatePost(@PathVariable Long postId, @RequestBody PostDto dto) throws NotFoundException {
         PostDto post = postService.updatePost(postId, dto);
-        return ApiResponse.ok(post);
+        return ApiResponse.response(post);
     }
 }
