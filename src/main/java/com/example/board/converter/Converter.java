@@ -27,6 +27,7 @@ public class Converter {
     }
     public PostDto convertPostDto(Post post){
        return  PostDto.builder()
+               .postId(post.getPostId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .user(this.converUserDto(post.getUser()))
@@ -35,6 +36,7 @@ public class Converter {
     }
     public UserDto converUserDto(User user){
         return UserDto.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .age(user.getAge())
                 .hobby(user.getHobby())
