@@ -1,7 +1,6 @@
 package org.prgms.board.post.dto;
 
 import lombok.Getter;
-import org.prgms.board.comment.dto.CommentResponse;
 import org.prgms.board.domain.entity.Post;
 
 import java.time.LocalDateTime;
@@ -13,7 +12,7 @@ public class PostResponse {
     private Long id;
     private String title;
     private String content;
-    private String author;
+    private Long author;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 
@@ -23,7 +22,7 @@ public class PostResponse {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.content = entity.getContent();
-        this.author = entity.getWriter().getName();
+        this.author = entity.getWriter().getId();
         this.createdDate = entity.getCreatedDate();
         this.updatedDate = entity.getUpdatedDate();
         this.comments = entity.getComments().stream()

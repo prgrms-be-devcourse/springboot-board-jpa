@@ -27,6 +27,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
@@ -66,11 +67,11 @@ class PostServiceTest {
     @Test
     void addPostTest() {
         PostRequest postRequest = new PostRequest(1L, "title", "content");
-
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+        when(userRepository.findByIdAndDeleted(anyLong(), anyBoolean())).thenReturn(Optional.of(user));
         when(postRepository.save(any())).thenReturn(post);
 
         Long postId = postService.addPost(postRequest);
+
         assertThat(postId).isEqualTo(post.getId());
     }
 
@@ -78,22 +79,22 @@ class PostServiceTest {
     @Test
     void modifyPostTest() {
         PostRequest postRequest = new PostRequest(1L, "title2", "content2");
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+        when(userRepository.findByIdAndDeleted(anyLong(), anyBoolean())).thenReturn(Optional.of(user));
         when(postRepository.findById(anyLong())).thenReturn(Optional.of(post));
 
         postService.modifyPost(post.getId(), postRequest);
 
         PostResponse retrievedPost = postService.getOnePost(post.getId());
-        assertThat(retrievedPost.getTitle()).isEqualTo("title2");
-        assertThat(retrievedPost.getContent()).isEqualTo("content2");
-        assertThat(retrievedPost.getAuthor()).isEqualTo("buhee");
+        assertThat(retrievedPost.getTitle()).isEqualTo(postRequest.getTitle());
+        assertThat(retrievedPost.getContent()).isEqualTo(postRequest.getContent());
+        assertThat(retrievedPost.getAuthor()).isEqualTo(postRequest.getUserId());
     }
 
     @DisplayName("게시글 삭제 확인")
     @Test
     void removePostTest() {
         UserIdRequest userIdRequest = new UserIdRequest(1L);
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+        when(userRepository.findByIdAndDeleted(anyLong(), anyBoolean())).thenReturn(Optional.of(user));
         when(postRepository.findById(anyLong())).thenReturn(Optional.of(post));
         when(postRepository.findById(anyLong())).thenReturn(Optional.empty());
 
@@ -111,7 +112,7 @@ class PostServiceTest {
             posts.add(post);
         }
         Page page = new PageImpl(posts);
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+        when(userRepository.findByIdAndDeleted(anyLong(), anyBoolean())).thenReturn(Optional.of(user));
         when(postRepository.findAllByWriter(any(Pageable.class), any())).thenReturn(page);
 
         Pageable pageable = PageRequest.of(0, 2);
@@ -143,9 +144,10 @@ class PostServiceTest {
         when(postRepository.findById(anyLong())).thenReturn(Optional.of(post));
 
         PostResponse retrievedPost = postService.getOnePost(post.getId());
+
         assertThat(retrievedPost.getTitle()).isEqualTo("title");
         assertThat(retrievedPost.getContent()).isEqualTo("content");
-        assertThat(retrievedPost.getAuthor()).isEqualTo("buhee");
+        assertThat(retrievedPost.getAuthor()).isEqualTo(1L);
         assertThat(retrievedPost.getComments()).hasSize(2);
         assertThat(retrievedPost.getComments().get(0).getContent()).isEqualTo("comment1");
     }

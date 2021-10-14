@@ -1,14 +1,15 @@
-package org.prgms.board.comment.controller;
+package org.prgms.board.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.prgms.board.comment.dto.CommentRequest;
-import org.prgms.board.comment.service.CommentService;
 import org.prgms.board.domain.entity.Comment;
 import org.prgms.board.domain.entity.Post;
 import org.prgms.board.domain.entity.User;
+import org.prgms.board.post.dto.CommentRequest;
+import org.prgms.board.post.service.CommentService;
+import org.prgms.board.user.dto.UserIdRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -72,13 +73,13 @@ class CommentControllerTest {
     @DisplayName("댓글 등록하기")
     @Test
     void addComment() throws Exception {
-        given(commentService.addComment(anyLong(), anyLong(), any())).willReturn(comment.getId());
+        given(commentService.addComment(anyLong(), any())).willReturn(comment.getId());
 
         String body = objectMapper.writeValueAsString(
-            new CommentRequest("comment"));
+            new CommentRequest(1L, "comment"));
 
         RequestBuilder request = MockMvcRequestBuilders
-            .post("/api/comments/{userId}/{postId}", user.getId(), post.getId())
+            .post("/posts/{id}/comments", post.getId())
             .content(body)
             .contentType(MediaType.APPLICATION_JSON);
 
@@ -87,6 +88,7 @@ class CommentControllerTest {
             .andDo(
                 document("comment-add",
                     requestFields(
+                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 식별자"),
                         fieldWithPath("content").type(JsonFieldType.STRING).description("댓글")
                     ),
                     responseFields(
@@ -103,10 +105,10 @@ class CommentControllerTest {
         given(commentService.modifyComment(anyLong(), anyLong(), any())).willReturn(comment.getId());
 
         String body = objectMapper.writeValueAsString(
-            new CommentRequest("test comment"));
+            new CommentRequest(1L, "test comment"));
 
         RequestBuilder request = MockMvcRequestBuilders
-            .put("/api/comments/{userId}/{commenttId}", user.getId(), comment.getId())
+            .put("/posts/{postId}/comments/{commentId}", post.getId(), comment.getId())
             .content(body)
             .contentType(MediaType.APPLICATION_JSON);
 
@@ -115,6 +117,7 @@ class CommentControllerTest {
             .andDo(
                 document("comment-modify",
                     requestFields(
+                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 식별자"),
                         fieldWithPath("content").type(JsonFieldType.STRING).description("댓글")
                     ),
                     responseFields(
@@ -129,13 +132,21 @@ class CommentControllerTest {
     @DisplayName("댓글 삭제하기")
     @Test
     void removeComment() throws Exception {
+        String body = objectMapper.writeValueAsString(
+            new UserIdRequest(1L));
+
         RequestBuilder request = MockMvcRequestBuilders
-            .delete("/api/comments/{userId}/{commenttId}", user.getId(), comment.getId());
+            .delete("/posts/{postId}/comments/{commentId}", post.getId(), comment.getId())
+            .content(body)
+            .contentType(MediaType.APPLICATION_JSON);
 
         this.mockMvc.perform(request)
             .andExpect(status().isOk())
             .andDo(
                 document("comment-remove",
+                    requestFields(
+                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 식별자")
+                    ),
                     responseFields(
                         fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
@@ -38,27 +37,15 @@ public class PostService {
 
     @Transactional
     public Long modifyPost(Long postId, PostRequest postRequest) {
-        User user = getUser(postRequest.getUserId());
-        Post post = getPost(postId);
-
-        if (!user.equals(post.getWriter())) {
-            throw new NotMatchException("자신의 게시글만 수정할 수 있습니다.");
-        }
-
+        Post post = validate(postRequest.getUserId(), postId);
         post.changeInfo(postRequest.getTitle(), postRequest.getContent());
         return post.getId();
     }
 
     @Transactional
     public void removePost(Long postId, UserIdRequest userIdRequest) {
-        User user = getUser(userIdRequest.getUserId());
-        Post post = getPost(postId);
-
-        if (!user.equals(post.getWriter())) {
-            throw new NotMatchException("자신의 게시글만 삭제할 수 있습니다.");
-        }
-
-        postRepository.delete(getPost(postId));
+        Post post = validate(userIdRequest.getUserId(), postId);
+        postRepository.delete(post);
     }
 
     @Transactional(readOnly = true)
@@ -77,6 +64,17 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponse getOnePost(Long postId) {
         return new PostResponse(getPost(postId));
+    }
+
+    private Post validate(Long userId, Long postId) {
+        User user = getUser(userId);
+        Post post = getPost(postId);
+
+        if (!user.equals(post.getWriter())) {
+            throw new NotMatchException("해당 게시글에 접근 권한이 없습니다.");
+        }
+
+        return post;
     }
 
     private Post getPost(Long id) {

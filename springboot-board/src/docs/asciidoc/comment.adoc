@@ -7,7 +7,7 @@ endif::[]
 
 === 댓글 등록
 
-==== /api/comments/{userId}/{postId}
+==== /posts/{id}/comments
 
 .Request
 include::{snippets}/comment-add/http-request.adoc[]
@@ -18,7 +18,7 @@ include::{snippets}/comment-add/response-fields.adoc[]
 
 === 댓글 수정
 
-==== /api/comments/{userId}/{commentId}
+==== /posts/{postId}/comments/{commentId}
 
 .Request
 include::{snippets}/comment-modify/http-request.adoc[]
@@ -29,7 +29,7 @@ include::{snippets}/comment-modify/response-fields.adoc[]
 
 === 댓글 삭제
 
-==== /api/comments/{userId}/{commentId}
+==== /posts/{postId}/comments/{commentId}
 
 .Request
 include::{snippets}/comment-remove/http-request.adoc[]
