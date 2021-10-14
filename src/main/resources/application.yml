@@ -5,13 +5,11 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
-
   jpa:
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
-        show_sql: true
         format_sql: true
     database-platform: org.hibernate.dialect.H2Dialect
   h2:

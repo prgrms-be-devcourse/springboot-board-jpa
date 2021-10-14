@@ -21,8 +21,11 @@ class UserTest {
         // given
         User user = new User("awesomeo", "coding");
         Post post = new Post("test title", "test content");
-        user.addPost(post);
+        post.setAuthor(user);
+
         em.persist(user);
+        em.persist(post);
+
 
         // when
         Post findPost = em.find(Post.class, post.getId());
@@ -38,8 +41,9 @@ class UserTest {
         // given
         User user = new User("awesomeo", "coding");
         Post post = new Post("test title", "test content");
-        user.addPost(post);
+        post.setAuthor(user);
         em.persist(user);
+        em.persist(post);
 
         // when
         em.remove(user);

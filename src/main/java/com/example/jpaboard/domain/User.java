@@ -27,17 +27,11 @@ public class User extends BaseTimeEntity {
 
     private String hobby;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
     public User(String name, String hobby) {
         this.name = name;
         this.hobby = hobby;
-    }
-
-    public Post addPost(Post post) {
-        posts.add(post);
-        post.setAuthor(this);
-        return post;
     }
 }

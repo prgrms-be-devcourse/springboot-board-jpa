@@ -1,5 +1,6 @@
 package com.example.jpaboard.domain;
 
+import com.example.jpaboard.dto.PostRequest;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,5 +42,18 @@ public class Post extends BaseTimeEntity {
 
     public void setAuthor(User author) {
         this.author = author;
+        author.getPosts().add(this);
+    }
+
+    public static Post createPost(User user, String title, String content) {
+        Post post = new Post(title, content);
+        post.setAuthor(user);
+        return post;
+    }
+
+    public Post update(PostRequest postRequest) {
+        title = postRequest.getTitle();
+        content = postRequest.getContent();
+        return this;
     }
 }
