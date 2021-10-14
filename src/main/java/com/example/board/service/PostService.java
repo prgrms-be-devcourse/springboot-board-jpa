@@ -1,7 +1,6 @@
 package com.example.board.service;
 
-import com.example.board.converter.PostConverter;
-import com.example.board.domain.Post;
+import com.example.board.converter.Converter;
 import com.example.board.dto.PostDto;
 import com.example.board.repository.PostRepository;
 import javassist.NotFoundException;
@@ -11,17 +10,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 
 @Service
 public class PostService {
 
     private final PostRepository postRepository;
-    private final PostConverter postConverter;
+    private final Converter postConverter;
 
     @Autowired
-    PostService(PostRepository postRepository, PostConverter postConverter){
+    PostService(PostRepository postRepository, Converter postConverter){
         this.postRepository = postRepository;
         this.postConverter = postConverter;
     }
