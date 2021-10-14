@@ -20,7 +20,7 @@ public class User extends BaseEntity{
 
     @Id
     @Column(name="id")
-    private String userId;
+    private String id;
 
     @Column(name="name", nullable = false, length = 20)
     private String name;
@@ -35,7 +35,7 @@ public class User extends BaseEntity{
     private List<Post> posts = new ArrayList<>();
 
     public User(String id, String name, int age, String hobby, LocalDateTime time, String createdBy) {
-        this.userId = id;
+        this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;
@@ -44,24 +44,24 @@ public class User extends BaseEntity{
     }
 
     public User(String id, String name, int age, String hobby, User user) {
-        this.userId = id;
+        this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;
         this.setCreatedAt(LocalDateTime.now());
-        this.setCreatedBy(user.getUserId());
+        this.setCreatedBy(user.getId());
     }
 
     public User(String id, String name, int age, User user) {
-        this.userId = id;
+        this.id = id;
         this.name = name;
         this.age = age;
         this.setCreatedAt(LocalDateTime.now());
-        this.setCreatedBy(user.getUserId());
+        this.setCreatedBy(user.getId());
     }
 
     public User(String id, String name, int age, String hobby) {
-        this.userId = id;
+        this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;
@@ -69,7 +69,7 @@ public class User extends BaseEntity{
     }
 
     public User(String id, String name, int age) {
-        this.userId = id;
+        this.id = id;
         this.name = name;
         this.age = age;
         this.setCreatedAt(LocalDateTime.now());

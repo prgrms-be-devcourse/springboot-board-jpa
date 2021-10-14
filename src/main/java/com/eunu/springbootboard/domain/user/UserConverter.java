@@ -3,14 +3,16 @@ package com.eunu.springbootboard.domain.user;
 import com.eunu.springbootboard.domain.post.PostConverter;
 import com.eunu.springbootboard.entity.User;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserConverter {
 
     PostConverter postConverter = new PostConverter();
 
     public User convertUser(UserDto userDto) {
         User user = new User(
-            userDto.getUserId(),
+            userDto.getId(),
             userDto.getName(),
             userDto.getAge(),
             userDto.getHobby(),
@@ -30,7 +32,7 @@ public class UserConverter {
 
     public UserDto convertUserDto(User user) {
         return UserDto.builder()
-            .userId(user.getUserId())
+            .id(user.getId())
             .name(user.getName())
             .age(user.getAge())
             .hobby(user.getHobby())
