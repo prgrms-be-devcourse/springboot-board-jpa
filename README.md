@@ -17,14 +17,14 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
   - [x] name
   - [x] age
   - [x] hobby
-  - [x] **created_at**
-  - [x] **created_by**
+  - [ ] **created_at**
+  - [ ] **created_by**
 - [x] 게시글(Post)
   - [x] id (PK) (auto increment)
   - [x] title
   - [x] content
-  - [x] **created_at**
-  - [x] **created_by**
+  - [ ] **created_at**
+  - [ ] **created_by**
 - [x] 회원과 게시글에 대한 연관관계를 설정한다.
   - [x] 회원과 게시글은 1:N 관계이다.
 - [x] 게시글 Repository를 구현한다. (PostRepository)
@@ -84,6 +84,16 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 # 사용 기술 및 환경
 
 Java 11, Spring Boot, Maven, JPA, Lombok, MySQL, Mockito
+
+
+
+# 추가 기능
+
+### 1. EntityListeners 를 통한 Entity 수정 시간 자동 update
+
+### 2. Request DTO에 대한 유효성 검증
+
+
 
 # Wiki
 

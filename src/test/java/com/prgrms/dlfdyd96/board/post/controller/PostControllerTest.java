@@ -1,19 +1,15 @@
 package com.prgrms.dlfdyd96.board.post.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,13 +20,10 @@ import com.prgrms.dlfdyd96.board.domain.User;
 import com.prgrms.dlfdyd96.board.post.dto.CreatePostRequest;
 import com.prgrms.dlfdyd96.board.post.dto.PostResponse;
 import com.prgrms.dlfdyd96.board.post.dto.UpdatePostRequest;
-import com.prgrms.dlfdyd96.board.post.repository.PostRepository;
 import com.prgrms.dlfdyd96.board.post.service.PostService;
-import com.prgrms.dlfdyd96.board.user.dto.UserResponse;
 import java.util.List;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,8 +46,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 class PostControllerTest {
-
-  private static final Long MIN_POST_ID = 0L;
 
   @Autowired
   private MockMvc mockMvc;
@@ -103,7 +94,7 @@ class PostControllerTest {
         .content(objectMapper.writeValueAsString(requestDto));
 
     // WHEN // THEN
-    ResultActions resultActions = mockMvc.perform(request)
+    mockMvc.perform(request)
         .andExpect(status().isCreated())
         .andDo(print())
         .andDo(document("post-save",
@@ -154,8 +145,66 @@ class PostControllerTest {
   }
 
   @Test
+  @DisplayName("[POST] '/posts' 요청 Request DTO 유효성 테스트 title")
+  void saveCallRequestDTOValidationTitleTest() throws Exception {
+    // GIVEN
+    Long stubPostId = post.getId();
+    given(postService.save(any())).willReturn(stubPostId);
+
+    CreatePostRequest requestNullDto = CreatePostRequest.builder()
+        // .title(post.getTitle())
+        .content(post.getContent())
+        .userId(post.getUser().getId())
+        .build();
+    RequestBuilder requestTitleIsNull = MockMvcRequestBuilders.post("/posts")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(requestNullDto));
+
+    // WHEN
+    // THEN
+    mockMvc.perform(requestTitleIsNull)
+        .andExpect(status().isBadRequest())
+        .andDo(print());
+  }
+
+  @Test
+  @DisplayName("[POST] '/posts' 요청 Request DTO 유효성 테스트 Content")
+  void saveCallRequestDTOValidationContentTest() throws Exception {
+    // GIVEN
+    Long stubPostId = post.getId();
+    given(postService.save(any())).willReturn(stubPostId);
+
+    CreatePostRequest requestDto1 = CreatePostRequest.builder()
+        .title(post.getTitle())
+        .content("")
+        .userId(post.getUser().getId())
+        .build();
+    RequestBuilder requestContentEmpty = MockMvcRequestBuilders.post("/posts")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(requestDto1));
+
+    CreatePostRequest requestDto2 = CreatePostRequest.builder()
+        .title(post.getTitle())
+        // .content("")
+        .userId(post.getUser().getId())
+        .build();
+    RequestBuilder requestContentNull = MockMvcRequestBuilders.post("/posts")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(requestDto2));
+
+    // WHEN
+    // THEN
+    mockMvc.perform(requestContentEmpty)
+        .andExpect(status().isCreated())
+        .andDo(print());
+    mockMvc.perform(requestContentNull)
+        .andExpect(status().isBadRequest())
+        .andDo(print());
+  }
+
+  @Test
   @DisplayName("[GET] '/posts' 테스트")
-  void testGetAllWithPageAndSize() throws Exception {
+  void getAllCallTest() throws Exception {
     // GIVEN
     Page<PostResponse> stubFindPosts = new PageImpl<>(
         List.of(
@@ -243,7 +292,7 @@ class PostControllerTest {
 
   @Test
   @DisplayName("[GET] '/posts/{id}' 테스트")
-  void testGetOne() throws Exception {
+  void getOneCallTest() throws Exception {
     // GIVEN
     Long givenPostId = post.getId();
     PostResponse stubFindOne = PostResponse.builder()
@@ -276,10 +325,11 @@ class PostControllerTest {
 
   @Test
   @DisplayName("[GET] '/posts/{id}' not found exception 테스트")
-  void getPostException() throws Exception {
+  void getOneCallExceptionTest() throws Exception {
     // GIVEN
     Long givenWrongPostId = 9899L;
-    given(postService.findOne(givenWrongPostId)).willThrow(new NotFoundException("게시물을 찾을 수 없습니다."));
+    given(postService.findOne(givenWrongPostId)).willThrow(
+        new NotFoundException("게시물을 찾을 수 없습니다."));
 
     RequestBuilder request = get("/posts/{id}", givenWrongPostId)
         .contentType(MediaType.APPLICATION_JSON);
@@ -300,7 +350,7 @@ class PostControllerTest {
 
   @Test
   @DisplayName("[PUT] '/posts/{id} 요청 성공")
-  void testUpdatePost() throws Exception {
+  void updateCallTest() throws Exception {
     // GIVEN
     Long givenPostId = post.getId();
     UpdatePostRequest givenRequest = UpdatePostRequest.builder()
@@ -346,7 +396,7 @@ class PostControllerTest {
 
   @Test
   @DisplayName("[PUT] '/posts/{id} 요청 postId 예외")
-  void testUpdateException() throws Exception {
+  void updateCallExceptionTest() throws Exception {
     // GIVEN
     Long givenWrongPostId = post.getId();
     UpdatePostRequest givenRequest = UpdatePostRequest.builder()
@@ -382,8 +432,64 @@ class PostControllerTest {
   }
 
   @Test
+  @DisplayName("[PUT] '/posts' 요청 Request DTO 유효성 테스트 title")
+  void updateCallRequestDTOValidationTitleTest() throws Exception {
+    // GIVEN
+    Long givenPostId = post.getId();
+    UpdatePostRequest requestNullDto = UpdatePostRequest.builder()
+        // .title(post.getTitle())
+        .content(post.getContent())
+        .userId(post.getUser().getId())
+        .build();
+    RequestBuilder requestTitleIsNull = MockMvcRequestBuilders.put("/posts/{id}", givenPostId)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(requestNullDto));
+
+    // WHEN
+    // THEN
+    mockMvc.perform(requestTitleIsNull)
+        .andExpect(status().isBadRequest())
+        .andDo(print());
+  }
+
+  @Test
+  @DisplayName("[PUT] '/posts' 요청 Request DTO 유효성 테스트 - Content")
+  void updateCallRequestDTOValidationContentTest() throws Exception {
+    // GIVEN
+    Long givenPostId = post.getId();
+
+    UpdatePostRequest requestContentIsNullDto = UpdatePostRequest.builder()
+        .title(post.getTitle())
+        // .content(post.getContent())
+        .userId(post.getUser().getId())
+        .build();
+    RequestBuilder requestContentIsNull = MockMvcRequestBuilders.put("/posts/{id}", givenPostId)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(requestContentIsNullDto));
+
+    UpdatePostRequest requestEmptyDto = UpdatePostRequest.builder()
+        .title(post.getTitle())
+        .content("")
+        .userId(post.getUser().getId())
+        .build();
+    RequestBuilder requestContentIsEmpty = MockMvcRequestBuilders.put("/posts/{id}", givenPostId)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(requestEmptyDto));
+
+    // WHEN
+    // THEN
+    mockMvc.perform(requestContentIsNull)
+        .andExpect(status().isBadRequest())
+        .andDo(print());
+
+    mockMvc.perform(requestContentIsEmpty)
+        .andExpect(status().isOk())
+        .andDo(print());
+  }
+
+  @Test
   @DisplayName("[DELETE] '/posts/{id} 요청 성공")
-  void testDelete() throws Exception {
+  void deleteCallTest() throws Exception {
     // GIVEN
     Long givenPostId = post.getId();
     RequestBuilder request = delete("/posts/{id}", givenPostId)
@@ -405,7 +511,7 @@ class PostControllerTest {
 
   @Test
   @DisplayName("[DELETE] '/posts/{id} 요청 예외")
-  void testDeleteException() throws Exception {
+  void deleteCallExceptionTest() throws Exception {
     // GIVEN
     Long givenPostId = post.getId();
     RequestBuilder request = delete("/posts/{id}", givenPostId)

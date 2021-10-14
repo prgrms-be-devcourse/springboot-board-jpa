@@ -6,9 +6,12 @@ import com.prgrms.dlfdyd96.board.post.dto.UpdatePostRequest;
 import com.prgrms.dlfdyd96.board.post.service.PostService;
 import com.prgrms.dlfdyd96.board.common.api.ApiResponse;
 import javassist.NotFoundException;
+import javassist.tools.web.BadHttpRequest;
+import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 @RestController
 public class PostController {
@@ -35,6 +39,12 @@ public class PostController {
     return ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
   }
 
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  private ApiResponse<String> badRequestHandler(Exception exception) {
+    return ApiResponse.fail(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+  }
+
   @ExceptionHandler(NotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   private ApiResponse<String> notFoundHandler(NotFoundException exception) {
@@ -43,7 +53,7 @@ public class PostController {
 
   @PostMapping("/posts")
   @ResponseStatus(HttpStatus.CREATED)
-  public ApiResponse<Long> create(@RequestBody CreatePostRequest createPostRequest)
+  public ApiResponse<Long> create(@RequestBody @Valid CreatePostRequest createPostRequest)
       throws NotFoundException {
     return ApiResponse.ok(postService.save(createPostRequest));
   }
@@ -59,7 +69,7 @@ public class PostController {
   }
 
   @PutMapping("/posts/{id}")
-  public ApiResponse<PostResponse> update(@PathVariable Long id, @RequestBody UpdatePostRequest updatePostRequest) throws Exception {
+  public ApiResponse<PostResponse> update(@PathVariable Long id, @RequestBody @Valid UpdatePostRequest updatePostRequest) throws Exception {
     return ApiResponse.ok(postService.update(id, updatePostRequest));
   }
 
