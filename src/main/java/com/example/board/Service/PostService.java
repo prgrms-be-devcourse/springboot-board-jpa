@@ -23,9 +23,10 @@ public class PostService {
     Converter converter;
 
     @Transactional
-    public Post save(PostDto post){
+    public Long save(PostDto post){
         var resultPost = converter.convertpost(post);
-        return postRepository.save(resultPost);
+        Post save = postRepository.save(resultPost);
+        return save.getPostId();
     }
 
     @Transactional

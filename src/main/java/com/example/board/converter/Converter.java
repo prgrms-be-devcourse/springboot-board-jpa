@@ -12,7 +12,6 @@ public class Converter {
         Post post=new Post();
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
-//        post.setCreatedAt(LocalDateTime.now());
         post.setUser(this.convertuser(dto.getUser()));
         return post;
 
@@ -23,7 +22,6 @@ public class Converter {
         user.setHobby(dto.getHobby());
         user.setAge(dto.getAge());
         user.setCreatedBy(dto.getName());
-//        user.setCreatedAt(LocalDateTime.now());
         return user;
 
     }
