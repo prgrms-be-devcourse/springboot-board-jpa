@@ -1,12 +1,14 @@
 package com.example.springbootboard.domain;
 
+import com.example.springbootboard.domain.common.BaseTimeEntity;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name="post")
-public class Post {
+public class Post extends BaseTimeEntity {
 
     // Default Constructor
     protected Post(){
@@ -16,8 +18,6 @@ public class Post {
     public Post(String title, String content){
         this.title = title;
         this.content = content;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
     }
 
     @Id
@@ -29,12 +29,6 @@ public class Post {
 
     @Lob
     private String content;
-
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", referencedColumnName = "id")
@@ -63,14 +57,6 @@ public class Post {
         return content;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
     public User getCreatedBy() {
         return createdBy;
     }
@@ -79,12 +65,10 @@ public class Post {
 
     public void setTitle(String title) {
         this.title = title;
-        this.updatedAt = LocalDateTime.now();
     }
 
     public void setContent(String content) {
         this.content = content;
-        this.updatedAt = LocalDateTime.now();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.springbootboard.domain;
 
+import com.example.springbootboard.domain.common.BaseTimeEntity;
 import com.example.springbootboard.domain.vo.Name;
 import org.apache.tomcat.jni.Local;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name="user")
-public class User {
+public class User extends BaseTimeEntity {
 
     // Default Constructor
     protected User(){
@@ -22,8 +23,6 @@ public class User {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
     }
 
     @Id
@@ -38,12 +37,6 @@ public class User {
 
     @Column(name = "hobby", nullable = true, length = 30)
     private String hobby;
-
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "createdBy") // 연관관계 주인은 order.createBy
     private List<Post> posts = new ArrayList<>();
@@ -70,14 +63,6 @@ public class User {
         return hobby;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
     public List<Post> getPosts() {
         return posts;
     }
@@ -86,17 +71,14 @@ public class User {
 
     public void setName(Name name) {
         this.name = name;
-        this.updatedAt = LocalDateTime.now();
     }
 
     public void setAge(int age) {
         this.age = age;
-        this.updatedAt = LocalDateTime.now();
     }
 
     public void setHobby(String hobby) {
         this.hobby = hobby;
-        this.updatedAt = LocalDateTime.now();
     }
 
 }
