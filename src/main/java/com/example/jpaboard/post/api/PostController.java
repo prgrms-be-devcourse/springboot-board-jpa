@@ -1,6 +1,8 @@
 package com.example.jpaboard.post.api;
 
+import com.example.jpaboard.post.converter.PostConverter;
 import com.example.jpaboard.post.domain.Post;
+import com.example.jpaboard.post.dto.PostDto;
 import com.example.jpaboard.user.domain.User;
 import com.example.jpaboard.common.ApiResponse;
 import com.example.jpaboard.post.dto.PostRequest;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,13 +34,8 @@ public class PostController {
     private final UserRepository userRepository;
 
     @GetMapping("{postId}")
-    public ApiResponse<PostResponse> getPostDetails(@PathVariable Long postId) {
-        Post findPost = postService.getPost(postId);
-        Long id = findPost.getId();
-        String title = findPost.getTitle();
-        String content = findPost.getContent();
-        String author = findPost.getAuthor().getName();
-        return ApiResponse.ok(new PostResponse(id, title, content, author));
+    public ResponseEntity<PostDto> getPostDetails(@PathVariable Long postId) {
+        return ResponseEntity.ok(postService.getPost(postId));
     }
 
     @PostMapping
@@ -47,12 +45,7 @@ public class PostController {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Post post = postService.createPost(user, postRequest);
 
-        Long id = post.getId();
-        String title = post.getTitle();
-        String content = post.getContent();
-        String author = post.getAuthor().getName();
-
-        return ApiResponse.ok(new PostResponse(id, title, content, author));
+        return ApiResponse.ok(PostConverter.convertPostResponse(post));
     }
 
     @PostMapping("{postId}")

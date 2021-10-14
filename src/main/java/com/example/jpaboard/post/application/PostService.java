@@ -2,6 +2,7 @@ package com.example.jpaboard.post.application;
 
 import com.example.jpaboard.post.converter.PostConverter;
 import com.example.jpaboard.post.domain.Post;
+import com.example.jpaboard.post.dto.PostDto;
 import com.example.jpaboard.user.domain.User;
 import com.example.jpaboard.post.dto.PostRequest;
 import com.example.jpaboard.post.dto.PostResponse;
@@ -24,8 +25,9 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Post getPost(Long postId) {
-        return postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+    public PostDto getPost(Long postId) {
+        Post findPost = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        return PostConverter.convertPostDto(findPost);
     }
 
     public Post update(Long postId, PostRequest postRequest) {
