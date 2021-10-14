@@ -48,7 +48,6 @@ public class PostService {
 
         entity.setTitle(dto.getTitle());
         entity.setContent(dto.getContent());
-        postRepository.save(entity);
 
         return postConverter.convertToPostDto(entity);
     }
