@@ -20,8 +20,6 @@ public class Converter {
                 .title(dto.getTitle())
                 .build();
 
-        post.setWriter(writer);
-
         return post;
     }
 
