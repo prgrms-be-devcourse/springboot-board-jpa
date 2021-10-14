@@ -25,7 +25,7 @@ public class PostService {
 
     @Transactional
     public PostDto findOne(Long postId) throws NotFoundException {
-        PostDto postDto = postRepository.findById(postId.toString())
+        PostDto postDto = postRepository.findById(postId)
             .map(postConverter::convertPostDto)
             .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
 
@@ -42,7 +42,7 @@ public class PostService {
     public PostDto update(Long postId,PostDto dto) throws NotFoundException {
         if(!postId.equals(dto.getId())) {new NotFoundException("게시물 아이디가 일치하지 않습니다.");}
 
-        Post entity = postRepository.findById(postId.toString())
+        Post entity = postRepository.findById(postId)
             .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
         Post post = postConverter.convertPost(dto);
 
