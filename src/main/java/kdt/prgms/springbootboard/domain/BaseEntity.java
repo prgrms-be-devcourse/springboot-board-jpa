@@ -40,4 +40,14 @@ public abstract class BaseEntity {
     public LocalDateTime getLastModifiedDate() {
         return lastModifiedDate;
     }
+
+    @Override
+    public String toString() {
+        return
+            "[createdBy='" + createdBy + '\'' +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy='" + lastModifiedBy + '\'' +
+                ", lastModifiedDate=" + lastModifiedDate +
+                "}]";
+    }
 }

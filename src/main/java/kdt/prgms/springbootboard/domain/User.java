@@ -38,6 +38,12 @@ public class User extends BaseEntity {
         return new User(name, age, hobby);
     }
 
+    public void changeUserProfile(String name, int age, Hobby hobby) {
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+    }
+
     public void addPost(Post post) {
         this.posts.add(post);
     }
@@ -60,5 +66,14 @@ public class User extends BaseEntity {
 
     public Hobby getHobby() {
         return hobby;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", age=" + age +
+            "} " + super.toString();
     }
 }
