@@ -1,6 +1,7 @@
 package kdt.prgrms.devrun.post.controller;
 
 import kdt.prgrms.devrun.common.dto.ApiResult;
+import kdt.prgrms.devrun.common.dto.PageDto;
 import kdt.prgrms.devrun.post.dto.AddPostRequestDto;
 import kdt.prgrms.devrun.post.dto.DetailPostDto;
 import kdt.prgrms.devrun.post.dto.EditPostRequestDto;
@@ -23,7 +24,7 @@ public class PostApiController {
     final private PostService postService;
 
     @GetMapping()
-    public ApiResult<Page<SimplePostDto>> posts(Pageable pageable) {
+    public ApiResult<PageDto<SimplePostDto>> posts(Pageable pageable) {
         return ApiResult.ok(postService.getPostPagingList(pageable));
     }
 

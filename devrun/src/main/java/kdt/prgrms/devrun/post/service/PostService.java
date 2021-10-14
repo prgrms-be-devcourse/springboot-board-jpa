@@ -1,5 +1,6 @@
 package kdt.prgrms.devrun.post.service;
 
+import kdt.prgrms.devrun.common.dto.PageDto;
 import kdt.prgrms.devrun.post.dto.AddPostRequestDto;
 import kdt.prgrms.devrun.post.dto.DetailPostDto;
 import kdt.prgrms.devrun.post.dto.EditPostRequestDto;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface PostService {
 
-    Page<SimplePostDto> getPostPagingList(Pageable pageable);
+    PageDto<SimplePostDto> getPostPagingList(Pageable pageable);
 
     DetailPostDto getPostById(Long postId);
 

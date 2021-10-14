@@ -1,5 +1,6 @@
 package kdt.prgrms.devrun.post.service;
 
+import kdt.prgrms.devrun.common.dto.PageDto;
 import kdt.prgrms.devrun.common.exception.PostNotFoundException;
 import kdt.prgrms.devrun.common.exception.UserNotFoundException;
 import kdt.prgrms.devrun.domain.Post;
@@ -25,8 +26,8 @@ public class SimplePostService implements PostService{
     private final UserRepository userRepository;
 
     @Override
-    public Page<SimplePostDto> getPostPagingList(Pageable pageable) {
-        return postRepository.findAll(pageable).map(post -> {
+    public PageDto<SimplePostDto> getPostPagingList(Pageable pageable) {
+        final Page<SimplePostDto> simplePostDtos = postRepository.findAll(pageable).map(post -> {
             return SimplePostDto.builder()
                 .id(post.getId())
                 .title(post.getContent())
@@ -34,6 +35,7 @@ public class SimplePostService implements PostService{
                 .createdBy(post.getUser().getLoginId())
                 .build();
         });
+        return new PageDto<>(simplePostDtos);
     }
 
     @Override

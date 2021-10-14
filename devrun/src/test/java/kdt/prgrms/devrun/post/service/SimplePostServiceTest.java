@@ -1,5 +1,6 @@
 package kdt.prgrms.devrun.post.service;
 
+import kdt.prgrms.devrun.common.dto.PageDto;
 import kdt.prgrms.devrun.common.exception.PostNotFoundException;
 import kdt.prgrms.devrun.domain.Post;
 import kdt.prgrms.devrun.domain.User;
@@ -83,12 +84,13 @@ class SimplePostServiceTest {
         final PageRequest pageRequest = PageRequest.of(0, 2);
 
         // when
-        final Page<SimplePostDto> postDtoPage = postService.getPostPagingList(pageRequest);
+        final PageDto<SimplePostDto> postDtoPage = postService.getPostPagingList(pageRequest);
 
         // then
-        assertThat(postDtoPage.getTotalElements(), is(2L));
-        assertThat(postDtoPage.getTotalPages(), is(1));
-        assertThat(postDtoPage.getContent(), not(empty()));
+        assertThat(postDtoPage.getTotalCount(), is(2L));
+        assertThat(postDtoPage.getPageNo(), is(0));
+        assertThat(postDtoPage.getPageSize(), is(2));
+        assertThat(postDtoPage.getList(), not(empty()));
     }
 
     @Test
