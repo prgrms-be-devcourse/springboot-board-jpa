@@ -1,11 +1,11 @@
-package com.example.jpaboard.controller;
+package com.example.jpaboard.user.api;
 
-import com.example.jpaboard.domain.User;
-import com.example.jpaboard.dto.ApiResponse;
-import com.example.jpaboard.dto.UserRequest;
-import com.example.jpaboard.dto.UserResponse;
+import com.example.jpaboard.user.domain.User;
+import com.example.jpaboard.common.ApiResponse;
+import com.example.jpaboard.user.dto.UserRequest;
+import com.example.jpaboard.user.dto.UserResponse;
 import com.example.jpaboard.exception.UserNotFoundException;
-import com.example.jpaboard.repository.UserRepository;
+import com.example.jpaboard.user.infra.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

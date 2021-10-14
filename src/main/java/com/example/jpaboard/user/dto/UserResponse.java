@@ -1,4 +1,4 @@
-package com.example.jpaboard.dto;
+package com.example.jpaboard.user.dto;
 
 import lombok.Getter;
 

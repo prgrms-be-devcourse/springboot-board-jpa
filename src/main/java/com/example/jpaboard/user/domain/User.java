@@ -1,5 +1,7 @@
-package com.example.jpaboard.domain;
+package com.example.jpaboard.user.domain;
 
+import com.example.jpaboard.common.domain.BaseTimeEntity;
+import com.example.jpaboard.post.domain.Post;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;

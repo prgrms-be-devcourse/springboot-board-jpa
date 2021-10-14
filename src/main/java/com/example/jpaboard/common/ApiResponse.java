@@ -1,4 +1,4 @@
-package com.example.jpaboard.dto;
+package com.example.jpaboard.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;

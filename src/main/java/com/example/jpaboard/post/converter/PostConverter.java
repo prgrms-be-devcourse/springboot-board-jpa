@@ -1,7 +1,7 @@
-package com.example.jpaboard.converter;
+package com.example.jpaboard.post.converter;
 
-import com.example.jpaboard.domain.Post;
-import com.example.jpaboard.dto.PostResponse;
+import com.example.jpaboard.post.domain.Post;
+import com.example.jpaboard.post.dto.PostResponse;
 
 public class PostConverter {
 

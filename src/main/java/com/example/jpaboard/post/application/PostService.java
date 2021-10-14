@@ -1,12 +1,12 @@
-package com.example.jpaboard.service;
+package com.example.jpaboard.post.application;
 
-import com.example.jpaboard.converter.PostConverter;
-import com.example.jpaboard.domain.Post;
-import com.example.jpaboard.domain.User;
-import com.example.jpaboard.dto.PostRequest;
-import com.example.jpaboard.dto.PostResponse;
+import com.example.jpaboard.post.converter.PostConverter;
+import com.example.jpaboard.post.domain.Post;
+import com.example.jpaboard.user.domain.User;
+import com.example.jpaboard.post.dto.PostRequest;
+import com.example.jpaboard.post.dto.PostResponse;
 import com.example.jpaboard.exception.PostNotFoundException;
-import com.example.jpaboard.repository.PostRepository;
+import com.example.jpaboard.post.infra.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

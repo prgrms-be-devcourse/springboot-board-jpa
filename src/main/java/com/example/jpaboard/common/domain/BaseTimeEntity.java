@@ -1,4 +1,4 @@
-package com.example.jpaboard.domain;
+package com.example.jpaboard.common.domain;
 
 import java.time.LocalDateTime;
 import javax.persistence.EntityListeners;
