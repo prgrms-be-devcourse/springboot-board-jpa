@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -41,14 +42,14 @@ public class PostController {
     }
 
     @PostMapping("/post")
-    public ApiResponse<Long> insert(@RequestBody PostRequestDto dto) throws UserNotFoundException {
+    public ApiResponse<Long> insert(@Valid @RequestBody PostRequestDto dto) throws UserNotFoundException {
         Long postId = postService.insert(dto);
 
         return ApiResponse.ok(postId);
     }
 
     @DeleteMapping("/post")
-    public ResponseEntity deleteOne(@RequestBody PostDeleteRequestDto dto) throws PostNotFoundException, UserNotFoundException, UserAndPostNotMatchException {
+    public ResponseEntity deleteOne(@Valid @RequestBody PostDeleteRequestDto dto) throws PostNotFoundException, UserNotFoundException, UserAndPostNotMatchException {
         postService.deleteOne(dto);
 
         return new ResponseEntity(HttpStatus.OK);

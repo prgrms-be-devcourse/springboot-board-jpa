@@ -37,10 +37,11 @@ public class UserController {
         return ApiResponse.ok(userResponseDto);
     }
 
-    @GetMapping("/user/{name}")
-    public ApiResponse<UserResponseDto> findByName(@PathVariable String name) throws UserNotFoundException {
-        var userResponseDto = userService.findByName(name);
-
-        return ApiResponse.ok(userResponseDto);
-    }
+//    TODO: URI 오류 수정
+//    @GetMapping("/user/{name}")
+//    public ApiResponse<UserResponseDto> findByName(@PathVariable String name) throws UserNotFoundException {
+//        var userResponseDto = userService.findByName(name);
+//
+//        return ApiResponse.ok(userResponseDto);
+//    }
 }
