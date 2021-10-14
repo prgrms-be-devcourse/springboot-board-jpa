@@ -10,12 +10,12 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "Post")
+@Entity
 @Table(name = "post")
 public class Post extends BaseEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "title", nullable = false, length = 30)
@@ -23,7 +23,8 @@ public class Post extends BaseEntity{
 
     private @Lob String content;
 
-    @ManyToOne(fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER )
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User author;
 
     public void setUser(User user){
