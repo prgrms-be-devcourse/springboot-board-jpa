@@ -12,20 +12,20 @@ function Mypage(props) {
   const origin = local;
 
   // State
+  const userId = localStorage.getItem("userId")
   const [userInfo, setUserInfo] = useState({});
   const [myBoard, setMyBoard] = useState([]);
 
   // Effect
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
     // userInfo
-    axios.get(origin + "/api/user/" + userId)
+    axios.get(origin + `/api/user/${userId}`)
       .then(res => {
         console.log(res);
         setUserInfo(res.data)
       })
     // myPostInfo
-    axios.get(origin + "/api/post/user/" + userId)
+    axios.get(origin + `/api/post/user/${userId}`)
       .then(res => {
         console.log(res);
         setMyBoard(res.data)
@@ -35,7 +35,7 @@ function Mypage(props) {
   // Button
   const resign = () => {
     if (window.confirm("정말 탈퇴하시겠습니까?")) {
-      axios.delete(origin + "/api/user/" + userInfo.id)
+      axios.delete(origin + `/api/user/${userId}`)
         .then(res => {
           console.log(res);
           alert("회원탈퇴 완료. 초기화면으로 이동");
@@ -74,7 +74,7 @@ function Mypage(props) {
         <table>
           <tr>
             <th>id(post)</th>
-            <th>제목(title)</th>
+            <th style={{ width: "50%" }}>제목(title)</th>
             <th>조회수(view)</th>
             <th>작성자(createdBy)</th>
           </tr>
@@ -82,7 +82,7 @@ function Mypage(props) {
             myBoard.map(v =>
               <tr key={v.id}>
                 <td>{v.id}</td>
-                <td style={{ width: "60%" }}><Link to={`/post/${v.id}`} >{v.title}</Link></td>
+                <td><Link to={`/post/${v.id}`} >{v.title}</Link></td>
                 <td>{v.view}</td>
                 <td>{v.createdBy}</td>
               </tr>

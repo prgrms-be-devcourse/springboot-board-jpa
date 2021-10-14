@@ -22,8 +22,6 @@ public class PostService {
     @Transactional
     public PostDto savePost(PostDto postDto){
         Post post = dtoConverter.convetToPostEntity(postDto);
-        System.out.println(postDto.toString());
-        System.out.println(post.toString());
         Post saved = postRepository.save(post);
         return dtoConverter.convertToPostDto(saved);
     }
@@ -39,10 +37,24 @@ public class PostService {
     }
 
     @Transactional
-    public Long updateView(Long id, Long newView){
+    public PostDto updatePostById(Long id, String newTitle, String newContent){
+        Post entity = postRepository.findById(id).get();
+        entity.setTitle(newTitle);
+        entity.setContent(newContent);
+        // 트랜잭션이 끝날때 flush
+        return dtoConverter.convertToPostDto(entity);
+    }
+
+    @Transactional
+    public Long updateViewById(Long id, Long newView){
         Post entity = postRepository.findById(id).get();
         entity.setView(newView);
-        return postRepository.findById(id).get().getView();
+        return entity.getView();
+    }
+
+    @Transactional
+    public void deletePostById(Long id){
+        postRepository.deleteById(id);
     }
 
 }

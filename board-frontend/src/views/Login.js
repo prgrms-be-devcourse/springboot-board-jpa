@@ -45,7 +45,7 @@ function Login(props) {
         }
       })
       .catch(err => {
-        console.log(err)
+        console.log(err.response.status)
         if (err.response.status == 400)
           alert("가입되지 않은 email");
         else if (err.response.status == 401)

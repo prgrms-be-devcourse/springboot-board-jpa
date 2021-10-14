@@ -7,6 +7,7 @@ import Mypage from './views/Mypage';
 import Board from './views/Board';
 import Posting from './views/Posting';
 import Post from './views/Post';
+import UpdatePost from './views/UpdatePost';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <Route path="/board" component={ Board } exact />
       <Route path="/posting" component={ Posting } exact />
       <Route path="/post/:postId" component={ Post } exact />
+      <Route path="/update-post/:postId" component={ UpdatePost } exact />
 
     </BrowserRouter>
   );

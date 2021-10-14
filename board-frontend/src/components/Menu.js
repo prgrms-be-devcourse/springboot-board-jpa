@@ -8,10 +8,8 @@ function Menu() {
     if (localStorage.getItem("userId") == null) {
       alert("로그인 정보가 없습니다");
       window.location.replace("/");
-      // props.history.push("/");
       return
     }});
-
 
     const logout = () => {
         alert("로그아웃 완료. 초기화면으로 이동")

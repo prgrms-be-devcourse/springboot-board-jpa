@@ -10,13 +10,13 @@ function Posting(props) {
     const origin = local;
 
     // State
+    const userId = localStorage.getItem("userId");
     const [userInfo, setUserInfo] = useState({});
     const [postInfo, setPostInfo] = useState({});
 
     // Effect
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
-        axios.get(origin + "/api/user/" + userId)
+        axios.get(origin + `/api/user/${userId}`)
             .then(res => {
                 console.log(res);
                 setUserInfo(res.data)

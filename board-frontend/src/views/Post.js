@@ -11,17 +11,18 @@ function Post(props) {
     const origin = local;
 
     // State
+    const postId = props.match.params.postId;
     const [userInfo, setUserInfo] = useState({});
     const [postInfo, setPostInfo] = useState({});
 
+    // Effect
     useEffect(async () => {
-        const postId = props.match.params.postId;
         // post 정보 받아오기
-        const response = await axios.get(origin + "/api/post/" + postId);
+        const response = await axios.get(origin + `/api/post/${postId}`);
         const res_postInfo = response.data
         console.log(res_postInfo)
         // view 업데이트
-        axios.patch(origin + "/api/post/" + postId, { newView: res_postInfo.view + 1 })
+        axios.patch(origin + `/api/post/${postId}/view`, { newView: res_postInfo.view + 1 })
             .then(res => {
                 console.log(res);
                 res_postInfo.view = res.data;
@@ -30,9 +31,20 @@ function Post(props) {
             })
     }, []);
 
-    const test = () => {
-        console.log(userInfo.id)
-        console.log(localStorage.getItem("userId"))
+    // Button
+    const deletePost = () => {
+        if (window.confirm("정말 삭제하시겠습니까?")) {
+            axios.delete(origin + `/api/post/${postId}`)
+              .then(res => {
+                console.log(res);
+                alert("게시물 삭제 완료");
+                props.history.goBack();
+                return
+              })
+          }
+    }
+    const moveUpdatePost = () => {
+        props.history.push(`/update-post/${postId}`);
     }
 
     return (
@@ -59,9 +71,9 @@ function Post(props) {
                         return ( <div className="div_wrapper">
                                 내가 작성한 게시물입니다
                                 <br /><br />
-                                <button>삭제하기</button>
+                                <button onClick={deletePost}>삭제하기</button>
                                 &nbsp;&nbsp;&nbsp;
-                                <button>수정하기</button>
+                                <button onClick={moveUpdatePost}>수정하기</button>
                             </div>)
                     }
                 }
