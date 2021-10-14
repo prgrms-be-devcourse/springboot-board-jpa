@@ -7,8 +7,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @Entity
-@EqualsAndHashCode
 @Getter
 @Builder
 @AllArgsConstructor
@@ -18,12 +19,13 @@ public class User extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String name;
 
     @Column(nullable = false)
     private int age;
 
+    @Column(length = 50)
     private String hobby;
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -33,8 +35,11 @@ public class User extends BaseEntity<Long> {
         this.posts.add(post);
     }
 
-    public boolean deletePost(Post post){
+    public boolean deleteOnePost(Post post){
         return posts.remove(post);
     }
 
+    public void deleteAllPosts() {
+        posts.clear();
+    }
 }

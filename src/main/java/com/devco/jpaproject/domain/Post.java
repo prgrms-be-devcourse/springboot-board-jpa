@@ -4,6 +4,7 @@ import com.devco.jpaproject.domain.common.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -17,22 +18,24 @@ public class Post extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "writer_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "writer_id", referencedColumnName = "id")
     private User writer;
 
     public void updateTitle(String title){
         this.title = title;
+        setModifiedAt(LocalDateTime.now());
     }
 
     public void updateContent(String content){
         this.content = content;
+        setModifiedAt(LocalDateTime.now());
     }
 
     /**
@@ -52,6 +55,5 @@ public class Post extends BaseEntity<Long> {
             this.writer.getPosts().remove(this);
         }
     }
-
 
 }
