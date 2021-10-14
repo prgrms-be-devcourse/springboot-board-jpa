@@ -1,5 +1,6 @@
 package kdt.prgrms.devrun.post.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class SimplePostDto {
     @NotBlank
     private String title;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
 }
