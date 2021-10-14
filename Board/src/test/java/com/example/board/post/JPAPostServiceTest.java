@@ -1,11 +1,7 @@
 package com.example.board.post;
 
-import com.example.board.member.Member;
 import com.example.board.member.MemberDto;
 import com.example.board.member.MemberService;
-import javassist.NotFoundException;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
