@@ -8,10 +8,12 @@ import org.prgrms.springbootboard.domain.UserRepository;
 import org.prgrms.springbootboard.dto.PostCreateRequest;
 import org.prgrms.springbootboard.dto.PostResponse;
 import org.prgrms.springbootboard.exception.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
+@Transactional(readOnly = true)
 @Service
 public class PostService {
 
@@ -23,6 +25,7 @@ public class PostService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public PostResponse createPost(PostCreateRequest request) {
         Long writerId = request.getWriterId();
         User user = userRepository.findById(writerId)
@@ -32,5 +35,25 @@ public class PostService {
         Post saved = postRepository.save(post);
 
         return PostConverter.convertEntityToResponse(saved);
+    }
+
+    public PostResponse findById(Long id) {
+        Post post = postRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("존재하지 않는 post입니다, id: " + id));
+
+        return PostConverter.convertEntityToResponse(post);
+    }
+
+    public Page<PostResponse> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable)
+            .map(PostConverter::convertEntityToResponse);
+    }
+
+    public Page<PostResponse> findAllByWriter(Long writerId, Pageable pageable) {
+        User writer = userRepository.findById(writerId)
+            .orElseThrow(() -> new NotFoundException("존재하지 않는 user입니다, id: " + writerId));
+
+        return postRepository.findAllByWriter(writer, pageable)
+            .map(PostConverter::convertEntityToResponse);
     }
 }
