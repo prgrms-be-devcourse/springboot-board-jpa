@@ -165,4 +165,39 @@ class PostServiceTest {
             () -> assertThat(posts2.get(1).getId()).isEqualTo(saved3.getId())
         );
     }
+
+    @Test
+    void 게시글을_수정한다() {
+        // given
+        Post saved = postRepository.save(new Post("title", "content", writer));
+        Long postId = saved.getId();
+        String newTitle = "new title";
+        String newContent = "new content";
+
+        // when
+        PostResponse response = postService.update(postId, newTitle, newContent);
+        Post updated = postRepository.findById(postId).get();
+
+        // then
+        assertAll(
+            () -> assertThat(response.getTitle()).isEqualTo(newTitle),
+            () -> assertThat(response.getContent()).isEqualTo(newContent),
+            () -> assertThat(updated.getLastModifiedAt()).isAfter(updated.getCreatedAt())
+        );
+    }
+
+    @Test
+    void 게시글을_삭제한다() {
+        // given
+        Post saved = postRepository.save(new Post("title", "content", writer));
+        Long postId = saved.getId();
+
+        // when
+        postService.deleteById(postId);
+
+        // then
+        assertThatThrownBy(() -> postService.findById(postId))
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("존재하지 않는 post입니다, id: " + postId);
+    }
 }
