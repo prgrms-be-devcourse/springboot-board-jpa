@@ -1,16 +1,14 @@
 package com.example.board.converter;
 
-import com.example.board.Dto.PostRequestDto;
+import com.example.board.Dto.PostDto;
 import com.example.board.Dto.UserDto;
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 @Component
 public class Converter {
-    public Post convertpost(PostRequestDto dto){
+    public Post convertpost(PostDto dto){
         Post post=new Post();
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
@@ -29,8 +27,8 @@ public class Converter {
         return user;
 
     }
-    public PostRequestDto convertPostDto(Post post){
-       return  PostRequestDto.builder()
+    public PostDto convertPostDto(Post post){
+       return  PostDto.builder()
                 .title(post.getTitle())
                 .content(post.getContent())
                 .user(this.converUserDto(post.getUser()))

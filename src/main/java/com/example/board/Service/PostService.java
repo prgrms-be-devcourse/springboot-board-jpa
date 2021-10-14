@@ -1,6 +1,6 @@
 package com.example.board.Service;
 
-import com.example.board.Dto.PostRequestDto;
+import com.example.board.Dto.PostDto;
 import com.example.board.Repository.PostRepository;
 import com.example.board.converter.Converter;
 import com.example.board.domain.Post;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -24,13 +23,13 @@ public class PostService {
     Converter converter;
 
     @Transactional
-    public Post save(PostRequestDto post){
+    public Post save(PostDto post){
         var resultPost = converter.convertpost(post);
         return postRepository.save(resultPost);
     }
 
     @Transactional
-    public Post update(Long id, PostRequestDto postRequestDto) throws NotFoundException {
+    public Post update(Long id, PostDto postDto) throws NotFoundException {
         Optional<Post> updatePost =postRepository.findById(id);
 
 
@@ -39,15 +38,15 @@ public class PostService {
         }
 
 
-        updatePost.get().setContent(postRequestDto.getContent());
-        updatePost.get().setTitle(postRequestDto.getTitle());
+        updatePost.get().setContent(postDto.getContent());
+        updatePost.get().setTitle(postDto.getTitle());
 //        System.out.println(updatePost.get().getUser().getName());
         return updatePost.get();
 
     }
 
     @Transactional
-    public PostRequestDto findOne(Long id) throws NotFoundException {
+    public PostDto findOne(Long id) throws NotFoundException {
 
         return postRepository.findById(id)
                 .map(converter::convertPostDto)
@@ -56,7 +55,7 @@ public class PostService {
     }
 
     @Transactional
-    public Page<PostRequestDto> findAll(Pageable pageable){
+    public Page<PostDto> findAll(Pageable pageable){
         return postRepository.findAll(pageable)
                         .map(converter::convertPostDto);
 
