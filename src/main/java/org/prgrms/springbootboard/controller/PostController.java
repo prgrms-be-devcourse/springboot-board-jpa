@@ -6,11 +6,14 @@ import javax.validation.Valid;
 
 import org.prgrms.springbootboard.dto.PostCreateRequest;
 import org.prgrms.springbootboard.dto.PostResponse;
+import org.prgrms.springbootboard.dto.PostUpdateRequest;
 import org.prgrms.springbootboard.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,5 +53,19 @@ public class PostController {
     public ResponseEntity<Page<PostResponse>> findAllByWriter(@PathVariable Long writerId, Pageable pageable) {
         Page<PostResponse> responses = postService.findAllByWriter(writerId, pageable);
         return ResponseEntity.ok(responses);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<PostResponse> update(
+        @PathVariable Long id,
+        @RequestBody @Valid PostUpdateRequest request) {
+        PostResponse response = postService.update(id, request.getTitle(), request.getContent());
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        postService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
