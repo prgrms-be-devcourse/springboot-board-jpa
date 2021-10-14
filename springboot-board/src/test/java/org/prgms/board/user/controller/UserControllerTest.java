@@ -57,7 +57,7 @@ class UserControllerTest {
         given(userService.getOneUser(anyLong())).willReturn(new UserResponse(user));
 
         RequestBuilder request = MockMvcRequestBuilders
-            .get("/api/users/{userId}", user.getId())
+            .get("/users/{id}", user.getId())
             .accept(MediaType.APPLICATION_JSON);
 
         this.mockMvc.perform(request)
@@ -87,7 +87,7 @@ class UserControllerTest {
             new UserRequest("buhee", 26, "making"));
 
         RequestBuilder request = MockMvcRequestBuilders
-            .post("/api/users")
+            .post("/users")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON);
 
@@ -117,7 +117,7 @@ class UserControllerTest {
             new UserRequest("buri", 26, "tufting"));
 
         RequestBuilder request = MockMvcRequestBuilders
-            .put("/api/users/{userId}", user.getId())
+            .put("/users/{id}", user.getId())
             .content(body)
             .contentType(MediaType.APPLICATION_JSON);
 
@@ -142,7 +142,7 @@ class UserControllerTest {
     @Test
     void removeUser() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders
-            .delete("/api/users/{userId}", user.getId());
+            .delete("/users/{id}", user.getId());
 
         this.mockMvc.perform(request)
             .andExpect(status().isOk())

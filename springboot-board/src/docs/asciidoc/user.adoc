@@ -7,7 +7,7 @@ endif::[]
 
 === 사용자 조회
 
-==== /api/users/{userId}
+==== /users/{id}
 
 .Request
 include::{snippets}/user-getOne/http-request.adoc[]
@@ -18,7 +18,7 @@ include::{snippets}/user-getOne/response-fields.adoc[]
 
 === 사용자 저장
 
-==== /api/users
+==== /users
 
 .Request
 include::{snippets}/user-add/http-request.adoc[]
@@ -29,7 +29,7 @@ include::{snippets}/user-add/response-fields.adoc[]
 
 === 사용자 수정
 
-==== /api/users/{userId}
+==== /users/{id}
 
 .Request
 include::{snippets}/user-modify/http-request.adoc[]
@@ -40,7 +40,7 @@ include::{snippets}/user-modify/response-fields.adoc[]
 
 === 사용자 삭제
 
-==== /api/users/{userId}
+==== /users/{id}
 
 .Request
 include::{snippets}/user-remove/http-request.adoc[]

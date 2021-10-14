@@ -80,10 +80,12 @@ public class PostService {
     }
 
     private Post getPost(Long id) {
-        return postRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 게시글을 찾을 수 없습니다."));
+        return postRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("해당 게시글을 찾을 수 없습니다."));
     }
 
     private User getUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+        return userRepository.findByIdAndDeleted(id, false)
+            .orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
     }
 }

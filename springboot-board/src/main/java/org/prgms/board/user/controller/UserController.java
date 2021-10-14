@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
@@ -17,9 +17,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{userId}")
-    public ApiResponse<UserResponse> getOne(@PathVariable Long userId) {
-        return ApiResponse.toResponse(userService.getOneUser(userId));
+    @GetMapping("/{id}")
+    public ApiResponse<UserResponse> getOne(@PathVariable Long id) {
+        return ApiResponse.toResponse(userService.getOneUser(id));
     }
 
     @PostMapping
@@ -27,15 +27,14 @@ public class UserController {
         return ApiResponse.toResponse(userService.addUser(userRequest));
     }
 
-    @PutMapping("/{userId}")
-    public ApiResponse<Long> modifyUser(@PathVariable Long userId, @RequestBody @Valid UserRequest userRequest) {
-        return ApiResponse.toResponse(userService.modifyUser(userId, userRequest));
+    @PutMapping("/{id}")
+    public ApiResponse<Long> modifyUser(@PathVariable Long id, @RequestBody @Valid UserRequest userRequest) {
+        return ApiResponse.toResponse(userService.modifyUser(id, userRequest));
     }
 
-    @DeleteMapping("/{userId}")
-    public ApiResponse<Integer> removeUser(@PathVariable Long userId) {
-        userService.removeUser(userId);
-        return ApiResponse.toResponse(1);
+    @DeleteMapping("/{id}")
+    public ApiResponse<Long> removeUser(@PathVariable Long id) {
+        return ApiResponse.toResponse(userService.removeUser(id));
     }
 
 }

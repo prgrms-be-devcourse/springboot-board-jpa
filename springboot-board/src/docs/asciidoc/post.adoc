@@ -7,7 +7,7 @@ endif::[]
 
 === 게시글 조회
 
-==== /api/posts/{postId}
+==== /posts/{id}
 
 .Request
 include::{snippets}/post-getOne/http-request.adoc[]
@@ -18,7 +18,7 @@ include::{snippets}/post-getOne/response-fields.adoc[]
 
 === 게시글 등록
 
-==== /api/posts/{userId}
+==== /posts
 
 .Request
 include::{snippets}/post-add/http-request.adoc[]
@@ -29,7 +29,7 @@ include::{snippets}/post-add/response-fields.adoc[]
 
 === 게시글 수정
 
-==== /api/posts/{userId}/{postId}
+==== /posts/{id}
 
 .Request
 include::{snippets}/post-modify/http-request.adoc[]
@@ -40,7 +40,7 @@ include::{snippets}/post-modify/response-fields.adoc[]
 
 === 게시글 삭제
 
-==== /api/posts/{userId}/{postId}
+==== /posts/{id}
 
 .Request
 include::{snippets}/post-remove/http-request.adoc[]

@@ -2,8 +2,6 @@ package org.prgms.board.domain.entity;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.prgms.board.common.BaseTime;
 
 import javax.persistence.*;
@@ -11,8 +9,6 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "user")
-@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
 public class User extends BaseTime {
     @Id
     @Column(name = "id")
@@ -43,6 +39,10 @@ public class User extends BaseTime {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+    }
+
+    public void removeUser() {
+        this.deleted = true;
     }
 
 }
