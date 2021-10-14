@@ -5,17 +5,31 @@ import com.example.board.domain.Post;
 import com.example.board.domain.User;
 import com.example.board.dto.PostDto;
 import com.example.board.dto.UserDto;
+import com.example.board.repository.PostRepository;
+import com.example.board.service.PostService;
+import com.example.board.service.UserService;
+import javassist.NotFoundException;
 import lombok.Builder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PostConverter {
+public class Converter {
+
+    @Autowired
+    private UserService userService;
 
     public Post convertPost(PostDto postDto){
         Post post = new Post();
 
         post.setTitle(postDto.getTitle());
-        post.setAuthor(this.convertUser(postDto.getUserDto()));
+        try {
+            UserDto userDto = postDto.getUserDto();
+            userService.find(userDto.getName());
+            post.setAuthor(User.getMockUser(userDto.getId()));
+        } catch (NotFoundException e){
+            post.setAuthor(this.convertUser(postDto.getUserDto()));
+        }
         post.setContent(postDto.getContent());
         post.setCreatedAt(postDto.getCreatedAt());
         post.setCreatedBy(postDto.getCreatedBy());
@@ -38,13 +52,14 @@ public class PostConverter {
         return PostDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
+                .userDto(convertUserEntity(post.getAuthor()))
                 .content(post.getContent())
                 .createdAt(post.getCreatedAt())
                 .createdBy(post.getCreatedBy())
                 .build();
     }
 
-    public UserDto converUserEntity (User user){
+    public UserDto convertUserEntity (User user){
         return UserDto.builder()
                 .id(user.getId())
                 .age(user.getAge())
