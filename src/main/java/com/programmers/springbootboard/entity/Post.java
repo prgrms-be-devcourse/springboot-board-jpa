@@ -34,4 +34,14 @@ public class Post extends BaseEntity {
                 .user(user)
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", user=" + user +
+                '}';
+    }
 }

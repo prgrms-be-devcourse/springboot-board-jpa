@@ -7,6 +7,7 @@ import com.programmers.springbootboard.entity.User;
 import com.programmers.springbootboard.handler.NotFoundException;
 import com.programmers.springbootboard.repository.PostRepository;
 import com.programmers.springbootboard.repository.UserRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ public class PostService {
     private final UserRepository userRepository;
 
     @Transactional
-    public PostResponseDto createPost(PostRequestDto dto) {
+    public PostResponseDto createPost(@NonNull PostRequestDto dto) {
         log.info("createPost called with PostRequestDto: " + dto);
         Assert.notNull(dto.getUsername(), "Username must be provided.");
 
@@ -35,7 +36,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostResponseDto readPost(Long id) {
+    public PostResponseDto readPost(@NonNull Long id) {
         log.info("readPost called with id: " + id);
         Post post = postRepository.findWithUserById(id)
                 .orElseThrow(() -> new NotFoundException("No Post found with id: " + id));
@@ -44,7 +45,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostResponseDto> readPostPage(Pageable pageable) {
+    public Page<PostResponseDto> readPostPage(@NonNull Pageable pageable) {
         log.info("readPostPage called with Pageable offset: " + pageable.getOffset() + ", size: " + pageable.getPageSize());
         Page<Post> postList = postRepository.findAllWithTeam(pageable);
         if (!postList.hasContent()) throw new NotFoundException("No Post found");
@@ -53,7 +54,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDto updatePost(PostRequestDto dto) {
+    public PostResponseDto updatePost(@NonNull PostRequestDto dto) {
         log.info("updatePost is called with PostRequestDto: " + dto);
         Assert.notNull(dto.getId(), "Post Id must be provided.");
 

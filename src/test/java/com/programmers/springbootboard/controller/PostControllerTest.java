@@ -1,14 +1,12 @@
 package com.programmers.springbootboard.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.programmers.springbootboard.dto.ApiResponse;
 import com.programmers.springbootboard.dto.PostRequestDto;
-import com.programmers.springbootboard.dto.PostResponseDto;
 import com.programmers.springbootboard.entity.Post;
 import com.programmers.springbootboard.entity.User;
 import com.programmers.springbootboard.repository.PostRepository;
 import com.programmers.springbootboard.repository.UserRepository;
-import com.programmers.springbootboard.service.PostService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,20 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -62,15 +53,20 @@ public class PostControllerTest {
         userRepository.save(user);
     }
 
+    @AfterEach
+    void cleanup() {
+        postRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("포스트 조회 MVC 테스트")
     void testGetPostMVC() throws Exception {
         // Given
-        Post post = Post.builder().id(1L).title("title").content("content").user(user).build();
+        Post post = Post.builder().title("title").content("content").user(user).build();
         postRepository.save(post);
 
         // When & Then
-        mockMvc.perform(get("/api/v1/posts/{id}", 1))
+        mockMvc.perform(get("/api/v1/posts/{id}", post.getId()))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("get-post",
@@ -179,12 +175,12 @@ public class PostControllerTest {
     @DisplayName("포스트 수정 MVC 테스트")
     void testUpdatePostMVC() throws Exception {
         // Given
-        Post post = Post.builder().id(1L).title("title").content("content").user(user).build();
+        Post post = Post.builder().title("title").content("content").user(user).build();
         postRepository.save(post);
-        PostRequestDto dto = PostRequestDto.builder().id(1L).title("title2").content("content2").username("username").build();
+        PostRequestDto dto = PostRequestDto.builder().id(post.getId()).title("title2").content("content2").username("username").build();
 
         // When & Then
-        mockMvc.perform(put("/api/v1/posts/{id}", 1)
+        mockMvc.perform(put("/api/v1/posts/{id}", post.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
@@ -211,4 +207,24 @@ public class PostControllerTest {
                                 fieldWithPath("data.created_at").type(JsonFieldType.STRING).description("post created at")
                         )));
     }
+
+    @Test
+    @DisplayName("에러 응답 테스트")
+    void testErrorResponse() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/{id}", 999))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andDo(document("error-response",
+                        pathParameters(
+                                parameterWithName("id").description("post id")
+                        ),
+                        responseFields(
+                                fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("Is successful response"),
+                                fieldWithPath("status_code").type(JsonFieldType.NUMBER).description("status code of response"),
+                                fieldWithPath("http_method").type(JsonFieldType.STRING).description("http method of request"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("error message"),
+                                fieldWithPath("data.error_message").type(JsonFieldType.STRING).description("error details")
+                        )));
+    }
+
 }
