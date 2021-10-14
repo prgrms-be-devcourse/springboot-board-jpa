@@ -1,9 +1,9 @@
 package domain;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "post")
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue
@@ -16,6 +16,10 @@ public class Post extends BaseEntity {
     @Column(name = "content")
     private String content;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
+
     protected Post() {
     }
 
@@ -26,6 +30,14 @@ public class Post extends BaseEntity {
 
     public static Post createPost(String title, String content) {
         return new Post(title, content);
+    }
+
+    public void changeUser(User user) {
+        if(this.user != null) {
+            this.user.removePost(this);
+        }
+        this.user = user;
+        this.user.addPost(this);
     }
 
     public Long getId() {
