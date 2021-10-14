@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Embeddable
 public class Hobby {
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "hobby_name", nullable = false)
     private String name;
 
     @Column(name = "hobby_type", nullable = false)
