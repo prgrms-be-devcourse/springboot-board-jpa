@@ -3,7 +3,7 @@ package com.devco.jpaproject.controller;
 import com.devco.jpaproject.controller.dto.PostDeleteRequestDto;
 import com.devco.jpaproject.controller.dto.PostRequestDto;
 import com.devco.jpaproject.controller.dto.PostResponseDto;
-import com.devco.jpaproject.controller.dto.PostUpdateResquestDto;
+import com.devco.jpaproject.controller.dto.PostUpdateRequestDto;
 import com.devco.jpaproject.exception.PostNotFoundException;
 import com.devco.jpaproject.exception.UserAndPostNotMatchException;
 import com.devco.jpaproject.exception.UserNotFoundException;
@@ -23,12 +23,6 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class PostController {
     private final PostService postService;
-
-    @GetMapping("/posts")
-    public ApiResponse<List<PostResponseDto>> findAll(){
-        var allPosts = postService.findAll();
-        return ApiResponse.ok(allPosts);
-    }
 
     @GetMapping("/posts/pages")
     public ApiResponse<Page<PostResponseDto>> findAllByPages(Pageable pageable){
@@ -50,7 +44,7 @@ public class PostController {
     }
 
     @PatchMapping("/post")
-    public ResponseEntity update(@Valid @RequestBody PostUpdateResquestDto dto) throws PostNotFoundException {
+    public ResponseEntity update(@Valid @RequestBody PostUpdateRequestDto dto) throws PostNotFoundException, UserAndPostNotMatchException {
         postService.update(dto);
 
         return new ResponseEntity(HttpStatus.OK);
