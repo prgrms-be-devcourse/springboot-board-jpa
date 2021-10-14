@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
@@ -17,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/user")
-    public ApiResponse<Long> insert(@RequestBody UserRequestDto dto){
+    public ApiResponse<Long> insert(@Valid @RequestBody UserRequestDto dto){
         Long id = userService.insert(dto);
 
         return ApiResponse.ok(id);
