@@ -6,6 +6,7 @@ import com.board.springbootboard.web.dto.PostsResponseDto;
 import com.board.springbootboard.web.dto.PostsSaveRequestDto;
 import com.board.springbootboard.web.dto.PostsUpdateRequestsDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -27,12 +28,19 @@ public class PostsApiController {
     }
 
     // id로 조회
+    @GetMapping("/api/v1/posts/{id}")
     public PostsResponseDto findById(@PathVariable Long id) {
         return postsService.findById(id);
     }
 
 
     // 다건 조회
+    @GetMapping("/")
+    public String index(Model model) {
+        model.addAttribute("posts",postsService.findAllDesc());
+        return "index";
+    }
+
 
 
 

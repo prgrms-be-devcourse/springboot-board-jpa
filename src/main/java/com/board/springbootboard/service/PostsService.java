@@ -2,12 +2,16 @@ package com.board.springbootboard.service;
 
 import com.board.springbootboard.domain.posts.Posts;
 import com.board.springbootboard.domain.posts.PostsRepository;
+import com.board.springbootboard.web.dto.PostsListResponseDto;
 import com.board.springbootboard.web.dto.PostsResponseDto;
 import com.board.springbootboard.web.dto.PostsSaveRequestDto;
 import com.board.springbootboard.web.dto.PostsUpdateRequestsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +35,14 @@ public class PostsService {
     public PostsResponseDto findById(Long id) {
         Posts entity=postsRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 게시물이 없습니다. id="+id));
         return new PostsResponseDto(entity);
+    }
+
+    // 다건 조회 (id 별 내림차순)
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDto> findAllDesc() {
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new) // Map을 통해
+                .collect(Collectors.toList()); // List로 변환
     }
 
 
