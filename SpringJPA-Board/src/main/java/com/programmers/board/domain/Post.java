@@ -21,7 +21,7 @@ public class Post extends BaseEntity{
     @Column(name = "content", nullable = false, length = 200)
     private String content;
 
-    @ManyToOne
+    @ManyToOne // User : Post = 1 : N 관계
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

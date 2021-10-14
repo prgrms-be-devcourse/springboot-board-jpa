@@ -25,7 +25,7 @@ public class User extends BaseEntity{
     @Column(name = "hobby")
     private String hobby;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user") // User : Post = 1 : N 관계
     private List<Post> posts = new ArrayList<>();
 
     public void addPost(Post post){
