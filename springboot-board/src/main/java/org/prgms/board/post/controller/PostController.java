@@ -4,6 +4,7 @@ import org.prgms.board.common.response.ApiResponse;
 import org.prgms.board.post.dto.PostRequest;
 import org.prgms.board.post.dto.PostResponse;
 import org.prgms.board.post.service.PostService;
+import org.prgms.board.user.dto.UserIdRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
 
@@ -24,29 +25,29 @@ public class PostController {
         return ApiResponse.toResponse(postService.getAllPost(pageable));
     }
 
-    @GetMapping("/{userId}")
-    public ApiResponse<Page<PostResponse>> getAllPostByUser(Pageable pageable, @PathVariable Long userId) {
-        return ApiResponse.toResponse(postService.getAllPostByUser(pageable, userId));
+    @GetMapping("/users")
+    public ApiResponse<Page<PostResponse>> getAllPostByUser(Pageable pageable, @RequestBody UserIdRequest userIdRequest) {
+        return ApiResponse.toResponse(postService.getAllPostByUser(pageable, userIdRequest));
     }
 
-    @GetMapping("/post/{postId}")
-    public ApiResponse<PostResponse> getOnePost(@PathVariable Long postId) {
-        return ApiResponse.toResponse(postService.getOnePost(postId));
+    @GetMapping("/{id}")
+    public ApiResponse<PostResponse> getOnePost(@PathVariable Long id) {
+        return ApiResponse.toResponse(postService.getOnePost(id));
     }
 
-    @PostMapping("/{userId}")
-    public ApiResponse<Long> addPost(@PathVariable Long userId, @RequestBody @Valid PostRequest postRequest) {
-        return ApiResponse.toResponse(postService.addPost(userId, postRequest));
+    @PostMapping
+    public ApiResponse<Long> addPost(@RequestBody @Valid PostRequest postRequest) {
+        return ApiResponse.toResponse(postService.addPost(postRequest));
     }
 
-    @PutMapping("/{userId}/{postId}")
-    public ApiResponse<Long> modifyPost(@PathVariable Long userId, @PathVariable Long postId, @RequestBody @Valid PostRequest postRequest) {
-        return ApiResponse.toResponse(postService.modifyPost(userId, postId, postRequest));
+    @PutMapping("/{id}")
+    public ApiResponse<Long> modifyPost(@PathVariable Long id, @RequestBody @Valid PostRequest postRequest) {
+        return ApiResponse.toResponse(postService.modifyPost(id, postRequest));
     }
 
-    @DeleteMapping("/{userId}/{postId}")
-    public ApiResponse<Integer> removePost(@PathVariable Long userId, @PathVariable Long postId) {
-        postService.removePost(userId, postId);
+    @DeleteMapping("/{id}")
+    public ApiResponse<Integer> removePost(@PathVariable Long id, @RequestBody UserIdRequest userIdRequest) {
+        postService.removePost(id, userIdRequest);
         return ApiResponse.toResponse(1);
     }
 

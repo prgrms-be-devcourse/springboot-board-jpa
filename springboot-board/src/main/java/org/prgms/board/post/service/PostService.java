@@ -8,12 +8,14 @@ import org.prgms.board.domain.repository.PostRepository;
 import org.prgms.board.domain.repository.UserRepository;
 import org.prgms.board.post.dto.PostRequest;
 import org.prgms.board.post.dto.PostResponse;
+import org.prgms.board.user.dto.UserIdRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
@@ -24,8 +26,8 @@ public class PostService {
     }
 
     @Transactional
-    public Long addPost(Long userId, PostRequest postRequest) {
-        User user = getUser(userId);
+    public Long addPost(PostRequest postRequest) {
+        User user = getUser(postRequest.getUserId());
 
         return postRepository.save(Post.builder()
             .title(postRequest.getTitle())
@@ -35,8 +37,8 @@ public class PostService {
     }
 
     @Transactional
-    public Long modifyPost(Long userId, Long postId, PostRequest postRequest) {
-        User user = getUser(userId);
+    public Long modifyPost(Long postId, PostRequest postRequest) {
+        User user = getUser(postRequest.getUserId());
         Post post = getPost(postId);
 
         if (!user.equals(post.getWriter())) {
@@ -48,8 +50,8 @@ public class PostService {
     }
 
     @Transactional
-    public void removePost(Long userId, Long postId) {
-        User user = getUser(userId);
+    public void removePost(Long postId, UserIdRequest userIdRequest) {
+        User user = getUser(userIdRequest.getUserId());
         Post post = getPost(postId);
 
         if (!user.equals(post.getWriter())) {
@@ -66,8 +68,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostResponse> getAllPostByUser(Pageable pageable, Long userId) {
-        User user = getUser(userId);
+    public Page<PostResponse> getAllPostByUser(Pageable pageable, UserIdRequest userIdRequest) {
+        User user = getUser(userIdRequest.getUserId());
         return postRepository.findAllByWriter(pageable, user)
             .map(PostResponse::new);
     }

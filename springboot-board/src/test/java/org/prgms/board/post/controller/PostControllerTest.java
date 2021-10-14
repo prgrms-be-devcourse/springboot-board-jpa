@@ -10,6 +10,7 @@ import org.prgms.board.domain.entity.User;
 import org.prgms.board.post.dto.PostRequest;
 import org.prgms.board.post.dto.PostResponse;
 import org.prgms.board.post.service.PostService;
+import org.prgms.board.user.dto.UserIdRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -88,7 +89,7 @@ class PostControllerTest {
         given(postService.getAllPost(any(Pageable.class))).willReturn(page);
 
         RequestBuilder request = MockMvcRequestBuilders
-            .get("/api/posts")
+            .get("/posts")
             .accept(MediaType.APPLICATION_JSON);
 
         this.mockMvc.perform(request)
@@ -102,7 +103,7 @@ class PostControllerTest {
         given(postService.getOnePost(anyLong())).willReturn(new PostResponse(post));
 
         RequestBuilder request = MockMvcRequestBuilders
-            .get("/api/posts/{postId}", post.getId())
+            .get("/posts/{id}", post.getId())
             .contentType(MediaType.APPLICATION_JSON);
 
         this.mockMvc.perform(request)
@@ -131,13 +132,13 @@ class PostControllerTest {
     @DisplayName("게시글 등록하기")
     @Test
     void addPost() throws Exception {
-        given(postService.addPost(anyLong(), any())).willReturn(post.getId());
+        given(postService.addPost(any())).willReturn(post.getId());
 
         String body = objectMapper.writeValueAsString(
-            new PostRequest("title", "content"));
+            new PostRequest(1L, "title", "content"));
 
         RequestBuilder request = MockMvcRequestBuilders
-            .post("/api/posts/{userId}", user.getId())
+            .post("/posts")
             .content(body)
             .contentType(MediaType.APPLICATION_JSON);
 
@@ -146,6 +147,7 @@ class PostControllerTest {
             .andDo(
                 document("post-add",
                     requestFields(
+                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 식별자"),
                         fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                         fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
                     ),
@@ -160,13 +162,13 @@ class PostControllerTest {
     @DisplayName("게시글 수정하기")
     @Test
     void modifyPost() throws Exception {
-        given(postService.modifyPost(anyLong(), anyLong(), any())).willReturn(post.getId());
+        given(postService.modifyPost(anyLong(), any())).willReturn(post.getId());
 
         String body = objectMapper.writeValueAsString(
-            new PostRequest("title", "content"));
+            new PostRequest(1L, "title", "content"));
 
         RequestBuilder request = MockMvcRequestBuilders
-            .put("/api/posts/{userId}/{postId}", user.getId(), post.getId())
+            .put("/posts/{id}", post.getId())
             .content(body)
             .contentType(MediaType.APPLICATION_JSON);
 
@@ -175,6 +177,7 @@ class PostControllerTest {
             .andDo(
                 document("post-modify",
                     requestFields(
+                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 식별자"),
                         fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                         fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
                     ),
@@ -189,13 +192,21 @@ class PostControllerTest {
     @DisplayName("게시글 삭제하기")
     @Test
     void removePost() throws Exception {
+        String body = objectMapper.writeValueAsString(
+            new UserIdRequest(1L));
+
         RequestBuilder request = MockMvcRequestBuilders
-            .delete("/api/posts/{userId}/{postId}", user.getId(), post.getId());
+            .delete("/posts/{id}", post.getId())
+            .content(body)
+            .contentType(MediaType.APPLICATION_JSON);
 
         this.mockMvc.perform(request)
             .andExpect(status().isOk())
             .andDo(
                 document("post-remove",
+                    requestFields(
+                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 식별자")
+                    ),
                     responseFields(
                         fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")

@@ -15,6 +15,7 @@ import org.prgms.board.domain.repository.PostRepository;
 import org.prgms.board.domain.repository.UserRepository;
 import org.prgms.board.post.dto.PostRequest;
 import org.prgms.board.post.dto.PostResponse;
+import org.prgms.board.user.dto.UserIdRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -64,23 +65,23 @@ class PostServiceTest {
     @DisplayName("게시글 등록 확인")
     @Test
     void addPostTest() {
-        PostRequest postRequest = new PostRequest("title", "content");
+        PostRequest postRequest = new PostRequest(1L, "title", "content");
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
         when(postRepository.save(any())).thenReturn(post);
 
-        Long postId = postService.addPost(user.getId(), postRequest);
+        Long postId = postService.addPost(postRequest);
         assertThat(postId).isEqualTo(post.getId());
     }
 
     @DisplayName("게시글 수정 확인")
     @Test
     void modifyPostTest() {
-        PostRequest postRequest = new PostRequest("title2", "content2");
+        PostRequest postRequest = new PostRequest(1L, "title2", "content2");
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
         when(postRepository.findById(anyLong())).thenReturn(Optional.of(post));
 
-        postService.modifyPost(user.getId(), post.getId(), postRequest);
+        postService.modifyPost(post.getId(), postRequest);
 
         PostResponse retrievedPost = postService.getOnePost(post.getId());
         assertThat(retrievedPost.getTitle()).isEqualTo("title2");
@@ -91,11 +92,12 @@ class PostServiceTest {
     @DisplayName("게시글 삭제 확인")
     @Test
     void removePostTest() {
+        UserIdRequest userIdRequest = new UserIdRequest(1L);
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
         when(postRepository.findById(anyLong())).thenReturn(Optional.of(post));
         when(postRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> postService.removePost(user.getId(), post.getId()))
+        assertThatThrownBy(() -> postService.removePost(post.getId(), userIdRequest))
             .isInstanceOf(NotFoundException.class)
             .hasMessageContaining("해당 게시글을 찾을 수 없습니다.");
     }
@@ -103,6 +105,7 @@ class PostServiceTest {
     @DisplayName("특정 사용자의 모든 게시글 조회 확인")
     @Test
     void getAllPostByUserTest() {
+        UserIdRequest userIdRequest = new UserIdRequest(1L);
         List<Post> posts = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             posts.add(post);
@@ -112,7 +115,7 @@ class PostServiceTest {
         when(postRepository.findAllByWriter(any(Pageable.class), any())).thenReturn(page);
 
         Pageable pageable = PageRequest.of(0, 2);
-        Page<PostResponse> postResponses = postService.getAllPostByUser(pageable, user.getId());
+        Page<PostResponse> postResponses = postService.getAllPostByUser(pageable, userIdRequest);
 
         assertThat(postResponses.getTotalPages()).isEqualTo(page.getTotalPages());
         assertThat(postResponses.getTotalElements()).isEqualTo(page.getTotalElements());
