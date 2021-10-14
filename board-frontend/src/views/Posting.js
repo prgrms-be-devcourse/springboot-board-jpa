@@ -35,7 +35,7 @@ function Posting(props) {
             .then(res => {
                 console.log(res);
                 alert("게시물이 등록되었습니다.")
-                props.history.push("/board");
+                props.history.push("/board/1");
             })
     };
 

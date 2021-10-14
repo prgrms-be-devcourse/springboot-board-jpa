@@ -7,6 +7,8 @@ import com.example.boardbackend.dto.request.UpdateViewRequest;
 import com.example.boardbackend.dto.response.BoardResponse;
 import com.example.boardbackend.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +30,20 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
-    // 게시물 전체 조회
-//    @GetMapping
-//    public ResponseEntity<List<BoardResponse>> getAllPosts(Pageable pageable){
-//
-//    }
+    // 게시물 전체 조회 (페이징)
+    @GetMapping
+    public ResponseEntity<Page<BoardResponse>> getAllPosts(Pageable pageable){
+        Page<BoardResponse> response = postService.findPostsAll(pageable)
+                .map(postDto -> responseConverter.convertToBoard(postDto));
+        return ResponseEntity.ok(response);
+    }
+
+    // 총 게시글 수 조회
+    @GetMapping("/total")
+    public ResponseEntity<Long> getTotalCount(){
+        Long response = postService.countPostsAll();
+        return ResponseEntity.ok(response);
+    }
 
     // user id로 게시물 조회
     @GetMapping("/user/{id}")

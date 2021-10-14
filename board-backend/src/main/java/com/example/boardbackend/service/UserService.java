@@ -29,7 +29,7 @@ public class UserService {
         return dtoConverter.convertToUserDto(saved);
     }
 
-    public List<UserDto> findUserAll() {
+    public List<UserDto> findUsersAll() {
         return userRepository.findAll().stream()
                 .map(user -> dtoConverter.convertToUserDto(user))
                 .collect(Collectors.toList());
