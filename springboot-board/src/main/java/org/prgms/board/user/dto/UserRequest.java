@@ -3,12 +3,13 @@ package org.prgms.board.user.dto;
 import lombok.Getter;
 import org.prgms.board.domain.entity.User;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 public class UserRequest {
-    @NotNull(message = "이름을 입력해주세요")
+    @NotBlank(message = "이름을 입력해주세요")
     private String name;
+
     private int age;
     private String hobby;
 

@@ -54,7 +54,7 @@ class UserControllerTest {
     @DisplayName("특정 사용자 정보 조회하기")
     @Test
     void getOneUser() throws Exception {
-        given(userService.getOneUser(anyLong())).willReturn(new UserResponse(user));
+        given(userService.getUser(anyLong())).willReturn(new UserResponse(user));
 
         RequestBuilder request = MockMvcRequestBuilders
             .get("/users/{id}", user.getId())

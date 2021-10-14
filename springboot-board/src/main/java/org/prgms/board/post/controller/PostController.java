@@ -25,24 +25,24 @@ public class PostController {
     }
 
     @GetMapping
-    public ApiResponse<Page<PostResponse>> getAllPost(Pageable pageable) {
-        return ApiResponse.toResponse(postService.getAllPost(pageable));
+    public ApiResponse<Page<PostResponse>> getPosts(Pageable pageable) {
+        return ApiResponse.toResponse(postService.getPosts(pageable));
     }
 
     @GetMapping("/users")
-    public ApiResponse<Page<PostResponse>> getAllPostByUser(Pageable pageable,
-                                                            @RequestBody @Valid UserIdRequest userIdRequest) {
-        return ApiResponse.toResponse(postService.getAllPostByUser(pageable, userIdRequest));
+    public ApiResponse<Page<PostResponse>> getPostsByUser(Pageable pageable,
+                                                          @RequestBody @Valid UserIdRequest userIdRequest) {
+        return ApiResponse.toResponse(postService.getPostsByUser(pageable, userIdRequest));
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<PostResponse> getOnePost(@PathVariable Long id) {
-        return ApiResponse.toResponse(postService.getOnePost(id));
+    public ApiResponse<PostResponse> getPost(@PathVariable Long id) {
+        return ApiResponse.toResponse(postService.getPost(id));
     }
 
     @PostMapping
-    public ApiResponse<Long> addPost(@RequestBody @Valid PostRequest postRequest) {
-        return ApiResponse.toResponse(postService.addPost(postRequest));
+    public ApiResponse<Long> writePost(@RequestBody @Valid PostRequest postRequest) {
+        return ApiResponse.toResponse(postService.writePost(postRequest));
     }
 
     @PutMapping("/{id}")
@@ -52,16 +52,16 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ApiResponse<Integer> removePost(@PathVariable Long id,
-                                           @RequestBody @Valid UserIdRequest userIdRequest) {
+    public ApiResponse<Void> removePost(@PathVariable Long id,
+                                        @RequestBody @Valid UserIdRequest userIdRequest) {
         postService.removePost(id, userIdRequest);
-        return ApiResponse.toResponse(1);
+        return ApiResponse.ok();
     }
 
     @PostMapping("/{id}/comments")
-    public ApiResponse<Long> addComment(@PathVariable Long id,
-                                        @RequestBody @Valid CommentRequest commentRequest) {
-        return ApiResponse.toResponse(commentService.addComment(id, commentRequest));
+    public ApiResponse<Long> writeComment(@PathVariable Long id,
+                                          @RequestBody @Valid CommentRequest commentRequest) {
+        return ApiResponse.toResponse(commentService.writeComment(id, commentRequest));
     }
 
     @PutMapping("/{postId}/comments/{commentId}")
@@ -72,11 +72,11 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}/comments/{commentId}")
-    public ApiResponse<Integer> removeComment(@PathVariable Long postId,
-                                              @PathVariable Long commentId,
-                                              @RequestBody @Valid UserIdRequest userIdRequest) {
+    public ApiResponse<Void> removeComment(@PathVariable Long postId,
+                                           @PathVariable Long commentId,
+                                           @RequestBody @Valid UserIdRequest userIdRequest) {
         commentService.removeComment(postId, commentId, userIdRequest);
-        return ApiResponse.toResponse(1);
+        return ApiResponse.ok();
     }
 
 }

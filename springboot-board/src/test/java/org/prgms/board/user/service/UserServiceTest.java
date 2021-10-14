@@ -59,7 +59,7 @@ class UserServiceTest {
 
         userService.modifyUser(user.getId(), modifyUser);
 
-        UserResponse retrievedUser = userService.getOneUser(user.getId());
+        UserResponse retrievedUser = userService.getUser(user.getId());
         assertThat(retrievedUser.getName()).isEqualTo("buri");
         assertThat(retrievedUser.getHobby()).isEqualTo("tufting");
     }
@@ -79,7 +79,7 @@ class UserServiceTest {
     void getOneUserTest() {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
 
-        UserResponse retrievedUser = userService.getOneUser(user.getId());
+        UserResponse retrievedUser = userService.getUser(user.getId());
         assertThat(retrievedUser.getName()).isEqualTo("buhee");
         assertThat(retrievedUser.getAge()).isEqualTo(26);
         assertThat(retrievedUser.getHobby()).isEqualTo("making");

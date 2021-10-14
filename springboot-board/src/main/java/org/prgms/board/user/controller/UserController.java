@@ -19,7 +19,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ApiResponse<UserResponse> getOne(@PathVariable Long id) {
-        return ApiResponse.toResponse(userService.getOneUser(id));
+        return ApiResponse.toResponse(userService.getUser(id));
     }
 
     @PostMapping
@@ -34,7 +34,8 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ApiResponse<Long> removeUser(@PathVariable Long id) {
-        return ApiResponse.toResponse(userService.removeUser(id));
+        userService.removeUser(id);
+        return ApiResponse.ok();
     }
 
 }

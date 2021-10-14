@@ -23,25 +23,24 @@ public class UserService {
 
     @Transactional
     public Long modifyUser(Long userId, UserRequest userRequest) {
-        User user = getUser(userId);
+        User user = activeUser(userId);
         user.changeInfo(userRequest.getName(), userRequest.getAge(), userRequest.getHobby());
         return user.getId();
     }
 
     @Transactional
-    public Long removeUser(Long userId) {
-        User user = getUser(userId);
+    public void removeUser(Long userId) {
+        User user = activeUser(userId);
         user.removeUser();
-        return user.getId();
     }
 
     @Transactional(readOnly = true)
-    public UserResponse getOneUser(Long userId) {
-        return new UserResponse(getUser(userId));
+    public UserResponse getUser(Long userId) {
+        return new UserResponse(activeUser(userId));
     }
 
-    private User getUser(Long id) {
+    private User activeUser(Long id) {
         return userRepository.findByIdAndDeleted(id, false)
-            .orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+            .orElseThrow(() -> new NotFoundException(String.format("해당 %d번 사용자를 찾을 수 없습니다.", id)));
     }
 }

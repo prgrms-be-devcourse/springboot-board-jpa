@@ -70,7 +70,7 @@ class PostServiceTest {
         when(userRepository.findByIdAndDeleted(anyLong(), anyBoolean())).thenReturn(Optional.of(user));
         when(postRepository.save(any())).thenReturn(post);
 
-        Long postId = postService.addPost(postRequest);
+        Long postId = postService.writePost(postRequest);
 
         assertThat(postId).isEqualTo(post.getId());
     }
@@ -84,7 +84,7 @@ class PostServiceTest {
 
         postService.modifyPost(post.getId(), postRequest);
 
-        PostResponse retrievedPost = postService.getOnePost(post.getId());
+        PostResponse retrievedPost = postService.getPost(post.getId());
         assertThat(retrievedPost.getTitle()).isEqualTo(postRequest.getTitle());
         assertThat(retrievedPost.getContent()).isEqualTo(postRequest.getContent());
         assertThat(retrievedPost.getAuthor()).isEqualTo(postRequest.getUserId());
@@ -116,7 +116,7 @@ class PostServiceTest {
         when(postRepository.findAllByWriter(any(Pageable.class), any())).thenReturn(page);
 
         Pageable pageable = PageRequest.of(0, 2);
-        Page<PostResponse> postResponses = postService.getAllPostByUser(pageable, userIdRequest);
+        Page<PostResponse> postResponses = postService.getPostsByUser(pageable, userIdRequest);
 
         assertThat(postResponses.getTotalPages()).isEqualTo(page.getTotalPages());
         assertThat(postResponses.getTotalElements()).isEqualTo(page.getTotalElements());
@@ -143,7 +143,7 @@ class PostServiceTest {
 
         when(postRepository.findById(anyLong())).thenReturn(Optional.of(post));
 
-        PostResponse retrievedPost = postService.getOnePost(post.getId());
+        PostResponse retrievedPost = postService.getPost(post.getId());
 
         assertThat(retrievedPost.getTitle()).isEqualTo("title");
         assertThat(retrievedPost.getContent()).isEqualTo("content");

@@ -25,14 +25,16 @@ public class PostService {
     }
 
     @Transactional
-    public Long addPost(PostRequest postRequest) {
-        User user = getUser(postRequest.getUserId());
+    public Long writePost(PostRequest postRequest) {
+        User user = activeUser(postRequest.getUserId());
 
-        return postRepository.save(Post.builder()
-            .title(postRequest.getTitle())
-            .content(postRequest.getContent())
-            .writer(user)
-            .build()).getId();
+        return postRepository.save(
+            Post.builder()
+                .title(postRequest.getTitle())
+                .content(postRequest.getContent())
+                .writer(user)
+                .build()
+        ).getId();
     }
 
     @Transactional
@@ -49,41 +51,41 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostResponse> getAllPost(Pageable pageable) {
+    public Page<PostResponse> getPosts(Pageable pageable) {
         return postRepository.findAll(pageable)
             .map(PostResponse::new);
     }
 
     @Transactional(readOnly = true)
-    public Page<PostResponse> getAllPostByUser(Pageable pageable, UserIdRequest userIdRequest) {
-        User user = getUser(userIdRequest.getUserId());
+    public Page<PostResponse> getPostsByUser(Pageable pageable, UserIdRequest userIdRequest) {
+        User user = activeUser(userIdRequest.getUserId());
         return postRepository.findAllByWriter(pageable, user)
             .map(PostResponse::new);
     }
 
     @Transactional(readOnly = true)
-    public PostResponse getOnePost(Long postId) {
-        return new PostResponse(getPost(postId));
+    public PostResponse getPost(Long postId) {
+        return new PostResponse(findPost(postId));
     }
 
     private Post validate(Long userId, Long postId) {
-        User user = getUser(userId);
-        Post post = getPost(postId);
+        User user = activeUser(userId);
+        Post post = findPost(postId);
 
         if (!user.equals(post.getWriter())) {
-            throw new NotMatchException("해당 게시글에 접근 권한이 없습니다.");
+            throw new NotMatchException(String.format("해당 %d번 게시글을 작성한 사용자가 아닙니다.", postId));
         }
 
         return post;
     }
 
-    private Post getPost(Long id) {
+    private Post findPost(Long id) {
         return postRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("해당 게시글을 찾을 수 없습니다."));
+            .orElseThrow(() -> new NotFoundException(String.format("해당 %d번 게시글을 찾을 수 없습니다.", id)));
     }
 
-    private User getUser(Long id) {
+    private User activeUser(Long id) {
         return userRepository.findByIdAndDeleted(id, false)
-            .orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+            .orElseThrow(() -> new NotFoundException(String.format("해당 %d번 사용자를 찾을 수 없습니다.", id)));
     }
 }

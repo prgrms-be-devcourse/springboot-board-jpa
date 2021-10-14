@@ -73,7 +73,7 @@ class CommentControllerTest {
     @DisplayName("댓글 등록하기")
     @Test
     void addComment() throws Exception {
-        given(commentService.addComment(anyLong(), any())).willReturn(comment.getId());
+        given(commentService.writeComment(anyLong(), any())).willReturn(comment.getId());
 
         String body = objectMapper.writeValueAsString(
             new CommentRequest(1L, "comment"));

@@ -76,7 +76,7 @@ class CommentServiceTest {
         when(postRepository.findById(anyLong())).thenReturn(Optional.of(post));
         when(commentRepository.save(any())).thenReturn(comment);
 
-        Long commentId = commentService.addComment(post.getId(), commentRequest);
+        Long commentId = commentService.writeComment(post.getId(), commentRequest);
 
         assertThat(commentId).isEqualTo(comment.getId());
     }
@@ -91,7 +91,7 @@ class CommentServiceTest {
 
         commentService.modifyComment(post.getId(), comment.getId(), commentRequest);
 
-        CommentResponse retrievedComment = commentService.getOneComment(comment.getId());
+        CommentResponse retrievedComment = commentService.getComment(comment.getId());
         assertThat(retrievedComment.getAuthor()).isEqualTo(commentRequest.getUserId());
         assertThat(retrievedComment.getContent()).isEqualTo(commentRequest.getContent());
     }

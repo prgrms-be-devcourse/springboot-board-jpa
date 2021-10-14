@@ -29,15 +29,17 @@ public class CommentService {
     }
 
     @Transactional
-    public Long addComment(Long postId, CommentRequest commentRequest) {
-        User user = getUser(commentRequest.getUserId());
-        Post post = getPost(postId);
+    public Long writeComment(Long postId, CommentRequest commentRequest) {
+        User user = activeUser(commentRequest.getUserId());
+        Post post = findPost(postId);
 
-        return commentRepository.save(Comment.builder()
-            .content(commentRequest.getContent())
-            .post(post)
-            .writer(user)
-            .build()).getId();
+        return commentRepository.save(
+            Comment.builder()
+                .content(commentRequest.getContent())
+                .post(post)
+                .writer(user)
+                .build()
+        ).getId();
     }
 
     @Transactional
@@ -54,38 +56,38 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public CommentResponse getOneComment(Long commentId) {
-        return new CommentResponse(getComment(commentId));
+    public CommentResponse getComment(Long commentId) {
+        return new CommentResponse(findComment(commentId));
     }
 
     private Comment validate(Long postId, Long commentId, Long userId) {
-        User user = getUser(userId);
-        Post post = getPost(postId);
-        Comment comment = getComment(commentId);
+        User user = activeUser(userId);
+        Post post = findPost(postId);
+        Comment comment = findComment(commentId);
 
         if (!post.equals(comment.getPost())) {
-            throw new NotMatchException("해당 게시글에 존재하지 않는 댓글입니다.");
+            throw new NotMatchException(String.format("해당 %d번 게시글에 존재하지 않는 댓글입니다.", postId));
         }
 
         if (!user.equals(comment.getWriter())) {
-            throw new NotMatchException("해당 댓글에 접근 권한이 없습니다.");
+            throw new NotMatchException(String.format("해당 %d번 댓글을 작성한 사용자가 아닙니다.", commentId));
         }
 
         return comment;
     }
 
-    private Comment getComment(Long id) {
+    private Comment findComment(Long id) {
         return commentRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("해당 댓글을 찾을 수 없습니다."));
+            .orElseThrow(() -> new NotFoundException(String.format("해당 %d번 댓글을 찾을 수 없습니다.", id)));
     }
 
-    private Post getPost(Long id) {
+    private Post findPost(Long id) {
         return postRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("해당 게시글을 찾을 수 없습니다."));
+            .orElseThrow(() -> new NotFoundException(String.format("해당 %d번 게시글을 찾을 수 없습니다.", id)));
     }
 
-    private User getUser(Long id) {
+    private User activeUser(Long id) {
         return userRepository.findByIdAndDeleted(id, false)
-            .orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+            .orElseThrow(() -> new NotFoundException(String.format("해당 %d번 사용자를 찾을 수 없습니다.", id)));
     }
 }

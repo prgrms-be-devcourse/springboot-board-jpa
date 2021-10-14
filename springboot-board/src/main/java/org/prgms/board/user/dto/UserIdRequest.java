@@ -2,11 +2,11 @@ package org.prgms.board.user.dto;
 
 import lombok.Getter;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 public class UserIdRequest {
-    @NotNull
+    @NotBlank
     private Long userId;
 
     public UserIdRequest() {

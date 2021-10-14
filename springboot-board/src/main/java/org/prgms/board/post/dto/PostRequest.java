@@ -2,15 +2,17 @@ package org.prgms.board.post.dto;
 
 import lombok.Getter;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 public class PostRequest {
-    @NotNull
+    @NotBlank
     private Long userId;
-    @NotNull(message = "제목을 입력해주세요")
+
+    @NotBlank(message = "제목을 입력해주세요")
     private String title;
-    @NotNull(message = "내용을 입력해주세요")
+
+    @NotBlank(message = "내용을 입력해주세요")
     private String content;
 
     public PostRequest() {

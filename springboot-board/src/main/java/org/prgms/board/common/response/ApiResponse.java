@@ -11,6 +11,10 @@ public class ApiResponse<T> {
     public ApiResponse() {
     }
 
+    public ApiResponse(int status) {
+        this.status = status;
+    }
+
     public ApiResponse(int status, T data) {
         this.status = status;
         this.data = data;
@@ -18,5 +22,9 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> toResponse(T data) {
         return new ApiResponse<T>(HttpStatus.OK.value(), data);
+    }
+
+    public static <T> ApiResponse<T> ok() {
+        return new ApiResponse<T>(HttpStatus.NO_CONTENT.value());
     }
 }

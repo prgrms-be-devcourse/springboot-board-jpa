@@ -86,7 +86,7 @@ class PostControllerTest {
             postResponses.add(new PostResponse(post));
         }
         Page page = new PageImpl(postResponses);
-        given(postService.getAllPost(any(Pageable.class))).willReturn(page);
+        given(postService.getPosts(any(Pageable.class))).willReturn(page);
 
         RequestBuilder request = MockMvcRequestBuilders
             .get("/posts")
@@ -100,7 +100,7 @@ class PostControllerTest {
     @DisplayName("특정 게시글 조회하기")
     @Test
     void getOnePost() throws Exception {
-        given(postService.getOnePost(anyLong())).willReturn(new PostResponse(post));
+        given(postService.getPost(anyLong())).willReturn(new PostResponse(post));
 
         RequestBuilder request = MockMvcRequestBuilders
             .get("/posts/{id}", post.getId())
@@ -132,7 +132,7 @@ class PostControllerTest {
     @DisplayName("게시글 등록하기")
     @Test
     void addPost() throws Exception {
-        given(postService.addPost(any())).willReturn(post.getId());
+        given(postService.writePost(any())).willReturn(post.getId());
 
         String body = objectMapper.writeValueAsString(
             new PostRequest(1L, "title", "content"));
