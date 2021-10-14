@@ -5,10 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
-@EqualsAndHashCode
 @Getter
 @Builder
 @AllArgsConstructor
@@ -24,7 +22,7 @@ public class Post extends BaseEntity<Long> {
     @Column(nullable = false, length = 1000)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id", referencedColumnName = "id")
     private User writer;
 
@@ -34,20 +32,8 @@ public class Post extends BaseEntity<Long> {
         setModifiedAt(LocalDateTime.now());
     }
 
-    /**
-     * 연관관계 편의 매소드
-     */
-    public void addToWriter(User writer){
-        this.writer = writer;        //양방향
-        writer.getPosts().add(this); //연결을 함
-    }
-
-    public boolean deleteFromWriter(){
-        if(Objects.nonNull(this.writer)){
-            return this.writer.getPosts().remove(this);
-        }
-
-        return false;
+    public void setWriter(User writer){
+        this.writer = writer;
     }
 
 }

@@ -28,4 +28,16 @@ public class User extends BaseEntity<Long> {
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
+
+    /**
+     * 연관관계 편의 메소드
+     */
+    public void addPost(Post post){
+        this.posts.add(post);
+        post.setWriter(this);
+    }
+
+    public void deletePost(Post post){
+        this.posts.remove(post);
+    }
 }
