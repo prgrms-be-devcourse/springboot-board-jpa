@@ -15,12 +15,12 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class EditPostRequest {
 
-    @NotBlank
+    @NotBlank(message = "제목은 필수 입력 사항입니다.")
     private String title;
 
     private String content;
 
-    @NotBlank
+    @NotBlank(message = "작성자 ID는 필수 입력 사항입니다.")
     private String createdBy;
 
     public Post convertToEntity(User user) {
