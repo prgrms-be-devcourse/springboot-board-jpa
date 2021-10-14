@@ -3,8 +3,9 @@ package kdt.prgrms.devrun.post.service;
 import kdt.prgrms.devrun.common.exception.PostNotFoundException;
 import kdt.prgrms.devrun.domain.Post;
 import kdt.prgrms.devrun.domain.User;
+import kdt.prgrms.devrun.post.dto.AddPostRequest;
 import kdt.prgrms.devrun.post.dto.DetailPostDto;
-import kdt.prgrms.devrun.post.dto.PostForm;
+import kdt.prgrms.devrun.post.dto.EditPostRequest;
 import kdt.prgrms.devrun.post.dto.SimplePostDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import java.util.ArrayList;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -118,7 +118,7 @@ class SimplePostServiceTest {
 
         String newPostTitle = "New Post Title";
         String newPostContent = "New Post Content";
-        final PostForm postForm = PostForm.builder()
+        final AddPostRequest postForm = AddPostRequest.builder()
             .title(newPostTitle)
             .content(newPostContent)
             .createdBy(user.getLoginId())
@@ -141,7 +141,7 @@ class SimplePostServiceTest {
         String updatePostTitle = "Update Post Title";
         String updatePostContent = "Update Post Content";
 
-        final PostForm postForm = PostForm.builder()
+        final EditPostRequest postForm = EditPostRequest.builder()
             .title(updatePostTitle)
             .content(updatePostContent)
             .createdBy(user.getLoginId())
@@ -166,7 +166,7 @@ class SimplePostServiceTest {
         String updatePostTitle = "Update Post Title";
         String updatePostContent = "Update Post Content";
 
-        final PostForm postForm = PostForm.builder()
+        final EditPostRequest postForm = EditPostRequest.builder()
             .title(updatePostTitle)
             .content(updatePostContent)
             .createdBy(user.getLoginId())

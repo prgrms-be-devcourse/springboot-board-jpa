@@ -13,15 +13,15 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostForm {
-
-    @NotBlank
-    private String createdBy;
+public class EditPostRequest {
 
     @NotBlank
     private String title;
 
     private String content;
+
+    @NotBlank
+    private String createdBy;
 
     public Post convertToEntity(User user) {
         return new Post(title, content, user);
