@@ -50,3 +50,9 @@ include::{snippets}/update-post/request-fields.adoc[]
 .Response
 include::{snippets}/update-post/http-response.adoc[]
 include::{snippets}/update-post/response-fields.adoc[]
+
+=== 에러 응답
+
+.Response
+include::{snippets}/error-response/http-response.adoc[]
+include::{snippets}/error-response/response-fields.adoc[]

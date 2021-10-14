@@ -541,3 +541,53 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 </tr>
 </tbody>
 </table>
+
+## 에러 응답
+
+**Response**
+
+    HTTP/1.1 400 Bad Request
+    Content-Type: application/json;charset=UTF-8
+    Content-Length: 109
+
+    {"success":false,"http_method":"GET","status_code":400,"data":{"error_message":"No Post found with id: 999"}}
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>Path</p></td>
+<td style="text-align: left;"><p>Type</p></td>
+<td style="text-align: left;"><p>Description</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>success</code></p></td>
+<td style="text-align: left;"><p><code>Boolean</code></p></td>
+<td style="text-align: left;"><p>Is successful response</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>status_code</code></p></td>
+<td style="text-align: left;"><p><code>Number</code></p></td>
+<td style="text-align: left;"><p>status code of response</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>http_method</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
+<td style="text-align: left;"><p>http method of request</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>data</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
+<td style="text-align: left;"><p>error message</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>data.error_message</code></p></td>
+<td style="text-align: left;"><p><code>String</code></p></td>
+<td style="text-align: left;"><p>error details</p></td>
+</tr>
+</tbody>
+</table>
