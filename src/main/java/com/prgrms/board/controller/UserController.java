@@ -23,19 +23,19 @@ public class UserController {
         return ResponseEntity.ok(userService.createUser(userRequest));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserFindRequest> getUser(@PathVariable final Long id) {
-        return ResponseEntity.ok(userService.findUser(id));
+    @GetMapping
+    public ResponseEntity<UserFindRequest> getUser(final @RequestParam Long userId) {
+        return ResponseEntity.ok(userService.findUser(userId));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Long> modifyUser(@PathVariable Long id, final @Valid @RequestBody UserCreateRequest userCreateRequest) {
-        return ResponseEntity.ok(userService.modifyUser(id, userCreateRequest));
+    @PutMapping
+    public ResponseEntity<Long> modifyUser(final @RequestParam Long userId, final @Valid @RequestBody UserCreateRequest userCreateRequest) {
+        return ResponseEntity.ok(userService.modifyUser(userId, userCreateRequest));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Long> removeUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.removeUser(id));
+    @DeleteMapping
+    public ResponseEntity<Long> removeUser(final @RequestParam Long userId) {
+        return ResponseEntity.ok(userService.removeUser(userId));
     }
 
 }
