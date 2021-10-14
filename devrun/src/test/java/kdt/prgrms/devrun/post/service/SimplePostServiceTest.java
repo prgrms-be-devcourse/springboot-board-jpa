@@ -3,9 +3,9 @@ package kdt.prgrms.devrun.post.service;
 import kdt.prgrms.devrun.common.exception.PostNotFoundException;
 import kdt.prgrms.devrun.domain.Post;
 import kdt.prgrms.devrun.domain.User;
-import kdt.prgrms.devrun.post.dto.AddPostRequest;
+import kdt.prgrms.devrun.post.dto.AddPostRequestDto;
 import kdt.prgrms.devrun.post.dto.DetailPostDto;
-import kdt.prgrms.devrun.post.dto.EditPostRequest;
+import kdt.prgrms.devrun.post.dto.EditPostRequestDto;
 import kdt.prgrms.devrun.post.dto.SimplePostDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,7 +118,7 @@ class SimplePostServiceTest {
 
         String newPostTitle = "New Post Title";
         String newPostContent = "New Post Content";
-        final AddPostRequest postForm = AddPostRequest.builder()
+        final AddPostRequestDto postForm = AddPostRequestDto.builder()
             .title(newPostTitle)
             .content(newPostContent)
             .createdBy(user.getLoginId())
@@ -141,7 +141,7 @@ class SimplePostServiceTest {
         String updatePostTitle = "Update Post Title";
         String updatePostContent = "Update Post Content";
 
-        final EditPostRequest postForm = EditPostRequest.builder()
+        final EditPostRequestDto postForm = EditPostRequestDto.builder()
             .title(updatePostTitle)
             .content(updatePostContent)
             .createdBy(user.getLoginId())
@@ -166,7 +166,7 @@ class SimplePostServiceTest {
         String updatePostTitle = "Update Post Title";
         String updatePostContent = "Update Post Content";
 
-        final EditPostRequest postForm = EditPostRequest.builder()
+        final EditPostRequestDto postForm = EditPostRequestDto.builder()
             .title(updatePostTitle)
             .content(updatePostContent)
             .createdBy(user.getLoginId())

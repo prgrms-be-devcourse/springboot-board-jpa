@@ -1,9 +1,9 @@
 package kdt.prgrms.devrun.post.controller;
 
 import kdt.prgrms.devrun.common.dto.ApiResult;
-import kdt.prgrms.devrun.post.dto.AddPostRequest;
+import kdt.prgrms.devrun.post.dto.AddPostRequestDto;
 import kdt.prgrms.devrun.post.dto.DetailPostDto;
-import kdt.prgrms.devrun.post.dto.EditPostRequest;
+import kdt.prgrms.devrun.post.dto.EditPostRequestDto;
 import kdt.prgrms.devrun.post.dto.SimplePostDto;
 import kdt.prgrms.devrun.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -34,14 +34,14 @@ public class PostApiController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
-    public ApiResult<Long> create(@RequestBody @Valid AddPostRequest addPostRequest) {
-        final Long createdPostId = postService.createPost(addPostRequest);
+    public ApiResult<Long> create(@RequestBody @Valid AddPostRequestDto addPostRequestDto) {
+        final Long createdPostId = postService.createPost(addPostRequestDto);
         return ApiResult.ok(createdPostId);
     }
 
     @PatchMapping("/{id}")
-    public ApiResult<Long> update(@PathVariable("id") Long postId ,@RequestBody @Valid EditPostRequest editPostRequest) {
-        final Long updatedPostId = postService.updatePost(postId, editPostRequest);
+    public ApiResult<Long> update(@PathVariable("id") Long postId ,@RequestBody @Valid EditPostRequestDto editPostRequestDto) {
+        final Long updatedPostId = postService.updatePost(postId, editPostRequestDto);
         return ApiResult.ok(updatedPostId);
     }
 

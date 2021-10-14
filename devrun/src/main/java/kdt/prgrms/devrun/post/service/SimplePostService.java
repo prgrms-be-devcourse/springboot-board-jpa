@@ -4,9 +4,9 @@ import kdt.prgrms.devrun.common.exception.PostNotFoundException;
 import kdt.prgrms.devrun.common.exception.UserNotFoundException;
 import kdt.prgrms.devrun.domain.Post;
 import kdt.prgrms.devrun.domain.User;
-import kdt.prgrms.devrun.post.dto.AddPostRequest;
+import kdt.prgrms.devrun.post.dto.AddPostRequestDto;
 import kdt.prgrms.devrun.post.dto.DetailPostDto;
-import kdt.prgrms.devrun.post.dto.EditPostRequest;
+import kdt.prgrms.devrun.post.dto.EditPostRequestDto;
 import kdt.prgrms.devrun.post.dto.SimplePostDto;
 import kdt.prgrms.devrun.post.repository.PostRepository;
 import kdt.prgrms.devrun.user.repository.UserRepository;
@@ -53,9 +53,9 @@ public class SimplePostService implements PostService{
 
     @Override
     @Transactional
-    public Long createPost(AddPostRequest addPostRequest) {
-        final User foundUser = userRepository.findUsersByLoginId(addPostRequest.getCreatedBy()).orElseThrow(() -> new UserNotFoundException());
-        final Post newPost = addPostRequest.convertToEntity(foundUser);
+    public Long createPost(AddPostRequestDto addPostRequestDto) {
+        final User foundUser = userRepository.findUsersByLoginId(addPostRequestDto.getCreatedBy()).orElseThrow(() -> new UserNotFoundException());
+        final Post newPost = addPostRequestDto.convertToEntity(foundUser);
 
         final Post savedPost = postRepository.save(newPost);
         return savedPost.getId();
@@ -63,10 +63,10 @@ public class SimplePostService implements PostService{
 
     @Override
     @Transactional
-    public Long updatePost(Long postId , EditPostRequest editPostRequest) {
+    public Long updatePost(Long postId , EditPostRequestDto editPostRequestDto) {
 
         Post foundPost = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException());
-        foundPost.updatePost(editPostRequest.getTitle(), editPostRequest.getContent());
+        foundPost.updatePost(editPostRequestDto.getTitle(), editPostRequestDto.getContent());
 
         return postId;
     }
