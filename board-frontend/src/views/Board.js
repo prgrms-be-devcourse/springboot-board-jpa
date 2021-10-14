@@ -8,7 +8,7 @@ function Board(props) {
     // Select Origin
     const local = 'http://localhost:8080';
     const deploy = 'http://15.165.69.116:8080';
-    const origin = local;
+    const origin = deploy;
 
     // State
     const page = props.match.params.page;

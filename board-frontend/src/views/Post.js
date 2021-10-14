@@ -8,7 +8,7 @@ function Post(props) {
     // Select Origin
     const local = 'http://localhost:8080';
     const deploy = 'http://15.165.69.116:8080';
-    const origin = local;
+    const origin = deploy;
 
     // State
     const postId = props.match.params.postId;
