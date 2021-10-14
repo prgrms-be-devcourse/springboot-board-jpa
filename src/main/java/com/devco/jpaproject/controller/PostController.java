@@ -57,7 +57,8 @@ public class PostController {
     }
 
     @DeleteMapping("/post")
-    public ResponseEntity deleteOne(@Valid @RequestBody PostDeleteRequestDto dto) throws PostNotFoundException, UserNotFoundException, UserAndPostNotMatchException {
+    public ResponseEntity deleteOne(@Valid @RequestBody PostDeleteRequestDto dto)
+            throws PostNotFoundException, UserAndPostNotMatchException {
         postService.deleteOne(dto);
 
         return new ResponseEntity(HttpStatus.OK);
