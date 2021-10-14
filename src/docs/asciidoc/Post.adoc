@@ -1,0 +1,63 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 게시글
+=== 1. 게시글 등록
+==== /ap1/v1/post
+
+.Request
+include::{snippets}/post-insert/http-request.adoc[]
+include::{snippets}/post-insert/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-insert/http-response.adoc[]
+include::{snippets}/post-insert/response-fields.adoc[]
+
+
+=== 2. 게시글 삭제
+==== /ap1/v1/post
+
+.Request
+include::{snippets}/post-delete/http-request.adoc[]
+include::{snippets}/post-delete/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-delete/http-response.adoc[]
+
+
+=== 3. 게시글 id로 찾기
+==== /ap1/v1/post/{id}
+
+.Request
+include::{snippets}/post-find-by-id/http-request.adoc[]
+
+.Response
+include::{snippets}/post-find-by-id/http-response.adoc[]
+include::{snippets}/post-find-by-id/response-fields.adoc[]
+
+
+
+=== 4. 게시글 수정
+==== /ap1/v1/post
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+
+
+=== 5. 모든 게시글 조회
+==== /ap1/v1/posts
+
+.Request
+include::{snippets}/posts-page/http-request.adoc[]
+
+.Response
+include::{snippets}/posts-page/http-response.adoc[]
+include::{snippets}/posts-page/response-fields.adoc[]
+
+
+

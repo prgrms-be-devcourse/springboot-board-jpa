@@ -1,0 +1,37 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 유저
+=== 1. 유저 등록
+==== /ap1/v1/user
+
+.Request
+include::{snippets}/user-insert/http-request.adoc[]
+include::{snippets}/user-insert/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-insert/http-response.adoc[]
+include::{snippets}/user-insert/response-fields.adoc[]
+
+
+=== 2. 유저 삭제
+==== /ap1/v1/user/{id}
+
+.Request
+include::{snippets}/user-delete/http-request.adoc[]
+
+.Response
+include::{snippets}/user-delete/http-response.adoc[]
+
+
+
+=== 1. 유저 id로 찾기
+==== /ap1/v1/user/{id}
+
+.Request
+include::{snippets}/user-find-by-id/http-request.adoc[]
+
+.Response
+include::{snippets}/user-find-by-id/http-response.adoc[]
+include::{snippets}/user-find-by-id/response-fields.adoc[]
