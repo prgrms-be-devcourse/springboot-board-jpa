@@ -16,35 +16,36 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @ResponseStatus(HttpStatus.OK)
+@RequestMapping("/api/v1/posts")
 public class PostApiController {
 
     final private PostService postService;
 
-    @GetMapping("/api/v1/posts")
+    @GetMapping()
     public ApiResult<Page<SimplePostDto>> posts(Pageable pageable) {
         return ApiResult.ok(postService.getPostPagingList(pageable));
     }
 
-    @GetMapping("/api/v1/post/{id}")
+    @GetMapping("/{id}")
     public ApiResult<DetailPostDto> post(@PathVariable("id") Long postId) {
         return ApiResult.ok(postService.getPostById(postId));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/api/v1/post")
+    @PostMapping()
     public ApiResult<Long> create(@RequestBody @Valid PostForm postForm) {
         final Long createdPostId = postService.createPost(postForm);
         return ApiResult.ok(createdPostId);
     }
 
-    @PatchMapping("/api/v1/post/{id}")
+    @PatchMapping("/{id}")
     public ApiResult<Long> update(@PathVariable("id") Long postId ,@RequestBody @Valid PostForm postForm) {
         final Long updatedPostId = postService.updatePost(postId, postForm);
         return ApiResult.ok(updatedPostId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/api/v1/post/{id}")
+    @DeleteMapping("/{id}")
     public ApiResult<Object> delete(@PathVariable("id") Long postId) {
         postService.deletePostById(postId);
         return ApiResult.ok(null);
