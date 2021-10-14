@@ -13,10 +13,10 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 30, unique = true)
+    @Column(name = "user_name", nullable = false, length = 50, unique = true)
     private String name;
 
-    @Column(name = "age")
+    @Column(name = "age", nullable = false)
     private int age;
 
     @Embedded
