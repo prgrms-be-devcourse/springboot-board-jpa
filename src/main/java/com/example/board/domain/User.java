@@ -3,32 +3,41 @@ package com.example.board.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "User")
+@Entity
 @Table(name = "user")
 public class User extends BaseEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
-    @Column(name = "user_name", nullable = false, length = 20)
+    private User(int id){
+        this.id = id;
+    }
+
+    public static User getMockUser(int id){
+        return new User(id);
+    }
+
+    @Column(name = "name", nullable = false, length = 20, unique = true)
     private String name;
 
     private int age;
+
+    @Enumerated(EnumType.STRING)
     private Hobby hobby;
 
-    @OneToMany
-    @JoinColumn(name = "post_id")
-    private List<Post> posts;
+    @OneToMany(mappedBy = "author", cascade = CascadeType.MERGE)
+    private List<Post> posts = new ArrayList<>();
 
     public void addPost(Post post){
         posts.add(post);
