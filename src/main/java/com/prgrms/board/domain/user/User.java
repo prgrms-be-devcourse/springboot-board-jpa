@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -15,13 +14,13 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "age", nullable = false)
     private int age;
 
-    @Lob
+    @Column(name = "hobby")
     private String hobby;
 
     protected User() {
@@ -33,7 +32,6 @@ public class User extends BaseEntity {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        setCreatedAt(LocalDateTime.now());
         setCreatedBy(name);
     }
 

@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
@@ -13,18 +13,14 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter(AccessLevel.PROTECTED)
-@EntityListeners(EnableJpaAuditing.class)
+@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 public class BaseEntity {
-    @Column(name = "created_by")
+    @Column(name = "created_by", updatable = false)
     private String createdBy;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     @CreatedDate
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime createdAt;
-
-    public void addCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
 }
 

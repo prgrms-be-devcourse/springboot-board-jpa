@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -16,13 +15,13 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
+    @Column(name = "title", nullable = false, length = 100)
     private String title;
 
-    @Lob
+    @Column(name = "content", nullable = false, length = 1000)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -35,7 +34,6 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
         this.user = user;
-        setCreatedAt(LocalDateTime.now());
         setCreatedBy(user.getName());
     }
 
