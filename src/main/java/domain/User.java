@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -20,6 +22,9 @@ public class User extends BaseEntity {
     @Embedded
     private Hobby hobby;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
     protected User() {
     }
 
@@ -31,6 +36,14 @@ public class User extends BaseEntity {
 
     public static User createUser(String name, int age, Hobby hobby) {
         return new User(name, age, hobby);
+    }
+
+    public void addPost(Post post) {
+        this.posts.add(post);
+    }
+
+    public void removePost(Post post) {
+        this.posts.remove(post);
     }
 
     public Long getId() {
