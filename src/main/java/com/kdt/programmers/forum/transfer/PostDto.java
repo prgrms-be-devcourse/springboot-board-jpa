@@ -1,7 +1,6 @@
 package com.kdt.programmers.forum.transfer;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 

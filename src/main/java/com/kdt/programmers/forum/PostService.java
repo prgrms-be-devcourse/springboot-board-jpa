@@ -4,7 +4,6 @@ import com.kdt.programmers.forum.domain.Post;
 import com.kdt.programmers.forum.transfer.PostDto;
 import com.kdt.programmers.forum.utils.PostConverter;
 import javassist.NotFoundException;
-import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
