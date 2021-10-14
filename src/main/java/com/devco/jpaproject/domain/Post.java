@@ -28,12 +28,8 @@ public class Post extends BaseEntity<Long> {
     @JoinColumn(name = "writer_id", referencedColumnName = "id")
     private User writer;
 
-    public void updateTitle(String title){
+    public void updateTitleAndContent(String title, String content){
         this.title = title;
-        setModifiedAt(LocalDateTime.now());
-    }
-
-    public void updateContent(String content){
         this.content = content;
         setModifiedAt(LocalDateTime.now());
     }
@@ -41,19 +37,17 @@ public class Post extends BaseEntity<Long> {
     /**
      * 연관관계 편의 매소드
      */
-    public void setWriter(User writer){
-        if(Objects.nonNull(this.writer)){
-            this.writer.getPosts().remove(this);
-        }
-
+    public void addToWriter(User writer){
         this.writer = writer;        //양방향
         writer.getPosts().add(this); //연결을 함
     }
 
-    public void delete(){
+    public boolean deleteFromWriter(){
         if(Objects.nonNull(this.writer)){
-            this.writer.getPosts().remove(this);
+            return this.writer.getPosts().remove(this);
         }
+
+        return false;
     }
 
 }

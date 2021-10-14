@@ -7,8 +7,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static lombok.AccessLevel.PROTECTED;
-
 @Entity
 @Getter
 @Builder
@@ -30,16 +28,4 @@ public class User extends BaseEntity<Long> {
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
-
-    public void addPost(Post post){
-        this.posts.add(post);
-    }
-
-    public boolean deleteOnePost(Post post){
-        return posts.remove(post);
-    }
-
-    public void deleteAllPosts() {
-        posts.clear();
-    }
 }
