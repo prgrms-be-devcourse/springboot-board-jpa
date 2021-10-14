@@ -29,9 +29,8 @@ public class UserService {
     @Transactional
     public void deleteOne(Long id) throws UserNotFoundException {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("userId: " + id + "not found"));
+                .orElseThrow(() -> new UserNotFoundException("userId: " + id + " not found"));
 
-        user.delete();
         userRepository.delete(user);
     }
 
@@ -39,21 +38,13 @@ public class UserService {
     public UserResponseDto findById(Long id) throws UserNotFoundException {
         return userRepository.findById(id)
                 .map(converter::toUserResponseDto)
-                .orElseThrow(() -> new UserNotFoundException("userId: " + id + "not found"));
+                .orElseThrow(() -> new UserNotFoundException("userId: " + id + " not found"));
     }
 
     @Transactional(readOnly = true)
     public UserResponseDto findByName(String name) throws UserNotFoundException {
         return userRepository.findByName(name)
                 .map(converter::toUserResponseDto)
-                .orElseThrow(() -> new UserNotFoundException("userName: " + name + "not found"));
-    }
-
-    /**
-     * test용 메소드
-     */
-    @Transactional
-    public void deleteAll() {
-        userRepository.deleteAll();
+                .orElseThrow(() -> new UserNotFoundException("userName: " + name + " not found"));
     }
 }
