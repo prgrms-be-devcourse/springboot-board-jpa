@@ -1,6 +1,5 @@
 package com.prgrms.dlfdyd96.board.domain;
 
-import com.prgrms.dlfdyd96.board.post.dto.PostResponse;
 import com.prgrms.dlfdyd96.board.post.dto.UpdatePostRequest;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -18,7 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.util.Assert;
 
 @Getter
 @Entity
@@ -41,15 +39,6 @@ public class Post extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
-
-  public Post(String title, String content, User user) {
-    Assert.hasText(title, "title is Not null");
-    Assert.notNull(user, "user is Not null");
-
-    this.title = title;
-    this.content = content;
-    this.user = user;
-  }
 
   public void setUser(User user) {
     if (Objects.nonNull(this.user)) {

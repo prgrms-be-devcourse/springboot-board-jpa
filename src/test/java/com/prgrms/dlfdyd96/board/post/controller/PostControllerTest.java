@@ -21,6 +21,7 @@ import com.prgrms.dlfdyd96.board.post.dto.CreatePostRequest;
 import com.prgrms.dlfdyd96.board.post.dto.PostResponse;
 import com.prgrms.dlfdyd96.board.post.dto.UpdatePostRequest;
 import com.prgrms.dlfdyd96.board.post.service.PostService;
+import java.time.LocalDateTime;
 import java.util.List;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -48,14 +49,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 class PostControllerTest {
 
   @Autowired
+  ObjectMapper objectMapper;
+  @Autowired
   private MockMvc mockMvc;
-
   @MockBean
   private PostService postService;
-
-  @Autowired
-  ObjectMapper objectMapper;
-
   private User user;
   private Post post;
 
@@ -213,12 +211,16 @@ class PostControllerTest {
                 .userName(post.getUser().getName())
                 .id(post.getId())
                 .title(post.getTitle())
+                .updatedAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
                 .build(),
             PostResponse.builder()
                 .content("새로운 내용")
                 .userName("min_jung")
                 .id(post.getId() + 1)
                 .title("제목2")
+                .updatedAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
                 .build()
         )
     );
@@ -245,6 +247,13 @@ class PostControllerTest {
                     .description("내용"),
                 fieldWithPath("data.content[].userName").type(JsonFieldType.STRING)
                     .description("작성자 이름"),
+
+                fieldWithPath("data.content[].createdBy").type(JsonFieldType.NULL)
+                    .description("생성자"),
+                fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING)
+                    .description("생성 시간"),
+                fieldWithPath("data.content[].updatedAt").type(JsonFieldType.STRING)
+                    .description("수정 시간"),
                 fieldWithPath("data.pageable").type(JsonFieldType.STRING)
                     .description("요청한 pageable 정보"),
                 // TODO: 테스트 코드에선 "INSTANCE"가 나오고 실제 실행할땐 밑에 있는 객체로 나온다....모징?
@@ -300,6 +309,8 @@ class PostControllerTest {
         .content(post.getContent())
         .id(post.getId())
         .userName(post.getUser().getName())
+        .updatedAt(LocalDateTime.now())
+        .createdAt(LocalDateTime.now())
         .build();
     given(postService.findOne(givenPostId)).willReturn(stubFindOne);
 
@@ -318,6 +329,9 @@ class PostControllerTest {
                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
                 fieldWithPath("data.content").type(JsonFieldType.STRING).description("내용"),
                 fieldWithPath("data.userName").type(JsonFieldType.STRING).description("작성자 이름"),
+                fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("생성자"),
+                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 시간"),
+                fieldWithPath("data.updatedAt").type(JsonFieldType.STRING).description("수정 시간"),
                 fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
             )
         ));
@@ -363,6 +377,8 @@ class PostControllerTest {
         .title(givenRequest.getTitle())
         .content(givenRequest.getContent())
         .userName(post.getUser().getName())
+        .updatedAt(LocalDateTime.now())
+        .createdAt(LocalDateTime.now())
         .build();
 
     given(postService.update(anyLong(), any())).willReturn(stubUpdate);
@@ -389,6 +405,9 @@ class PostControllerTest {
                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
                 fieldWithPath("data.content").type(JsonFieldType.STRING).description("내용"),
                 fieldWithPath("data.userName").type(JsonFieldType.STRING).description("작성자 이름"),
+                fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("생성자"),
+                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 시간"),
+                fieldWithPath("data.updatedAt").type(JsonFieldType.STRING).description("수정 시간"),
                 fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
             )
         ));

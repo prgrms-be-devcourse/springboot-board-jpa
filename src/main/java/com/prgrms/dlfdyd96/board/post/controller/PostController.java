@@ -1,12 +1,11 @@
 package com.prgrms.dlfdyd96.board.post.controller;
 
+import com.prgrms.dlfdyd96.board.common.api.ApiResponse;
 import com.prgrms.dlfdyd96.board.post.dto.CreatePostRequest;
 import com.prgrms.dlfdyd96.board.post.dto.PostResponse;
 import com.prgrms.dlfdyd96.board.post.dto.UpdatePostRequest;
 import com.prgrms.dlfdyd96.board.post.service.PostService;
-import com.prgrms.dlfdyd96.board.common.api.ApiResponse;
 import javassist.NotFoundException;
-import javassist.tools.web.BadHttpRequest;
 import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 @RestController
 public class PostController {
@@ -69,7 +67,8 @@ public class PostController {
   }
 
   @PutMapping("/posts/{id}")
-  public ApiResponse<PostResponse> update(@PathVariable Long id, @RequestBody @Valid UpdatePostRequest updatePostRequest) throws Exception {
+  public ApiResponse<PostResponse> update(@PathVariable Long id,
+      @RequestBody @Valid UpdatePostRequest updatePostRequest) throws Exception {
     return ApiResponse.ok(postService.update(id, updatePostRequest));
   }
 

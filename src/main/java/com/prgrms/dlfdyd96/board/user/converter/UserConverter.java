@@ -2,7 +2,6 @@ package com.prgrms.dlfdyd96.board.user.converter;
 
 import com.prgrms.dlfdyd96.board.domain.Post;
 import com.prgrms.dlfdyd96.board.domain.User;
-import com.prgrms.dlfdyd96.board.post.converter.PostConverter;
 import com.prgrms.dlfdyd96.board.post.dto.PostResponse;
 import com.prgrms.dlfdyd96.board.user.dto.CreateUserRequest;
 import com.prgrms.dlfdyd96.board.user.dto.UserResponse;
@@ -33,6 +32,9 @@ public class UserConverter {
             .map(this::convertPostResponse)
             .collect(Collectors.toList())
         )
+        .createdAt(user.getCreatedAt())
+        .createdBy(user.getCreatedBy())
+        .updatedAt(user.getUpdatedAt())
         .build();
   }
 
@@ -41,6 +43,9 @@ public class UserConverter {
         .id(post.getId())
         .title(post.getTitle())
         // .content(post.getContent()) // TODO: content는 필요 없지 않나...? 생각해보자.
+        .createdAt(post.getCreatedAt())
+        .createdBy(post.getCreatedBy())
+        .updatedAt(post.getUpdatedAt())
         .build();
   }
 }
