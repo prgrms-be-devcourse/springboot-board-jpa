@@ -13,7 +13,7 @@ public class Post extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "title", nullable = false, length = 250)
     private String title;
