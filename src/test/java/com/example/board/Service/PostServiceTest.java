@@ -32,6 +32,7 @@ class PostServiceTest {
     PostRepository postRepository;
 
 
+
     private UserDto userDto;
 
     @BeforeEach
@@ -66,94 +67,69 @@ class PostServiceTest {
         assertThat(user.getName(),is("박연수"));
     }
 
-//    @Test
-//    void update() throws NotFoundException {
-//
-//        PostDto postDto = PostDto.builder()
-//                .title("test확인")
-//                .content("post test중입니다")
-//                .user(
-//                        UserDto.builder()
-//                                .age(24)
-//                                .name("박연수")
-//                                .hobby("놀기")
-//                                .build()
-//                )
-//                .build();
-//
-//        Post result = postService.save(postDto);
-//
-//
-//        PostDto postDto1 = PostDto.builder()
-//                .title("update 확인")
-//                .content("update test중입니다")
-//                .user(
-//                        UserDto.builder()
-//                                .age(24)
-//                                .name("박연수")
-//                                .hobby("놀기")
-//                                .build()
-//                )
-//                .build();
-//
-//       postService.update(result.getPostId(), postDto1);
-//        Post byId = postRepository.findById(result.getPostId()).get();
-//
-//
-//
-//        assertThat(postDto1.getContent(),is(byId.getContent()));
-//        assertThat(postDto1.getTitle(),is(byId.getTitle()));
-//
-//
-//    }
-//    @Test
-//    void findOne() throws NotFoundException {
-//        PostDto postDto = PostDto.builder()
-//                .title("test확인")
-//                .content("post test중입니다")
-//                .user(
-//                        UserDto.builder()
-//                                .age(24)
-//                                .name("박연수")
-//                                .hobby("놀기")
-//                                .build()
-//                )
-//                .build();
-//        Post result = postService.save(postDto);
-//        PostDto one = postService.findOne(result.getPostId());
-//
-//        assertThat(postDto.getTitle(),is(one.getTitle()));
-//        assertThat(postDto.getContent(),is(one.getContent()));
-//
-//
-//    }
-//    @Test
-//    void findAll(){
-//        PostDto postDto = PostDto.builder()
-//                .title("test확인")
-//                .content("post test중입니다")
-//                .user(
-//                        UserDto.builder()
-//                                .age(24)
-//                                .name("박연수")
-//                                .hobby("놀기")
-//                                .build()
-//                )
-//                .build();
-//        Post result = postService.save(postDto);
-//
-//
-//
-//        PageRequest page=PageRequest.of(0,10);
-//
-//        Page<PostDto> all=postService.findAll(page);
-//
-//        assertThat(all.getTotalPages(),is(1));
-//
-//    }
-    @AfterEach
-    void tearDown() {
-        postRepository.deleteAll();
+    @Test
+    @Transactional
+    void update() throws NotFoundException {
+
+        PostDto postDto = PostDto.builder()
+                .title("test확인")
+                .content("post test중입니다")
+                .user(userDto)
+                .build();
+
+        Long postId =postService.save(postDto);
+
+        PostDto postDto1 = PostDto.builder()
+                .title("update 확인")
+                .content("update test중입니다")
+                .user(
+                        UserDto.builder()
+                                .age(24)
+                                .name("박연수")
+                                .hobby("놀기")
+                                .build()
+                )
+                .build();
+
+        postService.update(postId, postDto1);
+        Post byId = postRepository.findAll().get(0);
+
+        assertThat(postDto1.getContent(),is(byId.getContent()));
+        assertThat(postDto1.getTitle(),is(byId.getTitle()));
+        assertThat(userDto.getName(),is(byId.getUser().getName()));
+
+
     }
-//
+    @Test
+    void findOne() throws NotFoundException {
+        PostDto postDto = PostDto.builder()
+                .title("test확인")
+                .content("post test중입니다")
+                .user(userDto)
+                .build();
+        Long id = postService.save(postDto);
+        PostDto one = postService.findOne(id);
+
+        assertThat(postDto.getTitle(),is(one.getTitle()));
+        assertThat(postDto.getContent(),is(one.getContent()));
+
+
+    }
+    @Test
+    void findAll(){
+        PostDto postDto = PostDto.builder()
+                .title("test확인")
+                .content("post test중입니다")
+                .user(userDto)
+                .build();
+        postService.save(postDto);
+        PageRequest page=PageRequest.of(0,10);
+
+        Page<PostDto> all=postService.findAll(page);
+
+        assertThat(all.getTotalPages(),is(1));
+
+    }
+
+
 }

@@ -30,23 +30,15 @@ public class PostService {
     }
 
     @Transactional
-    public Post update(Long id, PostDto postDto) throws NotFoundException {
-        Optional<Post> updatePost =postRepository.findById(id);
-
-
-        if(!updatePost.isPresent()){
-            throw new NotFoundException("post를 찾을 수 없어 update에 실패했습니다");
-        }
-
-
-        updatePost.get().setContent(postDto.getContent());
-        updatePost.get().setTitle(postDto.getTitle());
-//        System.out.println(updatePost.get().getUser().getName());
-        return updatePost.get();
+    public PostDto update(Long id, PostDto postDto) throws NotFoundException {
+        Post post=postRepository.findById(id).orElseThrow(()->new NotFoundException("post를 찾을 수 없어 update에 실패했습니다"));
+            post.setContent(postDto.getContent());
+            post.setTitle(postDto.getTitle());
+        return converter.convertPostDto(post);
 
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PostDto findOne(Long id) throws NotFoundException {
 
         return postRepository.findById(id)
@@ -55,7 +47,7 @@ public class PostService {
 
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PostDto> findAll(Pageable pageable){
         return postRepository.findAll(pageable)
                         .map(converter::convertPostDto);
