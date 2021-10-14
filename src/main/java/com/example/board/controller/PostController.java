@@ -28,7 +28,7 @@ public class PostController {
 
     @GetMapping("/{id}")
     public ApiResponse<PostDto> get(@PathVariable int id) throws NotFoundException {
-        PostDto postDto =  postService.find(id);
+        PostDto postDto = postService.find(id);
         return ApiResponse.ok(postDto);
     }
 
