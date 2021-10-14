@@ -2,7 +2,6 @@ package com.example.springbootboard.repository;
 
 import com.example.springbootboard.domain.Hobby;
 import com.example.springbootboard.domain.User;
-import com.example.springbootboard.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
