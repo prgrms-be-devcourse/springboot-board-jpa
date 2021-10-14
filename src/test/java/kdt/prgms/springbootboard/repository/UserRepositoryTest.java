@@ -189,6 +189,4 @@ class UserRepositoryTest {
         //then
         assertThat(allUsers, empty());
     }
-
-
 }
