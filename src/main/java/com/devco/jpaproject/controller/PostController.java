@@ -3,6 +3,7 @@ package com.devco.jpaproject.controller;
 import com.devco.jpaproject.controller.dto.PostDeleteRequestDto;
 import com.devco.jpaproject.controller.dto.PostRequestDto;
 import com.devco.jpaproject.controller.dto.PostResponseDto;
+import com.devco.jpaproject.controller.dto.PostUpdateResquestDto;
 import com.devco.jpaproject.exception.PostNotFoundException;
 import com.devco.jpaproject.exception.UserAndPostNotMatchException;
 import com.devco.jpaproject.exception.UserNotFoundException;
@@ -46,6 +47,13 @@ public class PostController {
         Long postId = postService.insert(dto);
 
         return ApiResponse.ok(postId);
+    }
+
+    @PatchMapping("/post")
+    public ResponseEntity update(@Valid @RequestBody PostUpdateResquestDto dto) throws PostNotFoundException {
+        postService.update(dto);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("/post")
