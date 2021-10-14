@@ -55,27 +55,31 @@ class PostControllerTest {
 
         // When Then
         mockMvc
-            .perform(post("/api/v1/posts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(postRequest)))
+            .perform(
+                post("/api/v1/posts")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(postRequest))
+            )
             .andExpect(status().isCreated())
             .andDo(print())
-            .andDo(document("save-post",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint()),
-                requestFields(
-                    fieldWithPath("title").type(JsonFieldType.STRING).description("post title"),
-                    fieldWithPath("content").type(JsonFieldType.STRING).description("post content")
-                ),
-                responseFields(
-                    fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
-                    fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
-                    fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
-                    fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("created at"),
-                    fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("created by"),
-                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
+            .andDo(
+                document("save-post",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    requestFields(
+                        fieldWithPath("title").type(JsonFieldType.STRING).description("post title"),
+                        fieldWithPath("content").type(JsonFieldType.STRING).description("post content")
+                    ),
+                    responseFields(
+                        fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
+                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
+                        fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
+                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("created at"),
+                        fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("created by"),
+                        fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
+                    )
                 )
-            ));
+            );
     }
 
 
@@ -88,21 +92,25 @@ class PostControllerTest {
 
         // When Then
         mockMvc
-            .perform(get("/api/v1/posts/{postId}", post.getId())
-                .contentType(MediaType.APPLICATION_JSON))
+            .perform(
+                get("/api/v1/posts/{postId}", post.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
             .andExpect(status().isOk())
             .andDo(print())
-            .andDo(document("get-post-by-id",
-                preprocessResponse(prettyPrint()),
-                responseFields(
-                    fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
-                    fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
-                    fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
-                    fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("created at"),
-                    fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("created by"),
-                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
+            .andDo(
+                document("get-post-by-id",
+                    preprocessResponse(prettyPrint()),
+                    responseFields(
+                        fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
+                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
+                        fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
+                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("created at"),
+                        fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("created by"),
+                        fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
+                    )
                 )
-            ));
+            );
     }
 
     @Test
@@ -118,32 +126,38 @@ class PostControllerTest {
         final String SIZE = "3";
         final String PAGE = "0";
         mockMvc
-            .perform(get("/api/v1/posts")
-                .param("size", SIZE)
-                .param("page", PAGE))
+            .perform(
+                get("/api/v1/posts")
+                    .param("size", SIZE)
+                    .param("page", PAGE)
+            )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.content", hasSize(3)))
             .andDo(print())
-            .andDo(document("get-posts-by-page",
-                preprocessResponse(prettyPrint()),
-                responseFields(
-                    fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("id"),
-                    fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("title"),
-                    fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("content"),
-                    fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("created at"),
-                    fieldWithPath("data.content[].createdBy").type(JsonFieldType.NULL).description("created by"),
-                    fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("total pages"),
-                    fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("total elements"),
-                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
+            .andDo(
+                document("get-posts-by-page",
+                    preprocessResponse(prettyPrint()),
+                    responseFields(
+                        fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("id"),
+                        fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("title"),
+                        fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("content"),
+                        fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("created at"),
+                        fieldWithPath("data.content[].createdBy").type(JsonFieldType.NULL).description("created by"),
+                        fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("total pages"),
+                        fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("total elements"),
+                        fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
+                    )
                 )
-            ));
+            );
 
         // When Then
         final String NEXT_PAGE = "1";
         mockMvc
-            .perform(get("/api/v1/posts")
-                .param("size", SIZE)
-                .param("page", NEXT_PAGE))
+            .perform(
+                get("/api/v1/posts")
+                    .param("size", SIZE)
+                    .param("page", NEXT_PAGE)
+            )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.content", hasSize(1)))
             .andDo(print());
@@ -158,26 +172,30 @@ class PostControllerTest {
 
         // When Then
         mockMvc
-            .perform(patch("/api/v1/posts/{postId}", post.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateRequest)))
+            .perform(
+                patch("/api/v1/posts/{postId}", post.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(updateRequest))
+            )
             .andExpect(status().isOk())
             .andDo(print())
-            .andDo(document("update-post",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint()),
-                requestFields(
-                    fieldWithPath("title").type(JsonFieldType.STRING).description("post title"),
-                    fieldWithPath("content").type(JsonFieldType.STRING).description("post content")
-                ),
-                responseFields(
-                    fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
-                    fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
-                    fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
-                    fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("created at"),
-                    fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("created by"),
-                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
+            .andDo(
+                document("update-post",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    requestFields(
+                        fieldWithPath("title").type(JsonFieldType.STRING).description("post title"),
+                        fieldWithPath("content").type(JsonFieldType.STRING).description("post content")
+                    ),
+                    responseFields(
+                        fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
+                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
+                        fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
+                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("created at"),
+                        fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("created by"),
+                        fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
+                    )
                 )
-            ));
+            );
     }
 }
