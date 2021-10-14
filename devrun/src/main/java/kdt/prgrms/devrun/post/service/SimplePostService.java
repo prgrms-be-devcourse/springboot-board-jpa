@@ -29,7 +29,6 @@ public class SimplePostService implements PostService{
             return SimplePostDto.builder()
                 .id(post.getId())
                 .title(post.getContent())
-                .createdBy(post.getCreatedBy())
                 .createdAt(post.getCreatedAt())
                 .build();
         });
@@ -44,7 +43,6 @@ public class SimplePostService implements PostService{
             .id(foundPost.getId())
             .title(foundPost.getTitle())
             .content(foundPost.getContent())
-            .createdBy(foundPost.getCreatedBy())
             .createdAt(foundPost.getCreatedAt())
             .build();
 

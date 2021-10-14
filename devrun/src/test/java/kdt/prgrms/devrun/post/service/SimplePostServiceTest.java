@@ -47,7 +47,6 @@ class SimplePostServiceTest {
             .loginPw("1234")
             .age(27)
             .name("김지훈")
-            .hobby("게임")
             .email("devrunner21@gmail.com")
             .posts(new ArrayList<Post>())
             .build();

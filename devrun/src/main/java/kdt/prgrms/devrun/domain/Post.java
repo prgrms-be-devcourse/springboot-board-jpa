@@ -9,16 +9,19 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Post extends BaseEntity {
+@Table(name = "post")
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
     @Column(name = "post_id")
     private Long id;
 
+    @Column(name = "title", length = 200, nullable = false)
     private String title;
 
     @Lob
+    @Column(name = "content", length = 1000)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,9 +33,6 @@ public class Post extends BaseEntity {
         this.content = content;
 
         changeUser(user);
-
-        changeCreatedBy(user.getLoginId());
-        changeUpdatedBy(user.getLoginId());
     }
 
     public void changeUser(User user) {
@@ -43,8 +43,6 @@ public class Post extends BaseEntity {
     public Post updatePost(String title, String content) {
         this.title = title;
         this.content = content;
-
-        changeUpdatedBy(user.getLoginId());
 
         return this;
     }
