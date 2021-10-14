@@ -91,7 +91,7 @@ class PostServiceTest {
                 )
                 .build();
 
-        postService.update(postId, postDto1);
+        postService.update(postId, postDto1.getTitle(),postDto1.getContent());
         Post byId = postRepository.findAll().get(0);
 
         assertThat(postDto1.getContent(),is(byId.getContent()));

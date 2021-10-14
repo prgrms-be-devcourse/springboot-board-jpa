@@ -30,10 +30,10 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto update(Long id, PostDto postDto) throws NotFoundException {
+    public PostDto update(Long id, String title,String content) throws NotFoundException {
         Post post=postRepository.findById(id).orElseThrow(()->new NotFoundException("post를 찾을 수 없어 update에 실패했습니다"));
-            post.setContent(postDto.getContent());
-            post.setTitle(postDto.getTitle());
+            post.setContent(content);
+            post.setTitle(title);
         return converter.convertPostDto(post);
 
     }

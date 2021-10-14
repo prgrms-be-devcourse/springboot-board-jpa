@@ -2,6 +2,7 @@ package com.example.board.Controller;
 
 import com.example.board.ApiResponse;
 import com.example.board.Dto.PostDto;
+import com.example.board.Dto.PostRequestDto;
 import com.example.board.Service.PostService;
 import com.example.board.domain.Post;
 import javassist.NotFoundException;
@@ -37,14 +38,14 @@ public class PostController {
 
     }
     @PostMapping("api/v1/posts")
-    public ApiResponse<Post> createPost(@RequestBody PostDto postdto){
-        Post save = postService.save(postdto);
+    public ApiResponse<Long> createPost(@RequestBody PostDto postdto){
+        Long save = postService.save(postdto);
         return ApiResponse.ok(save);
 
     }
-    @PostMapping("api/v1/posts/{id}")
-    public ApiResponse<Post> updatePost(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
-        Post update = postService.update(id, postDto);
+    @PatchMapping("api/v1/posts/{id}")
+    public ApiResponse<PostDto> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) throws NotFoundException {
+        PostDto update = postService.update(id, postRequestDto.getTitle(),postRequestDto.getContent());
         return ApiResponse.ok(update);
 
     }
