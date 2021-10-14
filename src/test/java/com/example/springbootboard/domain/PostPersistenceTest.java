@@ -1,5 +1,6 @@
 package com.example.springbootboard.domain;
 
+import com.example.springbootboard.domain.vo.Name;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ public class PostPersistenceTest {
         transaction.begin();
 
         // 회원 엔티티
-        User user = new User("허승연",26,"운동");
+        User user = new User(new Name("허승연"),26,"운동");
 
         entityManager.persist(user);
 

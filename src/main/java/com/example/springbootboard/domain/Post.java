@@ -16,7 +16,6 @@ public class Post {
     public Post(String title, String content){
         this.title = title;
         this.content = content;
-        this.createdBy = createdBy;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }

@@ -1,5 +1,6 @@
 package com.example.springbootboard.domain;
 
+import com.example.springbootboard.domain.vo.Name;
 import org.apache.tomcat.jni.Local;
 
 import javax.annotation.processing.Generated;
@@ -17,7 +18,7 @@ public class User {
 
     }
 
-    public User(String name, int age, String hobby) {
+    public User(Name name, int age, String hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
@@ -29,8 +30,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 30)
-    private String name;
+    @Embedded
+    private Name name;
 
     @Column(name = "age", nullable = false)
     private int age;
@@ -57,7 +58,7 @@ public class User {
         return id;
     }
 
-    public String getName() {
+    public Name getName() {
         return name;
     }
 
@@ -83,7 +84,7 @@ public class User {
 
     // SETTER
 
-    public void setName(String name) {
+    public void setName(Name name) {
         this.name = name;
         this.updatedAt = LocalDateTime.now();
     }
