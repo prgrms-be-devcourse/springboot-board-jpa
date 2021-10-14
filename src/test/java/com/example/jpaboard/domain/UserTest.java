@@ -2,6 +2,8 @@ package com.example.jpaboard.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.example.jpaboard.post.domain.Post;
+import com.example.jpaboard.user.domain.User;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
