@@ -8,12 +8,14 @@ import kdt.prgrms.devrun.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@ResponseStatus(HttpStatus.OK)
 public class PostApiController {
 
     final private PostService postService;
@@ -28,6 +30,7 @@ public class PostApiController {
         return ApiResult.ok(postService.getPostById(postId));
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/api/v1/post")
     public ApiResult<Long> create(@RequestBody @Valid PostForm postForm) {
         final Long createdPostId = postService.createPost(postForm);
@@ -40,6 +43,7 @@ public class PostApiController {
         return ApiResult.ok(updatedPostId);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/api/v1/post/{id}")
     public ApiResult<Object> delete(@PathVariable("id") Long postId) {
         postService.deletePostById(postId);
