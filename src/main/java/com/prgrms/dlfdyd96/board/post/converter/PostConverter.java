@@ -4,8 +4,6 @@ import com.prgrms.dlfdyd96.board.domain.Post;
 import com.prgrms.dlfdyd96.board.domain.User;
 import com.prgrms.dlfdyd96.board.post.dto.CreatePostRequest;
 import com.prgrms.dlfdyd96.board.post.dto.PostResponse;
-import com.prgrms.dlfdyd96.board.user.converter.UserConverter;
-import com.prgrms.dlfdyd96.board.user.dto.UserResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -27,6 +25,9 @@ public class PostConverter {
         .title(post.getTitle())
         .content(post.getContent())
         .userName(post.getUser().getName())
+        .createdAt(post.getCreatedAt())
+        .createdBy(post.getCreatedBy())
+        .updatedAt(post.getUpdatedAt())
         .build();
   }
 }

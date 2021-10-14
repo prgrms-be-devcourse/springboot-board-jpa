@@ -14,7 +14,6 @@ import com.prgrms.dlfdyd96.board.post.dto.PostResponse;
 import com.prgrms.dlfdyd96.board.post.dto.UpdatePostRequest;
 import com.prgrms.dlfdyd96.board.post.repository.PostRepository;
 import com.prgrms.dlfdyd96.board.user.repository.UserRepository;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import javassist.NotFoundException;

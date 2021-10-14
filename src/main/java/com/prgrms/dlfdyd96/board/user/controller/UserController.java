@@ -6,9 +6,11 @@ import com.prgrms.dlfdyd96.board.user.dto.UpdateUserRequest;
 import com.prgrms.dlfdyd96.board.user.dto.UserResponse;
 import com.prgrms.dlfdyd96.board.user.service.UserService;
 import javassist.NotFoundException;
+import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +31,7 @@ public class UserController {
   }
 
   // TODO: (Refactoring) controller adviser
-  @ExceptionHandler
+  @ExceptionHandler(NotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   private ApiResponse<String> notFoundExceptionHandler(NotFoundException exception) {
     return ApiResponse.fail(HttpStatus.NOT_FOUND.value(), exception.getMessage());
@@ -41,9 +43,15 @@ public class UserController {
     return ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
   }
 
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  private ApiResponse<String> badRequestHandler(Exception exception) {
+    return ApiResponse.fail(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+  }
+
   @PostMapping("/users")
   @ResponseStatus(HttpStatus.CREATED)
-  public ApiResponse<Long> create(@RequestBody CreateUserRequest createRequestDto) {
+  public ApiResponse<Long> create(@RequestBody @Valid CreateUserRequest createRequestDto) {
     return ApiResponse.ok(userService.save(createRequestDto));
   }
 
@@ -58,7 +66,8 @@ public class UserController {
   }
 
   @PutMapping("/users/{id}")
-  public ApiResponse<UserResponse> update(@PathVariable Long id, @RequestBody UpdateUserRequest updateRequestDto)
+  public ApiResponse<UserResponse> update(@PathVariable Long id,
+      @RequestBody @Valid UpdateUserRequest updateRequestDto)
       throws NotFoundException {
     return ApiResponse.ok(userService.update(id, updateRequestDto));
   }
