@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/japboard;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:~/jpaboard;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
 
@@ -9,9 +9,9 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: create
-    show-sql: true
     properties:
       hibernate.format_sql: true
 
 logging.level:
+  root: info
   org.hibernate.SQL: debug
