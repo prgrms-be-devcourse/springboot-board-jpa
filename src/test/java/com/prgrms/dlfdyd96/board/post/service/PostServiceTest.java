@@ -58,7 +58,7 @@ class PostServiceTest {
   }
 
   @Test
-  @DisplayName("[POST] 게시물을 생성할 수 있다. ")
+  @DisplayName("게시물을 생성할 수 있다. ")
   void testSave() throws NotFoundException {
     // GIVEN
     CreatePostRequest givenRequest = CreatePostRequest.builder()
@@ -91,7 +91,7 @@ class PostServiceTest {
   }
 
   @Test
-  @DisplayName("[POST] 게시물을 생성하기 위해 user가 유효해야 한다.")
+  @DisplayName("게시물을 생성하기 위해 user가 유효해야 한다.")
   void testSaveException() {
     // GIVEN
     Long wrongUserId = 2L;
@@ -110,7 +110,7 @@ class PostServiceTest {
   }
 
   @Test
-  @DisplayName("[GET] 게시물 단건 조회할 수 있다.")
+  @DisplayName("게시물 단건 조회할 수 있다.")
   void testFindOne() throws NotFoundException {
     // GIVEN
     Long givenPostId = 1L;
@@ -138,7 +138,7 @@ class PostServiceTest {
   }
 
   @Test
-  @DisplayName("[GET] 없는 게시물 단건 조회할 시 NotFoundException을 발생한다.")
+  @DisplayName("없는 게시물 단건 조회할 시 NotFoundException을 발생한다.")
   void testFindOneException() {
     // GIVEN
     Long givenWrongPostId = 1L;
@@ -151,7 +151,7 @@ class PostServiceTest {
   }
 
   @Test
-  @DisplayName("[GET] 게시물 리스트를 조회할 수 있다.")
+  @DisplayName("게시물 리스트를 조회할 수 있다.")
   void testFindPosts() {
     // GIVEN
     int givenPage = 0;
@@ -194,7 +194,7 @@ class PostServiceTest {
   }
 
   @Test
-  @DisplayName("[PUT] 게시물을 수정할 수 있다.")
+  @DisplayName("게시물을 수정할 수 있다.")
   void testUpdate() throws NotFoundException {
     // GIVEN
     Post originPost = Post.builder()
@@ -229,7 +229,7 @@ class PostServiceTest {
   }
 
   @Test
-  @DisplayName("[PUT] 수정할 게시물을 찾을 수 없으면 NotFoundException을 발생한다.")
+  @DisplayName("수정할 게시물을 찾을 수 없으면 NotFoundException을 발생한다.")
   void testUpdatePostNotFoundException() {
     // GIVEN
     Long givenNotMatchedPostId = 2L;
@@ -248,7 +248,7 @@ class PostServiceTest {
   }
 
   @Test
-  @DisplayName("[PUT] 수정할 게시물이 사용자가 다르면 NotFoundException을 발생한다.(공격 방어)")
+  @DisplayName("수정할 게시물이 사용자가 다르면 NotFoundException을 발생한다.(공격 방어)")
   void testUpdateUserNotMatchException() {
     // GIVEN
     Post originPost = Post.builder()
@@ -278,7 +278,7 @@ class PostServiceTest {
   }
 
   @Test
-  @DisplayName("[PUT] 수정할 게시물이 사용자가 다르면 NotFoundException을 발생한다.(공격 방어)")
+  @DisplayName("수정할 게시물이 사용자가 다르면 NotFoundException을 발생한다.(공격 방어)")
   void testDelete() throws NotFoundException {
     // GIVEN
     Post originPost = Post.builder()
@@ -299,7 +299,7 @@ class PostServiceTest {
   }
 
   @Test
-  @DisplayName("[PUT] 수정할 게시물이 사용자가 다르면 NotFoundException을 발생한다.(공격 방어)")
+  @DisplayName("수정할 게시물이 사용자가 다르면 NotFoundException을 발생한다.(공격 방어)")
   void testDeleteNotFoundException() {
     // GIVEN
     Long givenWrongPostId = 0L;

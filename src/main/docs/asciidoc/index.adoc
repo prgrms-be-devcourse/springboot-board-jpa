@@ -25,6 +25,10 @@ include::{snippets}/post-save/http-response.adoc[]
 
 include::{snippets}/post-save/response-fields.adoc[]
 
+.Error Request
+
+include::{snippets}/post-save-error/http-request.adoc[]
+
 .Error Response
 
 include::{snippets}/post-save-error/http-response.adoc[]
@@ -49,6 +53,34 @@ include::{snippets}/post-get-all/http-response.adoc[]
 
 include::{snippets}/post-get-all/response-fields.adoc[]
 
+=== 게시판 단건 조회
+
+==== [GET] /posts/:id
+
+.Request
+
+include::{snippets}/post-get-one/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-get-one/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-get-one/response-fields.adoc[]
+
+.Error Request
+
+include::{snippets}/post-get-one-error/http-request.adoc[]
+
+.Error Response
+
+include::{snippets}/post-get-one-error/http-response.adoc[]
+
+.Error Response Fields
+
+include::{snippets}/post-get-one-error/response-fields.adoc[]
+
 === 게시판 업데이트
 
 ==== [PUT] /posts/:id
@@ -68,3 +100,43 @@ include::{snippets}/post-update/http-response.adoc[]
 .Response Fields
 
 include::{snippets}/post-update/response-fields.adoc[]
+
+.Error Request
+
+include::{snippets}/post-update-error/http-request.adoc[]
+
+.Error Response
+
+include::{snippets}/post-update-error/http-response.adoc[]
+
+.Error Response Fields
+
+include::{snippets}/post-update-error/response-fields.adoc[]
+
+=== 게시판 삭제
+
+==== [DELETE] /posts/:id
+
+.Request
+
+include::{snippets}/post-delete/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-delete/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-delete/response-fields.adoc[]
+
+.Error Request
+
+include::{snippets}/post-delete-error/http-request.adoc[]
+
+.Error Response
+
+include::{snippets}/post-delete-error/http-response.adoc[]
+
+.Error Response Fields
+
+include::{snippets}/post-delete-error/response-fields.adoc[]
