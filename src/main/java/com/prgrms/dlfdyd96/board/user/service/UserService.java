@@ -33,7 +33,7 @@ public class UserService {
   public UserResponse update(Long id, UpdateUserRequest updateUserDto) throws NotFoundException {
     User user = userRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다."));
-    user.update(updateUserDto); // TODO: 이 부분을 테스트 하기 위해선?
+    user.update(updateUserDto);
     return userConverter.convertUserResponse(user);
   }
 

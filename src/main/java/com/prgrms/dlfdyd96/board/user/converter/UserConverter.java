@@ -42,7 +42,6 @@ public class UserConverter {
     return PostResponse.builder()
         .id(post.getId())
         .title(post.getTitle())
-        // .content(post.getContent()) // TODO: content는 필요 없지 않나...? 생각해보자.
         .createdAt(post.getCreatedAt())
         .createdBy(post.getCreatedBy())
         .updatedAt(post.getUpdatedAt())
