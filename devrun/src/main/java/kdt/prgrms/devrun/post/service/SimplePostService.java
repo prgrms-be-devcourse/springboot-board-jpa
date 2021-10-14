@@ -30,6 +30,7 @@ public class SimplePostService implements PostService{
                 .id(post.getId())
                 .title(post.getContent())
                 .createdAt(post.getCreatedAt())
+                .createdBy(post.getUser().getLoginId())
                 .build();
         });
     }
@@ -44,6 +45,7 @@ public class SimplePostService implements PostService{
             .title(foundPost.getTitle())
             .content(foundPost.getContent())
             .createdAt(foundPost.getCreatedAt())
+            .createdBy(foundPost.getUser().getLoginId())
             .build();
 
     }

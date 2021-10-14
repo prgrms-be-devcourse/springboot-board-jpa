@@ -36,6 +36,7 @@ class SimplePostServiceTest {
     final Long INVALID_POST_ID = 1000000L;
 
     User user;
+    User user2;
     Post post1;
     Post post2;
 
@@ -52,8 +53,19 @@ class SimplePostServiceTest {
             .build();
         entityManager.persist(user);
 
+        user2 = User.builder()
+            .loginId("kjt3520222")
+            .loginPw("123422")
+            .age(27)
+            .name("김지훈22")
+            .email("devrunner2222@gmail.com")
+            .posts(new ArrayList<Post>())
+            .build();
+        entityManager.persist(user);
+        entityManager.persist(user2);
+
         post1 = new Post("title1", "content1", user);
-        post2 = new Post("title2", "content2", user);
+        post2 = new Post("title2", "content2", user2);
 
         entityManager.persist(post1);
         entityManager.persist(post2);
