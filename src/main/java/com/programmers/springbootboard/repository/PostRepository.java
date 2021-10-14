@@ -18,5 +18,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             value = "select p from Post p left join fetch p.user",
             countQuery = "select count(p) from Post p"
     )
-    Page<Post> findAllWithTeam(Pageable pageable);
+    Page<Post> findAllWithUser(Pageable pageable);
 }

@@ -47,7 +47,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public Page<PostResponseDto> readPostPage(@NonNull Pageable pageable) {
         log.info("readPostPage called with Pageable offset: " + pageable.getOffset() + ", size: " + pageable.getPageSize());
-        Page<Post> postList = postRepository.findAllWithTeam(pageable);
+        Page<Post> postList = postRepository.findAllWithUser(pageable);
         if (!postList.hasContent()) throw new NotFoundException("No Post found");
 
         return postList.map(PostResponseDto::of);
