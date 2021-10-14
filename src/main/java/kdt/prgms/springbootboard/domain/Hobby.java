@@ -1,4 +1,4 @@
-package domain;
+package kdt.prgms.springbootboard.domain;
 
 import javax.persistence.*;
 

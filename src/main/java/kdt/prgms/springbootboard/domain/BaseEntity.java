@@ -1,5 +1,4 @@
-package domain;
-
+package kdt.prgms.springbootboard.domain;
 
 import java.time.LocalDateTime;
 import javax.persistence.*;
