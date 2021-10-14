@@ -1,16 +1,19 @@
 package com.board.springbootboard.domain.posts;
 
 
+import com.board.springbootboard.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @NoArgsConstructor
 @Getter
 @Entity
-public class Posts {
+@DynamicUpdate // 변경 필드만 대응
+public class Posts extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -30,4 +33,13 @@ public class Posts {
         this.content = content;
         this.author = author;
     }
+
+    // 수정
+    public void update(String title,String content) {
+        this.title=title;
+        this.content=content;
+    }
+
+
+
 }
