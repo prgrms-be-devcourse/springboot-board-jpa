@@ -6,7 +6,6 @@ import com.kdt.programmers.forum.transfer.PageDto;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import com.kdt.programmers.forum.transfer.response.ApiResponse;
 import com.kdt.programmers.forum.transfer.PostDto;
-import com.kdt.programmers.forum.utils.PostConverter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -18,11 +17,8 @@ public class PostController {
 
     private final PostService postService;
 
-    private final PostConverter postConverter;
-
-    public PostController(PostService postService, PostConverter postConverter) {
+    public PostController(PostService postService) {
         this.postService = postService;
-        this.postConverter = postConverter;
     }
 
     @GetMapping("")
