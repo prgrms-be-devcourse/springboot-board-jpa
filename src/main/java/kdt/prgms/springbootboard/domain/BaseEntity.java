@@ -25,6 +25,9 @@ public abstract class BaseEntity {
     @Column(name = "last_modified_date", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime lastModifiedDate;
 
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = Boolean.TRUE;
+
     public String getCreatedBy() {
         return createdBy;
     }
@@ -41,13 +44,18 @@ public abstract class BaseEntity {
         return lastModifiedDate;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
     @Override
     public String toString() {
-        return
-            "[createdBy='" + createdBy + '\'' +
-                ", createdDate=" + createdDate +
-                ", lastModifiedBy='" + lastModifiedBy + '\'' +
-                ", lastModifiedDate=" + lastModifiedDate +
-                "}]";
+        return "[" +
+            "createdBy='" + createdBy + '\'' +
+            ", createdDate=" + createdDate +
+            ", lastModifiedBy='" + lastModifiedBy + '\'' +
+            ", lastModifiedDate=" + lastModifiedDate +
+            ", isActive=" + isActive +
+            ']';
     }
 }
