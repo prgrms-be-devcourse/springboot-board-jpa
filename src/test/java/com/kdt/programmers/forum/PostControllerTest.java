@@ -193,4 +193,16 @@ class PostControllerTest {
                 )
             );
     }
+
+    @Test
+    @DisplayName("존재하지 않는 게시글 ID로 조회할 수 없다")
+    void testNotFoundPostId() throws Exception {
+        // Given
+        long postId = Long.MAX_VALUE;
+
+        // When Then
+        mockMvc
+            .perform(get("/api/v1/posts/{postId}", postId))
+            .andExpect(status().isNotFound());
+    }
 }
