@@ -1,5 +1,6 @@
 package com.kdt.programmers.forum;
 
+import com.kdt.programmers.forum.exception.PostNotFoundException;
 import com.kdt.programmers.forum.transfer.PostDto;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import javassist.NotFoundException;
@@ -45,7 +46,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("ID로 게시글을 조회할 수 있다")
-    void testFindPostById() throws NotFoundException {
+    void testFindPostById() throws PostNotFoundException {
         // Given
         PostRequest postRequest = new PostRequest("find by id test", "");
         PostDto post = postService.savePost(postRequest);
@@ -79,7 +80,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시글을 수정할 수 있다")
-    void testUpdatePost() throws NotFoundException {
+    void testUpdatePost() throws PostNotFoundException {
         // Given
         PostDto post = postService.savePost(new PostRequest("new post", ""));
 
