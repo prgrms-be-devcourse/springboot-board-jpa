@@ -49,11 +49,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 class PostControllerTest {
 
   @Autowired
-  ObjectMapper objectMapper;
+  private ObjectMapper objectMapper;
   @Autowired
   private MockMvc mockMvc;
   @MockBean
   private PostService postService;
+
   private User user;
   private Post post;
 

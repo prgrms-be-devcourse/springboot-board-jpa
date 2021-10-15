@@ -10,9 +10,7 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,25 +26,6 @@ public class PostController {
 
   public PostController(PostService postService) {
     this.postService = postService;
-  }
-
-  // TODO: (Refactoring) controller adviser
-  @ExceptionHandler
-  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-  private ApiResponse<String> exceptionHandler(Exception exception) {
-    return ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
-  }
-
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  private ApiResponse<String> badRequestHandler(Exception exception) {
-    return ApiResponse.fail(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
-  }
-
-  @ExceptionHandler(NotFoundException.class)
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  private ApiResponse<String> notFoundHandler(NotFoundException exception) {
-    return ApiResponse.fail(HttpStatus.NOT_FOUND.value(), exception.getMessage());
   }
 
   @PostMapping("/posts")
