@@ -89,7 +89,7 @@ class PostRepositoryTest {
     void 게시글_수정() {
         //given
         //when
-        this.savedPost.editContent(new PostRequest("수정제목2", "수정내용2"));
+        this.savedPost.editPost(new PostRequest("수정제목2", "수정내용2"));
         final Post editedPost = postRepository.save(this.savedPost);
 
         //then
