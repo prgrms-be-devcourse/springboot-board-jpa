@@ -3,12 +3,11 @@ ifndef::snippets[]
 :snippets: ../../../target/generated-snippets
 endif::[]
 
-== 게시판
+== Spring Boot JPA 게시판
 
-=== 게시판 생성
 
-=== /posts/{id}
 
+=== 게시글 작성 (POST "/posts")
 .Request
 include::{snippets}/post-save/http-request.adoc[]
 include::{snippets}/post-save/request-fields.adoc[]
@@ -16,3 +15,32 @@ include::{snippets}/post-save/request-fields.adoc[]
 .Response
 include::{snippets}/post-save/http-response.adoc[]
 include::{snippets}/post-save/response-fields.adoc[]
+
+
+
+=== 게시글 수정 (POST "/posts/{id}")
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+
+
+=== 게시글 단건 조회 (GET "/posts/{id}")
+.Request
+include::{snippets}/post-getOne/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getOne/http-response.adoc[]
+include::{snippets}/post-getOne/response-fields.adoc[]
+
+
+
+=== 게시글 페이징 조회 (GET "/posts")
+include::{snippets}/post-getAll/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getAll/http-response.adoc[]
