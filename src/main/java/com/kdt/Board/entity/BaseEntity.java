@@ -7,7 +7,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @MappedSuperclass
 @Getter
@@ -19,4 +21,10 @@ public abstract class BaseEntity {
     
     @LastModifiedDate
     private LocalDateTime modifiedAt;
+
+    @PrePersist
+    public void onPrePersist() {
+        this.createdAt = this.createdAt.truncatedTo(ChronoUnit.SECONDS);
+        this.modifiedAt = this.modifiedAt.truncatedTo(ChronoUnit.SECONDS);
+    }
 }

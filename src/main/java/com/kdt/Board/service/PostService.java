@@ -25,12 +25,12 @@ public class PostService {
 
     public Page<PostResponse> getPosts(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(conversion::toPostDto);
+                .map(conversion::toPostResponse);
     }
 
     public PostResponse getPost(Long id) throws NotFoundException {
         return postRepository.findById(id)
-                .map(conversion::toPostDto)
+                .map(conversion::toPostResponse)
                 .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
     }
 

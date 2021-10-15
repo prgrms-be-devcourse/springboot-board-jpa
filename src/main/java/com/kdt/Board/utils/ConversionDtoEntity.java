@@ -15,7 +15,7 @@ public class ConversionDtoEntity {
 
     private final UserRepository userRepository;
 
-    public PostResponse toPostDto(Post post) {
+    public PostResponse toPostResponse(Post post) {
         final User user = post.getUser();
         return PostResponse.builder()
                 .id(post.getId())
@@ -24,6 +24,7 @@ public class ConversionDtoEntity {
                 .userResponse(UserResponse.builder()
                         .name(user.getName())
                         .hobby(user.getHobby())
+                        .age(user.getAge())
                         .createdAt(user.getCreatedAt())
                         .modifiedAt(user.getModifiedAt())
                         .build())
@@ -42,4 +43,13 @@ public class ConversionDtoEntity {
                 .build();
     }
 
+    public UserResponse toUserResponse(User user) {
+        return UserResponse.builder()
+                .name(user.getName())
+                .hobby(user.getHobby())
+                .age(user.getAge())
+                .createdAt(user.getCreatedAt())
+                .modifiedAt(user.getModifiedAt())
+                .build();
+    }
 }

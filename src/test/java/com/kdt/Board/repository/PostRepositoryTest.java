@@ -39,7 +39,7 @@ class PostRepositoryTest {
     }
 
     @Test
-    void 게시글_단일_조회() {
+    void 게시글_단건_조회() {
         //given
         //when
         final Post foundPost = postRepository.findById(savedPost.getId()).get();
