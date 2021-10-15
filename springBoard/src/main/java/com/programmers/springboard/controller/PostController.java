@@ -4,7 +4,6 @@ import com.programmers.springboard.config.ApiResponse;
 import com.programmers.springboard.dto.PostDto;
 import com.programmers.springboard.dto.PostResponseDto;
 import com.programmers.springboard.service.PostService;
-import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public ApiResponse<PostResponseDto> getOne(@PathVariable Long id) throws NotFoundException {
+    public ApiResponse<PostResponseDto> getOne(@PathVariable Long id) {
         PostResponseDto one = postService.findOne(id);
         return ApiResponse.ok(one);
     }
@@ -38,13 +37,13 @@ public class PostController {
 
 
     @PatchMapping("/posts/{id}")
-    public ApiResponse<Long> update(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
+    public ApiResponse<Long> update(@PathVariable Long id, @RequestBody PostDto postDto) {
         Long postId = postService.update(postDto, id);
         return ApiResponse.ok(postId);
     }
 
     @DeleteMapping("/posts/{id}")
-    public void delete(@PathVariable Long id) throws NotFoundException {
+    public void delete(@PathVariable Long id) {
         postService.delete(id);
     }
 }
