@@ -21,12 +21,12 @@ public class GlobalAdvice {
     }
 
     @ExceptionHandler(UserAndPostNotMatchException.class)
-    public ApiResponse<String> UserAndPostNotMatchHandler(UserAndPostNotMatchException e){
+    public ApiResponse<String> userAndPostNotMatchHandler(UserAndPostNotMatchException e){
         return ApiResponse.fail(404, e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
-    public ApiResponse<String> EnternalServerErrorHandler(Exception e){
+    public ApiResponse<String> enternalServerErrorHandler(Exception e){
         return ApiResponse.fail(500, e.getMessage());
     }
 
