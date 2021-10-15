@@ -41,11 +41,4 @@ public class Post extends CreationBaseEntity {
         this.title = title;
         this.content = content;
     }
-
-    public static Post createNewPost(String title, String content) {
-        Post newPost = new Post();
-        newPost.setTitle(title);
-        newPost.setContent(content);
-        return newPost;
-    }
 }
