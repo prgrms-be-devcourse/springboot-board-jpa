@@ -5,18 +5,14 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
 
 import kdt.prgms.springbootboard.config.JpaAuditingConfiguration;
-import kdt.prgms.springbootboard.domain.Hobby;
-import kdt.prgms.springbootboard.domain.HobbyType;
-import kdt.prgms.springbootboard.domain.User;
+import kdt.prgms.springbootboard.domain.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
 @Slf4j
 @DataJpaTest(includeFilters = @Filter(
     type = ASSIGNABLE_TYPE,

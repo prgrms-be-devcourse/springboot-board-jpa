@@ -3,9 +3,13 @@ package kdt.prgms.springbootboard.domain;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
+@SQLDelete(sql = "UPDATE user SET is_active = false WHERE user_id=?")
+@Where(clause = "is_active=true")
 public class User extends BaseEntity {
 
     @Id
