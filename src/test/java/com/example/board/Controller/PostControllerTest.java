@@ -36,31 +36,15 @@ class PostControllerTest {
     @Autowired
     private WebApplicationContext wac;
 
+    private PostDto postDto;
+
     @BeforeEach
     void setup(){
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .alwaysDo(print())
                 .build();
-    }
-//    @BeforeEach
-//    void setup(){
-//        PostRequestDto postRequestDto = PostRequestDto.builder()
-//                .title("test확인")
-//                .content("post test중입니다")
-//                .user(
-//                        UserDto.builder()
-//                                .age(24)
-//                                .name("박연수")
-//                                .hobby("놀기")
-//                                .build()
-//                )
-//                .build();
-//        postService.save(postRequestDto);
-//    }
-    @Test
-    void saveApiTest() throws Exception {
-        PostDto postDto = PostDto.builder()
+        postDto = PostDto.builder()
                 .title("test확인")
                 .content("post test중입니다")
                 .user(
@@ -71,28 +55,21 @@ class PostControllerTest {
                                 .build()
                 )
                 .build();
+        postService.save(postDto);
+    }
+    @Test
+    void saveApiTest() throws Exception {
+
        mockMvc.perform(post("/api/v1/posts")
                .contentType(MediaType.APPLICATION_JSON)
                .content(objectMapper.writeValueAsString(postDto)))
                .andExpect(status().isOk())
                .andDo(print());
 
-
-
     }
     @Test
     void update() throws Exception {
-        PostDto postDto = PostDto.builder()
-                .title("test확인")
-                .content("post test중입니다")
-                .user(
-                        UserDto.builder()
-                                .age(24)
-                                .name("박연수")
-                                .hobby("놀기")
-                                .build()
-                )
-                .build();
+
         Long save = postService.save(postDto);
 
         PostRequestDto postDto2 = PostRequestDto.builder()
@@ -106,47 +83,36 @@ class PostControllerTest {
                 .andDo(print());
 
     }
-//    @Test
-//    void findOne() throws Exception {
-//        PostDto postDto = PostDto.builder()
-//                .title("test확인")
-//                .content("post test중입니다")
-//                .user(
-//                        UserDto.builder()
-//                                .age(24)
-//                                .name("박연수")
-//                                .hobby("놀기")
-//                                .build()
-//                )
-//                .build();
-//        Post save = postService.save(postDto);
-//
-//
-//
-//        mockMvc.perform(get("/api/v1/posts/{id}",save.getPostId())
-//                        .contentType(MediaType.APPLICATION_JSON))
-//
-//                .andExpect(status().isOk())
-//                .andDo(print());
-//
-//
-//    }
-//    @Test
-//    void findAll() throws Exception {
-//        PageRequest page=PageRequest.of(0,10);
-//
-//        mockMvc.perform(get("/api/v1/posts")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(String.valueOf(page)))
-//
-//                .andExpect(status().isOk())
-//                .andDo(print());
-//
-//
-//    }
-//
-//
-//
-//
-//
+    @Test
+    void findOne() throws Exception {
+
+        Long save = postService.save(postDto);
+
+
+        mockMvc.perform(get("/api/v1/posts/{id}",save)
+                        .contentType(MediaType.APPLICATION_JSON))
+
+                .andExpect(status().isOk())
+                .andDo(print());
+
+
+    }
+    @Test
+    void findAll() throws Exception {
+        PageRequest page=PageRequest.of(0,10);
+
+        mockMvc.perform(get("/api/v1/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(String.valueOf(page)))
+
+                .andExpect(status().isOk())
+                .andDo(print());
+
+
+    }
+
+
+
+
+
 }

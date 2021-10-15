@@ -1,4 +1,4 @@
-package com.example.board;
+package com.example.board.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
