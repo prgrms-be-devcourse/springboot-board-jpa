@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -20,6 +21,9 @@ public class Post extends BaseEntity{
 
     @Column(name = "content", nullable = false, length = 200)
     private String content;
+
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // User : Post = 1 : N 관계
     @JoinColumn(name = "user_id", referencedColumnName = "id")
