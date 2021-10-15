@@ -12,7 +12,7 @@ import java.util.Objects;
 @Setter
 public class Post extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "title", nullable = false, length = 50)
@@ -21,7 +21,7 @@ public class Post extends BaseEntity{
     @Column(name = "content", nullable = false, length = 200)
     private String content;
 
-    @ManyToOne // User : Post = 1 : N 관계
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // User : Post = 1 : N 관계
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
