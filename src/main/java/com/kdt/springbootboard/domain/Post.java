@@ -1,5 +1,6 @@
 package com.kdt.springbootboard.domain;
 
+import com.kdt.springbootboard.dto.PostDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,6 +33,11 @@ public class Post extends BaseEntity {
 
         this.user = user;
         user.getPosts().add(this);
+    }
+
+    public void updatePost(PostDto postDto) {
+        this.title = postDto.getTitle();
+        this.content = postDto.getContent();
     }
 
     @Builder
