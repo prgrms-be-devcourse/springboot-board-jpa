@@ -8,34 +8,38 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 
 ### **1. SpringDataJPA 를 설정한다.**
 
-- [v] datasource : h2
+- [x] datasource : h2
+- [x] Java : 11
+- [x] Buildtool : Maven
+- [x] IDE : IntelliJ
+- [x] 그외 : Lombok, Mockito
 
 ### **2. 엔티티를 구성한다**
 
-- [v] 회원(User)
-    - [v] id (PK) (auto increment)
-    - [v] name
-    - [v] age
-    - [v] hobby
-    - [v] **created_at**
-    - [v] **created_by**
+- [x] 회원(User)
+    - [x] id (PK) (auto increment)
+    - [x] name
+    - [x] age
+    - [x] hobby
+    - [x] **created_at**
+    - [x] **created_by**
 - [x] 게시글(Post)
-    - [v] id (PK) (auto increment)
-    - [v] title
-    - [v] content
-    - [v] **created_at**
-    - [v] **created_by**
-- [v] 회원과 게시글에 대한 연관관계를 설정한다.
-    - [v] 회원과 게시글은 1:N 관계이다.
-- [v] 게시글 Repository를 구현한다. (PostRepository)
+    - [x] id (PK) (auto increment)
+    - [x] title
+    - [x] content
+    - [x] **created_at**
+    - [x] **created_by**
+- [x] 회원과 게시글에 대한 연관관계를 설정한다.
+    - [x] 회원과 게시글은 1:N 관계이다.
+- [x] 게시글 Repository를 구현한다. (PostRepository)
 
 ### **3. API를 구현한다.**
 
-- [v] 게시글 조회
-    - [v] 페이징 조회 (GET "/posts")
-    - [v] 단건 조회 (GET "/posts/{id}")
-- [v] 게시글 작성 (POST "/posts")
-- [v] 게시글 수정 (POST "/posts/{id}")
-- [v] 게시글 삭제 (Delete "/posts/{id}")
+- [x] 게시글 조회
+    - [x] 페이징 조회 (GET "/posts")
+    - [x] 단건 조회 (GET "/posts/{id}")
+- [x] 게시글 작성 (POST "/posts")
+- [x] 게시글 수정 (POST "/posts/{id}")
+- [x] 게시글 삭제 (Delete "/posts/{id}")
 
 ### 4. REST-DOCS를 이용해서 문서화한다.
