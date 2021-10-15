@@ -169,7 +169,7 @@ class PostControllerTest {
         // When Then
         mockMvc
             .perform(
-                patch("/api/v1/posts/{postId}", post.getId())
+                put("/api/v1/posts/{postId}", post.getId())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(updateRequest))
             )
