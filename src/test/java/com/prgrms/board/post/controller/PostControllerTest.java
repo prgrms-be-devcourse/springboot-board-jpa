@@ -41,26 +41,27 @@ class PostControllerTest {
     @Autowired
     private PostRepository postRepository;
 
-    private final Long id = 1L;
+    private Long id;
+
     private PostDto postDto;
 
     @BeforeEach
     void setUp() {
         UserDto userDto = UserDto.builder()
-                .id(id)
+                .id(1L)
                 .name("이범진")
                 .age(33)
                 .hobby("독서")
                 .build();
 
         postDto = PostDto.builder()
-                .id(id)
+                .id(1L)
                 .title("게시글 제목")
                 .content("게시글 내용")
                 .userDto(userDto)
                 .build();
 
-        postService.save(postDto);
+        id = postService.save(postDto);
     }
 
     @AfterEach
@@ -140,16 +141,29 @@ class PostControllerTest {
     @Test
     void updatePost() throws Exception {
         //given
-        postDto.changeContent("수정된 게시글 내용");
-        postService.update(postDto);
+        PostDto updatedPostDto = PostDto.builder()
+                .id(id)
+                .title("수정된 게시글 제목")
+                .content("수정된 게시글 내용")
+                .userDto(
+                        UserDto.builder()
+                                .id(id)
+                                .name("수정된 이름")
+                                .age(30)
+                                .hobby("수정된 취미")
+                                .build()
+                )
+                .build();
+
+        Long savedPostId = postService.save(updatedPostDto);
 
         //when //then
-        mockMvc.perform(post("/api/posts/{id}", id)
+        mockMvc.perform(post("/api/posts/{id}", savedPostId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postDto)))
+                        .content(objectMapper.writeValueAsString(updatedPostDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("post-modify",
+                .andDo(document("post-update",
                         requestFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("id"),
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("title"),

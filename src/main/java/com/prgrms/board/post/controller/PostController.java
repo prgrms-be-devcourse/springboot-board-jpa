@@ -40,9 +40,9 @@ public class PostController {
 
     @PostMapping("/posts/{id}")
     public ApiResponse<Long> update(
-            @RequestBody PostDto postDto
+            @PathVariable Long id, @RequestBody PostDto postDto
     ) throws NotFoundException {
-        Long id = postService.update(postDto);
-        return ApiResponse.ok(id);
+        Long updatedPostId = postService.update(id, postDto);
+        return ApiResponse.ok(updatedPostId);
     }
 }
