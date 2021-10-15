@@ -94,6 +94,8 @@ Java 11, Spring Boot, Maven, JPA, Lombok, MySQL, Mockito
 
 ### 3. Rest Controller Advice를 통한 Cont용oller Exception Handler AOP 적용
 
+### 4. logback.xml 을 통한 로그 기록
+
 # Wiki
 
 wiki에 기술 이슈에 대한 고민과 해결 방법을 포스팅한 블로그 url을 포함한다.
