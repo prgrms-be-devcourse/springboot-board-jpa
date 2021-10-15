@@ -6,6 +6,7 @@ import com.kdt.programmers.forum.transfer.PageDto;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import com.kdt.programmers.forum.transfer.response.ApiResponse;
 import com.kdt.programmers.forum.transfer.PostDto;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -13,13 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/posts")
+@AllArgsConstructor
 public class PostController {
 
     private final PostService postService;
-
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
 
     @GetMapping("")
     public ApiResponse<PageDto> getPosts(Pageable pageable) {

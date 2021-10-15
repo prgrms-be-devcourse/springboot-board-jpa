@@ -5,6 +5,7 @@ import com.kdt.programmers.forum.exception.PostNotFoundException;
 import com.kdt.programmers.forum.transfer.PostDto;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import com.kdt.programmers.forum.utils.PostConverter;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,16 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class PostService {
 
     private final PostJpaRepository postRepository;
 
     private final PostConverter postConverter;
-
-    public PostService(PostJpaRepository postRepository, PostConverter postConverter) {
-        this.postRepository = postRepository;
-        this.postConverter = postConverter;
-    }
 
     public PostDto savePost(PostRequest postRequest) {
         Post post = postConverter.convertToPost(postRequest);
