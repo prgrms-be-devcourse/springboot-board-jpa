@@ -38,7 +38,7 @@ public class PostController {
             PostDto post = postService.findPostById(postId);
             return ApiResponse.response(post);
         } catch (PostNotFoundException e) {
-            throw new NotFoundException("request resource was not found", e);
+            throw new NotFoundException("requested post was not found", e);
         }
     }
 
