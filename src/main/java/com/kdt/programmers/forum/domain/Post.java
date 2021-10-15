@@ -21,7 +21,7 @@ public class Post extends CreationBaseEntity {
     private String content;
 
     @Column(name = "user_id", insertable = false, updatable = false)
-    private Integer userId;
+    private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
