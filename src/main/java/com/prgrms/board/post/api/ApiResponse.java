@@ -14,7 +14,7 @@ public class ApiResponse<T> {
 
     private T data;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime serverDatetime;
 
     public ApiResponse(HttpStatus httpStatus, T data) {
