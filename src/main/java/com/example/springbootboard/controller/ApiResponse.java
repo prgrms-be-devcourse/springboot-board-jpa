@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 
 public class ApiResponse<T> {
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private int statusCode;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private T data;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime serverDatetime;

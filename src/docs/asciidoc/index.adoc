@@ -1,0 +1,41 @@
+
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시글 API List
+
+=== 1. 게시글 생성
+
+==== url : localhost:8080/posts/{id}
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+=== 2. 게시글 조회
+
+==== url : localhost:8080/posts/{id}
+
+.Request
+include::{snippets}/post-getAll/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getAll/http-response.adoc[]
+include::{snippets}/post-getAll/response-fields.adoc[]
+
+=== 3. 게시글 단일 조회
+
+==== url : localhost:8080/posts/{id}
+
+.Request
+include::{snippets}/post-getOne/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getOne/http-response.adoc[]
+include::{snippets}/post-getOne/response-fields.adoc[]

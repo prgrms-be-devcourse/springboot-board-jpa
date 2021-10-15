@@ -29,7 +29,7 @@ public class PostService {
     public Long save(PostDto dto) {
         // 1. dto -> entity 변환 (준영속)
         Post post = postConverter.convertPost(dto);
-        post.setCreatedBy(userRepository.findById(dto.getCreated_by()).get());
+        post.setCreatedBy(userRepository.findById(dto.getCreatedBy()).get());
         // 2. orderRepository.save(enitiy) -> 영속화
         Post entity = postRepository.save(post);
         // 3. 결과 반환

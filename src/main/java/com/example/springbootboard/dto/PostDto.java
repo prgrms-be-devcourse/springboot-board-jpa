@@ -3,14 +3,14 @@ package com.example.springbootboard.dto;
 public class PostDto {
     String title;
     String content;
-    Long created_by;
+    Long createdBy;
 
     public PostDto(){}
 
-    public PostDto(String title, String content, Long created_by) {
+    public PostDto(String title, String content, Long createdBy) {
         this.title = title;
         this.content = content;
-        this.created_by = created_by;
+        this.createdBy = createdBy;
     }
 
     public String getTitle() {
@@ -21,7 +21,7 @@ public class PostDto {
         return content;
     }
 
-    public Long getCreated_by() {
-        return created_by;
+    public Long getCreatedBy() {
+        return createdBy;
     }
 }
