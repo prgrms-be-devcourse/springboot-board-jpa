@@ -75,7 +75,6 @@ class PostControllerTest {
                         fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
                         fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("created at"),
-                        fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("created by"),
                         fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
                     )
                 )
@@ -105,7 +104,6 @@ class PostControllerTest {
                         fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
                         fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("created at"),
-                        fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("created by"),
                         fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
                     )
                 )
@@ -141,7 +139,6 @@ class PostControllerTest {
                         fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("title"),
                         fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("content"),
                         fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("created at"),
-                        fieldWithPath("data.content[].createdBy").type(JsonFieldType.NULL).description("created by"),
                         fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("total pages"),
                         fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("total elements"),
                         fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
@@ -191,7 +188,6 @@ class PostControllerTest {
                         fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
                         fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("created at"),
-                        fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("created by"),
                         fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("server time")
                     )
                 )
