@@ -1,4 +1,4 @@
-package com.kdt.programmers.forum.utils;
+package com.kdt.programmers.forum.exception;
 
 import com.kdt.programmers.forum.transfer.response.ErrorResponse;
 import javassist.NotFoundException;
