@@ -1,7 +1,6 @@
 package com.kdt.springbootboard.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
 public class User extends BaseEntity {
     @Id
@@ -32,4 +31,19 @@ public class User extends BaseEntity {
         post.setUser(this);
     }
 
+    @Builder
+    public User(Long id, String name, int age, String hobby, List<Post> posts) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+        this.posts = posts;
+    }
+
+    @Builder
+    public User(String name, int age, String hobby) {
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+    }
 }

@@ -1,14 +1,13 @@
 package com.kdt.springbootboard.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "post")
 public class Post extends BaseEntity {
     @Id
@@ -18,6 +17,7 @@ public class Post extends BaseEntity {
     @Column(name = "title", nullable = false, length = 20)
     private String title;
 
+    @Lob
     @Column(name = "content")
     private String content;
 
@@ -32,5 +32,20 @@ public class Post extends BaseEntity {
 
         this.user = user;
         user.getPosts().add(this);
+    }
+
+    @Builder
+    public Post(Long id, String title, String content, User user) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.user = user;
+    }
+
+    @Builder
+    public Post(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
+        this.user = user;
     }
 }
