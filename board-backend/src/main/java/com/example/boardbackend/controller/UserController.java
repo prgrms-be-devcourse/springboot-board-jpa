@@ -30,23 +30,17 @@ public class UserController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<UserIdResponse> login(@RequestBody LoginRequest loginDto){
+    public ResponseEntity<UserIdResponse> login(@Valid @RequestBody LoginRequest loginDto){
         String email = loginDto.getEmail();
         String password = loginDto.getPassword();
-        Optional<UserDto> userByEmail = userService.findUserByEmail(email);
-
-        // 가입 X
-        if(userByEmail.isEmpty()){
-            throw new NotFoundException("가입되지 않은 이메일입니다");
-        }
-
+        UserDto userByEmail = userService.findUserByEmail(email);
         // 비밀번호 검증
-        String findPW = userByEmail.get().getPassword();
+        String findPW = userByEmail.getPassword();
         if(!password.equals(findPW)){
             throw new IllegalArgException("비밀번호가 틀립니다");
         }
         // 검증됨 -> 200 + id 값
-        Long findId = userByEmail.get().getId();
+        Long findId = userByEmail.getId();
         UserIdResponse response = responseConverter.convertToUserId(findId);
         return ResponseEntity.ok(response);
     }

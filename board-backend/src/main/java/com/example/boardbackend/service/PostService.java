@@ -1,5 +1,6 @@
 package com.example.boardbackend.service;
 
+import com.example.boardbackend.common.error.exception.NotFoundException;
 import com.example.boardbackend.domain.Post;
 import com.example.boardbackend.dto.PostDto;
 import com.example.boardbackend.common.converter.DtoConverter;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class PostService {
 
     public Page<PostDto> findPostsAll(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(post -> dtoConverter.convertToPostDto(post));
+                .map(dtoConverter::convertToPostDto);
     }
 
     public Long countPostsAll(){
@@ -38,17 +40,22 @@ public class PostService {
 
     public List<PostDto> findPostsByCreatedBy(Long createdBy) {
         return postRepository.findByCreatedBy(createdBy).stream()
-                .map(post -> dtoConverter.convertToPostDto(post))
+                .map(dtoConverter::convertToPostDto)
                 .collect(Collectors.toList());
     }
 
     public PostDto findPostById(Long id) {
-        return dtoConverter.convertToPostDto(postRepository.findById(id).get());
+        return postRepository.findById(id)
+                .map(dtoConverter::convertToPostDto)
+                .orElseThrow(() -> new NotFoundException("해당 ID의 게시물을 찾을 수 없습니다"));
     }
 
     @Transactional
     public PostDto updatePostById(Long id, String newTitle, String newContent) {
-        Post entity = postRepository.findById(id).get();
+        Optional<Post> byId = postRepository.findById(id);
+        if(byId.isEmpty())
+            throw new NotFoundException("해당 ID의 게시물을 찾을 수 없습니다");
+        Post entity = byId.get();
         entity.setTitle(newTitle);
         entity.setContent(newContent);
         // 트랜잭션이 끝날때 flush

@@ -18,7 +18,6 @@ function Posting(props) {
     useEffect(() => {
         axios.get(origin + `/api/user/${userId}`)
             .then(res => {
-                // console.log(res);
                 setUserInfo(res.data)
                 setPostInfo({ title: "", content: "", userDto: res.data })
             })
@@ -30,13 +29,15 @@ function Posting(props) {
 
     // Button
     const savePost = () => {
-        // console.log(postInfo);
         axios.post(origin + "/api/post", postInfo)
             .then(res => {
-                // console.log(res);
                 alert("게시물이 등록되었습니다.")
                 props.history.push("/board/1");
             })
+            .catch(err => {
+                if (err.response.status == 400 || err.response.status == 404)
+                    alert(err.response.data.message);
+            });
     };
 
     return (

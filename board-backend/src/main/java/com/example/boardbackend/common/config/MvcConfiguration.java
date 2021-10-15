@@ -9,9 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        // FIXME : 나중에 origin 변경
         registry.addMapping("/api/**")
-                .allowedOrigins("*")
+                .allowedOrigins("http://localhost:3000", "http://devcourse.s3-website.ap-northeast-2.amazonaws.com")
                 .allowedMethods(
                         HttpMethod.POST.name(),
                         HttpMethod.GET.name(),

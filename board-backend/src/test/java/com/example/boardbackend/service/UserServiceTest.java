@@ -98,11 +98,8 @@ class UserServiceTest {
         // prepared userDto
 
         // When
-        Optional<UserDto> userByEmail = userService.findUserByEmail(userDto.getEmail());
 
         // Then
-        assertThat(userByEmail.isPresent(), is(true));
-        assertThat(userByEmail.get().getEmail(), is(userDto.getEmail()));
     }
 
     @Test

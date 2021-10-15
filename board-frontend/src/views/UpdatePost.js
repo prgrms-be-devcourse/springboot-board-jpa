@@ -29,7 +29,7 @@ function UpdatePost(props) {
             return;
         }
         setUserInfo(res_userInfo);
-        setNewPostInfo({title : res_postInfo.title, content : res_postInfo.content});
+        setNewPostInfo({ title: res_postInfo.title, content: res_postInfo.content });
     }, []);
 
     // Handler
@@ -41,10 +41,14 @@ function UpdatePost(props) {
         // console.log(newPostInfo);
         axios.patch(origin + `/api/post/${postId}`, newPostInfo)
             .then(res => {
-                // console.log(res);
                 alert("게시물이 성공적으로 수정되었습니다.")
                 props.history.goBack();
             })
+            .catch(err => {
+                if (err.response.status == 400 || err.response.status == 404) {
+                    alert(err.response.data.message);
+                }
+            });
     };
 
     return (
@@ -60,9 +64,9 @@ function UpdatePost(props) {
                     <li><b>이름</b>: {userInfo.name}</li>
                 </ul>
 
-                <input style={{ width: "100%" }} type="text" placeholder="제목" onChange={titleHandler} value={newPostInfo.title}/>
+                <input style={{ width: "100%" }} type="text" placeholder="제목" onChange={titleHandler} value={newPostInfo.title} />
                 <br /><br />
-                <textarea style={{ width: "100%", height: "300px" }} placeholder="내용을 입력하세요" onChange={contentHandler} value={newPostInfo.content}/>
+                <textarea style={{ width: "100%", height: "300px" }} placeholder="내용을 입력하세요" onChange={contentHandler} value={newPostInfo.content} />
                 <div style={{ textAlign: "center" }}>
                     <button onClick={updatePost}>수정완료</button>
                 </div>

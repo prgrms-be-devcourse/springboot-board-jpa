@@ -18,9 +18,14 @@ function Post(props) {
     // Effect
     useEffect(async () => {
         // post 정보 받아오기
-        const response = await axios.get(origin + `/api/post/${postId}`);
+        const response = await axios.get(origin + `/api/post/${postId}`)
+            .catch(err => {
+                if (err.response.status == 400 || err.response.status == 404) {
+                    alert(err.response.data.message);
+                    props.history.goBack();
+                }
+            });
         const res_postInfo = response.data
-        // console.log(res_postInfo)
         // view 업데이트
         axios.patch(origin + `/api/post/${postId}/view`, { newView: res_postInfo.view + 1 })
             .then(res => {
@@ -35,13 +40,12 @@ function Post(props) {
     const deletePost = () => {
         if (window.confirm("정말 삭제하시겠습니까?")) {
             axios.delete(origin + `/api/post/${postId}`)
-              .then(res => {
-                // console.log(res);
-                alert("게시물 삭제 완료");
-                props.history.goBack();
-                return
-              })
-          }
+                .then(res => {
+                    alert("게시물 삭제 완료");
+                    props.history.goBack();
+                    return
+                })
+        }
     }
     const moveUpdatePost = () => {
         props.history.push(`/update-post/${postId}`);
@@ -56,7 +60,7 @@ function Post(props) {
 
             <table className="table_post">
                 <td style={{ backgroundColor: 'lightgrey' }}><b>작성시간</b>: {postInfo.createdAt}</td>
-                <td style={{ backgroundColor: 'lightgrey' }}><b>작성자</b>: {userInfo.name}</td>
+                <td style={{ backgroundColor: 'lightgrey' }}><b>작성자</b>: {userInfo.name} (<span style={{ fontSize: "13px" }}>{userInfo.email}</span>)</td>
                 <td style={{ backgroundColor: 'lightgrey' }}><b>조회수</b>: {postInfo.view}</td>
             </table>
             <br />
@@ -67,14 +71,14 @@ function Post(props) {
             <br />
             {(
                 () => {
-                    if(localStorage.getItem("userId") == userInfo.id){
-                        return ( <div className="div_wrapper">
-                                내가 작성한 게시물입니다
-                                <br /><br />
-                                <button onClick={deletePost}>삭제하기</button>
-                                &nbsp;&nbsp;&nbsp;
-                                <button onClick={moveUpdatePost}>수정하기</button>
-                            </div>)
+                    if (localStorage.getItem("userId") == userInfo.id) {
+                        return (<div className="div_wrapper">
+                            내가 작성한 게시물입니다
+                            <br /><br />
+                            <button onClick={deletePost}>삭제하기</button>
+                            &nbsp;&nbsp;&nbsp;
+                            <button onClick={moveUpdatePost}>수정하기</button>
+                        </div>)
                     }
                 }
             )()}

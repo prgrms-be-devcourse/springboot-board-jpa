@@ -36,13 +36,13 @@ function Login(props) {
   const login = () => {
     axios.post(origin + '/api/user/login', loginInfo)
       .then(res => {
-        alert("로그인 성공, 마이페이지로 이동")
         const userId = res.data.id;
         localStorage.setItem('userId', userId);
         props.history.push("/mypage");
       })
       .catch(err => {
-        alert(err.response.data.message)
+        if (err.response.status == 400 || err.response.status == 404)
+          alert(err.response.data.message);
       });
   }
 
@@ -52,7 +52,8 @@ function Login(props) {
         alert("회원가입 완료 (id : " + res.data.id + ")");
       })
       .catch(err => {
-        alert(err.response.data.message);
+        if (err.response.status == 400 || err.response.status == 404)
+          alert(err.response.data.message);
       });
   }
 

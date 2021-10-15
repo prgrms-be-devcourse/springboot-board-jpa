@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,7 @@ public class PostController {
 
     // 게시물 생성
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> createPost(@Valid  @RequestBody PostDto postDto) {
         PostDto response = postService.savePost(postDto);
         return ResponseEntity.ok(response);
     }
@@ -33,7 +34,7 @@ public class PostController {
     @GetMapping
     public ResponseEntity<Page<BoardResponse>> getAllPosts(Pageable pageable){
         Page<BoardResponse> response = postService.findPostsAll(pageable)
-                .map(postDto -> responseConverter.convertToBoard(postDto));
+                .map(responseConverter::convertToBoard);
         return ResponseEntity.ok(response);
     }
 
@@ -48,7 +49,7 @@ public class PostController {
     @GetMapping("/user/{id}")
     public ResponseEntity<List<BoardResponse>> getUserPosts(@PathVariable("id") Long createdBy) {
         List<BoardResponse> response = postService.findPostsByCreatedBy(createdBy).stream()
-                .map(postDto -> responseConverter.convertToBoard(postDto))
+                .map(responseConverter::convertToBoard)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(response);
     }
@@ -64,7 +65,7 @@ public class PostController {
     @PatchMapping("/{id}")
     public ResponseEntity<PostDto> updatePost(
             @PathVariable("id") Long id,
-            @RequestBody UpdatePostRequest updatePostRequest
+            @Valid @RequestBody UpdatePostRequest updatePostRequest
     ) {
         String newTitle = updatePostRequest.getTitle();
         String newContent = updatePostRequest.getContent();

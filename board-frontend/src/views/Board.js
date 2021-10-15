@@ -24,7 +24,6 @@ function Board(props) {
         // 페이징 조회 요청
         axios.get(origin + "/api/post", { params: { page: page - 1, size: pageSize, sort: "id,DESC" } })
             .then(res => {
-                // console.log(res);
                 setPosts(res.data.content)
             })
         // 총 게시글 수 받고 페이지 수 계산
