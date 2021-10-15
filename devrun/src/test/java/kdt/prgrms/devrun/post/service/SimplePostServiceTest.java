@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.Matchers.*;
@@ -40,7 +41,6 @@ class SimplePostServiceTest {
     final Long INVALID_POST_ID = 1000000L;
 
     private User user1;
-    private User user2;
 
     @BeforeAll
     void setUp() {
@@ -54,17 +54,7 @@ class SimplePostServiceTest {
             .posts(new ArrayList<Post>())
             .build();
 
-        user2 = User.builder()
-            .loginId("kjt3520222")
-            .loginPw("123422")
-            .age(27)
-            .name("이수민")
-            .email("devrunner2222@gmail.com")
-            .posts(new ArrayList<Post>())
-            .build();
-
         userRepository.save(user1);
-        userRepository.save(user2);
 
     }
 
@@ -73,28 +63,17 @@ class SimplePostServiceTest {
     void test_getAllPostPagingList() {
 
         // given
-        final Post post1 = Post.builder()
-            .title("제목 1")
-            .content("내용 1")
-            .user(user1)
-            .build();
-        final Post post2 = Post.builder()
-            .title("제목 2")
-            .content("내용 2")
-            .user(user2)
-            .build();
-        postRepository.save(post1);
-        postRepository.save(post2);
+        IntStream.range(0, 30).forEach(i -> postService.createPost(AddPostRequestDto.builder().title("제목 " + i).content("내용").createdBy(user1.getLoginId()).build()));
 
-        final PageRequest pageRequest = PageRequest.of(0, 2);
+        final PageRequest pageRequest = PageRequest.of(0, 10);
 
         // when
         final PageDto<SimplePostDto> postDtoPage = postService.getPostPagingList(pageRequest);
 
         // then
-        assertThat(postDtoPage.getTotalCount(), is(2L));
+        assertThat(postDtoPage.getTotalCount(), is(30L));
         assertThat(postDtoPage.getPageNo(), is(0));
-        assertThat(postDtoPage.getPageSize(), is(2));
+        assertThat(postDtoPage.getPageSize(), is(10));
         assertThat(postDtoPage.getList(), not(empty()));
     }
 
@@ -227,7 +206,7 @@ class SimplePostServiceTest {
 
     @Test
     @DisplayName("deletePostById()는 존재하지 않는 Id를 파라미터로 받으면, PostNotFoundException을 던집니다.")
-    void deletePostByIdTest_PostNotFoundException을() {
+    void test_deletePostById_invalidId() {
 
         assertThatThrownBy(() ->  postService.deletePostById(INVALID_POST_ID)).isInstanceOf(PostNotFoundException.class);
 

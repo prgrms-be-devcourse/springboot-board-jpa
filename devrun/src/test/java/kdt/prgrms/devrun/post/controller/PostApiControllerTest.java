@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @SpringBootTest
 @AutoConfigureMockMvc
-//@Transactional
+@Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("PostApiController 테스트")
 class PostApiControllerTest {
@@ -161,7 +161,6 @@ class PostApiControllerTest {
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("서버 응답 시간"),
-//                    fieldWithPath("payload").type(JsonFieldType.OBJECT).description("응답 데이터").optional(),
                     fieldWithPath("payload").type(JsonFieldType.NUMBER).description("생성된 게시글 Id"),
                     fieldWithPath("error").type(JsonFieldType.OBJECT).description("에러 데이터").optional(),
                     fieldWithPath("error.code").type(JsonFieldType.STRING).description("에러 코드"),
@@ -196,7 +195,6 @@ class PostApiControllerTest {
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("서버 응답 시간"),
-//                    fieldWithPath("payload").type(JsonFieldType.OBJECT).description("응답 데이터").optional(),
                     fieldWithPath("payload").type(JsonFieldType.NUMBER).description("생성된 게시글 Id"),
                     fieldWithPath("error").type(JsonFieldType.OBJECT).description("에러 데이터").optional(),
                     fieldWithPath("error.code").type(JsonFieldType.STRING).description("에러 코드"),
