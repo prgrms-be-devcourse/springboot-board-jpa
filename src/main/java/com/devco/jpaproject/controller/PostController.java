@@ -39,7 +39,7 @@ public class PostController {
     public ApiResponse<Long> insert(@Valid @RequestBody PostRequestDto dto) throws UserNotFoundException {
         Long postId = postService.insert(dto);
 
-        return ApiResponse.ok(postId);
+        return ApiResponse.created(postId);
     }
 
     @PatchMapping("/post")

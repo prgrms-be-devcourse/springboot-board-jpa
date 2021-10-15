@@ -22,7 +22,7 @@ public class UserController {
     public ApiResponse<Long> insert(@Valid @RequestBody UserRequestDto dto){
         Long id = userService.insert(dto);
 
-        return ApiResponse.ok(id);
+        return ApiResponse.created(id);
     }
 
     @DeleteMapping("/user/{id}")
