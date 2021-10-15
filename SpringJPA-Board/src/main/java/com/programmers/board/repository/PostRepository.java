@@ -3,5 +3,5 @@ package com.programmers.board.repository;
 import com.programmers.board.domain.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 }
