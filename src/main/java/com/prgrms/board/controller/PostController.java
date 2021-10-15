@@ -1,5 +1,6 @@
 package com.prgrms.board.controller;
 
+import com.prgrms.board.dto.IdResponse;
 import com.prgrms.board.dto.post.PostCreateRequest;
 import com.prgrms.board.dto.post.PostFindResponse;
 import com.prgrms.board.dto.post.PostModifyRequest;
@@ -22,7 +23,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest){
+    public ResponseEntity<IdResponse> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest){
         return ResponseEntity.ok(postService.createPost(postCreateRequest));
     }
 
@@ -37,12 +38,12 @@ public class PostController {
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<Long> modifyPost(final @PathVariable Long postId, final @Valid @RequestBody PostModifyRequest postModifyRequest){
+    public ResponseEntity<IdResponse> modifyPost(final @PathVariable Long postId, final @Valid @RequestBody PostModifyRequest postModifyRequest){
         return ResponseEntity.ok(postService.modifyPost(postId, postModifyRequest));
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Long> removePost(final @PathVariable Long postId){
+    public ResponseEntity<IdResponse> removePost(final @PathVariable Long postId){
         return ResponseEntity.ok(postService.removePost(postId));
     }
 }

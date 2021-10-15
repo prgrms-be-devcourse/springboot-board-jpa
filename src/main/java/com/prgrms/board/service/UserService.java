@@ -1,6 +1,7 @@
 package com.prgrms.board.service;
 
 import com.prgrms.board.domain.User;
+import com.prgrms.board.dto.IdResponse;
 import com.prgrms.board.dto.user.UserCreateRequest;
 import com.prgrms.board.dto.user.UserFindRequest;
 import com.prgrms.board.error.exception.NotFoundException;
@@ -20,8 +21,8 @@ public class UserService {
     }
 
     @Transactional
-    public Long createUser(final UserCreateRequest userCreateRequest){
-        return userRepository.save(userCreateRequest.toEntity()).getId();
+    public IdResponse createUser(final UserCreateRequest userCreateRequest){
+        return new IdResponse(userRepository.save(userCreateRequest.toEntity()).getId());
     }
 
     @Transactional(readOnly = true)
@@ -30,19 +31,19 @@ public class UserService {
     }
 
     @Transactional
-    public Long modifyUser(final Long id, final UserCreateRequest userCreateRequest){
+    public IdResponse modifyUser(final Long id, final UserCreateRequest userCreateRequest){
         User user = getUser(id);
         user.changeUserInfo(userCreateRequest.getName(), userCreateRequest.getAge(), userCreateRequest.getHobby());
 
-        return user.getId();
+        return new IdResponse(user.getId());
     }
 
     @Transactional
-    public Long removeUser(Long id) {
+    public IdResponse removeUser(Long id) {
         User user = getUser(id);
         userRepository.delete(user);
 
-        return user.getId();
+        return new IdResponse(user.getId());
     }
 
     private User getUser(final Long id) {

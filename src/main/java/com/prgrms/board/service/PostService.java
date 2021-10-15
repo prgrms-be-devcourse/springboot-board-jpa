@@ -2,6 +2,7 @@ package com.prgrms.board.service;
 
 import com.prgrms.board.domain.Post;
 import com.prgrms.board.domain.User;
+import com.prgrms.board.dto.IdResponse;
 import com.prgrms.board.dto.post.PostCreateRequest;
 import com.prgrms.board.dto.post.PostFindResponse;
 import com.prgrms.board.dto.post.PostModifyRequest;
@@ -27,7 +28,7 @@ public class PostService {
     }
 
     @Transactional
-    public Long createPost(PostCreateRequest postCreateRequest){
+    public IdResponse createPost(PostCreateRequest postCreateRequest){
         User foundUser = getUser(postCreateRequest.userId());
 
         Post post = Post.builder()
@@ -36,15 +37,15 @@ public class PostService {
                 .user(foundUser)
                 .build();
 
-        return postRepository.save(post).getId();
+        return new IdResponse(postRepository.save(post).getId());
     }
 
     @Transactional
-    public Long modifyPost(final Long postId, final PostModifyRequest postModifyRequest){
+    public IdResponse modifyPost(final Long postId, final PostModifyRequest postModifyRequest){
         Post post = getPost(postId);
         post.changeInfo(postModifyRequest.getTitle(), postModifyRequest.getContent());
 
-        return post.getId();
+        return new IdResponse(postRepository.save(post).getId());
     }
 
     @Transactional(readOnly = true)
@@ -61,11 +62,11 @@ public class PostService {
     }
 
     @Transactional
-    public Long removePost(final Long id) {
+    public IdResponse removePost(final Long id) {
         Post post = getPost(id);
         postRepository.delete(post);
 
-        return post.getId();
+        return new IdResponse(postRepository.save(post).getId());
     }
 
     private Post getPost(final Long id) {

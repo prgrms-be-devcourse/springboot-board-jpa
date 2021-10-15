@@ -1,5 +1,6 @@
 package com.prgrms.board.controller;
 
+import com.prgrms.board.dto.IdResponse;
 import com.prgrms.board.dto.user.UserCreateRequest;
 import com.prgrms.board.dto.user.UserFindRequest;
 import com.prgrms.board.service.UserService;
@@ -19,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> addUser(final @Valid @RequestBody UserCreateRequest userRequest) {
+    public ResponseEntity<IdResponse> addUser(final @Valid @RequestBody UserCreateRequest userRequest) {
         return ResponseEntity.ok(userService.createUser(userRequest));
     }
 
@@ -29,12 +30,12 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Long> modifyUser(final @PathVariable Long id, final @Valid @RequestBody UserCreateRequest userCreateRequest) {
+    public ResponseEntity<IdResponse> modifyUser(final @PathVariable Long id, final @Valid @RequestBody UserCreateRequest userCreateRequest) {
         return ResponseEntity.ok(userService.modifyUser(id, userCreateRequest));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> removeUser(final @PathVariable Long id) {
+    public ResponseEntity<IdResponse> removeUser(final @PathVariable Long id) {
         return ResponseEntity.ok(userService.removeUser(id));
     }
 
