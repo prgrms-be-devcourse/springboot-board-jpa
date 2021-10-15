@@ -83,3 +83,27 @@ td {
   padding: 50px 50px;
   word-wrap :break-word;
 }
+
+
+
+.button_page{
+  width: 30px;
+  padding : 4px 4px;
+  border: 1px solid black;
+  background-color: white;
+  cursor: pointer;
+}
+
+.button_page_move{
+  margin:0px 6px 0px 6px;
+  width: auto;
+  padding : 4px 4px;
+  border: 1px solid black;
+  background-color: white;
+  cursor: pointer;
+}
+
+.button_page_move:hover,
+.button_page:hover{
+  background-color: lightgray;
+}

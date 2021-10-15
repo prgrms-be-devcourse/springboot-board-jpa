@@ -66,6 +66,9 @@ function Login(props) {
 
   return (
     <div >
+      <img style={{width:"250px", position:"absolute", bottom:"0px", left:"0px"}} src="/img/ms.png" />
+
+      <br/>
 
       <h2>로그인</h2>
       <hr /><br />
@@ -77,7 +80,7 @@ function Login(props) {
         <button onClick={login}>로그인하기</button>
       </div>
 
-      <br /><br /><br />
+      <br /><br />
 
       <h2>회원가입</h2>
       <hr /><br />
@@ -85,6 +88,8 @@ function Login(props) {
       <div className="div_wrapper">
         <input type="email" placeholder="email" onChange={emailHandler} />
         <input type="password" placeholder="password" onChange={passwordHandler} />
+        <br/>
+        <span style={{fontSize:"13px", color:"red"}}>※주의 : 비번 암호화 안됨 </span>
         <input type="text" placeholder="name" onChange={nameHandler} />
         <input type="number" placeholder="age" onChange={ageHandler} />
         <input type="text" placeholder="hobby" onChange={hobbyHandler} />

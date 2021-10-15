@@ -13,8 +13,11 @@ function Board(props) {
     // State
     const page = props.match.params.page;
     const pageSize = 10;
-    const [totalPages, setTotalPages] = useState([]);
+    const [pageList, setPageList] = useState([]);
     const [posts, setPosts] = useState([]);
+    const [total, setTotal] = useState();
+    const [prev, setPrev] = useState();
+    const [next, setNext] = useState();
 
     // Effect
     const UE = useEffect(() => {
@@ -28,14 +31,23 @@ function Board(props) {
         axios.get(origin + "/api/post/total")
             .then(res => {
                 console.log(res);
+                // 전체 페이지 숫자
+                let totalPageNum = Math.ceil(res.data / pageSize);
+                setTotal(totalPageNum);
+                // 현재 페이지가 속한 범위의 리스트
+                let startPage = page%10==0 ? (Math.floor(page / 10)-1)*10 + 1 : Math.floor(page / 10) * 10 + 1;
+                let endPage = startPage+9 < totalPageNum ? startPage+9 : totalPageNum;
                 let pagesNumList = []
-                for (let i = 1; i <= Math.ceil(res.data / pageSize); i++) {
+                for (let i = startPage; i <= endPage; i++) {
                     pagesNumList.push(i);
                 }
-                setTotalPages(pagesNumList)
+                setPageList(pagesNumList);
+                // 이전-다음 페이지 지정 -> *1 페이지로 이동
+                setPrev(startPage - 10);
+                setNext(endPage + 1);
             })
     }, [props]);
- 
+
 
     // button
     const movePage = (page) => {
@@ -47,9 +59,9 @@ function Board(props) {
 
             <Menu />
 
-            <h2>게시판 ({page}page)</h2>
+            <h2>게시판 (page{page})</h2>
             <hr /><br />
-            <Link to="/posting" style={{fontSize : "20px"}}>📝 게시글 작성하기</Link>
+            <Link to="/posting" style={{ fontSize: "20px" }}>📝 게시글 작성하기</Link>
 
             <br /><br /><br />
 
@@ -76,12 +88,27 @@ function Board(props) {
 
             <br />
 
+            {(
+                () => {
+                    if (prev > 0) {
+                        return (<button className="button_page_move" onClick={() => movePage(prev)}>&lt; 이전</button>)
+                    }
+                }
+            )()}
+
             {
-                totalPages.map(v =>
-                    <button key={v} onClick={() => movePage(v)}>{v}</button>
+                pageList.map(v =>
+                    <button className="button_page" key={v} onClick={() => movePage(v)}>{v}</button>
                 )
             }
 
+            {(
+                () => {
+                    if (next < total) {
+                        return (<button className="button_page_move" onClick={() => movePage(next)}>다음 &gt;</button>)
+                    }
+                }
+            )()}
 
         </div>
     );

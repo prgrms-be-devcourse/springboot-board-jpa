@@ -34,19 +34,9 @@ public class Post extends BaseEntity{
     @Column(name = "view")
     private Long view;
 
-    // 다대일 - 양방향 매핑
+    // 다대일 - 단방향 매핑
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false, referencedColumnName = "id")
     private User user;
-
-
-//    // 연관관계 편의 메소드
-//    public void setUser(User user){
-//        if (Objects.nonNull(this.user)) {
-//            this.user.getPosts().remove(this);
-//        }
-//        this.user = user;
-//        user.getPosts().add(this);
-//    }
 
 }

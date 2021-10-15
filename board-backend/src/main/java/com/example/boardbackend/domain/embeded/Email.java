@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode
 @Embeddable
 public class Email {
+    // 검증 후 컬럼으로 지정
     @Column(name = "email", nullable = false, length = 45, unique = true)
     private String address;
 
