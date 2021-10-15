@@ -9,6 +9,7 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,7 +39,7 @@ public class PostController {
 
     }
     @PostMapping("api/v1/posts")
-    public ApiResponse<Long> createPost(@RequestBody PostDto postdto){
+    public ApiResponse<Long> createPost(@Validated @RequestBody PostDto postdto){
         Long save = postService.save(postdto);
         return ApiResponse.ok(save);
 
