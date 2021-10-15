@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Component
 public class PostConverter {
 
-    public Post convertPost(PostDto postDto) { // dto -> entity
+    public Post convertPost(PostDto postDto) { // PostDto -> Post entity
         Post post = new Post();
         post.setId(postDto.getId());
         post.setTitle(postDto.getTitle());
@@ -23,7 +23,7 @@ public class PostConverter {
         return post;
     }
 
-    public User convertUser(UserDto userDto) { // dto -> entity
+    public User convertUser(UserDto userDto) { // UserDto -> User entity
         User user = new User();
         user.setId(userDto.getId());
         user.setName(userDto.getName());
@@ -32,7 +32,7 @@ public class PostConverter {
         return user;
     }
 
-    public PostDto convertPostDto(Post post) { // entity -> dto
+    public PostDto convertPostDto(Post post) { // Post entity -> PostDto
         return PostDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -41,7 +41,7 @@ public class PostConverter {
                 .build();
     }
 
-    public UserDto convertUserDto(User user) {
+    public UserDto convertUserDto(User user) { // User entity -> UserDto
         return UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
