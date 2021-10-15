@@ -1,18 +1,71 @@
-# [미션] Spring Boot JPA로 게시판 구현
+# Spring Boot JPA로 게시판 구현
 
-## 미션 소개 😎
+## 📌 프로젝트 설명
+- SpringDataJPA를 설정한다. (h2 or MySQL)
+- 엔티티를 구성한다.
+- API를 구현한다.
+- 테스트코드를 작성한다.
+- REST-DOCS를 이용해 문서화 한다.
+---
+## 💻 개발 환경
+* IDE : IntelliJ
+* 개발 언어 : Java 17
+* 프레임워크 : SpringBoot 2.5.5
+* 라이브러리 : JPA
+* 빌드도구 : Maven 3.8.2
+* 데이터베이스 : AWS RDS MySQL 8.0.26
+---
+## 👩‍💻 요구 사항과 구현 내용
+### 📍 엔티티 구성
+- 회원(User)
+    - id (PK) (auto increment)
+    - name
+    - age
+    - hobby
+    - **created_at**
+    - **updated_at**
+- 게시글(Post)
+    - id (PK) (auto increment)
+    - title
+    - content
+    - **created_at**
+    - **created_at**
+- 게시글과 회원에 대한 연관관계를 설정한다.
+    - 게시글과 회원은 N : 1 단방향 관계이다.
 
-Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수행해봅시다. 최종 제출일은 10/19(일)입니다.
+### 📍 API 구현
 
-## 이곳은 공개 Repo입니다.
+### User API
+    유저 생성
+    * POST http://localhost:8080/users
 
-1. 여러분의 포트폴리오로 사용하셔도 됩니다.
-2. 때문에 이 repo를 fork한 뒤
-3. 여러분의 개인 Repo에 작업하며
-4. 이 Repo에 PR을 보내어 멘토의 코드 리뷰와 피드백을 받으세요.
+    유저 조회
+    * GET http://localhost:8080/users/{userId}
 
-## Branch 명명 규칙
+    유저 수정
+    * PUT http://localhost:8080/users/{userId}
 
-1. 여러분 repo는 알아서 해주시고 😀(본인 레포니 main으로 하셔두 되져)
-2. prgrms-be-devcourse/spring-board 레포로 PR시 branch는 본인 username을 적어주세요 :)  
-   base repo : `여기repo` base : `username` ← head repo : `여러분repo` compare : `main`
+    유저 삭제
+    * DELETE http://localhost:8080/users/{userId}
+
+### Post API
+    포스트 생성
+    * POST http://localhost:8080/posts
+
+    포스트 조회
+    * GET http://localhost:8080/posts/{postId}
+
+    특정 유저가 작성한 포스트 전체 조회
+    * GET http://localhost:8080/posts/list/{postId}
+
+    포스트 수정
+    * PUT http://localhost:8080/posts/{postId}
+
+    포스트 삭제
+    * DELETE http://localhost:8080/posts/{postId}
+
+### ERD
+<img src="https://user-images.githubusercontent.com/81504103/137440998-72ef919c-a4fc-49af-ae79-81ec78ee50c2.png" width="400" height="350">
+
+### Directory
+<img src="https://user-images.githubusercontent.com/81504103/137441117-8043f020-be37-4466-8ed3-56ea44906475.png" width="350" height="500">
