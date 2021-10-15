@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public class User extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Auto 전략으로 기본키를 맵핑할 것이다
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // IDENTITY 전략으로 기본키를 맵핑
     private Long id;
 
     @Column(name = "name", nullable = false, length = 30)
@@ -25,7 +25,7 @@ public class User extends BaseEntity{
     @Column(name = "hobby")
     private String hobby;
 
-    @OneToMany(mappedBy = "user") // User : Post = 1 : N 관계
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // User : Post = 1 : N 관계
     private List<Post> posts = new ArrayList<>();
 
     public void addPost(Post post){
