@@ -7,7 +7,7 @@ function Posting(props) {
     // Select Origin
     const local = 'http://localhost:8080';
     const deploy = 'http://15.165.69.116:8080';
-    const origin = deploy;
+    const origin = local;
 
     // State
     const userId = localStorage.getItem("userId");
@@ -18,7 +18,7 @@ function Posting(props) {
     useEffect(() => {
         axios.get(origin + `/api/user/${userId}`)
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 setUserInfo(res.data)
                 setPostInfo({ title: "", content: "", userDto: res.data })
             })
@@ -30,10 +30,10 @@ function Posting(props) {
 
     // Button
     const savePost = () => {
-        console.log(postInfo);
+        // console.log(postInfo);
         axios.post(origin + "/api/post", postInfo)
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 alert("게시물이 등록되었습니다.")
                 props.history.push("/board/1");
             })

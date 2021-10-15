@@ -9,7 +9,7 @@ function Mypage(props) {
   // Select Origin
   const local = 'http://localhost:8080';
   const deploy = 'http://15.165.69.116:8080';
-  const origin = deploy;
+  const origin = local;
 
   // State
   const userId = localStorage.getItem("userId")
@@ -21,13 +21,13 @@ function Mypage(props) {
     // userInfo
     axios.get(origin + `/api/user/${userId}`)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         setUserInfo(res.data)
       })
     // myPostInfo
     axios.get(origin + `/api/post/user/${userId}`)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         setMyBoard(res.data)
       })
   }, []);
@@ -37,7 +37,7 @@ function Mypage(props) {
     if (window.confirm("정말 탈퇴하시겠습니까?")) {
       axios.delete(origin + `/api/user/${userId}`)
         .then(res => {
-          console.log(res);
+          // console.log(res);
           alert("회원탈퇴 완료. 초기화면으로 이동");
           props.history.push("/");
           return

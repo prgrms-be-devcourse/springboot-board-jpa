@@ -8,7 +8,7 @@ function Board(props) {
     // Select Origin
     const local = 'http://localhost:8080';
     const deploy = 'http://15.165.69.116:8080';
-    const origin = deploy;
+    const origin = local;
 
     // State
     const page = props.match.params.page;
@@ -24,13 +24,13 @@ function Board(props) {
         // 페이징 조회 요청
         axios.get(origin + "/api/post", { params: { page: page - 1, size: pageSize, sort: "id,DESC" } })
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 setPosts(res.data.content)
             })
         // 총 게시글 수 받고 페이지 수 계산
         axios.get(origin + "/api/post/total")
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 // 전체 페이지 숫자
                 let totalPageNum = Math.ceil(res.data / pageSize);
                 setTotal(totalPageNum);
@@ -97,9 +97,14 @@ function Board(props) {
             )()}
 
             {
-                pageList.map(v =>
-                    <button className="button_page" key={v} onClick={() => movePage(v)}>{v}</button>
-                )
+                pageList.map(v => {
+                    if(v == page){
+                        return <button className="button_recent_page" key={v}>{v}</button>
+                    }
+                    else{
+                        return <button className="button_page" key={v} onClick={() => movePage(v)}>{v}</button>
+                    }
+                })
             }
 
             {(

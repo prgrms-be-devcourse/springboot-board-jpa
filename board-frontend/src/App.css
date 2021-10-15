@@ -94,6 +94,13 @@ td {
   cursor: pointer;
 }
 
+.button_recent_page{
+  width: 30px;
+  padding : 4px 4px;
+  border: 1px solid black;
+  background-color: gray;
+}
+
 .button_page_move{
   margin:0px 6px 0px 6px;
   width: auto;

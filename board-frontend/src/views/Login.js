@@ -7,7 +7,7 @@ function Login(props) {
   // Select Origin
   const local = 'http://localhost:8080';
   const deploy = 'http://15.165.69.116:8080';
-  const origin = deploy;
+  const origin = local;
 
   // State
   const [loginInfo, setLoginInfo] = useState({
@@ -36,39 +36,31 @@ function Login(props) {
   const login = () => {
     axios.post(origin + '/api/user/login', loginInfo)
       .then(res => {
-        console.log(res)
-        if (res.status == 200) {
-          alert("로그인 성공, 마이페이지로 이동")
-          const userId = res.data.id;
-          localStorage.setItem('userId', userId);
-          props.history.push("/mypage");
-        }
+        alert("로그인 성공, 마이페이지로 이동")
+        const userId = res.data.id;
+        localStorage.setItem('userId', userId);
+        props.history.push("/mypage");
       })
       .catch(err => {
-        console.log(err.response.status)
-        if (err.response.status == 400)
-          alert("가입되지 않은 email");
-        else if (err.response.status == 401)
-          alert("비밀번호가 틀림");
+        alert(err.response.data.message)
       });
   }
 
   const signUp = () => {
     axios.post(origin + '/api/user', userInfo).then(
       res => {
-        console.log(res)
-        if (res.status == 200)
-          alert("회원가입 완료 (id : " + res.data.id + ")");
-        // FIXME : 새로고침 or 입력창 초기화
-      }
-    )
+        alert("회원가입 완료 (id : " + res.data.id + ")");
+      })
+      .catch(err => {
+        alert(err.response.data.message);
+      });
   }
 
   return (
     <div >
-      <img style={{width:"250px", position:"absolute", bottom:"0px", left:"0px"}} src="/img/ms.png" />
+      <img style={{ width: "250px", position: "absolute", bottom: "0px", left: "0px" }} src="/img/ms.png" />
 
-      <br/>
+      <br />
 
       <h2>로그인</h2>
       <hr /><br />
@@ -88,8 +80,8 @@ function Login(props) {
       <div className="div_wrapper">
         <input type="email" placeholder="email" onChange={emailHandler} />
         <input type="password" placeholder="password" onChange={passwordHandler} />
-        <br/>
-        <span style={{fontSize:"13px", color:"red"}}>※주의 : 비번 암호화 안됨 </span>
+        <br />
+        <span style={{ fontSize: "13px", color: "red" }}>※주의 : 비번 암호화 안됨 </span>
         <input type="text" placeholder="name" onChange={nameHandler} />
         <input type="number" placeholder="age" onChange={ageHandler} />
         <input type="text" placeholder="hobby" onChange={hobbyHandler} />

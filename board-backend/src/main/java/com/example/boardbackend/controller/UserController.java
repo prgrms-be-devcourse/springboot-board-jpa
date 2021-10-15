@@ -1,16 +1,17 @@
 package com.example.boardbackend.controller;
 
-import com.example.boardbackend.dto.converter.ResponseConverter;
+import com.example.boardbackend.common.converter.ResponseConverter;
 import com.example.boardbackend.dto.request.LoginRequest;
 import com.example.boardbackend.dto.UserDto;
 import com.example.boardbackend.dto.response.UserIdResponse;
+import com.example.boardbackend.common.error.exception.IllegalArgException;
+import com.example.boardbackend.common.error.exception.NotFoundException;
 import com.example.boardbackend.service.UserService;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class UserController {
 
     // 회원가입
     @PostMapping
-    public ResponseEntity<UserDto> signUp(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserDto userDto){
         UserDto response = userService.saveUser(userDto);
         return ResponseEntity.ok(response);
     }
@@ -34,16 +35,15 @@ public class UserController {
         String password = loginDto.getPassword();
         Optional<UserDto> userByEmail = userService.findUserByEmail(email);
 
-        // 가입 X -> 400
+        // 가입 X
         if(userByEmail.isEmpty()){
-            return ResponseEntity.badRequest().build();
+            throw new NotFoundException("가입되지 않은 이메일입니다");
         }
 
         // 비밀번호 검증
         String findPW = userByEmail.get().getPassword();
-        // 비번 틀림 -> 401
         if(!password.equals(findPW)){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new IllegalArgException("비밀번호가 틀립니다");
         }
         // 검증됨 -> 200 + id 값
         Long findId = userByEmail.get().getId();
@@ -53,7 +53,7 @@ public class UserController {
 
     // id로 회원정보 조회
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserInfo(@PathVariable("id") Long id) throws NotFoundException {
+    public ResponseEntity<UserDto> getUserInfo(@PathVariable("id") Long id){
         UserDto response = userService.findUserById(id);
         return ResponseEntity.ok(response);
     }

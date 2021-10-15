@@ -1,14 +1,13 @@
 package com.example.boardbackend.controller;
 
 import com.example.boardbackend.dto.PostDto;
-import com.example.boardbackend.dto.converter.ResponseConverter;
+import com.example.boardbackend.common.converter.ResponseConverter;
 import com.example.boardbackend.dto.request.UpdatePostRequest;
 import com.example.boardbackend.dto.request.UpdateViewRequest;
 import com.example.boardbackend.dto.response.BoardResponse;
 import com.example.boardbackend.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

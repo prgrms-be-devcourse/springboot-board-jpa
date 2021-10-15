@@ -1,4 +1,4 @@
-package com.example.boardbackend.config;
+package com.example.boardbackend.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

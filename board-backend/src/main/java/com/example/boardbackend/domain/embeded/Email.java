@@ -1,6 +1,6 @@
 package com.example.boardbackend.domain.embeded;
+import com.example.boardbackend.common.error.exception.IllegalArgException;
 import lombok.*;
-import org.springframework.util.Assert;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -16,7 +16,9 @@ public class Email {
     private String address;
 
     public Email(String address){
-        Assert.isTrue(checkAddress(address), "Invalid email address");
+        if(!checkAddress(address)){
+            throw new IllegalArgException("이메일 형식이 맞지 않습니다!");
+        }
         this.address = address;
     }
 

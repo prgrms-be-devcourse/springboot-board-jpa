@@ -7,7 +7,7 @@ function UpdatePost(props) {
     // Select Origin
     const local = 'http://localhost:8080';
     const deploy = 'http://15.165.69.116:8080';
-    const origin = deploy;
+    const origin = local;
 
     // State
     const userId = localStorage.getItem("userId");
@@ -19,7 +19,7 @@ function UpdatePost(props) {
     useEffect(async () => {
         // post 정보 받아오기
         const response = await axios.get(origin + `/api/post/${postId}`);
-        console.log(response)
+        // console.log(response)
         const res_postInfo = response.data
         const res_userInfo = res_postInfo.userDto
         // 검증
@@ -38,10 +38,10 @@ function UpdatePost(props) {
 
     // Button
     const updatePost = () => {
-        console.log(newPostInfo);
+        // console.log(newPostInfo);
         axios.patch(origin + `/api/post/${postId}`, newPostInfo)
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 alert("게시물이 성공적으로 수정되었습니다.")
                 props.history.goBack();
             })

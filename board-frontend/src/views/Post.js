@@ -8,7 +8,7 @@ function Post(props) {
     // Select Origin
     const local = 'http://localhost:8080';
     const deploy = 'http://15.165.69.116:8080';
-    const origin = deploy;
+    const origin = local;
 
     // State
     const postId = props.match.params.postId;
@@ -20,11 +20,11 @@ function Post(props) {
         // post 정보 받아오기
         const response = await axios.get(origin + `/api/post/${postId}`);
         const res_postInfo = response.data
-        console.log(res_postInfo)
+        // console.log(res_postInfo)
         // view 업데이트
         axios.patch(origin + `/api/post/${postId}/view`, { newView: res_postInfo.view + 1 })
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 res_postInfo.view = res.data;
                 setPostInfo(res_postInfo)
                 setUserInfo(res_postInfo.userDto)
@@ -36,7 +36,7 @@ function Post(props) {
         if (window.confirm("정말 삭제하시겠습니까?")) {
             axios.delete(origin + `/api/post/${postId}`)
               .then(res => {
-                console.log(res);
+                // console.log(res);
                 alert("게시물 삭제 완료");
                 props.history.goBack();
                 return

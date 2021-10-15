@@ -2,7 +2,7 @@ package com.example.boardbackend.service;
 
 import com.example.boardbackend.domain.Post;
 import com.example.boardbackend.dto.PostDto;
-import com.example.boardbackend.dto.converter.DtoConverter;
+import com.example.boardbackend.common.converter.DtoConverter;
 import com.example.boardbackend.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

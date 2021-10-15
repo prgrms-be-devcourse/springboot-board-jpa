@@ -1,4 +1,4 @@
-package com.example.boardbackend.dto.converter;
+package com.example.boardbackend.common.converter;
 
 import com.example.boardbackend.domain.Post;
 import com.example.boardbackend.domain.User;

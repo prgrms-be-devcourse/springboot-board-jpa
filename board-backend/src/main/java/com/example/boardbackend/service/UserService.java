@@ -2,11 +2,10 @@ package com.example.boardbackend.service;
 
 import com.example.boardbackend.domain.User;
 import com.example.boardbackend.domain.embeded.Email;
-import com.example.boardbackend.dto.converter.DtoConverter;
-import com.example.boardbackend.dto.request.LoginRequest;
+import com.example.boardbackend.common.converter.DtoConverter;
 import com.example.boardbackend.dto.UserDto;
+import com.example.boardbackend.common.error.exception.NotFoundException;
 import com.example.boardbackend.repository.UserRepository;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,14 +45,14 @@ public class UserService {
         }
     }
 
-    public UserDto findUserById(Long id) throws NotFoundException {
+    public UserDto findUserById(Long id) {
         return userRepository.findById(id)
                 .map(user -> dtoConverter.convertToUserDto(user))
-                .orElseThrow(() -> new NotFoundException("ID값에 해당하는 사용자가 없음"));
+                .orElseThrow(() -> new NotFoundException("해당 ID의 사용자가 없음"));
     }
 
     @Transactional
-    public void deleteUserById(Long id){
+    public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
 
