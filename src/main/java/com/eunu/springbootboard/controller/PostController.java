@@ -1,8 +1,8 @@
 package com.eunu.springbootboard.controller;
 
 import com.eunu.springbootboard.ApiResponse;
-import com.eunu.springbootboard.domain.post.PostDto;
-import com.eunu.springbootboard.domain.post.PostService;
+import com.eunu.springbootboard.dao.post.PostDto;
+import com.eunu.springbootboard.dao.post.PostService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

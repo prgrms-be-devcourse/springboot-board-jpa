@@ -1,4 +1,4 @@
-package com.eunu.springbootboard.domain.user;
+package com.eunu.springbootboard.dao.user;
 
 import com.eunu.springbootboard.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;

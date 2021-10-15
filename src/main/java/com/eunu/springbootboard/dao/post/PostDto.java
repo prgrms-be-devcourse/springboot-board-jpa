@@ -1,4 +1,4 @@
-package com.eunu.springbootboard.domain.post;
+package com.eunu.springbootboard.dao.post;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

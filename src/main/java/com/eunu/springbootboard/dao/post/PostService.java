@@ -1,4 +1,4 @@
-package com.eunu.springbootboard.domain.post;
+package com.eunu.springbootboard.dao.post;
 
 import com.eunu.springbootboard.entity.Post;
 import javassist.NotFoundException;

@@ -1,6 +1,6 @@
-package com.eunu.springbootboard.domain.user;
+package com.eunu.springbootboard.dao.user;
 
-import com.eunu.springbootboard.domain.post.PostConverter;
+import com.eunu.springbootboard.dao.post.PostConverter;
 import com.eunu.springbootboard.entity.User;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;

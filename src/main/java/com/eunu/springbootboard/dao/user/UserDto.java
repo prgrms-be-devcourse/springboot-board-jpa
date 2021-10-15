@@ -1,6 +1,6 @@
-package com.eunu.springbootboard.domain.user;
+package com.eunu.springbootboard.dao.user;
 
-import com.eunu.springbootboard.domain.post.PostDto;
+import com.eunu.springbootboard.dao.post.PostDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;

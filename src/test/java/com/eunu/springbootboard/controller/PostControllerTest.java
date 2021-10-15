@@ -1,7 +1,6 @@
 package com.eunu.springbootboard.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -11,9 +10,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.eunu.springbootboard.domain.post.PostDto;
-import com.eunu.springbootboard.domain.post.PostService;
-import com.eunu.springbootboard.domain.user.UserDto;
+import com.eunu.springbootboard.dao.post.PostDto;
+import com.eunu.springbootboard.dao.post.PostService;
+import com.eunu.springbootboard.dao.user.UserDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.UUID;
