@@ -1,0 +1,51 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+= 게시물 API 명세서
+
+== 1. 모든 게시물 요청
+=== /posts
+.Request
+include::{snippets}/posts-getAllWithPaging/http-request.adoc[]
+.Response
+include::{snippets}/posts-getAllWithPaging/http-response.adoc[]
+include::{snippets}/posts-getAllWithPaging/response-fields.adoc[]
+
+== 2. 특정 게시물 요청
+=== /posts/{id}
+.Request
+include::{snippets}/posts-getById/http-request.adoc[]
+
+.Response
+include::{snippets}/posts-getById/http-response.adoc[]
+include::{snippets}/posts-getById/response-fields.adoc[]
+
+== 3. 게시물 저장
+=== /posts
+.Request
+include::{snippets}/posts-save/http-request.adoc[]
+include::{snippets}/posts-save/request-fields.adoc[]
+.Response
+include::{snippets}/posts-save/http-response.adoc[]
+include::{snippets}/posts-save/response-fields.adoc[]
+
+== 3. 게시물 수정
+=== /posts/{id}
+.Request
+include::{snippets}/posts-update/http-request.adoc[]
+include::{snippets}/posts-update/request-fields.adoc[]
+.Response
+include::{snippets}/posts-update/http-response.adoc[]
+include::{snippets}/posts-update/response-fields.adoc[]
+
+== 참고 1. 사용자 정보 저장
+=== /users
+.Request
+include::{snippets}/users-save/http-request.adoc[]
+include::{snippets}/users-save/request-fields.adoc[]
+.Response
+include::{snippets}/users-save/http-response.adoc[]
+include::{snippets}/users-save/response-fields.adoc[]
+테스트할 때 미리 사용자 정보를 저장하기 위해 만들어 놓았습니다.
