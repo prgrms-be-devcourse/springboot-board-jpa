@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 public class UserResponse {
 
+    private Long userId;
     private String name;
     private Integer age;
     private String hobby;
@@ -19,7 +20,8 @@ public class UserResponse {
     private LocalDateTime modifiedAt;
 
     @Builder
-    public UserResponse(String name, Integer age, String hobby, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public UserResponse(Long userId, String name, Integer age, String hobby, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.userId = userId;
         this.name = name;
         this.age = age;
         this.hobby = hobby;

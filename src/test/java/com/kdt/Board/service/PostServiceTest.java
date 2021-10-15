@@ -59,7 +59,7 @@ class PostServiceTest {
         //given
         //when
         final PostResponse post = postService.getPost(savedPost.getId());
-        final UserResponse userResponse = conversion.toUserResponse(savedPost.getUser());
+        final UserResponse userResponse = conversion.toUserResponse(user);
 
         //then
         Assertions.assertThat(post.getTitle()).isEqualTo(savedPost.getTitle());

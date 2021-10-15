@@ -22,6 +22,7 @@ public class ConversionDtoEntity {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .userResponse(UserResponse.builder()
+                        .userId(user.getId())
                         .name(user.getName())
                         .hobby(user.getHobby())
                         .age(user.getAge())
@@ -35,7 +36,8 @@ public class ConversionDtoEntity {
     }
 
     public Post toPost(Long userId, PostRequest postRequest) {
-        final User user = userRepository.findById(userId).get();
+        //회원가입 기능이 없으므로, 회원이 존재하지 않으면 임시로 회원 생성
+        final User user = userRepository.findById(userId).orElse(User.builder().build());
         return Post.builder()
                 .user(user)
                 .title(postRequest.getTitle())
@@ -45,6 +47,7 @@ public class ConversionDtoEntity {
 
     public UserResponse toUserResponse(User user) {
         return UserResponse.builder()
+                .userId(user.getId())
                 .name(user.getName())
                 .hobby(user.getHobby())
                 .age(user.getAge())
