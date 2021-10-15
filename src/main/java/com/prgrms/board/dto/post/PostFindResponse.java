@@ -1,7 +1,6 @@
 package com.prgrms.board.dto.post;
 
 import com.prgrms.board.domain.Post;
-import com.prgrms.board.domain.User;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

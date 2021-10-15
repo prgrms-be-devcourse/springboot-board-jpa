@@ -3,7 +3,6 @@ package com.prgrms.board.dto.post;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 @Getter
 public class PostModifyRequest {
