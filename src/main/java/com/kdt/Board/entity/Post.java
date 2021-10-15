@@ -1,5 +1,6 @@
 package com.kdt.Board.entity;
 
+import com.kdt.Board.dto.PostRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,5 +29,11 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
         this.user = user;
+    }
+
+    //-------------------------
+    public void editContent(PostRequest postRequest) {
+        this.title = postRequest.getTitle();
+        this.content = postRequest.getContent();
     }
 }
