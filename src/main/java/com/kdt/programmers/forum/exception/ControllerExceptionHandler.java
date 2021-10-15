@@ -20,7 +20,7 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResponse<String> badRequestException(IllegalArgumentException e) {
-        log.error("bad request error", e);
+        log.error(e.getMessage(), e);
         return ErrorResponse.response(e.getMessage());
     }
 }
