@@ -2,7 +2,6 @@ package com.kdt.api;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-import com.kdt.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,8 +19,8 @@ public class ApiExceptionAdvice {
         return ErrorResponse.of(e.getMessage());
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ErrorResponse badRequestException(NotFoundException e) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ErrorResponse badRequestException(IllegalArgumentException e) {
         log.error("Unexpected Exception : {}", e.getMessage());
         return ErrorResponse.of(e.getMessage());
     }
