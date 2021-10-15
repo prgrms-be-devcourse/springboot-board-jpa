@@ -37,32 +37,32 @@
 
 ### User API
     유저 생성
-    * POST http://localhost:8080/users
+    * POST /users
 
     유저 조회
-    * GET http://localhost:8080/users/{userId}
+    * GET /users/{userId}
 
     유저 수정
-    * PUT http://localhost:8080/users/{userId}
+    * PUT /users/{userId}
 
     유저 삭제
-    * DELETE http://localhost:8080/users/{userId}
+    * DELETE /users/{userId}
 
 ### Post API
     포스트 생성
-    * POST http://localhost:8080/posts
+    * POST /posts
 
     포스트 조회
-    * GET http://localhost:8080/posts/{postId}
+    * GET /posts/{postId}
 
     특정 유저가 작성한 포스트 전체 조회
-    * GET http://localhost:8080/posts/list/{postId}
+    * GET /posts/list/{postId}
 
     포스트 수정
-    * PUT http://localhost:8080/posts/{postId}
+    * PUT /posts/{postId}
 
     포스트 삭제
-    * DELETE http://localhost:8080/posts/{postId}
+    * DELETE /posts/{postId}
 
 ### ERD
 <img src="https://user-images.githubusercontent.com/81504103/137440998-72ef919c-a4fc-49af-ae79-81ec78ee50c2.png" width="400" height="350">
