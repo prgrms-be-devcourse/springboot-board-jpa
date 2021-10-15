@@ -1,6 +1,7 @@
 package com.kdt.programmers.forum;
 
 import com.kdt.programmers.forum.transfer.PostDto;
+import com.kdt.programmers.forum.transfer.request.PostRequest;
 import javassist.NotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,10 +33,10 @@ class PostServiceTest {
     @DisplayName("게시글을 저장할 수 있다")
     void testSavePost() {
         // Given
-        PostDto dto = new PostDto("test", "");
+        PostRequest postRequest = new PostRequest("test", "");
 
         // When
-        postService.savePost(dto);
+        postService.savePost(postRequest);
 
         // Then
         assertThat(postJpaRepository.count(), equalTo(1L));
@@ -46,8 +47,8 @@ class PostServiceTest {
     @DisplayName("ID로 게시글을 조회할 수 있다")
     void testFindPostById() throws NotFoundException {
         // Given
-        PostDto dto = new PostDto("find by id test", "");
-        PostDto post = postService.savePost(dto);
+        PostRequest postRequest = new PostRequest("find by id test", "");
+        PostDto post = postService.savePost(postRequest);
 
         // When
         PostDto entity = postService.findPostById(post.getId());
@@ -60,10 +61,10 @@ class PostServiceTest {
     @DisplayName("게시글을 페이지 단위로 조회할 수 있다")
     void testFindPostPage() {
         // Given
-        postService.savePost(new PostDto("post1", ""));
-        postService.savePost(new PostDto("post2", ""));
-        postService.savePost(new PostDto("post3", ""));
-        postService.savePost(new PostDto("post4", ""));
+        postService.savePost(new PostRequest("post1", ""));
+        postService.savePost(new PostRequest("post2", ""));
+        postService.savePost(new PostRequest("post3", ""));
+        postService.savePost(new PostRequest("post4", ""));
 
         // When
         Page<PostDto> posts = postService.findPostsByPage(PageRequest.of(1, 2));
@@ -80,10 +81,10 @@ class PostServiceTest {
     @DisplayName("게시글을 수정할 수 있다")
     void testUpdatePost() throws NotFoundException {
         // Given
-        PostDto post = postService.savePost(new PostDto("new post", ""));
+        PostDto post = postService.savePost(new PostRequest("new post", ""));
 
         // When
-        postService.updatePost(post.getId(), new PostDto("updated post", ""));
+        postService.updatePost(post.getId(), new PostRequest("updated post", ""));
 
         // Then
         PostDto maybeUpdatedPost = postService.findPostById(post.getId());

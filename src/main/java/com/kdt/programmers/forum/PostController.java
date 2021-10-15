@@ -39,16 +39,14 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    public ApiResponse<PostDto> savePost(@RequestBody PostRequest postRequest) {
-        PostDto dto = postConverter.convertToPostDto(postRequest);
-        PostDto post = postService.savePost(dto);
+    public ApiResponse<PostDto> savePost(@RequestBody final PostRequest postRequest) {
+        PostDto post = postService.savePost(postRequest);
         return ApiResponse.response(post);
     }
 
     @PatchMapping("/{postId}")
-    public ApiResponse<PostDto> updatePost(@PathVariable Long postId, @RequestBody PostRequest postRequest) throws NotFoundException {
-        PostDto dto = postConverter.convertToPostDto(postRequest);
-        PostDto post = postService.updatePost(postId, dto);
+    public ApiResponse<PostDto> updatePost(@PathVariable Long postId, @RequestBody final PostRequest postRequest) throws NotFoundException {
+        PostDto post = postService.updatePost(postId, postRequest);
         return ApiResponse.response(post);
     }
 }

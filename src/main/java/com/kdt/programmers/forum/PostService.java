@@ -2,6 +2,7 @@ package com.kdt.programmers.forum;
 
 import com.kdt.programmers.forum.domain.Post;
 import com.kdt.programmers.forum.transfer.PostDto;
+import com.kdt.programmers.forum.transfer.request.PostRequest;
 import com.kdt.programmers.forum.utils.PostConverter;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
@@ -22,8 +23,8 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto savePost(PostDto dto) {
-        Post post = postConverter.convertToPost(dto);
+    public PostDto savePost(PostRequest postRequest) {
+        Post post = postConverter.convertToPost(postRequest);
         Post entity = postRepository.save(post);
         return postConverter.convertToPostDto(entity);
     }
@@ -42,11 +43,11 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto updatePost(Long postId, PostDto dto) throws NotFoundException {
+    public PostDto updatePost(Long postId, PostRequest postRequest) throws NotFoundException {
         Post entity = postRepository.findById(postId)
             .orElseThrow(() -> new NotFoundException("post does not exist"));
 
-        entity.update(dto.getTitle(), dto.getContent());
+        entity.update(postRequest.getTitle(), postRequest.getContent());
         return postConverter.convertToPostDto(entity);
     }
 }

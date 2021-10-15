@@ -86,8 +86,8 @@ class PostControllerTest {
     @DisplayName("게시글을 ID로 조회할 수 있다")
     void testGetPost() throws Exception {
         // Given
-        PostDto dto = new PostDto("test title", "");
-        PostDto post = postService.savePost(dto);
+        PostRequest postRequest = new PostRequest("test title", "");
+        PostDto post = postService.savePost(postRequest);
 
         // When Then
         mockMvc
@@ -116,10 +116,10 @@ class PostControllerTest {
     @DisplayName("게시글을 페이지로 조회할 수 있다")
     void testGetPosts() throws Exception {
         // Given
-        postService.savePost(new PostDto("test title", ""));
-        postService.savePost(new PostDto("test title", ""));
-        postService.savePost(new PostDto("test title", ""));
-        postService.savePost(new PostDto("test title", ""));
+        postService.savePost(new PostRequest("test title", ""));
+        postService.savePost(new PostRequest("test title", ""));
+        postService.savePost(new PostRequest("test title", ""));
+        postService.savePost(new PostRequest("test title", ""));
 
         // When Then
         final String SIZE = "3";
@@ -166,7 +166,7 @@ class PostControllerTest {
     @DisplayName("게시글을 수정할 수 있다")
     void testUpdatePost() throws Exception {
         // Given
-        PostDto post = postService.savePost(new PostDto("test post", ""));
+        PostDto post = postService.savePost(new PostRequest("test post", ""));
         PostRequest updateRequest = new PostRequest("updated post", "");
 
         // When Then
