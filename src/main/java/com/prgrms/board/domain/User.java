@@ -28,7 +28,8 @@ public class User extends BaseEntity{
     }
 
     @Builder
-    private User(String name, int age, String hobby){
+    private User(Long id, String name, int age, String hobby){
+        this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;

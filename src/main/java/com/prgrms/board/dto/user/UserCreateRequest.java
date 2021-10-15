@@ -20,6 +20,12 @@ public class UserCreateRequest {
     public UserCreateRequest(){
     }
 
+    public UserCreateRequest(String name, int age, String hobby){
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+    }
+
     public User toEntity(){
         return User.builder()
                 .name(name)
