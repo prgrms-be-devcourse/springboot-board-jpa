@@ -20,7 +20,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -67,6 +66,7 @@ class CommentControllerTest {
             .post(post)
             .writer(user)
             .build();
+
         post.addComment(comment);
     }
 
@@ -148,7 +148,7 @@ class CommentControllerTest {
                         fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 식별자")
                     ),
                     responseFields(
-                        fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
+                        fieldWithPath("data").type(JsonFieldType.NULL).description("데이터"),
                         fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드")
                     )
                 )

@@ -9,14 +9,14 @@ import org.prgms.board.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
 public class CommentRepositoryTest {
+    private static final String UPDATE_COMMENT = "댓글 수정";
+
     @Autowired
     private UserRepository userRepository;
 
@@ -26,69 +26,72 @@ public class CommentRepositoryTest {
     @Autowired
     private CommentRepository commentRepository;
 
-    private Long postId;
-    private Long commentId;
+    private User user;
+    private Post post;
+    private Comment comment;
 
     @BeforeEach
     void setUp() {
-        User user = User.builder()
+        userRepository.deleteAll();
+        postRepository.deleteAll();
+        commentRepository.deleteAll();
+
+        user = User.builder()
             .name("김부희")
             .age(26)
             .hobby("만들기")
             .build();
 
-        Post post = Post.builder()
+        post = Post.builder()
             .title("제목")
             .content("내용")
             .writer(user)
             .build();
 
-        Comment comment = Comment.builder()
+        comment = Comment.builder()
             .content("댓글")
             .post(post)
             .writer(user)
             .build();
+
         post.addComment(comment);
 
-        userRepository.save(user).getId();
-        postId = postRepository.save(post).getId();
-        commentId = commentRepository.save(comment).getId();
+        userRepository.save(user);
+        postRepository.save(post);
+        commentRepository.save(comment);
     }
 
     @DisplayName("댓글 등록 확인")
     @Test
     void commentInsertTest() {
-        assertThat(commentRepository.findById(commentId).isPresent()).isEqualTo(true);
+        assertThat(commentRepository.findById(comment.getId()).isPresent()).isEqualTo(true);
     }
 
     @DisplayName("댓글 수정 확인")
     @Test
     void commentUpdateTest() {
-        Comment findComment = commentRepository.findById(commentId).get();
-        findComment.changeInfo("댓글수정");
+        comment.changeInfo(UPDATE_COMMENT);
 
-        Optional<Comment> retrievedComment = commentRepository.findById(commentId);
+        Optional<Comment> retrievedComment = commentRepository.findById(comment.getId());
         assertThat(retrievedComment.isPresent()).isEqualTo(true);
-        assertThat(retrievedComment.get().getContent()).isEqualTo("댓글수정");
+        assertThat(retrievedComment.get().getContent()).isEqualTo(UPDATE_COMMENT);
     }
 
     @DisplayName("특정 댓글 삭제 확인")
     @Test
     void commentDeleteTest() {
-        Comment findComment = commentRepository.findById(commentId).get();
-        commentRepository.delete(findComment);
+        commentRepository.delete(comment);
 
-        Optional<Comment> retrievedComment = commentRepository.findById(commentId);
+        Optional<Comment> retrievedComment = commentRepository.findById(comment.getId());
         assertThat(retrievedComment.isPresent()).isEqualTo(false);
     }
 
     @DisplayName("게시글 삭제 시 관련 댓글 삭제 확인")
     @Test
     void postDeleteWithCommentTest() {
-        Post findPost = postRepository.findById(postId).get();
-        postRepository.delete(findPost);
+        postRepository.delete(post);
 
-        Optional<Comment> retrievedComment = commentRepository.findById(commentId);
+        Optional<Comment> retrievedComment = commentRepository.findById(comment.getId());
         assertThat(retrievedComment.isPresent()).isEqualTo(false);
     }
 }
