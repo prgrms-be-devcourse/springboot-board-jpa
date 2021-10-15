@@ -27,10 +27,11 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(PostDto postDto) throws NotFoundException {
-        Post findPost = postRepository.findById(postDto.getId())
-                .map(post -> postConverter.convertPost(postDto))
+    public Long update(Long PostId, PostDto postDto) throws NotFoundException {
+        Post findPost = postRepository.findById(PostId)
                 .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
+        findPost.changeTitle("수정된 게시물 제목");
+        findPost.changeContent("수정된 게시물 내용");
         return findPost.getId();
     }
 

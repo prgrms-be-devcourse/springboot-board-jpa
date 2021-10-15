@@ -1,5 +1,6 @@
 package com.prgrms.board.post.service;
 
+import com.prgrms.board.domain.post.Post;
 import com.prgrms.board.domain.post.PostRepository;
 import com.prgrms.board.post.dto.PostDto;
 import com.prgrms.board.post.dto.UserDto;
@@ -24,12 +25,12 @@ class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
-    private UserDto userDto;
     private PostDto postDto;
+    private Long postDtoId;
 
     @BeforeEach
     void setUp() {
-        userDto = UserDto.builder()
+        UserDto userDto = UserDto.builder()
                 .id(1L)
                 .name("이범진")
                 .age(33)
@@ -43,9 +44,7 @@ class PostServiceTest {
                 .userDto(userDto)
                 .build();
 
-        Long postDtoId = postService.save(postDto);
-
-        assertThat(postRepository.findById(postDtoId)).isNotEmpty();
+        postDtoId = postService.save(postDto);
     }
 
     @AfterEach
@@ -56,31 +55,18 @@ class PostServiceTest {
     @DisplayName("게시글 저장 테스트")
     @Test
     void savePost() throws NotFoundException {
-        //Given
-        userDto = UserDto.builder()
-                .id(1L)
-                .name("이범진")
-                .age(33)
-                .hobby("독서")
-                .build();
-
-        postDto = PostDto.builder()
-                .id(1L)
-                .title("게시글 제목")
-                .content("게시글 내용")
-                .userDto(userDto)
-                .build();
-
-        postService.save(postDto);
-
-        assertThat(postRepository.findAll()).isNotEmpty();
+        //then
+        Post findPost = postRepository.findById(postDtoId).get();
+        assertThat(findPost.getId()).isEqualTo(postDtoId);
+        assertThat(findPost.getTitle()).isEqualTo(postDto.getTitle());
+        assertThat(findPost.getContent()).isEqualTo(postDto.getContent());
     }
 
     @DisplayName("게시물 단건 조회 테스트")
     @Test
     void findOnePost() throws NotFoundException {
         //when
-        PostDto findPost = postService.findOne(1L);
+        PostDto findPost = postService.findOne(postDtoId);
 
         //then
         assertThat(findPost.getId()).isEqualTo(findPost.getId());
@@ -105,14 +91,24 @@ class PostServiceTest {
     @Test
     void updatePost() throws NotFoundException {
         //given
-        postDto.changeTitle("수정된 제목");
-        postDto.changeContent("수정된 게시글");
+        PostDto updatedPostDto = PostDto.builder()
+                .id(1L)
+                .title("수정된 게시글 제목")
+                .content("수정된 게시글 내용")
+                .userDto(
+                        UserDto.builder()
+                                .id(1L)
+                                .name("수정된 유저")
+                                .age(28)
+                                .build()
+                )
+                .build();
 
         //when
-        postService.update(postDto);
+        Long updatedPostDtoId = postService.update(postDtoId, updatedPostDto);
 
         //then
-        PostDto findPost = postService.findOne(1L);
-        assertThat(findPost.getId()).isEqualTo(1L);
+        PostDto findPost = postService.findOne(updatedPostDtoId);
+        assertThat(findPost.getId()).isEqualTo(updatedPostDtoId);
     }
 }
