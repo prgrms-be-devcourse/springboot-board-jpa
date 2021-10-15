@@ -24,8 +24,9 @@ public class UserService {
     @Transactional
     public UserDto saveUser(UserDto userDto) {
         // Email 중복체크
-        userRepository.findByEmail(new Email(userDto.getEmail()))
-                .orElseThrow(() -> new NotFoundException("이미 중복되는 이메일이 있습니다"));
+        Optional<User> byEmail = userRepository.findByEmail(new Email(userDto.getEmail()));
+        if(byEmail.isPresent())
+            throw new NotFoundException("이미 중복되는 이메일이 있습니다");
         User user = dtoConverter.convertToUserEntity(userDto);
         User saved = userRepository.save(user);
         return dtoConverter.convertToUserDto(saved);
