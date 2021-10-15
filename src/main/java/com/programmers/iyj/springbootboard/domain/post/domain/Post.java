@@ -2,10 +2,7 @@ package com.programmers.iyj.springbootboard.domain.post.domain;
 
 import com.programmers.iyj.springbootboard.domain.model.BaseEntity;
 import com.programmers.iyj.springbootboard.domain.user.domain.User;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -16,6 +13,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "post")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
