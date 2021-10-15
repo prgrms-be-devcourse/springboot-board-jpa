@@ -1,6 +1,5 @@
 package com.programmers.board.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Builder
@@ -9,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-    private Long userId;
+    private Long id;
     private String name;
     private int age;
     private String hobby;
