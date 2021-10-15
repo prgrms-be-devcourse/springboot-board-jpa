@@ -82,7 +82,6 @@ class PostControllerTest {
             );
     }
 
-
     @Test
     @DisplayName("게시글을 ID로 조회할 수 있다")
     void testGetPost() throws Exception {
