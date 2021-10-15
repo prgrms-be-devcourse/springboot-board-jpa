@@ -1,32 +1,43 @@
 package kdt.prgrms.devrun.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kdt.prgrms.devrun.domain.Post;
+import kdt.prgrms.devrun.domain.User;
+import kdt.prgrms.devrun.post.dto.AddPostRequestDto;
 import kdt.prgrms.devrun.post.dto.DetailPostDto;
-import kdt.prgrms.devrun.post.dto.PostForm;
-import kdt.prgrms.devrun.post.dto.SimplePostDto;
+import kdt.prgrms.devrun.post.dto.EditPostRequestDto;
 import kdt.prgrms.devrun.post.service.PostService;
+import kdt.prgrms.devrun.user.repository.UserRepository;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureRestDocs
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
+//@Transactional
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DisplayName("PostApiController 테스트")
 class PostApiControllerTest {
 
     @Autowired
@@ -35,20 +46,40 @@ class PostApiControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @MockBean
-    PostService postService;
+    @Autowired
+    private PostService postService;
 
-    final Long VALID_POST_ID = 1L;
-    final Long INVALID_POST_ID = 1000L;
+    @Autowired
+    private UserRepository userRepository;
+
+    private final Long VALID_POST_ID = 1L;
+    private final String BASE_URI = "/api/v1/posts";
+
+    private User user;
+
+    @BeforeAll
+    void setUp() {
+
+        user = User.builder()
+            .loginId("kjt3520")
+            .loginPw("1234")
+            .age(27)
+            .name("김지훈")
+            .email("devrunner21@gmail.com")
+            .posts(new ArrayList<Post>())
+            .build();
+
+        userRepository.save(user);
+
+        IntStream.range(0, 30).forEach(i -> postService.createPost(AddPostRequestDto.builder().title("제목 " + i).content("내용").createdBy(user.getLoginId()).build()));
+
+    }
 
     @Test
-    void posts() throws Exception {
+    @DisplayName("게시글 페이징 목록 조회 테스트")
+    void test_posts() throws Exception {
 
-        final PageRequest pageRequest = PageRequest.of(0, 2);
-        Page<SimplePostDto> postDtoPage = Page.empty();
-        given(postService.getPostPagingList(pageRequest)).willReturn(postDtoPage);
-
-        mockMvc.perform(get("/api/v1/posts")
+        mockMvc.perform(get(BASE_URI)
             .param("page", String.valueOf(0))
             .param("size", String.valueOf(10))
             .contentType(MediaType.APPLICATION_JSON))
@@ -58,19 +89,10 @@ class PostApiControllerTest {
     }
 
     @Test
-    void post_success() throws Exception {
+    @DisplayName("게시글 단건(상세) 조회 테스트")
+    void test_post() throws Exception {
 
-        final DetailPostDto detailPostDto = DetailPostDto.builder()
-            .id(VALID_POST_ID)
-            .title("title")
-            .content("content")
-            .createdBy("devrunner21")
-            .createdAt(LocalDateTime.now())
-            .build();
-
-        given(postService.getPostById(VALID_POST_ID)).willReturn(detailPostDto);
-
-        mockMvc.perform(get("/api/v1/post/{id}", VALID_POST_ID)
+        mockMvc.perform(get(BASE_URI + "/{id}", VALID_POST_ID)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(print());
@@ -78,36 +100,34 @@ class PostApiControllerTest {
     }
 
     @Test
-    void createTest() throws Exception {
+    @DisplayName("게시글 생성 테스트")
+    void test_create() throws Exception {
 
-        final PostForm postForm = PostForm.builder()
+        final AddPostRequestDto postForm = AddPostRequestDto.builder()
             .title("New Post Title")
             .content("New Post Content")
-            .createdBy("devrunner21")
+            .createdBy(user.getLoginId())
             .build();
 
-        given(postService.createPost(postForm)).willReturn(VALID_POST_ID);
-
-        mockMvc.perform(post("/api/v1/post")
+        mockMvc.perform(post(BASE_URI)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(postForm)))
-            .andExpect(status().isOk())
+            .andExpect(status().isCreated())
             .andDo(print());
 
     }
 
     @Test
-    void updateTest() throws Exception {
+    @DisplayName("게시글 수정 테스트")
+    void test_update() throws Exception {
 
-        final PostForm postForm = PostForm.builder()
+        final EditPostRequestDto postForm = EditPostRequestDto.builder()
             .title("New Post Title")
             .content("New Post Content")
-            .createdBy("devrunner21")
+            .createdBy(user.getLoginId())
             .build();
 
-        given(postService.updatePost(VALID_POST_ID, postForm)).willReturn(VALID_POST_ID);
-
-        mockMvc.perform(patch("/api/v1/post/{id}", VALID_POST_ID)
+        mockMvc.perform(patch(BASE_URI + "/{id}", VALID_POST_ID)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(postForm)))
             .andExpect(status().isOk())
@@ -115,11 +135,16 @@ class PostApiControllerTest {
     }
 
     @Test
-    void deleteTest() throws Exception {
-        mockMvc.perform(delete("/api/v1/post/{id}", VALID_POST_ID)
+    @DisplayName("게시글 삭제 테스트")
+    void test_delete() throws Exception {
+
+        final Long savedPostId = postService.createPost(AddPostRequestDto.builder().title("삭제할 게시글 제목").content("삭제할 게시글 내용").createdBy(user.getLoginId()).build());
+
+        mockMvc.perform(delete(BASE_URI + "/{id}", savedPostId)
             .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
+            .andExpect(status().isNoContent())
             .andDo(print());
+
     }
 
 }
