@@ -11,8 +11,6 @@ import com.devco.jpaproject.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,6 +19,8 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class PostController {
+    private static final String SUCCESS = "SUCCESS";
+
     private final PostService postService;
 
     @GetMapping("/posts")
@@ -43,18 +43,18 @@ public class PostController {
     }
 
     @PatchMapping("/post")
-    public ResponseEntity update(@Valid @RequestBody PostUpdateRequestDto dto) throws PostNotFoundException, UserAndPostNotMatchException {
+    public ApiResponse<String> update(@Valid @RequestBody PostUpdateRequestDto dto) throws PostNotFoundException, UserAndPostNotMatchException {
         postService.update(dto);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return ApiResponse.ok(SUCCESS);
     }
 
     @DeleteMapping("/post")
-    public ResponseEntity deleteOne(@Valid @RequestBody PostDeleteRequestDto dto)
+    public ApiResponse<String> deleteOne(@Valid @RequestBody PostDeleteRequestDto dto)
             throws PostNotFoundException, UserAndPostNotMatchException {
         postService.deleteOne(dto);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return ApiResponse.ok(SUCCESS);
     }
 
 }

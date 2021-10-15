@@ -5,8 +5,6 @@ import com.devco.jpaproject.controller.dto.UserResponseDto;
 import com.devco.jpaproject.exception.UserNotFoundException;
 import com.devco.jpaproject.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,6 +13,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class UserController {
+    private static final String SUCCESS = "SUCCESS";
 
     private final UserService userService;
 
@@ -26,10 +25,10 @@ public class UserController {
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity deleteOne(@PathVariable Long id) throws UserNotFoundException {
+    public ApiResponse<String> deleteOne(@PathVariable Long id) throws UserNotFoundException {
         userService.deleteOne(id);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return ApiResponse.ok(SUCCESS);
     }
 
     @GetMapping("/user/{id}")
