@@ -45,7 +45,7 @@ public class PostController {
 
     }
     @PatchMapping("api/v1/posts/{id}")
-    public ApiResponse<PostDto> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) throws NotFoundException {
+    public ApiResponse<PostDto> updatePost(@PathVariable Long id,@Validated @RequestBody PostRequestDto postRequestDto) throws NotFoundException {
         PostDto update = postService.update(id, postRequestDto.getTitle(),postRequestDto.getContent());
         return ApiResponse.ok(update);
 
