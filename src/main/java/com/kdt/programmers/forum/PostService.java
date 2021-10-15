@@ -28,7 +28,7 @@ public class PostService {
         return postConverter.convertToPostDto(entity);
     }
 
-    public PostDto findPostById(Long postId) throws PostNotFoundException {
+    public PostDto findPostById(Long postId) {
         return postRepository.findById(postId)
             .map(postConverter::convertToPostDto)
             .orElseThrow(() -> new PostNotFoundException("post with id " + postId + " not found"));
