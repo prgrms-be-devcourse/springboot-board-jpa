@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Transactional
 @Service
@@ -39,8 +40,8 @@ public class PostService {
     }
 
     @Transactional
-    public Long modifyPost(PostModifyRequest postModifyRequest){
-        Post post = getPost(postModifyRequest.getId());
+    public Long modifyPost(final Long postId, final PostModifyRequest postModifyRequest){
+        Post post = getPost(postId);
         post.changeInfo(postModifyRequest.getTitle(), postModifyRequest.getContent());
 
         return post.getId();

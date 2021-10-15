@@ -26,23 +26,23 @@ public class PostController {
         return ResponseEntity.ok(postService.createPost(postCreateRequest));
     }
 
-    @GetMapping
-    public ResponseEntity<PostFindResponse> findPost(final @RequestParam Long postId){
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostFindResponse> findPost(final @PathVariable Long postId){
         return ResponseEntity.ok(postService.findPost(postId));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Page<PostFindResponse>> findAllPostByUserId(Pageable pageable, final @RequestParam Long userId) {
+    public ResponseEntity<Page<PostFindResponse>> findAllPostByUserId(Pageable pageable, final @RequestBody Long userId) {
         return ResponseEntity.ok(postService.findAllPostByUserId(pageable, userId));
     }
 
-    @PutMapping
-    public ResponseEntity<Long> modifyPost(final @Valid @RequestBody PostModifyRequest postModifyRequest){
-        return ResponseEntity.ok(postService.modifyPost(postModifyRequest));
+    @PutMapping("/{postId}")
+    public ResponseEntity<Long> modifyPost(final @PathVariable Long postId, final @Valid @RequestBody PostModifyRequest postModifyRequest){
+        return ResponseEntity.ok(postService.modifyPost(postId, postModifyRequest));
     }
 
-    @DeleteMapping
-    public ResponseEntity<Long> removePost(final @RequestParam Long postId){
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Long> removePost(final @PathVariable Long postId){
         return ResponseEntity.ok(postService.removePost(postId));
     }
 }
