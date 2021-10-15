@@ -75,8 +75,7 @@ class PostServiceTest {
     @Test
     void updateTest() throws NotFoundException {
         //Given
-        postDto.setTitle("update title");
-        postDto.setContent("update content");
+        postDto.update("update title", "update content");
 
         //When
         postService.update(postDto, 1L);
