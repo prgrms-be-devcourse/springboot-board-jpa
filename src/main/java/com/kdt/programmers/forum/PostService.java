@@ -5,6 +5,7 @@ import com.kdt.programmers.forum.exception.PostNotFoundException;
 import com.kdt.programmers.forum.transfer.PostDto;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import com.kdt.programmers.forum.utils.PostConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,21 +25,18 @@ public class PostService {
         this.postConverter = postConverter;
     }
 
-    @Transactional
     public PostDto savePost(PostRequest postRequest) {
         Post post = postConverter.convertToPost(postRequest);
         Post entity = postRepository.save(post);
         return postConverter.convertToPostDto(entity);
     }
 
-    @Transactional
     public PostDto findPostById(Long postId) throws PostNotFoundException {
         return postRepository.findById(postId)
             .map(postConverter::convertToPostDto)
             .orElseThrow(() -> new PostNotFoundException("post with id " + postId + " not found"));
     }
 
-    @Transactional
     public Page<PostDto> findPostsByPage(Pageable pageable) {
         return postRepository.findAll(pageable)
             .map(postConverter::convertToPostDto);
