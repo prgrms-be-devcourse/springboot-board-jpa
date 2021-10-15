@@ -1,8 +1,8 @@
 package com.kdt.post.service;
 
 import com.kdt.domain.post.PostRepository;
-import com.kdt.exception.NotFoundException;
-import com.kdt.post.dto.PostDto;
+import com.kdt.post.dto.PostSaveDto;
+import com.kdt.post.dto.PostViewDto;
 import java.text.MessageFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,25 +19,25 @@ public class PostService {
     private final PostConvertor postConvertor;
 
     @Transactional
-    public Long save(PostDto postDto) {
-        return postRepository.save(postConvertor.convertPostDtoToPost(postDto)).getId();
+    public Long save(PostSaveDto postSaveDto) {
+        return postRepository.save(postConvertor.convertPostSaveDtoToPost(postSaveDto)).getId();
     }
 
-    public Page<PostDto> findAll(Pageable pageable) {
-        return postRepository.findAll(pageable).map(postConvertor::convertPostToPostDto);
+    public Page<PostViewDto> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable).map(postConvertor::convertPostToPostViewDto);
     }
 
-    public PostDto findOne(Long id) {
+    public PostViewDto findOne(Long id) {
         return postRepository.findById(id)
-                .map(postConvertor::convertPostToPostDto)
-                .orElseThrow(() -> new NotFoundException(MessageFormat.format("not found id : {0}", id)));
+                .map(postConvertor::convertPostToPostViewDto)
+                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("not found id : {0}", id)));
     }
 
     @Transactional
-    public Long update(PostDto postDto) {
-        return postRepository.findById(postDto.getId())
-                .map(post -> postConvertor.convertPostDtoToPost(postDto))
-                .orElseThrow(() -> new NotFoundException(MessageFormat.format("not found id : {0}", postDto.getId())))
+    public Long update(PostSaveDto postSaveDto) {
+        return postRepository.findById(postSaveDto.getId())
+                .map(post -> postConvertor.convertPostSaveDtoToPost(postSaveDto))
+                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("not found id : {0}", postSaveDto.getId())))
                 .getId();
     }
 }

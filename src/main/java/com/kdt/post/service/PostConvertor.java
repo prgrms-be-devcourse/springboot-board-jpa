@@ -2,20 +2,20 @@ package com.kdt.post.service;
 
 import com.kdt.domain.post.Post;
 import com.kdt.domain.user.User;
-import com.kdt.post.dto.PostDto;
+import com.kdt.post.dto.PostSaveDto;
+import com.kdt.post.dto.PostViewDto;
 import com.kdt.user.dto.UserDto;
-import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostConvertor {
 
-    public Post convertPostDtoToPost(PostDto postDto) {
+    public Post convertPostSaveDtoToPost(PostSaveDto postSaveDto) {
         return Post.builder()
-                .id(postDto.getId())
-                .title(postDto.getTitle())
-                .content(postDto.getContent())
-                .user(convertUserDtoToUser(postDto.getUserDto()))
+                .id(postSaveDto.getId())
+                .title(postSaveDto.getTitle())
+                .content(postSaveDto.getContent())
+                .user(convertUserDtoToUser(postSaveDto.getUserDto()))
                 .build();
     }
 
@@ -28,13 +28,13 @@ public class PostConvertor {
         return user;
     }
 
-    public PostDto convertPostToPostDto(Post post) {
-        PostDto postDto = new PostDto();
-        postDto.setId(post.getId());
-        postDto.setTitle(post.getTitle());
-        postDto.setContent(post.getContent());
-        postDto.setUserDto(convertUserToUserDto(post.getUser()));
-        return postDto;
+    public PostViewDto convertPostToPostViewDto(Post post) {
+        PostViewDto postViewDto = new PostViewDto();
+        postViewDto.setId(post.getId());
+        postViewDto.setTitle(post.getTitle());
+        postViewDto.setContent(post.getContent());
+        postViewDto.setUserDto(convertUserToUserDto(post.getUser()));
+        return postViewDto;
     }
 
     private UserDto convertUserToUserDto(User user) {

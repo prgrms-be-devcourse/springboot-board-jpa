@@ -4,9 +4,10 @@ import static com.kdt.api.PostApi.POSTS;
 import static com.kdt.api.PostApi.PREFIX;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import com.kdt.post.dto.PostDto;
+import com.kdt.post.dto.PostSaveDto;
+import com.kdt.post.dto.PostViewDto;
 import com.kdt.post.service.PostService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(PREFIX + POSTS)
+@RequestMapping(value = PREFIX + POSTS)
 public class PostApi {
 
     protected static final String PREFIX = "/api/v1";
@@ -30,26 +31,26 @@ public class PostApi {
 
     private final PostService postService;
 
-    @PostMapping
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
-    public ApiResponse<Long> addPost(@RequestBody @Valid PostDto postDto) {
-        return ApiResponse.ok(postService.save(postDto));
+    public ApiResponse<Long> addPost(@RequestBody @Valid PostSaveDto postSaveDto) {
+        return ApiResponse.ok(postService.save(postSaveDto));
     }
 
-    @GetMapping
-    public ApiResponse<Page<PostDto>> getPosts(Pageable pageable) {
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    public ApiResponse<Page<PostViewDto>> getPosts(Pageable pageable) {
         return ApiResponse.ok(postService.findAll(pageable));
     }
 
-    @GetMapping("/{id}")
-    public ApiResponse<PostDto> getPost(@PathVariable Long id) {
+    @GetMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE)
+    public ApiResponse<PostViewDto> getPost(@PathVariable Long id) {
         return ApiResponse.ok(postService.findOne(id));
     }
 
-    @PostMapping("/{id}")
+    @PostMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(NO_CONTENT)
-    public ApiResponse<Long> updatePost(@RequestBody @Valid PostDto postDto) {
-        return ApiResponse.ok(postService.update(postDto));
+    public ApiResponse<Long> updatePost(@RequestBody @Valid PostSaveDto postSaveDto) {
+        return ApiResponse.ok(postService.update(postSaveDto));
     }
 
 }

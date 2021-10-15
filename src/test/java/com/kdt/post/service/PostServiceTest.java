@@ -1,16 +1,14 @@
 package com.kdt.post.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 import com.kdt.domain.post.Post;
 import com.kdt.domain.post.PostRepository;
-import com.kdt.post.dto.PostDto;
-import java.util.Arrays;
+import com.kdt.post.dto.PostSaveDto;
+import com.kdt.post.dto.PostViewDto;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,7 +36,10 @@ class PostServiceTest {
     PostConvertor postConvertor;
 
     @Mock
-    PostDto postDto;
+    PostSaveDto postSaveDto;
+
+    @Mock
+    PostViewDto postViewDto;
 
     @Mock
     Post post;
@@ -47,16 +48,16 @@ class PostServiceTest {
     @DisplayName("postDto를 post로 변환하여 저장한다.")
     void savePostDtoToPost() {
         //given
-        given(postConvertor.convertPostDtoToPost(postDto)).willReturn(post);
+        given(postConvertor.convertPostSaveDtoToPost(postSaveDto)).willReturn(post);
         given(postRepository.save(post)).willReturn(post);
         given(post.getId()).willReturn(1L);
 
         //when
-        Long savePostId = postService.save(postDto);
+        Long savePostId = postService.save(postSaveDto);
 
         //then
         then(postRepository).should().save(post);
-        then(postConvertor).should().convertPostDtoToPost(postDto);
+        then(postConvertor).should().convertPostSaveDtoToPost(postSaveDto);
         assertThat(savePostId).isEqualTo(1L);
     }
 
@@ -72,7 +73,7 @@ class PostServiceTest {
         given(postRepository.findAll(pageRequest)).willReturn(new PageImpl<>(posts));
 
         //when
-        Page<PostDto> findAll = postService.findAll(pageRequest);
+        Page<PostViewDto> findAll = postService.findAll(pageRequest);
 
         //then
         assertThat(findAll.getTotalElements()).isEqualTo(30);
@@ -83,28 +84,28 @@ class PostServiceTest {
     void getPost() {
         //given
         given(postRepository.findById(1L)).willReturn(Optional.of(post));
-        given(postConvertor.convertPostToPostDto(post)).willReturn(postDto);
+        given(postConvertor.convertPostToPostViewDto(post)).willReturn(postViewDto);
 
         //when
-        PostDto findPostDto = postService.findOne(1L);
+        PostViewDto findDto = postService.findOne(1L);
 
         //then
         then(postRepository).should().findById(1L);
-        then(postConvertor).should().convertPostToPostDto(post);
-        assertThat(findPostDto).isNotNull();
+        then(postConvertor).should().convertPostToPostViewDto(post);
+        assertThat(findDto).isNotNull();
     }
 
     @Test
     @DisplayName("postDto를 post로 변환하여 수정한다.")
     void updatePostDtoToPost() {
         //given
-        given(postDto.getId()).willReturn(1L);
-        given(postRepository.findById(postDto.getId())).willReturn(Optional.of(post));
-        given(postConvertor.convertPostDtoToPost(postDto)).willReturn(post);
+        given(postSaveDto.getId()).willReturn(1L);
+        given(postRepository.findById(postSaveDto.getId())).willReturn(Optional.of(post));
+        given(postConvertor.convertPostSaveDtoToPost(postSaveDto)).willReturn(post);
         given(post.getId()).willReturn(1L);
 
         //when
-        Long savePostId = postService.update(postDto);
+        Long savePostId = postService.update(postSaveDto);
 
         //then
         then(postRepository).should().findById(1L);

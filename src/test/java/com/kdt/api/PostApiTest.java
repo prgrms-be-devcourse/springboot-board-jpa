@@ -2,6 +2,7 @@ package com.kdt.api;
 
 import static com.kdt.api.PostApi.POSTS;
 import static com.kdt.api.PostApi.PREFIX;
+import static org.springframework.http.MediaType.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -24,7 +25,7 @@ import com.kdt.domain.post.Post;
 import com.kdt.domain.post.PostRepository;
 import com.kdt.domain.user.User;
 import com.kdt.domain.user.UserRepository;
-import com.kdt.post.dto.PostDto;
+import com.kdt.post.dto.PostSaveDto;
 import com.kdt.post.service.PostConvertor;
 import com.kdt.user.dto.UserDto;
 import java.util.stream.IntStream;
@@ -35,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -70,11 +70,11 @@ class PostApiTest {
     void addPost() throws Exception {
         User user = userRepository.save(User.builder().name("tester").age(1995).build());
 
-        PostDto postDto = givenPostDto(user.getId());
+        PostSaveDto postSaveDto = givenPostDto(user.getId());
 
         mockMvc.perform(post(PREFIX + POSTS)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(postDto)))
+                .contentType(APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(postSaveDto)))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andDo(document("save-post",
@@ -102,12 +102,12 @@ class PostApiTest {
     void savePostFailToTitleAndContentIsNull() throws Exception {
         User user = userRepository.save(User.builder().name("tester").age(1995).build());
 
-        PostDto postDto = givenPostDto(user.getId());
-        postDto.setTitle("");
-        postDto.setContent("");
+        PostSaveDto postSaveDto = givenPostDto(user.getId());
+        postSaveDto.setTitle("");
+        postSaveDto.setContent("");
         mockMvc.perform(post(PREFIX + POSTS)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(postDto)))
+                .contentType(APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(postSaveDto)))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andDo(document("invalid-save-post",
@@ -136,13 +136,13 @@ class PostApiTest {
     @Test
     @DisplayName("게시물 저장 요청 실패 (존재하지 않는 회원인 경우)")
     void savePostFailToNotfoundUser() throws Exception {
-        PostDto postDto = new PostDto();
-        postDto.setTitle("title");
-        postDto.setContent("content");
+        PostSaveDto postSaveDto = new PostSaveDto();
+        postSaveDto.setTitle("title");
+        postSaveDto.setContent("content");
 
         mockMvc.perform(post(PREFIX + POSTS)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(postDto)))
+                .contentType(APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(postSaveDto)))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andDo(document("null-user-save-post",
@@ -175,7 +175,7 @@ class PostApiTest {
         mockMvc.perform(get(PREFIX + POSTS)
                 .param("page", "2")
                 .param("size", "10")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .contentType(APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("get-posts",
@@ -249,13 +249,20 @@ class PostApiTest {
         User user = userRepository.save(User.builder().name("tester").age(1995).build());
         Post post = postRepository.save(Post.builder().title("제목").content("내용").user(user).build());
 
-        PostDto postDto = postConvertor.convertPostToPostDto(post);
-        postDto.setTitle("변경한 제목");
-        postDto.setContent("변경한 내용");
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
+        userDto.setAge(user.getAge());
+
+        PostSaveDto postSaveDto = new PostSaveDto();
+        postSaveDto.setId(post.getId());
+        postSaveDto.setUserDto(userDto);
+        postSaveDto.setTitle("변경한 제목");
+        postSaveDto.setContent("변경한 내용");
 
         mockMvc.perform(post(PREFIX + POSTS + "/{id}", post.getId())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(postDto)))
+                .contentType(APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(postSaveDto)))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andDo(document("update-post",
@@ -278,17 +285,17 @@ class PostApiTest {
 
     }
 
-    private PostDto givenPostDto(Long userId) {
+    private PostSaveDto givenPostDto(Long userId) {
         UserDto userDto = new UserDto();
         userDto.setId(userId);
         userDto.setName("tester");
         userDto.setAge(1995);
 
-        PostDto postDto = new PostDto();
-        postDto.setTitle("스프링 스터디 모집");
-        postDto.setContent("스프링을 주제로 주 1회 발표하며 공부하실 스터디원을 모집합니다.");
-        postDto.setUserDto(userDto);
-        return postDto;
+        PostSaveDto postSaveDto = new PostSaveDto();
+        postSaveDto.setTitle("스프링 스터디 모집");
+        postSaveDto.setContent("스프링을 주제로 주 1회 발표하며 공부하실 스터디원을 모집합니다.");
+        postSaveDto.setUserDto(userDto);
+        return postSaveDto;
     }
 
 }

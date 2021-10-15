@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter
-public class PostDto {
+public class PostSaveDto {
 
     private Long id;
 
