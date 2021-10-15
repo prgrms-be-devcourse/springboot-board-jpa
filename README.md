@@ -13,27 +13,27 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 ### **2. 엔티티를 구성한다**
 
 - [x] 회원(User)
-  - [x] id (PK) (auto increment)
-  - [x] name
-  - [x] age
-  - [x] hobby
-  - [ ] **created_at**
-  - [ ] **created_by**
+    - [x] id (PK) (auto increment)
+    - [x] name
+    - [x] age
+    - [x] hobby
+    - [ ] **created_at**
+    - [ ] **created_by**
 - [x] 게시글(Post)
-  - [x] id (PK) (auto increment)
-  - [x] title
-  - [x] content
-  - [ ] **created_at**
-  - [ ] **created_by**
+    - [x] id (PK) (auto increment)
+    - [x] title
+    - [x] content
+    - [ ] **created_at**
+    - [ ] **created_by**
 - [x] 회원과 게시글에 대한 연관관계를 설정한다.
-  - [x] 회원과 게시글은 1:N 관계이다.
+    - [x] 회원과 게시글은 1:N 관계이다.
 - [x] 게시글 Repository를 구현한다. (PostRepository)
 
 ### **3. API를 구현한다.**
 
 - [x] 게시글 조회
-  - [x] 페이징 조회 (GET "/posts")
-  - [x] 단건 조회 (GET "/posts/{id}")
+    - [x] 페이징 조회 (GET "/posts")
+    - [x] 단건 조회 (GET "/posts/{id}")
 - [x] 게시글 작성 (POST "/posts")
 - [x] 게시글 수정 (POST "/posts/{id}")
 
@@ -54,14 +54,15 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 - 지속적인 성능 개선
 - 나쁜 냄새가 나는 코드에 대한 리팩토링
 
-### 코딩 컨벤션 
+### 코딩 컨벤션
 
-- [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html) 을 준수 (intellij-java-google-style.xml : [link](https://github.com/google/styleguide))
+- [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html) 을 준수 (
+  intellij-java-google-style.xml : [link](https://github.com/google/styleguide))
 
 ### 성능 최적화
 
 - 서버 부하를 줄이기 위해 캐싱 서버 적극 활용
-  - DB 서버와의 통신을 최소화 (N+1 문제)
+    - DB 서버와의 통신을 최소화 (N+1 문제)
 - 인덱스와 쿼리 튜닝을 활용
 
 ### 브랜치 관리 전략
@@ -85,15 +86,13 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 
 Java 11, Spring Boot, Maven, JPA, Lombok, MySQL, Mockito
 
-
-
 # 추가 기능
 
 ### 1. EntityListeners 를 통한 Entity 수정 시간 자동 update
 
 ### 2. Request DTO에 대한 유효성 검증
 
-
+### 3. Rest Controller Advice를 통한 Cont용oller Exception Handler AOP 적용
 
 # Wiki
 
