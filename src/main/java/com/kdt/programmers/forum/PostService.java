@@ -1,10 +1,10 @@
 package com.kdt.programmers.forum;
 
 import com.kdt.programmers.forum.domain.Post;
+import com.kdt.programmers.forum.exception.PostNotFoundException;
 import com.kdt.programmers.forum.transfer.PostDto;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import com.kdt.programmers.forum.utils.PostConverter;
-import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,10 +30,10 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto findPostById(Long id) throws NotFoundException {
-        return postRepository.findById(id)
+    public PostDto findPostById(Long postId) throws PostNotFoundException {
+        return postRepository.findById(postId)
             .map(postConverter::convertToPostDto)
-            .orElseThrow(() -> new NotFoundException("post not found"));
+            .orElseThrow(() -> new PostNotFoundException("post with id " + postId + " not found"));
     }
 
     @Transactional
@@ -43,9 +43,9 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto updatePost(Long postId, PostRequest postRequest) throws NotFoundException {
+    public PostDto updatePost(Long postId, PostRequest postRequest) throws PostNotFoundException {
         Post entity = postRepository.findById(postId)
-            .orElseThrow(() -> new NotFoundException("post does not exist"));
+            .orElseThrow(() -> new PostNotFoundException("post with id " + postId + " not found"));
 
         entity.update(postRequest.getTitle(), postRequest.getContent());
         return postConverter.convertToPostDto(entity);

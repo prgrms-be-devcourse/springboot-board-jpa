@@ -1,11 +1,12 @@
 package com.kdt.programmers.forum;
 
+import com.kdt.programmers.forum.exception.NotFoundException;
+import com.kdt.programmers.forum.exception.PostNotFoundException;
 import com.kdt.programmers.forum.transfer.PageDto;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import com.kdt.programmers.forum.transfer.response.ApiResponse;
 import com.kdt.programmers.forum.transfer.PostDto;
 import com.kdt.programmers.forum.utils.PostConverter;
-import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -33,8 +34,12 @@ public class PostController {
 
     @GetMapping("/{postId}")
     public ApiResponse<PostDto> getPost(@PathVariable Long postId) throws NotFoundException {
-        PostDto post = postService.findPostById(postId);
-        return ApiResponse.response(post);
+        try {
+            PostDto post = postService.findPostById(postId);
+            return ApiResponse.response(post);
+        } catch (PostNotFoundException e) {
+            throw new NotFoundException("request resource was not found", e);
+        }
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -45,7 +50,10 @@ public class PostController {
     }
 
     @PatchMapping("/{postId}")
-    public ApiResponse<PostDto> updatePost(@PathVariable Long postId, @RequestBody final PostRequest postRequest) throws NotFoundException {
+    public ApiResponse<PostDto> updatePost(
+        @PathVariable Long postId,
+        @RequestBody final PostRequest postRequest
+    ) throws PostNotFoundException {
         PostDto post = postService.updatePost(postId, postRequest);
         return ApiResponse.response(post);
     }
