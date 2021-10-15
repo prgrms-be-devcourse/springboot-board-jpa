@@ -22,9 +22,9 @@ include::{snippets}/post-save/response-fields.adoc[]
 === /posts/{id}
 
 .Request
-include::{snippets}/post-modify/http-request.adoc[]
-include::{snippets}/post-modify/request-fields.adoc[]
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
 
 .Response
-include::{snippets}/post-modify/http-response.adoc[]
-include::{snippets}/post-modify/response-fields.adoc[]
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
