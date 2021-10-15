@@ -46,9 +46,7 @@ public class PostService {
         Post entity = postRepository.findById(postId)
             .orElseThrow(() -> new NotFoundException("post does not exist"));
 
-        entity.setTitle(dto.getTitle());
-        entity.setContent(dto.getContent());
-
+        entity.update(dto.getTitle(), dto.getContent());
         return postConverter.convertToPostDto(entity);
     }
 }

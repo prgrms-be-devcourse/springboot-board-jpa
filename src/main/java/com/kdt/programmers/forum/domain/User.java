@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Getter
-@Setter
 public class User extends CreationBaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

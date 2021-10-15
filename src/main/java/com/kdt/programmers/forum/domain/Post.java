@@ -8,7 +8,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "posts")
 @Getter
-@Setter
 @NoArgsConstructor
 public class Post extends CreationBaseEntity {
     @Id
@@ -38,6 +37,11 @@ public class Post extends CreationBaseEntity {
 
     public Post(Long id, String title, String content) {
         this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
     }
