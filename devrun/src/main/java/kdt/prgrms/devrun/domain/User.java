@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Builder
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(
