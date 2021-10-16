@@ -60,9 +60,9 @@ public class PostController {
     // 게시글 수정
     // POST "/posts/{id}" -> mockMVC를 이용한 테스트까지
     @PostMapping("/posts/{id}")
-    public ApiResponse<PostDto> editPost(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
-        PostDto editedPost = postService.editPost(id, postDto);
-        return ApiResponse.ok(editedPost);
+    public ApiResponse<Long> editPost(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
+        Long postId = postService.editPost(id, postDto);
+        return ApiResponse.ok(postId);
     }
 
 }

@@ -1,0 +1,63 @@
+:hardbreaks:
+ifndef::snippet[]
+:snippets: ../.../../target/generated-snippets
+endif::[]
+
+== 게시판
+
+=== 게시글 생성 및 업로드
+
+=== POST /api/v1/posts
+
+.Request
+
+include::{snippets}/Saving-A-Post/http-request.adoc[]
+include::{snippets}/Saving-A-Post/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/Saving-A-Post/http-response.adoc[]
+include::{snippets}/Saving-A-Post/response-fields.adoc[]
+
+
+=== 단일 게시글 정보 받아오기
+
+=== GET /api/v1/posts/{id}
+
+.Request
+
+include::{snippets}/Read-A-Post/http-request.adoc[]
+
+.Response
+
+include::{snippets}/Read-A-Post/http-response.adoc[]
+include::{snippets}/Read-A-Post/response-fields.adoc[]
+
+
+=== 전체 게시글 정보 받아오기
+
+=== GET /api/v1/posts
+
+.Request
+
+include::{snippets}/Read-All-Post/http-request.adoc[]
+
+.Response
+
+include::{snippets}/Read-All-Post/http-response.adoc[]
+include::{snippets}/Read-All-Post/response-fields.adoc[]
+
+
+=== 게시글 수정하기
+
+=== POST /api/v1/posts/{id}
+
+.Request
+
+include::{snippets}/Edit-A-Post/http-request.adoc[]
+include::{snippets}/Edit-A-Post/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/Edit-A-Post/http-response.adoc[]
+include::{snippets}/Edit-A-Post/response-fields.adoc[]

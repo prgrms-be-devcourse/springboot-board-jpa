@@ -38,11 +38,10 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto editPost(Long id, PostDto postDto) throws NotFoundException {
+    public Long editPost(Long id, PostDto postDto) throws NotFoundException {
         Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException("Post Not Found"));
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
-        postRepository.save(post);
-        return PostConverter.convertFromPostToDto(post);
+        return postRepository.save(post).getId();
     }
 }
