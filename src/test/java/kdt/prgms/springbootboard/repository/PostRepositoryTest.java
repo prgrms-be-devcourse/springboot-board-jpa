@@ -7,6 +7,7 @@ import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
 import kdt.prgms.springbootboard.config.JpaAuditingConfiguration;
 import kdt.prgms.springbootboard.domain.*;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -27,6 +28,14 @@ class PostRepositoryTest {
     @Autowired
     PostRepository postRepository;
 
+    private User user;
+
+    @BeforeEach
+    void setUp() {
+        user = User.createUser("tester#1", 1);
+    }
+
+
     @Test
     void 게시글이_없으면_빈_결과값이_정상() {
         //when
@@ -39,14 +48,12 @@ class PostRepositoryTest {
     @Test
     void 게시글_생성_성공() {
         //given
+        entityManager.persist(user);
         var postTitle = "testTitle#1";
         var postContent = "testContent#1";
 
-        var user1 = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
-        entityManager.persist(user1);
-
         //when
-        var newPost = postRepository.save(Post.createPost(postTitle, postContent, user1));
+        var newPost = postRepository.save(Post.createPost(postTitle, postContent, user));
 
         //then
         log.info("created post: {}", newPost);
@@ -63,7 +70,6 @@ class PostRepositoryTest {
     @Test
     void 전체_게시글_조회_성공() {
         //given
-        var user = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
         entityManager.persist(user);
 
         var post1 = Post.createPost("testTitle#1", "testContent#1", user);
@@ -89,7 +95,6 @@ class PostRepositoryTest {
     @Test
     void 게시글_아이디로_조회_성공() {
         //given
-        var user = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
         entityManager.persist(user);
 
         var post1 = Post.createPost("testTitle#1", "testContent#1", user);
@@ -108,7 +113,6 @@ class PostRepositoryTest {
     @Test
     void 게시글_제목으로_조회_성공() {
         //given
-        var user = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
         entityManager.persist(user);
 
         var post1 = Post.createPost("test#1", "testContent#1", user);
@@ -130,7 +134,6 @@ class PostRepositoryTest {
     @Test
     void 게시글_정보_변경_성공() {
         //given
-        var user = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
         entityManager.persist(user);
 
         var post = Post.createPost("testTitle#1", "testContent#1", user);
@@ -151,7 +154,6 @@ class PostRepositoryTest {
     @Test
     void 아이디로_게시글_삭제_성공() {
         //given
-        var user = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
         entityManager.persist(user);
         entityManager.flush();
         entityManager.clear();

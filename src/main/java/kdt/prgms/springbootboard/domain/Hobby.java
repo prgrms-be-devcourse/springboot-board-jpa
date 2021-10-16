@@ -6,10 +6,10 @@ import javax.persistence.*;
 @Embeddable
 public class Hobby {
 
-    @Column(name = "hobby_name", nullable = false)
+    @Column(name = "hobby_name")
     private String name;
 
-    @Column(name = "hobby_type", nullable = false)
+    @Column(name = "hobby_type")
     @Enumerated(EnumType.STRING)
     private HobbyType hobbyType;
 
