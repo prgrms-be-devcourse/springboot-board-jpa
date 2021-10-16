@@ -2,12 +2,20 @@ package com.programmers.iyj.springbootboard.domain.user.domain;
 
 import com.programmers.iyj.springbootboard.domain.model.BaseEntity;
 import com.programmers.iyj.springbootboard.domain.post.domain.Post;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
@@ -42,5 +50,18 @@ public class User extends BaseEntity {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
