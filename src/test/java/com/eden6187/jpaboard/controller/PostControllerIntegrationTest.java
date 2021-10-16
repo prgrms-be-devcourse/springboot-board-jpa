@@ -4,6 +4,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -47,7 +48,7 @@ public class PostControllerIntegrationTest {
   ObjectMapper objectMapper;
 
   @BeforeEach
-  void setUp() {
+  void setUpData() {
     //given
     User user1 = User.builder()
         .name(UserMockData.TEST_NAME)
@@ -102,6 +103,34 @@ public class PostControllerIntegrationTest {
                     fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
                     fieldWithPath("serverDatetime").type(JsonFieldType.STRING)
                         .description("serverDatetime")
+                )
+            )
+        );
+  }
+
+  @Test
+  @Transactional
+  void getSinglePost() throws Exception {
+    //when
+    mockMvc.perform(get("/api/v1/posts/{id}", postId))
+        //then
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data.title").value(PostMockData.TEST_TITLE))
+        .andExpect(jsonPath("$.data.content").value(PostMockData.TEST_CONTENT))
+        .andExpect(jsonPath("$.data.userId").value(userId))
+        .andExpect(jsonPath("$.data.userName").value(UserMockData.TEST_NAME))
+        .andDo(print())
+        .andDo(document("post-get-single",
+                responseFields(
+                    fieldWithPath("serverDatetime").type(JsonFieldType.STRING)
+                        .description("serverDatetime"),
+                    fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
+                    fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
+                    fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
+                    fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("userId"),
+                    fieldWithPath("data.userName").type(JsonFieldType.STRING).description("userName"),
+                    fieldWithPath("data.createdBy").type(JsonFieldType.STRING).description("createdBy"),
+                    fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("createdAt")
                 )
             )
         );

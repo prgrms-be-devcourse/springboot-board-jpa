@@ -50,6 +50,7 @@ public class Post extends BaseEntity {
     this.title = title;
     this.content = content;
     this.user = user;
+    this.createdAt = LocalDateTime.now();
   }
 
   // 연관 관계 편의 메소드

@@ -11,10 +11,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ApiResponse<T> {
 
-  private int statusCode;
-  private T data;
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
   private LocalDateTime serverDatetime;
+  private int statusCode;
+  private T data;
 
   public ApiResponse(int statusCode, T data) {
     this.statusCode = statusCode;

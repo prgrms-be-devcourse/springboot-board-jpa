@@ -2,6 +2,7 @@ package com.eden6187.jpaboard.service;
 
 import com.eden6187.jpaboard.common.ErrorCode;
 import com.eden6187.jpaboard.controller.PostController.AddPostRequestDto;
+import com.eden6187.jpaboard.controller.PostController.GetSinglePostResponseDto;
 import com.eden6187.jpaboard.controller.PostController.UpdatePostRequestDto;
 import com.eden6187.jpaboard.controller.PostController.UpdatePostResponseDto;
 import com.eden6187.jpaboard.exception.AuthorizationException;
@@ -35,7 +36,7 @@ public class PostService {
               throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
             }
         );
-    Post post = postConverter.convertPost(addPostRequestDto);
+    Post post = postConverter.convertToPost(addPostRequestDto);
 
     // 2. Entity 사이의 연관관계 맺어주기
     post.setUser(user);
@@ -77,5 +78,17 @@ public class PostService {
         .title(updatedPost.getTitle())
         .content(updatedPost.getContent())
         .build();
+  }
+
+  @Transactional(readOnly = true)
+  public GetSinglePostResponseDto getSinglePost(Long postId) {
+    Post post = postRepository.findById(postId)
+        .orElseThrow(
+            () -> {
+              throw new PostNotFoundException(ErrorCode.POST_NOT_FOUND);
+            }
+        );
+
+    return postConverter.convertToDto(post);
   }
 }

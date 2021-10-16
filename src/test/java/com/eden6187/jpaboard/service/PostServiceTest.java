@@ -59,7 +59,7 @@ class PostServiceTest {
         .id(UserMockData.TEST_ID)
         .build();
 
-    when(postConverter.convertPost(addPostRequestDto))
+    when(postConverter.convertToPost(addPostRequestDto))
         .thenReturn(post);
     when(userRepository.findById(UserMockData.TEST_ID))
         .thenReturn(Optional.of(user));

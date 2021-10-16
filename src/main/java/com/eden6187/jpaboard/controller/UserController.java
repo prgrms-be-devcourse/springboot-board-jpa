@@ -24,7 +24,6 @@ public class UserController {
 
   private final UserService userService;
 
-  // start -- [POST /api/v1/users]
   @PostMapping
   public ResponseEntity<ApiResponse<AddUserResponseDto>> addUser(
       @RequestBody AddUserRequestDto saveUserDto) {
