@@ -1,4 +1,4 @@
-package kdt.prgms.springbootboard.global.config.error;
+package kdt.prgms.springbootboard.global.error;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

@@ -1,7 +1,7 @@
-package kdt.prgms.springbootboard.global.config.error;
+package kdt.prgms.springbootboard.global.error;
 
 
-import kdt.prgms.springbootboard.global.config.error.exception.BusinessException;
+import kdt.prgms.springbootboard.global.error.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

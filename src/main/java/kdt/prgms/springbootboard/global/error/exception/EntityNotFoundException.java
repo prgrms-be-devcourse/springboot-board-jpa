@@ -1,6 +1,6 @@
-package kdt.prgms.springbootboard.global.config.error.exception;
+package kdt.prgms.springbootboard.global.error.exception;
 
-import kdt.prgms.springbootboard.global.config.error.ErrorCode;
+import kdt.prgms.springbootboard.global.error.ErrorCode;
 
 public class EntityNotFoundException extends BusinessException {
 
