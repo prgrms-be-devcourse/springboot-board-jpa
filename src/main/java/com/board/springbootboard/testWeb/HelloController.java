@@ -1,7 +1,7 @@
-package com.board.springbootboard.web;
+package com.board.springbootboard.testWeb;
 
 
-import com.board.springbootboard.web.dto.HelloResponseDto;
+import com.board.springbootboard.testWeb.dto.HelloResponseDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

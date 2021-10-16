@@ -1,4 +1,4 @@
-package com.board.springbootboard.web;
+package com.board.springbootboard.testWeb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,10 @@
-package com.board.springbootboard.web;
+package com.board.springbootboard.domain.posts.controller;
 
 
-import com.board.springbootboard.domain.posts.Posts;
+import com.board.springbootboard.domain.posts.PostsEntity;
 import com.board.springbootboard.domain.posts.PostsRepository;
-import com.board.springbootboard.web.dto.PostsSaveRequestDto;
-import com.board.springbootboard.web.dto.PostsUpdateRequestsDto;
+import com.board.springbootboard.domain.posts.dto.PostsSaveRequestDto;
+import com.board.springbootboard.domain.posts.dto.PostsUpdateRequestsDto;
 import org.junit.After;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,12 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.is;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 
 @Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -70,7 +67,7 @@ class PostsApiControllerTest {
         assertThat(responseEntity.getBody()).isGreaterThan(0L);
         log.info("responseEntity.getBody {}",responseEntity.getBody());
 
-        List<Posts>all=postsRepository.findAll();
+        List<PostsEntity>all=postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(title);
         assertThat(all.get(0).getContent()).isEqualTo(content);
 
@@ -81,7 +78,7 @@ class PostsApiControllerTest {
     @DisplayName("게시글 수정")
     public void posts_수정() throws Exception {
         // Given
-        Posts savePosts=postsRepository.save(Posts.builder()
+        PostsEntity savePosts=postsRepository.save(PostsEntity.builder()
                 .title("title")
                 .content("content")
                 .author("sds1zzang")
@@ -106,7 +103,7 @@ class PostsApiControllerTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isGreaterThan(0L);
 
-        List<Posts>all=postsRepository.findAll();
+        List<PostsEntity>all=postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(updateTitle);
         assertThat(all.get(0).getContent()).isEqualTo(updateContent);
 

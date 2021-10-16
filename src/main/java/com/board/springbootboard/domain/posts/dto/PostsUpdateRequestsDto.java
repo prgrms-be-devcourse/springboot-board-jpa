@@ -1,4 +1,4 @@
-package com.board.springbootboard.web.dto;
+package com.board.springbootboard.domain.posts.dto;
 
 import lombok.Builder;
 import lombok.Getter;

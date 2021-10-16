@@ -1,6 +1,6 @@
-package com.board.springbootboard.web.dto;
+package com.board.springbootboard.domain.posts.dto;
 
-import com.board.springbootboard.domain.posts.Posts;
+import com.board.springbootboard.domain.posts.PostsEntity;
 import lombok.Getter;
 
 // Entity 필드 중 일부만 사용
@@ -11,7 +11,7 @@ public class PostsResponseDto {
     private String content;
     private String author;
 
-    public PostsResponseDto(Posts entity) {
+    public PostsResponseDto(PostsEntity entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.content = entity.getContent();

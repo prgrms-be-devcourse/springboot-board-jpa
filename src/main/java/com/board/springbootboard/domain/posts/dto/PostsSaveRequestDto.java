@@ -1,7 +1,7 @@
-package com.board.springbootboard.web.dto;
+package com.board.springbootboard.domain.posts.dto;
 
 
-import com.board.springbootboard.domain.posts.Posts;
+import com.board.springbootboard.domain.posts.PostsEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +21,12 @@ public class PostsSaveRequestDto {
         this.author = author;
     }
 
-    public Posts toEntity() {
-        return Posts.builder()
+
+    // Converter
+    // Controller -> Service -> Repository
+    //                      DTO (temp)
+    public PostsEntity toEntity() {
+        return PostsEntity.builder()
                 .title(title)
                 .content(content)
                 .author(author)

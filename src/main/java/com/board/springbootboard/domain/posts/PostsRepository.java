@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface PostsRepository extends JpaRepository<Posts,Long> {
+public interface PostsRepository extends JpaRepository<PostsEntity,Long> {
 
     // Querydsl: id별 내림 차순 다건 조회
-    @Query("SELECT p FROM Posts p ORDER BY p.id DESC")
-    List<Posts> findAllDesc();
+    @Query("SELECT p FROM PostsEntity p ORDER BY p.id DESC")
+    List<PostsEntity> findAllDesc();
 
 }

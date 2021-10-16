@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @DynamicUpdate // 변경 필드만 대응
-public class Posts extends BaseTimeEntity {
+public class PostsEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -28,7 +28,7 @@ public class Posts extends BaseTimeEntity {
 
     // 생성자에 빌더 사용시, 생성자에 포함된 빌드만 빌더에 포함
     @Builder
-    public Posts(String title, String content, String author) {
+    public PostsEntity(String title, String content, String author) {
         this.title = title;
         this.content = content;
         this.author = author;
