@@ -122,25 +122,20 @@ class UserRepositoryTest {
     @Test
     void 유저_정보_변경_성공() {
         //given
-        var user1 = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
-        entityManager.persist(user1);
-
-        var user2 = User
-            .createUser("tester#2", 2, Hobby.createHobby("hobby#2", HobbyType.COLLECTION));
-        entityManager.persist(user2);
+        var user = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
+        entityManager.persist(user);
 
         //when
-        var foundUser = userRepository.findById(user2.getId()).get();
-        foundUser.changeUserProfile(
-            "changed" + user2.getName(),
-            user2.getAge() + 1,
-            Hobby.createHobby("changed" + user2.getHobby().getName(),
-                user2.getHobby().getHobbyType())
+        user.changeUserProfile(
+            "changed" + user.getName(),
+            user.getAge() + 1,
+            Hobby.createHobby("changed" + user.getHobby().getName(),
+                user.getHobby().getHobbyType())
         );
-        var checkUser = userRepository.findById(foundUser.getId()).get();
+        var foundUser = userRepository.findById(user.getId()).get();
 
         //then
-        assertThat(checkUser, samePropertyValuesAs(foundUser));
+        assertThat(foundUser, samePropertyValuesAs(user));
 
     }
 
@@ -166,23 +161,5 @@ class UserRepositoryTest {
                 samePropertyValuesAs(user1)
             )
         );
-    }
-
-    @Test
-    void 전체_유저_삭제_성공() {
-        //given
-        var user1 = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
-        entityManager.persist(user1);
-
-        var user2 = User
-            .createUser("tester#2", 2, Hobby.createHobby("hobby#2", HobbyType.COLLECTION));
-        entityManager.persist(user2);
-
-        //when
-        userRepository.deleteAll();
-        var allUsers = userRepository.findAll();
-
-        //then
-        assertThat(allUsers, empty());
     }
 }
