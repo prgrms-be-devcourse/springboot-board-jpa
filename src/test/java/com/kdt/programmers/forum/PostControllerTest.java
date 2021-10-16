@@ -1,8 +1,7 @@
 package com.kdt.programmers.forum;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kdt.programmers.forum.transfer.PostDto;
+import com.kdt.programmers.forum.transfer.PostWrapper;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +15,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -86,7 +84,7 @@ class PostControllerTest {
     void testGetPost() throws Exception {
         // Given
         PostRequest postRequest = new PostRequest("test title", "");
-        PostDto post = postService.savePost(postRequest);
+        PostWrapper post = postService.savePost(postRequest);
 
         // When Then
         mockMvc
@@ -163,7 +161,7 @@ class PostControllerTest {
     @DisplayName("게시글을 수정할 수 있다")
     void testUpdatePost() throws Exception {
         // Given
-        PostDto post = postService.savePost(new PostRequest("test post", ""));
+        PostWrapper post = postService.savePost(new PostRequest("test post", ""));
         PostRequest updateRequest = new PostRequest("updated post", "");
 
         // When Then

@@ -5,12 +5,12 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class PageDto {
-    private final List<PostDto> content;
+public class PageWrapper {
+    private final List<PostWrapper> content;
     private final long totalPages;
     private final long totalElements;
 
-    public PageDto(List<PostDto> content, long totalPages, long totalElements) {
+    public PageWrapper(List<PostWrapper> content, long totalPages, long totalElements) {
         this.content = content;
         this.totalPages = totalPages;
         this.totalElements = totalElements;
