@@ -72,6 +72,10 @@ public class User extends BaseEntity {
         return hobby;
     }
 
+    public List<Post> getPosts() {
+        return posts;
+    }
+
     @Override
     public String toString() {
         return "User{" +

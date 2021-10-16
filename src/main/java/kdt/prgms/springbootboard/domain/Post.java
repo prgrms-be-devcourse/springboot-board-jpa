@@ -9,6 +9,7 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE post SET deleted = true WHERE post_id=?")
 @Where(clause = "deleted=false")
 public class Post extends BaseEntity {
+
     @Id
     @GeneratedValue
     @Column(name = "post_id")
@@ -39,8 +40,13 @@ public class Post extends BaseEntity {
 
     }
 
+    public void changePost(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     public void changeUser(User user) {
-        if(this.user != null) {
+        if (this.user != null) {
             this.user.removePost(this);
         }
         this.user = user;
