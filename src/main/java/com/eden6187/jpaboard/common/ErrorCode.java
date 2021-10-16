@@ -8,7 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ErrorCode {
-  DUPLICATED_USER_NAME(400, "U001", "User 이름 중복");
+  DUPLICATED_USER_NAME(400, "U001", "User 이름 중복"),
+  USER_NOT_FOUND(404,"U002","존재하지 않는 USER");
 
   private int statusCode;
   private final String privateCode;

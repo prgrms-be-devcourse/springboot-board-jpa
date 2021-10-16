@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserConverter {
 
-  public User convertUser(AddUserRequestDto saveUserRequestDto){
+  public User convertUser(AddUserRequestDto saveUserRequestDto) {
     return User.builder()
         .name(saveUserRequestDto.getName())
         .age(saveUserRequestDto.getAge())

@@ -3,8 +3,8 @@ package com.eden6187.jpaboard.controller;
 import com.eden6187.jpaboard.common.ApiResponse;
 import com.eden6187.jpaboard.common.ErrorCode;
 import com.eden6187.jpaboard.common.ErrorResponse;
-import com.eden6187.jpaboard.exception.DuplicatedUserNameException;
-import com.eden6187.jpaboard.service.UserService;
+import com.eden6187.jpaboard.exception.UserNotFoundException;
+import com.eden6187.jpaboard.service.PostService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,22 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
-public class UserController {
+public class PostController {
 
-  private final UserService userService;
+  private final PostService postService;
 
-  // start -- [POST /api/v1/users]
+  // start -- [POST /api/v1/posts] - 게시물 추가
   @PostMapping
-  public ResponseEntity<ApiResponse<AddUserResponseDto>> addUser(
-      @RequestBody AddUserRequestDto saveUserDto) {
-    Long createdUserId = userService.addUser(saveUserDto);
+  ResponseEntity<ApiResponse<AddPostResponseDto>> addPost(
+      @RequestBody AddPostRequestDto addPostRequestDto) {
+    log.info("request add post");
+    Long addedPostId = postService.addPost(addPostRequestDto);
     return ResponseEntity.ok(
         ApiResponse.ok(
-            AddUserResponseDto
+            AddPostResponseDto
                 .builder()
-                .userId(createdUserId)
+                .postId(addedPostId)
                 .build()
         )
     );
@@ -44,28 +45,32 @@ public class UserController {
   @AllArgsConstructor
   @Getter
   @Builder
-  public static class AddUserRequestDto {
-    final String name;
-    final Integer age;
-    final String hobby;
+  public static class AddPostRequestDto {
+
+    final Long userId;
+    final String title;
+    final String content;
   }
 
   // response DTO
   @AllArgsConstructor
   @Getter
   @Builder
-  public static class AddUserResponseDto {
-    final Long userId;
+  public static class AddPostResponseDto {
+
+    final Long postId;
   }
 
-  @ExceptionHandler(DuplicatedUserNameException.class)
-  public ResponseEntity<ErrorResponse> handleDuplicatedUserNameException(
-      DuplicatedUserNameException ex) {
+  // UserNotFoundException
+  @ExceptionHandler(UserNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleUserNotFoundException(
+      UserNotFoundException userNotFoundException) {
+    log.info("handle user not found exception");
     return ResponseEntity
         .badRequest()
         .body(
-            ErrorResponse.of(ErrorCode.USER_NOT_FOUND)
+            ErrorResponse.of(ErrorCode.DUPLICATED_USER_NAME)
         );
   }
-  // end -- [POST /api/v1/users]
+  // end -- [POST /api/v1/posts] - 게시물 추가
 }

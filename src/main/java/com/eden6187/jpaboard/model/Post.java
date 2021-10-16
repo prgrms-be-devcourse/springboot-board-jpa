@@ -1,5 +1,6 @@
 package com.eden6187.jpaboard.model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
+
+  @Builder
+  public Post(String createdBy, LocalDateTime createdAt, Long id, String title,
+      String content, User user) {
+    super(createdBy, createdAt);
+    this.id = id;
+    this.title = title;
+    this.content = content;
+    this.user = user;
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +48,7 @@ public class Post extends BaseEntity {
   private String content;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  // Post 가 삭제 된다고 해도 게시물은 남아 있어야 하기 때문에 CascadeType.PERSIST
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 
@@ -47,5 +60,7 @@ public class Post extends BaseEntity {
 
     this.user = user;
     user.getPosts().add(this);
+
+    this.createdBy = user.getName();
   }
 }

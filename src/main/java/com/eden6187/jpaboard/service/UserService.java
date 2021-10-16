@@ -20,12 +20,12 @@ public class UserService {
   private final UserConverter userConverter;
 
   @Transactional
-  public Long addUser(AddUserRequestDto userDto) throws DuplicatedUserNameException{
+  public Long addUser(AddUserRequestDto userDto) throws DuplicatedUserNameException {
     User user = userConverter.convertUser(userDto);
-    try{
+    try {
       User savedUser = userRepository.save(user);
       return savedUser.getId();
-    }catch (DataIntegrityViolationException exception){
+    } catch (DataIntegrityViolationException exception) {
       // unique 제약 조건은 비즈니스 로직상의 문제가 아니고 DB 자체에서 제약 조건을 만족하지 못해서 발생한 예외이다.
       // 따라서, 복구를 하는 것을 강제하기 보다는 오류가 발생했음을 가능한 신속하게 알려주어야 한다.
       // 다만, 이때 왜 이러한 오류가 발생했는지를 알려주어야 하기 때문에
