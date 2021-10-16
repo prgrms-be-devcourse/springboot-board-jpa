@@ -1,0 +1,56 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시판 요구사항
+
+=== 개시글 조회 (페이징 조회)
+
+.Request
+include::{snippets}/getAll-response/http-request.adoc[]
+include::{snippets}/getAll-response/request-parameters.adoc[]
+
+.Response
+include::{snippets}/getAll-response/response-body.adoc[]
+include::{snippets}/getAll-response/response-fields-beneath-content.adoc[]
+- 필드 정보에서 pagination 정보는 생략하고 올렸습니다.
+
+[verse]
+{zwsp}
+
+
+=== 게시글 (단건 조회)
+.Request
+include::{snippets}/getone/http-request.adoc[]
+include::{snippets}/getone/path-parameters.adoc[]
+
+.Response
+include::{snippets}/getone/http-response.adoc[]
+include::{snippets}/getone/response-fields.adoc[]
+
+[verse]
+{zwsp}
+
+
+=== 게시글 작성
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+
+
+[verse]
+{zwsp}
+
+
+=== 게시글 수정
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/path-parameters.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
