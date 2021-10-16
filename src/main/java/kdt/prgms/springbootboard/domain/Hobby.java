@@ -2,7 +2,9 @@ package kdt.prgms.springbootboard.domain;
 
 import java.util.Objects;
 import javax.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Embeddable
 public class Hobby {
 
@@ -23,14 +25,6 @@ public class Hobby {
 
     public static Hobby createHobby(String name, HobbyType hobbyType) {
         return new Hobby(name, hobbyType);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public HobbyType getHobbyType() {
-        return hobbyType;
     }
 
     @Override

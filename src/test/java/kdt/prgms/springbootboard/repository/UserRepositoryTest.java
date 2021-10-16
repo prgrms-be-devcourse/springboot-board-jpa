@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
 
-import kdt.prgms.springbootboard.config.JpaAuditingConfiguration;
+import kdt.prgms.springbootboard.global.config.JpaAuditingConfiguration;
 import kdt.prgms.springbootboard.domain.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

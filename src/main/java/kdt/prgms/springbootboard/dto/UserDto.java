@@ -1,5 +1,11 @@
 package kdt.prgms.springbootboard.dto;
 
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class UserDto {
     private Long id;
 
@@ -13,30 +19,6 @@ public class UserDto {
     public UserDto(Long id, String name, int age) {
         this.id = id;
         this.name = name;
-        this.age = age;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
         this.age = age;
     }
 
