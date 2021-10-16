@@ -2,6 +2,9 @@ package kdt.prgms.springbootboard.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,8 +15,11 @@ public class PostDetailDto {
 
     private Long id;
 
+    @NotBlank
+    @Size(max = 100)
     private String title;
 
+    @Size(max = 255)
     private String content;
 
     private String createdBy;
@@ -26,6 +32,7 @@ public class PostDetailDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime lastModifiedDate;
 
+    @NotNull
     private UserDto userDto;
 
     public PostDetailDto() {
