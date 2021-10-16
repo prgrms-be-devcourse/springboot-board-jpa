@@ -5,27 +5,37 @@ import com.board.springbootboard.domain.posts.PostsEntity;
 import com.board.springbootboard.domain.posts.PostsRepository;
 import com.board.springbootboard.domain.posts.dto.PostsSaveRequestDto;
 import com.board.springbootboard.domain.posts.dto.PostsUpdateRequestsDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.junit.After;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.is;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureRestDocs
+@AutoConfigureMockMvc
 @Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PostsApiControllerTest {
@@ -39,6 +49,12 @@ class PostsApiControllerTest {
     @Autowired
     private PostsRepository postsRepository;
 
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
     @After
     public void tearDown() throws Exception {
         postsRepository.deleteAll();
@@ -49,12 +65,12 @@ class PostsApiControllerTest {
     @DisplayName("게시글 등록")
     public void posts_등록() throws Exception {
         // Given
-        String title="title";
-        String content="content";
+        String title="title1";
+        String content="content2";
         PostsSaveRequestDto requestDto=PostsSaveRequestDto.builder()
                 .title(title)
                 .content(content)
-                .author("sds1zzang")
+                .author("sds2zzang")
                 .build();
 
         String url="http://localhost:" + port +"/api/v1/posts";
@@ -108,6 +124,11 @@ class PostsApiControllerTest {
         assertThat(all.get(0).getContent()).isEqualTo(updateContent);
 
     }
+
+
+
+
+
 
 
 

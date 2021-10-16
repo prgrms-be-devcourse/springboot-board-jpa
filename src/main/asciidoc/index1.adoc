@@ -1,0 +1,18 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 포스트
+
+=== 포스트 등록
+
+=== /orders/{uuid}
+
+.Request
+include::{snippets}/posts-save/http-request.adoc[]
+include::{snippets}/posts-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/posts-save/http-response.adoc[]
+include::{snippets}/posts-save/response-fields.adoc[]

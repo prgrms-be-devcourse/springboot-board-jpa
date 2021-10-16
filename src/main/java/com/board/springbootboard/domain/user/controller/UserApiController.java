@@ -35,11 +35,11 @@ public class UserApiController {
 
 
     // TODO 다건 조회 : VIEW 단 만들어서 연결 예정
-    @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("users",userService.findAllDesc());
-        return "index";
-    }
+//    @GetMapping("/")
+//    public String index(Model model) {
+//        model.addAttribute("users",userService.findAllDesc());
+//        return "index";
+//    }
 
     // TODO nickName으로 회원 조회 및 수정
 
