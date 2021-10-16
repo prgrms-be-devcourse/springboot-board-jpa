@@ -1,4 +1,4 @@
-package kdt.prgms.springbootboard.config;
+package kdt.prgms.springbootboard.global.config;
 
 import java.util.Optional;
 import java.util.UUID;

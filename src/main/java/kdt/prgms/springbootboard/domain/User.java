@@ -3,9 +3,11 @@ package kdt.prgms.springbootboard.domain;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+import lombok.Getter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+@Getter
 @Entity
 @Table(name = "user")
 @SQLDelete(sql = "UPDATE user SET deleted = true WHERE user_id=?")
@@ -55,25 +57,6 @@ public class User extends BaseEntity {
         this.posts.remove(post);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public Hobby getHobby() {
-        return hobby;
-    }
-
-    public List<Post> getPosts() {
-        return posts;
-    }
 
     @Override
     public String toString() {

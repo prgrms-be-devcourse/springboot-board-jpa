@@ -2,9 +2,11 @@ package kdt.prgms.springbootboard.domain;
 
 import java.time.LocalDateTime;
 import javax.persistence.*;
+import lombok.Getter;
 import org.springframework.data.annotation.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
@@ -27,26 +29,6 @@ public abstract class BaseEntity {
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public LocalDateTime getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
 
     @Override
     public String toString() {
