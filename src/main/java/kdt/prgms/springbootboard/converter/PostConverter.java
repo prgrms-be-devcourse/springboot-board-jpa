@@ -1,6 +1,7 @@
 package kdt.prgms.springbootboard.converter;
 
 import kdt.prgms.springbootboard.domain.Post;
+import kdt.prgms.springbootboard.dto.PostDetailDto;
 import kdt.prgms.springbootboard.dto.PostDto;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,19 @@ public class PostConverter {
             post.getId(),
             post.getTitle(),
             post.getContent(),
+            userConverter.convertUserDto(post.getUser())
+        );
+    }
+
+    public PostDetailDto convertPostDetailDto(Post post) {
+        return new PostDetailDto(
+            post.getId(),
+            post.getTitle(),
+            post.getContent(),
+            post.getCreatedBy(),
+            post.getLastModifiedDate(),
+            post.getLastModifiedBy(),
+            post.getLastModifiedDate(),
             userConverter.convertUserDto(post.getUser())
         );
     }
