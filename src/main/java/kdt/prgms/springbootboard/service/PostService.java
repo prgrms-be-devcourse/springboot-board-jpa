@@ -29,8 +29,8 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(PostDto postDto) {
-        var foundPost = postRepository.findById(postDto.getId())
+    public Long update(Long postId, PostDto postDto) {
+        var foundPost = postRepository.findById(postId)
             .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
         foundPost.changePost(postDto.getTitle(), postDto.getContent());
         return foundPost.getId();

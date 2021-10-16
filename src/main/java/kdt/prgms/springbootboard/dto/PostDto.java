@@ -1,6 +1,9 @@
 package kdt.prgms.springbootboard.dto;
 
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,10 +13,14 @@ public class PostDto {
 
     private Long id;
 
+    @NotBlank
+    @Size(max = 100)
     private String title;
 
+    @Size(max = 255)
     private String content;
 
+    @NotNull
     private UserDto userDto;
 
     public PostDto() {
