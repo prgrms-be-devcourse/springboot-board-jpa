@@ -18,13 +18,13 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PostDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(PostDto::new);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PostDto findOne(Long id) throws NotFoundException {
         return postRepository.findById(id)
                 .map(PostDto::new)
