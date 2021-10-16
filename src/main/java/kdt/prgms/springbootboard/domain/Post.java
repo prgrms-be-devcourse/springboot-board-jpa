@@ -1,9 +1,13 @@
 package kdt.prgms.springbootboard.domain;
 
 import javax.persistence.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "post")
+@SQLDelete(sql = "UPDATE post SET deleted = true WHERE post_id=?")
+@Where(clause = "deleted=false")
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue
@@ -28,8 +32,11 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public static Post createPost(String title, String content) {
-        return new Post(title, content);
+    public static Post createPost(String title, String content, User user) {
+        var newPost = new Post(title, content);
+        newPost.changeUser(user);
+        return newPost;
+
     }
 
     public void changeUser(User user) {
@@ -50,5 +57,15 @@ public class Post extends BaseEntity {
 
     public String getContent() {
         return content;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", content='" + content + '\'' +
+            ", user=" + user +
+            "} " + super.toString();
     }
 }

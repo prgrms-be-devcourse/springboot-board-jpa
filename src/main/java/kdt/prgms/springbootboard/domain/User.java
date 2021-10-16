@@ -8,8 +8,8 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "user")
-@SQLDelete(sql = "UPDATE user SET is_active = false WHERE user_id=?")
-@Where(clause = "is_active=true")
+@SQLDelete(sql = "UPDATE user SET deleted = true WHERE user_id=?")
+@Where(clause = "deleted=false")
 public class User extends BaseEntity {
 
     @Id
