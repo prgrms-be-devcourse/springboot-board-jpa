@@ -10,7 +10,7 @@
     POST /posts
     POST /posts/{id}
     ```
-- [REST-DOCS]() 를 이용해서 문서화한다.
+- REST-DOCS 를 이용해서 문서화한다.
 - [프로젝트 정리 notion](https://wooden-plate-047.notion.site/SpringBoot-Part4-7-ac252c788a104096bde8a6d0db2eab99)
 
 ## 사용 기술 😎
