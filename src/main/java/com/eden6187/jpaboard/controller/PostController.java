@@ -3,7 +3,6 @@ package com.eden6187.jpaboard.controller;
 import com.eden6187.jpaboard.common.ApiResponse;
 import com.eden6187.jpaboard.common.ErrorResponse;
 import com.eden6187.jpaboard.exception.not_found.NotFoundException;
-import com.eden6187.jpaboard.exception.not_found.UserNotFoundException;
 import com.eden6187.jpaboard.service.PostService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,7 +42,7 @@ public class PostController {
 
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorResponse> handleNotFoundException(
-      UserNotFoundException notFoundException) {
+      NotFoundException notFoundException) {
     return ResponseEntity
         .badRequest()
         .body(

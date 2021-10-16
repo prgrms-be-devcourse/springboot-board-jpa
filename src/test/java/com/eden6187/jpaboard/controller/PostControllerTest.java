@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.eden6187.jpaboard.common.ErrorCode;
 import com.eden6187.jpaboard.controller.PostController.AddPostRequestDto;
-import com.eden6187.jpaboard.exception.not_found.UserNotFoundException;
+import com.eden6187.jpaboard.exception.not_found.NotFoundException;
 import com.eden6187.jpaboard.service.PostService;
 import com.eden6187.jpaboard.test_data.PostMockData;
 import com.eden6187.jpaboard.test_data.UserMockData;
@@ -78,8 +78,8 @@ public class PostControllerTest {
   }
 
   @Test
-  void handleUserNotFoundException() throws Exception {
-    when(postService.addPost(any())).thenThrow(new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
+  void handleNotFound() throws Exception {
+    when(postService.addPost(any())).thenThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
     mockMvc.perform(post("/api/v1/posts")
             .contentType(MediaType.APPLICATION_JSON)
@@ -87,7 +87,7 @@ public class PostControllerTest {
         )
         .andExpect(status().is4xxClientError())
         .andDo(print())
-        .andDo(document("post-add/user-not-found",
+        .andDo(document("post-add/not-found",
                 requestFields(
                     fieldWithPath("userId").type(JsonFieldType.NUMBER).description("userId"),
                     fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
@@ -105,8 +105,5 @@ public class PostControllerTest {
                 )
             )
         );
-
-
   }
-
 }
