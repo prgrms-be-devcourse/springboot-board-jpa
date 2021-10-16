@@ -4,8 +4,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -13,17 +18,14 @@ import java.time.temporal.ChronoUnit;
 @MappedSuperclass
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
-    @Column(name = "create_by")
-    private String createBy;
-
-    @Column(name = "create_ay",columnDefinition = "TIMESTAMP")
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createAt;
 
-    public BaseEntity(String createBy, LocalDateTime createAt) {
-        this.createBy = createBy;
-        this.createAt = createAt;
-    }
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
 }
