@@ -2,12 +2,14 @@ package com.board.springbootboard.domain.posts;
 
 
 import com.board.springbootboard.domain.BaseTimeEntity;
+import com.board.springbootboard.domain.user.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
@@ -39,6 +41,25 @@ public class PostsEntity extends BaseTimeEntity {
         this.title=title;
         this.content=content;
     }
+
+
+    // User와 매핑 (양방햐 매핑)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name="user_id",referencedColumnName = "id")
+    private UserEntity user;
+
+    public void setUser(UserEntity user) {
+        if(Objects.nonNull(this.user)) {
+            this.user.getUsers().remove(this);
+        }
+
+        this.user = user;
+        user.getUsers().add(this);
+    }
+
+
+
+
 
 
 

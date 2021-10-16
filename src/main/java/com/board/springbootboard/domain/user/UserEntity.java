@@ -2,12 +2,15 @@ package com.board.springbootboard.domain.user;
 
 
 import com.board.springbootboard.domain.BaseTimeEntity;
+import com.board.springbootboard.domain.posts.PostsEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -43,8 +46,16 @@ public class UserEntity extends BaseTimeEntity {
     }
 
 
+    // 연관관계 매핑
+    @OneToMany(mappedBy = "user")
+    private List<PostsEntity> users=new ArrayList<>();
 
-    //Todo - 연관관계 매핑
+
+    public void addUser(PostsEntity posts){
+        posts.setUser(this);
+    }
+
+
 
 
 }
