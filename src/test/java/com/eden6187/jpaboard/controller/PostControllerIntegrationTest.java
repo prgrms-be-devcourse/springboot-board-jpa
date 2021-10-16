@@ -110,7 +110,7 @@ public class PostControllerIntegrationTest {
 
   @Test
   @Transactional
-  void getSinglePost() throws Exception {
+  void getOne() throws Exception {
     //when
     mockMvc.perform(get("/api/v1/posts/{id}", postId))
         //then
@@ -131,6 +131,72 @@ public class PostControllerIntegrationTest {
                     fieldWithPath("data.userName").type(JsonFieldType.STRING).description("userName"),
                     fieldWithPath("data.createdBy").type(JsonFieldType.STRING).description("createdBy"),
                     fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("createdAt")
+                )
+            )
+        );
+  }
+
+  @Test
+  @Transactional
+  void getAll() throws Exception {
+    //when
+    mockMvc.perform(get("/api/v1/posts", postId)
+            .param("page", String.valueOf(0))
+            .param("size", String.valueOf(10))
+        )
+        //then
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("post-get-all",
+                responseFields(
+                    fieldWithPath("serverDatetime").type(JsonFieldType.STRING)
+                        .description("serverDatetime"),
+                    fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
+                    fieldWithPath("data.content[].title").type(JsonFieldType.STRING)
+                        .description("data.content[].title"),
+                    fieldWithPath("data.content[].content").type(JsonFieldType.STRING)
+                        .description("data.content[].content"),
+                    fieldWithPath("data.content[].userId").type(JsonFieldType.NUMBER)
+                        .description("data.content[].userId"),
+                    fieldWithPath("data.content[].createdBy").type(JsonFieldType.STRING)
+                        .description("data.content[].createdBy"),
+                    fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING)
+                        .description("data.content[].createdAt"),
+                    fieldWithPath("data.content[].userName").type(JsonFieldType.STRING)
+                        .description("data.content[].userName"),
+                    fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN)
+                        .description("data.pageable.sort.sorted"),
+                    fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN)
+                        .description("data.pageable.sort.empty"),
+                    fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN)
+                        .description("data.pageable.sort.unsorted"),
+                    fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER)
+                        .description("data.pageable.pageNumber"),
+                    fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER)
+                        .description("data.pageable.pageSize"),
+                    fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER)
+                        .description("data.pageable.offset"),
+                    fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN)
+                        .description("data.pageable.paged"),
+                    fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN)
+                        .description("data.pageable.unpaged"),
+                    fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER)
+                        .description("data.totalElements"),
+                    fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER)
+                        .description("data.totalPages"),
+                    fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("data.last"),
+                    fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER)
+                        .description("data.numberOfElements"),
+                    fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("data.size"),
+                    fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("data.number"),
+                    fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN)
+                        .description("data.sort.empty"),
+                    fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN)
+                        .description("data.sort.sorted"),
+                    fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN)
+                        .description("data.sort.unsorted"),
+                    fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("data.first"),
+                    fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("data.empty")
                 )
             )
         );

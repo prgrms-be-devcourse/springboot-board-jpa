@@ -11,6 +11,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +35,16 @@ public class PostController {
       @PathVariable("id") Long postId) {
     return ResponseEntity.ok(
         ApiResponse.ok(
-            postService.getSinglePost(postId)
+            postService.findOne(postId)
         )
+    );
+  }
+
+  @GetMapping
+  ResponseEntity<ApiResponse<Page<GetSinglePostResponseDto>>> getSinglePost(Pageable pageable) {
+    Page<GetSinglePostResponseDto> pages = postService.findAll(pageable);
+    return ResponseEntity.ok(
+        ApiResponse.ok(pages)
     );
   }
 

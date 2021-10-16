@@ -14,6 +14,8 @@ import com.eden6187.jpaboard.repository.PostRepository;
 import com.eden6187.jpaboard.repository.UserRepository;
 import com.eden6187.jpaboard.service.converter.PostConverter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,7 +83,7 @@ public class PostService {
   }
 
   @Transactional(readOnly = true)
-  public GetSinglePostResponseDto getSinglePost(Long postId) {
+  public GetSinglePostResponseDto findOne(Long postId) {
     Post post = postRepository.findById(postId)
         .orElseThrow(
             () -> {
@@ -90,5 +92,12 @@ public class PostService {
         );
 
     return postConverter.convertToDto(post);
+  }
+
+  @Transactional(readOnly = true)
+  public Page<GetSinglePostResponseDto> findAll(Pageable pageable) {
+    return postRepository
+        .findAll(pageable)
+        .map(postConverter::convertToDto);
   }
 }
