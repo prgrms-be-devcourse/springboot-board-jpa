@@ -40,17 +40,16 @@ class UserRepositoryTest {
         //given
         var userName = "test";
         var userAge = 20;
-        var userHobby = Hobby.createHobby("test hobby", HobbyType.SPORTS);
 
         //when
-        var user = userRepository.save(User.createUser(userName, userAge, userHobby));
+        var user = userRepository.save(User.createUser(userName, userAge));
 
         //then
         log.info("created user: {}", user);
         assertThat(user, hasProperty("id", notNullValue()));
         assertThat(user, hasProperty("name", is(userName)));
         assertThat(user, hasProperty("age", is(userAge)));
-        assertThat(user, hasProperty("hobby", is(userHobby)));
+        assertThat(user, hasProperty("hobby", nullValue()));
         assertThat(user, hasProperty("createdBy", notNullValue()));
         assertThat(user, hasProperty("createdDate", notNullValue()));
         assertThat(user, hasProperty("lastModifiedBy", notNullValue()));
@@ -60,14 +59,13 @@ class UserRepositoryTest {
     @Test
     void 전체_유저_조회_성공() {
         //given
-        var user1 = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
+        var user1 = User.createUser("tester#1", 1);
         entityManager.persist(user1);
 
-        var user2 = User
-            .createUser("tester#2", 2, Hobby.createHobby("hobby#2", HobbyType.COLLECTION));
+        var user2 = User.createUser("tester#2", 2);
         entityManager.persist(user2);
 
-        var user3 = User.createUser("tester#3", 3, Hobby.createHobby("hobby#3", HobbyType.ETC));
+        var user3 = User.createUser("tester#3", 3);
         entityManager.persist(user3);
 
         //when
@@ -88,28 +86,23 @@ class UserRepositoryTest {
     @Test
     void 유저_아이디로_조회_성공() {
         //given
-        var user1 = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
-        entityManager.persist(user1);
-
-        var user2 = User
-            .createUser("tester#2", 2, Hobby.createHobby("hobby#2", HobbyType.COLLECTION));
-        entityManager.persist(user2);
+        var user = User.createUser("tester#1", 1);
+        entityManager.persist(user);
 
         //when
-        var foundUser = userRepository.findById(user2.getId()).get();
+        var foundUser = userRepository.findById(user.getId()).get();
 
         //then
-        assertThat(foundUser, samePropertyValuesAs(user2));
+        assertThat(foundUser, samePropertyValuesAs(user));
     }
 
     @Test
     void 유저_이름으로_조회_성공() {
         //given
-        var user1 = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
+        var user1 = User.createUser("tester#1", 1);
         entityManager.persist(user1);
 
-        var user2 = User
-            .createUser("tester#2", 2, Hobby.createHobby("hobby#2", HobbyType.COLLECTION));
+        var user2 = User.createUser("tester#2", 2);
         entityManager.persist(user2);
 
         //when
@@ -122,15 +115,14 @@ class UserRepositoryTest {
     @Test
     void 유저_정보_변경_성공() {
         //given
-        var user = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
+        var user = User.createUser("tester#1", 1);
         entityManager.persist(user);
 
         //when
         user.changeUserProfile(
             "changed" + user.getName(),
             user.getAge() + 1,
-            Hobby.createHobby("changed" + user.getHobby().getName(),
-                user.getHobby().getHobbyType())
+            Hobby.createHobby("soccer", HobbyType.SPORTS)
         );
         var foundUser = userRepository.findById(user.getId()).get();
 
@@ -142,11 +134,10 @@ class UserRepositoryTest {
     @Test
     void 아이디로_유저_삭제_성공() {
         //given
-        var user1 = User.createUser("tester#1", 1, Hobby.createHobby("hobby#1", HobbyType.SPORTS));
+        var user1 = User.createUser("tester#1", 1);
         entityManager.persist(user1);
 
-        var user2 = User
-            .createUser("tester#2", 2, Hobby.createHobby("hobby#2", HobbyType.COLLECTION));
+        var user2 = User.createUser("tester#2", 2);
         entityManager.persist(user2);
 
         //when

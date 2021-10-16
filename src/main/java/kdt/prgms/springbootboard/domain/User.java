@@ -32,14 +32,13 @@ public class User extends BaseEntity {
     protected User() {
     }
 
-    private User(String name, int age, Hobby hobby) {
+    private User(String name, int age) {
         this.name = name;
         this.age = age;
-        this.hobby = hobby;
     }
 
-    public static User createUser(String name, int age, Hobby hobby) {
-        return new User(name, age, hobby);
+    public static User createUser(String name, int age) {
+        return new User(name, age);
     }
 
     public void changeUserProfile(String name, int age, Hobby hobby) {

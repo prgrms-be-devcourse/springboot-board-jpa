@@ -65,6 +65,10 @@ public class Post extends BaseEntity {
         return content;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
