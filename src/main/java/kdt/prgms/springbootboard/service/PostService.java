@@ -1,9 +1,9 @@
 package kdt.prgms.springbootboard.service;
 
-import javassist.NotFoundException;
 import kdt.prgms.springbootboard.converter.PostConverter;
 import kdt.prgms.springbootboard.dto.PostDetailDto;
 import kdt.prgms.springbootboard.dto.PostDto;
+import kdt.prgms.springbootboard.global.config.error.exception.EntityNotFoundException;
 import kdt.prgms.springbootboard.repository.PostRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,8 +29,9 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(PostDto postDto) throws NotFoundException {
-        var foundPost = postRepository.findById(postDto.getId()).orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
+    public Long update(PostDto postDto) {
+        var foundPost = postRepository.findById(postDto.getId())
+            .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
         foundPost.changePost(postDto.getTitle(), postDto.getContent());
         return foundPost.getId();
     }
@@ -39,10 +40,10 @@ public class PostService {
         return postRepository.findAll(pageable).map(postConverter::convertPostDto);
     }
 
-    public PostDetailDto findOne(Long postId) throws NotFoundException {
+    public PostDetailDto findOne(Long postId) {
         return postRepository.findById(postId)
             .map(postConverter::convertPostDetailDto)
-            .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
+            .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
     }
 
 }
