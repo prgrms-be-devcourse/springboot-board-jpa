@@ -3,7 +3,7 @@ package kdt.prgms.springbootboard.service;
 import kdt.prgms.springbootboard.converter.PostConverter;
 import kdt.prgms.springbootboard.dto.PostDetailDto;
 import kdt.prgms.springbootboard.dto.PostDto;
-import kdt.prgms.springbootboard.global.config.error.exception.EntityNotFoundException;
+import kdt.prgms.springbootboard.global.error.exception.EntityNotFoundException;
 import kdt.prgms.springbootboard.repository.PostRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

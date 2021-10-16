@@ -1,4 +1,4 @@
-package kdt.prgms.springbootboard.global.config.error;
+package kdt.prgms.springbootboard.global.error;
 
 import java.util.ArrayList;
 import java.util.List;
