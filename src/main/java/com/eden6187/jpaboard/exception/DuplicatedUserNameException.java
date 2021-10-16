@@ -1,20 +1,10 @@
 package com.eden6187.jpaboard.exception;
 
-public class DuplicatedUserNameException extends RuntimeException {
+import com.eden6187.jpaboard.common.ErrorCode;
 
-  public DuplicatedUserNameException() {
-    super();
-  }
+public class DuplicatedUserNameException extends CustomException {
 
-  public DuplicatedUserNameException(String message) {
-    super(message);
-  }
-
-  public DuplicatedUserNameException(Throwable cause) {
-    super(cause);
-  }
-
-  public DuplicatedUserNameException(String message, Throwable cause) {
-    super(message, cause);
+  public DuplicatedUserNameException(ErrorCode errorCode) {
+    super(errorCode);
   }
 }

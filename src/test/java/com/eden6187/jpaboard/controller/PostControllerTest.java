@@ -10,8 +10,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.eden6187.jpaboard.common.ErrorCode;
 import com.eden6187.jpaboard.controller.PostController.AddPostRequestDto;
-import com.eden6187.jpaboard.exception.UserNotFoundException;
+import com.eden6187.jpaboard.exception.not_found.UserNotFoundException;
 import com.eden6187.jpaboard.service.PostService;
 import com.eden6187.jpaboard.test_data.PostMockData;
 import com.eden6187.jpaboard.test_data.UserMockData;
@@ -38,20 +39,17 @@ import org.springframework.test.web.servlet.MockMvc;
 @Slf4j
 public class PostControllerTest {
 
-  @Autowired
-  ObjectMapper objectMapper;
-
-  @Autowired
-  private MockMvc mockMvc;
-
-  @MockBean
-  private PostService postService;
-
   private static final AddPostRequestDto testAddPostDto = AddPostRequestDto.builder()
       .userId(UserMockData.TEST_ID)
       .title(PostMockData.TEST_TITLE)
       .content(PostMockData.TEST_CONTENT)
       .build();
+  @Autowired
+  ObjectMapper objectMapper;
+  @Autowired
+  private MockMvc mockMvc;
+  @MockBean
+  private PostService postService;
 
   @Test
   void addUserTest() throws Exception {
@@ -80,8 +78,8 @@ public class PostControllerTest {
   }
 
   @Test
-  void handleUserNotFoundException() throws Exception{
-    when(postService.addPost(any())).thenThrow(UserNotFoundException.class);
+  void handleUserNotFoundException() throws Exception {
+    when(postService.addPost(any())).thenThrow(new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
 
     mockMvc.perform(post("/api/v1/posts")
             .contentType(MediaType.APPLICATION_JSON)
@@ -96,13 +94,19 @@ public class PostControllerTest {
                     fieldWithPath("content").type(JsonFieldType.STRING).description("content")
                 ),
                 responseFields(
-                  fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("serverDatetime"),
-                    fieldWithPath("errorCode.statusCode").type(JsonFieldType.NUMBER).description("serverDatetime"),
-                    fieldWithPath("errorCode.privateCode").type(JsonFieldType.STRING).description("privateCode"),
-                    fieldWithPath("errorCode.message").type(JsonFieldType.STRING).description("message")
+                    fieldWithPath("serverDatetime").type(JsonFieldType.STRING)
+                        .description("serverDatetime"),
+                    fieldWithPath("errorCode.statusCode").type(JsonFieldType.NUMBER)
+                        .description("serverDatetime"),
+                    fieldWithPath("errorCode.privateCode").type(JsonFieldType.STRING)
+                        .description("privateCode"),
+                    fieldWithPath("errorCode.message").type(JsonFieldType.STRING)
+                        .description("message")
                 )
             )
         );
 
+
   }
+
 }

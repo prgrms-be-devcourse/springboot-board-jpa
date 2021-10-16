@@ -25,16 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
-  @Builder
-  public Post(String createdBy, LocalDateTime createdAt, Long id, String title,
-      String content, User user) {
-    super(createdBy, createdAt);
-    this.id = id;
-    this.title = title;
-    this.content = content;
-    this.user = user;
-  }
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
@@ -49,8 +39,18 @@ public class Post extends BaseEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   // Post 가 삭제 된다고 해도 게시물은 남아 있어야 하기 때문에 CascadeType.PERSIST
-  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
   private User user;
+
+  @Builder
+  public Post(String createdBy, LocalDateTime createdAt, Long id, String title,
+      String content, User user) {
+    super(createdBy, createdAt);
+    this.id = id;
+    this.title = title;
+    this.content = content;
+    this.user = user;
+  }
 
   // 연관 관계 편의 메소드
   public void setUser(User user) {
@@ -62,5 +62,21 @@ public class Post extends BaseEntity {
     user.getPosts().add(this);
 
     this.createdBy = user.getName();
+  }
+
+  public void updateTitle(String title) {
+    this.title = title;
+  }
+
+  public void updateContent(String content) {
+    this.content = content;
+  }
+
+  public boolean isBelongedTo(User user) {
+    if (!Objects.nonNull(user)) {
+      return false;
+    }
+
+    return this.user.getId().equals(user.getId());
   }
 }

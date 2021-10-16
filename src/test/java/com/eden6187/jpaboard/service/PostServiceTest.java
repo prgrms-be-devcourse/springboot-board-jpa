@@ -1,12 +1,18 @@
 package com.eden6187.jpaboard.service;
 
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.eden6187.jpaboard.controller.PostController.AddPostRequestDto;
-import com.eden6187.jpaboard.exception.UserNotFoundException;
+import com.eden6187.jpaboard.controller.PostController.UpdatePostRequestDto;
+import com.eden6187.jpaboard.exception.AuthorizationException;
+import com.eden6187.jpaboard.exception.not_found.PostNotFoundException;
+import com.eden6187.jpaboard.exception.not_found.UserNotFoundException;
 import com.eden6187.jpaboard.model.Post;
 import com.eden6187.jpaboard.model.User;
 import com.eden6187.jpaboard.repository.PostRepository;
@@ -17,6 +23,7 @@ import com.eden6187.jpaboard.test_data.UserMockData;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -84,5 +91,51 @@ class PostServiceTest {
     assertThrows(UserNotFoundException.class, () -> {
       postService.addPost(addPostRequestDto);
     });
+  }
+
+  @Test
+  void updatePostUserNotFound() {
+    UpdatePostRequestDto updatePostRequestDto = mock(UpdatePostRequestDto.class);
+    when(postRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(mock(Post.class)));
+    when(userRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
+
+    assertThrows(
+        UserNotFoundException.class,
+        () -> {
+          postService.updatePost(updatePostRequestDto, PostMockData.TEST_ID);
+        }
+    );
+  }
+
+  @Test
+  void updatePostPostNotFound() {
+    UpdatePostRequestDto updatePostRequestDto = mock(UpdatePostRequestDto.class);
+    when(postRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
+    when(userRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(mock(User.class)));
+
+    assertThrows(
+        PostNotFoundException.class,
+        () -> {
+          postService.updatePost(updatePostRequestDto, PostMockData.TEST_ID);
+        }
+    );
+  }
+
+  @Test
+  void updatePostAuthorization() {
+    //given
+    Post post = mock(Post.class);
+    User user = mock(User.class);
+    when(postRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(post));
+    when(userRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(user));
+    when(post.isBelongedTo(any())).thenReturn(false);
+
+    //then
+    assertThrows(
+        AuthorizationException.class,
+        () -> {
+          postService.updatePost(mock(UpdatePostRequestDto.class), UserMockData.TEST_ID);
+        }
+    );
   }
 }

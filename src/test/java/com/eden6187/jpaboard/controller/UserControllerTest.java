@@ -1,10 +1,21 @@
 package com.eden6187.jpaboard.controller;
 
-import com.eden6187.jpaboard.test_data.UserMockData;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.eden6187.jpaboard.common.ErrorCode;
 import com.eden6187.jpaboard.controller.UserController.AddUserRequestDto;
 import com.eden6187.jpaboard.exception.DuplicatedUserNameException;
 import com.eden6187.jpaboard.repository.UserRepository;
 import com.eden6187.jpaboard.service.UserService;
+import com.eden6187.jpaboard.test_data.UserMockData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,16 +28,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {
     UserController.class
@@ -81,14 +82,15 @@ class UserControllerTest {
   }
 
   @Test
-  void handleDuplicatedUserNameException() throws Exception{
+  void handleDuplicatedUserNameException() throws Exception {
     AddUserRequestDto saveUserRequestDto = AddUserRequestDto.builder()
         .age(UserMockData.TEST_AGE)
         .name(UserMockData.TEST_NAME)
         .hobby(UserMockData.TEST_HOBBY)
         .build();
 
-    when(userService.addUser(any())).thenThrow(new DuplicatedUserNameException());
+    when(userService.addUser(any())).thenThrow(
+        new DuplicatedUserNameException(ErrorCode.DUPLICATED_USER_NAME));
 
     mockMvc.perform(post("/api/v1/users")
             .contentType(MediaType.APPLICATION_JSON)
@@ -96,16 +98,19 @@ class UserControllerTest {
         )
         .andExpect(status().is4xxClientError())
         .andDo(print())
-        .andDo(document("user-duplicated",
+        .andDo(document("user-add/user-duplicated",
                 requestFields(
                     fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
                     fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
                     fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
                 ),
                 responseFields(
-                    fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("server_datetime"),
-                    fieldWithPath("errorCode.statusCode").type(JsonFieldType.NUMBER).description("status_code"),
-                    fieldWithPath("errorCode.privateCode").type(JsonFieldType.STRING).description("private_code"),
+                    fieldWithPath("serverDatetime").type(JsonFieldType.STRING)
+                        .description("server_datetime"),
+                    fieldWithPath("errorCode.statusCode").type(JsonFieldType.NUMBER)
+                        .description("status_code"),
+                    fieldWithPath("errorCode.privateCode").type(JsonFieldType.STRING)
+                        .description("private_code"),
                     fieldWithPath("errorCode.message").type(JsonFieldType.STRING).description("message")
                 )
             )

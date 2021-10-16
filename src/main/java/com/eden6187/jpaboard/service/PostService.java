@@ -1,7 +1,12 @@
 package com.eden6187.jpaboard.service;
 
+import com.eden6187.jpaboard.common.ErrorCode;
 import com.eden6187.jpaboard.controller.PostController.AddPostRequestDto;
-import com.eden6187.jpaboard.exception.UserNotFoundException;
+import com.eden6187.jpaboard.controller.PostController.UpdatePostRequestDto;
+import com.eden6187.jpaboard.controller.PostController.UpdatePostResponseDto;
+import com.eden6187.jpaboard.exception.AuthorizationException;
+import com.eden6187.jpaboard.exception.not_found.PostNotFoundException;
+import com.eden6187.jpaboard.exception.not_found.UserNotFoundException;
 import com.eden6187.jpaboard.model.Post;
 import com.eden6187.jpaboard.model.User;
 import com.eden6187.jpaboard.repository.PostRepository;
@@ -27,7 +32,7 @@ public class PostService {
         .findById(userId)
         .orElseThrow(
             () -> {
-              throw new UserNotFoundException();
+              throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
             }
         );
     Post post = postConverter.convertPost(addPostRequestDto);
@@ -40,4 +45,37 @@ public class PostService {
     return savedPost.getId();
   }
 
+  @Transactional
+  public UpdatePostResponseDto updatePost(UpdatePostRequestDto updatePostRequestDto, Long postId)
+      throws PostNotFoundException, AuthorizationException, UserNotFoundException {
+    // 1.영속화
+    Post post = postRepository.findById(postId)
+        .orElseThrow(
+            () -> {
+              throw new PostNotFoundException(ErrorCode.POST_NOT_FOUND);
+            }
+        );
+    User user = userRepository.findById(updatePostRequestDto.getUserId())
+        .orElseThrow(
+            () -> {
+              throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+            }
+        );
+
+    // 2. post를 쓴 user와 request에서 들어온 user의 ID를 비교
+    if (!post.isBelongedTo(user)) {
+      throw new AuthorizationException(ErrorCode.NO_AUTHORIZATION);
+    }
+
+    post.updateContent(updatePostRequestDto.getContent());
+    post.updateTitle(updatePostRequestDto.getTitle());
+
+    Post updatedPost = postRepository.save(post);
+
+    return UpdatePostResponseDto
+        .builder()
+        .title(updatedPost.getTitle())
+        .content(updatedPost.getContent())
+        .build();
+  }
 }

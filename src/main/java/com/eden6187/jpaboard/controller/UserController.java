@@ -1,7 +1,6 @@
 package com.eden6187.jpaboard.controller;
 
 import com.eden6187.jpaboard.common.ApiResponse;
-import com.eden6187.jpaboard.common.ErrorCode;
 import com.eden6187.jpaboard.common.ErrorResponse;
 import com.eden6187.jpaboard.exception.DuplicatedUserNameException;
 import com.eden6187.jpaboard.service.UserService;
@@ -40,32 +39,31 @@ public class UserController {
     );
   }
 
-  // request DTO
-  @AllArgsConstructor
-  @Getter
-  @Builder
-  public static class AddUserRequestDto {
-    final String name;
-    final Integer age;
-    final String hobby;
-  }
-
-  // response DTO
-  @AllArgsConstructor
-  @Getter
-  @Builder
-  public static class AddUserResponseDto {
-    final Long userId;
-  }
-
   @ExceptionHandler(DuplicatedUserNameException.class)
   public ResponseEntity<ErrorResponse> handleDuplicatedUserNameException(
       DuplicatedUserNameException ex) {
     return ResponseEntity
         .badRequest()
         .body(
-            ErrorResponse.of(ErrorCode.USER_NOT_FOUND)
+            ErrorResponse.of(ex.getErrorCode())
         );
   }
-  // end -- [POST /api/v1/users]
+
+  @AllArgsConstructor
+  @Getter
+  @Builder
+  public static class AddUserRequestDto {
+
+    final String name;
+    final Integer age;
+    final String hobby;
+  }
+
+  @AllArgsConstructor
+  @Getter
+  @Builder
+  public static class AddUserResponseDto {
+
+    final Long userId;
+  }
 }

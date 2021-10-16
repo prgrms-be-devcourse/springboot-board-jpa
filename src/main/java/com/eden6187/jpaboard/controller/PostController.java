@@ -1,9 +1,9 @@
 package com.eden6187.jpaboard.controller;
 
 import com.eden6187.jpaboard.common.ApiResponse;
-import com.eden6187.jpaboard.common.ErrorCode;
 import com.eden6187.jpaboard.common.ErrorResponse;
-import com.eden6187.jpaboard.exception.UserNotFoundException;
+import com.eden6187.jpaboard.exception.not_found.NotFoundException;
+import com.eden6187.jpaboard.exception.not_found.UserNotFoundException;
 import com.eden6187.jpaboard.service.PostService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,6 @@ public class PostController {
 
   private final PostService postService;
 
-  // start -- [POST /api/v1/posts] - 게시물 추가
   @PostMapping
   ResponseEntity<ApiResponse<AddPostResponseDto>> addPost(
       @RequestBody AddPostRequestDto addPostRequestDto) {
@@ -41,7 +41,28 @@ public class PostController {
     );
   }
 
-  // request DTO
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNotFoundException(
+      UserNotFoundException notFoundException) {
+    return ResponseEntity
+        .badRequest()
+        .body(
+            ErrorResponse.of(notFoundException.getErrorCode())
+        );
+  }
+
+  @PostMapping("/{id}")
+  ResponseEntity<ApiResponse<UpdatePostResponseDto>> updatePost(
+      @PathVariable("id") Long postId,
+      @RequestBody() UpdatePostRequestDto requestDto
+  ) {
+
+    UpdatePostResponseDto dto = postService.updatePost(requestDto, postId);
+    return ResponseEntity.ok(
+        ApiResponse.ok(dto)
+    );
+  }
+
   @AllArgsConstructor
   @Getter
   @Builder
@@ -52,7 +73,6 @@ public class PostController {
     final String content;
   }
 
-  // response DTO
   @AllArgsConstructor
   @Getter
   @Builder
@@ -61,16 +81,22 @@ public class PostController {
     final Long postId;
   }
 
-  // UserNotFoundException
-  @ExceptionHandler(UserNotFoundException.class)
-  public ResponseEntity<ErrorResponse> handleUserNotFoundException(
-      UserNotFoundException userNotFoundException) {
-    log.info("handle user not found exception");
-    return ResponseEntity
-        .badRequest()
-        .body(
-            ErrorResponse.of(ErrorCode.DUPLICATED_USER_NAME)
-        );
+  @AllArgsConstructor
+  @Getter
+  @Builder
+  public static class UpdatePostRequestDto {
+
+    final Long userId;
+    final String title;
+    final String content;
   }
-  // end -- [POST /api/v1/posts] - 게시물 추가
+
+  @AllArgsConstructor
+  @Getter
+  @Builder
+  public static class UpdatePostResponseDto {
+
+    final String title;
+    final String content;
+  }
 }
