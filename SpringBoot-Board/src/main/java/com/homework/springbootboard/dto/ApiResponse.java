@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApiResponse<T> {
+
+    private static final int HTTP_STATUS_OK = 200;
+
     private ErrorStatus errorStatus;
     private int code;
     private T data;
@@ -25,7 +28,7 @@ public class ApiResponse<T> {
     }
 
     public ApiResponse(T data) {
-        this.code = 200;
+        this.code = HTTP_STATUS_OK;
         this.data = data;
         this.serverDateTime = LocalDateTime.now();
     }
