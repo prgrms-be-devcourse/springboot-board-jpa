@@ -20,6 +20,10 @@ public class Post extends BaseEntity {
 	@Column(name = "content")
 	private String content;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
