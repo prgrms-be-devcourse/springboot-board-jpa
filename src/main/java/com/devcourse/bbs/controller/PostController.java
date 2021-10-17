@@ -22,8 +22,8 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<PostDTO>>> getPostsByPage
-            (@RequestParam(name = "page") int page,
-             @RequestParam(name = "size") int size) {
+            (@RequestParam int page,
+             @RequestParam int size) {
         return ResponseEntity.ok(ApiResponse.success(postService.findPostsByPage(page, size)));
     }
 
