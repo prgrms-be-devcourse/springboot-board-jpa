@@ -1,5 +1,7 @@
 package com.devcourse.springbootboard.user.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +28,7 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserResponse> createUser(@RequestBody final UserSignUpRequest userSignUpRequest) {
+	public ResponseEntity<UserResponse> createUser(@Valid @RequestBody final UserSignUpRequest userSignUpRequest) {
 		return ResponseEntity.ok(userService.saveUser(userSignUpRequest));
 	}
 
@@ -38,7 +40,7 @@ public class UserController {
 	@PutMapping("/{id}/profile")
 	public ResponseEntity<UserResponse> modifyUser(
 		@PathVariable final Long id,
-		@RequestBody final UserUpdateRequest userUpdateRequest
+		@Valid @RequestBody final UserUpdateRequest userUpdateRequest
 	) {
 		return ResponseEntity.ok(userService.updateUser(id, userUpdateRequest));
 	}

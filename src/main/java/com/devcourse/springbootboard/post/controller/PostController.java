@@ -1,5 +1,7 @@
 package com.devcourse.springbootboard.post.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -38,12 +40,12 @@ public class PostController {
 	}
 
 	@PostMapping
-	public ResponseEntity<PostResponse> addPost(@RequestBody final PostWriteRequest postWriteRequest) {
+	public ResponseEntity<PostResponse> addPost(@Valid @RequestBody final PostWriteRequest postWriteRequest) {
 		return ResponseEntity.ok(postService.savePost(postWriteRequest));
 	}
 
 	@PutMapping
-	public ResponseEntity<PostResponse> modifyPost(@RequestBody final PostUpdateRequest postUpdateRequest) {
+	public ResponseEntity<PostResponse> modifyPost(@Valid @RequestBody final PostUpdateRequest postUpdateRequest) {
 		return ResponseEntity.ok(postService.updatePost(postUpdateRequest));
 	}
 
