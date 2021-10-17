@@ -11,9 +11,15 @@ spring:
         hbm2ddl:
           auto: create-drop
         format_sql: true
-  profiles:
-    active: local
+#  profiles:
+#    active: local
 
 logging.level:
   org.hibernate.SQL: debug
 
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
