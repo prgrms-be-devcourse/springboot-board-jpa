@@ -1,0 +1,20 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+= 게시판
+
+== 공통응답
+include::{snippets}/common/response-fields.adoc[]
+== 게시글 조회
+
+=== /posts
+
+.Request
+include::{snippets}/post-search/http-request.adoc[]
+//include::{snippets}/post-search/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-search/http-response.adoc[]
+include::{snippets}/post-search/response-fields-data.adoc[]
