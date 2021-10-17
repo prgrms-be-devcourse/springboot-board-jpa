@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -38,6 +40,16 @@ public class PostService {
 
     public PostDto save(PostDto postDto) {
         Post entity = mapper.dtoToEntity(postDto);
+        return mapper.entityToDto(postRepository.save(entity));
+    }
+
+    public PostDto save(PostDto postDto, Long id) {
+        Post entity = Post.builder()
+                .id(id)
+                .title(postDto.getTitle())
+                .content(postDto.getContent())
+                .build();
+
         return mapper.entityToDto(postRepository.save(entity));
     }
 }
