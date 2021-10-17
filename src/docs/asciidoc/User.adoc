@@ -1,0 +1,65 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 유저
+
+=== 유저 생성
+
+- Url : /users
+
+.Request
+include::{snippets}/user-insert/http-request.adoc[]
+include::{snippets}/user-insert/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-insert/http-response.adoc[]
+include::{snippets}/user-insert/response-fields.adoc[]
+
+=== 유저 조회
+
+- 단건 조회
+url : /users/{id}
+
+.Request
+include::{snippets}/user-getOne/http-request.adoc[]
+
+.Response
+include::{snippets}/user-getOne/http-response.adoc[]
+include::{snippets}/user-getOne/response-fields.adoc[]
+
+- 전체 조회
+url : /users
+
+.Request
+include::{snippets}/user-getAll/http-request.adoc[]
+
+.Response
+include::{snippets}/user-getAll/http-response.adoc[]
+include::{snippets}/user-getAll/response-fields.adoc[]
+
+=== 유저 수정
+
+url : /users/{id}
+
+.Request
+include::{snippets}/user-update/http-request.adoc[]
+include::{snippets}/user-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-update/http-response.adoc[]
+include::{snippets}/user-update/response-fields.adoc[]
+
+=== 유저 삭제
+
+url : /users/{id}
+
+.Request
+include::{snippets}/user-delete/http-request.adoc[]
+
+.Response
+include::{snippets}/user-delete/http-response.adoc[]
+include::{snippets}/user-delete/response-fields.adoc[]
+
+
