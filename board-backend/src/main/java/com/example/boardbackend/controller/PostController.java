@@ -47,8 +47,8 @@ public class PostController {
 
     // user id로 게시물 조회
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<BoardResponse>> getUserPosts(@PathVariable("id") Long createdBy) {
-        List<BoardResponse> response = postService.findPostsByCreatedBy(createdBy).stream()
+    public ResponseEntity<List<BoardResponse>> getUserPosts(@PathVariable("id") Long userId) {
+        List<BoardResponse> response = postService.findPostsByUserId(userId).stream()
                 .map(responseConverter::convertToBoard)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(response);

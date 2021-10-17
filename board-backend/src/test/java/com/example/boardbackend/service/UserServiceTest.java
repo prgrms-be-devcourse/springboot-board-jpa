@@ -2,6 +2,7 @@ package com.example.boardbackend.service;
 
 import com.example.boardbackend.common.error.exception.NotFoundException;
 import com.example.boardbackend.domain.User;
+import com.example.boardbackend.domain.embeded.Email;
 import com.example.boardbackend.dto.UserDto;
 import com.example.boardbackend.common.converter.DtoConverter;
 import com.example.boardbackend.repository.UserRepository;
@@ -22,7 +23,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @Transactional
 @SpringBootTest
 class UserServiceTest {
@@ -41,7 +41,6 @@ class UserServiceTest {
                 .name("test")
                 .age(20)
                 .hobby("코딩")
-                .createdAt(LocalDateTime.now())
                 .build();
         return dtoConverter.convertToUserDto(userRepository.save(dtoConverter.convertToUserEntity(userDto)));
     }
@@ -59,13 +58,11 @@ class UserServiceTest {
         // Given
         createUser();
         UserDto newUserDto = UserDto.builder()
-                .id(2L)
                 .email("test2@mail.com")
                 .password("1234")
                 .name("test2")
                 .age(30)
                 .hobby("개발")
-                .createdAt(LocalDateTime.now())
                 .build();
 
         // When
@@ -74,7 +71,7 @@ class UserServiceTest {
         // Then
         long count = userRepository.count();
         assertThat(count, is(2L));
-        Optional<User> byId = userRepository.findById(newUserDto.getId());
+        Optional<User> byId = userRepository.findByEmail(new Email(newUserDto.getEmail()));
         assertThat(byId.isPresent(), is(true));
     }
 
@@ -130,6 +127,7 @@ class UserServiceTest {
         userService.deleteUserById(userDto.getId());
 
         // Then
+        assertThat(userRepository.findAll(), hasSize(0));
         assertThrows(NotFoundException.class, () -> userService.findUserById(userDto.getId()));
     }
 }

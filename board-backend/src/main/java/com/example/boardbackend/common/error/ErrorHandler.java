@@ -35,7 +35,7 @@ public class ErrorHandler {
                 .status(HttpStatus.NOT_FOUND)   // 404
                 .body(
                         ErrorResponse.builder()
-                                .message(e.getLocalizedMessage())   // 오류가 터진 곳에서 재정의한 메시지를 가져옴
+                                .message(e.getLocalizedMessage())               // 오류가 터진 곳에서 재정의한 메시지를 가져옴
                                 .exceptionType(e.getClass().getSimpleName())    // Exception 타입을 반환 (Exception 종류가 많아지면 유용)
                                 .build()
                 );
@@ -47,8 +47,8 @@ public class ErrorHandler {
                 .status(HttpStatus.BAD_REQUEST)   // 400
                 .body(
                         ErrorResponse.builder()
-                                .message(e.getLocalizedMessage())   // 오류가 터진 곳에서 재정의한 메시지를 가져옴
-                                .exceptionType(e.getClass().getSimpleName())    // Exception 타입을 반환 (Exception 종류가 많아지면 유용)
+                                .message(e.getLocalizedMessage())
+                                .exceptionType(e.getClass().getSimpleName())
                                 .build()
                 );
     }

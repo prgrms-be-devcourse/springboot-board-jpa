@@ -38,5 +38,4 @@ public class Post extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false, referencedColumnName = "id")
     private User user;
-
 }

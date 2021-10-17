@@ -38,8 +38,8 @@ public class PostService {
         return postRepository.count();
     }
 
-    public List<PostDto> findPostsByCreatedBy(Long createdBy) {
-        return postRepository.findByCreatedBy(createdBy).stream()
+    public List<PostDto> findPostsByUserId(Long userId) {
+        return postRepository.findByCreatedBy(userId).stream()
                 .map(dtoConverter::convertToPostDto)
                 .collect(Collectors.toList());
     }
