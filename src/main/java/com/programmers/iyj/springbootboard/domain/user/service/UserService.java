@@ -32,8 +32,8 @@ public class UserService {
                 .map(mapper::entityToDto);
     }
 
-    public User save(UserDto userDto) {
+    public UserDto save(UserDto userDto) {
         User entity = mapper.dtoToEntity(userDto);
-        return userRepository.save(entity);
+        return mapper.entityToDto(userRepository.save(entity));
     }
 }

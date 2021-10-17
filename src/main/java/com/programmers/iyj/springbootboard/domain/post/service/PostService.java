@@ -36,8 +36,8 @@ public class PostService {
                 .map(mapper::entityToDto);
     }
 
-    public Post save(PostDto postDto) {
+    public PostDto save(PostDto postDto) {
         Post entity = mapper.dtoToEntity(postDto);
-        return postRepository.save(entity);
+        return mapper.entityToDto(postRepository.save(entity));
     }
 }
