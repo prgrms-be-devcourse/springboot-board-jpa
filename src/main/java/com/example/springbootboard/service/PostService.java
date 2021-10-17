@@ -6,6 +6,7 @@ import com.example.springbootboard.dto.PostRequestDto;
 import com.example.springbootboard.dto.PostResponseDto;
 import com.example.springbootboard.entity.Post;
 import com.example.springbootboard.entity.User;
+import com.example.springbootboard.exception.error.NotFoundException;
 import com.example.springbootboard.repository.PostRepository;
 import com.example.springbootboard.repository.UserRepository;
 import org.springframework.stereotype.Service;

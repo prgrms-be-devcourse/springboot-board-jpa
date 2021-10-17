@@ -4,6 +4,7 @@ import com.example.springbootboard.converter.DtoConverter;
 import com.example.springbootboard.dto.UserRequestDto;
 import com.example.springbootboard.dto.UserResponseDto;
 import com.example.springbootboard.entity.User;
+import com.example.springbootboard.exception.error.NotFoundException;
 import com.example.springbootboard.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
