@@ -45,12 +45,15 @@ class PostServiceTest {
     @BeforeAll
     public static void setUp() {
         post = Post.builder()
+                .id(1L)
                 .title("title1")
                 .content("content1")
                 .build();
 
         postDto = PostDto.builder()
                 .id(1L)
+                .title("title1")
+                .content("content1")
                 .build();
     }
 
@@ -94,13 +97,13 @@ class PostServiceTest {
         given(postRepository.save(any())).willReturn(post);
 
         // When
-        Post savedPost = postService.save(postDto);
+        PostDto savedPostDto = postService.save(postDto);
 
         // Then
         then(postRepository)
                 .should()
                 .save(post);
 
-        assertThat(savedPost).isEqualTo(post);
+        assertThat(savedPostDto).isEqualTo(postDto);
     }
 }

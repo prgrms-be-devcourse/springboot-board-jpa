@@ -46,7 +46,8 @@ public class User extends BaseEntity {
     private List<Post> posts = new ArrayList<>();
 
     @Builder
-    public User(String name, Integer age, Hobby hobby) {
+    public User(Long id, String name, Integer age, Hobby hobby) {
+        this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;

@@ -41,6 +41,7 @@ class UserServiceTest {
     @BeforeAll
     public static void setUp() {
         user = User.builder()
+                .id(1L)
                 .name("john")
                 .age(25)
                 .hobby(Hobby.NETFLIX)
@@ -94,13 +95,13 @@ class UserServiceTest {
         given(userRepository.save(any())).willReturn(user);
 
         // When
-        User savedUser = userService.save(userDto);
+        UserDto savedUserDto = userService.save(userDto);
 
         // Then
         then(userRepository)
                 .should()
                 .save(user);
 
-        assertThat(savedUser).isEqualTo(user);
+        assertThat(savedUserDto).isEqualTo(userDto);
     }
 }
