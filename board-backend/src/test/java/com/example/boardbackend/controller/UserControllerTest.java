@@ -6,10 +6,7 @@ import com.example.boardbackend.repository.UserRepository;
 import com.example.boardbackend.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,7 +26,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -44,18 +41,15 @@ class UserControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    Long userId;
-    UserDto userDto = UserDto.builder()
-            .email("test@mail.com")
-            .password("1234")
-            .name("test")
-            .age(20)
-            .hobby("코딩")
-            .build();
-
-    @BeforeEach
-    void saveUser() {
-        userId = userService.saveUser(userDto).getId();
+    private UserDto createUser(){
+        UserDto userDto = UserDto.builder()
+                .email("test@mail.com")
+                .password("1234")
+                .name("test")
+                .age(20)
+                .hobby("코딩")
+                .build();
+        return userService.saveUser(userDto);
     }
 
     @AfterEach
@@ -118,6 +112,7 @@ class UserControllerTest {
     @DisplayName("로그인 요청을 받을 수 있다.")
     void login_test() throws Exception {
         // Given
+        UserDto userDto = createUser();
         LoginRequest loginRequest = LoginRequest.builder()
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())
@@ -153,6 +148,7 @@ class UserControllerTest {
     @DisplayName("유저 정보 조회 요청을 받을 수 있다.")
     void getUserInfo_test() throws Exception {
         // Given + When
+        Long userId = createUser().getId();
         ResultActions resultActions = mockMvc.perform(
                 get("/api/user/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -185,6 +181,7 @@ class UserControllerTest {
     @DisplayName("유저 삭제 요청을 받을 수 있다.")
     void resign_test() throws Exception {
         // Given + When
+        Long userId = createUser().getId();
         ResultActions resultActions = mockMvc.perform(
                 delete("/api/user/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON)

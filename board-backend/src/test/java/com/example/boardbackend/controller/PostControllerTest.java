@@ -48,35 +48,47 @@ class PostControllerTest {
     @Autowired
     PostRepository postRepository;
     @Autowired
+    UserRepository userRepository;
+    @Autowired
     ObjectMapper objectMapper;
 
     Long postId;
-    Long userId = 1L;
-
-    UserDto userDto = UserDto.builder()
-            .id(userId)
-            .email("test@mail.com")
-            .password("1234")
-            .name("test")
-            .age(20)
-            .hobby("코딩")
-            .createdAt(LocalDateTime.now())
-            .build();
-
-    PostDto postDto = PostDto.builder()
-            .title("제목")
-            .content("내용")
-            .userDto(userDto)
-            .build();
+    Long userId;
 
     @BeforeAll
     void saveUser() {
-        userService.saveUser(userDto);
+        UserDto userDto = UserDto.builder()
+                .email("test@mail.com")
+                .password("1234")
+                .name("test")
+                .age(20)
+                .hobby("코딩")
+                .build();
+        userId = userService.saveUser(userDto).getId();
     }
 
     @BeforeEach
     void setUp() {
+        UserDto userDto = UserDto.builder()
+                .id(userId)
+                .email("test@mail.com")
+                .password("1234")
+                .name("test")
+                .age(20)
+                .hobby("코딩")
+                .createdAt(LocalDateTime.now())
+                .build();
+        PostDto postDto = PostDto.builder()
+                .title("제목")
+                .content("내용")
+                .userDto(userDto)
+                .build();
         postId = postService.savePost(postDto).getId();
+    }
+
+    @AfterAll
+    void cleanUp(){
+        userRepository.deleteAll();
     }
 
     @AfterEach
@@ -90,6 +102,15 @@ class PostControllerTest {
     @DisplayName("게시물 삽입 요청을 받을 수 있다.")
     void createPost_test() throws Exception {
         // Given
+        UserDto userDto = UserDto.builder()
+                .id(userId)
+                .email("test@mail.com")
+                .password("1234")
+                .name("test")
+                .age(20)
+                .hobby("코딩")
+                .createdAt(LocalDateTime.now())
+                .build();
         PostDto newPostDto = PostDto.builder()
                 .title("제목")
                 .content("내용")

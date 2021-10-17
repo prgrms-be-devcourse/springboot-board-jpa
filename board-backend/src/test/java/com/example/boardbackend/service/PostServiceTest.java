@@ -6,6 +6,7 @@ import com.example.boardbackend.dto.PostDto;
 import com.example.boardbackend.dto.UserDto;
 import com.example.boardbackend.repository.PostRepository;
 
+import com.example.boardbackend.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,19 +37,21 @@ class PostServiceTest {
     @Autowired
     PostRepository postRepository;
     @Autowired
+    UserRepository userRepository;
+    @Autowired
     DtoConverter dtoConverter;
 
-    UserDto userDto = UserDto.builder()
-            .id(1L)
-            .email("test@mail.com")
-            .password("1234")
-            .name("test")
-            .age(20)
-            .hobby("코딩")
-            .createdAt(LocalDateTime.now())
-            .build();
+    Long userId;
 
     private PostDto createPost(String title, String content) {
+        UserDto userDto = UserDto.builder()
+                .id(userId)
+                .email("test@mail.com")
+                .password("1234")
+                .name("test")
+                .age(20)
+                .hobby("코딩")
+                .build();
         PostDto postDto = PostDto.builder()
                 .title(title)
                 .content(content)
@@ -60,12 +63,24 @@ class PostServiceTest {
     @BeforeAll
     void setUp(){
         // 유저를 하나 생성해놓고 시작 (테스트동안 불변)
-        userService.saveUser(userDto);
+        UserDto userDto = UserDto.builder()
+                .email("test@mail.com")
+                .password("1234")
+                .name("test")
+                .age(20)
+                .hobby("코딩")
+                .build();
+        userId = userService.saveUser(userDto).getId();
     }
 
     @AfterEach
     void tearDown() {
         postRepository.deleteAll();
+    }
+
+    @AfterAll
+    void cleanUp(){
+        userRepository.deleteAll();
     }
 
 //    ------------------------------------------------------------------------------------
@@ -75,6 +90,14 @@ class PostServiceTest {
     void savePost_test() {
         // Given
         createPost("1", "1");
+        UserDto userDto = UserDto.builder()
+                .id(userId)
+                .email("test@mail.com")
+                .password("1234")
+                .name("test")
+                .age(20)
+                .hobby("코딩")
+                .build();
         PostDto newPostDto = PostDto.builder()
                 .title("2")
                 .content("2")
