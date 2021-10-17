@@ -61,7 +61,8 @@ public class PostController {
     // POST "/posts/{id}" -> mockMVC를 이용한 테스트까지
     @PostMapping("/posts/{id}")
     public ApiResponse<Long> editPost(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
-        Long postId = postService.editPost(id, postDto);
+        postDto.setId(id);
+        Long postId = postService.editPost(postDto);
         return ApiResponse.ok(postId);
     }
 

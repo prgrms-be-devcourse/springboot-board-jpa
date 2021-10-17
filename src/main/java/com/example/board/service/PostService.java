@@ -38,8 +38,8 @@ public class PostService {
     }
 
     @Transactional
-    public Long editPost(Long id, PostDto postDto) throws NotFoundException {
-        Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException("Post Not Found"));
+    public Long editPost(PostDto postDto) throws NotFoundException {
+        Post post = postRepository.findById(postDto.getId()).orElseThrow(() -> new NotFoundException("Post Not Found"));
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
         return postRepository.save(post).getId();
