@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public final ApiResponse<Object> handleAllExceptions(Exception ex, WebRequest request) {
+    public final ApiResponse<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false));
         return ApiResponse.fail(ErrorStatus.INTERNAL_SERVER_ERROR, ErrorStatus.INTERNAL_SERVER_ERROR.getStatus().value(), exceptionResponse);
     }
 
     @ExceptionHandler(PostNotFoundException.class)
-    public final ApiResponse<Object> handlePostNotFoundException(PostNotFoundException ex, WebRequest request) {
+    public final ApiResponse<ExceptionResponse> handlePostNotFoundException(PostNotFoundException ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false));
         return ApiResponse.fail(ErrorStatus.POST_NOT_FOUND, ErrorStatus.POST_NOT_FOUND.getStatus().value(), exceptionResponse);
     }
