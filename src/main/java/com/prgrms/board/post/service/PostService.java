@@ -14,11 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PostService {
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
-    @Autowired
-    private PostConverter postConverter;
+    private final PostConverter postConverter;
+
+    public PostService(PostRepository postRepository, PostConverter postConverter) {
+        this.postRepository = postRepository;
+        this.postConverter = postConverter;
+    }
 
     @Transactional
     public Long save(PostDto postDto) {
