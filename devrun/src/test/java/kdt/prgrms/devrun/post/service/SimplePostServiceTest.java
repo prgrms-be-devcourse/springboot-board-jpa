@@ -51,7 +51,6 @@ class SimplePostServiceTest {
             .age(27)
             .name("김지훈")
             .email("devrunner21@gmail.com")
-            .posts(new ArrayList<Post>())
             .build();
 
         userRepository.save(user1);

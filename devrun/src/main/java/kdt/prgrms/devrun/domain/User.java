@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -49,6 +48,17 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user")
     List<Post> posts = new ArrayList<>();
+
+    @Builder
+    public User(Long id, String loginId, String loginPw, String name, int age, String email) {
+        this.id = id;
+        this.loginId = loginId;
+        this.loginPw = loginPw;
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.posts = new ArrayList<>();
+    }
 
     public void addPost(Post post) {
         if(Objects.nonNull(post)){
