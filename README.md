@@ -58,7 +58,7 @@
 
 ### Architecture
 
-![게시판 drawio](https://user-images.githubusercontent.com/71180414/137648484-4bd4b2c8-b01a-46dd-bdd7-4d87741cd7c7.png)
+![게시판 drawio (1)](https://user-images.githubusercontent.com/71180414/137648777-4dba92e4-b37e-4c87-9d13-0d5e563939b3.png)
 
 
 ### Schema
