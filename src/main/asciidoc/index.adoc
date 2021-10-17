@@ -1,0 +1,45 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시물
+
+=== 게시물 요청
+==== /posts/{id}
+.Request
+include::{snippets}/post-get/http-request.adoc[]
+include::{snippets}/post-get/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-get/http-response.adoc[]
+include::{snippets}/post-get/response-fields.adoc[]
+
+==== /posts
+.Request
+include::{snippets}/posts-get/http-request.adoc[]
+include::{snippets}/posts-get/request-fields.adoc[]
+
+.Response
+include::{snippets}/posts-get/http-response.adoc[]
+include::{snippets}/posts-get/response-fields.adoc[]
+
+=== 게시물 생성
+==== /posts
+.Request
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+=== 게시물 생성
+==== /posts
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
