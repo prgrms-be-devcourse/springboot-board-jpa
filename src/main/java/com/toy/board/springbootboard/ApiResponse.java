@@ -12,7 +12,7 @@ import java.time.temporal.ChronoUnit;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ApiResponse <T> {
+public class ApiResponse<T> {
     private int statusCode;
     private T data;
 
@@ -26,11 +26,11 @@ public class ApiResponse <T> {
     }
 
     //SC_OK is 200
-    public static <T> ApiResponse<T> ok(T data){
+    public static <T> ApiResponse<T> ok(T data) {
         return new ApiResponse<>(HttpServletResponse.SC_OK, data);
     }
 
-    public static <T> ApiResponse<T> fail(int statusCode, T data){
+    public static <T> ApiResponse<T> fail(int statusCode, T data) {
         return new ApiResponse<>(statusCode, data);
     }
 }

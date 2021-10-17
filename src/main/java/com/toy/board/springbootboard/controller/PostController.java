@@ -20,11 +20,13 @@ public class PostController {
 
     @ExceptionHandler
     private ApiResponse<String> exceptionHandle(Exception exception) {
+        log.info("Exception : {} , {}", HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
         return ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
     private ApiResponse<String> notFoundHandle(NotFoundException exception) {
+        log.info("Exception : {} , {}", HttpStatus.NOT_FOUND.value(), exception.getMessage());
         return ApiResponse.fail(HttpStatus.NOT_FOUND.value(), exception.getMessage());
     }
 
