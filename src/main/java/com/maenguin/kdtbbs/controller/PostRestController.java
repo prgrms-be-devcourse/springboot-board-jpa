@@ -30,14 +30,14 @@ public class PostRestController {
     }
 
     @PostMapping
-    public ApiResponse<Boolean> registerPost(@RequestBody PostAddDto postAddDto) {
-        postService.savePost(postAddDto);
-        return ApiResponse.success(true);
+    public ApiResponse<Long> registerPost(@RequestBody PostAddDto postAddDto) {
+        Long id = postService.savePost(postAddDto);
+        return ApiResponse.success(id);
     }
 
     @PostMapping(path = "{id}")
-    public ApiResponse<Boolean> editPost(@PathVariable("id") Long postId, @RequestBody PostAddDto postAddDto) {
-        postService.editPost(postId, postAddDto);
-        return ApiResponse.success(true);
+    public ApiResponse<Long> editPost(@PathVariable("id") Long postId, @RequestBody PostAddDto postAddDto) {
+        Long id = postService.editPost(postId, postAddDto);
+        return ApiResponse.success(id);
     }
 }

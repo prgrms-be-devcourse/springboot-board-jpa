@@ -44,17 +44,19 @@ public class PostService {
     }
 
     @Transactional
-    public void savePost(PostAddDto postAddDto) {
+    public Long savePost(PostAddDto postAddDto) {
         Long userId = postAddDto.getUserId();
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(" for id: "+userId));
         Post post = bbsConverter.convertToPost(postAddDto);
         post.changeUser(user);
-        postRepository.save(post);
+        Post entity = postRepository.save(post);
+        return entity.getPostId();
     }
 
     @Transactional
-    public void editPost(Long postId, PostAddDto postAddDto) {
+    public Long editPost(Long postId, PostAddDto postAddDto) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(" for id:"+postId));
         post.editPost(postAddDto.getTitle(), postAddDto.getContent());
+        return post.getPostId();
     }
 }
