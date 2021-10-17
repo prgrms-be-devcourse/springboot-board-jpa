@@ -1,9 +1,11 @@
 package com.example.boardbackend.dto.request;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 
+@Builder
 @Getter
 public class UpdatePostRequest {
     @NotBlank(message = "제목을 입력해주세요")

@@ -20,7 +20,7 @@ public class UserDto {
 
     @NotBlank(message = "이름을 입력해주세요")
     @Size(message="이름은 최대 30자까지 입력 가능합니다", max=30)
-    @Pattern(message="이름은 한글 및 영어만 입력 가능합니다", regexp = "^[가-힣a-zA-Z]")
+    @Pattern(message="이름은 한글 및 영어만 입력 가능합니다", regexp = "^[가-힣a-zA-Z]*$")
     private String name;
 
     @Positive(message = "나이는 1세 이상이어야합니다")

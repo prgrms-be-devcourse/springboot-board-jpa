@@ -20,11 +20,6 @@ repositories {
 	mavenCentral()
 }
 
-// snippets 경로 전역변수 설정
-ext {
-	set('snippetsDir', file("build/generated-snippets"))
-}
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -42,22 +37,46 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
+// snippets 경로 전역변수 설정
+ext {
+	set('snippetsDir', file("build/generated-snippets"))
+}
+
+// 테스트시 빌드 -> snippetsDir 경로로 이동
 test {
 	outputs.dir snippetsDir
 	useJUnitPlatform()
 }
-
 asciidoctor {
-	dependsOn test
 	inputs.dir snippetsDir
-//	attributes \
-//		'snippets': snippetsDir
+	dependsOn test
 }
 
-// html로 변환하기 ( build/generated-snippets/static/docs ??)
-bootJar {
-	dependsOn asciidoctor
-	from ("${asciidoctor.outputDir}") {
-		into 'static/docs'
-	}
-}
+// ???
+
+
+
+
+//asciidoctor.doFirst {
+//	delete file('src/main/resources/docs')
+//}
+
+//task copyDocument(type: Copy) {
+//	dependsOn asciidoctor
+//	from file("build/docs/asciidoc")
+//	into file("src/main/resources/static/docs")
+//}
+
+//build {
+//	dependsOn copyDocument
+//}
+
+//// html로 변환하기
+//bootJar {
+//	dependsOn asciidoctor
+//	copy {
+//		from "${asciidoctor.outputDir}"
+//		into 'BOOT-INF/classes/static/docs'
+//	}
+//}
+

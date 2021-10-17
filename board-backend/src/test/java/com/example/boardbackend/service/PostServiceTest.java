@@ -5,8 +5,7 @@ import com.example.boardbackend.common.error.exception.NotFoundException;
 import com.example.boardbackend.dto.PostDto;
 import com.example.boardbackend.dto.UserDto;
 import com.example.boardbackend.repository.PostRepository;
-import com.example.boardbackend.repository.UserRepository;
-import org.apache.tomcat.util.http.fileupload.util.Streams;
+
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,9 +18,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -36,9 +32,9 @@ class PostServiceTest {
     @Autowired
     PostService postService;
     @Autowired
-    PostRepository postRepository;
+    UserService userService;
     @Autowired
-    UserRepository userRepository;
+    PostRepository postRepository;
     @Autowired
     DtoConverter dtoConverter;
 
@@ -49,6 +45,7 @@ class PostServiceTest {
             .name("test")
             .age(20)
             .hobby("코딩")
+            .createdAt(LocalDateTime.now())
             .build();
 
     private PostDto createPost(String title, String content) {
@@ -57,13 +54,13 @@ class PostServiceTest {
                 .content(content)
                 .userDto(userDto)
                 .build();
-        return dtoConverter.convertToPostDto(postRepository.save(dtoConverter.convetToPostEntity(postDto)));
+        return postService.savePost(postDto);
     }
 
     @BeforeAll
     void setUp(){
         // 유저를 하나 생성해놓고 시작 (테스트동안 불변)
-        userRepository.save(dtoConverter.convertToUserEntity(userDto));
+        userService.saveUser(userDto);
     }
 
     @AfterEach

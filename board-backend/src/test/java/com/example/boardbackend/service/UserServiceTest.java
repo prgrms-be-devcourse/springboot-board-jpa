@@ -4,11 +4,8 @@ import com.example.boardbackend.common.error.exception.NotFoundException;
 import com.example.boardbackend.domain.User;
 import com.example.boardbackend.domain.embeded.Email;
 import com.example.boardbackend.dto.UserDto;
-import com.example.boardbackend.common.converter.DtoConverter;
 import com.example.boardbackend.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +27,6 @@ class UserServiceTest {
     UserService userService;
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    DtoConverter dtoConverter;
 
     private UserDto createUser(){
         UserDto userDto = UserDto.builder()
@@ -42,7 +36,7 @@ class UserServiceTest {
                 .age(20)
                 .hobby("코딩")
                 .build();
-        return dtoConverter.convertToUserDto(userRepository.save(dtoConverter.convertToUserEntity(userDto)));
+        return userService.saveUser(userDto);
     }
 
     @AfterEach
@@ -60,7 +54,7 @@ class UserServiceTest {
         UserDto newUserDto = UserDto.builder()
                 .email("test2@mail.com")
                 .password("1234")
-                .name("test2")
+                .name("어쩌구")
                 .age(30)
                 .hobby("개발")
                 .build();

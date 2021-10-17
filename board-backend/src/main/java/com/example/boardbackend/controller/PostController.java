@@ -79,6 +79,7 @@ public class PostController {
             @PathVariable("id") Long id,
             @RequestBody UpdateViewRequest updateViewRequest
     ) {
+        System.out.println(updateViewRequest.getNewView());
         Long response = postService.updateViewById(id, updateViewRequest.getNewView());
         return ResponseEntity.ok(response);
     }

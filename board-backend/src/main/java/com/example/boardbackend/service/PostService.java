@@ -25,6 +25,7 @@ public class PostService {
     @Transactional
     public PostDto savePost(PostDto postDto) {
         Post post = dtoConverter.convetToPostEntity(postDto);
+        // insert 문은 여기서 실행되지 않고 트랜잭션이 끝날때 실행되므로 엔티티의 view는 아직 null이다.
         Post saved = postRepository.save(post);
         return dtoConverter.convertToPostDto(saved);
     }
