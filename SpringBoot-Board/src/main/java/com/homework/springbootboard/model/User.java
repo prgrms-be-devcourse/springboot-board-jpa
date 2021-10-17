@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,7 +29,7 @@ public class User extends BaseEntity {
     private String hobby;
 
     @OneToMany(mappedBy = "user")
-    private List<Post> postList;
+    private List<Post> postList = new ArrayList<>();
 
     @Builder
     public User(Long id, String name, int age, String hobby, List<Post> postList) {
