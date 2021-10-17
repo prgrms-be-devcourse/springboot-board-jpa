@@ -24,7 +24,7 @@ public class PostRestController {
     }
 
     @GetMapping
-    public ApiResponse<Page<PostDto>> searchAllPosts(
+    public ApiResponse<PostListDto> searchAllPosts(
             @PageableDefault(size = 3, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return ApiResponse.success(postService.getAllPosts(pageable));
     }
