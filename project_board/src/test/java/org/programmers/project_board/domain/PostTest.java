@@ -1,4 +1,4 @@
-package org.programmers.project_board.entity;
+package org.programmers.project_board.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

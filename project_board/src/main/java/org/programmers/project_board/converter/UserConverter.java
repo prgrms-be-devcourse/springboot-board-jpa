@@ -1,7 +1,7 @@
 package org.programmers.project_board.converter;
 
 import org.programmers.project_board.dto.UserDto;
-import org.programmers.project_board.entity.User;
+import org.programmers.project_board.domain.User;
 import org.springframework.stereotype.Component;
 
 @Component

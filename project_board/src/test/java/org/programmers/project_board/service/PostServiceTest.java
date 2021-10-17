@@ -3,7 +3,7 @@ package org.programmers.project_board.service;
 import org.junit.jupiter.api.*;
 import org.programmers.project_board.dto.PostDto;
 import org.programmers.project_board.dto.UserDto;
-import org.programmers.project_board.entity.Post;
+import org.programmers.project_board.domain.Post;
 import org.programmers.project_board.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PostServiceTest {

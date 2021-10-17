@@ -1,7 +1,7 @@
 package org.programmers.project_board.converter;
 
 import org.programmers.project_board.dto.PostDto;
-import org.programmers.project_board.entity.Post;
+import org.programmers.project_board.domain.Post;
 import org.springframework.stereotype.Component;
 
 @Component

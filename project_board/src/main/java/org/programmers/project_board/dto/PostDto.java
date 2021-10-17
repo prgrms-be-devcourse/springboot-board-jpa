@@ -10,11 +10,8 @@ import lombok.*;
 public class PostDto {
 
     private Long id;
-
     private String title;
-
     private String content;
-
     private UserDto userDto;
 
 }
