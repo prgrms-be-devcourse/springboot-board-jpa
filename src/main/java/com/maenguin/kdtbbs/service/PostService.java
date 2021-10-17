@@ -32,9 +32,10 @@ public class PostService {
         this.bbsConverter = bbsConverter;
     }
 
-    public Page<PostDto> getAllPosts(Pageable pageable) {
-        return postRepository.findAll(pageable)
+    public PostListDto getAllPosts(Pageable pageable) {
+        Page<PostDto> page = postRepository.findAll(pageable)
                 .map(bbsConverter::convertToPostDto);
+        return new PostListDto(page);
     }
 
     public PostDto getPostById(Long postId) {
