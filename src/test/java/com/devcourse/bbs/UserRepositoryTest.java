@@ -1,5 +1,6 @@
 package com.devcourse.bbs;
 
+import com.devcourse.bbs.domain.post.Post;
 import com.devcourse.bbs.domain.user.User;
 import com.devcourse.bbs.repository.user.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -84,16 +85,22 @@ class UserRepositoryTest {
     @Test
     void userDeleteTest() {
         User user = User.builder()
-                .name("name")
+                .name("name123")
                 .age(25)
                 .hobby("hob")
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now()).build();
+        user.getPosts().add(Post.builder()
+                .user(user)
+                .title("TITLE")
+                .content("CONTENT")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now()).build());
         entityManager.persist(user);
         entityManager.flush();
         entityManager.clear();
 
-        userRepository.deleteByName("name"); // executes SELECT query to get details and call remove by id.
+        userRepository.deleteByName("name123"); // executes SELECT query to get details and call remove by id.
         assertTrue(userRepository.findByName("name").isEmpty());
     }
 }

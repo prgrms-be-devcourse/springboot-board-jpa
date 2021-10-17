@@ -8,7 +8,6 @@ import com.devcourse.bbs.domain.user.User;
 import com.devcourse.bbs.repository.post.PostRepository;
 import com.devcourse.bbs.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
