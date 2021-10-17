@@ -22,20 +22,15 @@ public class Post extends BaseEntity {
     @Column(name = "post_id")
     private Long id;
 
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Lob
-    @NotNull
-    @Size(min = 1, max = 10000000)
-    @Column(name = "content")
+    @Column(name = "content", nullable = false)
     private String content;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Builder

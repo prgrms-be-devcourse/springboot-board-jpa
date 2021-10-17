@@ -28,13 +28,9 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Min(value = 1)
-    @Max(value = 150)
     @Column(name = "age")
     private Integer age;
 
