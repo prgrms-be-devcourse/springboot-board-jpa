@@ -19,9 +19,6 @@ public class PostController {
     @GetMapping("/posts/{id}")
     public ApiResponse<PostDto> getPost(@PathVariable Long id) {
         PostDto post = postService.findPost(id);
-        if (post == null) {
-            throw new PostNotFoundException(String.format("Post ID : %s not found"));
-        }
 
         return ApiResponse.ok(post);
     }
