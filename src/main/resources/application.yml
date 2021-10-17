@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/jpa_board?serverTimezone=UTC&characterEncoding=UTF-8
     username: devcourse
-    password: devcourse
+    password: ${MYSQL_PWD}
 
   jpa:
     open-in-view: false

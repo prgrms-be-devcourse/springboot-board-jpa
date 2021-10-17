@@ -298,3 +298,4 @@ buildNumber.properties
 # End of https://www.toptal.com/developers/gitignore/api/intellij,intellij+all,intellij+iml,macos,maven,java
 
 .mvn/
+.env
