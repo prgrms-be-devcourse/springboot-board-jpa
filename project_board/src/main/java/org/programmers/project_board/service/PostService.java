@@ -2,10 +2,13 @@ package org.programmers.project_board.service;
 
 import lombok.RequiredArgsConstructor;
 import org.programmers.project_board.converter.PostConverter;
+import org.programmers.project_board.converter.UserConverter;
 import org.programmers.project_board.dto.PostDto;
 import org.programmers.project_board.entity.Post;
+import org.programmers.project_board.entity.User;
 import org.programmers.project_board.exception.NotFoundException;
 import org.programmers.project_board.repository.PostRepository;
+import org.programmers.project_board.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +20,9 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
-
+    private final UserRepository userRepository;
     private final PostConverter postConverter;
+    private final UserConverter userConverter;
 
     @Transactional
     public List<PostDto> getAllPosts() {
@@ -36,8 +40,10 @@ public class PostService {
 
     @Transactional
     public Long savePost(PostDto postDto) {
+        User user = userConverter.convertUser(postDto.getUserDto());
         Post post = postConverter.convertPost(postDto);
 
+        userRepository.save(user);
         Post entity = postRepository.save(post);
 
         return entity.getId();
