@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom';
 function Mypage(props) {
 
   // Select Origin
-  const local = 'http://localhost:8080';
-  const deploy = 'http://15.165.69.116:8080';
+  const local = 'http://localhost:8080/api';
+  const deploy = 'https://boardapi.hanjo.xyz/api';
   const origin = deploy;
 
   // State
@@ -19,13 +19,13 @@ function Mypage(props) {
   // Effect
   useEffect(() => {
     // userInfo
-    axios.get(origin + `/api/user/${userId}`)
+    axios.get(origin + `/user/${userId}`)
       .then(res => {
         // console.log(res);
         setUserInfo(res.data)
       })
     // myPostInfo
-    axios.get(origin + `/api/post/user/${userId}`)
+    axios.get(origin + `/post/user/${userId}`)
       .then(res => {
         // console.log(res);
         setMyBoard(res.data)
@@ -35,7 +35,7 @@ function Mypage(props) {
   // Button
   const resign = () => {
     if (window.confirm("정말 탈퇴하시겠습니까?")) {
-      axios.delete(origin + `/api/user/${userId}`)
+      axios.delete(origin + `/user/${userId}`)
         .then(res => {
           // console.log(res);
           alert("회원탈퇴 완료. 초기화면으로 이동");

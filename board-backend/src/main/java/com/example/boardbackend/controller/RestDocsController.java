@@ -6,15 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@RequiredArgsConstructor
 @Controller
-public class MvcTestController {
-    private final UserService userService;
-
+public class RestDocsController {
     @GetMapping("/")
-    public String renderTestPage(Model model){
-        var userList = userService.findUsersAll();
-        model.addAttribute("userList", userList);
-        return "test";
+    public String renderRestDocs(){
+        return "index";
     }
 }

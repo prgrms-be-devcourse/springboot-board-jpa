@@ -5,9 +5,10 @@ import axios from 'axios';
 function Login(props) {
 
   // Select Origin
-  const local = 'http://localhost:8080';
-  const deploy = 'http://15.165.69.116:8080';
+  const local = 'http://localhost:8080/api';
+  const deploy = 'https://boardapi.hanjo.xyz/api';
   const origin = deploy;
+
 
   // State
   const [loginInfo, setLoginInfo] = useState({
@@ -34,7 +35,7 @@ function Login(props) {
 
   // Button
   const login = () => {
-    axios.post(origin + '/api/user/login', loginInfo)
+    axios.post(origin + '/user/login', loginInfo)
       .then(res => {
         const userId = res.data.id;
         localStorage.setItem('userId', userId);
@@ -47,7 +48,7 @@ function Login(props) {
   }
 
   const signUp = () => {
-    axios.post(origin + '/api/user', userInfo).then(
+    axios.post(origin + '/user', userInfo).then(
       res => {
         alert("회원가입 완료 (id : " + res.data.id + ")");
       })

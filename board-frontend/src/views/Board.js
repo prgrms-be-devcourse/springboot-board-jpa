@@ -6,8 +6,8 @@ import Menu from '../components/Menu';
 
 function Board(props) {
     // Select Origin
-    const local = 'http://localhost:8080';
-    const deploy = 'http://15.165.69.116:8080';
+    const local = 'http://localhost:8080/api';
+    const deploy = 'https://boardapi.hanjo.xyz/api';
     const origin = deploy;
 
     // State
@@ -22,13 +22,13 @@ function Board(props) {
     // Effect
     const UE = useEffect(() => {
         // 페이징 조회 요청
-        axios.get(origin + "/api/post", { params: { page: page - 1, size: pageSize, sort: "id,DESC" } })
+        axios.get(origin + "/post", { params: { page: page - 1, size: pageSize, sort: "id,DESC" } })
             .then(res => {
                 setPosts(res.data.content)
                 console.log(res)
             })
         // 총 게시글 수 받고 페이지 수 계산
-        axios.get(origin + "/api/post/total")
+        axios.get(origin + "/post/total")
             .then(res => {
                 // console.log(res);
                 // 전체 페이지 숫자

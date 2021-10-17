@@ -5,8 +5,8 @@ import Menu from '../components/Menu';
 function Posting(props) {
 
     // Select Origin
-    const local = 'http://localhost:8080';
-    const deploy = 'http://15.165.69.116:8080';
+    const local = 'http://localhost:8080/api';
+    const deploy = 'https://boardapi.hanjo.xyz/api';
     const origin = deploy;
 
     // State
@@ -16,7 +16,7 @@ function Posting(props) {
 
     // Effect
     useEffect(() => {
-        axios.get(origin + `/api/user/${userId}`)
+        axios.get(origin + `/user/${userId}`)
             .then(res => {
                 setUserInfo(res.data)
                 setPostInfo({ title: "", content: "", userDto: res.data })
@@ -29,7 +29,7 @@ function Posting(props) {
 
     // Button
     const savePost = () => {
-        axios.post(origin + "/api/post", postInfo)
+        axios.post(origin + "/post", postInfo)
             .then(res => {
                 alert("게시물이 등록되었습니다.")
                 props.history.push("/board/1");

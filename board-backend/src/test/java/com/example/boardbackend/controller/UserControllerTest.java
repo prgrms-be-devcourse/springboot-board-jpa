@@ -22,6 +22,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -89,7 +91,7 @@ class UserControllerTest {
                 .andDo(print())
                 .andDo(
                         document(
-                                "user/sign-up",
+                                "user/sign-up", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 requestFields(
                                         fieldWithPath("id").type(JsonFieldType.NULL).description("id"),
                                         fieldWithPath("email").type(JsonFieldType.STRING).description("email"),
@@ -135,7 +137,7 @@ class UserControllerTest {
                 .andDo(print())
                 .andDo(
                         document(
-                                "user/login",
+                                "user/login",  preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 requestFields(
                                         fieldWithPath("email").type(JsonFieldType.STRING).description("email"),
                                         fieldWithPath("password").type(JsonFieldType.STRING).description("password")
@@ -162,7 +164,7 @@ class UserControllerTest {
                 .andDo(print())
                 .andDo(
                         document(
-                                "user/get",
+                                "user/get",  preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 pathParameters(
                                         parameterWithName("id").description("userId")
                                 ),
@@ -194,7 +196,7 @@ class UserControllerTest {
                 .andDo(print())
                 .andDo(
                         document(
-                                "user/delete",
+                                "user/delete",  preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 pathParameters(
                                         parameterWithName("id").description("userId")
                                 )

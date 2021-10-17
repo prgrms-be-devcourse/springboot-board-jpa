@@ -52,31 +52,29 @@ asciidoctor {
 	dependsOn test
 }
 
-// ???
+
+// html로 변환하기
+bootJar {
+	dependsOn asciidoctor
+	copy {
+		from "${asciidoctor.outputDir}"
+		into 'BOOT-INF/classes/templates'
+	}
+}
+
+asciidoctor.doFirst {
+	delete file('src/main/resources/templates')
+}
+
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	from file("build/docs/asciidoc")
+	into file("src/main/resources/templates")
+}
+
+build {
+	dependsOn copyDocument
+}
 
 
-
-
-//asciidoctor.doFirst {
-//	delete file('src/main/resources/docs')
-//}
-
-//task copyDocument(type: Copy) {
-//	dependsOn asciidoctor
-//	from file("build/docs/asciidoc")
-//	into file("src/main/resources/static/docs")
-//}
-
-//build {
-//	dependsOn copyDocument
-//}
-
-//// html로 변환하기
-//bootJar {
-//	dependsOn asciidoctor
-//	copy {
-//		from "${asciidoctor.outputDir}"
-//		into 'BOOT-INF/classes/static/docs'
-//	}
-//}
 

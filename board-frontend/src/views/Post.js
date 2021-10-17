@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 function Post(props) {
 
     // Select Origin
-    const local = 'http://localhost:8080';
-    const deploy = 'http://15.165.69.116:8080';
+    const local = 'http://localhost:8080/api';
+    const deploy = 'https://boardapi.hanjo.xyz/api';
     const origin = deploy;
 
     // State
@@ -18,7 +18,7 @@ function Post(props) {
     // Effect
     useEffect(async () => {
         // post 정보 받아오기
-        const response = await axios.get(origin + `/api/post/${postId}`)
+        const response = await axios.get(origin + `/post/${postId}`)
             .catch(err => {
                 if (err.response.status == 400 || err.response.status == 404) {
                     alert(err.response.data.message);
@@ -27,7 +27,7 @@ function Post(props) {
             });
         const res_postInfo = response.data
         // view 업데이트
-        axios.patch(origin + `/api/post/${postId}/view`, { newView: res_postInfo.view + 1 })
+        axios.patch(origin + `/post/${postId}/view`, { newView: res_postInfo.view + 1 })
             .then(res => {
                 // console.log(res);
                 res_postInfo.view = res.data;
@@ -39,7 +39,7 @@ function Post(props) {
     // Button
     const deletePost = () => {
         if (window.confirm("정말 삭제하시겠습니까?")) {
-            axios.delete(origin + `/api/post/${postId}`)
+            axios.delete(origin + `/post/${postId}`)
                 .then(res => {
                     alert("게시물 삭제 완료");
                     props.history.goBack();

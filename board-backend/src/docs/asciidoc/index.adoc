@@ -1,0 +1,31 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+:root: /src/docs/asciidoc
+
+= Board - Rest Docs
+
+|===
+| 환경 | Domain
+
+| local
+| http://localhost:8080
+
+| deploy
+| http://15.165.69.116:8080
+|===
+
+== user
+
+=== 회원가입
+
+`request`
+
+include::{snippets}/user/sign-up/http-request.adoc[]
+include::{snippets}/user/sign-up/request-fields.adoc[]
+
+`response`
+include::{snippets}/user/sign-up/http-response.adoc[]
+include::{snippets}/user/sign-up/response-fields.adoc[]

@@ -5,8 +5,8 @@ import Menu from '../components/Menu';
 function UpdatePost(props) {
 
     // Select Origin
-    const local = 'http://localhost:8080';
-    const deploy = 'http://15.165.69.116:8080';
+    const local = 'http://localhost:8080/api';
+    const deploy = 'https://boardapi.hanjo.xyz/api';
     const origin = deploy;
 
     // State
@@ -18,7 +18,7 @@ function UpdatePost(props) {
     // Effect
     useEffect(async () => {
         // post 정보 받아오기
-        const response = await axios.get(origin + `/api/post/${postId}`);
+        const response = await axios.get(origin + `/post/${postId}`);
         // console.log(response)
         const res_postInfo = response.data
         const res_userInfo = res_postInfo.userDto
@@ -39,7 +39,7 @@ function UpdatePost(props) {
     // Button
     const updatePost = () => {
         // console.log(newPostInfo);
-        axios.patch(origin + `/api/post/${postId}`, newPostInfo)
+        axios.patch(origin + `/post/${postId}`, newPostInfo)
             .then(res => {
                 alert("게시물이 성공적으로 수정되었습니다.")
                 props.history.goBack();

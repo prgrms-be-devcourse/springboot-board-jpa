@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -109,7 +110,7 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(
                         document(
-                                "post/create",
+                                "post/create",  preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 requestFields(
                                         fieldWithPath("id").type(JsonFieldType.NULL).description("id"),
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
@@ -161,7 +162,7 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(
                         document(
-                                "post/get_pageable",
+                                "post/get_pageable", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 requestParameters(
                                         parameterWithName("page").description("pageable-page"),
                                         parameterWithName("size").description("pageable-size"),
@@ -216,7 +217,7 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(
                         document(
-                                "post/get_userId",
+                                "post/get_userId", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 pathParameters(
                                         parameterWithName("id").description("userId")
                                 ),
@@ -246,7 +247,7 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(
                         document(
-                                "post/get_postId",
+                                "post/get_postId", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 pathParameters(
                                         parameterWithName("id").description("postId")
                                 ),
@@ -293,7 +294,7 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(
                         document(
-                                "post/update",
+                                "post/update",  preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 pathParameters(
                                         parameterWithName("id").description("postId")
                                 ),
@@ -369,7 +370,7 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(
                         document(
-                                "post/delete",
+                                "post/delete", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 pathParameters(
                                         parameterWithName("id").description("postId")
                                 )
