@@ -10,6 +10,8 @@ import com.maenguin.kdtbbs.exception.PostNotFoundException;
 import com.maenguin.kdtbbs.exception.UserNotFoundException;
 import com.maenguin.kdtbbs.repository.PostRepository;
 import com.maenguin.kdtbbs.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,12 +32,9 @@ public class PostService {
         this.bbsConverter = bbsConverter;
     }
 
-    public PostListDto getAllPosts() {
-        List<PostDto> postDtoList = postRepository.findAll()
-                .stream()
-                .map(bbsConverter::convertToPostDto)
-                .collect(Collectors.toList());
-        return new PostListDto(postDtoList);
+    public Page<PostDto> getAllPosts(Pageable pageable) {
+        return postRepository.findAll(pageable)
+                .map(bbsConverter::convertToPostDto);
     }
 
     public PostDto getPostById(Long postId) {

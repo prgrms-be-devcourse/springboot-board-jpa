@@ -5,6 +5,10 @@ import com.maenguin.kdtbbs.dto.PostAddDto;
 import com.maenguin.kdtbbs.dto.PostDto;
 import com.maenguin.kdtbbs.dto.PostListDto;
 import com.maenguin.kdtbbs.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import static com.maenguin.kdtbbs.dto.ApiResponse.success;
@@ -20,8 +24,9 @@ public class PostRestController {
     }
 
     @GetMapping
-    public ApiResponse<PostListDto> searchAllPosts() {
-        return ApiResponse.success(postService.getAllPosts());
+    public ApiResponse<Page<PostDto>> searchAllPosts(
+            @PageableDefault(size = 3, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ApiResponse.success(postService.getAllPosts(pageable));
     }
 
     @GetMapping(path = "{id}")
