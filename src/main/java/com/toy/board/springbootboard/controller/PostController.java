@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
@@ -30,28 +31,28 @@ public class PostController {
         return ApiResponse.fail(HttpStatus.NOT_FOUND.value(), exception.getMessage());
     }
 
-    @PostMapping("/posts")
+    @PostMapping("")
     public ApiResponse<Long> save(@RequestBody PostDto postDto) throws NotFoundException {
         return ApiResponse.ok(postService.save(postDto));
     }
 
-    @GetMapping("/posts")
+    @GetMapping("")
     public ApiResponse<Page<PostDto>> getAll(Pageable pageable) {
         Page<PostDto> page = postService.findPosts(pageable);
         return ApiResponse.ok(page);
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public ApiResponse<PostDto> get(@PathVariable long id) throws NotFoundException {
         PostDto postDto = postService.findById(id);
         return ApiResponse.ok(postDto);
     }
 
-    @PostMapping("posts/{id}")
+    @PostMapping("/{id}")
     public ApiResponse<Long> update(
             @PathVariable long id,
             @RequestBody PostDto postDto
-    ) throws NotFoundException {
+    ) {
         return ApiResponse.ok(postService.update(id, postDto));
     }
 }

@@ -30,8 +30,8 @@ public class PostService {
     @Transactional
     public long save(PostDto postDto) throws NotFoundException {
         User user = userRepository.findById(postDto.getUserId())
-                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다.") );
-        Post post = postConverter.convertPost(postDto,user); // dto->entity
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+        Post post = postConverter.convertPost(postDto, user); // dto->entity
         Post entity = postRepository.save(post); // persist
         return entity.getId();
     }
@@ -50,9 +50,14 @@ public class PostService {
     }
 
     @Transactional
-    public long update(long id, PostDto postDto) throws NotFoundException {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("업데이트오류 : 포스트를 찾을 수 없습니다."));
+    public long update(long id, PostDto postDto) {
+        Post post = null;
+        try {
+            post = postRepository.findById(id)
+                    .orElseThrow(() -> new NotFoundException("업데이트오류 : 포스트를 찾을 수 없습니다."));
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
 
