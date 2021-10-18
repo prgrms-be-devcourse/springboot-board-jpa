@@ -36,4 +36,4 @@ build/
 /.idea/
 /HELP.md
 /board.iml
-/src/main/resources/application.yml
+/.env
