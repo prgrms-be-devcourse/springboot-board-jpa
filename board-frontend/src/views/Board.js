@@ -8,7 +8,7 @@ function Board(props) {
     // Select Origin
     const local = 'http://localhost:8080/api';
     const deploy = 'https://boardapi.hanjo.xyz/api';
-    const origin = deploy;
+    const origin = local;
 
     // State
     const page = props.match.params.page;
@@ -25,12 +25,10 @@ function Board(props) {
         axios.get(origin + "/post", { params: { page: page - 1, size: pageSize, sort: "id,DESC" } })
             .then(res => {
                 setPosts(res.data.content)
-                console.log(res)
             })
         // 총 게시글 수 받고 페이지 수 계산
         axios.get(origin + "/post/total")
             .then(res => {
-                // console.log(res);
                 // 전체 페이지 숫자
                 let totalPageNum = Math.ceil(res.data / pageSize);
                 setTotal(totalPageNum);

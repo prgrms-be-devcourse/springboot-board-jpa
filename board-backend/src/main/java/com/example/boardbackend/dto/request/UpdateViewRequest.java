@@ -2,7 +2,7 @@ package com.example.boardbackend.dto.request;
 
 import lombok.*;
 
-@Builder
+@Setter
 @Getter
 public class UpdateViewRequest {
     private Long newView;

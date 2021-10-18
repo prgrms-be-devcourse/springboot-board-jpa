@@ -9,7 +9,7 @@ function Mypage(props) {
   // Select Origin
   const local = 'http://localhost:8080/api';
   const deploy = 'https://boardapi.hanjo.xyz/api';
-  const origin = deploy;
+  const origin = local;
 
   // State
   const userId = localStorage.getItem("userId")

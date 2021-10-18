@@ -8,7 +8,7 @@ function Post(props) {
     // Select Origin
     const local = 'http://localhost:8080/api';
     const deploy = 'https://boardapi.hanjo.xyz/api';
-    const origin = deploy;
+    const origin = local;
 
     // State
     const postId = props.match.params.postId;
