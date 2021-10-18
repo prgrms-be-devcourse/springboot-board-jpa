@@ -1,14 +1,18 @@
 package com.example.board.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Post extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,6 +27,14 @@ public class Post extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
+
+	public void updateTitle(String newTitle) {
+		this.title = newTitle;
+	}
+
+	public void updateContent(String newContent) {
+		this.content = newContent;
+	}
 
 	@Override
 	public boolean equals(Object o) {

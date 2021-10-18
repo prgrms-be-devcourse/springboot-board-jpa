@@ -36,7 +36,6 @@ class PostServiceTest {
         PostDto postDto = PostDto.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
-                .createdBy("Test User Name 1")
                 .build();
 
         Long savedPostId = postService.save(postDto);
@@ -44,7 +43,6 @@ class PostServiceTest {
 
         assertThat(foundPostDto.getTitle()).isEqualTo(postDto.getTitle());
         assertThat(foundPostDto.getContent()).isEqualTo(postDto.getContent());
-        assertThat(foundPostDto.getCreatedBy()).isEqualTo(postDto.getCreatedBy());
     }
 
     @Test
@@ -53,17 +51,14 @@ class PostServiceTest {
         PostDto postDto1 = PostDto.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
-                .createdBy("Test User Name 1")
                 .build();
         PostDto postDto2 = PostDto.builder()
                 .title("Test Post 2")
                 .content("Content of Test Post 2")
-                .createdBy("Test User Name 2")
                 .build();
         PostDto postDto3 = PostDto.builder()
                 .title("Test Post 3")
                 .content("Content of Test Post 3")
-                .createdBy("Test User Name 3")
                 .build();
         postService.save(postDto1);
         postService.save(postDto2);

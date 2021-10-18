@@ -50,7 +50,6 @@ class PostControllerTest {
         PostDto postDto = PostDto.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
-                .createdBy("Test User 1")
                 .build();
 
         mockMvc.perform(post("/api/v1/posts")
@@ -65,8 +64,7 @@ class PostControllerTest {
                                     // Fields of PostDto
                                     fieldWithPath("id").type(JsonFieldType.NULL).description("게시글에 부여되는 ID값. 서버에서 부여되는 값이다."),
                                     fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                    fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
-                                    fieldWithPath("createdBy").type(JsonFieldType.STRING).description("게시글 작성자 이름")
+                                    fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용")
                             ),
                             responseFields(
                                     fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
@@ -83,7 +81,6 @@ class PostControllerTest {
         PostDto postDto = PostDto.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
-                .createdBy("Test User 1")
                 .build();
         Long id = postService.save(postDto);
 
@@ -101,7 +98,6 @@ class PostControllerTest {
                                         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("조회하려는 게시글의 ID"),
                                         fieldWithPath("data.title").type(JsonFieldType.STRING).description("조회하려는 게시글의 제목"),
                                         fieldWithPath("data.content").type(JsonFieldType.STRING).description("조회하려는 게시글의 내용"),
-                                        fieldWithPath("data.createdBy").type(JsonFieldType.STRING).description("조회하려는 게시글의 작성자"),
 
                                         fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("서버가 응답한 시간")
                                 )
@@ -115,17 +111,14 @@ class PostControllerTest {
         PostDto postDto1 = PostDto.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
-                .createdBy("Test User 1")
                 .build();
         PostDto postDto2 = PostDto.builder()
                 .title("Test Post 2")
                 .content("Content of Test Post 2")
-                .createdBy("Test User 2")
                 .build();
         PostDto postDto3 = PostDto.builder()
                 .title("Test Post 3")
                 .content("Content of Test Post 3")
-                .createdBy("Test User 3")
                 .build();
         postService.save(postDto1);
         postService.save(postDto2);
@@ -148,7 +141,6 @@ class PostControllerTest {
                                         fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("조회하려는 게시글의 ID"),
                                         fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("조회하려는 게시글의 제목"),
                                         fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("조회하려는 게시글의 내용"),
-                                        fieldWithPath("data.content[].createdBy").type(JsonFieldType.STRING).description("조회하려는 게시글의 작성자"),
 
                                         fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("Pageable 관련 정보"),
                                         fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("Page 정렬 관련 정보"),
@@ -188,7 +180,6 @@ class PostControllerTest {
         PostDto postDto1 = PostDto.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
-                .createdBy("Test User 1")
                 .build();
         Long postId = postService.save(postDto1);
 
@@ -209,8 +200,7 @@ class PostControllerTest {
                                         // Fields of PostDto
                                         fieldWithPath("id").type(JsonFieldType.NULL).description("게시글의 ID값. 여기서는 이용되지 않는다."),
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("수정하려는 게시글 제목"),
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("수정하려는 게시글 내용"),
-                                        fieldWithPath("createdBy").type(JsonFieldType.NULL).description("게시글 작성자 이름. 여기서는 이용되지 않는다.")
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("수정하려는 게시글 내용")
                                 ),
                                 responseFields(
                                         fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
