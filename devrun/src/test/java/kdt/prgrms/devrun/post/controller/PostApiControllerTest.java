@@ -6,6 +6,7 @@ import kdt.prgrms.devrun.domain.User;
 import kdt.prgrms.devrun.post.dto.AddPostRequestDto;
 import kdt.prgrms.devrun.post.dto.DetailPostDto;
 import kdt.prgrms.devrun.post.dto.EditPostRequestDto;
+import kdt.prgrms.devrun.post.repository.PostRepository;
 import kdt.prgrms.devrun.post.service.PostService;
 import kdt.prgrms.devrun.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -51,6 +54,9 @@ class PostApiControllerTest {
     private PostService postService;
 
     @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     private final Long VALID_POST_ID = 1L;
@@ -71,7 +77,8 @@ class PostApiControllerTest {
 
         userRepository.save(user);
 
-        IntStream.range(0, 30).forEach(i -> postService.createPost(AddPostRequestDto.builder().title("제목 " + i).content("내용").createdBy(user.getLoginId()).build()));
+        final List<Post> postListForTest = IntStream.range(0, 10).mapToObj(i -> Post.builder().title("제목 " + i).content("내용").user(user).build()).collect(Collectors.toList());
+        postRepository.saveAll(postListForTest);
 
     }
 
@@ -95,6 +102,7 @@ class PostApiControllerTest {
                     fieldWithPath("payload.totalCount").type(JsonFieldType.NUMBER).description("전체 데이터 수"),
                     fieldWithPath("payload.pageNo").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
                     fieldWithPath("payload.pageSize").type(JsonFieldType.NUMBER).description("한 페이지 크기"),
+                    fieldWithPath("payload.hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부"),
                     fieldWithPath("payload.list").type(JsonFieldType.ARRAY).description("페이징 리스트"),
                     fieldWithPath("payload.list[].id").type(JsonFieldType.NUMBER).description("게시글 Id"),
                     fieldWithPath("payload.list[].title").type(JsonFieldType.STRING).description("게시글 제목"),

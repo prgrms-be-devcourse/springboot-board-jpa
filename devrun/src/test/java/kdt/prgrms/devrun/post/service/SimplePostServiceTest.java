@@ -17,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -62,17 +64,18 @@ class SimplePostServiceTest {
     void test_getAllPostPagingList() {
 
         // given
-        IntStream.range(0, 30).forEach(i -> postService.createPost(AddPostRequestDto.builder().title("제목 " + i).content("내용").createdBy(user1.getLoginId()).build()));
+        final List<Post> postListForTest = IntStream.range(0, 10).mapToObj(i -> Post.builder().title("제목 " + i).content("내용").user(user1).build()).collect(Collectors.toList());
+        postRepository.saveAll(postListForTest);
 
-        final PageRequest pageRequest = PageRequest.of(0, 10);
+        final PageRequest pageRequest = PageRequest.of(0, 5);
 
         // when
         final PageDto<SimplePostDto> postDtoPage = postService.getPostPagingList(pageRequest);
 
         // then
-        assertThat(postDtoPage.getTotalCount(), is(30L));
+        assertThat(postDtoPage.getTotalCount(), is(10L));
         assertThat(postDtoPage.getPageNo(), is(0));
-        assertThat(postDtoPage.getPageSize(), is(10));
+        assertThat(postDtoPage.getPageSize(), is(5));
         assertThat(postDtoPage.getList(), not(empty()));
     }
 

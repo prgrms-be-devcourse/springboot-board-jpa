@@ -2,7 +2,6 @@ package kdt.prgrms.devrun.post.repository;
 
 import kdt.prgrms.devrun.domain.Post;
 import kdt.prgrms.devrun.domain.User;
-import kdt.prgrms.devrun.post.dto.AddPostRequestDto;
 import kdt.prgrms.devrun.user.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -33,6 +30,7 @@ class PostRepositoryTest {
     private UserRepository userRepository;
 
     private Post post;
+
     @BeforeAll
     void setup() {
 
@@ -45,7 +43,9 @@ class PostRepositoryTest {
             .build();
         userRepository.save(user);
 
-        IntStream.range(0, 30).forEach(i -> postRepository.save(Post.builder().title("제목 " + i).content("내용").user(user).build()));
+        final List<Post> postListForTest = IntStream.range(0, 10).mapToObj(i -> Post.builder().title("제목 " + i).content("내용").user(user).build()).collect(Collectors.toList());
+        postRepository.saveAll(postListForTest);
+
         post = postRepository.save(Post.builder().title("제목 XX").content("내용 XX").user(user).build());
     }
 
@@ -56,7 +56,7 @@ class PostRepositoryTest {
         final PageRequest pageRequest = PageRequest.of(0, 2);
         final Page<Post> pagingPost = postRepository.findAll(pageRequest);
 
-        assertThat(pagingPost.getTotalPages(), is(16));
+        assertThat(pagingPost.getTotalPages(), is(31));
         assertThat(pagingPost.getTotalElements(), is(31L));
 
     }
