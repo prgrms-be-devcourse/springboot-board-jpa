@@ -1,12 +1,14 @@
 package com.programmers.springbootboard.member.dto.bundle;
 
+import com.programmers.springbootboard.annotation.ThreadSafety;
 import lombok.Builder;
 
+@ThreadSafety
 @Builder
 public class MemberDeleteBundle {
-    private Long id;
+    private final Long memberId;
 
-    public Long getId() {
-        return id;
+    public Long getMemberId() {
+        return memberId;
     }
 }

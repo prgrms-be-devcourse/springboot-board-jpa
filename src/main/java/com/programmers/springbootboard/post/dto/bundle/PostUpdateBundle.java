@@ -10,7 +10,7 @@ import lombok.Builder;
 @Builder
 public class PostUpdateBundle {
     private final Email email;
-    private final Long id;
+    private final Long postId;
     private final Title title;
     private final Content content;
 
@@ -18,8 +18,8 @@ public class PostUpdateBundle {
         return email;
     }
 
-    public Long getId() {
-        return id;
+    public Long getPostId() {
+        return postId;
     }
 
     public Title getTitle() {

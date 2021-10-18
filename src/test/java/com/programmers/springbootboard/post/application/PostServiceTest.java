@@ -112,7 +112,7 @@ class PostServiceTest {
         Email email = new Email("wrjs@naver.com");
 
         // when
-        postService.deleteByEmail(id, email);
+        postService.delete(id, email);
 
         // then
         assertThat(0L).isEqualTo(postService.count());

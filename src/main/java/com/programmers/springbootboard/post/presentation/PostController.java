@@ -44,15 +44,14 @@ public class PostController {
 
     @PostMapping(consumes = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<ResponseDto> insert(@RequestBody PostInsertRequest request) {
-        PostInsertBundle postInsertServiceDto = postConverter.toPostInsertServiceDto(request);
-        PostInsertResponse responseDto = postService.insert(postInsertServiceDto);
+        PostInsertBundle bundle = postConverter.toPostInsertBundle(request);
+        PostInsertResponse responseDto = postService.insert(bundle);
 
-        // TODO
         EntityModel<PostInsertResponse> entityModel = EntityModel.of(responseDto,
                 getLinkToAddress().withSelfRel().withType(HttpMethod.POST.name()),
-                getLinkToAddress().slash(responseDto.getId()).withRel("delete").withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().slash(responseDto.getId()).withRel("update").withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(responseDto.getId()).withRel("get").withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(responseDto.getPostId()).withRel("delete").withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().slash(responseDto.getPostId()).withRel("update").withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(responseDto.getPostId()).withRel("get").withType(HttpMethod.GET.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
@@ -63,16 +62,15 @@ public class PostController {
         );
     }
 
-    // TODO <-에러 발생
-    @DeleteMapping(value = "/{id}", consumes = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<ResponseDto> delete(@PathVariable Long id, @RequestBody PostDeleteRequest request) {
-        PostDeleteBundle serviceDto = postConverter.toPostDeleteServiceDto(id, request);
-        PostDeleteResponse post = postService.deleteByEmail(serviceDto);
+    @DeleteMapping(value = "/{postId}", consumes = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<ResponseDto> delete(@PathVariable Long postId, @RequestBody PostDeleteRequest request) {
+        PostDeleteBundle bundle = postConverter.toPostDeleteBundle(postId, request);
+        PostDeleteResponse response = postService.delete(bundle);
 
-        EntityModel<PostDeleteResponse> entityModel = EntityModel.of(post,
-                getLinkToAddress().slash(post.getId()).withSelfRel().withType(HttpMethod.DELETE.name()),
+        EntityModel<PostDeleteResponse> entityModel = EntityModel.of(response,
+                getLinkToAddress().slash(response.getPostId()).withSelfRel().withType(HttpMethod.DELETE.name()),
                 getLinkToAddress().withRel("insert").withType(HttpMethod.POST.name()),
-                getLinkToAddress().slash(post.getId()).withRel("get").withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(response.getPostId()).withRel("get").withType(HttpMethod.GET.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
@@ -83,15 +81,15 @@ public class PostController {
         );
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<ResponseDto> updatePost(@PathVariable Long id, @RequestBody PostUpdateRequest request) {
-        PostUpdateBundle serviceUpdateDto = postConverter.toPostUpdateServiceDto(id, request);
-        PostUpdateResponse post = postService.update(serviceUpdateDto);
+    @PutMapping(value = "/{postId}", consumes = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<ResponseDto> updatePost(@PathVariable Long postId, @RequestBody PostUpdateRequest request) {
+        PostUpdateBundle bundle = postConverter.toPostUpdateBundle(postId, request);
+        PostUpdateResponse response = postService.update(bundle);
 
-        EntityModel<PostUpdateResponse> entityModel = EntityModel.of(post,
-                getLinkToAddress().slash(post.getId()).withSelfRel().withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(post.getId()).withRel("delete").withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().slash(post.getId()).withRel("get").withType(HttpMethod.GET.name()),
+        EntityModel<PostUpdateResponse> entityModel = EntityModel.of(response,
+                getLinkToAddress().slash(response.getPostId()).withSelfRel().withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getPostId()).withRel("delete").withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().slash(response.getPostId()).withRel("get").withType(HttpMethod.GET.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
@@ -102,15 +100,15 @@ public class PostController {
         );
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<ResponseDto> post(@PathVariable Long id) {
-        PostFindBundle serviceDto = postConverter.toPostFindServiceDto(id);
-        PostDetailResponse post = postService.findById(serviceDto);
+    @GetMapping(value = "/{postId}")
+    public ResponseEntity<ResponseDto> post(@PathVariable Long postId) {
+        PostFindBundle bundle = postConverter.toPostFindBundle(postId);
+        PostDetailResponse response = postService.findById(bundle);
 
-        EntityModel<PostDetailResponse> entityModel = EntityModel.of(post,
-                getLinkToAddress().slash(post.getId()).withSelfRel().withType(HttpMethod.GET.name()),
-                getLinkToAddress().slash(post.getId()).withRel("update").withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(post.getId()).withRel("delete").withType(HttpMethod.DELETE.name()),
+        EntityModel<PostDetailResponse> entityModel = EntityModel.of(response,
+                getLinkToAddress().slash(response.getPostId()).withSelfRel().withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(response.getPostId()).withRel("update").withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getPostId()).withRel("delete").withType(HttpMethod.DELETE.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
@@ -123,14 +121,14 @@ public class PostController {
 
     @GetMapping()
     public ResponseEntity<ResponseDto> posts(Pageable pageable) {
-        Page<PostDetailResponse> posts = postService.findAll(pageable);
+        Page<PostDetailResponse> response = postService.findAll(pageable);
 
         Link link = getLinkToAddress().withSelfRel().withType(HttpMethod.GET.name());
 
         return responseConverter.toResponseEntity(
                 HttpStatus.OK,
                 ResponseMessage.MEMBERS_INQUIRY_SUCCESS,
-                posts,
+                response,
                 link
         );
     }

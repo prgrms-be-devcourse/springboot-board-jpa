@@ -47,17 +47,17 @@ public class MemberService {
 
     @Transactional
     public MemberDeleteResponse delete(MemberDeleteBundle bundle) {
-        Member member = memberRepository.findById(bundle.getId())
+        Member member = memberRepository.findById(bundle.getMemberId())
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
-        memberRepository.deleteById(bundle.getId());
+        memberRepository.deleteById(bundle.getMemberId());
         return memberConverter.toMemberDeleteResponse(member.getId(), member.getEmail());
     }
 
     @Transactional
     public MemberUpdateResponse update(MemberUpdateBundle bundle) {
-        Member member = memberRepository.findById(bundle.getId())
+        Member member = memberRepository.findById(bundle.getMemberId())
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });

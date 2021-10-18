@@ -8,12 +8,12 @@ import lombok.NonNull;
 @Builder
 public class MemberDeleteResponse {
     @NonNull
-    private final Long id;
+    private final Long memberId;
     @NonNull
     private final String email;
 
-    public Long getId() {
-        return id;
+    public Long getMemberId() {
+        return memberId;
     }
 
     public String getEmail() {

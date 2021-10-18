@@ -8,13 +8,13 @@ import lombok.Builder;
 @Builder
 public class PostDeleteBundle {
     private final Email email;
-    private final Long id;
+    private final Long postId;
 
     public Email getEmail() {
         return email;
     }
 
-    public Long getId() {
-        return id;
+    public Long getPostId() {
+        return postId;
     }
 }

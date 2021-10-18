@@ -9,13 +9,13 @@ import lombok.Builder;
 @ThreadSafety
 @Builder
 public class MemberUpdateBundle {
-    private final Long id;
+    private final Long memberId;
     private final Name name;
     private final Age age;
     private final Hobby hobby;
 
-    public Long getId() {
-        return id;
+    public Long getMemberId() {
+        return memberId;
     }
 
     public Name getName() {

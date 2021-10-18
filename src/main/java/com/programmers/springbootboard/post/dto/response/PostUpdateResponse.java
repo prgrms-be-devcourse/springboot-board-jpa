@@ -6,13 +6,13 @@ import lombok.Builder;
 @ThreadSafety
 @Builder
 public class PostUpdateResponse {
-    private final Long id;
+    private final Long postId;
     private final String title;
     private final String content;
     private final String email;
 
-    public Long getId() {
-        return id;
+    public Long getPostId() {
+        return postId;
     }
 
     public String getTitle() {

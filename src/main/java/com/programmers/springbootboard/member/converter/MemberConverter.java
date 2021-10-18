@@ -36,7 +36,7 @@ public class MemberConverter {
 
     public MemberSignResponse toMemberSignResponse(Member member) {
         return MemberSignResponse.builder()
-                .id(member.getId())
+                .memberId(member.getId())
                 .email(member.getEmail().getEmail())
                 .name(member.getName().getName())
                 .age(member.getAge().getAge())
@@ -46,7 +46,7 @@ public class MemberConverter {
 
     public MemberDeleteBundle toMemberDeleteBundle(Long id) {
         return MemberDeleteBundle.builder()
-                .id(id)
+                .memberId(id)
                 .build();
     }
 
@@ -58,14 +58,14 @@ public class MemberConverter {
 
     public MemberDeleteResponse toMemberDeleteResponse(Long id, Email email) {
         return MemberDeleteResponse.builder()
-                .id(id)
+                .memberId(id)
                 .email(email.getEmail())
                 .build();
     }
 
     public MemberUpdateBundle toMemberUpdateBundle(Long id, MemberUpdateRequest request) {
         return MemberUpdateBundle.builder()
-                .id(id)
+                .memberId(id)
                 .name(new Name(request.getName()))
                 .age(new Age(request.getAge()))
                 .hobby(new Hobby(request.getHobby()))
@@ -74,7 +74,7 @@ public class MemberConverter {
 
     public MemberUpdateResponse toMemberUpdateResponse(Member member) {
         return MemberUpdateResponse.builder()
-                .id(member.getId())
+                .memberId(member.getId())
                 .email(member.getEmail().getEmail())
                 .name(member.getName().getName())
                 .age(member.getAge().getAge())
@@ -84,7 +84,7 @@ public class MemberConverter {
 
     public MemberDetailResponse toMemberDetailResponse(Member member) {
         return MemberDetailResponse.builder()
-                .id(member.getId())
+                .memberId(member.getId())
                 .email(member.getEmail().getEmail())
                 .name(member.getName().getName())
                 .age(member.getAge().toString())

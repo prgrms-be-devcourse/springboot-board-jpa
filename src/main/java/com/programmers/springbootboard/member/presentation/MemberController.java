@@ -29,12 +29,6 @@ import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
-// TODO LINK를 자동화시키자!
-// 헤이티오스를 분리하는건??? 컨트롤러에서는, 데이터만쏴주고, 헤이티오스를 담당하는 컨트롤러를 만들어서, 링크를 연결
-// 메서드 공통부분 빼기, 어노테이션 인터셉터(스프링 컨테이너 관련)로..(aop도 쓸 필요없다..)
-// 메서드 나누기, 어노테이션 만들기, 어떤 데이터를 넣을지, 리턴 값을 꺼내서 사용?? 찾아보기.. 영준님코드 보기
-// aop 대신 인터셉터 로그 찍어주기!,어노테이션프로세서 -> 코드 컴파일할때 교체가능...
-
 @RestController
 @RequestMapping(value = "/api/member", produces = MediaTypes.HAL_JSON_VALUE)
 @RequiredArgsConstructor
@@ -55,9 +49,9 @@ public class MemberController {
         // TODO
         EntityModel<MemberSignResponse> entityModel = EntityModel.of(response,
                 getLinkToAddress().withSelfRel().withType(HttpMethod.POST.name()),
-                getLinkToAddress().slash(response.getId()).withRel("delete").withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().slash(response.getId()).withRel("update").withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(response.getId()).withRel("get").withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel("delete").withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel("update").withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel("get").withType(HttpMethod.GET.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
@@ -68,16 +62,16 @@ public class MemberController {
         );
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<ResponseDto> delete(@PathVariable Long id) {
-        MemberDeleteBundle bundle = memberConverter.toMemberDeleteBundle(id);
+    @DeleteMapping(value = "/{memberId}")
+    public ResponseEntity<ResponseDto> delete(@PathVariable Long memberId) {
+        MemberDeleteBundle bundle = memberConverter.toMemberDeleteBundle(memberId);
         MemberDeleteResponse response = memberService.delete(bundle);
 
         // TODO
         EntityModel<MemberDeleteResponse> entityModel = EntityModel.of(response,
-                getLinkToAddress().slash(response.getId()).withSelfRel().withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().slash(response.getMemberId()).withSelfRel().withType(HttpMethod.DELETE.name()),
                 getLinkToAddress().withRel("insert").withType(HttpMethod.POST.name()),
-                getLinkToAddress().slash(response.getId()).withRel("get").withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel("get").withType(HttpMethod.GET.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
@@ -88,16 +82,16 @@ public class MemberController {
         );
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<ResponseDto> edit(@PathVariable Long id, @RequestBody MemberUpdateRequest request) {
-        MemberUpdateBundle bundle = memberConverter.toMemberUpdateBundle(id, request);
+    @PutMapping(value = "/{memberId}", consumes = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<ResponseDto> edit(@PathVariable Long memberId, @RequestBody MemberUpdateRequest request) {
+        MemberUpdateBundle bundle = memberConverter.toMemberUpdateBundle(memberId, request);
         MemberUpdateResponse response = memberService.update(bundle);
 
         // TODO
         EntityModel<MemberUpdateResponse> entityModel = EntityModel.of(response,
-                getLinkToAddress().slash(response.getId()).withSelfRel().withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(response.getId()).withRel("delete").withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().slash(response.getId()).withRel("get").withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(response.getMemberId()).withSelfRel().withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel("delete").withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel("get").withType(HttpMethod.GET.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
@@ -108,16 +102,16 @@ public class MemberController {
         );
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<ResponseDto> get(@PathVariable Long id) {
-        MemberFindBundle bundle = memberConverter.toMemberFindBundle(id);
+    @GetMapping(value = "/{memberId}")
+    public ResponseEntity<ResponseDto> get(@PathVariable Long memberId) {
+        MemberFindBundle bundle = memberConverter.toMemberFindBundle(memberId);
         MemberDetailResponse response = memberService.findById(bundle);
 
         // TODO
         EntityModel<MemberDetailResponse> entityModel = EntityModel.of(response,
-                getLinkToAddress().slash(response.getId()).withSelfRel().withType(HttpMethod.GET.name()),
-                getLinkToAddress().slash(response.getId()).withRel("update").withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(response.getId()).withRel("delete").withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().slash(response.getMemberId()).withSelfRel().withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel("update").withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel("delete").withType(HttpMethod.DELETE.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
@@ -130,14 +124,14 @@ public class MemberController {
 
     @GetMapping()
     public ResponseEntity<ResponseDto> getAll(Pageable pageable) {
-        Page<MemberDetailResponse> members = memberService.findAll(pageable);
+        Page<MemberDetailResponse> response = memberService.findAll(pageable);
 
         Link link = getLinkToAddress().withSelfRel().withType(HttpMethod.GET.name());
 
         return responseConverter.toResponseEntity(
                 HttpStatus.OK,
                 ResponseMessage.MEMBERS_INQUIRY_SUCCESS,
-                members,
+                response,
                 link
         );
     }

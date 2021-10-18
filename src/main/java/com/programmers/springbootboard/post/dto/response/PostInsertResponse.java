@@ -1,16 +1,15 @@
 package com.programmers.springbootboard.post.dto.response;
 
 import lombok.Builder;
-import lombok.Data;
 
 @Builder
 public class PostInsertResponse {
-    private final Long id;
+    private final Long postId;
     private final String title;
     private final String content;
 
-    public Long getId() {
-        return id;
+    public Long getPostId() {
+        return postId;
     }
 
     public String getTitle() {

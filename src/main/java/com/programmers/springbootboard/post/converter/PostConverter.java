@@ -19,11 +19,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PostConverter {
-    public PostInsertBundle toPostInsertServiceDto(PostInsertRequest dto) {
+    public PostInsertBundle toPostInsertBundle(PostInsertRequest request) {
         return PostInsertBundle.builder()
-                .email(new Email(dto.getEmail()))
-                .title(new Title(dto.getTitle()))
-                .content(new Content(dto.getContent()))
+                .email(new Email(request.getEmail()))
+                .title(new Title(request.getTitle()))
+                .content(new Content(request.getContent()))
                 .build();
     }
 
@@ -34,66 +34,57 @@ public class PostConverter {
                 .build();
     }
 
-    public PostInsertResponse toPostInsertResponseDto(Post post) {
+    public PostInsertResponse toPostInsertResponse(Post post) {
         return PostInsertResponse.builder()
-                .id(post.getId())
+                .postId(post.getId())
                 .title(post.getTitle().getTitle())
                 .content(post.getContent().getContent())
                 .build();
     }
 
-    public PostDeleteBundle toPostDeleteServiceDto(Long id, PostDeleteRequest dto) {
+    public PostDeleteBundle toPostDeleteBundle(Long postId, PostDeleteRequest dto) {
         return PostDeleteBundle.builder()
                 .email(new Email(dto.getEmail()))
-                .id(id)
+                .postId(postId)
                 .build();
     }
 
     public PostDetailResponse toPostDetailResponse(Post post) {
         return PostDetailResponse.builder()
-                .id(post.getId())
+                .postId(post.getId())
                 .title(post.getTitle().getTitle())
                 .content(post.getContent().getContent())
                 .email(post.getMember().getEmail().getEmail())
                 .build();
     }
 
-    public PostUpdateBundle toPostUpdateServiceDto(Long id, PostUpdateRequest requestDto) {
+    public PostUpdateBundle toPostUpdateBundle(Long postId, PostUpdateRequest requestDto) {
         return PostUpdateBundle.builder()
                 .email(new Email(requestDto.getEmail()))
-                .id(id)
+                .postId(postId)
                 .title(new Title(requestDto.getTitle()))
                 .content(new Content(requestDto.getContent()))
                 .build();
     }
 
-    public PostUpdateResponse toPostUpdateResponseDto(Post post) {
+    public PostUpdateResponse toPostUpdateResponse(Post post) {
         return PostUpdateResponse.builder()
                 .email(post.getMember().getEmail().getEmail())
-                .id(post.getId())
+                .postId(post.getId())
                 .title(post.getTitle().getTitle())
                 .content(post.getContent().getContent())
                 .build();
     }
 
-    public PostFindBundle toPostFindServiceDto(Long id) {
+    public PostFindBundle toPostFindBundle(Long postId) {
         return PostFindBundle.builder()
-                .id(id)
+                .postId(postId)
                 .build();
     }
 
-
-    public PostUpdateRequest toPostUpdateRequest(Email email, Title title, Content content) {
-        return PostUpdateRequest.builder()
-                .email(email.getEmail())
-                .title(title.getTitle())
-                .content(content.getContent())
-                .build();
-    }
-
-    public PostDeleteResponse toPostDeleteResponse(Long id, Email email) {
+    public PostDeleteResponse toPostDeleteResponse(Long postId, Email email) {
         return PostDeleteResponse.builder()
-                .id(id)
+                .postId(postId)
                 .email(email.getEmail())
                 .build();
     }

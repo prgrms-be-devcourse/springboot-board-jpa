@@ -1,11 +1,19 @@
 package com.programmers.springbootboard.post.dto.response;
 
+import com.programmers.springbootboard.annotation.ThreadSafety;
 import lombok.Builder;
-import lombok.Data;
 
-@Data
+@ThreadSafety
 @Builder
 public class PostDeleteResponse {
-    private Long id;
-    private String email;
+    private final Long postId;
+    private final String email;
+
+    public Long getPostId() {
+        return postId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }

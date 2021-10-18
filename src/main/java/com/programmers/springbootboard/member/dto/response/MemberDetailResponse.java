@@ -8,7 +8,7 @@ import lombok.NonNull;
 @Builder
 public class MemberDetailResponse {
     @NonNull
-    private Long id;
+    private Long memberId;
     @NonNull
     private String email;
     @NonNull
@@ -18,8 +18,8 @@ public class MemberDetailResponse {
     @NonNull
     private String hobby;
 
-    public Long getId() {
-        return id;
+    public Long getMemberId() {
+        return memberId;
     }
 
     public String getEmail() {

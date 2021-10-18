@@ -30,54 +30,53 @@ public class PostService {
     private final PostRepository postRepository;
 
     @Transactional
-    public PostInsertResponse insert(PostInsertBundle dto) {
-        Member member = memberRepository.findByEmail(dto.getEmail())
+    public PostInsertResponse insert(PostInsertBundle bundle) {
+        Member member = memberRepository.findByEmail(bundle.getEmail())
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
 
-        Post post = postConverter.toPost(dto);
+        Post post = postConverter.toPost(bundle);
         post.addPost(member);
 
         Post insertedPost = postRepository.save(post);
-        return postConverter.toPostInsertResponseDto(insertedPost);
+        return postConverter.toPostInsertResponse(insertedPost);
     }
 
     @Transactional
-    public PostDeleteResponse deleteByEmail(PostDeleteBundle serviceDto) {
-        Member member = memberRepository.findByEmail(serviceDto.getEmail())
+    public PostDeleteResponse delete(PostDeleteBundle bundle) {
+        Member member = memberRepository.findByEmail(bundle.getEmail())
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
-
-        Post post = member.getPosts().findPostById(serviceDto.getId());
+        Post post = member.getPosts().findPostById(bundle.getPostId());
         member.getPosts().deletePost(post);
 
         return postConverter.toPostDeleteResponse(post.getId(), member.getEmail());
     }
 
     @Transactional
-    public PostUpdateResponse update(PostUpdateBundle serviceDto) {
-        Member member = memberRepository.findByEmail(serviceDto.getEmail())
+    public PostUpdateResponse update(PostUpdateBundle bundle) {
+        Member member = memberRepository.findByEmail(bundle.getEmail())
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
 
-        Post post = member.getPosts().findPostById(serviceDto.getId());
+        Post post = member.getPosts().findPostById(bundle.getPostId());
 
         post.update(
-                serviceDto.getTitle(),
-                serviceDto.getContent(),
+                bundle.getTitle(),
+                bundle.getContent(),
                 member.getId()
         );
 
-        return postConverter.toPostUpdateResponseDto(post);
+        return postConverter.toPostUpdateResponse(post);
     }
 
 
     @Transactional(readOnly = true)
-    public PostDetailResponse findById(PostFindBundle serviceDto) {
-        return postRepository.findById(serviceDto.getId())
+    public PostDetailResponse findById(PostFindBundle bundle) {
+        return postRepository.findById(bundle.getPostId())
                 .map(postConverter::toPostDetailResponse)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_POST);

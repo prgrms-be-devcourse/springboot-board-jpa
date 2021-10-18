@@ -2,12 +2,10 @@ package com.programmers.springbootboard.member.domain;
 
 import com.programmers.springbootboard.common.domain.BaseEntity;
 import com.programmers.springbootboard.member.domain.vo.*;
-import com.programmers.springbootboard.post.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import javax.persistence.*;
-import java.util.Collections;
 
 @Entity
 @Builder
