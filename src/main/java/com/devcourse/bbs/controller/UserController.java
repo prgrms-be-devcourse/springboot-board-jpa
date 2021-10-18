@@ -21,9 +21,10 @@ public class UserController {
 
     @GetMapping("/{name}")
     public ResponseEntity<ApiResponse<UserDTO>> getUser(@PathVariable(name = "name") String name) {
-        return ResponseEntity.ok(ApiResponse.success(userService.findUserByName(name).orElseThrow(() -> {
+        UserDTO user = userService.findUserByName(name).orElseThrow(() -> {
             throw new IllegalArgumentException("User with given name not found.");
-        })));
+        });
+        return ResponseEntity.ok(ApiResponse.success(user));
     }
 
     @PostMapping

@@ -7,6 +7,7 @@ import com.devcourse.bbs.domain.user.User;
 import com.devcourse.bbs.repository.post.PostRepository;
 import com.devcourse.bbs.repository.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -43,18 +44,24 @@ class PostControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    User user;
+
     private static final FieldDescriptor apiResponseSuccess = fieldWithPath("success").description("Status of result");
     private static final FieldDescriptor apiResponseResult = fieldWithPath("result").description("Value of result");
     private static final FieldDescriptor apiResponseError = fieldWithPath("error").description("Message of result");
 
-    @Test
-    void createPostTest() throws Exception {
-        User user = userRepository.save(User.builder()
+    @BeforeEach
+    void initUser() {
+        user = userRepository.save(User.builder()
                 .name("NAME")
                 .age(25)
-                .hobby("HOBYY")
+                .hobby("HOBBY")
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now()).build());
+    }
+
+    @Test
+    void createPostTest() throws Exception {
         PostCreateRequest request = new PostCreateRequest();
         request.setUser(user.getName());
         request.setTitle("TITLE");
@@ -86,12 +93,6 @@ class PostControllerTest {
 
     @Test
     void updatePostTest() throws Exception {
-        User user = userRepository.save(User.builder()
-                .name("NAME")
-                .age(25)
-                .hobby("HOBYY")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now()).build());
         Post post = postRepository.save(Post.builder()
                 .title("TITLE")
                 .content("CONTENT")
@@ -128,12 +129,6 @@ class PostControllerTest {
 
     @Test
     void deletePostTest() throws Exception {
-        User user = userRepository.save(User.builder()
-                .name("NAME")
-                .age(25)
-                .hobby("HOBYY")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now()).build());
         Post post = postRepository.save(Post.builder()
                 .title("TITLE")
                 .content("CONTENT")
@@ -151,12 +146,6 @@ class PostControllerTest {
 
     @Test
     void getPostTest() throws Exception {
-        User user = userRepository.save(User.builder()
-                .name("NAME")
-                .age(25)
-                .hobby("HOBYY")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now()).build());
         Post post = postRepository.save(Post.builder()
                 .title("TITLE")
                 .content("CONTENT")
@@ -185,27 +174,21 @@ class PostControllerTest {
 
     @Test
     void readPostsByPageTest() throws Exception {
-        User user = userRepository.save(User.builder()
-                .name("NAME")
-                .age(25)
-                .hobby("HOBBY")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now()).build());
-        Post post1 = postRepository.save(Post.builder()
+        postRepository.save(Post.builder()
                 .title("TITLE1")
                 .content("CONTENT1")
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .user(user).build());
-        Post post2 = postRepository.save(Post.builder()
-                .title("TITLE1")
-                .content("CONTENT1")
+        postRepository.save(Post.builder()
+                .title("TITLE2")
+                .content("CONTENT2")
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .user(user).build());
         Post post3 = postRepository.save(Post.builder()
-                .title("TITLE1")
-                .content("CONTENT1")
+                .title("TITLE3")
+                .content("CONTENT3")
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .user(user).build());

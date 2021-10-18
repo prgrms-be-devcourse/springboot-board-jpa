@@ -6,6 +6,7 @@ import com.devcourse.bbs.controller.bind.PostUpdateRequest;
 import com.devcourse.bbs.domain.post.PostDTO;
 import com.devcourse.bbs.service.post.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +23,8 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<PostDTO>>> getPostsByPage
-            (@RequestParam int page,
-             @RequestParam int size) {
-        return ResponseEntity.ok(ApiResponse.success(postService.findPostsByPage(page, size)));
+            (Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.success(postService.findPostsByPage(pageable.getPageNumber(), pageable.getPageSize())));
     }
 
     @GetMapping("/{id}")
@@ -38,9 +38,8 @@ public class PostController {
     @PostMapping
     public ResponseEntity<ApiResponse<PostDTO>> createPost(@Valid @RequestBody PostCreateRequest request) {
         PostDTO post = postService.createPost(request);
-        return ResponseEntity
-                .created(URI.create(String.format("/posts/%d", post.getId())))
-                .body(ApiResponse.success(post));
+        URI createdPostURI = URI.create(String.format("/posts/%d", post.getId()));
+        return ResponseEntity.created(createdPostURI).body(ApiResponse.success(post));
     }
 
     @PutMapping("/{id}")
