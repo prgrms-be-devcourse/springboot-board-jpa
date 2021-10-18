@@ -15,15 +15,14 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-@MappedSuperclass
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity {
+public abstract class BaseTimeEntity {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
