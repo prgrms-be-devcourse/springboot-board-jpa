@@ -1,6 +1,5 @@
 package com.kdt.bulletinboard.service;
 
-import com.kdt.bulletinboard.ApiResponse;
 import com.kdt.bulletinboard.converter.PostConverter;
 import com.kdt.bulletinboard.dto.PostDto;
 import com.kdt.bulletinboard.entity.Post;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 public class PostService {

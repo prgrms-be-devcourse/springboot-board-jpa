@@ -1,6 +1,5 @@
 package com.kdt.bulletinboard.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kdt.bulletinboard.dto.PostDto;
 import com.kdt.bulletinboard.dto.UserDto;
@@ -108,8 +107,8 @@ class PostControllerTest {
                 .userDto(userDto)
                 .build();
         mockMvc.perform(put("/posts/{id}", newPostDto.getId())
-                .content(objectMapper.writeValueAsString(newPostDto))
-                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                        .content(objectMapper.writeValueAsString(newPostDto))
+                        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-update"
                         , requestFields(
