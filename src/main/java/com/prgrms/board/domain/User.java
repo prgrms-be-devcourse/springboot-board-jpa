@@ -2,11 +2,13 @@ package com.prgrms.board.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name = "user")
 public class User extends BaseEntity{
 
@@ -18,14 +20,11 @@ public class User extends BaseEntity{
     @Column(name = "name", nullable = false, length = 30)
     private String name;
 
-    @Column(name = "age", nullable = false, length = 20)
+    @Column(name = "age", nullable = false)
     private int age;
 
     @Column(name = "hobby", length = 100)
     private String hobby;
-
-    public User(){
-    }
 
     @Builder
     private User(Long id, String name, int age, String hobby){

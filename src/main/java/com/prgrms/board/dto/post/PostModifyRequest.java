@@ -12,8 +12,12 @@ public class PostModifyRequest {
 
     private String content;
 
-    public PostModifyRequest(String title, String content){
+    private PostModifyRequest(String title, String content){
         this.title = title;
         this.content = content;
+    }
+
+    public static PostModifyRequest from(String title, String content){
+        return new PostModifyRequest(title, content);
     }
 }

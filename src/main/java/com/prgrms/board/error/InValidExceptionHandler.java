@@ -7,16 +7,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ValidExceptionHandler {
+public class InValidExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ValidErrorResponse> argumentNotValidException(MethodArgumentNotValidException ex) {
+    protected ResponseEntity<InvalidErrorResponse> argumentNotValidException(MethodArgumentNotValidException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ValidErrorResponse.builder()
+                .body(InvalidErrorResponse.builder()
                         .field(ex.getBindingResult().getFieldErrors().get(0).getField())
                         .message(ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage())
                         .build());
     }
-
 }

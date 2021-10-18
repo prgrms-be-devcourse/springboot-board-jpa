@@ -20,13 +20,17 @@ public class UserFindRequest {
 
     private LocalDateTime updatedAt;
 
-    public UserFindRequest(User user) {
+    private UserFindRequest(User user) {
         this.id = user.getId();
         this.name = user.getName();
         this.age = user.getAge();
         this.hobby = user.getHobby();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
+    }
+
+    public static UserFindRequest from(User user){
+        return new UserFindRequest(user);
     }
 
 }

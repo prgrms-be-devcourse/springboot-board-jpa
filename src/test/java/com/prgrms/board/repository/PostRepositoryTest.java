@@ -105,7 +105,7 @@ class PostRepositoryTest {
 
         //when
         postRepository.save(post);
-        post.changeInfo("데브코스 TIL 2일차", "오늘의 느낀점:어렵다.");
+        post.changePostInfo("데브코스 TIL 2일차", "오늘의 느낀점:어렵다.");
 
         //then
         Post findPost = postRepository.findById(post.getId()).get();

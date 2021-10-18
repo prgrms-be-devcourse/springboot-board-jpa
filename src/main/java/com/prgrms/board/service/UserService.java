@@ -22,12 +22,12 @@ public class UserService {
 
     @Transactional
     public IdResponse createUser(final UserCreateRequest userCreateRequest){
-        return new IdResponse(userRepository.save(userCreateRequest.toEntity()).getId());
+        return IdResponse.from(userRepository.save(userCreateRequest.toEntity()).getId());
     }
 
     @Transactional(readOnly = true)
     public UserFindRequest findUser(final Long id){
-        return new UserFindRequest(getUser(id));
+        return UserFindRequest.from(getUser(id));
     }
 
     @Transactional
@@ -35,7 +35,7 @@ public class UserService {
         User user = getUser(id);
         user.changeUserInfo(userCreateRequest.getName(), userCreateRequest.getAge(), userCreateRequest.getHobby());
 
-        return new IdResponse(user.getId());
+        return IdResponse.from(user.getId());
     }
 
     @Transactional
@@ -43,7 +43,7 @@ public class UserService {
         User user = getUser(id);
         userRepository.delete(user);
 
-        return new IdResponse(user.getId());
+        return IdResponse.from(user.getId());
     }
 
     private User getUser(final Long id) {

@@ -36,28 +36,27 @@ public class PostService {
                 .user(foundUser)
                 .build();
 
-        return new IdResponse(postRepository.save(post).getId());
+        return IdResponse.from(postRepository.save(post).getId());
     }
 
     @Transactional
     public IdResponse modifyPost(final Long postId, final PostModifyRequest postModifyRequest){
         Post post = getPost(postId);
-        post.changeInfo(postModifyRequest.getTitle(), postModifyRequest.getContent());
+        post.changePostInfo(postModifyRequest.getTitle(), postModifyRequest.getContent());
 
-        return new IdResponse(postRepository.save(post).getId());
+        return IdResponse.from(post.getId());
     }
 
     @Transactional(readOnly = true)
     public PostFindResponse findPost(final Long id) {
-        Post test = getPost(id);
-        return new PostFindResponse(test);
+        return PostFindResponse.from(getPost(id));
     }
 
     @Transactional(readOnly = true)
     public Page<PostFindResponse> findAllPostByUserId(Pageable pageable, final Long userId){
         User user = getUser(userId);
         return postRepository.findAllByUser(pageable, user)
-                .map(PostFindResponse::new);
+                .map(PostFindResponse::from);
     }
 
     @Transactional
@@ -65,7 +64,7 @@ public class PostService {
         Post post = getPost(id);
         postRepository.delete(post);
 
-        return new IdResponse(postRepository.save(post).getId());
+        return IdResponse.from(post.getId());
     }
 
     private Post getPost(final Long id) {

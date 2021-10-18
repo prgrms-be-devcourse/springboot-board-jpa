@@ -18,12 +18,16 @@ public class PostFindResponse {
 
     private LocalDateTime updatedAt;
 
-    public PostFindResponse(Post post){
+    private PostFindResponse(Post post){
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getUpdatedAt();
+    }
+
+    public static PostFindResponse from(Post post){
+        return new PostFindResponse(post);
     }
 
 }

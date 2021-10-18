@@ -2,11 +2,13 @@ package com.prgrms.board.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name ="post")
 public class Post extends BaseEntity{
 
@@ -18,15 +20,12 @@ public class Post extends BaseEntity{
     @Column(name = "title", nullable = false, length = 250)
     private String title;
 
-    @Lob
+    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
-    public Post(){
-    }
 
     @Builder
     private Post(Long id, User user, String title, String content){
@@ -36,7 +35,7 @@ public class Post extends BaseEntity{
         this.content = content;
     }
 
-    public void changeInfo(String title, String content){
+    public void changePostInfo(String title, String content){
         this.title = title;
         this.content = content;
     }

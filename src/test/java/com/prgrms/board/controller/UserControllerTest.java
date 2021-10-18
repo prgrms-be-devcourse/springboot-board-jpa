@@ -58,9 +58,9 @@ class UserControllerTest {
     @DisplayName("사용자 정보 저장")
     @Test
     void createUserTest() throws Exception {
-        given(userService.createUser(any(UserCreateRequest.class))).willReturn(new IdResponse(user.getId()));
+        given(userService.createUser(any(UserCreateRequest.class))).willReturn(IdResponse.from(user.getId()));
 
-        String body = objectMapper.writeValueAsString(new UserCreateRequest("dahee", 90, "노래듣기"));
+        String body = objectMapper.writeValueAsString(UserCreateRequest.from("dahee", 90, "노래듣기"));
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/users")
@@ -87,7 +87,7 @@ class UserControllerTest {
     @DisplayName("특정 사용자 정보 조회")
     @Test
     void findUserTest() throws Exception {
-        given(userService.findUser(anyLong())).willReturn(new UserFindRequest(user));
+        given(userService.findUser(anyLong())).willReturn(UserFindRequest.from(user));
 
         RequestBuilder request = RestDocumentationRequestBuilders
                 .get("/users/{id}", user.getId())
@@ -116,9 +116,9 @@ class UserControllerTest {
     @DisplayName("사용자 정보 수정")
     @Test
     void modifyUserTest() throws Exception {
-        given(userService.modifyUser(anyLong(), any(UserCreateRequest.class))).willReturn(new IdResponse(user.getId()));
+        given(userService.modifyUser(anyLong(), any(UserCreateRequest.class))).willReturn(IdResponse.from(user.getId()));
 
-        String body = objectMapper.writeValueAsString(new UserCreateRequest("dahee", 90, "노래듣기"));
+        String body = objectMapper.writeValueAsString(UserCreateRequest.from("dahee", 90, "노래듣기"));
 
         RequestBuilder request = RestDocumentationRequestBuilders
                 .put("/users/{id}", user.getId())
@@ -148,7 +148,7 @@ class UserControllerTest {
     @DisplayName("사용자 정보 삭제")
     @Test
     void removeUserTest() throws Exception {
-        given(userService.removeUser(anyLong())).willReturn(new IdResponse(user.getId()));
+        given(userService.removeUser(anyLong())).willReturn(IdResponse.from(user.getId()));
 
         RequestBuilder request = RestDocumentationRequestBuilders
                 .delete("/users/{id}", user.getId());
