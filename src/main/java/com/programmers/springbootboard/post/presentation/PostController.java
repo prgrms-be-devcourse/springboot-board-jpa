@@ -38,6 +38,12 @@ public class PostController {
     private final PostConverter postConverter;
     private final ResponseConverter responseConverter;
 
+    private static final String INSERT_METHOD = "insert";
+    private static final String DELETE_METHOD = "delete";
+    private static final String UPDATE_METHOD = "update";
+    private static final String GET_METHOD = "get";
+    private static final String GET_ALL_METHOD = "get-all";
+
     private WebMvcLinkBuilder getLinkToAddress() {
         return linkTo(PostController.class);
     }
@@ -49,10 +55,10 @@ public class PostController {
 
         EntityModel<PostInsertResponse> entityModel = EntityModel.of(responseDto,
                 getLinkToAddress().withSelfRel().withType(HttpMethod.POST.name()),
-                getLinkToAddress().slash(responseDto.getPostId()).withRel("delete").withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().slash(responseDto.getPostId()).withRel("update").withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(responseDto.getPostId()).withRel("get").withType(HttpMethod.GET.name()),
-                getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
+                getLinkToAddress().slash(responseDto.getPostId()).withRel(DELETE_METHOD).withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().slash(responseDto.getPostId()).withRel(UPDATE_METHOD).withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(responseDto.getPostId()).withRel(GET_METHOD).withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(GET_ALL_METHOD).withType(HttpMethod.GET.name())
         );
 
         return responseConverter.toResponseEntity(
@@ -69,9 +75,9 @@ public class PostController {
 
         EntityModel<PostDeleteResponse> entityModel = EntityModel.of(response,
                 getLinkToAddress().slash(response.getPostId()).withSelfRel().withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().withRel("insert").withType(HttpMethod.POST.name()),
-                getLinkToAddress().slash(response.getPostId()).withRel("get").withType(HttpMethod.GET.name()),
-                getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
+                getLinkToAddress().withRel(INSERT_METHOD).withType(HttpMethod.POST.name()),
+                getLinkToAddress().slash(response.getPostId()).withRel(GET_METHOD).withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(GET_ALL_METHOD).withType(HttpMethod.GET.name())
         );
 
         return responseConverter.toResponseEntity(
@@ -88,9 +94,9 @@ public class PostController {
 
         EntityModel<PostUpdateResponse> entityModel = EntityModel.of(response,
                 getLinkToAddress().slash(response.getPostId()).withSelfRel().withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(response.getPostId()).withRel("delete").withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().slash(response.getPostId()).withRel("get").withType(HttpMethod.GET.name()),
-                getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
+                getLinkToAddress().slash(response.getPostId()).withRel(DELETE_METHOD).withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().slash(response.getPostId()).withRel(GET_METHOD).withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(GET_ALL_METHOD).withType(HttpMethod.GET.name())
         );
 
         return responseConverter.toResponseEntity(
@@ -107,9 +113,9 @@ public class PostController {
 
         EntityModel<PostDetailResponse> entityModel = EntityModel.of(response,
                 getLinkToAddress().slash(response.getPostId()).withSelfRel().withType(HttpMethod.GET.name()),
-                getLinkToAddress().slash(response.getPostId()).withRel("update").withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(response.getPostId()).withRel("delete").withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
+                getLinkToAddress().slash(response.getPostId()).withRel(UPDATE_METHOD).withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getPostId()).withRel(DELETE_METHOD).withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().withRel(GET_ALL_METHOD).withType(HttpMethod.GET.name())
         );
 
         return responseConverter.toResponseEntity(

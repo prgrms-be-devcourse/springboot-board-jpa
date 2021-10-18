@@ -37,6 +37,12 @@ public class MemberController {
     private final MemberConverter memberConverter;
     private final ResponseConverter responseConverter;
 
+    private static final String INSERT_METHOD = "insert";
+    private static final String DELETE_METHOD = "delete";
+    private static final String UPDATE_METHOD = "update";
+    private static final String GET_METHOD = "get";
+    private static final String GET_ALL_METHOD = "get-all";
+
     private WebMvcLinkBuilder getLinkToAddress() {
         return linkTo(MemberController.class);
     }
@@ -49,10 +55,10 @@ public class MemberController {
         // TODO
         EntityModel<MemberSignResponse> entityModel = EntityModel.of(response,
                 getLinkToAddress().withSelfRel().withType(HttpMethod.POST.name()),
-                getLinkToAddress().slash(response.getMemberId()).withRel("delete").withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().slash(response.getMemberId()).withRel("update").withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(response.getMemberId()).withRel("get").withType(HttpMethod.GET.name()),
-                getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
+                getLinkToAddress().slash(response.getMemberId()).withRel(DELETE_METHOD).withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel(UPDATE_METHOD).withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel(GET_METHOD).withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(GET_ALL_METHOD).withType(HttpMethod.GET.name())
         );
 
         return responseConverter.toResponseEntity(
@@ -70,9 +76,9 @@ public class MemberController {
         // TODO
         EntityModel<MemberDeleteResponse> entityModel = EntityModel.of(response,
                 getLinkToAddress().slash(response.getMemberId()).withSelfRel().withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().withRel("insert").withType(HttpMethod.POST.name()),
-                getLinkToAddress().slash(response.getMemberId()).withRel("get").withType(HttpMethod.GET.name()),
-                getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
+                getLinkToAddress().withRel(INSERT_METHOD).withType(HttpMethod.POST.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel(GET_METHOD).withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(GET_ALL_METHOD).withType(HttpMethod.GET.name())
         );
 
         return responseConverter.toResponseEntity(
@@ -90,9 +96,9 @@ public class MemberController {
         // TODO
         EntityModel<MemberUpdateResponse> entityModel = EntityModel.of(response,
                 getLinkToAddress().slash(response.getMemberId()).withSelfRel().withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(response.getMemberId()).withRel("delete").withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().slash(response.getMemberId()).withRel("get").withType(HttpMethod.GET.name()),
-                getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
+                getLinkToAddress().slash(response.getMemberId()).withRel(DELETE_METHOD).withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel(GET_METHOD).withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(GET_ALL_METHOD).withType(HttpMethod.GET.name())
         );
 
         return responseConverter.toResponseEntity(
@@ -110,9 +116,9 @@ public class MemberController {
         // TODO
         EntityModel<MemberDetailResponse> entityModel = EntityModel.of(response,
                 getLinkToAddress().slash(response.getMemberId()).withSelfRel().withType(HttpMethod.GET.name()),
-                getLinkToAddress().slash(response.getMemberId()).withRel("update").withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(response.getMemberId()).withRel("delete").withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
+                getLinkToAddress().slash(response.getMemberId()).withRel(UPDATE_METHOD).withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getMemberId()).withRel(DELETE_METHOD).withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().withRel(GET_ALL_METHOD).withType(HttpMethod.GET.name())
         );
 
         return responseConverter.toResponseEntity(
