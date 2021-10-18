@@ -21,9 +21,9 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/posts")
 public class PostApiController {
 
-    final private PostService postService;
+    private final PostService postService;
 
-    @GetMapping()
+    @GetMapping
     public ApiResult<PageDto<SimplePostDto>> posts(Pageable pageable) {
         return ApiResult.ok(postService.getPostPagingList(pageable));
     }
@@ -34,7 +34,7 @@ public class PostApiController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping()
+    @PostMapping
     public ApiResult<Long> create(@RequestBody @Valid AddPostRequestDto addPostRequestDto) {
         final Long createdPostId = postService.createPost(addPostRequestDto);
         return ApiResult.ok(createdPostId);
