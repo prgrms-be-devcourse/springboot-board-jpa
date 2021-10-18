@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/posts")
 public class PostController {
 
     private final PostService postService;
@@ -36,14 +36,14 @@ public class PostController {
 
     // 게시글 조회
     // 1. 페이징 조회 : GET "/posts"
-    @GetMapping("/posts")
+    @GetMapping
     public ApiResponse<Page<PostDto>> requestPageOfPosts(Pageable pageable) {
         Page<PostDto> all = postService.findAll(pageable);
         return ApiResponse.ok(all);
     }
 
     // 2. 단건 조회 : GET "/posts/{id}"
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public ApiResponse<PostDto> requestOnePost(@PathVariable Long id) throws NotFoundException {
         PostDto foundPostDto = postService.findById(id);
         return ApiResponse.ok(foundPostDto);
@@ -51,15 +51,15 @@ public class PostController {
 
     // 게시글 작성
     // POST "/posts"
-    @PostMapping("/posts")
+    @PostMapping
     public ApiResponse<Long> uploadPost(@RequestBody PostDto postDto) {
         Long savedPostId = postService.save(postDto);
         return ApiResponse.ok(savedPostId);
     }
 
     // 게시글 수정
-    // POST "/posts/{id}" -> mockMVC를 이용한 테스트까지
-    @PostMapping("/posts/{id}")
+    // POST "/posts/{id}"
+    @PostMapping("/{id}")
     public ApiResponse<Long> editPost(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
         postDto.setId(id);
         Long postId = postService.editPost(postDto);
