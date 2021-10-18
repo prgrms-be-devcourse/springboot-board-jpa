@@ -15,8 +15,8 @@ import java.util.Objects;
 @Table(
     name = "user",
     uniqueConstraints = {
-    @UniqueConstraint(name = "UniqueLoginId", columnNames = {"login_id"}),
-    @UniqueConstraint(name = "UniqueEmail", columnNames = {"email"}),
+    @UniqueConstraint(name = "UK_user_login_id", columnNames = {"login_id"}),
+    @UniqueConstraint(name = "UK_user_login_email", columnNames = {"email"}),
 })
 public class User extends BaseTimeEntity {
 
