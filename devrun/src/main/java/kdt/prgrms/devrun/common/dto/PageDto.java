@@ -17,11 +17,14 @@ public class PageDto<T> {
 
     private List<T> list;
 
+    private boolean hasNext;
+
     public PageDto(Page<T> tPage) {
         this.totalCount = tPage.getTotalElements();
         this.pageNo = tPage.getNumber();
         this.pageSize = tPage.getSize();
         this.list = tPage.getContent();
+        this.hasNext = tPage.hasNext();
     }
 
 }
