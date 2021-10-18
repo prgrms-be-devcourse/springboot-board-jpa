@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -78,6 +83,7 @@ class PostControllerTest {
                 .content("서비스 테스트 입니다.")
                 .userDto(
                         UserDto.builder()
+                                .id(1L)
                                 .name("chaewon")
                                 .age(25)
                                 .hobby("ddd")
@@ -89,7 +95,31 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto))) //Json 형태의 String으로 orderDto를 변환
                 .andExpect(status().isOk()) // 200
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-save",
+                        preprocessRequest(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
+                                fieldWithPath("userDto").type(JsonFieldType.OBJECT).description("userDto"),
+                                fieldWithPath("userDto.id").type(JsonFieldType.NUMBER).description("userDto.id"),
+                                fieldWithPath("userDto.name").type(JsonFieldType.STRING).description("userDto.name"),
+                                fieldWithPath("userDto.age").type(JsonFieldType.NUMBER).description("userDto.age"),
+                                fieldWithPath("userDto.hobby").type(JsonFieldType.STRING).description("userDto.hobby")
+
+
+
+                        ),
+
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
+                                fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답시간")
+
+
+                        )
+                ));
     }
 
     @Test
@@ -97,7 +127,25 @@ class PostControllerTest {
         mockMvc.perform(get("/posts/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()) //200응답을 기대
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-getOne",
+                preprocessRequest(prettyPrint()),
+                responseFields(
+                        fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+                        fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
+                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
+                        fieldWithPath("data.content").type(JsonFieldType.STRING).description("게시글"),
+                        fieldWithPath("data.userDto").type(JsonFieldType.OBJECT).description("userDto"),
+                        fieldWithPath("data.userDto.id").type(JsonFieldType.NUMBER).description("userDto.id"),
+                        fieldWithPath("data.userDto.name").type(JsonFieldType.STRING).description("userDto.name"),
+                        fieldWithPath("data.userDto.age").type(JsonFieldType.NUMBER).description("userDto.age"),
+                        fieldWithPath("data.userDto.hobby").type(JsonFieldType.STRING).description("userDto.hobby"),
+
+                        fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답시간")
+
+                )
+                ));
     }
 
     @Test

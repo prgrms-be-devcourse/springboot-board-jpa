@@ -1,0 +1,27 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시판
+
+==== Save
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+==== getOne
+.Request
+include::{snippets}/post-getOne/http-request.adoc[]
+include::{snippets}/post-getOne/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-getOne/http-request.adoc[]
+include::{snippets}/post-getOne/response-fields.adoc[]
+
+.
