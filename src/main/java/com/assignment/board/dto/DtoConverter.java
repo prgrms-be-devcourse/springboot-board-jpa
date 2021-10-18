@@ -30,6 +30,7 @@ public class DtoConverter {
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
+                .userDto(this.convertUserDto(post.getUser()))
                 .build();
     }
 
