@@ -9,7 +9,7 @@ endif::[]
 include::{snippets}/common/response-fields.adoc[]
 == 게시글 조회
 
-=== /posts
+=== GET /posts
 
 .Request
 include::{snippets}/post-search/http-request.adoc[]
@@ -18,3 +18,40 @@ include::{snippets}/post-search/http-request.adoc[]
 .Response
 include::{snippets}/post-search/http-response.adoc[]
 include::{snippets}/post-search/response-fields-data.adoc[]
+
+== 게시글 단건 조회
+
+=== GET /posts/{id}
+
+.Request
+include::{snippets}/post-search-one/http-request.adoc[]
+include::{snippets}/post-search-one/path-parameters.adoc[]
+
+.Response
+include::{snippets}/post-search-one/http-response.adoc[]
+include::{snippets}/post-search-one/response-fields-data.adoc[]
+
+== 게시글 등록
+
+=== POST /posts
+
+.Request
+include::{snippets}/post-register/http-request.adoc[]
+include::{snippets}/post-register/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-register/http-response.adoc[]
+include::{snippets}/post-register/response-fields-data.adoc[]
+
+== 게시글 수정
+
+=== POST /posts/{id}
+
+.Request
+include::{snippets}/post-edit/http-request.adoc[]
+include::{snippets}/post-edit/path-parameters.adoc[]
+include::{snippets}/post-edit/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-edit/http-response.adoc[]
+include::{snippets}/post-edit/response-fields-data.adoc[]
