@@ -20,9 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PostServiceTest {
     @Autowired
     private PostService postService;
-    @Autowired
-    private UserService userService;
-
     private Long postId;
 
     @BeforeEach
@@ -31,7 +28,6 @@ class PostServiceTest {
                 .name("eonju")
                 .hobby(Hobby.CYCLING)
                 .build();
-        userService.save(userDto);
 
         PostDto postDto = PostDto.builder()
                 .title("1st Post")
@@ -45,7 +41,7 @@ class PostServiceTest {
     @Test
     void findOneTest() throws NotFoundException {
         PostDto foundPostDto = postService.findOnePost(postId);
-        assertThat(foundPostDto.getId()).isEqualTo(postId);
+        assertThat(postId).isEqualTo(foundPostDto.getId());
     }
 
     @Test
@@ -55,5 +51,14 @@ class PostServiceTest {
         assertThat(posts.getTotalElements()).isEqualTo(1);
     }
 
-
+    @Test
+    void updatePost() throws NotFoundException {
+        PostDto newPostDto = PostDto.builder()
+                .id(postId)
+                .title("updated post")
+                .content("this is updated post. ")
+                .build();
+        Long updatedPostId = postService.updatePost(newPostDto.getId(), newPostDto);
+        assertThat(updatedPostId).isEqualTo(postId);
+    }
 }

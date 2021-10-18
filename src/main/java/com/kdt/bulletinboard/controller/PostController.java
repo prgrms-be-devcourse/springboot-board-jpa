@@ -16,7 +16,7 @@ public class PostController {
     private PostService postService;
 
     @PostMapping("/posts")
-    public ApiResponse<Long> save(@RequestBody PostDto postDto) {
+    public ApiResponse<Long> write(@RequestBody PostDto postDto) {
         Long id = postService.save(postDto);
         return ApiResponse.ok(id);
     }
@@ -30,6 +30,11 @@ public class PostController {
     @GetMapping("/posts")
     public ApiResponse<Page<PostDto>> findAllPost(Pageable pageable) {
         return ApiResponse.ok(postService.findAllPost(pageable));
+    }
+
+    @PutMapping("/posts/{id}")
+    public ApiResponse<Long> updatePost(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
+        return ApiResponse.ok(postService.updatePost(id, postDto));
     }
 
     @ExceptionHandler

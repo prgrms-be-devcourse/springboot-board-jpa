@@ -1,5 +1,6 @@
 package com.kdt.bulletinboard.service;
 
+import com.kdt.bulletinboard.ApiResponse;
 import com.kdt.bulletinboard.converter.PostConverter;
 import com.kdt.bulletinboard.dto.PostDto;
 import com.kdt.bulletinboard.entity.Post;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class PostService {
@@ -38,5 +40,16 @@ public class PostService {
     public Page<PostDto> findAllPost(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(postConverter::convertToPostDto);
+    }
+
+    public Long updatePost(Long id, PostDto postDto) throws NotFoundException {
+        postRepository.findById(id)
+                .map(foundPost -> {
+                    foundPost.updatePost(postDto.getTitle(), postDto.getContent());
+                    postRepository.save(foundPost);
+                    return id;
+                })
+                .orElseThrow(() -> new NotFoundException("해당 포스트를 찾을 수 없습니다."));
+        return id;
     }
 }

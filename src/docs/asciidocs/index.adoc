@@ -7,7 +7,7 @@ endif::[]
 
 === 포스트 생성
 
-==== /posts/{id}
+==== /posts
 
 .Request
 include::{snippets}/post-save/http-request.adoc[]
@@ -16,3 +16,15 @@ include::{snippets}/post-save/request-fields.adoc[]
 .Response
 include::{snippets}/post-save/http-response.adoc[]
 include::{snippets}/post-save/response-fields.adoc[]
+
+=== 포스트 수정
+
+==== /posts/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
