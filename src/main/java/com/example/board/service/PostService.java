@@ -15,26 +15,28 @@ import javax.transaction.Transactional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final PostConverter postConverter;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, PostConverter postConverter) {
         this.postRepository = postRepository;
+        this.postConverter = postConverter;
     }
 
     @Transactional
     public Long save(PostDto postDto) {
-        Post post = PostConverter.convertFromDtoToPost(postDto);
+        Post post = postConverter.convertFromDtoToPost(postDto);
         Post savedPost = postRepository.save(post);
         return savedPost.getId();
     }
 
     @Transactional
     public Page<PostDto> findAll(Pageable pageable) {
-        return postRepository.findAll(pageable).map(PostConverter::convertFromPostToDto);
+        return postRepository.findAll(pageable).map(postConverter::convertFromPostToDto);
     }
 
     @Transactional
     public PostDto findById(Long id) throws NotFoundException {
-        return postRepository.findById(id).map(PostConverter::convertFromPostToDto).orElseThrow(() -> new NotFoundException("Post Not Found"));
+        return postRepository.findById(id).map(postConverter::convertFromPostToDto).orElseThrow(() -> new NotFoundException("Post Not Found"));
     }
 
     @Transactional
