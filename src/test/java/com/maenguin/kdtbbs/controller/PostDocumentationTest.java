@@ -1,75 +1,92 @@
 package com.maenguin.kdtbbs.controller;
 
-import com.maenguin.kdtbbs.domain.Post;
-import com.maenguin.kdtbbs.domain.User;
-import com.maenguin.kdtbbs.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maenguin.kdtbbs.dto.PostAddDto;
+import com.maenguin.kdtbbs.dto.PostAddResDto;
+import com.maenguin.kdtbbs.dto.PostDto;
+import com.maenguin.kdtbbs.dto.PostListDto;
+import com.maenguin.kdtbbs.service.PostService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Collections;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.snippet.Attributes.attributes;
-import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
 @AutoConfigureRestDocs
-@AutoConfigureMockMvc
+@WebMvcTest(PostRestController.class)
 public class PostDocumentationTest {
 
     @Autowired
     private MockMvc mockMvc;
+    @MockBean
+    private PostService postService;
     @Autowired
-    private UserRepository userRepository;
-
-    @BeforeEach
-    void setUp() {
-        User user = new User("string", "string");
-        Post post = new Post("string", "string");
-        user.addPost(post);
-        userRepository.save(user);
-    }
+    private ObjectMapper objectMapper;
 
     @Test
-    void common() throws Exception {
+    void commonDocs() throws Exception {
+
+        //given
+        PostDto postDto = new PostDto(1L, "string", "string");
+        given(postService.getPostById(any(Long.class)))
+                .willReturn(postDto);
+        //when
         ResultActions result = mockMvc.perform(
-                get("/bbs/api/v1/posts")
+                get("/bbs/api/v1/posts/{id}", 1L)
                         .accept(MediaType.APPLICATION_JSON)
         );
-
+        //then
         result.andExpect(status().isOk())
                 .andDo(document("common",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                subsectionWithPath("data").description("요청 결과 데이터"),
                                 fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("요청 성공 여부"),
-                                fieldWithPath("error").type(JsonFieldType.NULL).description("에러 정보"),
-                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답 시간")
+                                subsectionWithPath("data").type(JsonFieldType.OBJECT).description("요청 결과 데이터 (success = false면 null)"),
+                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답 시간"),
+                                fieldWithPath("error").type(JsonFieldType.OBJECT).description("에러 정보 (success = true면 null)").optional(),
+                                fieldWithPath("error.errorCode").type(JsonFieldType.NUMBER).description("에러 코드"),
+                                fieldWithPath("error.message").type(JsonFieldType.STRING).description("에러 메시지")
                         )
                 ));
     }
 
     @Test
     void searchAllPostsDocs() throws Exception {
+
+        //given
+        PostDto postDto = new PostDto(1L, "string", "string");
+        Page<PostDto> page = new PageImpl<>(Collections.singletonList(postDto), PageRequest.of(0, 1), 0);
+        PostListDto postListDto = new PostListDto(page);
+        given(postService.getAllPosts(any(Pageable.class)))
+                .willReturn(postListDto);
+        //when
         ResultActions result = mockMvc.perform(
                 get("/bbs/api/v1/posts")
                         .accept(MediaType.APPLICATION_JSON)
         );
-
+        //then
         result.andExpect(status().isOk())
                 .andDo(document("post-search",
                         preprocessRequest(prettyPrint()),
@@ -88,6 +105,99 @@ public class PostDocumentationTest {
                                 fieldWithPath("pagination.size").type(JsonFieldType.NUMBER).description("페이징 size")
                         )
                 ));
+    }
 
+    @Test
+    void searchPostByIdDocs() throws Exception {
+
+        //given
+        PostDto postDto = new PostDto(1L, "string", "string");
+        given(postService.getPostById(any(Long.class)))
+                .willReturn(postDto);
+        //when
+        ResultActions result = mockMvc.perform(
+                get("/bbs/api/v1/posts/{id}", 2L)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+        //then
+        result.andExpect(status().isOk())
+                .andDo(document("post-search-one",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("게시글 id")
+                        ),
+                        responseFields(
+                                beneathPath("data").withSubsectionId("data"),
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 id"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용")
+                        )
+                ));
+    }
+
+    @Test
+    void registerPostDocs() throws Exception {
+
+        //given
+        PostAddDto postAddDto = new PostAddDto(1L, "string", "string");
+        given(postService.savePost(any(PostAddDto.class)))
+                .willReturn(new PostAddResDto(1L));
+        //when
+        ResultActions result = mockMvc.perform(
+                post("/bbs/api/v1/posts")
+                        .content(objectMapper.writeValueAsString(postAddDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+        //then
+        result.andExpect(status().isOk())
+                .andDo(document("post-register",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용")
+                        ),
+                        responseFields(
+                                beneathPath("data").withSubsectionId("data"),
+                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 Id")
+                        )
+                ));
+    }
+
+    @Test
+    void editPostDocs() throws Exception {
+
+        //given
+        PostAddDto postAddDto = new PostAddDto(1L, "string", "string");
+        given(postService.editPost(any(Long.class), any(PostAddDto.class)))
+                .willReturn(new PostAddResDto(1L));
+        //when
+        ResultActions result = mockMvc.perform(
+                post("/bbs/api/v1/posts/{id}", 1L)
+                        .content(objectMapper.writeValueAsString(postAddDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+        //then
+        result.andExpect(status().isOk())
+                .andDo(document("post-edit",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("게시글 id")
+                        ),
+                        requestFields(
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id").optional(),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용")
+                        ),
+                        responseFields(
+                                beneathPath("data").withSubsectionId("data"),
+                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 Id")
+                        )
+                ));
     }
 }
