@@ -1,0 +1,58 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시글
+
+=== 게시글 생성
+
+- Url : /posts
+
+.Request
+include::{snippets}/insertPost/http-request.adoc[]
+include::{snippets}/insertPost/request-body.adoc[]
+
+.Response
+include::{snippets}/insertPost/http-response.adoc[]
+include::{snippets}/insertPost/response-body.adoc[]
+include::{snippets}/insertPost/response-fields.adoc[]
+
+=== 게시글 조회
+
+- 단건 조회 url : /posts/{postId}
+
+.Request
+include::{snippets}/getPost_by_postId/http-request.adoc[]
+include::{snippets}/getPost_by_postId/request-body.adoc[]
+
+.Response
+include::{snippets}/getPost_by_postId/http-response.adoc[]
+include::{snippets}/getPost_by_postId/response-body.adoc[]
+include::{snippets}/getPost_by_postId/response-fields.adoc[]
+
+- 전체 조회 url : /posts
+
+.Request
+include::{snippets}/getAllPosts/http-request.adoc[]
+include::{snippets}/getAllPosts/request-body.adoc[]
+include::{snippets}/getAllPosts/request-parameters.adoc[]
+
+.Response
+include::{snippets}/getAllPosts/http-response.adoc[]
+include::{snippets}/getAllPosts/response-body.adoc[]
+include::{snippets}/getAllPosts/response-fields.adoc[]
+
+=== 게시글 수정
+
+url : /posts/{postId}
+
+.Request
+include::{snippets}/updatePost/http-request.adoc[]
+include::{snippets}/updatePost/request-body.adoc[]
+include::{snippets}/updatePost/request-fields.adoc[]
+
+.Response
+include::{snippets}/updatePost/http-response.adoc[]
+include::{snippets}/updatePost/response-body.adoc[]
+include::{snippets}/updatePost/response-fields.adoc[]
