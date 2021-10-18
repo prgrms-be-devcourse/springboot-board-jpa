@@ -5,13 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(
@@ -50,7 +48,7 @@ public class User extends BaseTimeEntity {
     List<Post> posts = new ArrayList<>();
 
     @Builder
-    public User(Long id, String loginId, String loginPw, String name, int age, String email) {
+    private User(Long id, String loginId, String loginPw, String name, int age, String email) {
         this.id = id;
         this.loginId = loginId;
         this.loginPw = loginPw;
