@@ -1,9 +1,6 @@
 package com.maenguin.kdtbbs.controller;
 
-import com.maenguin.kdtbbs.dto.ApiResponse;
-import com.maenguin.kdtbbs.dto.PostAddDto;
-import com.maenguin.kdtbbs.dto.PostDto;
-import com.maenguin.kdtbbs.dto.PostListDto;
+import com.maenguin.kdtbbs.dto.*;
 import com.maenguin.kdtbbs.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,14 +32,12 @@ public class PostRestController {
     }
 
     @PostMapping
-    public ApiResponse<Long> registerPost(@RequestBody PostAddDto postAddDto) {
-        Long id = postService.savePost(postAddDto);
-        return ApiResponse.success(id);
+    public ApiResponse<PostAddResDto> registerPost(@RequestBody PostAddDto postAddDto) {
+        return ApiResponse.success(postService.savePost(postAddDto));
     }
 
     @PostMapping(path = "{id}")
-    public ApiResponse<Long> editPost(@PathVariable("id") Long postId, @RequestBody PostAddDto postAddDto) {
-        Long id = postService.editPost(postId, postAddDto);
-        return ApiResponse.success(id);
+    public ApiResponse<PostAddResDto> editPost(@PathVariable("id") Long postId, @RequestBody PostAddDto postAddDto) {
+        return ApiResponse.success(postService.editPost(postId, postAddDto));
     }
 }

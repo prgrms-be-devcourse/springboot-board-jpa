@@ -4,6 +4,7 @@ import com.maenguin.kdtbbs.converter.BBSConverter;
 import com.maenguin.kdtbbs.domain.Post;
 import com.maenguin.kdtbbs.domain.User;
 import com.maenguin.kdtbbs.dto.PostAddDto;
+import com.maenguin.kdtbbs.dto.PostAddResDto;
 import com.maenguin.kdtbbs.dto.PostDto;
 import com.maenguin.kdtbbs.dto.PostListDto;
 import com.maenguin.kdtbbs.exception.PostNotFoundException;
@@ -44,19 +45,19 @@ public class PostService {
     }
 
     @Transactional
-    public Long savePost(PostAddDto postAddDto) {
+    public PostAddResDto savePost(PostAddDto postAddDto) {
         Long userId = postAddDto.getUserId();
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(" for id: "+userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(" for id: " + userId));
         Post post = bbsConverter.convertToPost(postAddDto);
         post.changeUser(user);
         Post entity = postRepository.save(post);
-        return entity.getPostId();
+        return new PostAddResDto(entity.getPostId());
     }
 
     @Transactional
-    public Long editPost(Long postId, PostAddDto postAddDto) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(" for id:"+postId));
+    public PostAddResDto editPost(Long postId, PostAddDto postAddDto) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(" for id:" + postId));
         post.editPost(postAddDto.getTitle(), postAddDto.getContent());
-        return post.getPostId();
+        return new PostAddResDto(post.getPostId());
     }
 }
