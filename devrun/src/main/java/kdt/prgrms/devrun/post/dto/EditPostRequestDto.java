@@ -24,7 +24,11 @@ public class EditPostRequestDto {
     private String createdBy;
 
     public Post convertToEntity(User user) {
-        return new Post(title, content, user);
+        return Post.builder()
+            .user(user)
+            .title(title)
+            .content(content)
+            .build();
     }
 
 }
