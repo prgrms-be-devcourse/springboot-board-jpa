@@ -1,0 +1,67 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== User API
+=== 유저 생성 /users
+.Request
+include::{snippets}/create-user/request-fields.adoc[]
+.Response
+include::{snippets}/create-user/response-fields.adoc[]
+
+=== 유저 조회 /users/{userId}
+.path parameters
+include::{snippets}/find-user/path-parameters.adoc[]
+.Request
+include::{snippets}/find-user/http-request.adoc[]
+.Response
+include::{snippets}/find-user/response-fields.adoc[]
+
+=== 유저 수정 /users/{userId}
+.path parameters
+include::{snippets}/modify-user/request-fields.adoc[]
+.Request
+include::{snippets}/modify-user/http-request.adoc[]
+.Response
+include::{snippets}/modify-user/response-fields.adoc[]
+
+=== 유저 삭제 /users/{userId}
+.path parameters
+include::{snippets}/remove-user/path-parameters.adoc[]
+.Request
+include::{snippets}/remove-user/http-request.adoc[]
+.Response
+include::{snippets}/remove-user/response-fields.adoc[]
+
+
+== POST API
+=== 포스트 생성 /posts
+.Request
+include::{snippets}/create-post/request-fields.adoc[]
+.Response
+include::{snippets}/create-post/response-fields.adoc[]
+
+=== 포스트 조회 /posts/{postId}
+.path parameters
+include::{snippets}/find-post/path-parameters.adoc[]
+.Request
+include::{snippets}/find-post/http-request.adoc[]
+.Response
+include::{snippets}/find-post/response-fields.adoc[]
+
+=== 포스트 수정 /posts/{postId}
+.path parameters
+include::{snippets}/modify-post/request-fields.adoc[]
+.Request
+include::{snippets}/modify-post/http-request.adoc[]
+.Response
+include::{snippets}/modify-post/response-fields.adoc[]
+
+=== 포스트 삭제 /posts/{postId}
+.path parameters
+include::{snippets}/remove-post/path-parameters.adoc[]
+.Request
+include::{snippets}/remove-post/http-request.adoc[]
+.Response
+include::{snippets}/remove-post/response-fields.adoc[]
