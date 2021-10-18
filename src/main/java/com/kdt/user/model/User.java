@@ -1,10 +1,13 @@
 package com.kdt.user.model;
 
+import com.kdt.common.model.BaseEntity;
 import com.kdt.post.model.Post;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +15,9 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "users")
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -36,11 +39,8 @@ public class User {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-    }
 
-    @Override
-    public String toString() {
-        return MessageFormat.format("id : {0}, name : {1}, age : {2}, hobby : {3}", id, name, age, hobby);
+        super.update();
     }
 
     public void addPost(Post post){
