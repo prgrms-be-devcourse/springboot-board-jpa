@@ -1,6 +1,6 @@
-package com.programmers.springbootboard.exception.error;
+package com.programmers.springbootboard.error.exception;
 
-import com.programmers.springbootboard.exception.ErrorMessage;
+import com.programmers.springbootboard.error.ErrorMessage;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(ErrorMessage message) {

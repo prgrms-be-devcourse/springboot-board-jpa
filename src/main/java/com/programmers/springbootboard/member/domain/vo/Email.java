@@ -1,7 +1,7 @@
 package com.programmers.springbootboard.member.domain.vo;
 
-import com.programmers.springbootboard.exception.ErrorMessage;
-import com.programmers.springbootboard.exception.error.InvalidArgumentException;
+import com.programmers.springbootboard.error.ErrorMessage;
+import com.programmers.springbootboard.error.exception.InvalidArgumentException;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
@@ -15,7 +15,7 @@ public class Email {
     @Transient
     private static final String EMAIL_VALIDATOR = "^[_a-zA-Z0-9-\\+]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9]+)*(\\.[a-zA-Z]{2,3})$";
 
-    @Column(name = "member_email", nullable = false)
+    @Column(name = "member_email", nullable = false, unique = true)
     private String email;
 
     protected Email() {

@@ -7,13 +7,13 @@ import com.programmers.springbootboard.member.domain.vo.Age;
 import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
-import com.programmers.springbootboard.member.dto.MemberSignRequest;
+import com.programmers.springbootboard.member.dto.request.MemberSignRequest;
 import com.programmers.springbootboard.post.application.PostService;
 import com.programmers.springbootboard.post.converter.PostConverter;
 import com.programmers.springbootboard.post.domain.vo.Content;
 import com.programmers.springbootboard.post.domain.vo.Title;
-import com.programmers.springbootboard.post.dto.PostInsertRequest;
-import com.programmers.springbootboard.post.dto.PostUpdateRequest;
+import com.programmers.springbootboard.post.dto.response.PostInsertResponse;
+import com.programmers.springbootboard.post.dto.request.PostUpdateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -92,7 +92,7 @@ public class PostControllerTest {
         Title title = new Title("행복합니당 행복합니다.");
         Content content = new Content("행복합니당행복합니당행복합니당!");
 
-        PostInsertRequest postInsertRequest = postConverter.toPostInsertRequest(email, title, content);
+        PostInsertResponse postInsertRequest = postConverter.toPostInsertRequest(email, title, content);
 
         // when // then
         mockMvc.perform(post("/api/post")
@@ -132,7 +132,7 @@ public class PostControllerTest {
         Title title = new Title("행복합니당 행복합니다.");
         Content content = new Content("행복합니당행복합니당행복합니당!");
 
-        PostInsertRequest postInsertRequest = postConverter.toPostInsertRequest(email, title, content);
+        PostInsertResponse postInsertRequest = postConverter.toPostInsertRequest(email, title, content);
         postService.insert(email, postInsertRequest);
 
         // when // then
@@ -168,7 +168,7 @@ public class PostControllerTest {
         Title title = new Title("행복합니당 행복합니다.");
         Content content = new Content("행복합니당행복합니당행복합니당!");
 
-        PostInsertRequest postInsertRequest = postConverter.toPostInsertRequest(email, title, content);
+        PostInsertResponse postInsertRequest = postConverter.toPostInsertRequest(email, title, content);
         postService.insert(email, postInsertRequest);
 
         PostUpdateRequest postUpdateRequest = postConverter.toPostUpdateRequest(email, title, content);
@@ -212,7 +212,7 @@ public class PostControllerTest {
         Title title = new Title("행복합니당 행복합니다.");
         Content content = new Content("행복합니당행복합니당행복합니당!");
 
-        PostInsertRequest postInsertRequest = postConverter.toPostInsertRequest(email, title, content);
+        PostInsertResponse postInsertRequest = postConverter.toPostInsertRequest(email, title, content);
         postService.insert(email, postInsertRequest);
 
         // when // then
@@ -246,7 +246,7 @@ public class PostControllerTest {
         Title title = new Title("행복합니당 행복합니다.");
         Content content = new Content("행복합니당행복합니당행복합니당!");
 
-        PostInsertRequest postInsertRequest = postConverter.toPostInsertRequest(email, title, content);
+        PostInsertResponse postInsertRequest = postConverter.toPostInsertRequest(email, title, content);
         postService.insert(email, postInsertRequest);
 
         // when // then

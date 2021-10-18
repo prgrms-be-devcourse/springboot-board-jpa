@@ -1,18 +1,19 @@
 package com.programmers.springbootboard.post.application;
 
-import com.programmers.springbootboard.exception.ErrorMessage;
-import com.programmers.springbootboard.exception.error.NotFoundException;
-import com.programmers.springbootboard.member.application.MemberService;
+import com.programmers.springbootboard.error.ErrorMessage;
+import com.programmers.springbootboard.error.exception.NotFoundException;
 import com.programmers.springbootboard.member.domain.Member;
-import com.programmers.springbootboard.member.domain.vo.Email;
+import com.programmers.springbootboard.member.infrastructure.MemberRepository;
 import com.programmers.springbootboard.post.converter.PostConverter;
 import com.programmers.springbootboard.post.domain.Post;
-import com.programmers.springbootboard.post.domain.vo.Content;
-import com.programmers.springbootboard.post.domain.vo.Title;
-import com.programmers.springbootboard.post.dto.PostDeleteResponse;
-import com.programmers.springbootboard.post.dto.PostDetailResponse;
-import com.programmers.springbootboard.post.dto.PostInsertRequest;
-import com.programmers.springbootboard.post.dto.PostUpdateRequest;
+import com.programmers.springbootboard.post.dto.response.PostDeleteResponse;
+import com.programmers.springbootboard.post.dto.response.PostDetailResponse;
+import com.programmers.springbootboard.post.dto.response.PostInsertResponse;
+import com.programmers.springbootboard.post.dto.response.PostUpdateResponse;
+import com.programmers.springbootboard.post.dto.bundle.PostDeleteBundle;
+import com.programmers.springbootboard.post.dto.bundle.PostFindBundle;
+import com.programmers.springbootboard.post.dto.bundle.PostInsertBundle;
+import com.programmers.springbootboard.post.dto.bundle.PostUpdateBundle;
 import com.programmers.springbootboard.post.infrastructure.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,55 +21,63 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class PostService {
-    private final MemberService memberService; // TODO :: 파사드 레이어를 만들어서 써보자!
+    private final MemberRepository memberRepository;
+    // private final MemberService memberService; // TODO :: 파사드 레이어를 만들어서 써보자!
     private final PostConverter postConverter;
     private final PostRepository postRepository;
 
     @Transactional
-    public PostDetailResponse insert(Email email, PostInsertRequest request) {
-        Member member = memberService.findByEmail(email);
-        Post post = postConverter.toPost(request, member);
+    public PostInsertResponse insert(PostInsertBundle dto) {
+        Member member = memberRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> {
+                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+                });
 
-        postRepository.save(post);
-        member.addPost(post);
+        Post post = postConverter.toPost(dto);
+        post.addPost(member);
 
-        return postConverter.toPostDetailResponse(post);
+        Post insertedPost = postRepository.save(post);
+        return postConverter.toPostInsertResponseDto(insertedPost);
     }
 
     @Transactional
-    public PostDeleteResponse deleteByEmail(Long id, Email email) {
-        Member member = memberService.findByEmail(email);
-        Post post = member.getPosts().findPostById(id);
+    public PostDeleteResponse deleteByEmail(PostDeleteBundle serviceDto) {
+        Member member = memberRepository.findByEmail(serviceDto.getEmail())
+                .orElseThrow(() -> {
+                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+                });
+
+        Post post = member.getPosts().findPostById(serviceDto.getId());
         member.getPosts().deletePost(post);
 
         return postConverter.toPostDeleteResponse(post.getId(), member.getEmail());
     }
 
     @Transactional
-    public PostDetailResponse update(Email email, Long id, PostUpdateRequest request) {
-        Member member = memberService.findByEmail(email);
+    public PostUpdateResponse update(PostUpdateBundle serviceDto) {
+        Member member = memberRepository.findByEmail(serviceDto.getEmail())
+                .orElseThrow(() -> {
+                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+                });
 
-        Post post = member.getPosts().findPostById(id);
+        Post post = member.getPosts().findPostById(serviceDto.getId());
 
         post.update(
-                new Title(request.getTitle()),
-                new Content(request.getContent()),
+                serviceDto.getTitle(),
+                serviceDto.getContent(),
                 member.getId()
         );
 
-        return postConverter.toPostDetailResponse(post);
+        return postConverter.toPostUpdateResponseDto(post);
     }
 
 
     @Transactional(readOnly = true)
-    public PostDetailResponse findById(Long id) {
-        return postRepository.findById(id)
+    public PostDetailResponse findById(PostFindBundle serviceDto) {
+        return postRepository.findById(serviceDto.getId())
                 .map(postConverter::toPostDetailResponse)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_POST);

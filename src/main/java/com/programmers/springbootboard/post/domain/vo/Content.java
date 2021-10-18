@@ -1,20 +1,15 @@
 package com.programmers.springbootboard.post.domain.vo;
 
-import com.programmers.springbootboard.exception.ErrorMessage;
-import com.programmers.springbootboard.exception.error.InvalidArgumentException;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Transient;
-import java.util.regex.Pattern;
+import javax.persistence.Lob;
 
 @Embeddable
 @EqualsAndHashCode
 public class Content {
-    @Transient
-    private static final String CONTENT_REGEX = "^.{5,2000}$";
-
+    @Lob
     @Column(name = "post_content")
     private String content;
 
@@ -22,14 +17,7 @@ public class Content {
     }
 
     public Content(String content) {
-        validate(content);
         this.content = content;
-    }
-
-    public void validate(String content) {
-        if (!Pattern.matches(CONTENT_REGEX, content)) {
-            throw new InvalidArgumentException(ErrorMessage.INVALID_POST_CONTENT);
-        }
     }
 
     public String getContent() {

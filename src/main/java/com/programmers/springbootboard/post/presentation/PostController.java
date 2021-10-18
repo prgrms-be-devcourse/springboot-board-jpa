@@ -1,13 +1,21 @@
 package com.programmers.springbootboard.post.presentation;
 
+import com.programmers.springbootboard.common.converter.ResponseConverter;
 import com.programmers.springbootboard.common.dto.ResponseDto;
 import com.programmers.springbootboard.common.dto.ResponseMessage;
-import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.post.application.PostService;
-import com.programmers.springbootboard.post.dto.PostDeleteResponse;
-import com.programmers.springbootboard.post.dto.PostDetailResponse;
-import com.programmers.springbootboard.post.dto.PostInsertRequest;
-import com.programmers.springbootboard.post.dto.PostUpdateRequest;
+import com.programmers.springbootboard.post.converter.PostConverter;
+import com.programmers.springbootboard.post.dto.request.PostDeleteRequest;
+import com.programmers.springbootboard.post.dto.request.PostInsertRequest;
+import com.programmers.springbootboard.post.dto.response.PostDeleteResponse;
+import com.programmers.springbootboard.post.dto.response.PostDetailResponse;
+import com.programmers.springbootboard.post.dto.response.PostInsertResponse;
+import com.programmers.springbootboard.post.dto.request.PostUpdateRequest;
+import com.programmers.springbootboard.post.dto.response.PostUpdateResponse;
+import com.programmers.springbootboard.post.dto.bundle.PostDeleteBundle;
+import com.programmers.springbootboard.post.dto.bundle.PostFindBundle;
+import com.programmers.springbootboard.post.dto.bundle.PostInsertBundle;
+import com.programmers.springbootboard.post.dto.bundle.PostUpdateBundle;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +24,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,30 +35,39 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+    private final PostConverter postConverter;
+    private final ResponseConverter responseConverter;
 
     private WebMvcLinkBuilder getLinkToAddress() {
         return linkTo(PostController.class);
     }
 
     @PostMapping(consumes = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<ResponseDto> insertPost(@RequestBody PostInsertRequest request) {
-        Email email = new Email(request.getEmail());
-        PostDetailResponse post = postService.insert(email, request);
+    public ResponseEntity<ResponseDto> insert(@RequestBody PostInsertRequest request) {
+        PostInsertBundle postInsertServiceDto = postConverter.toPostInsertServiceDto(request);
+        PostInsertResponse responseDto = postService.insert(postInsertServiceDto);
 
-        EntityModel<PostDetailResponse> entityModel = EntityModel.of(post,
+        // TODO
+        EntityModel<PostInsertResponse> entityModel = EntityModel.of(responseDto,
                 getLinkToAddress().withSelfRel().withType(HttpMethod.POST.name()),
-                getLinkToAddress().slash(post.getId()).withRel("delete").withType(HttpMethod.DELETE.name()),
-                getLinkToAddress().slash(post.getId()).withRel("update").withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(post.getId()).withRel("get").withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(responseDto.getId()).withRel("delete").withType(HttpMethod.DELETE.name()),
+                getLinkToAddress().slash(responseDto.getId()).withRel("update").withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(responseDto.getId()).withRel("get").withType(HttpMethod.GET.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
-        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.POST_INSERT_SUCCESS, entityModel));
+        return responseConverter.toResponseEntity(
+                HttpStatus.CREATED,
+                ResponseMessage.POST_INSERT_SUCCESS,
+                entityModel
+        );
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDto> deletePost(@PathVariable Long id, @RequestBody Email email) {
-        PostDeleteResponse post = postService.deleteByEmail(id, email);
+    // TODO <-에러 발생
+    @DeleteMapping(value = "/{id}", consumes = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<ResponseDto> delete(@PathVariable Long id, @RequestBody PostDeleteRequest request) {
+        PostDeleteBundle serviceDto = postConverter.toPostDeleteServiceDto(id, request);
+        PostDeleteResponse post = postService.deleteByEmail(serviceDto);
 
         EntityModel<PostDeleteResponse> entityModel = EntityModel.of(post,
                 getLinkToAddress().slash(post.getId()).withSelfRel().withType(HttpMethod.DELETE.name()),
@@ -58,27 +76,36 @@ public class PostController {
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
-        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.POST_DELETE_SUCCESS, entityModel));
+        return responseConverter.toResponseEntity(
+                HttpStatus.OK,
+                ResponseMessage.POST_DELETE_SUCCESS,
+                entityModel
+        );
     }
 
-    @PatchMapping(value = "/{id}", consumes = MediaTypes.HAL_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<ResponseDto> updatePost(@PathVariable Long id, @RequestBody PostUpdateRequest request) {
-        Email email = new Email(request.getEmail());
-        PostDetailResponse post = postService.update(email, id, request);
+        PostUpdateBundle serviceUpdateDto = postConverter.toPostUpdateServiceDto(id, request);
+        PostUpdateResponse post = postService.update(serviceUpdateDto);
 
-        EntityModel<PostDetailResponse> entityModel = EntityModel.of(post,
+        EntityModel<PostUpdateResponse> entityModel = EntityModel.of(post,
                 getLinkToAddress().slash(post.getId()).withSelfRel().withType(HttpMethod.PATCH.name()),
                 getLinkToAddress().slash(post.getId()).withRel("delete").withType(HttpMethod.DELETE.name()),
                 getLinkToAddress().slash(post.getId()).withRel("get").withType(HttpMethod.GET.name()),
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
-        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.POST_UPDATE_SUCCESS, entityModel));
+        return responseConverter.toResponseEntity(
+                HttpStatus.OK,
+                ResponseMessage.POST_UPDATE_SUCCESS,
+                entityModel
+        );
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ResponseDto> post(@PathVariable Long id) {
-        PostDetailResponse post = postService.findById(id);
+        PostFindBundle serviceDto = postConverter.toPostFindServiceDto(id);
+        PostDetailResponse post = postService.findById(serviceDto);
 
         EntityModel<PostDetailResponse> entityModel = EntityModel.of(post,
                 getLinkToAddress().slash(post.getId()).withSelfRel().withType(HttpMethod.GET.name()),
@@ -87,7 +114,11 @@ public class PostController {
                 getLinkToAddress().withRel("get-all").withType(HttpMethod.GET.name())
         );
 
-        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.POST_INQUIRY_SUCCESS, entityModel));
+        return responseConverter.toResponseEntity(
+                HttpStatus.OK,
+                ResponseMessage.POST_INQUIRY_SUCCESS,
+                entityModel
+        );
     }
 
     @GetMapping()
@@ -96,6 +127,11 @@ public class PostController {
 
         Link link = getLinkToAddress().withSelfRel().withType(HttpMethod.GET.name());
 
-        return ResponseEntity.ok(ResponseDto.of(ResponseMessage.POSTS_INQUIRY_SUCCESS, posts, link));
+        return responseConverter.toResponseEntity(
+                HttpStatus.OK,
+                ResponseMessage.MEMBERS_INQUIRY_SUCCESS,
+                posts,
+                link
+        );
     }
 }

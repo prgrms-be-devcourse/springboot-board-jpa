@@ -1,7 +1,7 @@
 package com.programmers.springbootboard.member.domain.vo;
 
-import com.programmers.springbootboard.exception.ErrorMessage;
-import com.programmers.springbootboard.exception.error.InvalidArgumentException;
+import com.programmers.springbootboard.error.ErrorMessage;
+import com.programmers.springbootboard.error.exception.InvalidArgumentException;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
@@ -16,10 +16,9 @@ public class Age {
     private static final String AGE_VALIDATOR = "^100|[1-9]?\\d$";
 
     @Column(name = "member_age", nullable = false)
-    private int age;
+    private Integer age;
 
     protected Age() {
-
     }
 
     public Age(String age) {

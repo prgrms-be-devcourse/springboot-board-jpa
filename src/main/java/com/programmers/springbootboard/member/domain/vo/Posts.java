@@ -1,7 +1,8 @@
-package com.programmers.springbootboard.post.domain;
+package com.programmers.springbootboard.member.domain.vo;
 
-import com.programmers.springbootboard.exception.ErrorMessage;
-import com.programmers.springbootboard.exception.error.NotFoundException;
+import com.programmers.springbootboard.error.ErrorMessage;
+import com.programmers.springbootboard.error.exception.NotFoundException;
+import com.programmers.springbootboard.post.domain.Post;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
@@ -17,10 +18,6 @@ public class Posts {
 
     public void addPost(Post post) {
         posts.add(post);
-    }
-
-    public boolean ownPost(Post post) {
-        return posts.contains(post);
     }
 
     public void deletePost(Post post) {

@@ -1,44 +1,44 @@
 package com.programmers.springbootboard.member.application;
 
-import com.programmers.springbootboard.exception.ErrorMessage;
-import com.programmers.springbootboard.exception.error.DuplicationArgumentException;
-import com.programmers.springbootboard.exception.error.NotFoundException;
+import com.programmers.springbootboard.error.ErrorMessage;
+import com.programmers.springbootboard.error.exception.DuplicationArgumentException;
+import com.programmers.springbootboard.error.exception.NotFoundException;
 import com.programmers.springbootboard.member.converter.MemberConverter;
 import com.programmers.springbootboard.member.domain.Member;
 import com.programmers.springbootboard.member.domain.vo.Email;
-import com.programmers.springbootboard.member.dto.*;
+import com.programmers.springbootboard.member.dto.response.MemberSignResponse;
+import com.programmers.springbootboard.member.dto.response.MemberUpdateResponse;
+import com.programmers.springbootboard.member.dto.bundle.MemberDeleteBundle;
+import com.programmers.springbootboard.member.dto.bundle.MemberFindBundle;
+import com.programmers.springbootboard.member.dto.bundle.MemberSignBundle;
+import com.programmers.springbootboard.member.dto.response.MemberDeleteResponse;
+import com.programmers.springbootboard.member.dto.response.MemberDetailResponse;
+import com.programmers.springbootboard.member.dto.bundle.MemberUpdateBundle;
 import com.programmers.springbootboard.member.infrastructure.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
+@RequiredArgsConstructor
 public class MemberService {
     //TODO :: 파사드 레이어 진행해보기
     private final MemberRepository memberRepository;
     private final MemberConverter memberConverter;
 
-    public MemberService(MemberRepository memberRepository, MemberConverter memberConverter) {
-        this.memberRepository = memberRepository;
-        this.memberConverter = memberConverter;
-    }
-
     @Transactional
-    public MemberDetailResponse insert(MemberSignRequest request) {
-        Email email = new Email(request.getEmail());
-        if (existsByEmail(email)) {
+    public MemberSignResponse insert(MemberSignBundle bundle) {
+        if (existsByEmail(bundle.getEmail())) {
             throw new DuplicationArgumentException(ErrorMessage.DUPLICATION_MEMBER_EMAIL);
         }
 
-        Member member = memberConverter.toMember(request);
-        memberRepository.save(member);
+        Member member = memberConverter.toMember(bundle);
         member.addByInformation(member.getId());
 
-        return memberConverter.toMemberDetailResponse(member);
+        Member memberEntity = memberRepository.save(member);
+        return memberConverter.toMemberSignResponse(memberEntity);
     }
 
     private boolean existsByEmail(Email email) {
@@ -46,28 +46,28 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberDeleteResponse deleteById(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-        });
-        memberRepository.deleteById(id);
-        return memberConverter.toMemberDeleteResponse(member.getId(), member.getEmail());
-    }
-
-    //역할에 맞는 함수형을 쓰자!
-    @Transactional
-    public MemberDetailResponse update(Long id, MemberUpdateRequest request) {
-        Member member = memberRepository.findById(id)
+    public MemberDeleteResponse delete(MemberDeleteBundle bundle) {
+        Member member = memberRepository.findById(bundle.getId())
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
                 });
-        member.update(request);
-        return memberConverter.toMemberDetailResponse(member);
+        memberRepository.deleteById(bundle.getId());
+        return memberConverter.toMemberDeleteResponse(member.getId(), member.getEmail());
+    }
+
+    @Transactional
+    public MemberUpdateResponse update(MemberUpdateBundle bundle) {
+        Member member = memberRepository.findById(bundle.getId())
+                .orElseThrow(() -> {
+                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+                });
+        member.update(bundle.getName(), bundle.getAge(), bundle.getHobby());
+        return memberConverter.toMemberUpdateResponse(member);
     }
 
     @Transactional(readOnly = true)
-    public MemberDetailResponse findById(Long id) {
-        return memberRepository.findById(id)
+    public MemberDetailResponse findById(MemberFindBundle bundle) {
+        return memberRepository.findById(bundle.getId())
                 .map(memberConverter::toMemberDetailResponse)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
@@ -78,14 +78,6 @@ public class MemberService {
     public Page<MemberDetailResponse> findAll(Pageable pageable) {
         return memberRepository.findAll(pageable)
                 .map(memberConverter::toMemberDetailResponse);
-    }
-
-    @Transactional(readOnly = true)
-    public Member findByEmail(Email email) {
-        return memberRepository.findByEmail(email)
-                .orElseThrow(() -> {
-                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-                });
     }
 
     // TODO 필요없는 코드가 test를 위해서??? 수정하기!

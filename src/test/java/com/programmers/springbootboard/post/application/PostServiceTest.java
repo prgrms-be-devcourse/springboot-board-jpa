@@ -6,13 +6,13 @@ import com.programmers.springbootboard.member.domain.vo.Age;
 import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
-import com.programmers.springbootboard.member.dto.MemberSignRequest;
+import com.programmers.springbootboard.member.dto.request.MemberSignRequest;
 import com.programmers.springbootboard.post.converter.PostConverter;
 import com.programmers.springbootboard.post.domain.vo.Content;
 import com.programmers.springbootboard.post.domain.vo.Title;
-import com.programmers.springbootboard.post.dto.PostDetailResponse;
-import com.programmers.springbootboard.post.dto.PostInsertRequest;
-import com.programmers.springbootboard.post.dto.PostUpdateRequest;
+import com.programmers.springbootboard.post.dto.response.PostDetailResponse;
+import com.programmers.springbootboard.post.dto.response.PostInsertResponse;
+import com.programmers.springbootboard.post.dto.request.PostUpdateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,7 +57,7 @@ class PostServiceTest {
         Title title = new Title("이것은 제목");
         Content content = new Content("이것은 본문이다!");
 
-        PostInsertRequest postRequest = postConverter.toPostInsertRequest(email, title, content);
+        PostInsertResponse postRequest = postConverter.toPostInsertRequest(email, title, content);
 
         postService.insert(email, postRequest);
     }

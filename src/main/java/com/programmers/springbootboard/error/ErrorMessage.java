@@ -1,4 +1,4 @@
-package com.programmers.springbootboard.exception;
+package com.programmers.springbootboard.error;
 
 import org.springframework.http.HttpStatus;
 
@@ -11,7 +11,6 @@ public enum ErrorMessage {
     INVALID_MEMBER_HOBBY(HttpStatus.BAD_REQUEST, "취미 형식이 맞지 않습니다."),
     NOT_EXIST_MEMBER(HttpStatus.BAD_REQUEST, "존재하지 않는 회원입니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "정의되지 않은 서버 에러"),
-    INVALID_POST_CONTENT(HttpStatus.BAD_REQUEST, "본문 형식이 맞지 않습니다."),
     INVALID_POST_TITLE(HttpStatus.BAD_REQUEST, "제목 형식이 맞지 않습니다."),
     DUPLICATION_MEMBER_EMAIL(HttpStatus.BAD_REQUEST, "중복된 이메일입니다."),
     NOT_EXIST_POST(HttpStatus.BAD_REQUEST, "존재하지 않는 게시글 입니다."),

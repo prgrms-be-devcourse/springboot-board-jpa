@@ -5,9 +5,9 @@ import com.programmers.springbootboard.member.domain.vo.Age;
 import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
-import com.programmers.springbootboard.member.dto.MemberDetailResponse;
-import com.programmers.springbootboard.member.dto.MemberSignRequest;
-import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
+import com.programmers.springbootboard.member.dto.response.MemberDetailResponse;
+import com.programmers.springbootboard.member.dto.request.MemberSignRequest;
+import com.programmers.springbootboard.member.dto.request.MemberUpdateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -80,7 +80,7 @@ class MemberServiceTest {
         memberService.insert(request);
 
         // when
-        memberService.deleteById(1L);
+        memberService.delete(1L);
 
         // then
         long count = memberService.count();

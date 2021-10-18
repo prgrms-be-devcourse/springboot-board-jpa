@@ -7,8 +7,8 @@ import com.programmers.springbootboard.member.domain.vo.Age;
 import com.programmers.springbootboard.member.domain.vo.Email;
 import com.programmers.springbootboard.member.domain.vo.Hobby;
 import com.programmers.springbootboard.member.domain.vo.Name;
-import com.programmers.springbootboard.member.dto.MemberSignRequest;
-import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
+import com.programmers.springbootboard.member.dto.request.MemberSignRequest;
+import com.programmers.springbootboard.member.dto.request.MemberUpdateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -50,6 +51,7 @@ class MemberControllerTest {
     private MemberConverter memberConverter;
 
     @BeforeEach
+    @Transactional
     void init() {
         // given
         memberService.deleteAll();

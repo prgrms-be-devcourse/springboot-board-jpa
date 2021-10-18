@@ -11,6 +11,8 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
+    Optional<Member> findOneWithAuthoritiesByEmail(Email email);
+
     @Override
     void deleteById(Long id);
 

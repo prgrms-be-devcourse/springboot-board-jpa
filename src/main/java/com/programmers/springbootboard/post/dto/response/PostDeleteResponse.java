@@ -1,11 +1,11 @@
-package com.programmers.springbootboard.member.dto;
+package com.programmers.springbootboard.post.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class MemberDeleteResponse {
+public class PostDeleteResponse {
     private Long id;
     private String email;
 }

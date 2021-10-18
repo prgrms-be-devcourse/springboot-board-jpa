@@ -1,17 +1,13 @@
 package com.programmers.springbootboard.member.domain;
 
 import com.programmers.springbootboard.common.domain.BaseEntity;
-import com.programmers.springbootboard.member.domain.vo.Age;
-import com.programmers.springbootboard.member.domain.vo.Email;
-import com.programmers.springbootboard.member.domain.vo.Hobby;
-import com.programmers.springbootboard.member.domain.vo.Name;
-import com.programmers.springbootboard.member.dto.MemberUpdateRequest;
+import com.programmers.springbootboard.member.domain.vo.*;
 import com.programmers.springbootboard.post.domain.Post;
-import com.programmers.springbootboard.post.domain.Posts;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import javax.persistence.*;
+import java.util.Collections;
 
 @Entity
 @Builder
@@ -41,10 +37,10 @@ public class Member extends BaseEntity<Long> {
 
     }
 
-    public void update(MemberUpdateRequest request) {
-        this.name = new Name(request.getName());
-        this.age = new Age(request.getAge());
-        this.hobby = new Hobby(request.getHobby());
+    public void update(Name name, Age age, Hobby hobby) {
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
         lastModifiedId(this.getId());
     }
 
@@ -70,10 +66,5 @@ public class Member extends BaseEntity<Long> {
 
     public Posts getPosts() {
         return posts;
-    }
-
-    public void addPost(Post post) {
-        this.getPosts().addPost(post);
-        post.addByInformation(this.getId());
     }
 }
