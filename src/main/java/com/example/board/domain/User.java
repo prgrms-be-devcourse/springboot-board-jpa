@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -28,8 +25,4 @@ public class User extends BaseEntity {
 
 	@Column(name = "hobby")
 	private String hobby;
-
-	// TODO: 연관관계 맵핑 확인 테스트 코드 작성?
-	@OneToMany(mappedBy = "user")
-	private List<Post> posts = new ArrayList<>();
 }
