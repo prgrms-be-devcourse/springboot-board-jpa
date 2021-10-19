@@ -6,6 +6,9 @@
 - 포스트 작성
 - 포스트 수정
 
+### API 문서화
+링크 : https://github.com/16min99/SpringBoot-Board/blob/main/src/docs/asciidoc/index.adoc  
+
 ### domain (Entity)
 ![image](https://user-images.githubusercontent.com/65473604/137195907-c18ed793-a662-40aa-85ca-c0d3f1f8a196.png)
 
