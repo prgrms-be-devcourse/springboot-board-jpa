@@ -12,7 +12,7 @@ import java.util.Objects;
 @Getter @Setter
 public class Post extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "title", nullable = false)

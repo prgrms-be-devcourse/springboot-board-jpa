@@ -6,6 +6,8 @@ import com.toy.board.springbootboard.model.dto.PostDto;
 import com.toy.board.springbootboard.model.dto.UserDto;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class PostConverter {
 
@@ -15,8 +17,8 @@ public class PostConverter {
                 postDto.getContent(),
                 user
         );
-        post.setCreatedAt(postDto.getCreatedAt());
-        post.setCreatedBy(postDto.getCreatedBy());
+        post.setCreatedAt(LocalDateTime.now());
+        post.setCreatedBy(user.getName());
 
         return post;
     }
@@ -38,8 +40,6 @@ public class PostConverter {
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .createdBy(post.getCreatedBy())
-                .createdAt(post.getCreatedAt())
                 .build();
     }
 
