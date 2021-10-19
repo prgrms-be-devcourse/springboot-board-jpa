@@ -13,11 +13,12 @@ import javax.validation.constraints.NotEmpty;
 public class PostRequest {
     private @NotEmpty String title;
     private @NotEmpty String content;
+    private @NotEmpty String writer;
 
     protected PostRequest() {
     }
 
     public Post newPost() {
-        return Post.of(title, content);
+        return Post.of(title, content, writer);
     }
 }

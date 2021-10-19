@@ -1,6 +1,6 @@
 package com.poogle.board.model.post;
 
-import com.poogle.board.model.BaseTimeEntity;
+import com.poogle.board.model.BaseEntity;
 import com.poogle.board.model.user.User;
 import lombok.Getter;
 
@@ -12,7 +12,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Entity
-public class Post extends BaseTimeEntity {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,16 +32,17 @@ public class Post extends BaseTimeEntity {
     protected Post() {
     }
 
-    public static Post of(String title, String content) {
-        return new Post(title, content);
+    public static Post of(String title, String content, String writer) {
+        return new Post(title, content, writer);
     }
 
-    private Post(String title, String content) {
+    private Post(String title, String content, String writer) {
         checkArgument(isNotEmpty(title), "Title must be provided.");
         checkArgument(
                 content.length() >= 1 && content.length() <= 500,
                 "Content length must be between 1 and 500 characters."
         );
+        checkArgument(isNotEmpty(writer), "Writer must be provided.");
         this.title = title;
         this.content = content;
     }

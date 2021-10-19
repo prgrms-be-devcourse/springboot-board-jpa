@@ -28,18 +28,20 @@ class PostServiceTest {
 
     private String title;
     private String content;
+    private String writer;
 
     @BeforeAll
     void setUp() {
         title = "title";
         content = "content";
-        postService.write(Post.of(title, content));
+        writer = "tester";
+        postService.write(Post.of(title, content, writer));
     }
 
     @Test
     @DisplayName("포스트 추가")
     void create_user() {
-        Post post = postService.write(Post.of(title, content));
+        Post post = postService.write(Post.of(title, content, writer));
         assertAll(
                 () -> assertThat(post, is(notNullValue())),
                 () -> assertThat(post.getId(), is(notNullValue())),
