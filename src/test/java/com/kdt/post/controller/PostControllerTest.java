@@ -111,21 +111,12 @@ class PostControllerTest {
 
         //When
         //Then
-        MvcResult mvcResult = mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(saveRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
-
-        String responseData = JsonPath.parse(mvcResult.getResponse().getContentAsString()).read("data").toString();
-        Long savedPostId = Long.valueOf(responseData);
-        PostDto savedPostDto = postService.find(savedPostId);
-
-        assertThat(savedPostDto, samePropertyValuesAs(postDto2, "id", "createdAt", "createdBy", "lastUpdatedAt", "userDto"));
-        assertThat(savedPostDto.getUserDto(), samePropertyValuesAs(userDto, "id", "createdAt", "createdBy", "lastUpdatedAt", "postDtos"));
-        assertThat(postService.findAll(PageRequest.of(0, 10)).getTotalElements(), is(2L));
-        assertThat(userService.find(userId).getPostDtos().size(), is(2));
     }
 
     @Test
@@ -175,9 +166,6 @@ class PostControllerTest {
                 .andExpect(status().isBadRequest())
                 .andDo(print())
                 .andReturn();
-
-        assertThat(postService.findAll(PageRequest.of(0, 10)).getTotalElements(), is(1L));
-        assertThat(userService.find(userId).getPostDtos().size(), is(1));
     }
 
     @Test
@@ -203,8 +191,6 @@ class PostControllerTest {
                 .andExpect(status().isNotFound())
                 .andDo(print())
                 .andReturn();
-        assertThat(postService.findAll(PageRequest.of(0, 10)).getTotalElements(), is(1L));
-        assertThat(userService.find(userId).getPostDtos().size(), is(1));
     }
 
     @Test
@@ -223,19 +209,12 @@ class PostControllerTest {
 
         //When
         //Then
-        MvcResult mvcResult = mockMvc.perform(put("/posts/{id}", postId)
+        mockMvc.perform(put("/posts/{id}", postId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
-
-        String responseData = JsonPath.parse(mvcResult.getResponse().getContentAsString()).read("data").toString();
-        Long updatedPostId = Long.valueOf(responseData);
-        PostDto updatedPostDto = postService.find(updatedPostId);
-
-        assertThat(updatedPostDto, samePropertyValuesAs(updatedPostDto, "userDto", "lastUpdatedAt"));
-        log.info(updatedPostDto.toString());
 
     }
 
@@ -264,9 +243,6 @@ class PostControllerTest {
                 .andExpect(status().isNotFound())
                 .andDo(print())
                 .andReturn();
-
-        PostDto savedPostDto = postService.find(postId);
-        assertThat(savedPostDto, samePropertyValuesAs(postDto, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt"));
     }
 
     @Test
@@ -294,9 +270,6 @@ class PostControllerTest {
                 .andExpect(status().isBadRequest())
                 .andDo(print())
                 .andReturn();
-
-        PostDto savedPostDto = postService.find(postId);
-        assertThat(savedPostDto, samePropertyValuesAs(postDto, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt"));
 
     }
 
@@ -346,14 +319,6 @@ class PostControllerTest {
                 .andExpect(status().isNotFound())
                 .andDo(print())
                 .andReturn();
-
-        PostDto savedPostDto = postService.find(postId);
-        assertThat(savedPostDto, samePropertyValuesAs(postDto, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt"));
-        assertThat(userService.find(userId).getPostDtos().get(0),samePropertyValuesAs(postDto, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt") );
-
-        PostDto savedPostDto2 = postService.find(postId2);
-        assertThat(savedPostDto2, samePropertyValuesAs(postDto2, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt"));
-        assertThat(userService.find(userId2).getPostDtos().get(0),samePropertyValuesAs(postDto2, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt") );
     }
 
     @Test
@@ -429,18 +394,12 @@ class PostControllerTest {
 
         //When
         //Then
-        MvcResult mvcResult = mockMvc.perform(delete("/posts/{id}", postId)
+        mockMvc.perform(delete("/posts/{id}", postId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(deleteRequestDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
-
-        String responseData = JsonPath.parse(mvcResult.getResponse().getContentAsString()).read("data").toString();
-        Long deletedPostId = Long.valueOf(responseData);
-
-        assertThrows(NotFoundException.class, () -> postService.find(deletedPostId));
-        assertThat(userService.find(userId).getPostDtos().size(), is(0));
     }
 
     @Test
@@ -483,15 +442,5 @@ class PostControllerTest {
                 .andExpect(status().isNotFound())
                 .andDo(print())
                 .andReturn();
-
-        assertThat(postService.findAll(PageRequest.of(0, 10)).getTotalElements(), is(2L));
-
-        PostDto savedPostDto = postService.find(postId);
-        assertThat(savedPostDto, samePropertyValuesAs(postDto, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt"));
-        assertThat(userService.find(userId).getPostDtos().get(0),samePropertyValuesAs(postDto, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt") );
-
-        PostDto savedPostDto2 = postService.find(postId2);
-        assertThat(savedPostDto2, samePropertyValuesAs(postDto2, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt"));
-        assertThat(userService.find(userId2).getPostDtos().get(0),samePropertyValuesAs(postDto2, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt") );
     }
 }

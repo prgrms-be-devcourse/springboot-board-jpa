@@ -102,9 +102,6 @@ class PostServiceTest {
         assertThat(postDtosOfUser, hasItem(samePropertyValuesAs(postDto, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt")));
         assertThat(postDtosOfUser, hasItem(samePropertyValuesAs(postDto2, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt")));
         postDtosOfUser.forEach(p -> log.info(p.toString()));
-
-        List<Post> postDtos = postRepository.findAll();
-        assertThat(postDtos.size(), is(2));
     }
 
     @Test
@@ -259,7 +256,6 @@ class PostServiceTest {
 
         //Then
         assertThrows(NotFoundException.class, () -> postService.find(postId));
-        assertThat(postRepository.findAll().size(), is(0));
         assertThat(userService.find(userId).getPostDtos().size(), is(0));
     }
 
@@ -280,7 +276,6 @@ class PostServiceTest {
 
         //Then
         assertThat(postService.find(postId), samePropertyValuesAs(postDto, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt"));
-        assertThat(postRepository.findAll().size(), is(1));
         assertThat(userService.find(userId).getPostDtos().size(), is(1));
         assertThat(userService.find(userId).getPostDtos().get(0), samePropertyValuesAs(postDto, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt"));
     }

@@ -98,20 +98,12 @@ class UserControllerTest {
 
         //When
         //Then
-        MvcResult mvcResult = mockMvc.perform(post("/users")
+        mockMvc.perform(post("/users")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(userDto2)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
-
-        String responseData = JsonPath.parse(mvcResult.getResponse().getContentAsString()).read("data").toString();
-        Long savedUserId = Long.valueOf(responseData);
-        UserDto savedUserDto = userService.find(savedUserId);
-
-        assertThat(savedUserDto, samePropertyValuesAs(userDto2, "id", "createdAt", "createdBy", "lastUpdatedAt", "postDtos"));
-        assertThat(userService.find(userId).getId(), is(userId));
-        log.info("{}", savedUserDto.toString());
     }
 
     @Test
@@ -157,20 +149,12 @@ class UserControllerTest {
 
         //When
         //Then
-        MvcResult mvcResult = mockMvc.perform(put("/users/{id}", userId)
+        mockMvc.perform(put("/users/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
-
-        String responseData = JsonPath.parse(mvcResult.getResponse().getContentAsString()).read("data").toString();
-        Long updatedUserId = Long.valueOf(responseData);
-        UserDto updatedUserDto = userService.find(updatedUserId);
-
-        assertThat(updatedUserDto, samePropertyValuesAs(userDto, "id", "createdAt", "createdBy", "lastUpdatedAt", "postDtos"));
-        assertThat(userService.find(updatedUserId).getId(), is(updatedUserId));
-        log.info("after updating : {}", updatedUserDto.toString());
     }
 
     @Test
@@ -192,11 +176,6 @@ class UserControllerTest {
                 .andExpect(status().isNotFound())
                 .andDo(print())
                 .andReturn();
-
-        UserDto savedUserDto = userService.find(userId);
-
-        assertThat(savedUserDto, samePropertyValuesAs(userDto, "id", "createdAt", "createdBy", "lastUpdatedAt", "postDtos"));
-        log.info("after failing update : {}", savedUserDto.toString());
     }
 
     @Test
@@ -218,11 +197,6 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andDo(print())
                 .andReturn();
-
-        UserDto savedUserDto = userService.find(userId);
-
-        assertThat(savedUserDto, samePropertyValuesAs(userDto, "id", "createdAt", "createdBy", "lastUpdatedAt", "postDtos"));
-        log.info("after failing update : {}", savedUserDto.toString());
     }
 
     @Test
@@ -263,17 +237,11 @@ class UserControllerTest {
         //Given
         //When
         //Then
-        MvcResult mvcResult = mockMvc.perform(delete("/users/{id}", userId)
+        mockMvc.perform(delete("/users/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
-
-        String responseData = JsonPath.parse(mvcResult.getResponse().getContentAsString()).read("data").toString();
-        Long deletedId = Long.valueOf(responseData);
-
-        assertThrows(NotFoundException.class, () -> userService.find(deletedId));
-        assertThat(postService.findAll(PageRequest.of(0, 10)).getTotalElements(), is(0L));
     }
 
     @Test
@@ -287,7 +255,5 @@ class UserControllerTest {
                 .andExpect(status().isNotFound())
                 .andDo(print())
                 .andReturn();
-
-        assertThat(postService.findAll(PageRequest.of(0, 10)).getTotalElements(), is(1L));
     }
 }
