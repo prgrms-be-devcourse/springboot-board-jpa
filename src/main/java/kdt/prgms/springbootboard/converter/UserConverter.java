@@ -11,8 +11,4 @@ public class UserConverter {
     public UserDto convertUserDto(User user) {
         return new UserDto(user.getId(), user.getName(), user.getAge());
     }
-
-    public User convertUser(UserDto userDto) {
-        return User.createUser(userDto.getName(), userDto.getAge());
-    }
 }

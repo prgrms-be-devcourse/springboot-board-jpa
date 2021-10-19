@@ -26,6 +26,12 @@ public class PostDto {
     public PostDto() {
     }
 
+    public PostDto(String title, String content, UserDto userDto) {
+        this.title = title;
+        this.content = content;
+        this.userDto = userDto;
+    }
+
     public PostDto(Long id, String title, String content,
         UserDto userDto) {
         this.id = id;
