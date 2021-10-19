@@ -20,13 +20,11 @@ public class PostConverter {
     }
 
     public User convertUser(UserDto userDto) {
-        User user = new User();
-        user.setName(userDto.getName());
-        user.setAge(userDto.getAge());
-        user.setHobby(userDto.getHobby());
-        user.setCreatedBy(userDto.getName());
-        user.setCreatedAt(LocalDateTime.now());
-        return user;
+        return User.builder()
+                .name(userDto.getName())
+                .age(userDto.getAge())
+                .hobby(userDto.getHobby())
+                .build();
     }
 
     public PostResponseDto convertPostDto(Post post) {
