@@ -139,7 +139,7 @@ class PostServiceTest {
         when(postRepository.findAllByWriter(any(Pageable.class), any())).thenReturn(page);
 
         Pageable pageable = PageRequest.of(0, cnt);
-        Page<PostResponse> postResponses = postService.getPostsByUser(pageable, new UserIdRequest(USERID));
+        Page<PostResponse> postResponses = postService.getPostsByUser(pageable, USERID);
 
         assertThat(postResponses.getTotalPages()).isEqualTo(page.getTotalPages());
         assertThat(postResponses.getTotalElements()).isEqualTo(page.getTotalElements());

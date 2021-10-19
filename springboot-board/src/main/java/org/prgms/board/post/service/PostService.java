@@ -57,8 +57,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostResponse> getPostsByUser(Pageable pageable, UserIdRequest userIdRequest) {
-        User user = activeUser(userIdRequest.getUserId());
+    public Page<PostResponse> getPostsByUser(Pageable pageable, Long id) {
+        User user = activeUser(id);
         return postRepository.findAllByWriter(pageable, user)
             .map(PostResponse::new);
     }

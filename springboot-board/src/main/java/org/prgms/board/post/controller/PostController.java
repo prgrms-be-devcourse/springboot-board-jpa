@@ -10,7 +10,6 @@ import org.prgms.board.user.dto.UserIdRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
 @RestController
@@ -27,12 +26,6 @@ public class PostController {
     @GetMapping
     public ApiResponse<Page<PostResponse>> getPosts(Pageable pageable) {
         return ApiResponse.toResponse(postService.getPosts(pageable));
-    }
-
-    @GetMapping("/users")
-    public ApiResponse<Page<PostResponse>> getPostsByUser(Pageable pageable,
-                                                          @RequestBody @Valid UserIdRequest userIdRequest) {
-        return ApiResponse.toResponse(postService.getPostsByUser(pageable, userIdRequest));
     }
 
     @GetMapping("/{id}")
