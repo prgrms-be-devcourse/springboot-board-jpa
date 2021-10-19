@@ -31,21 +31,20 @@ public class PostService {
     }
 
     @Transactional
-    public Long save(PostDto postDto) {
+    public PostDetailDto save(PostDto postDto) {
         var foundUser = userRepository.findByName(postDto.getUserDto().getName())
             .orElseThrow(() -> new UserNotFoundException(postDto.getUserDto().getName()));
         var newPost = postConverter.convertPost(postDto, foundUser);
-        var savedPostEntity = postRepository.save(newPost);
-        return postRepository.save(savedPostEntity).getId();
+        return postConverter.convertPostDetailDto(postRepository.save(newPost));
     }
 
     @Transactional
-    public Long update(Long postId, PostDto postDto) {
+    public PostDetailDto update(Long postId, PostDto postDto) {
         var foundPost = postRepository.findById(postId)
             .orElseThrow(() -> new PostNotFoundException(
                 MessageFormat.format("{0}({1})", postDto.getTitle(), postDto.getId())));
         foundPost.changePost(postDto.getTitle(), postDto.getContent());
-        return foundPost.getId();
+        return postConverter.convertPostDetailDto(foundPost);
     }
 
     public Page<PostDto> findAll(Pageable pageable) {

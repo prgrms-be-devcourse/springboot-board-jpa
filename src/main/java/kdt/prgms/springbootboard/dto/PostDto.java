@@ -1,6 +1,7 @@
 package kdt.prgms.springbootboard.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,6 +22,7 @@ public class PostDto {
     private String content;
 
     @NotNull
+    @JsonProperty("user")
     private UserDto userDto;
 
     public PostDto() {

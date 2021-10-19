@@ -1,6 +1,7 @@
 package kdt.prgms.springbootboard.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -33,6 +34,7 @@ public class PostDetailDto {
     private LocalDateTime lastModifiedDate;
 
     @NotNull
+    @JsonProperty(value = "user")
     private UserDto userDto;
 
     public PostDetailDto() {

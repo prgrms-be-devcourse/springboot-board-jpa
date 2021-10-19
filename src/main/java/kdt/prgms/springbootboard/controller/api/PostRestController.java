@@ -22,7 +22,7 @@ public class PostRestController {
     }
 
     @PostMapping("/v1")
-    public ResponseEntity<Long> create(@RequestBody @Valid PostDto postDto) {
+    public ResponseEntity<PostDetailDto> create(@RequestBody @Valid PostDto postDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.save(postDto));
     }
 
@@ -37,7 +37,7 @@ public class PostRestController {
     }
 
     @PostMapping("v1/{postId}")
-    public ResponseEntity<Long> updateProfile(@PathVariable long postId,
+    public ResponseEntity<PostDetailDto> updatePost(@PathVariable long postId,
         @RequestBody @Valid PostDto postDto) {
         return ResponseEntity.ok(postService.update(postId, postDto));
     }
