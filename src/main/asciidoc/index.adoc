@@ -1,0 +1,69 @@
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== 게시글
+
+=== 게시글 생성
+
+.Request
+include::{snippets}/posts-create/http-request.adoc[]
+include::{snippets}/posts-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/posts-create/http-response.adoc[]
+include::{snippets}/posts-create/response-fields.adoc[]
+
+=== 게시글 생성 실패 : 유효하지 않은 타이틀 (null, length)
+
+.Request
+include::{snippets}/posts-create-invalid-title-empty/http-request.adoc[]
+
+.Response
+include::{snippets}/posts-create-invalid-title-empty/http-response.adoc[]
+
+.Request
+include::{snippets}/posts-create-invalid-title-long/http-request.adoc[]
+
+.Response
+include::{snippets}/posts-create-invalid-title-long/http-response.adoc[]
+
+=== 게시글 생성 실패 : 존재 하지 않는 유저
+
+.Request
+include::{snippets}/posts-create-invalid-user/http-request.adoc[]
+
+.Response
+include::{snippets}/posts-create-invalid-user/http-response.adoc[]
+
+
+=== 게시글 리스트 조회
+
+.Request
+include::{snippets}/posts-list/http-request.adoc[]
+
+.Response
+include::{snippets}/posts-list/http-response.adoc[]
+include::{snippets}/posts-list/response-fields.adoc[]
+
+=== 게시글 단건 조회
+
+.Request
+include::{snippets}/posts-detail/http-request.adoc[]
+include::{snippets}/posts-detail/path-parameters.adoc[]
+
+.Response
+include::{snippets}/posts-update/http-response.adoc[]
+include::{snippets}/posts-update/response-fields.adoc[]
+
+=== 게시글 수정
+
+.Request
+include::{snippets}/posts-update/http-request.adoc[]
+include::{snippets}/posts-update/path-parameters.adoc[]
+
+.Response
+include::{snippets}/posts-update/http-response.adoc[]
+include::{snippets}/posts-update/response-fields.adoc[]
