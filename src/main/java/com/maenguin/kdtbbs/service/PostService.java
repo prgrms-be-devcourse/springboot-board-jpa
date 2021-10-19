@@ -40,7 +40,7 @@ public class PostService {
     }
 
     public PostDto getPostById(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow();
+        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(" for id:" + postId));
         return bbsConverter.convertToPostDto(post);
     }
 
