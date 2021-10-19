@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.maenguin.kdtbbs.dto.ApiResponse.success;
 
 @RestController
-@RequestMapping("bbs/api/v1/posts")
+@RequestMapping("/api/v1/posts")
 public class PostRestController {
 
     private final PostService postService;

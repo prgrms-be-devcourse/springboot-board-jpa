@@ -53,7 +53,7 @@ public class PostDocumentationTest {
                 .willReturn(postDto);
         //when
         ResultActions result = mockMvc.perform(
-                get("/bbs/api/v1/posts/{id}", 1L)
+                get("/api/v1/posts/{id}", 1L)
                         .accept(MediaType.APPLICATION_JSON)
         );
         //then
@@ -83,7 +83,7 @@ public class PostDocumentationTest {
                 .willReturn(postListDto);
         //when
         ResultActions result = mockMvc.perform(
-                get("/bbs/api/v1/posts")
+                get("/api/v1/posts")
                         .accept(MediaType.APPLICATION_JSON)
         );
         //then
@@ -116,7 +116,7 @@ public class PostDocumentationTest {
                 .willReturn(postDto);
         //when
         ResultActions result = mockMvc.perform(
-                get("/bbs/api/v1/posts/{id}", 2L)
+                get("/api/v1/posts/{id}", 2L)
                         .accept(MediaType.APPLICATION_JSON)
         );
         //then
@@ -145,7 +145,7 @@ public class PostDocumentationTest {
                 .willReturn(new PostAddResDto(1L));
         //when
         ResultActions result = mockMvc.perform(
-                post("/bbs/api/v1/posts")
+                post("/api/v1/posts")
                         .content(objectMapper.writeValueAsString(postAddDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -176,7 +176,7 @@ public class PostDocumentationTest {
                 .willReturn(new PostAddResDto(1L));
         //when
         ResultActions result = mockMvc.perform(
-                post("/bbs/api/v1/posts/{id}", 1L)
+                post("/api/v1/posts/{id}", 1L)
                         .content(objectMapper.writeValueAsString(postAddDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
