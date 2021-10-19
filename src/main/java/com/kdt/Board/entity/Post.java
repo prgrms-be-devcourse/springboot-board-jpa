@@ -32,7 +32,7 @@ public class Post extends BaseEntity {
     }
 
     //-------------------------
-    public void editPost(PostRequest postRequest) {
+    public void edit(PostRequest postRequest) {
         this.title = postRequest.getTitle();
         this.content = postRequest.getContent();
     }

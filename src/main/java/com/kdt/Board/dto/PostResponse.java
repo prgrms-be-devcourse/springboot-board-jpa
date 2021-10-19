@@ -3,13 +3,11 @@ package com.kdt.Board.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
-@Setter
 public class PostResponse {
 
     private Long id;

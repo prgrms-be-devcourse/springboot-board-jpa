@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.security.sasl.AuthenticationException;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,6 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final ConversionDtoEntity conversion;
-
 
     public Page<PostResponse> getPosts(Pageable pageable) {
         return postRepository.findAll(pageable)
@@ -36,15 +36,14 @@ public class PostService {
 
     @Transactional
     public Long writePost(Long userId, PostRequest postRequest) {
-        final Post savedPost = postRepository.save(conversion.toPost(userId, postRequest));
-        return savedPost.getId();
+        return postRepository.save(conversion.toPost(userId, postRequest)).getId();
     }
 
     @Transactional
     public Long editPost(Long userId, Long postId, PostRequest postRequest) throws AuthenticationException {
         Post post = postRepository.findById(postId).get();
-        if (userId != post.getUser().getId()) throw new AuthenticationException("권한이 없습니다.");
-        post.editPost(postRequest);
+        if (!Objects.equals(userId, post.getUser().getId())) throw new AuthenticationException("권한이 없습니다.");
+        post.edit(postRequest);
         return post.getId();
     }
 }

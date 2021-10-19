@@ -28,31 +28,31 @@ public class PostController {
     sort: Sorting 기준 파라미터
     ex) size=10&page=1&sort=id,desc
      */
-    @GetMapping("")
+    @GetMapping
     public ApiResponse<Page<PostResponse>> getPosts(Pageable pageable) {
-        final Page<PostResponse> posts = postService.getPosts(pageable);
-        return ApiResponse.ok("게시글 다건 조회 성공", posts);
+        return ApiResponse.ok(postService.getPosts(pageable));
     }
 
     @GetMapping("/{id}")
     public ApiResponse<PostResponse> getPost(@PathVariable Long id) throws NotFoundException {
-        final PostResponse post = postService.getPost(id);
-        return ApiResponse.ok("게시글 단건 조회 성공", post);
+        return ApiResponse.ok(postService.getPost(id));
     }
 
-    @PostMapping("")
+    @PostMapping
     public ApiResponse<Long> writePost(HttpServletRequest request,  @RequestBody PostRequest postRequest) {
         final Cookie[] cookies = request.getCookies();
         final String userId = Arrays.stream(cookies).filter(x -> x.getName().equals("userid")).findFirst().get().getValue();
-        final Long postId = postService.writePost(Long.parseLong(userId), postRequest);
-        return ApiResponse.ok("게시글 생성 성공", postId);
+        return ApiResponse.ok(
+                postService.writePost(Long.parseLong(userId), postRequest)
+        );
     }
 
     @PutMapping("/{id}")
     public ApiResponse<Long> editPost(HttpServletRequest request, @PathVariable Long id, @RequestBody PostRequest postRequest) throws AuthenticationException {
         final Cookie[] cookies = request.getCookies();
         final String userId = Arrays.stream(cookies).filter(x -> x.getName().equals("userid")).findFirst().get().getValue();
-        final Long postId = postService.editPost(Long.parseLong(userId), id, postRequest);
-        return ApiResponse.ok("게시글 수정 성공", postId);
+        return ApiResponse.ok(
+                postService.editPost(Long.parseLong(userId), id, postRequest)
+        );
     }
 }

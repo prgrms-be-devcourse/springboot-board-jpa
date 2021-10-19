@@ -11,11 +11,11 @@ import javax.naming.AuthenticationException;
 public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ApiResponse notFoundHandler (NotFoundException e) {
-        return ApiResponse.fail(404, "존재하지 않습니다.", e.getMessage());
+        return ApiResponse.fail(404, e.getMessage());
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ApiResponse notAuthenticatedHandler (AuthenticationException e) {
-        return ApiResponse.fail(403, "권한이 없습니다.", e.getMessage());
+        return ApiResponse.fail(403, e.getMessage());
     }
 }
