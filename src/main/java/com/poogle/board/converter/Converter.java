@@ -14,7 +14,11 @@ public class Converter {
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .userResponse(this.convertUserDto(post.getUser()))
+                .createdAt(post.getCreatedAt())
+                .modifiedAt(post.getModifiedAt())
+                .createdBy(post.getCreatedBy())
+                .modifiedBy(post.getModifiedBy())
+//                .userResponse(this.convertUserDto(post.getUser())) //TODO: User 로그인 기능 구현 후 반영
                 .build();
     }
 
@@ -24,6 +28,8 @@ public class Converter {
                 .name(user.getName())
                 .age(user.getAge())
                 .hobby(user.getHobby())
+                .createdAt(user.getCreatedAt())
+                .modifiedAt(user.getModifiedAt())
                 .build();
     }
 }
