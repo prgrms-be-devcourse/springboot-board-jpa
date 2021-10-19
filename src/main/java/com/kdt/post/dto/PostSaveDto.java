@@ -14,15 +14,15 @@ public class PostSaveDto {
 
     private Long id;
 
-    @NotBlank
-    @Length(max = 50)
+    @NotBlank(message = "title is not blank")
+    @Length(max = 50, message = "length must be between 0 and 50")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "content is not blank")
     private String content;
 
     @JsonProperty(value = "user")
-    @NotNull
+    @NotNull(message = "userDto is not null")
     private UserDto userDto;
 
 }

@@ -1,7 +1,6 @@
 package com.kdt.api;
 
 import static com.kdt.api.PostApi.POSTS;
-import static com.kdt.api.PostApi.PREFIX;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -72,11 +71,11 @@ class PostApiTest {
 
         PostSaveDto postSaveDto = givenPostDto(user.getId());
 
-        mockMvc.perform(post(PREFIX + POSTS)
+        mockMvc.perform(post(POSTS)
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(postSaveDto)))
                 .andDo(print())
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andDo(document("save-post",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -87,7 +86,7 @@ class PostApiTest {
                                 fieldWithPath("user").type(OBJECT).description("user"),
                                 fieldWithPath("user.id").type(NUMBER).description("id"),
                                 fieldWithPath("user.name").type(STRING).description("name"),
-                                fieldWithPath("user.age").type(NUMBER).description("age")
+                                fieldWithPath("user.birthYear").type(NUMBER).description("birthYear")
                         ),
                         responseFields(
                                 fieldWithPath("data").type(NUMBER).description("Post id"),
@@ -103,9 +102,9 @@ class PostApiTest {
         User user = userRepository.save(User.builder().name("tester").age(1995).build());
 
         PostSaveDto postSaveDto = givenPostDto(user.getId());
-        postSaveDto.setTitle("");
+        postSaveDto.setTitle("111111111111111111111111111111111111111111111111111");
         postSaveDto.setContent("");
-        mockMvc.perform(post(PREFIX + POSTS)
+        mockMvc.perform(post(POSTS)
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(postSaveDto)))
                 .andDo(print())
@@ -120,7 +119,7 @@ class PostApiTest {
                                 fieldWithPath("user").type(OBJECT).description("user"),
                                 fieldWithPath("user.id").type(NUMBER).description("id"),
                                 fieldWithPath("user.name").type(STRING).description("name"),
-                                fieldWithPath("user.age").type(NUMBER).description("age")
+                                fieldWithPath("user.birthYear").type(NUMBER).description("birthYear")
                         ),
                         responseFields(
                                 fieldWithPath("message").type(STRING).description("message"),
@@ -128,6 +127,7 @@ class PostApiTest {
                                 fieldWithPath("errors[].resource").type(STRING).description("resource"),
                                 fieldWithPath("errors[].field").type(STRING).description("field"),
                                 fieldWithPath("errors[].code").type(STRING).description("code"),
+                                fieldWithPath("errors[].message").type(STRING).description("message"),
                                 fieldWithPath("serverDatetime").type(STRING).description("sever response time")
                         )
                 ));
@@ -140,7 +140,7 @@ class PostApiTest {
         postSaveDto.setTitle("title");
         postSaveDto.setContent("content");
 
-        mockMvc.perform(post(PREFIX + POSTS)
+        mockMvc.perform(post(POSTS)
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(postSaveDto)))
                 .andDo(print())
@@ -160,6 +160,7 @@ class PostApiTest {
                                 fieldWithPath("errors[].resource").type(STRING).description("resource"),
                                 fieldWithPath("errors[].field").type(STRING).description("field"),
                                 fieldWithPath("errors[].code").type(STRING).description("code"),
+                                fieldWithPath("errors[].message").type(STRING).description("message"),
                                 fieldWithPath("serverDatetime").type(STRING).description("sever response time")
                         )
                 ));
@@ -172,7 +173,7 @@ class PostApiTest {
         User user = userRepository.save(User.builder().name("tester").age(1995).build());
         IntStream.range(0, 30).forEach(i -> postRepository.save(Post.builder().title("제목 " + i).content("내용").user(user).build()));
 
-        mockMvc.perform(get(PREFIX + POSTS)
+        mockMvc.perform(get(POSTS)
                 .param("page", "2")
                 .param("size", "10")
                 .contentType(APPLICATION_JSON_VALUE))
@@ -190,8 +191,7 @@ class PostApiTest {
                                 fieldWithPath("data.content[].user").type(OBJECT).description("user"),
                                 fieldWithPath("data.content[].user.id").type(NUMBER).description("id"),
                                 fieldWithPath("data.content[].user.name").type(STRING).description("name"),
-                                fieldWithPath("data.content[].user.age").type(NUMBER).description("age"),
-                                fieldWithPath("data.content[].user.age").type(NUMBER).description("age"),
+                                fieldWithPath("data.content[].user.birthYear").type(NUMBER).description("birthYear"),
                                 fieldWithPath("data.pageable.sort.empty").type(BOOLEAN).description("sort.empty"),
                                 fieldWithPath("data.pageable.sort.sorted").type(BOOLEAN).description("sort.sorted"),
                                 fieldWithPath("data.pageable.sort.unsorted").type(BOOLEAN).description("sort.unsorted"),
@@ -222,7 +222,7 @@ class PostApiTest {
         User user = userRepository.save(User.builder().name("tester").age(1995).build());
         Post post = postRepository.save(Post.builder().title("제목").content("내용").user(user).build());
 
-        mockMvc.perform(get(PREFIX + POSTS + "/{id}", post.getId()))
+        mockMvc.perform(get(POSTS + "/{id}", post.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("get-post",
@@ -237,8 +237,7 @@ class PostApiTest {
                                 fieldWithPath("data.user").type(OBJECT).description("user"),
                                 fieldWithPath("data.user.id").type(NUMBER).description("id"),
                                 fieldWithPath("data.user.name").type(STRING).description("name"),
-                                fieldWithPath("data.user.age").type(NUMBER).description("age"),
-                                fieldWithPath("data.user.age").type(NUMBER).description("age")
+                                fieldWithPath("data.user.birthYear").type(NUMBER).description("birthYear")
                         )
                 ));
     }
@@ -252,7 +251,7 @@ class PostApiTest {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
         userDto.setName(user.getName());
-        userDto.setAge(user.getAge());
+        userDto.setBirthYear(user.getAge());
 
         PostSaveDto postSaveDto = new PostSaveDto();
         postSaveDto.setId(post.getId());
@@ -260,11 +259,11 @@ class PostApiTest {
         postSaveDto.setTitle("변경한 제목");
         postSaveDto.setContent("변경한 내용");
 
-        mockMvc.perform(post(PREFIX + POSTS + "/{id}", post.getId())
+        mockMvc.perform(post(POSTS + "/{id}", post.getId())
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(postSaveDto)))
                 .andDo(print())
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andDo(document("update-post",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -275,7 +274,7 @@ class PostApiTest {
                                 fieldWithPath("user").type(OBJECT).description("user"),
                                 fieldWithPath("user.id").type(NUMBER).description("id"),
                                 fieldWithPath("user.name").type(STRING).description("name"),
-                                fieldWithPath("user.age").type(NUMBER).description("age")
+                                fieldWithPath("user.birthYear").type(NUMBER).description("birthYear")
                         ),
                         responseFields(
                                 fieldWithPath("data").type(NUMBER).description("Post id"),
@@ -289,7 +288,7 @@ class PostApiTest {
         UserDto userDto = new UserDto();
         userDto.setId(userId);
         userDto.setName("tester");
-        userDto.setAge(1995);
+        userDto.setBirthYear(1995);
 
         PostSaveDto postSaveDto = new PostSaveDto();
         postSaveDto.setTitle("스프링 스터디 모집");

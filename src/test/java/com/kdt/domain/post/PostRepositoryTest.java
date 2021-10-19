@@ -52,8 +52,8 @@ class PostRepositoryTest {
         postRepository.save(post);
 
         //then
-        List<Post> findAll = postRepository.findAll();
-        assertThat(findAll).hasSize(1);
+        Post savePost = postRepository.findById(1L).get();
+        assertThat(savePost).isNotNull();
     }
 
     @Test

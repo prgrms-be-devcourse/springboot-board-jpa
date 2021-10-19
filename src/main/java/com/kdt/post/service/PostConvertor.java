@@ -23,7 +23,7 @@ public class PostConvertor {
         User user = User.builder()
                 .id(userDto.getId())
                 .name(userDto.getName())
-                .age(userDto.getAge())
+                .age(userDto.getBirthYear())
                 .build();
         return user;
     }
@@ -41,7 +41,7 @@ public class PostConvertor {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
         userDto.setName(user.getName());
-        userDto.setAge(user.getAge());
+        userDto.setBirthYear(user.getAge());
         return userDto;
     }
 }

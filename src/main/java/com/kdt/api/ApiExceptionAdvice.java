@@ -19,8 +19,8 @@ public class ApiExceptionAdvice {
         return ErrorResponse.of(e.getMessage());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ErrorResponse badRequestException(IllegalArgumentException e) {
+    @ExceptionHandler(RuntimeException.class)
+    public ErrorResponse badRequestException(RuntimeException e) {
         log.error("Unexpected Exception : {}", e.getMessage());
         return ErrorResponse.of(e.getMessage());
     }

@@ -30,14 +30,14 @@ public class PostService {
     public PostViewDto findOne(Long id) {
         return postRepository.findById(id)
                 .map(postConvertor::convertPostToPostViewDto)
-                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("not found id : {0}", id)));
+                .orElseThrow(() -> new RuntimeException(MessageFormat.format("not found id : {0}", id)));
     }
 
     @Transactional
-    public Long update(PostSaveDto postSaveDto) {
-        return postRepository.findById(postSaveDto.getId())
+    public Long update(Long postId, PostSaveDto postSaveDto) {
+        return postRepository.findById(postId)
                 .map(post -> postConvertor.convertPostSaveDtoToPost(postSaveDto))
-                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("not found id : {0}", postSaveDto.getId())))
+                .orElseThrow(() -> new RuntimeException(MessageFormat.format("not found postId : {0}", postSaveDto.getId())))
                 .getId();
     }
 }

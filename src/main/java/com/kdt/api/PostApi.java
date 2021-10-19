@@ -1,9 +1,9 @@
 package com.kdt.api;
 
 import static com.kdt.api.PostApi.POSTS;
-import static com.kdt.api.PostApi.PREFIX;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.kdt.post.dto.PostSaveDto;
@@ -23,16 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = PREFIX + POSTS)
+@RequestMapping(value = POSTS)
+@ResponseStatus(OK)
 public class PostApi {
 
-    protected static final String PREFIX = "/api/v1";
-    protected static final String POSTS = "/posts";
+    protected static final String POSTS = "/api/v1/posts";
 
     private final PostService postService;
 
-    @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    @ResponseStatus(CREATED)
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ApiResponse<Long> addPost(@RequestBody @Valid PostSaveDto postSaveDto) {
         return ApiResponse.ok(postService.save(postSaveDto));
     }
@@ -47,10 +46,9 @@ public class PostApi {
         return ApiResponse.ok(postService.findOne(id));
     }
 
-    @PostMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE)
-    @ResponseStatus(NO_CONTENT)
-    public ApiResponse<Long> updatePost(@RequestBody @Valid PostSaveDto postSaveDto) {
-        return ApiResponse.ok(postService.update(postSaveDto));
+    @PostMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ApiResponse<Long> editPost(@PathVariable("id") Long id, @RequestBody @Valid PostSaveDto postSaveDto) {
+        return ApiResponse.ok(postService.update(id, postSaveDto));
     }
 
 }

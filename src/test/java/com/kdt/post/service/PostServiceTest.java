@@ -105,7 +105,7 @@ class PostServiceTest {
         given(post.getId()).willReturn(1L);
 
         //when
-        Long savePostId = postService.update(postSaveDto);
+        Long savePostId = postService.update(1L, postSaveDto);
 
         //then
         then(postRepository).should().findById(1L);
