@@ -12,13 +12,11 @@ import java.time.LocalDateTime;
 @Component
 public class PostConverter {
     public Post convertPost(PostDto postDto) {
-        Post post = new Post();
-        post.setTitle(postDto.getTitle());
-        post.setContent(postDto.getContent());
-        post.setUser(this.convertUser(postDto.getUserDto()));
-        post.setCreatedBy(postDto.getUserDto().getName());
-        post.setCreatedAt(LocalDateTime.now());
-        return post;
+        return Post.builder()
+                .title(postDto.getTitle())
+                .content(postDto.getContent())
+                .user(this.convertUser(postDto.getUserDto()))
+                .build();
     }
 
     public User convertUser(UserDto userDto) {

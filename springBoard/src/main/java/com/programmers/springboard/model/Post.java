@@ -8,10 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "posts")
 @Getter
-@Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +24,19 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+
+    @Builder
+    public Post(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
+        this.user = user;
+        this.setCreatedBy(user.getName());
+        this.setCreatedAt(LocalDateTime.now());
+    }
+
     public void update(String title, String content, User user) {
         this.title = title;
         this.content = content;
         this.user = user;
-        this.setCreatedAt(LocalDateTime.now());
     }
 }
