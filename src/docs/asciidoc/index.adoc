@@ -1,0 +1,60 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== User
+
+=== User 생성
+
+.Request
+include::{snippets}/user-save/http-request.adoc[]
+include::{snippets}/user-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-save/http-response.adoc[]
+include::{snippets}/user-save/response-fields.adoc[]
+
+=== User 수정
+
+.Request
+include::{snippets}/user-edit/http-request.adoc[]
+include::{snippets}/user-edit/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-save/http-response.adoc[]
+include::{snippets}/user-save/response-fields.adoc[]
+
+=== User 조회
+
+.Response
+include::{snippets}/user-get/http-response.adoc[]
+include::{snippets}/user-get/response-fields.adoc[]
+
+== Post
+
+=== Post 생성
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+=== Post 수정
+
+.Request
+include::{snippets}/post-edit/http-request.adoc[]
+include::{snippets}/post-edit/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-edit/http-response.adoc[]
+include::{snippets}/post-edit/response-fields.adoc[]
+
+=== Post 조회
+
+.Response
+include::{snippets}/post-get/http-response.adoc[]
+include::{snippets}/post-get/response-fields.adoc[]
