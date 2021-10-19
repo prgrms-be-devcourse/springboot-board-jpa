@@ -9,8 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "post")
-@Getter
-@Setter
+@Getter @Setter
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

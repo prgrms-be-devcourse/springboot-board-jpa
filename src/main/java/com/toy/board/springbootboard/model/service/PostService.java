@@ -36,14 +36,14 @@ public class PostService {
         return entity.getId();
     }
 
-    @Transactional
+    @Transactional(readOnly = true) // 값 변경 방지
     public PostDto findById(long id) throws NotFoundException {
         return postRepository.findById(id)
                 .map(post -> postConverter.convertPostDto(post))
                 .orElseThrow(() -> new NotFoundException("조회오류: 포스트를 찾을 수 없습니다."));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PostDto> findPosts(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(postConverter::convertPostDto);
