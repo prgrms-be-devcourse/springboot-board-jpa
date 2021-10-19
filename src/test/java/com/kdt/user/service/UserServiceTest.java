@@ -1,5 +1,8 @@
 package com.kdt.user.service;
 
+import com.kdt.post.dto.PostControlRequestDto;
+import com.kdt.post.dto.PostDto;
+import com.kdt.post.service.PostService;
 import com.kdt.user.dto.UserDto;
 import com.kdt.user.repository.UserRepository;
 import javassist.NotFoundException;
@@ -25,17 +28,35 @@ class UserServiceTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    PostService postService;
+
     private Long userId;
+    private Long postId;
     private UserDto userDto;
+    private PostDto postDto;
 
     @BeforeEach
-    void setUp(){
+    void setUp() throws NotFoundException {
         userDto = UserDto.builder()
                 .name("son")
                 .age(30)
                 .hobby("soccer")
                 .build();
         userId = userService.save(userDto);
+
+        postDto = PostDto.builder()
+                .title("test-title")
+                .content("this is a sample post")
+                .build();
+
+        PostControlRequestDto postSaveRequestDto = PostControlRequestDto.builder()
+                .userId(userId)
+                .title(postDto.getTitle())
+                .content(postDto.getContent())
+                .build();
+
+        postId = postService.save(postSaveRequestDto);
     }
 
     @AfterEach
@@ -49,9 +70,13 @@ class UserServiceTest {
         //Given
         //When
         UserDto user = userService.find(userId);
+        PostDto post = postService.find(postId);
 
         //Then
-        assertThat(userDto, samePropertyValuesAs(user, "postDtos", "createdAt", "createdBy", "lastUpdatedAt"));
+        assertThat(user, samePropertyValuesAs(userDto, "id", "postDtos", "createdAt", "createdBy", "lastUpdatedAt"));
+        assertThat(user.getId(), is(userId));
+        assertThat(user.getPostDtos().size(), is(1));
+        assertThat(user.getPostDtos().get(0), samePropertyValuesAs(post, "userDto"));
         log.info(user.toString());
     }
 
@@ -83,7 +108,7 @@ class UserServiceTest {
 
         //Then
         UserDto savedUser = userService.find(userId);
-        assertThat(savedUser, samePropertyValuesAs(user, "lastUpdatedAt"));
+        assertThat(savedUser, samePropertyValuesAs(user, "lastUpdatedAt", "postDtos"));
         log.info(savedUser.toString());
     }
 
@@ -96,5 +121,14 @@ class UserServiceTest {
 
         //Then
         assertThrows(NotFoundException.class, () -> userService.find(userId));
+    }
+
+    @Test
+    @DisplayName("가입하지 않은 사용자를 삭제하면 예외가 발생한다.")
+    void deleteInvalidUserTest(){
+        //Given
+        //When
+        //Then
+        assertThrows(NotFoundException.class, () -> userService.delete(Long.MAX_VALUE));
     }
 }

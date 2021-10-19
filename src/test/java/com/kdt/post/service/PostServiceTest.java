@@ -1,9 +1,11 @@
 package com.kdt.post.service;
 
+import com.kdt.post.dto.PostControlRequestDto;
 import com.kdt.post.dto.PostDto;
 import com.kdt.post.model.Post;
 import com.kdt.post.repository.PostRepository;
 import com.kdt.user.dto.UserDto;
+import com.kdt.user.repository.UserRepository;
 import com.kdt.user.service.UserService;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,9 @@ class PostServiceTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     Long userId;
 
     Long postId;
@@ -53,22 +58,22 @@ class PostServiceTest {
 
         postDto = PostDto.builder()
                 .title("test-title")
-                .conent("this is a sample post")
+                .content("this is a sample post")
                 .build();
 
-        postId = postService.save(userId, postDto);
+        PostControlRequestDto saveRequestDto = PostControlRequestDto.builder()
+                .userId(userId)
+                .title(postDto.getTitle())
+                .content(postDto.getContent())
+                .build();
+
+        postId = postService.save(saveRequestDto);
     }
 
     @AfterEach
     void tearDown(){
-        List<Post> all = postRepository.findAll();
-        all.forEach((post) -> {
-            try {
-                postService.delete(post.getUser().getId(), post.getId());
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        });
+        userRepository.deleteAll();
+        postRepository.deleteAll();
     }
 
     @Test
@@ -77,11 +82,17 @@ class PostServiceTest {
         //Given
         PostDto postDto2 = PostDto.builder()
                 .title("test-title")
-                .conent("this is a sample post")
+                .content("this is a sample post")
+                .build();
+
+        PostControlRequestDto saveRequestDto = PostControlRequestDto.builder()
+                .userId(userId)
+                .title(postDto2.getTitle())
+                .content(postDto2.getContent())
                 .build();
 
         //When
-        postService.save(userId, postDto2);
+        postService.save(saveRequestDto);
 
         //Then
         UserDto user = userService.find(userId);
@@ -102,12 +113,18 @@ class PostServiceTest {
         //Given
         PostDto postDto2 = PostDto.builder()
                 .title("test-title")
-                .conent("this is a sample post")
+                .content("this is a sample post")
+                .build();
+
+        PostControlRequestDto saveRequestDto = PostControlRequestDto.builder()
+                .userId(null)
+                .title(postDto2.getTitle())
+                .content(postDto2.getContent())
                 .build();
 
         //When
         //Then
-        assertThrows(NotFoundException.class, () -> postService.update(null, postDto2));
+        assertThrows(NotFoundException.class, () -> postService.update(null, saveRequestDto));
 
         Page<PostDto> postDtos = postService.findAll(PageRequest.of(0, 10));
         assertThat(postDtos.getTotalElements(), is(1L));
@@ -129,9 +146,18 @@ class PostServiceTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         savedPost.setTitle("update-title");
-        savedPost.setConent("this is a updated post.");
-        postService.update(userId, savedPost);
+        savedPost.setContent("this is a updated post.");
+
+        PostControlRequestDto updateRequestDto = PostControlRequestDto.builder()
+                .userId(userId)
+                .postId(savedPost.getId())
+                .title(savedPost.getTitle())
+                .content(savedPost.getContent())
+                .build();
+
+        postService.update(savedPost.getId(), updateRequestDto);
 
         //Then
         PostDto updatedPostDto = postService.find(postId);
@@ -145,12 +171,19 @@ class PostServiceTest {
         //Given
         PostDto savedPost = postService.find(postId);
 
+        PostControlRequestDto updateRequestDto = PostControlRequestDto.builder()
+                .userId(null)
+                .postId(savedPost.getId())
+                .title(savedPost.getTitle())
+                .content(savedPost.getContent())
+                .build();
+
         //When
-        savedPost.setTitle("update-title");
-        savedPost.setConent("this is a updated post.");
+        updateRequestDto.setTitle("update-title");
+        updateRequestDto.setContent("this is a updated post.");
 
         //Then
-        assertThrows(NotFoundException.class, () -> postService.update(null, savedPost));
+        assertThrows(NotFoundException.class, () -> postService.update(null, updateRequestDto));
 
         PostDto notUpdatedPostDto = postService.find(postId);
         assertThat(notUpdatedPostDto, samePropertyValuesAs(postDto, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt"));
@@ -172,18 +205,31 @@ class PostServiceTest {
 
         PostDto postDto2 = PostDto.builder()
                 .title("test-title")
-                .conent("this is a sample post")
+                .content("this is a sample post")
                 .build();
 
-        Long postId2 = postService.save(userId2, postDto2);
+        PostControlRequestDto updateRequestDto = PostControlRequestDto.builder()
+                .userId(userId2)
+                .title(postDto2.getTitle())
+                .content(postDto2.getContent())
+                .build();
+
+        Long postId2 = postService.save(updateRequestDto);
 
         //When
         PostDto savedPostOfUser2 = postService.find(postId2);
         savedPostOfUser2.setTitle("update-title");
-        savedPostOfUser2.setConent("this is a updated post.");
+        savedPostOfUser2.setContent("this is a updated post.");
 
         //Then
-        assertThrows(NotFoundException.class, () -> postService.update(userId, savedPostOfUser2));
+        PostControlRequestDto updateRequestDto2 = PostControlRequestDto.builder()
+                .userId(userId)
+                .postId(savedPostOfUser2.getId())
+                .title(savedPostOfUser2.getTitle())
+                .content(savedPostOfUser2.getContent())
+                .build();
+
+        assertThrows(NotFoundException.class, () -> postService.update(savedPostOfUser2.getId(), updateRequestDto2));
 
         PostDto notUpdatedPostDto = postService.find(postId2);
         assertThat(notUpdatedPostDto, samePropertyValuesAs(postDto2, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt"));
@@ -200,8 +246,16 @@ class PostServiceTest {
     @DisplayName("로그인 상태에서 게시물을 정삭적으로 삭제하는지 확인한다.")
     void deleteTest() throws NotFoundException {
         //Given
+        postDto.setId(postId);
+        PostControlRequestDto deleteRequestDto = PostControlRequestDto.builder()
+                .userId(userId)
+                .postId(postDto.getId())
+                .title(postDto.getTitle())
+                .content(postDto.getContent())
+                .build();
+
         //When
-        postService.delete(userId, postId);
+        postService.delete(postDto.getId(), deleteRequestDto);
 
         //Then
         assertThrows(NotFoundException.class, () -> postService.find(postId));
@@ -213,8 +267,16 @@ class PostServiceTest {
     @DisplayName("로그아웃 상태에서 게시물을 삭제하면 예외가 발생한다.")
     void deleteTestWhenSignOut() throws NotFoundException {
         //Given
+        postDto.setId(postId);
+        PostControlRequestDto deleteRequestDto = PostControlRequestDto.builder()
+                .userId(null)
+                .postId(postDto.getId())
+                .title(postDto.getTitle())
+                .content(postDto.getContent())
+                .build();
+
         //When
-        assertThrows(NotFoundException.class, () -> postService.delete(null, postId));
+        assertThrows(NotFoundException.class, () -> postService.delete(null, deleteRequestDto));
 
         //Then
         assertThat(postService.find(postId), samePropertyValuesAs(postDto, "id", "userDto", "createdAt", "createdBy", "lastUpdatedAt"));
@@ -237,14 +299,28 @@ class PostServiceTest {
 
         PostDto postDto2 = PostDto.builder()
                 .title("test-title")
-                .conent("this is a sample post")
+                .content("this is a sample post")
                 .build();
 
-        Long postId2 = postService.save(userId2, postDto2);
+        PostControlRequestDto saveRequestDto = PostControlRequestDto.builder()
+                .userId(userId2)
+                .title(postDto2.getTitle())
+                .content(postDto2.getContent())
+                .build();
+
+        Long postId2 = postService.save(saveRequestDto);
+        postDto2.setId(postId2);
 
         //When
         //Then
-        assertThrows(NotFoundException.class, () -> postService.delete(userId, postId2));
+        PostControlRequestDto deleteRequestDto = PostControlRequestDto.builder()
+                .userId(userId)
+                .postId(postDto2.getId())
+                .title(postDto2.getTitle())
+                .content(postDto2.getContent())
+                .build();
+
+        assertThrows(NotFoundException.class, () -> postService.delete(postDto2.getId(), deleteRequestDto));
 
         Page<PostDto> posts = postService.findAll(PageRequest.of(0, 10));
         assertThat(posts.getTotalElements(), is(2L));
@@ -279,9 +355,16 @@ class PostServiceTest {
         //Given
         PostDto postDto2 = PostDto.builder()
                 .title("test-title")
-                .conent("this is a sample post")
+                .content("this is a sample post")
                 .build();
-        postService.save(userId, postDto2);
+
+        PostControlRequestDto saveRequestDto = PostControlRequestDto.builder()
+                .userId(userId)
+                .title(postDto2.getTitle())
+                .content(postDto2.getContent())
+                .build();
+
+        postService.save(saveRequestDto);
 
         //When
         Page<PostDto> posts = postService.findAll(PageRequest.of(0, 10));

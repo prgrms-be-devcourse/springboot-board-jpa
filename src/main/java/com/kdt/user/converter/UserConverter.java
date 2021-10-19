@@ -28,6 +28,7 @@ public class UserConverter {
 
     public UserDto convertUser(User user){
         return UserDto.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .age(user.getAge())
                 .hobby(user.getHobby())
@@ -44,7 +45,7 @@ public class UserConverter {
         return PostDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
-                .conent(post.getContent())
+                .content(post.getContent())
                 .createdBy(post.getCreatedBy())
                 .createdAt(post.getCreatedAt())
                 .lastUpdatedAt(post.getLastUpdatedAt())

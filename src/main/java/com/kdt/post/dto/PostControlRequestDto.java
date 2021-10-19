@@ -6,7 +6,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,9 +13,10 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class PostDto {
-    private Long id;
+public class PostControlRequestDto {
+    private Long userId;
+
+    private Long postId;
 
     @NotNull
     @Length(max = 100)
@@ -33,4 +33,16 @@ public class PostDto {
     private LocalDateTime createdAt;
 
     private LocalDateTime lastUpdatedAt;
+
+    public PostDto getPostDto(){
+        return PostDto.builder()
+                .id(postId)
+                .title(title)
+                .content(content)
+                .userDto(userDto)
+                .createdBy(createdBy)
+                .createdAt(createdAt)
+                .lastUpdatedAt(lastUpdatedAt)
+                .build();
+    }
 }

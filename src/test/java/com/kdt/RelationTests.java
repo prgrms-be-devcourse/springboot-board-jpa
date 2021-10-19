@@ -2,8 +2,12 @@ package com.kdt;
 
 import com.kdt.post.model.Post;
 import com.kdt.post.repository.PostRepository;
+import com.kdt.post.service.PostService;
+import com.kdt.user.dto.UserDto;
 import com.kdt.user.model.User;
 import com.kdt.user.repository.UserRepository;
+import com.kdt.user.service.UserService;
+import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +32,12 @@ public class RelationTests {
 
     @Autowired
     PostRepository postRepository;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    PostService postService;
 
     @BeforeEach
     void setUp(){

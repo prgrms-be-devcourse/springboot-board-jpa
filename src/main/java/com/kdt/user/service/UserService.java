@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.RollbackException;
+import javax.validation.ConstraintDeclarationException;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
@@ -21,7 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
 
-    public Long save(UserDto userDto){
+    public Long save(UserDto userDto) throws NotFoundException{
         User user = userRepository.save(userConverter.convertUserDto(userDto));
         return user.getId();
     }
@@ -37,6 +39,7 @@ public class UserService {
     public void delete(Long id) throws NotFoundException{
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("this account is not valid"));
+
         userRepository.deleteById(id);
     }
 

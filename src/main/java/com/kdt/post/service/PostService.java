@@ -1,22 +1,18 @@
 package com.kdt.post.service;
 
 import com.kdt.post.converter.PostConverter;
+import com.kdt.post.dto.PostControlRequestDto;
 import com.kdt.post.dto.PostDto;
 import com.kdt.post.model.Post;
 import com.kdt.post.repository.PostRepository;
-import com.kdt.user.dto.UserDto;
 import com.kdt.user.model.User;
 import com.kdt.user.repository.UserRepository;
-import com.kdt.user.service.UserService;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -37,31 +33,43 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundException("this post is not valid"));
     }
 
-    public Long save(Long userId, PostDto postDto) throws NotFoundException {
-        User user = getUser(userId);
+    public Long save(PostControlRequestDto requestDto) throws NotFoundException {
+        User user = getUser(requestDto.getUserId());
 
-        Post post = postConverter.convertPost(user.getName(), postDto);
+        Post post = postConverter.convertPost(requestDto);
         post.setUser(user);
 
         Post save = postRepository.save(post);
         return save.getId();
     }
 
-    public Long update(Long userId, PostDto postDto) throws NotFoundException {
-        User user = getUser(userId);
-        int postIdx = findIndexOfPost(user.getPosts(), postDto.getId());
-        Post post = user.getPosts().get(postIdx);
+    public Long update(Long postId, PostControlRequestDto requestDto) throws NotFoundException {
+        if(postId == null || postId.equals(requestDto) != false){
+            new NotFoundException("this post is not valid");
+        }
 
-        post.update(postDto.getTitle(), postDto.getConent());
+        User user = getUser(requestDto.getUserId());
+        PostDto postDto = requestDto.getPostDto();
+        Post post = user.getPosts().stream().filter(p -> p.getId().equals(postId))
+                            .findAny()
+                            .orElseThrow(() -> new NotFoundException("this post is not valid"));
 
-        return post.getId();
+        post.update(postDto.getTitle(), postDto.getContent());
+
+        return postId;
     }
 
-    public void delete(Long userId, Long postId) throws NotFoundException {
-        User user = getUser(userId);
-        int postIdx = findIndexOfPost(user.getPosts(), postId);
+    public void delete(Long postId, PostControlRequestDto requestDto) throws NotFoundException {
+        if(postId == null || postId.equals(requestDto) != false){
+            new NotFoundException("this post is not valid");
+        }
 
-        user.getPosts().remove(postIdx);
+        User user = getUser(requestDto.getUserId());
+        boolean isDeleted = user.getPosts().removeIf(p -> p.getId().equals(postId));
+
+        if(!isDeleted){
+            throw new NotFoundException("this post is not valid");
+        }
     }
 
     private User getUser(Long userId) throws NotFoundException {
@@ -71,15 +79,5 @@ public class PostService {
 
         return userRepository.findById(userId)
                     .orElseThrow(() -> new NotFoundException("this account is not valid"));
-    }
-
-    private int findIndexOfPost(List<Post> posts, Long postId) throws NotFoundException {
-        for(int idx = 0; idx < posts.size(); idx++){
-            if(posts.get(idx).getId().equals(postId)){
-                return idx;
-            }
-        }
-
-        throw new NotFoundException("this post is not valid");
     }
 }
