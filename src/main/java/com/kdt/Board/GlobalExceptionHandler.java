@@ -10,12 +10,12 @@ import javax.naming.AuthenticationException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
-    public ApiResponse notFoundHandler (NotFoundException e) {
+    public ApiResponse<String> notFoundHandler (NotFoundException e) {
         return ApiResponse.fail(404, e.getMessage());
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ApiResponse notAuthenticatedHandler (AuthenticationException e) {
+    public ApiResponse<String> notAuthenticatedHandler (AuthenticationException e) {
         return ApiResponse.fail(403, e.getMessage());
     }
 }
