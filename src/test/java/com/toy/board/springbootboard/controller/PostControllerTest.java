@@ -3,6 +3,8 @@ package com.toy.board.springbootboard.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toy.board.springbootboard.model.converter.PostConverter;
+import com.toy.board.springbootboard.model.domain.Post;
+import com.toy.board.springbootboard.model.domain.User;
 import com.toy.board.springbootboard.model.dto.PostDto;
 import com.toy.board.springbootboard.model.dto.UserDto;
 import com.toy.board.springbootboard.model.repository.PostRepository;
@@ -18,15 +20,11 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
-
-import java.time.LocalDateTime;
-
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.junit.jupiter.api.Assertions.*;
 
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
@@ -89,9 +87,9 @@ class PostControllerTest {
                                 fieldWithPath("userId").type(JsonFieldType.NUMBER).description("userId")
                         ),
                         responseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
                                 fieldWithPath("data").type(JsonFieldType.NUMBER).description("data"),
-                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
+                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("serverDateTime")
                         )));
     }
 
@@ -99,12 +97,51 @@ class PostControllerTest {
     @Order(2)
     @DisplayName("Posts 조회 요청 테스트")
     void getPostsTest() throws Exception {
+        PostDto postDto = PostDto.builder()
+                .id(2L)
+                .userId(1L)
+                .title("testTitle2")
+                .content("testContent2")
+                .build();
+        postService.save(postDto);
+
         mockMvc.perform(get("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("postList"));
+                .andDo(document("postList",responseFields(
+                        fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("status"),
+                        fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("message"),
+                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("data"),
+                        fieldWithPath("data.content[]").type(JsonFieldType.ARRAY).description("content"),
+                        fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("id"),
+                        fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("title"),
+                        fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("content"),
+                        fieldWithPath("data.content[].userId").type(JsonFieldType.NUMBER).description("userId"),
+                        fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("pageable"),
+                        fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("pageable.sort"),
+                        fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("pageable.sort.sorted"),
+                        fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("pageable.sort.unsorted"),
+                        fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("pageable.sort.empty"),
+                        fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER).description("pageable.pageSize"),
+                        fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER).description("pageable.pageNumber"),
+                        fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("pageable.offset"),
+                        fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("pageable.unpaged"),
+                        fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("pageable.paged"),
+                        fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("last"),
+                        fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
+                        fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("totalPages"),
+                        fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("first"),
+                        fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements"),
+                        fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("size"),
+                        fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("number"),
+                        fieldWithPath("data.sort").type(JsonFieldType.OBJECT).description("sort"),
+                        fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("sort.sorted"),
+                        fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("sort.unsorted"),
+                        fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("sort.empty"),
+                        fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("empty")
+                )));
     }
 
     @Test
