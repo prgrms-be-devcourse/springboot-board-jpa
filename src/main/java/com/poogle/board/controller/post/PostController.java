@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.poogle.board.controller.ApiResult.OK;
 
 @RestController
-@RequestMapping("api/post")
+@RequestMapping("api/posts")
 public class PostController {
 
     private final PostService postService;

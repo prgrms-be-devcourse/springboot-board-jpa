@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.poogle.board.controller.ApiResult.OK;
 
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("api/users")
 public class UserController {
 
     private final UserService userService;
@@ -23,7 +23,7 @@ public class UserController {
         this.converter = converter;
     }
 
-    @PostMapping("/join")
+    @PostMapping
     public ApiResult<UserResponse> join(@RequestBody UserRequest request) {
         return OK(converter.convertUserDto(userService.join(request.newUser())));
     }
