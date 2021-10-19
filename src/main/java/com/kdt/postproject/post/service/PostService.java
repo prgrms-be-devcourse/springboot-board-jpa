@@ -15,11 +15,14 @@ import java.util.Optional;
 
 @Service
 public class PostService {
-    @Autowired
-    private PostRepository postRepository;
 
-    @Autowired
+    private PostRepository postRepository;
     private PostConverter postConverter;
+
+    public PostService(PostRepository postRepository, PostConverter postConverter) {
+        this.postRepository = postRepository;
+        this.postConverter = postConverter;
+    }
 
     @Transactional
     public Long save(PostDto postDto) {

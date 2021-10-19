@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class PostController {
-    @Autowired
+
     private PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     @ExceptionHandler(NotFoundException.class)
     public ApiResponse<String> notFoundHandler (NotFoundException e) {
