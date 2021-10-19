@@ -22,6 +22,7 @@ public class UserResponse {
     private int age;
     private String hobby;
     private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
     public UserResponse(User source) {
         copyProperties(source, this);
@@ -35,6 +36,7 @@ public class UserResponse {
                 .append("age", age)
                 .append("hobby", hobby)
                 .append("createdAt", createdAt)
+                .append("modifiedAt", modifiedAt)
                 .toString();
     }
 
