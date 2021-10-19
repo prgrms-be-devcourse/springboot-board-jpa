@@ -1,0 +1,5 @@
+[source,bash]
+----
+$ echo '{"id":2,"title":"testTitle2","content":"testContent2","userId":1,"createdAt":"2021-10-19T21:21:46.716003","createdBy":"minkyu"}' | http POST 'http://localhost:8080/posts' \
+    'Content-Type:application/json;charset=UTF-8'
+----

@@ -1,0 +1,16 @@
+|===
+|Path|Type|Description
+
+|`+statusCode+`
+|`+Number+`
+|statusCode
+
+|`+data+`
+|`+Number+`
+|data
+
+|`+serverDateTime+`
+|`+String+`
+|serverDateTime
+
+|===

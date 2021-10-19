@@ -1,0 +1,5 @@
+[source,bash]
+----
+$ echo '{"id":1,"title":"updateTitle2","content":"updateContent2","userId":4}' | http POST 'http://localhost:8080/posts/1' \
+    'Content-Type:application/json;charset=UTF-8'
+----

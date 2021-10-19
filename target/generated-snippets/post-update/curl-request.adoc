@@ -1,0 +1,6 @@
+[source,bash]
+----
+$ curl 'http://localhost:8080/posts/1' -i -X POST \
+    -H 'Content-Type: application/json;charset=UTF-8' \
+    -d '{"id":1,"title":"updateTitle2","content":"updateContent2","userId":4}'
+----
