@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.*;
 
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
+import kdt.prgms.springbootboard.converter.PostConverter;
 import kdt.prgms.springbootboard.domain.Post;
 import kdt.prgms.springbootboard.domain.User;
 import kdt.prgms.springbootboard.repository.PostRepository;
@@ -30,6 +31,9 @@ class PostServiceTest {
     @Mock
     PostRepository postRepository;
 
+    @Mock
+    PostConverter postConvertor;
+
     private User user;
 
     @BeforeEach
@@ -41,13 +45,10 @@ class PostServiceTest {
     void 전체_게시글_조회_성공() {
         //given
         var pageRequest = PageRequest.of(0, 10);
-
         var posts = LongStream.range(0, 20)
             .mapToObj(i -> Post.createPost("title#" + i, "content#" + i, user))
             .collect(Collectors.toList());
-        var foundPosts = new PageImpl<>(posts);
-
-        given(postRepository.findAll(pageRequest)).willReturn(foundPosts);
+        given(postRepository.findAll(pageRequest)).willReturn(new PageImpl<>(posts));
 
         //when
         var result = postService.findAll(pageRequest);
