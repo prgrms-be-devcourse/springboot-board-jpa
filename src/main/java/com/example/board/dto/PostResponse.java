@@ -6,13 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDto {
+public class PostResponse {
     private Long id;
     private String title;
     private String content;
+    private LocalDateTime createdAt;
 }

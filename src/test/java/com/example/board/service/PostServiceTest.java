@@ -1,6 +1,7 @@
 package com.example.board.service;
 
-import com.example.board.dto.PostDto;
+import com.example.board.dto.PostRequest;
+import com.example.board.dto.PostResponse;
 import com.example.board.exception.PostNotFoundException;
 import com.example.board.repository.PostRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -35,46 +36,46 @@ class PostServiceTest {
     @DisplayName("(Controller에서 전달받은) 게시글을 정상적으로 저장한다.")
     void savePost() {
         // given
-        PostDto postDto = PostDto.builder()
+        PostRequest request = PostRequest.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
                 .build();
 
         // when
-        Long savedPostId = postService.save(postDto);
-        PostDto foundPostDto = postService.findById(savedPostId);
+        Long savedPostId = postService.save(request);
+        PostResponse foundPostDto = postService.findById(savedPostId);
 
         // then
-        assertThat(foundPostDto.getTitle()).isEqualTo(postDto.getTitle());
-        assertThat(foundPostDto.getContent()).isEqualTo(postDto.getContent());
+        assertThat(foundPostDto.getTitle()).isEqualTo(request.getTitle());
+        assertThat(foundPostDto.getContent()).isEqualTo(request.getContent());
     }
 
     @Test
     @DisplayName("전체 게시글 조회가 정상적으로 이루어진다")
     void findAllPost() {
         // given
-        PostDto postDto1 = PostDto.builder()
+        PostRequest request1 = PostRequest.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
                 .build();
 
-        PostDto postDto2 = PostDto.builder()
+        PostRequest request2 = PostRequest.builder()
                 .title("Test Post 2")
                 .content("Content of Test Post 2")
                 .build();
 
-        PostDto postDto3 = PostDto.builder()
+        PostRequest request3 = PostRequest.builder()
                 .title("Test Post 3")
                 .content("Content of Test Post 3")
                 .build();
 
-        postService.save(postDto1);
-        postService.save(postDto2);
-        postService.save(postDto3);
+        postService.save(request1);
+        postService.save(request2);
+        postService.save(request3);
 
         // when
         PageRequest page = PageRequest.of(0, 10);
-        Page<PostDto> all = postService.findAll(page);
+        Page<PostResponse> all = postService.findAll(page);
 
         // then
         assertThat(all.getTotalElements()).isEqualTo(3);
@@ -84,11 +85,11 @@ class PostServiceTest {
     @DisplayName("존재하지 않는 ID의 게시글 조회시 지정한 예외가 정상적으로 발생한다")
     void findWithWrongID() {
         // given
-        PostDto postDto = PostDto.builder()
+        PostRequest request = PostRequest.builder()
                 .title("temp")
                 .content("temp")
                 .build();
-        postService.save(postDto);
+        postService.save(request);
 
         // when
         Long wrongId = -1L;

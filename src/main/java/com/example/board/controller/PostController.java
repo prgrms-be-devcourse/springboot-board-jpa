@@ -1,7 +1,8 @@
 package com.example.board.controller;
 
 import com.example.board.ApiResponse;
-import com.example.board.dto.PostDto;
+import com.example.board.dto.PostRequest;
+import com.example.board.dto.PostResponse;
 import com.example.board.exception.PostNotFoundException;
 import com.example.board.service.PostService;
 import org.springframework.data.domain.Page;
@@ -35,27 +36,26 @@ public class PostController {
     }
 
     @GetMapping
-    public ApiResponse<Page<PostDto>> requestPageOfPosts(Pageable pageable) {
-        Page<PostDto> all = postService.findAll(pageable);
-        return ApiResponse.ok(all);
+    public ApiResponse<Page<PostResponse>> requestPageOfPosts(Pageable pageable) {
+        Page<PostResponse> posts = postService.findAll(pageable);
+        return ApiResponse.ok(posts);
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<PostDto> requestOnePost(@PathVariable Long id) {
-        PostDto foundPostDto = postService.findById(id);
-        return ApiResponse.ok(foundPostDto);
+    public ApiResponse<PostResponse> requestOnePost(@PathVariable Long id) {
+        PostResponse post = postService.findById(id);
+        return ApiResponse.ok(post);
     }
 
     @PostMapping
-    public ApiResponse<Long> createPost(@RequestBody PostDto postDto) {
-        Long savedPostId = postService.save(postDto);
+    public ApiResponse<Long> createPost(@RequestBody PostRequest request) {
+        Long savedPostId = postService.save(request);
         return ApiResponse.ok(savedPostId);
     }
 
     @PostMapping("/{id}")
-    public ApiResponse<Long> editPost(@PathVariable Long id, @RequestBody PostDto postDto) {
-        postDto.setId(id);
-        Long postId = postService.editPost(postDto);
+    public ApiResponse<Long> editPost(@PathVariable Long id, @RequestBody PostRequest request) {
+        Long postId = postService.editPost(id, request);
         return ApiResponse.ok(postId);
     }
 

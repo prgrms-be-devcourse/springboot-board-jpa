@@ -1,6 +1,6 @@
 package com.example.board.controller;
 
-import com.example.board.dto.PostDto;
+import com.example.board.dto.PostRequest;
 import com.example.board.repository.PostRepository;
 import com.example.board.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,14 +47,14 @@ class PostControllerTest {
     @Test
     @DisplayName("게시글이 정상정으로 생성 및 업로드된다")
     void postUpload() throws Exception {
-        PostDto postDto = PostDto.builder()
+        PostRequest request = PostRequest.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
                 .build();
 
         mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postDto))
+                        .content(objectMapper.writeValueAsString(request))
                 )
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -62,7 +62,6 @@ class PostControllerTest {
                         document("Saving-A-Post",
                             requestFields(
                                     // Fields of PostDto
-                                    fieldWithPath("id").type(JsonFieldType.NULL).description("게시글에 부여되는 ID값. 서버에서 부여되는 값이다."),
                                     fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
                                     fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용")
                             ),
@@ -78,11 +77,11 @@ class PostControllerTest {
     @Test
     @DisplayName("하나의 게시글 정보를 받아올 수 있다")
     void getOnePost() throws Exception {
-        PostDto postDto = PostDto.builder()
+        PostRequest request = PostRequest.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
                 .build();
-        Long id = postService.save(postDto);
+        Long id = postService.save(request);
 
         mockMvc.perform(get("/api/v1/posts/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -98,6 +97,7 @@ class PostControllerTest {
                                         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("조회하려는 게시글의 ID"),
                                         fieldWithPath("data.title").type(JsonFieldType.STRING).description("조회하려는 게시글의 제목"),
                                         fieldWithPath("data.content").type(JsonFieldType.STRING).description("조회하려는 게시글의 내용"),
+                                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("조회하려는 게시글이 생성된 시간"),
 
                                         fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("서버가 응답한 시간")
                                 )
@@ -108,21 +108,21 @@ class PostControllerTest {
     @Test
     @DisplayName("모든 게시글 정보를 받아올 수 있다")
     void getAllPost() throws Exception {
-        PostDto postDto1 = PostDto.builder()
+        PostRequest request1 = PostRequest.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
                 .build();
-        PostDto postDto2 = PostDto.builder()
+        PostRequest request2 = PostRequest.builder()
                 .title("Test Post 2")
                 .content("Content of Test Post 2")
                 .build();
-        PostDto postDto3 = PostDto.builder()
+        PostRequest request3 = PostRequest.builder()
                 .title("Test Post 3")
                 .content("Content of Test Post 3")
                 .build();
-        postService.save(postDto1);
-        postService.save(postDto2);
-        postService.save(postDto3);
+        postService.save(request1);
+        postService.save(request2);
+        postService.save(request3);
 
         mockMvc.perform(get("/api/v1/posts")
                         .param("page", String.valueOf(0))
@@ -141,6 +141,7 @@ class PostControllerTest {
                                         fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("조회하려는 게시글의 ID"),
                                         fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("조회하려는 게시글의 제목"),
                                         fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("조회하려는 게시글의 내용"),
+                                        fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("조회하려는 게시글들이 생성된 시간"),
 
                                         fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("Pageable 관련 정보"),
                                         fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("Page 정렬 관련 정보"),
@@ -177,20 +178,20 @@ class PostControllerTest {
     @Test
     @DisplayName("게시글을 정상적으로 수정할 수 있다")
     void editPost() throws Exception {
-        PostDto postDto1 = PostDto.builder()
+        PostRequest request = PostRequest.builder()
                 .title("Test Post 1")
                 .content("Content of Test Post 1")
                 .build();
-        Long postId = postService.save(postDto1);
+        Long postId = postService.save(request);
 
-        PostDto dtoForUpdate = PostDto.builder()
+        PostRequest editRequest = PostRequest.builder()
                 .title("Updated Title")
                 .content("Updated Content")
                 .build();
 
         mockMvc.perform(post("/api/v1/posts/{id}", postId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dtoForUpdate))
+                        .content(objectMapper.writeValueAsString(editRequest))
                 )
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -198,7 +199,6 @@ class PostControllerTest {
                         document("Edit-A-Post",
                                 requestFields(
                                         // Fields of PostDto
-                                        fieldWithPath("id").type(JsonFieldType.NULL).description("게시글의 ID값. 여기서는 이용되지 않는다."),
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("수정하려는 게시글 제목"),
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("수정하려는 게시글 내용")
                                 ),
