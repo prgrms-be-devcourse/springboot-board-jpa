@@ -47,7 +47,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ApiResponse<Long> uploadPost(@RequestBody PostDto postDto) {
+    public ApiResponse<Long> createPost(@RequestBody PostDto postDto) {
         Long savedPostId = postService.save(postDto);
         return ApiResponse.ok(savedPostId);
     }
