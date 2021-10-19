@@ -2,8 +2,8 @@ package com.example.board.controller;
 
 import com.example.board.ApiResponse;
 import com.example.board.dto.PostDto;
+import com.example.board.exception.PostNotFoundException;
 import com.example.board.service.PostService;
-import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,8 +24,8 @@ public class PostController {
         this.postService = postService;
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ApiResponse<String> notFoundHandler(NotFoundException e) {
+    @ExceptionHandler(PostNotFoundException.class)
+    public ApiResponse<String> postNotFoundHandler(PostNotFoundException e) {
         return ApiResponse.fail(404, e.getMessage());
     }
 
@@ -34,33 +34,26 @@ public class PostController {
         return ApiResponse.fail(500, e.getMessage());
     }
 
-    // 게시글 조회
-    // 1. 페이징 조회 : GET "/posts"
     @GetMapping
     public ApiResponse<Page<PostDto>> requestPageOfPosts(Pageable pageable) {
         Page<PostDto> all = postService.findAll(pageable);
         return ApiResponse.ok(all);
     }
 
-    // 2. 단건 조회 : GET "/posts/{id}"
     @GetMapping("/{id}")
-    public ApiResponse<PostDto> requestOnePost(@PathVariable Long id) throws NotFoundException {
+    public ApiResponse<PostDto> requestOnePost(@PathVariable Long id) {
         PostDto foundPostDto = postService.findById(id);
         return ApiResponse.ok(foundPostDto);
     }
 
-    // 게시글 작성
-    // POST "/posts"
     @PostMapping
     public ApiResponse<Long> uploadPost(@RequestBody PostDto postDto) {
         Long savedPostId = postService.save(postDto);
         return ApiResponse.ok(savedPostId);
     }
 
-    // 게시글 수정
-    // POST "/posts/{id}"
     @PostMapping("/{id}")
-    public ApiResponse<Long> editPost(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
+    public ApiResponse<Long> editPost(@PathVariable Long id, @RequestBody PostDto postDto) {
         postDto.setId(id);
         Long postId = postService.editPost(postDto);
         return ApiResponse.ok(postId);

@@ -13,8 +13,6 @@ public class PostConverter {
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
                 .build();
-
-
         return post;
     }
 

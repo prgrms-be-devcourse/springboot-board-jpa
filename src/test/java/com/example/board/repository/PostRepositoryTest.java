@@ -33,14 +33,10 @@ class PostRepositoryTest {
 				.build();
 
 		// when
-		postRepository.save(post);
+		Post savedPost = postRepository.save(post);
 
 		// then
-		Post foundPost = postRepository.findById(post.getId()).orElseThrow(
-				() -> new RuntimeException("No such post found")
-		);
+		Post foundPost = postRepository.findById(savedPost.getId()).get();
 		assertThat(foundPost).isEqualTo(post);
 	}
-
-
 }
