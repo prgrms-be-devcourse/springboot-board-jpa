@@ -14,7 +14,7 @@ public class BoardResponse {
     private Long view;
     private String createdBy;
 
-    static public BoardResponse from(PostDto postDto){
+    static public BoardResponse of(PostDto postDto){
         return BoardResponse.builder()
                 .id(postDto.getId())
                 .title(postDto.getTitle())

@@ -10,7 +10,7 @@ import lombok.Setter;
 public class UserIdResponse {
     private Long id;
 
-    static public UserIdResponse from(Long id){
+    static public UserIdResponse of(Long id){
         return UserIdResponse.builder()
                 .id(id)
                 .build();

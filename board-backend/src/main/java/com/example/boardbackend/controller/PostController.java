@@ -1,7 +1,6 @@
 package com.example.boardbackend.controller;
 
 import com.example.boardbackend.dto.PostDto;
-import com.example.boardbackend.common.converter.ResponseConverter;
 import com.example.boardbackend.dto.request.UpdatePostRequest;
 import com.example.boardbackend.dto.request.UpdateViewRequest;
 import com.example.boardbackend.dto.response.BoardResponse;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 @RestController
 public class PostController {
     private final PostService postService;
-    private final ResponseConverter responseConverter;
 
     // 게시물 생성
     @PostMapping
@@ -33,8 +31,7 @@ public class PostController {
     // 게시물 전체 조회 (페이징)
     @GetMapping
     public ResponseEntity<Page<BoardResponse>> getAllPosts(Pageable pageable){
-        Page<BoardResponse> response = postService.findPostsAll(pageable)
-                .map(responseConverter::convertToBoard);
+        Page<BoardResponse> response = postService.findPostsAll(pageable);
         return ResponseEntity.ok(response);
     }
 
@@ -48,9 +45,7 @@ public class PostController {
     // user id로 게시물 조회
     @GetMapping("/user/{id}")
     public ResponseEntity<List<BoardResponse>> getUserPosts(@PathVariable("id") Long userId) {
-        List<BoardResponse> response = postService.findPostsByUserId(userId).stream()
-                .map(responseConverter::convertToBoard)
-                .collect(Collectors.toList());
+        List<BoardResponse> response = postService.findPostsByUserId(userId);
         return ResponseEntity.ok(response);
     }
 

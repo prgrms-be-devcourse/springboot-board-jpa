@@ -1,17 +1,16 @@
 package com.example.boardbackend.domain;
 
 import com.example.boardbackend.dto.PostDto;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
 @Entity
 @Table(name = "post")
@@ -40,6 +39,28 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false, referencedColumnName = "id")
     private User user;
+
+    // ---------------------------------------------------------------
+
+    private Post(Long id, String title, String content, Long view, User user, LocalDateTime createdAt) {
+        super(createdAt);
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.view = view;
+        this.user = user;
+    }
+
+    static public Post of(PostDto postDto){
+        return new Post(
+                postDto.getId(),
+                postDto.getTitle(),
+                postDto.getContent(),
+                postDto.getView(),
+                User.of(postDto.getUserDto()),
+                postDto.getCreatedAt()
+        );
+    }
 
     // ---------------------------------------------------------------
 

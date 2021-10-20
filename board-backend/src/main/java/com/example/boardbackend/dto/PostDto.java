@@ -1,5 +1,6 @@
 package com.example.boardbackend.dto;
 
+import com.example.boardbackend.domain.Post;
 import com.example.boardbackend.domain.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,4 +30,16 @@ public class PostDto {
 
     private LocalDateTime createdAt;
 
+    // ---------------------------------------------------------------
+
+    static public PostDto of(Post post){
+        return PostDto.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .view(post.getView())
+                .userDto(UserDto.of(post.getUser()))
+                .createdAt(post.getCreatedAt())
+                .build();
+    }
 }

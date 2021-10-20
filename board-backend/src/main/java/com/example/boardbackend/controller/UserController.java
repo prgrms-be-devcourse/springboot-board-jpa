@@ -1,6 +1,5 @@
 package com.example.boardbackend.controller;
 
-import com.example.boardbackend.common.converter.ResponseConverter;
 import com.example.boardbackend.dto.request.LoginRequest;
 import com.example.boardbackend.dto.UserDto;
 import com.example.boardbackend.dto.response.UserIdResponse;
@@ -17,7 +16,6 @@ import javax.validation.Valid;
 @RestController
 public class UserController {
     private final UserService userService;
-    private final ResponseConverter responseConverter;
 
     // 회원가입
     @PostMapping

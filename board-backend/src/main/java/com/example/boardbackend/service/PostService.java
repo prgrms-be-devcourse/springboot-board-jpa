@@ -3,9 +3,9 @@ package com.example.boardbackend.service;
 import com.example.boardbackend.common.error.exception.NotFoundException;
 import com.example.boardbackend.domain.Post;
 import com.example.boardbackend.dto.PostDto;
-import com.example.boardbackend.common.converter.DtoConverter;
 import com.example.boardbackend.dto.request.UpdatePostRequest;
 import com.example.boardbackend.dto.request.UpdateViewRequest;
+import com.example.boardbackend.dto.response.BoardResponse;
 import com.example.boardbackend.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,34 +22,35 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
     private final PostRepository postRepository;
-    private final DtoConverter dtoConverter;
 
     @Transactional
     public PostDto savePost(PostDto postDto) {
-        Post post = dtoConverter.convetToPostEntity(postDto);
+        Post post = Post.of(postDto);
         // insert 문은 여기서 실행되지 않고 트랜잭션이 끝날때 실행되므로 엔티티의 view는 아직 null이다.
         Post saved = postRepository.save(post);
-        return dtoConverter.convertToPostDto(saved);
+        return PostDto.of(saved);
     }
 
-    public Page<PostDto> findPostsAll(Pageable pageable) {
+    public Page<BoardResponse> findPostsAll(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(dtoConverter::convertToPostDto);
+                .map(PostDto::of)
+                .map(BoardResponse::of);
     }
 
     public Long countPostsAll(){
         return postRepository.count();
     }
 
-    public List<PostDto> findPostsByUserId(Long userId) {
+    public List<BoardResponse> findPostsByUserId(Long userId) {
         return postRepository.findByCreatedBy(userId).stream()
-                .map(dtoConverter::convertToPostDto)
+                .map(PostDto::of)
+                .map(BoardResponse::of)
                 .collect(Collectors.toList());
     }
 
     public PostDto findPostById(Long id) {
         return postRepository.findById(id)
-                .map(dtoConverter::convertToPostDto)
+                .map(PostDto::of)
                 .orElseThrow(() -> new NotFoundException("해당 ID의 게시물을 찾을 수 없습니다"));
     }
 
@@ -62,7 +63,7 @@ public class PostService {
         String newTitle = updatePostRequest.getTitle();
         String newContent = updatePostRequest.getContent();
         entity.updatePost(newTitle, newContent);
-        return dtoConverter.convertToPostDto(entity);
+        return PostDto.of(entity);
     }
 
     @Transactional
