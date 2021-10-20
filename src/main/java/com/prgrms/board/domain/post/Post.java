@@ -2,13 +2,16 @@ package com.prgrms.board.domain.post;
 
 import com.prgrms.board.common.BaseEntity;
 import com.prgrms.board.domain.user.User;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "post")
 public class Post extends BaseEntity {
     @Id
@@ -22,11 +25,8 @@ public class Post extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "fk_post_to_user"))
     private User user;
-
-    protected Post() {
-    }
 
     @Builder
     public Post(Long id, String title, String content, User user) {
