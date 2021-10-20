@@ -81,7 +81,7 @@ public class PostService {
 
   @Transactional
   public List<PostFindRequest> findByUserId(Long id) {
-    return postRepository.findByUserId(id)
+    return postRepository.findPostsByUserId(id)
         .stream()
         .map((item) -> new PostFindRequest(item.getId(), item.getTitle(), item.getContent(),
             item.getCreatedAt(), item.getCreatedBy(), item.getUser().getId()))

@@ -77,8 +77,9 @@ class PostRepositoryTest {
     postRepository.save(post2);
 
     //then
-    List<Post> posts = postRepository.findByUserId(user.getId());
+    List<Post> posts = postRepository.findPostsByUserId(user.getId());
     assertThat(posts, hasSize(2));
+
   }
 
 }
