@@ -66,7 +66,6 @@ class PostControllerTest {
                                     fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용")
                             ),
                             responseFields(
-                                    fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
                                     fieldWithPath("data").type(JsonFieldType.NUMBER).description("생성된 게시글의 ID"),
                                     fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("서버가 응답한 시간")
                             )
@@ -91,8 +90,6 @@ class PostControllerTest {
                 .andDo(
                         document("Read-A-Post",
                                 responseFields(
-                                        fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
-
                                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("조회하려는 게시글의 정보"),
                                         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("조회하려는 게시글의 ID"),
                                         fieldWithPath("data.title").type(JsonFieldType.STRING).description("조회하려는 게시글의 제목"),
@@ -134,8 +131,6 @@ class PostControllerTest {
                 .andDo(
                         document("Read-All-Post",
                                 responseFields(
-                                        fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
-
                                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("조회하려는 게시글들을 감사고 있는 객체"),
                                         fieldWithPath("data.content[]").type(JsonFieldType.ARRAY).description("조회하려는 게시글들의 정보"),
                                         fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("조회하려는 게시글의 ID"),
@@ -203,8 +198,25 @@ class PostControllerTest {
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("수정하려는 게시글 내용")
                                 ),
                                 responseFields(
-                                        fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
                                         fieldWithPath("data").type(JsonFieldType.NUMBER).description("수정된 게시글의 ID. 기존 ID와 동일하다."),
+                                        fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("서버가 응답한 시간")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 게시글 조회 요청시 failResponse가 404 상태 코드로 정상적으로 반환된다.")
+    void getAbsentPost() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/{id}", 1000L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().is4xxClientError())
+                .andDo(print())
+                .andDo(
+                        document("Read-A-Post",
+                                responseFields(
+                                        fieldWithPath("data").type(JsonFieldType.STRING).description("에러 메세지"),
                                         fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("서버가 응답한 시간")
                                 )
                         )
