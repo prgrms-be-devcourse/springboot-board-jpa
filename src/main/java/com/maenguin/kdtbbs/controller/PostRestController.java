@@ -2,22 +2,21 @@ package com.maenguin.kdtbbs.controller;
 
 import com.maenguin.kdtbbs.dto.*;
 import com.maenguin.kdtbbs.service.PostService;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import static com.maenguin.kdtbbs.dto.ApiResponse.success;
 
 @RestController
 @RequestMapping("/api/v1/posts")
 public class PostRestController {
 
     private final PostService postService;
+    private final OptimisticLockTryer optimisticLockTryer;
 
-    public PostRestController(PostService postService) {
+    public PostRestController(PostService postService, OptimisticLockTryer optimisticLockTryer) {
         this.postService = postService;
+        this.optimisticLockTryer = optimisticLockTryer;
     }
 
     @GetMapping
@@ -28,7 +27,8 @@ public class PostRestController {
 
     @GetMapping(path = "{id}")
     public ApiResponse<PostDto> searchPostById(@PathVariable("id") Long postId) {
-        return ApiResponse.success(postService.getPostById(postId));
+        PostDto postDto = optimisticLockTryer.attempt(() -> postService.getPostById(postId), 10);
+        return ApiResponse.success(postDto);
     }
 
     @PostMapping
