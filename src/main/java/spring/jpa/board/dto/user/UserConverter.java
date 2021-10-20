@@ -21,13 +21,13 @@ public class UserConverter {
 
   //entity -> dto
   public UserDto convertUserDto(User user) {
-    UserDto userDto = new UserDto();
-    userDto.setId(user.getId());
-    userDto.setName(user.getName());
-    userDto.setAge(user.getAge());
-    userDto.setHobby(user.getHobby());
-    userDto.setCreatedAt(user.getCreatedAt());
-    userDto.setCreatedBy(user.getCreatedBy());
-    return userDto;
+    return UserDto.builder()
+        .id(user.getId())
+        .name(user.getName())
+        .age(user.getAge())
+        .hobby(user.getHobby())
+        .createdAt(user.getCreatedAt())
+        .createdBy(user.getCreatedBy())
+        .build();
   }
 }
