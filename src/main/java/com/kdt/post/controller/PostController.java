@@ -6,7 +6,6 @@ import com.kdt.post.dto.PostDto;
 import com.kdt.post.service.PostService;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,9 +30,9 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ApiResponse<Map> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    private ApiResponse<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
+        ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
@@ -51,30 +49,30 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    private ApiResponse<Long> savePost(@Valid @RequestBody PostControlRequestDto saveRequest) throws NotFoundException {
+    public ApiResponse<Long> savePost(@Valid @RequestBody PostControlRequestDto saveRequest) throws NotFoundException {
         Long postId = postService.save(saveRequest);
         return ApiResponse.ok(postId);
     }
 
     @GetMapping("/posts/{id}")
-    private ApiResponse<PostDto> getPost(@PathVariable Long id) throws NotFoundException {
+    public ApiResponse<PostDto> getPost(@PathVariable Long id) throws NotFoundException {
         PostDto postDto = postService.find(id);
         return ApiResponse.ok(postDto);
     }
 
     @GetMapping("/posts")
-    private ApiResponse<Page<PostDto>> getAllPost(Pageable pageable){
+    public ApiResponse<Page<PostDto>> getAllPost(Pageable pageable){
         return ApiResponse.ok(postService.findAll(pageable));
     }
 
     @PutMapping("/posts/{id}")
-    private ApiResponse<Long> updatePost(@PathVariable Long id, @Valid @RequestBody PostControlRequestDto updateRequest) throws NotFoundException {
+    public ApiResponse<Long> updatePost(@PathVariable Long id, @Valid @RequestBody PostControlRequestDto updateRequest) throws NotFoundException {
         Long updatedPostID = postService.update(id, updateRequest);
         return ApiResponse.ok(updatedPostID);
     }
 
     @DeleteMapping("/posts/{id}")
-    private ApiResponse<Long> deletePost(@PathVariable Long id, @Valid @RequestBody PostControlRequestDto removeRequest) throws NotFoundException {
+    public ApiResponse<Long> deletePost(@PathVariable Long id, @Valid @RequestBody PostControlRequestDto removeRequest) throws NotFoundException {
         postService.delete(id, removeRequest);
         return ApiResponse.ok(id);
     }

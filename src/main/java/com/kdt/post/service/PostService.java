@@ -22,6 +22,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    private static final String NOT_FOUNDED_MESSAGE = "this post is not valid";
+
     public Page<PostDto> findAll(Pageable pageable){
         return postRepository.findAll(pageable)
                 .map(postConverter::convertPostDto);
@@ -30,7 +32,7 @@ public class PostService {
     public PostDto find(Long postId) throws NotFoundException {
         return postRepository.findById(postId)
                 .map(postConverter::convertPostDto)
-                .orElseThrow(() -> new NotFoundException("this post is not valid"));
+                .orElseThrow(() -> new NotFoundException(NOT_FOUNDED_MESSAGE));
     }
 
     public Long save(PostControlRequestDto requestDto) throws NotFoundException {
@@ -44,15 +46,15 @@ public class PostService {
     }
 
     public Long update(Long postId, PostControlRequestDto requestDto) throws NotFoundException {
-        if(postId == null || postId.equals(requestDto) != false){
-            new NotFoundException("this post is not valid");
+        if(postId == null || !postId.equals(requestDto.getPostId())){
+            throw new NotFoundException(NOT_FOUNDED_MESSAGE);
         }
 
         User user = getUser(requestDto.getUserId());
         PostDto postDto = requestDto.getPostDto();
         Post post = user.getPosts().stream().filter(p -> p.getId().equals(postId))
                             .findAny()
-                            .orElseThrow(() -> new NotFoundException("this post is not valid"));
+                            .orElseThrow(() -> new NotFoundException(NOT_FOUNDED_MESSAGE));
 
         post.update(postDto.getTitle(), postDto.getContent());
 
@@ -60,15 +62,15 @@ public class PostService {
     }
 
     public void delete(Long postId, PostControlRequestDto requestDto) throws NotFoundException {
-        if(postId == null || postId.equals(requestDto) != false){
-            new NotFoundException("this post is not valid");
+        if(postId == null || !postId.equals(requestDto.getPostId())){
+            throw new NotFoundException(NOT_FOUNDED_MESSAGE);
         }
 
         User user = getUser(requestDto.getUserId());
         boolean isDeleted = user.getPosts().removeIf(p -> p.getId().equals(postId));
 
         if(!isDeleted){
-            throw new NotFoundException("this post is not valid");
+            throw new NotFoundException(NOT_FOUNDED_MESSAGE);
         }
     }
 
@@ -78,6 +80,6 @@ public class PostService {
         }
 
         return userRepository.findById(userId)
-                    .orElseThrow(() -> new NotFoundException("this account is not valid"));
+                    .orElseThrow(() -> new NotFoundException(NOT_FOUNDED_MESSAGE));
     }
 }

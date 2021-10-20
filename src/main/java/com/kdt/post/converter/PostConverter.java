@@ -14,7 +14,7 @@ public class PostConverter {
     public Post convertPost(Long userId, PostDto postDto){
         LocalDateTime now = LocalDateTime.now();
 
-        Post post = Post.builder()
+        return Post.builder()
                 .id(postDto.getId())
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
@@ -22,14 +22,12 @@ public class PostConverter {
                 .createdBy(userId.toString())
                 .lastUpdatedAt(now)
                 .build();
-
-        return post;
     }
 
     public Post convertPost(PostControlRequestDto postControlRequestDto){
         LocalDateTime now = LocalDateTime.now();
 
-        Post post = Post.builder()
+        return Post.builder()
                 .id(postControlRequestDto.getPostId())
                 .title(postControlRequestDto.getTitle())
                 .content(postControlRequestDto.getContent())
@@ -37,8 +35,6 @@ public class PostConverter {
                 .createdBy(postControlRequestDto.getUserId().toString())
                 .lastUpdatedAt(now)
                 .build();
-
-        return post;
     }
 
     public PostDto convertPostDto(Post post){

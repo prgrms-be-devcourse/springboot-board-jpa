@@ -14,7 +14,7 @@ public class UserConverter {
     public User convertUserDto(UserDto userDto) {
         LocalDateTime now = LocalDateTime.now();
 
-        User user = User.builder()
+        return User.builder()
                 .name(userDto.getName())
                 .age(userDto.getAge())
                 .hobby(userDto.getHobby())
@@ -22,8 +22,6 @@ public class UserConverter {
                 .createdBy(userDto.getName())
                 .lastUpdatedAt(now)
                 .build();
-
-        return user;
     }
 
     public UserDto convertUser(User user){
@@ -37,7 +35,7 @@ public class UserConverter {
                 .lastUpdatedAt(user.getLastUpdatedAt())
                 .postDtos(user.getPosts().stream()
                         .map(this::convertPostDto)
-                        .collect(Collectors.toList()))
+                        .toList())
                 .build();
     }
 

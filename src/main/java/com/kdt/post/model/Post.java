@@ -3,14 +3,11 @@ package com.kdt.post.model;
 import com.kdt.common.model.BaseEntity;
 import com.kdt.user.model.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @Entity
