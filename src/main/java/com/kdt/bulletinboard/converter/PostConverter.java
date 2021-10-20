@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Component
 public class PostConverter {
+
     public Post convertToPost(PostDto postDto) {
         Post post = new Post(postDto.getTitle(), postDto.getContent(), LocalDateTime.now().toString());
         post.setUser(convertToUser(postDto.getUserDto()));

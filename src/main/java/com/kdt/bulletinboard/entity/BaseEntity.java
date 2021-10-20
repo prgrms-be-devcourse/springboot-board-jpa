@@ -11,8 +11,10 @@ import java.time.LocalDateTime;
 @Setter
 @MappedSuperclass
 public class BaseEntity {
+
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime cratedAt;
+
     @Column(name = "created_by")
     private String createdBy;
 }

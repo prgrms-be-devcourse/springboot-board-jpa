@@ -28,10 +28,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 class PostControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private PostService postService;
+
     @Autowired
     private ObjectMapper objectMapper;
 

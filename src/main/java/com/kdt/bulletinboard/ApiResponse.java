@@ -11,8 +11,10 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class ApiResponse<T> {
+
     private int statusCode;
     private T data;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-DD HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime serverDatetime;
 
