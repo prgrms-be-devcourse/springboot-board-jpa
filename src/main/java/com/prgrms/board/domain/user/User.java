@@ -1,20 +1,23 @@
 package com.prgrms.board.domain.user;
 
 import com.prgrms.board.common.BaseEntity;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
     @Column(name = "age", nullable = false)
@@ -22,9 +25,6 @@ public class User extends BaseEntity {
 
     @Column(name = "hobby")
     private String hobby;
-
-    protected User() {
-    }
 
     @Builder
     public User(Long id, String name, int age, String hobby) {
