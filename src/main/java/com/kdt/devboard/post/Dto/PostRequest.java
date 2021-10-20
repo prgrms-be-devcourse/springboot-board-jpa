@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Builder
-public class PostInsertRequest {
+public class PostRequest {
 
     @NotBlank
     private final String title;

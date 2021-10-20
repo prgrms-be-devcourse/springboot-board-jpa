@@ -1,8 +1,7 @@
 package com.kdt.devboard.post.service;
 
-import com.kdt.devboard.post.Dto.PostInsertRequest;
+import com.kdt.devboard.post.Dto.PostRequest;
 import com.kdt.devboard.post.Dto.PostResponse;
-import com.kdt.devboard.post.Dto.PostUpdateRequest;
 import com.kdt.devboard.post.domain.Post;
 import com.kdt.devboard.post.repository.PostRepository;
 import com.kdt.devboard.user.domain.User;
@@ -38,7 +37,7 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundException("해당 게시물을 찾을 수 없습니다."));
     }
 
-    public Long save(PostInsertRequest postDto) throws NotFoundException {
+    public Long save(PostRequest postDto) throws NotFoundException {
         User user = userRepository.findById(postDto.getUserId())
                 .orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
 
@@ -48,8 +47,8 @@ public class PostService {
         return entity.getId();
     }
 
-    public PostResponse update(PostUpdateRequest postDto) throws NotFoundException {
-        Post findPost = postRepository.findById(postDto.getPostId())
+    public PostResponse update(Long postId, PostRequest postDto) throws NotFoundException {
+        Post findPost = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("해당 게시물을 찾을 수 없습니다."));
         findPost.changeInfo(postDto.getTitle(), postDto.getContent());
 
@@ -61,5 +60,6 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundException("해당 게시물을 찾을 수 없습니다."));
         postRepository.delete(post);
     }
+
 
 }

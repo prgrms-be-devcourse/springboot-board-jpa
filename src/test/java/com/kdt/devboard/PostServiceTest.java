@@ -1,8 +1,7 @@
 package com.kdt.devboard;
 
-import com.kdt.devboard.post.Dto.PostInsertRequest;
+import com.kdt.devboard.post.Dto.PostRequest;
 import com.kdt.devboard.post.Dto.PostResponse;
-import com.kdt.devboard.post.Dto.PostUpdateRequest;
 import com.kdt.devboard.post.repository.PostRepository;
 import com.kdt.devboard.post.service.PostService;
 import com.kdt.devboard.user.domain.User;
@@ -26,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class PostServiceTest {
 
     private User user;
-    private PostInsertRequest postRequest;
+    private PostRequest postRequest;
     private Long userId;
     private Long postId;
 
@@ -50,7 +49,7 @@ public class PostServiceTest {
         User save = userRepository.save(user);
         userId = save.getId();
 
-        postRequest = PostInsertRequest.builder()
+        postRequest = PostRequest.builder()
                 .content("내용")
                 .title("제목")
                 .userId(userId)
@@ -60,7 +59,9 @@ public class PostServiceTest {
 
     @AfterEach
     void tearUp() {
+
         userRepository.deleteAll();
+
     }
 
     @Test
@@ -74,7 +75,7 @@ public class PostServiceTest {
     @Test
     @DisplayName("게시물을 페이징 처리해서 조회")
     void findPosts() {
-        IntStream.range(1,10).mapToObj(i -> PostInsertRequest.builder()
+        IntStream.range(1,10).mapToObj(i -> PostRequest.builder()
                 .title("제목")
                 .content("내용")
                 .userId(userId)
@@ -96,13 +97,13 @@ public class PostServiceTest {
     @Test
     @DisplayName("게시물을 수정할 수 있다.")
     void update() throws NotFoundException {
-        PostUpdateRequest updatedPost = PostUpdateRequest.builder()
-                .postId(postId)
+        PostRequest updatedPost = PostRequest.builder()
                 .title("제에목")
                 .content("내에에용")
+                .userId(userId)
                 .build();
 
-        PostResponse update = service.update(updatedPost);
+        PostResponse update = service.update(postId,updatedPost);
 
         assertThat(postRepository.findById(postId).get().getTitle()).isEqualTo(updatedPost.getTitle());
         assertThat(postRepository.findById(postId).get().getContent()).isEqualTo(updatedPost.getContent());
@@ -116,5 +117,6 @@ public class PostServiceTest {
         assertThatThrownBy(() -> service.findOne(postId))
                 .isInstanceOf(NotFoundException.class);
     }
+
 
 }

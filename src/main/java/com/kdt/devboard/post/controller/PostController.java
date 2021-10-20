@@ -1,9 +1,8 @@
 package com.kdt.devboard.post.controller;
 
 import com.kdt.devboard.Common.ApiResponse;
-import com.kdt.devboard.post.Dto.PostInsertRequest;
+import com.kdt.devboard.post.Dto.PostRequest;
 import com.kdt.devboard.post.Dto.PostResponse;
-import com.kdt.devboard.post.Dto.PostUpdateRequest;
 import com.kdt.devboard.post.service.PostService;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
@@ -21,7 +20,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ApiResponse<Long> save(@RequestBody PostInsertRequest postRequest) throws NotFoundException {
+    public ApiResponse<Long> save(@RequestBody PostRequest postRequest) throws NotFoundException {
         return ApiResponse.ok(postService.save(postRequest));
     }
 
@@ -35,9 +34,9 @@ public class PostController {
         return ApiResponse.ok(postService.findAll(pageable));
     }
 
-    @PutMapping
-    public ApiResponse<PostResponse> updateOne(@RequestBody PostUpdateRequest postDto) throws NotFoundException {
-        return ApiResponse.ok(postService.update(postDto));
+    @PutMapping("/{id}")
+    public ApiResponse<PostResponse> updateOne(@PathVariable Long id, @RequestBody PostRequest postDto) throws NotFoundException {
+        return ApiResponse.ok(postService.update(id,postDto));
     }
 
     @DeleteMapping("/{id}")
