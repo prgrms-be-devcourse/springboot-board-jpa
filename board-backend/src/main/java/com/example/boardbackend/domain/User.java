@@ -35,6 +35,7 @@ public class User extends BaseEntity{
 
     // ---------------------------------------------------------------
 
+    @Builder
     private User(Long id, Email email, String password, String name, int age, String hobby, LocalDateTime createdAt) {
         super(createdAt);
         this.id = id;
@@ -46,14 +47,15 @@ public class User extends BaseEntity{
     }
 
     static public User of(UserDto userDto){
-        return new User(
-                userDto.getId(),
-                new Email(userDto.getEmail()),
-                userDto.getPassword(),
-                userDto.getName(),
-                userDto.getAge(),
-                userDto.getHobby(),
-                userDto.getCreatedAt()
-        );
+        // builder 실험
+        return User.builder()
+                .id(userDto.getId())
+                .email(new Email(userDto.getEmail()))
+                .password(userDto.getPassword())
+                .name(userDto.getName())
+                .age(userDto.getAge())
+                .hobby(userDto.getHobby())
+                .createdAt(userDto.getCreatedAt())
+                .build();
     }
 }

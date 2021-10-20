@@ -71,7 +71,7 @@ function Post(props) {
             <br />
             {(
                 () => {
-                    if (localStorage.getItem("userId") === userInfo.id) {
+                    if (localStorage.getItem("userId") == userInfo.id) {
                         return (<div className="div_wrapper">
                             내가 작성한 게시물입니다
                             <br /><br />
