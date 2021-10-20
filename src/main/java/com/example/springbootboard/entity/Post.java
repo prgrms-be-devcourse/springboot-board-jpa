@@ -15,8 +15,8 @@ public class Post extends BaseEntity<String> {
     @Column(name = "post_id")
     private Long id;
 
-    @Column(name = "title", length = 100, nullable = false)
-    private String title;
+    @Embedded
+    private Title title;
 
     @Lob
     @Column(name = "content", nullable = false)
@@ -27,7 +27,7 @@ public class Post extends BaseEntity<String> {
     private User user;
 
     @Builder
-    public Post(@NonNull String title, @NonNull String content, User user) {
+    public Post(@NonNull Title title, @NonNull String content, User user) {
         this.title = title;
         this.content = content;
         this.user = user;
@@ -36,7 +36,7 @@ public class Post extends BaseEntity<String> {
         }
     }
 
-    public void changeTitle(String title) {
+    public void changeTitle(Title title) {
         this.title = title;
     }
 

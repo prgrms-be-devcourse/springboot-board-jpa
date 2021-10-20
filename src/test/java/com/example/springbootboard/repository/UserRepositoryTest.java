@@ -1,6 +1,7 @@
 package com.example.springbootboard.repository;
 
 import com.example.springbootboard.entity.Post;
+import com.example.springbootboard.entity.Title;
 import com.example.springbootboard.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +34,7 @@ class UserRepositoryTest {
                 .build();
 
         user.addPost(Post.builder()
-                .title("testTitle")
+                .title(new Title("testTitle"))
                 .content("testContent")
                 .build());
 

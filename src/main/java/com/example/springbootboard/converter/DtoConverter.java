@@ -5,6 +5,7 @@ import com.example.springbootboard.dto.PostResponseDto;
 import com.example.springbootboard.dto.UserRequestDto;
 import com.example.springbootboard.dto.UserResponseDto;
 import com.example.springbootboard.entity.Post;
+import com.example.springbootboard.entity.Title;
 import com.example.springbootboard.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -50,7 +51,7 @@ public class DtoConverter {
     public List<Post> convertPosts(UserResponseDto userResponseDto) {
         return userResponseDto.getPostDtos().stream()
                 .map(postDto -> Post.builder()
-                        .title(postDto.getTitle())
+                        .title(new Title(postDto.getTitle()))
                         .content(postDto.getContent())
                         .build())
                 .collect(Collectors.toList());
@@ -58,7 +59,7 @@ public class DtoConverter {
 
     public Post convertPost(PostRequestDto postRequestDto) {
         return Post.builder()
-                .title(postRequestDto.getTitle())
+                .title(new Title(postRequestDto.getTitle()))
                 .content(postRequestDto.getContent())
                 .build();
     }
@@ -67,7 +68,7 @@ public class DtoConverter {
         return PostResponseDto.builder()
                 .postId(post.getId())
                 .userId(post.getUser().getId())
-                .title(post.getTitle())
+                .title(post.getTitle().getTitle())
                 .content(post.getContent())
                 .build();
     }

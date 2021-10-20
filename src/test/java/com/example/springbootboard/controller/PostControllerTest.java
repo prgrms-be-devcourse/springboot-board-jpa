@@ -64,14 +64,14 @@ class PostControllerTest {
                 .build();
 
         userId = userService.insert(userRequestDto);
-
-        PostRequestDto postRequestDto = PostRequestDto.builder()
-                .userId(userId)
-                .title("testTitle")
-                .content("testContent")
-                .build();
-
-        postId = postService.insert(postRequestDto);
+//
+//        PostRequestDto postRequestDto = PostRequestDto.builder()
+//                .userId(userId)
+//                .title("testTitle")
+//                .content("testContent")
+//                .build();
+//
+//        postId = postService.insert(postRequestDto);
     }
 
     @AfterEach

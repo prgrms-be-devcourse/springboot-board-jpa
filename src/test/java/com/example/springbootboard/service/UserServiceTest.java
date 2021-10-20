@@ -5,6 +5,7 @@ import com.example.springbootboard.dto.PostResponseDto;
 import com.example.springbootboard.dto.UserRequestDto;
 import com.example.springbootboard.dto.UserResponseDto;
 import com.example.springbootboard.entity.Post;
+import com.example.springbootboard.entity.Title;
 import com.example.springbootboard.entity.User;
 import com.example.springbootboard.exception.error.NotFoundException;
 import com.example.springbootboard.repository.UserRepository;
@@ -38,7 +39,7 @@ class UserServiceTest {
     UserResponseDto userResponseDto;
 
     @BeforeAll
-    void setUp() {
+     void setUp() {
         user = User.builder()
                 .name("testName")
                 .age(21)
@@ -46,7 +47,7 @@ class UserServiceTest {
                 .build();
 
         user.addPost(Post.builder()
-                .title("testTitle")
+                .title(new Title("testTitle"))
                 .content("testContent")
                 .build());
 

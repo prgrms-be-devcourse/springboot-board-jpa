@@ -5,6 +5,7 @@ import com.example.springbootboard.converter.DtoConverter;
 import com.example.springbootboard.dto.PostRequestDto;
 import com.example.springbootboard.dto.PostResponseDto;
 import com.example.springbootboard.entity.Post;
+import com.example.springbootboard.entity.Title;
 import com.example.springbootboard.entity.User;
 import com.example.springbootboard.exception.error.NotFoundException;
 import com.example.springbootboard.repository.PostRepository;
@@ -62,7 +63,7 @@ public class PostService {
                 .orElseThrow(()-> {
                     throw new NotFoundException("게시글을 찾을 수 없습니다.");
                 });
-        post.changeTitle(postRequestDto.getTitle());
+        post.changeTitle(new Title(postRequestDto.getTitle()));
         post.changeContent(postRequestDto.getContent());
 
         return dtoConverter.convertPostResponseDto(post);

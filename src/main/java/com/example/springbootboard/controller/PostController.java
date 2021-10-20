@@ -7,16 +7,17 @@ import com.example.springbootboard.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@RestController
+@RestController()
 public class PostController {
 
     @Autowired
     private PostService postService;
 
-    @PostMapping("/api/v1/posts")
-    public ApiResponse<Long> save(@RequestBody PostRequestDto postRequestDto) {
+    @PostMapping()
+    public ApiResponse<Long> insert(@Valid @RequestBody PostRequestDto postRequestDto) {
         Long id = postService.insert(postRequestDto);
         return ApiResponse.ok(id);
     }
