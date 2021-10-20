@@ -11,7 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.transaction.Transactional;
 
+@Transactional
 @SpringBootTest
 class PostPersistenceTest {
 
