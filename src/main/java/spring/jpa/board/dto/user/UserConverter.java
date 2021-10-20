@@ -7,7 +7,7 @@ import spring.jpa.board.domain.User;
 public class UserConverter {
 
   //dto -> entity
-  public User convertUser(UserDto userDto) {
+  public User convertToUser(UserDto userDto) {
     User user = User.builder().id(userDto.getId())
         .name(userDto.getName())
         .age(userDto.getAge())
@@ -20,7 +20,7 @@ public class UserConverter {
 
 
   //entity -> dto
-  public UserDto convertUserDto(User user) {
+  public UserDto convertToUserDto(User user) {
     return UserDto.builder()
         .id(user.getId())
         .name(user.getName())

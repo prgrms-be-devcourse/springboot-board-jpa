@@ -56,7 +56,7 @@ class PostRestControllerTest {
   @BeforeEach
   public void setUp() throws NotFoundException {
     User user = new User("강희정", 24, "영화");
-    UserDto save = userService.save(userConverter.convertUserDto(user));
+    UserDto save = userService.save(userConverter.convertToUserDto(user));
     userId = save.getId();
 
     PostCreateRequest post1 = new PostCreateRequest("테스트 글 첫번째 제목", "테스트중인 첫번째 게시글입니다.",

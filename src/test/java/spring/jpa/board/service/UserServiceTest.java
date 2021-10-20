@@ -42,7 +42,7 @@ class UserServiceTest {
     User user = new User("강희정", 24, "낮잠");
 
     //when
-    userService.save(userConverter.convertUserDto(user));
+    userService.save(userConverter.convertToUserDto(user));
     //then
     List<UserDto> all = userService.findAll();
     assertThat(all, hasSize(1));
@@ -54,10 +54,10 @@ class UserServiceTest {
   public void findAllTest() {
     //given
     User user1 = new User("강희정", 24, "낮잠");
-    userService.save(userConverter.convertUserDto(user1));
+    userService.save(userConverter.convertToUserDto(user1));
 
     User user2 = new User("강희정", 24, "낮잠");
-    userService.save(userConverter.convertUserDto(user2));
+    userService.save(userConverter.convertToUserDto(user2));
 
     //when
     List<UserDto> all = userService.findAll();
@@ -72,7 +72,7 @@ class UserServiceTest {
   public void findByIdTest() throws NotFoundException {
     //given
     User user = new User("강희정", 24, "낮잠");
-    UserDto saveUser = userService.save(userConverter.convertUserDto(user));
+    UserDto saveUser = userService.save(userConverter.convertToUserDto(user));
 
     //when
     UserDto findUser = userService.findById(saveUser.getId());

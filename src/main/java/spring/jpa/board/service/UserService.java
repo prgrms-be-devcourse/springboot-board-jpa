@@ -25,27 +25,27 @@ public class UserService {
 
   @Transactional
   public UserDto save(UserDto userDto) {
-    User saveUser = userRepository.save(userConverter.convertUser(userDto));
+    User saveUser = userRepository.save(userConverter.convertToUser(userDto));
 
     if (saveUser.getCreatedBy() == null) {
       saveUser.setCreatedBy(saveUser.getId());
       userRepository.save(saveUser);
     }
-    return userConverter.convertUserDto(
+    return userConverter.convertToUserDto(
         saveUser);
   }
 
   @Transactional
   public UserDto findById(Long id) throws NotFoundException {
     return userRepository.findById(id)
-        .map(userConverter::convertUserDto)
+        .map(userConverter::convertToUserDto)
         .orElseThrow(() -> new NotFoundException("사용자 정보를 찾을 수 없습니다."));
   }
 
   @Transactional
   public List<UserDto> findAll() {
     return userRepository.findAll()
-        .stream().map(userConverter::convertUserDto)
+        .stream().map(userConverter::convertToUserDto)
         .collect(Collectors.toList());
   }
 
