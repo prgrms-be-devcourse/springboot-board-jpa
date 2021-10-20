@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/board?useSSL=false
+    username: root
+    password: test1234
+  h2:
+    console:
+      enabled: true
+  jpa:
+    generate-ddl: true
+    database: mysql
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        # dialect: org.hibernate.dialect.H2Dialect
+        query.in_clause_parameter_padding: true
+        hbm2ddl:
+          auto: create
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
