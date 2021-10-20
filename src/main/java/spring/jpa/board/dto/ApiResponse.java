@@ -1,4 +1,4 @@
-package spring.jpa.board.controller;
+package spring.jpa.board.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;

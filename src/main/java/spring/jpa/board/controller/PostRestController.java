@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import spring.jpa.board.dto.ApiResponse;
 import spring.jpa.board.dto.post.PostCreateRequest;
 import spring.jpa.board.dto.post.PostFindRequest;
 import spring.jpa.board.dto.post.PostModifyRequest;
