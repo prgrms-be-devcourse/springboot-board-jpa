@@ -1,0 +1,61 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시판
+
+=== 게시판 생성
+
+=== /posts
+
+.Request
+include::{snippets}/insertPost/http-request.adoc[]
+include::{snippets}/insertPost/request-fields.adoc[]
+
+.Response
+include::{snippets}/insertPost/http-response.adoc[]
+include::{snippets}/insertPost/response-fields.adoc[]
+
+'''
+
+=== 게시글 단건 조회
+
+=== /posts/{id}
+
+.Request
+include::{snippets}/postFindById/http-request.adoc[]
+include::{snippets}/postFindById/path-parameters.adoc[]
+
+.Response
+include::{snippets}/postFindById/http-response.adoc[]
+include::{snippets}/postFindById/response-fields.adoc[]
+
+'''
+
+=== 게시글 수정
+
+=== /posts/{id}
+
+.Request
+include::{snippets}/changePost/http-request.adoc[]
+include::{snippets}/changePost/request-fields.adoc[]
+include::{snippets}/changePost/path-parameters.adoc[]
+
+.Response
+include::{snippets}/changePost/http-response.adoc[]
+include::{snippets}/changePost/response-fields.adoc[]
+
+=== 게시글 페이지 조회
+
+=== /posts
+
+.Request
+include::{snippets}/findAll/http-request.adoc[]
+include::{snippets}/findAll/request-fields.adoc[]
+
+.Response
+include::{snippets}/findAll/http-response.adoc[]
+include::{snippets}/findAll/response-fields.adoc[]
+
+'''
