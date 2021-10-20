@@ -18,8 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 @SpringBootTest
 class PostServiceTest {
+
     @Autowired
     private PostService postService;
+
     private Long postId;
 
     @BeforeEach
