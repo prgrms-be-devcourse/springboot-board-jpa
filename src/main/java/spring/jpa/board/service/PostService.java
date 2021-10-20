@@ -3,7 +3,6 @@ package spring.jpa.board.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import javassist.NotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import spring.jpa.board.dto.post.PostModifyRequest;
 import spring.jpa.board.repository.PostRepository;
 import spring.jpa.board.repository.UserRepository;
 
-@Slf4j
 @Service
 public class PostService {
 

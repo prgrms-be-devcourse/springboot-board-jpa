@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javassist.NotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +30,6 @@ import spring.jpa.board.dto.user.UserDto;
 import spring.jpa.board.service.PostService;
 import spring.jpa.board.service.UserService;
 
-@Slf4j
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest

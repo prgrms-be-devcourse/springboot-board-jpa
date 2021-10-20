@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.util.List;
 import javassist.NotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +21,6 @@ import spring.jpa.board.repository.PostRepository;
 import spring.jpa.board.repository.UserRepository;
 
 @SpringBootTest
-@Slf4j
 class PostServiceTest {
 
   @Autowired

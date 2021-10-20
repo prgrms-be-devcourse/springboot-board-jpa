@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.samePropertyValuesAs;
 
 import java.util.List;
 import javassist.NotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import spring.jpa.board.dto.user.UserDto;
 import spring.jpa.board.repository.UserRepository;
 
 @SpringBootTest
-@Slf4j
 class UserServiceTest {
 
   @Autowired
@@ -44,7 +42,7 @@ class UserServiceTest {
     User user = new User("강희정", 24, "낮잠");
 
     //when
-    UserDto save = userService.save(userConverter.convertUserDto(user));
+    userService.save(userConverter.convertUserDto(user));
     //then
     List<UserDto> all = userService.findAll();
     assertThat(all, hasSize(1));
