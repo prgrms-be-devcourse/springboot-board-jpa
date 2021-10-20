@@ -1,6 +1,8 @@
 package com.example.boardbackend.dto;
 
 import com.example.boardbackend.domain.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -9,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostDto {
     private Long id;
 
@@ -20,6 +23,10 @@ public class PostDto {
     private String content;
 
     private Long view;
+
+    @JsonProperty("userInfo")
     private UserDto userDto;
+
     private LocalDateTime createdAt;
+
 }

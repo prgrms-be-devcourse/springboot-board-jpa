@@ -4,6 +4,8 @@ import com.example.boardbackend.common.error.exception.NotFoundException;
 import com.example.boardbackend.domain.Post;
 import com.example.boardbackend.dto.PostDto;
 import com.example.boardbackend.common.converter.DtoConverter;
+import com.example.boardbackend.dto.request.UpdatePostRequest;
+import com.example.boardbackend.dto.request.UpdateViewRequest;
 import com.example.boardbackend.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -52,21 +54,25 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto updatePostById(Long id, String newTitle, String newContent) {
+    public PostDto updatePostById(Long id, UpdatePostRequest updatePostRequest) {
         Optional<Post> byId = postRepository.findById(id);
         if(byId.isEmpty())
             throw new NotFoundException("해당 ID의 게시물을 찾을 수 없습니다");
         Post entity = byId.get();
-        entity.setTitle(newTitle);
-        entity.setContent(newContent);
-        // 트랜잭션이 끝날때 flush
+        String newTitle = updatePostRequest.getTitle();
+        String newContent = updatePostRequest.getContent();
+        entity.updatePost(newTitle, newContent);
         return dtoConverter.convertToPostDto(entity);
     }
 
     @Transactional
-    public Long updateViewById(Long id, Long newView) {
-        Post entity = postRepository.findById(id).get();
-        entity.setView(newView);
+    public Long updateViewById(Long id, UpdateViewRequest updateViewRequest) {
+        Optional<Post> byId = postRepository.findById(id);
+        if(byId.isEmpty())
+            throw new NotFoundException("해당 ID의 게시물을 찾을 수 없습니다");
+        Post entity = byId.get();
+        Long newView = updateViewRequest.getView();
+        entity.updateView(newView);
         return entity.getView();
     }
 

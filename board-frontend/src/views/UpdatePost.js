@@ -21,9 +21,9 @@ function UpdatePost(props) {
         const response = await axios.get(origin + `/post/${postId}`);
         // console.log(response)
         const res_postInfo = response.data
-        const res_userInfo = res_postInfo.userDto
+        const res_userInfo = res_postInfo.userInfo
         // 검증
-        if (!userId == res_userInfo.id) {
+        if (!userId === res_userInfo.id) {
             alert("내가 작성한 게시물이 아닙니다!");
             props.history.goBack();
             return;

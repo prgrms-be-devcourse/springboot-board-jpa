@@ -5,14 +5,12 @@ import com.example.boardbackend.dto.request.LoginRequest;
 import com.example.boardbackend.dto.UserDto;
 import com.example.boardbackend.dto.response.UserIdResponse;
 import com.example.boardbackend.common.error.exception.IllegalArgException;
-import com.example.boardbackend.common.error.exception.NotFoundException;
 import com.example.boardbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
@@ -30,18 +28,8 @@ public class UserController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<UserIdResponse> login(@Valid @RequestBody LoginRequest loginDto){
-        String email = loginDto.getEmail();
-        String password = loginDto.getPassword();
-        UserDto userByEmail = userService.findUserByEmail(email);
-        // 비밀번호 검증
-        String findPW = userByEmail.getPassword();
-        if(!password.equals(findPW)){
-            throw new IllegalArgException("비밀번호가 틀립니다");
-        }
-        // 검증됨 -> 200 + id 값
-        Long findId = userByEmail.getId();
-        UserIdResponse response = responseConverter.convertToUserId(findId);
+    public ResponseEntity<UserIdResponse> login(@Valid @RequestBody LoginRequest loginRequest){
+        UserIdResponse response = userService.login(loginRequest);
         return ResponseEntity.ok(response);
     }
 

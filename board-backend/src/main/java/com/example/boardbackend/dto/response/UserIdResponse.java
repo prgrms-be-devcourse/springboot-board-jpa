@@ -9,4 +9,10 @@ import lombok.Setter;
 @Builder
 public class UserIdResponse {
     private Long id;
+
+    static public UserIdResponse from(Long id){
+        return UserIdResponse.builder()
+                .id(id)
+                .build();
+    }
 }

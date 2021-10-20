@@ -67,9 +67,7 @@ public class PostController {
             @PathVariable("id") Long id,
             @Valid @RequestBody UpdatePostRequest updatePostRequest
     ) {
-        String newTitle = updatePostRequest.getTitle();
-        String newContent = updatePostRequest.getContent();
-        PostDto response = postService.updatePostById(id, newTitle, newContent);
+        PostDto response = postService.updatePostById(id, updatePostRequest);
         return ResponseEntity.ok(response);
     }
 
@@ -79,8 +77,7 @@ public class PostController {
             @PathVariable("id") Long id,
             @RequestBody UpdateViewRequest updateViewRequest
     ) {
-        System.out.println(updateViewRequest.getNewView());
-        Long response = postService.updateViewById(id, updateViewRequest.getNewView());
+        Long response = postService.updateViewById(id, updateViewRequest);
         return ResponseEntity.ok(response);
     }
 

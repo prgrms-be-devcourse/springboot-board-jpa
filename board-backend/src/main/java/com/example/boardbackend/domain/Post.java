@@ -1,5 +1,6 @@
 package com.example.boardbackend.domain;
 
+import com.example.boardbackend.dto.PostDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,11 +10,12 @@ import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Getter @Setter
+@Getter
+@Setter
 @DynamicInsert
 @Entity
 @Table(name = "post")
-public class Post extends BaseEntity{
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +26,7 @@ public class Post extends BaseEntity{
     @Lob
     @Column(name = "content", nullable = false)
     private String content;
-    
+
     /**
      * @ColumnDefault는 DDL에만 관여
      * default는 컬럼=null이 insert될때가 아닌 insert문에 해당 컬럼이 아예 빠져있을때 작동되는것
@@ -38,4 +40,15 @@ public class Post extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false, referencedColumnName = "id")
     private User user;
+
+    // ---------------------------------------------------------------
+
+    public void updatePost(String newTitle, String newContent) {
+        this.title = newTitle;
+        this.content = newContent;
+    }
+
+    public void updateView(Long newView){
+        this.view = newView;
+    }
 }

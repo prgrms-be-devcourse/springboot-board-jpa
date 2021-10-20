@@ -5,5 +5,5 @@ import lombok.*;
 @Setter
 @Getter
 public class UpdateViewRequest {
-    private Long newView;
+    private Long view;
 }

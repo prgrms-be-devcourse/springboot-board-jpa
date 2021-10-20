@@ -27,12 +27,12 @@ function Post(props) {
             });
         const res_postInfo = response.data
         // view 업데이트
-        axios.patch(origin + `/post/${postId}/view`, { newView: res_postInfo.view + 1 })
+        axios.patch(origin + `/post/${postId}/view`, { view : res_postInfo.view + 1 })
             .then(res => {
                 // console.log(res);
                 res_postInfo.view = res.data;
                 setPostInfo(res_postInfo)
-                setUserInfo(res_postInfo.userDto)
+                setUserInfo(res_postInfo.userInfo)
             })
     }, []);
 
@@ -71,7 +71,7 @@ function Post(props) {
             <br />
             {(
                 () => {
-                    if (localStorage.getItem("userId") == userInfo.id) {
+                    if (localStorage.getItem("userId") === userInfo.id) {
                         return (<div className="div_wrapper">
                             내가 작성한 게시물입니다
                             <br /><br />

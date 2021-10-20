@@ -19,7 +19,7 @@ function Posting(props) {
         axios.get(origin + `/user/${userId}`)
             .then(res => {
                 setUserInfo(res.data)
-                setPostInfo({ title: "", content: "", userDto: res.data })
+                setPostInfo({ title: "", content: "", userInfo : res.data })
             })
     }, []);
 
