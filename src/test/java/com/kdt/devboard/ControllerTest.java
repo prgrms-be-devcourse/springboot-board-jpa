@@ -1,7 +1,8 @@
 package com.kdt.devboard;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kdt.devboard.post.Dto.PostRequest;
+import com.kdt.devboard.post.Dto.PostInsertRequest;
+import com.kdt.devboard.post.Dto.PostUpdateRequest;
 import com.kdt.devboard.post.repository.PostRepository;
 import com.kdt.devboard.post.service.PostService;
 import com.kdt.devboard.user.domain.User;
@@ -40,7 +41,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 public class ControllerTest {
 
     private User user;
-    private PostRequest postRequest;
+    private PostInsertRequest postRequest;
     private Long userId;
     private Long postId;
 
@@ -70,7 +71,7 @@ public class ControllerTest {
         User save = userRepository.save(user);
         userId = save.getId();
 
-        postRequest = PostRequest.builder()
+        postRequest = PostInsertRequest.builder()
                 .content("내용")
                 .title("제목")
                 .userId(userId)
@@ -122,11 +123,10 @@ public class ControllerTest {
     @Test
     @DisplayName("게시글 수정 요청 테스트")
     void updatePost() throws Exception {
-        PostRequest updatedPost = PostRequest.builder()
+        PostUpdateRequest updatedPost = PostUpdateRequest.builder()
                 .postId(postId)
                 .title("제에목")
                 .content("내에에용")
-                .userId(userId)
                 .build();
 
         mockMvc.perform(put("/posts")
@@ -138,7 +138,6 @@ public class ControllerTest {
                         preprocessRequest(prettyPrint()),
                         requestFields(
                                 fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
-                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 식별자"),
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
                         ),
@@ -199,7 +198,7 @@ public class ControllerTest {
     }
 
     private void createPosts() {
-        IntStream.range(1,10).mapToObj(i -> PostRequest.builder()
+        IntStream.range(1,10).mapToObj(i -> PostInsertRequest.builder()
                 .title("제목")
                 .content("내용")
                 .userId(userId)

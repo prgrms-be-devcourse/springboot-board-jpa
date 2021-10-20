@@ -1,7 +1,8 @@
 package com.kdt.devboard;
 
-import com.kdt.devboard.post.Dto.PostRequest;
+import com.kdt.devboard.post.Dto.PostInsertRequest;
 import com.kdt.devboard.post.Dto.PostResponse;
+import com.kdt.devboard.post.Dto.PostUpdateRequest;
 import com.kdt.devboard.post.repository.PostRepository;
 import com.kdt.devboard.post.service.PostService;
 import com.kdt.devboard.user.domain.User;
@@ -25,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class PostServiceTest {
 
     private User user;
-    private PostRequest postRequest;
+    private PostInsertRequest postRequest;
     private Long userId;
     private Long postId;
 
@@ -49,7 +50,7 @@ public class PostServiceTest {
         User save = userRepository.save(user);
         userId = save.getId();
 
-        postRequest = PostRequest.builder()
+        postRequest = PostInsertRequest.builder()
                 .content("내용")
                 .title("제목")
                 .userId(userId)
@@ -73,7 +74,7 @@ public class PostServiceTest {
     @Test
     @DisplayName("게시물을 페이징 처리해서 조회")
     void findPosts() {
-        IntStream.range(1,10).mapToObj(i -> PostRequest.builder()
+        IntStream.range(1,10).mapToObj(i -> PostInsertRequest.builder()
                 .title("제목")
                 .content("내용")
                 .userId(userId)
@@ -95,11 +96,10 @@ public class PostServiceTest {
     @Test
     @DisplayName("게시물을 수정할 수 있다.")
     void update() throws NotFoundException {
-        PostRequest updatedPost = PostRequest.builder()
+        PostUpdateRequest updatedPost = PostUpdateRequest.builder()
                 .postId(postId)
                 .title("제에목")
                 .content("내에에용")
-                .userId(userId)
                 .build();
 
         PostResponse update = service.update(updatedPost);

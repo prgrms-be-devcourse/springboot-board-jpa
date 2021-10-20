@@ -12,10 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Builder
-public class PostRequest {
-
-    @NotNull
-    private final Long postId;
+public class PostInsertRequest {
 
     @NotBlank
     private final String title;
@@ -33,4 +30,5 @@ public class PostRequest {
                 .user(user)
                 .build();
     }
+
 }
