@@ -25,6 +25,11 @@ public class Post extends BaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
+    private long view;
+
+    @Version
+    private Long version;
+
     public Post(String title, String content) {
         this.title = title;
         this.content = content;
@@ -41,5 +46,9 @@ public class Post extends BaseEntity{
     public void editPost(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void increaseView() {
+        this.view++;
     }
 }

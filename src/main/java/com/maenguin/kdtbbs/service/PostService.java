@@ -39,8 +39,10 @@ public class PostService {
         return new PostListDto(page);
     }
 
+    @Transactional
     public PostDto getPostById(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(" for id:" + postId));
+        post.increaseView();
         return bbsConverter.convertToPostDto(post);
     }
 
