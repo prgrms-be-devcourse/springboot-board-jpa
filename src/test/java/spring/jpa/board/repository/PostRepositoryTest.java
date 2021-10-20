@@ -34,15 +34,10 @@ class PostRepositoryTest {
   @DisplayName("게시글을 생성할 수 있다.")
   public void postCreateTest() {
     //given
-    User user = new User("강희정", 24);
-    user.setHobby("낮잠");
-
+    User user = new User("강희정", 24, "낮잠");
     userRepository.save(user);
 
-    Post post = new Post();
-    post.setTitle("테스트");
-    post.setContent("테스트중입니다.");
-    post.setUser(user);
+    Post post = new Post("테스트", "테스트중입니다.", user);
 
     //when
     postRepository.save(post);
@@ -57,27 +52,18 @@ class PostRepositoryTest {
   @DisplayName("사용자가 작성한 게시글 목록을 가져올 수 있다.")
   public void findPostByUserIdTest() {
     //given
-    User user = new User("강희정", 24);
-    user.setHobby("낮잠");
-
+    User user = new User("강희정", 24, "낮잠");
     userRepository.save(user);
 
-    Post post1 = new Post();
-    post1.setTitle("테스트");
-    post1.setContent("테스트중입니다.");
-    post1.setUser(user);
-
-    Post post2 = new Post();
-    post2.setTitle("테스트");
-    post2.setContent("테스트중입니다.");
-    post2.setUser(user);
-
-    //when
+    Post post1 = new Post("테스트", "테스트중입니다.", user);
+    Post post2 = new Post("테스트", "테스트중입니다.", user);
     postRepository.save(post1);
     postRepository.save(post2);
 
-    //then
+    //when
     List<Post> posts = postRepository.findPostsByUserId(user.getId());
+
+    //then
     assertThat(posts, hasSize(2));
 
   }

@@ -57,8 +57,7 @@ class PostRestControllerTest {
 
   @BeforeEach
   public void setUp() throws NotFoundException {
-    User user = new User("강희정", 24);
-    user.setHobby("영화");
+    User user = new User("강희정", 24, "영화");
     UserDto save = userService.save(userConverter.convertUserDto(user));
     userId = save.getId();
 

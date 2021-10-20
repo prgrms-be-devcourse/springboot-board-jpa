@@ -52,11 +52,11 @@ public class PostService {
   public Long update(Long id, PostModifyRequest postModifyRequest) throws NotFoundException {
     Post post = postRepository.findById(id).map(
         (entity) -> {
-          Post savePost = new Post(
-              entity.getId(),
-              postModifyRequest.title(),
-              postModifyRequest.content(),
-              entity.getUser());
+          Post savePost = Post.builder()
+              .id(entity.getId())
+              .title(postModifyRequest.title())
+              .content(postModifyRequest.content())
+              .user(entity.getUser()).build();
           savePost.setCreatedAt(entity.getCreatedAt());
           savePost.setCreatedBy(entity.getCreatedBy());
           return postRepository.save(savePost);

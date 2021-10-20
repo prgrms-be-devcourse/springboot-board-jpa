@@ -7,13 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,6 +33,12 @@ public class User extends BaseEntity {
 
   @Column(name = "hobby")
   private String hobby;
+
+  public User(String name, Integer age, String hobby) {
+    this.name = name;
+    this.age = age;
+    this.hobby = hobby;
+  }
 
   public User(String name, Integer age) {
     this.name = name;

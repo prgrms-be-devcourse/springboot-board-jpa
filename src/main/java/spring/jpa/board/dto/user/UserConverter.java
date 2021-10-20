@@ -8,11 +8,11 @@ public class UserConverter {
 
   //dto -> entity
   public User convertUser(UserDto userDto) {
-    User user = new User();
-    user.setId(userDto.getId());
-    user.setName(userDto.getName());
-    user.setAge(userDto.getAge());
-    user.setHobby(userDto.getHobby());
+    User user = User.builder().id(userDto.getId())
+        .name(userDto.getName())
+        .age(userDto.getAge())
+        .hobby(userDto.getHobby())
+        .build();
     user.setCreatedAt(userDto.getCreatedAt());
     user.setCreatedBy(userDto.getCreatedBy());
     return user;

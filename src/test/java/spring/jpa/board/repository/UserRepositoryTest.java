@@ -23,8 +23,7 @@ class UserRepositoryTest {
   @DisplayName("사용자를 생성할 수 있다.")
   public void userCreateTest() {
     //given 
-    User user = new User("강희정", 24);
-    user.setHobby("낮잠");
+    User user = new User("강희정", 24, "낮잠");
 
     //when
     userRepository.save(user);
