@@ -88,21 +88,4 @@ class UserServiceTest {
   }
 
 
-  @Test
-  @DisplayName("사용자 이름을 수정할 수 있다.")
-  public void updateUserTest() {
-    //given
-    User user = new User("강희정", 24);
-    user.setHobby("낮잠");
-    UserDto saveUser = userService.save(userConverter.convertUserDto(user));
-
-    //when
-    String name = "HeejeongKang";
-    saveUser.setName(name);
-    UserDto updateUser = userService.save(saveUser);
-
-    //then
-    assertThat(updateUser, samePropertyValuesAs(saveUser));
-  }
-
 }
