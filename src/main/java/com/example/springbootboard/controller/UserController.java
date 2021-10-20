@@ -7,33 +7,35 @@ import com.example.springbootboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/api/v1/users")
 public class UserController {
 
     @Autowired
     public UserService userService;
 
-    @PostMapping("/users")
-    public ApiResponse<Long> save(@RequestBody UserRequestDto userRequestDto) {
+    @PostMapping()
+    public ApiResponse<Long> save(@Valid @RequestBody UserRequestDto userRequestDto) {
         Long id = userService.insert(userRequestDto);
         return ApiResponse.ok(id);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ApiResponse<UserResponseDto> getOne(@PathVariable(value = "id") Long id) {
         UserResponseDto userResponseDto = userService.findById(id);
         return ApiResponse.ok(userResponseDto);
     }
 
-    @GetMapping("/users")
+    @GetMapping()
     public ApiResponse<List<UserResponseDto>> getAll() {
         List<UserResponseDto> all = userService.findAll();
         return ApiResponse.ok(all);
     }
 
-    @PatchMapping("/users/{id}")
+    @PatchMapping("/{id}")
     public ApiResponse<UserResponseDto> update(
             @PathVariable(value = "id") Long id,
             @RequestBody UserRequestDto userRequestDto
@@ -42,7 +44,7 @@ public class UserController {
         return ApiResponse.ok(userResponseDto);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public ApiResponse<String> delete(
             @PathVariable(value = "id") Long id
     ) {

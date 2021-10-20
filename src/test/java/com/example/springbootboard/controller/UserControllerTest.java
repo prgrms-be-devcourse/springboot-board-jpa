@@ -7,6 +7,7 @@ import com.example.springbootboard.service.PostService;
 import com.example.springbootboard.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -74,7 +75,7 @@ class UserControllerTest {
                 .hobby("testHobby")
                 .build();
         // when  // then
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userRequestDto)))
                 .andExpect(status().isOk())
@@ -96,7 +97,7 @@ class UserControllerTest {
 
     @Test
     void getOneTest() throws Exception {
-        mockMvc.perform(get("/users/{id}", id)
+        mockMvc.perform(get("/api/v1/users/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -119,7 +120,7 @@ class UserControllerTest {
 
     @Test
     void getAllTest() throws Exception {
-        mockMvc.perform(get("/users")
+        mockMvc.perform(get("/api/v1/users")
                         .param("page", String.valueOf(0))
                         .param("size", String.valueOf(10))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -150,7 +151,7 @@ class UserControllerTest {
                 .hobby("updatedHobby")
                 .build();
 
-        mockMvc.perform(patch("/users/{id}", id)
+        mockMvc.perform(patch("/api/v1/users/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userRequestDtoForUpdate)))
                 .andExpect(status().isOk())
@@ -180,7 +181,7 @@ class UserControllerTest {
 
     @Test
     void deleteTest() throws Exception {
-        mockMvc.perform(delete("/users/{id}", id)
+        mockMvc.perform(delete("/api/v1/users/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -191,5 +192,17 @@ class UserControllerTest {
                                 fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("유저 생성 요청은 이름과 나이가 필수여야 한다.")
+    void userRequestArgumentTest() throws Exception {
+        UserRequestDto userRequestDto = UserRequestDto.builder()
+                        .build();
+
+        mockMvc.perform(post("/api/v1/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userRequestDto)))
+                .andDo(print());
     }
 }

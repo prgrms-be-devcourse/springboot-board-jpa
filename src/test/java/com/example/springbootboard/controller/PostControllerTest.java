@@ -10,6 +10,7 @@ import com.example.springbootboard.service.PostService;
 import com.example.springbootboard.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -186,5 +187,18 @@ class PostControllerTest {
                                 fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
                         )));
 
+    }
+
+    @Test
+    @DisplayName("게시글 생성 요청은 userId와 title, content가 필수여야 한다.")
+    void postRequestArgumentTest() throws Exception {
+        PostRequestDto postRequestDto = PostRequestDto.builder()
+                .content("testContent")
+                .build();
+
+        mockMvc.perform(post("/api/v1/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postRequestDto)))
+                .andDo(print());
     }
 }
