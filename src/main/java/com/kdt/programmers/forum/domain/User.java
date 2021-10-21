@@ -14,13 +14,13 @@ public class User extends CreationBaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "age")
+    @Column
     private Integer age;
 
-    @Column(name = "hobby")
+    @Column
     private String hobby;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)

@@ -26,10 +26,10 @@ public class PostController {
         return ApiResponse.response(dto);
     }
 
-    @GetMapping("/{postId}")
-    public ApiResponse<PostDto> getPost(@PathVariable Long postId) {
+    @GetMapping("/{id}")
+    public ApiResponse<PostDto> getPost(@PathVariable Long id) {
         try {
-            PostDto post = postService.findPostById(postId);
+            PostDto post = postService.findPostById(id);
             return ApiResponse.response(post);
         } catch (PostNotFoundException e) {
             throw new NotFoundException("requested post was not found", e);
@@ -38,17 +38,17 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ApiResponse<PostDto> savePost(@RequestBody final PostRequest postRequest) {
-        PostDto post = postService.savePost(postRequest);
+    public ApiResponse<PostDto> savePost(@RequestBody final PostRequest request) {
+        PostDto post = postService.savePost(request);
         return ApiResponse.response(post);
     }
 
-    @PutMapping("/{postId}")
+    @PutMapping("/{id}")
     public ApiResponse<PostDto> updatePost(
-        @PathVariable Long postId,
-        @RequestBody final PostRequest postRequest
+        @PathVariable Long id,
+        @RequestBody final PostRequest request
     ) {
-        PostDto post = postService.updatePost(postId, postRequest);
+        PostDto post = postService.updatePost(id, request);
         return ApiResponse.response(post);
     }
 }

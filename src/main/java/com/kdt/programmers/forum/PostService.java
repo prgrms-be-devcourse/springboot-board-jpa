@@ -21,32 +21,32 @@ public class PostService {
 
     private final PostConverter postConverter;
 
-    public PostDto savePost(PostRequest postRequest) {
-        Post post = postConverter.convertToPost(postRequest);
+    public PostDto savePost(PostRequest request) {
+        Post post = postConverter.toPost(request);
         Post entity = postRepository.save(post);
-        return postConverter.convertToPostDto(entity);
+        return postConverter.toPostDto(entity);
     }
 
-    public PostDto findPostById(Long postId) {
-        return postRepository.findById(postId)
-            .map(postConverter::convertToPostDto)
-            .orElseThrow(() -> new PostNotFoundException("post with id " + postId + " not found"));
+    public PostDto findPostById(Long id) {
+        return postRepository.findById(id)
+            .map(postConverter::toPostDto)
+            .orElseThrow(() -> new PostNotFoundException("post with id " + id + " not found"));
     }
 
     public Page<PostDto> findPostsByPage(Pageable pageable) {
         return postRepository.findAll(pageable)
-            .map(postConverter::convertToPostDto);
+            .map(postConverter::toPostDto);
     }
 
     @Transactional
-    public PostDto updatePost(Long postId, PostRequest postRequest) {
-        Optional<Post> possibleEntity = postRepository.findById(postId);
+    public PostDto updatePost(Long id, PostRequest request) {
+        Optional<Post> possibleEntity = postRepository.findById(id);
 
         if (possibleEntity.isEmpty())
-            return this.savePost(postRequest);
+            return this.savePost(request);
 
         Post entity = possibleEntity.get();
-        entity.update(postRequest.getTitle(), postRequest.getContent());
-        return postConverter.convertToPostDto(entity);
+        entity.update(request.getTitle(), request.getContent());
+        return postConverter.toPostDto(entity);
     }
 }

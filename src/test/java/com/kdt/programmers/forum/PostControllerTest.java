@@ -29,10 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PostControllerTest {
 
     @Autowired
-    private PostService postService;
+    private PostService service;
 
     @Autowired
-    private PostJpaRepository postJpaRepository;
+    private PostJpaRepository repository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -42,21 +42,21 @@ class PostControllerTest {
 
     @BeforeEach
     void clean() {
-        postJpaRepository.deleteAll();
+        repository.deleteAll();
     }
 
     @Test
     @DisplayName("게시글을 저장할 수 있다")
     void savePost() throws Exception {
         // Given
-        PostRequest postRequest = new PostRequest("test title", "");
+        PostRequest request = new PostRequest("test title", "");
 
         // When Then
         mockMvc
             .perform(
                 post("/api/v1/posts")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(postRequest))
+                    .content(objectMapper.writeValueAsString(request))
             )
             .andExpect(status().isCreated())
             .andDo(print())
@@ -83,13 +83,13 @@ class PostControllerTest {
     @DisplayName("게시글을 ID로 조회할 수 있다")
     void testGetPost() throws Exception {
         // Given
-        PostRequest postRequest = new PostRequest("test title", "");
-        PostDto post = postService.savePost(postRequest);
+        PostRequest request = new PostRequest("test title", "");
+        PostDto post = service.savePost(request);
 
         // When Then
         mockMvc
             .perform(
-                get("/api/v1/posts/{postId}", post.getId())
+                get("/api/v1/posts/{id}", post.getId())
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
@@ -112,10 +112,10 @@ class PostControllerTest {
     @DisplayName("게시글을 페이지로 조회할 수 있다")
     void testGetPosts() throws Exception {
         // Given
-        postService.savePost(new PostRequest("test title", ""));
-        postService.savePost(new PostRequest("test title", ""));
-        postService.savePost(new PostRequest("test title", ""));
-        postService.savePost(new PostRequest("test title", ""));
+        service.savePost(new PostRequest("test title", ""));
+        service.savePost(new PostRequest("test title", ""));
+        service.savePost(new PostRequest("test title", ""));
+        service.savePost(new PostRequest("test title", ""));
 
         // When Then
         final String SIZE = "3";
@@ -161,13 +161,13 @@ class PostControllerTest {
     @DisplayName("게시글을 수정할 수 있다")
     void testUpdatePost() throws Exception {
         // Given
-        PostDto post = postService.savePost(new PostRequest("test post", ""));
+        PostDto post = service.savePost(new PostRequest("test post", ""));
         PostRequest updateRequest = new PostRequest("updated post", "");
 
         // When Then
         mockMvc
             .perform(
-                put("/api/v1/posts/{postId}", post.getId())
+                put("/api/v1/posts/{id}", post.getId())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(updateRequest))
             )
@@ -196,11 +196,11 @@ class PostControllerTest {
     @DisplayName("존재하지 않는 게시글 ID로 조회할 수 없다")
     void testNotFoundPostId() throws Exception {
         // Given
-        long postId = Long.MAX_VALUE;
+        long id = Long.MAX_VALUE;
 
         // When Then
         mockMvc
-            .perform(get("/api/v1/posts/{postId}", postId))
+            .perform(get("/api/v1/posts/{id}", id))
             .andExpect(status().isNotFound());
     }
 }

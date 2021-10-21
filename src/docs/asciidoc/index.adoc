@@ -18,7 +18,7 @@ include::{snippets}/save-post/http-response.adoc[]
 include::{snippets}/save-post/response-fields.adoc[]
 
 === 게시글 단건 조회
-=== GET /posts/{postId}
+=== GET /posts/{id}
 .Request
 include::{snippets}/get-post-by-id/http-request.adoc[]
 
@@ -36,7 +36,7 @@ include::{snippets}/get-posts-by-page/http-response.adoc[]
 include::{snippets}/get-post-by-id/response-fields.adoc[]
 
 === 게시글 수정
-=== PATCH /posts/{postId}
+=== PATCH /posts/{id}
 .Request
 include::{snippets}/update-post/http-request.adoc[]
 include::{snippets}/update-post/request-fields.adoc[]

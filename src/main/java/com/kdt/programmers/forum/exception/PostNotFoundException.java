@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class PostNotFoundException extends NotFoundException {
-    public PostNotFoundException(String msg) {
-        super(msg);
+    public PostNotFoundException(String message) {
+        super(message);
     }
 }

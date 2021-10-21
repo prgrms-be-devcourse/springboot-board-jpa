@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 
 @Component
 public class PostConverter {
-    public Post convertToPost(PostRequest postRequest) {
+    public Post toPost(PostRequest request) {
         Post post = new Post();
-        post.update(postRequest.getTitle(), postRequest.getContent());
+        post.update(request.getTitle(), request.getContent());
         post.setCreatedAt(LocalDateTime.now());
         return post;
     }
 
-    public PostDto convertToPostDto(Post post) {
+    public PostDto toPostDto(Post post) {
         return new PostDto(post.getId(), post.getTitle(), post.getContent(), post.getCreatedAt());
     }
 }
