@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1/posts")
 @AllArgsConstructor
@@ -40,8 +42,7 @@ public class PostController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ApiResponse<PostDto> savePost(@RequestBody final PostRequest request) {
-        PostDto post = postService.savePost(request);
-        return ApiResponse.response(post);
+        return ApiResponse.response(postService.savePost(request));
     }
 
     @PutMapping("/{id}")
@@ -49,7 +50,10 @@ public class PostController {
         @PathVariable Long id,
         @RequestBody final PostRequest request
     ) {
-        PostDto post = postService.updatePost(id, request);
-        return ApiResponse.response(post);
+        Optional<PostDto> possiblePost = postService.updatePost(id, request);
+
+        return ApiResponse.response(
+            possiblePost.orElse(postService.savePost(request))
+        );
     }
 }

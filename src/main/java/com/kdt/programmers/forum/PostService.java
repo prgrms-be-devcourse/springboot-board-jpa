@@ -40,15 +40,15 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto updatePost(Long id, PostRequest request) {
+    public Optional<PostDto> updatePost(Long id, PostRequest request) {
         Optional<Post> possibleEntity = postRepository.findById(id);
 
         if (possibleEntity.isEmpty())
-            return this.savePost(request);
+            return Optional.empty();
 
         Post entity = possibleEntity.get();
         entity.update(request.getTitle(), request.getContent());
 
-        return postConverter.toPostDto(entity);
+        return Optional.of(postConverter.toPostDto(entity));
     }
 }
