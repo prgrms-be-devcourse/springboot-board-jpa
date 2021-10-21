@@ -2,7 +2,7 @@ package com.kdt.programmers.forum;
 
 import com.kdt.programmers.forum.domain.Post;
 import com.kdt.programmers.forum.exception.PostNotFoundException;
-import com.kdt.programmers.forum.transfer.PostWrapper;
+import com.kdt.programmers.forum.transfer.PostDto;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import com.kdt.programmers.forum.utils.PostConverter;
 import lombok.AllArgsConstructor;
@@ -21,25 +21,25 @@ public class PostService {
 
     private final PostConverter postConverter;
 
-    public PostWrapper savePost(PostRequest postRequest) {
+    public PostDto savePost(PostRequest postRequest) {
         Post post = postConverter.convertToPost(postRequest);
         Post entity = postRepository.save(post);
         return postConverter.convertToPostDto(entity);
     }
 
-    public PostWrapper findPostById(Long postId) {
+    public PostDto findPostById(Long postId) {
         return postRepository.findById(postId)
             .map(postConverter::convertToPostDto)
             .orElseThrow(() -> new PostNotFoundException("post with id " + postId + " not found"));
     }
 
-    public Page<PostWrapper> findPostsByPage(Pageable pageable) {
+    public Page<PostDto> findPostsByPage(Pageable pageable) {
         return postRepository.findAll(pageable)
             .map(postConverter::convertToPostDto);
     }
 
     @Transactional
-    public PostWrapper updatePost(Long postId, PostRequest postRequest) {
+    public PostDto updatePost(Long postId, PostRequest postRequest) {
         Optional<Post> possibleEntity = postRepository.findById(postId);
 
         if (possibleEntity.isEmpty())

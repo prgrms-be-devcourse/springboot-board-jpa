@@ -1,7 +1,7 @@
 package com.kdt.programmers.forum;
 
 import com.kdt.programmers.forum.exception.PostNotFoundException;
-import com.kdt.programmers.forum.transfer.PostWrapper;
+import com.kdt.programmers.forum.transfer.PostDto;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -48,10 +48,10 @@ class PostServiceTest {
     void testFindPostById() throws PostNotFoundException {
         // Given
         PostRequest postRequest = new PostRequest("find by id test", "");
-        PostWrapper post = postService.savePost(postRequest);
+        PostDto post = postService.savePost(postRequest);
 
         // When
-        PostWrapper entity = postService.findPostById(post.getId());
+        PostDto entity = postService.findPostById(post.getId());
 
         // Then
         assertThat(entity.getTitle(), equalTo("find by id test"));
@@ -67,7 +67,7 @@ class PostServiceTest {
         postService.savePost(new PostRequest("post4", ""));
 
         // When
-        Page<PostWrapper> posts = postService.findPostsByPage(PageRequest.of(1, 2));
+        Page<PostDto> posts = postService.findPostsByPage(PageRequest.of(1, 2));
 
         // Then
         assertThat(posts.get().count(), equalTo(2L));
@@ -81,13 +81,13 @@ class PostServiceTest {
     @DisplayName("게시글을 수정할 수 있다")
     void testUpdatePost() throws PostNotFoundException {
         // Given
-        PostWrapper post = postService.savePost(new PostRequest("new post", ""));
+        PostDto post = postService.savePost(new PostRequest("new post", ""));
 
         // When
         postService.updatePost(post.getId(), new PostRequest("updated post", ""));
 
         // Then
-        PostWrapper maybeUpdatedPost = postService.findPostById(post.getId());
+        PostDto maybeUpdatedPost = postService.findPostById(post.getId());
         assertThat(maybeUpdatedPost.getTitle(), equalTo("updated post"));
     }
 }

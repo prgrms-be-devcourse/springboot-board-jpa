@@ -1,7 +1,7 @@
 package com.kdt.programmers.forum;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kdt.programmers.forum.transfer.PostWrapper;
+import com.kdt.programmers.forum.transfer.PostDto;
 import com.kdt.programmers.forum.transfer.request.PostRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -84,7 +84,7 @@ class PostControllerTest {
     void testGetPost() throws Exception {
         // Given
         PostRequest postRequest = new PostRequest("test title", "");
-        PostWrapper post = postService.savePost(postRequest);
+        PostDto post = postService.savePost(postRequest);
 
         // When Then
         mockMvc
@@ -161,7 +161,7 @@ class PostControllerTest {
     @DisplayName("게시글을 수정할 수 있다")
     void testUpdatePost() throws Exception {
         // Given
-        PostWrapper post = postService.savePost(new PostRequest("test post", ""));
+        PostDto post = postService.savePost(new PostRequest("test post", ""));
         PostRequest updateRequest = new PostRequest("updated post", "");
 
         // When Then
