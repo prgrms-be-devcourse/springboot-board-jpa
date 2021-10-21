@@ -19,7 +19,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("")
+    @GetMapping
     public ApiResponse<PageWrapper> getPosts(Pageable pageable) {
         Page<PostWrapper> posts = postService.findPostsByPage(pageable);
         PageWrapper dto = new PageWrapper(posts.getContent(), posts.getTotalPages(), posts.getTotalElements());
@@ -37,7 +37,7 @@ public class PostController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("")
+    @PostMapping
     public ApiResponse<PostWrapper> savePost(@RequestBody final PostRequest postRequest) {
         PostWrapper post = postService.savePost(postRequest);
         return ApiResponse.response(post);
