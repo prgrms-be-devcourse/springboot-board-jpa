@@ -22,7 +22,7 @@ public class PostController {
     @GetMapping
     public ApiResponse<SimplePage> getPosts(Pageable pageable) {
         Page<PostDto> posts = postService.findPostsByPage(pageable);
-        SimplePage dto = new SimplePage(posts.getContent(), posts.getTotalPages(), posts.getTotalElements());
+        SimplePage<PostDto> dto = new SimplePage<>(posts);
         return ApiResponse.response(dto);
     }
 

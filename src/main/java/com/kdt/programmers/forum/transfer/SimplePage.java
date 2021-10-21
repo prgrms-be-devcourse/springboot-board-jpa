@@ -1,6 +1,7 @@
 package com.kdt.programmers.forum.transfer;
 
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -10,9 +11,9 @@ public class SimplePage<T> {
     private final long totalPages;
     private final long totalElements;
 
-    public SimplePage(List<T> content, long totalPages, long totalElements) {
-        this.content = content;
-        this.totalPages = totalPages;
-        this.totalElements = totalElements;
+    public SimplePage(Page<T> page) {
+        this.content = page.getContent();
+        this.totalPages = page.getTotalPages();
+        this.totalElements = page.getTotalElements();
     }
 }

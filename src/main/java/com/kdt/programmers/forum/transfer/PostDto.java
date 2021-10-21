@@ -1,5 +1,6 @@
 package com.kdt.programmers.forum.transfer;
 
+import com.kdt.programmers.forum.domain.Post;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -12,10 +13,10 @@ public class PostDto {
     private final String content;
     private final LocalDateTime createdAt;
 
-    public PostDto(Long id, String title, String content, LocalDateTime createdAt) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.createdAt = createdAt;
+    public PostDto(Post post) {
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.createdAt = post.getCreatedAt();
     }
 }
