@@ -110,6 +110,14 @@ td {
   cursor: pointer;
 }
 
+.button_sort{
+  font-weight: bold;
+  border: 1px solid black;
+  background-color: white;
+  cursor: pointer;
+}
+
+.button_sort:hover,
 .button_page_move:hover,
 .button_page:hover{
   background-color: lightgray;

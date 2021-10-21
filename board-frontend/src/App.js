@@ -16,7 +16,7 @@ function App() {
 
       <Route path="/" component={ Login } exact />
       <Route path="/mypage" component={ Mypage } exact />
-      <Route path="/board/:page" component={ Board } exact />
+      <Route path="/board" component={ Board } exact />
       <Route path="/posting" component={ Posting } exact />
       <Route path="/post/:postId" component={ Post } exact />
       <Route path="/update-post/:postId" component={ UpdatePost } exact />
