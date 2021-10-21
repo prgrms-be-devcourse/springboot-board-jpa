@@ -2,6 +2,7 @@ package com.devco.jpaproject.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -20,11 +21,11 @@ public class ApiResponse<T>{
     }
 
     public static <T> ApiResponse<T> ok(T data){
-        return new ApiResponse<>(200, data);
+        return new ApiResponse<>(HttpStatus.OK.value(), data);
     }
 
     public static <T> ApiResponse<T> created(T data){
-        return new ApiResponse<>(201, data);
+        return new ApiResponse<>(HttpStatus.CREATED.value(), data);
     }
 
     public static <T> ApiResponse<T> fail(int statusCode, T data){
