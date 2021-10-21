@@ -85,7 +85,7 @@ class PostControllerTest {
                 .build();
 
         //when //then
-        mockMvc.perform(post("/api/v1/post")
+        mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))  // dto를 String형태로 변환해서 requestbody에 삽입
                 .andExpect(status().isOk())  // 기대되는 결과 200 일 것
@@ -112,7 +112,7 @@ class PostControllerTest {
         Long toBeFoundPostId = globalPostId;
 
         //when, then
-        mockMvc.perform(get("/api/v1/post/{id}", toBeFoundPostId)
+        mockMvc.perform(get("/api/v1/posts/{id}", toBeFoundPostId)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -193,7 +193,7 @@ class PostControllerTest {
                 .build();
 
         //when then
-        mockMvc.perform(delete("/api/v1/post")
+        mockMvc.perform(delete("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))  // dto를 String형태로 변환해서 requestbody에 삽입
                 .andExpect(status().isOk())  // 기대되는 결과 200 일 것
@@ -219,7 +219,7 @@ class PostControllerTest {
                 .build();
 
         //when then
-        mockMvc.perform(patch("/api/v1/post")
+        mockMvc.perform(patch("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())  // 기대되는 결과 200 일 것

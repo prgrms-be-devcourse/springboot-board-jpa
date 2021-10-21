@@ -29,27 +29,27 @@ public class PostController {
         return ApiResponse.ok(allPosts);
     }
 
-    @GetMapping("/post/{id}")
+    @GetMapping("/posts/{id}")
     public ApiResponse<PostResponseDto> findById(@PathVariable Long id) throws PostNotFoundException {
         var postResponseDto = postService.findById(id);
         return ApiResponse.ok(postResponseDto);
     }
 
-    @PostMapping("/post")
+    @PostMapping("/posts")
     public ApiResponse<Long> insert(@Valid @RequestBody PostRequestDto dto) throws UserNotFoundException {
         Long postId = postService.insert(dto);
 
         return ApiResponse.created(postId);
     }
 
-    @PatchMapping("/post")
+    @PatchMapping("/posts")
     public ApiResponse<String> update(@Valid @RequestBody PostUpdateRequestDto dto) throws PostNotFoundException, UserAndPostNotMatchException {
         postService.update(dto);
 
         return ApiResponse.ok(SUCCESS);
     }
 
-    @DeleteMapping("/post")
+    @DeleteMapping("/posts")
     public ApiResponse<String> deleteOne(@Valid @RequestBody PostDeleteRequestDto dto)
             throws PostNotFoundException, UserAndPostNotMatchException {
         postService.deleteOne(dto);

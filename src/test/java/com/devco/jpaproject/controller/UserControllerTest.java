@@ -70,7 +70,7 @@ class UserControllerTest {
                 .build();
 
         //when, then
-        mockMvc.perform(post("/api/v1/user")
+        mockMvc.perform(post("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userDto)))  // dto를 String형태로 변환해서 requestbody에 삽입
                 .andExpect(status().isOk())  // 기대되는 결과 200 일 것
@@ -97,7 +97,7 @@ class UserControllerTest {
         var id = globalUserId;
 
         // when, then
-        mockMvc.perform(delete("/api/v1/user/{id}", id)
+        mockMvc.perform(delete("/api/v1/users/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())  // 기대되는 결과 200 일 것
@@ -113,7 +113,7 @@ class UserControllerTest {
         var id = globalUserId;
 
         // when, then
-        mockMvc.perform(get("/api/v1/user/{id}", id)
+        mockMvc.perform(get("/api/v1/users/{id}", id)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())  // 기대되는 결과 200 일 것
                 .andDo(print())  // 결과를 프린트함
