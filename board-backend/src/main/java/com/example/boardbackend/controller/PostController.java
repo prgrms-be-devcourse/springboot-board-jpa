@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,21 +25,21 @@ public class PostController {
 
     // 게시물 생성
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@Valid  @RequestBody PostDto postDto) {
-        PostDto response = postService.savePost(postDto);
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto request) {
+        PostDto response = postService.savePost(request);
         return ResponseEntity.ok(response);
     }
 
     // 게시물 전체 조회 (페이징)
     @GetMapping
-    public ResponseEntity<Page<BoardResponse>> getAllPosts(Pageable pageable){
+    public ResponseEntity<Page<BoardResponse>> getAllPosts(Pageable pageable) {
         Page<BoardResponse> response = postService.findPostsAll(pageable);
         return ResponseEntity.ok(response);
     }
 
     // 총 게시글 수 조회
     @GetMapping("/total")
-    public ResponseEntity<Long> getTotalCount(){
+    public ResponseEntity<Long> getTotalCount() {
         Long response = postService.countPostsAll();
         return ResponseEntity.ok(response);
     }
@@ -60,9 +62,9 @@ public class PostController {
     @PatchMapping("/{id}")
     public ResponseEntity<PostDto> updatePost(
             @PathVariable("id") Long id,
-            @Valid @RequestBody UpdatePostRequest updatePostRequest
+            @Valid @RequestBody UpdatePostRequest request
     ) {
-        PostDto response = postService.updatePostById(id, updatePostRequest);
+        PostDto response = postService.updatePostById(id, request);
         return ResponseEntity.ok(response);
     }
 
@@ -70,9 +72,9 @@ public class PostController {
     @PatchMapping("/{id}/view")
     public ResponseEntity<Long> updateView(
             @PathVariable("id") Long id,
-            @RequestBody UpdateViewRequest updateViewRequest
+            @Valid @RequestBody UpdateViewRequest request
     ) {
-        Long response = postService.updateViewById(id, updateViewRequest);
+        Long response = postService.updateViewById(id, request);
         return ResponseEntity.ok(response);
     }
 
@@ -82,5 +84,17 @@ public class PostController {
         postService.deletePostById(id);
         return ResponseEntity.ok().build();
     }
+
+    // 검색
+    @GetMapping("/search")
+    public ResponseEntity<Page<BoardResponse>> searchPost(
+            @RequestParam("searchType") SearchType searchType,
+            @RequestParam(value = "keyword") @NotBlank String keyword,
+            Pageable pageable
+    ) {
+        Page<BoardResponse> response = postService.findPostsByKeyword(searchType, keyword, pageable);
+        return ResponseEntity.ok(response);
+    }
+
 
 }

@@ -16,16 +16,19 @@ function Board(props) {
     const page = query.page;
     const sort = query.sort;
     const size = 10;
+    const search = query.search;
+    const keyword = query.keyword;
     const [pageList, setPageList] = useState([]);
     const [posts, setPosts] = useState([]);
     const [total, setTotal] = useState();
     const [prev, setPrev] = useState();
     const [next, setNext] = useState();
+    const [inputKeyword, setInputKeyword] = useState();
+    const [searchType, setSearchType] = useState("");
 
 
     // Effect
     useEffect(() => {
-        console.log(page, sort)
         // 페이징 조회 요청
         axios.get(origin + "/post", { params: { page: page - 1, size: size, sort: sort } })
             .then(res => {
@@ -51,13 +54,29 @@ function Board(props) {
             })
     }, [props]);
 
-    // button
+    // Handler
+    const searchTypeHandler = (e) => setSearchType(e.currentTarget.value)
+    const inputKeywordHandler = (e) => setInputKeyword(e.currentTarget.value)
+
+    // Button
     const movePage = (page) => {
         props.history.push(`/board?page=${page}&sort=${sort}`);
     }
-
     const changeSort = (sort) => {
         props.history.push(`/board?page=${page}&sort=${sort}`);
+    }
+    const changeSearch = () => {
+        // `/board?page=${page}&sort=${sort}&search=${}&keyword=${}`
+        console.log(inputKeyword)
+        axios.get(origin + "/post/search", { params: { searchType: searchType, keyword: inputKeyword, page: 0, size: size, sort: sort} })
+            .then(res => {
+                console.log(res.data.content);
+            })
+            .catch(err => {
+                console.log(err.response)
+                if (err.response.status == 400 || err.response.status == 404)
+                    alert(err.response.data.message);
+            });
     }
 
     return (
@@ -66,36 +85,45 @@ function Board(props) {
             <Menu />
 
             <h2>게시판 (page{page})</h2>
-            <hr /><br />
             <Link to="/posting" style={{ fontSize: "20px" }}>📝 게시글 작성하기</Link>
 
-            <br /><br /><br />
+            <hr /><br />
+
+            <div className="div_wrapper_search">
+                <input type="radio" name="search" value="TITLE" onChange={searchTypeHandler} /> 제목
+                <input type="radio" name="search" value="CONTENT" onChange={searchTypeHandler} /> 내용
+                <input type="radio" name="search" value="AUTHOR" onChange={searchTypeHandler} /> 작성자
+                <input style={{ marginTop: "15px" }} type="text" placeholder="검색어를 입력하세요" onChange={inputKeywordHandler} />
+                <button onClick={changeSearch}>검색</button>
+            </div>
+
+            <br /><br />
 
             <div style={{ textAlign: "center" }}>
                 <table>
                     <tr>
-                        <th>id(post)
+                        <th>post_id&nbsp;
                             {(
                                 () => {
-                                    if(sort === "id,DESC")
+                                    if (sort === "id,DESC")
                                         return (<button className="button_sort" onClick={() => changeSort("id,ASC")}>∨</button>)
                                     else
                                         return (<button className="button_sort" onClick={() => changeSort("id,DESC")}>∧</button>)
                                 }
                             )()}
                         </th>
-                        <th style={{ width: "50%" }}>제목(title)</th>
-                        <th>조회수(view)
+                        <th style={{ width: "50%" }}>제목</th>
+                        <th>조회수&nbsp;
                             {(
                                 () => {
-                                    if(sort === "view,DESC")
+                                    if (sort === "view,DESC")
                                         return (<button className="button_sort" onClick={() => changeSort("view,ASC")}>∨</button>)
                                     else
                                         return (<button className="button_sort" onClick={() => changeSort("view,DESC")}>∧</button>)
                                 }
                             )()}
                         </th>
-                        <th>작성자(createdBy)</th>
+                        <th>작성자</th>
                     </tr>
                     {
                         posts.map(v =>

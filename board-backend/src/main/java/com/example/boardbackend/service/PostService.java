@@ -1,6 +1,7 @@
 package com.example.boardbackend.service;
 
 import com.example.boardbackend.common.error.exception.NotFoundException;
+import com.example.boardbackend.controller.SearchType;
 import com.example.boardbackend.domain.Post;
 import com.example.boardbackend.dto.PostDto;
 import com.example.boardbackend.dto.request.UpdatePostRequest;
@@ -37,7 +38,7 @@ public class PostService {
                 .map(BoardResponse::of);
     }
 
-    public Long countPostsAll(){
+    public Long countPostsAll() {
         return postRepository.count();
     }
 
@@ -57,7 +58,7 @@ public class PostService {
     @Transactional
     public PostDto updatePostById(Long id, UpdatePostRequest updatePostRequest) {
         Optional<Post> byId = postRepository.findById(id);
-        if(byId.isEmpty())
+        if (byId.isEmpty())
             throw new NotFoundException("해당 ID의 게시물을 찾을 수 없습니다");
         Post entity = byId.get();
         String newTitle = updatePostRequest.getTitle();
@@ -69,7 +70,7 @@ public class PostService {
     @Transactional
     public Long updateViewById(Long id, UpdateViewRequest updateViewRequest) {
         Optional<Post> byId = postRepository.findById(id);
-        if(byId.isEmpty())
+        if (byId.isEmpty())
             throw new NotFoundException("해당 ID의 게시물을 찾을 수 없습니다");
         Post entity = byId.get();
         Long newView = updateViewRequest.getView();
@@ -80,6 +81,20 @@ public class PostService {
     @Transactional
     public void deletePostById(Long id) {
         postRepository.deleteById(id);
+    }
+
+    public Page<BoardResponse> findPostsByKeyword(SearchType searchType, String keyword, Pageable pageable) {
+        Page<Post> foundResult;
+        // 검색 유형에 따라 분기
+        if(searchType == SearchType.TITLE)
+            foundResult = postRepository.findByTitleContains(keyword, pageable);
+        else if(searchType == SearchType.CONTENT )
+            foundResult = postRepository.findByContentContains(keyword, pageable);
+        else
+            foundResult = postRepository.findByUserNameContains(keyword, pageable);
+        return foundResult
+                .map(PostDto::of)
+                .map(BoardResponse::of);
     }
 
 }

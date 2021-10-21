@@ -19,15 +19,15 @@ public class UserController {
 
     // 회원가입
     @PostMapping
-    public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserDto userDto){
-        UserDto response = userService.saveUser(userDto);
+    public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserDto request){
+        UserDto response = userService.saveUser(request);
         return ResponseEntity.ok(response);
     }
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<UserIdResponse> login(@Valid @RequestBody LoginRequest loginRequest){
-        UserIdResponse response = userService.login(loginRequest);
+    public ResponseEntity<UserIdResponse> login(@Valid @RequestBody LoginRequest request){
+        UserIdResponse response = userService.login(request);
         return ResponseEntity.ok(response);
     }
 
