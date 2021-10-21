@@ -13,6 +13,7 @@ public class PostConverter {
         Post post = new Post();
         post.update(request.getTitle(), request.getContent());
         post.setCreatedAt(LocalDateTime.now());
+
         return post;
     }
 

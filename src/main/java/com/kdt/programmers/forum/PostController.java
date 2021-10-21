@@ -23,6 +23,7 @@ public class PostController {
     public ApiResponse<SimplePage> getPosts(Pageable pageable) {
         Page<PostDto> posts = postService.findPostsByPage(pageable);
         SimplePage<PostDto> dto = new SimplePage<>(posts);
+
         return ApiResponse.response(dto);
     }
 

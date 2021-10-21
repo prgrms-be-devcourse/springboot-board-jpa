@@ -24,6 +24,7 @@ public class PostService {
     public PostDto savePost(PostRequest request) {
         Post post = postConverter.toPost(request);
         Post entity = postRepository.save(post);
+
         return postConverter.toPostDto(entity);
     }
 
@@ -47,6 +48,7 @@ public class PostService {
 
         Post entity = possibleEntity.get();
         entity.update(request.getTitle(), request.getContent());
+
         return postConverter.toPostDto(entity);
     }
 }
