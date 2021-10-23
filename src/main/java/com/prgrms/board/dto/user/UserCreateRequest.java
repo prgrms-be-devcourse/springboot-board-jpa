@@ -1,17 +1,17 @@
 package com.prgrms.board.dto.user;
 
 import com.prgrms.board.domain.User;
+import com.prgrms.board.customValidation.Name;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
 @NoArgsConstructor
 @Getter
 public class UserCreateRequest {
 
-    @NotBlank(message = "이름이 비어있습니다.")
+    @Name
     private String name;
 
     @Positive
