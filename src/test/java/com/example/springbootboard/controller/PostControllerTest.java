@@ -65,14 +65,14 @@ class PostControllerTest {
                 .build();
 
         userId = userService.insert(userRequestDto);
-//
-//        PostRequestDto postRequestDto = PostRequestDto.builder()
-//                .userId(userId)
-//                .title("testTitle")
-//                .content("testContent")
-//                .build();
-//
-//        postId = postService.insert(postRequestDto);
+
+        PostRequestDto postRequestDto = PostRequestDto.builder()
+                .userId(userId)
+                .title("testTitle")
+                .content("testContent")
+                .build();
+
+        postId = postService.insert(postRequestDto);
     }
 
     @AfterEach
@@ -199,6 +199,7 @@ class PostControllerTest {
         mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postRequestDto)))
+                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
 }
