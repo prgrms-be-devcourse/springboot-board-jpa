@@ -6,10 +6,13 @@ import com.prgrms.board.dto.post.PostFindResponse;
 import com.prgrms.board.dto.post.PostModifyRequest;
 import com.prgrms.board.service.PostService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
+@Validated
 @RequestMapping("/posts")
 @RestController
 public class PostController {
@@ -26,7 +29,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostFindResponse> findPost(final @PathVariable Long id){
+    public ResponseEntity<PostFindResponse> findPost(final @PathVariable @Positive Long id){
         return ResponseEntity.ok(postService.findPost(id));
     }
 
@@ -36,7 +39,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<IdResponse> removePost(final @PathVariable Long id){
+    public ResponseEntity<IdResponse> removePost(final @PathVariable @Positive Long id){
         return ResponseEntity.ok(postService.removePost(id));
     }
 }

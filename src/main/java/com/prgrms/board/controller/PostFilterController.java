@@ -5,8 +5,12 @@ import com.prgrms.board.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Positive;
+
+@Validated
 @RestController
 public class PostFilterController {
 
@@ -17,7 +21,7 @@ public class PostFilterController {
     }
 
     @GetMapping("/users/{id}/posts")
-    public ResponseEntity<Page<PostFindResponse>> findAllPostByUserId(Pageable pageable, final @PathVariable Long id) {
+    public ResponseEntity<Page<PostFindResponse>> findAllPostByUserId(Pageable pageable, final @PathVariable @Positive Long id) {
         return ResponseEntity.ok(postService.findAllPostByUserId(pageable, id));
     }
 

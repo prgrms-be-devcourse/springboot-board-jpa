@@ -5,10 +5,13 @@ import com.prgrms.board.dto.user.UserCreateRequest;
 import com.prgrms.board.dto.user.UserFindRequest;
 import com.prgrms.board.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
+@Validated
 @RequestMapping("/users")
 @RestController
 public class UserController {
@@ -25,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserFindRequest> findUser(final @PathVariable Long id) {
+    public ResponseEntity<UserFindRequest> findUser(final @PathVariable @Positive Long id) {
         return ResponseEntity.ok(userService.findUser(id));
     }
 
@@ -35,7 +38,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<IdResponse> removeUser(final @PathVariable Long id) {
+    public ResponseEntity<IdResponse> removeUser(final @PathVariable @Positive Long id) {
         return ResponseEntity.ok(userService.removeUser(id));
     }
 
