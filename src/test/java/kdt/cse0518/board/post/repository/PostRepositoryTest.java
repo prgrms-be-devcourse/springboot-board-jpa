@@ -38,7 +38,9 @@ class PostRepositoryTest {
     @BeforeEach
     void setUp() {
         newUser1 = userFactory.createUser("최승은", 26, "weight training");
+        userRepository.save(newUser1);
         newPost1 = postFactory.createPost("제목", "내용", newUser1);
+        postRepository.save(newPost1);
     }
 
     @Test
@@ -50,7 +52,8 @@ class PostRepositoryTest {
         assertThat(postEntity.getContent(), is("내용"));
         assertThat(postEntity.getUser().getName(), is("최승은"));
 
-        postFactory.createPost("제목2", "내용2", newUser1);
+        final Post newPost2 = postFactory.createPost("제목2", "내용2", newUser1);
+        postRepository.save(newPost2);
 
         final Post postEntity2 = postRepository.findById(2L).get();
         assertThat(postEntity2.getTitle(), is("제목2"));
@@ -69,7 +72,8 @@ class PostRepositoryTest {
     @Transactional
     void testFindByUser() {
         final Pageable pageable = PageRequest.of(0, 5);
-        postFactory.createPost("제목2", "내용2", newUser1);
+        final Post newPost2 = postFactory.createPost("제목2", "내용2", newUser1);
+        postRepository.save(newPost2);
         final Page<Post> postsByUser = postRepository.findByUser(newUser1, pageable);
         assertThat(postsByUser.getContent().size(), is(2));
     }

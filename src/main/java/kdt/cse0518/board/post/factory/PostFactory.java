@@ -17,13 +17,12 @@ public class PostFactory {
     }
 
     public Post createPost(final String title, final String content, final User user) {
-        final Post newPost = Post.builder()
+        return Post.builder()
                 .title(title)
                 .content(content)
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
+                .user(user)
                 .build();
-        newPost.setUser(user);
-        return repository.save(newPost);
     }
 }

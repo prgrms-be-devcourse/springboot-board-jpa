@@ -34,6 +34,7 @@ public class PostConverter {
         return ResponseDto.builder()
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
+                .userId(postDto.getUser().getUserId())
                 .build();
     }
 

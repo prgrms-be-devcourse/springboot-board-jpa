@@ -32,9 +32,14 @@ public class UserService {
         return converter.toUserDto(userEntity);
     }
 
+    public User saveUser(final UserDto userDto) {
+        final User user = converter.toUser(userDto);
+        return repository.save(user);
+    }
+
     public Long newRequestDtoSave(final UserDto userDto) {
         final User userEntity = factory.createUser(userDto.getName(), userDto.getAge(), userDto.getHobby());
-        return userEntity.getUserId();
+        return repository.save(userEntity).getUserId();
     }
 
     public Long update(final UserDto userDto) {

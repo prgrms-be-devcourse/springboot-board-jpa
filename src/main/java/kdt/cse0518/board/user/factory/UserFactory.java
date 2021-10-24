@@ -16,13 +16,12 @@ public class UserFactory {
     }
 
     public User createUser(final String name, final int age, final String hobby) {
-        final User newUser = User.builder()
+        return User.builder()
                 .name(name)
                 .age(age)
                 .hobby(hobby)
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
                 .build();
-        return repository.save(newUser);
     }
 }

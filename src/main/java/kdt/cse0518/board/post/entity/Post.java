@@ -7,7 +7,6 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "post")
@@ -40,11 +39,10 @@ public class Post {
     protected Post() {
     }
 
-    public void setUser(final User user) {
-        if (Objects.nonNull(this.user)) {
-            this.user.getPosts().remove(this);
-        }
-
+    @Builder
+    public Post(final String title, final String content, final User user) {
+        this.title = title;
+        this.content = content;
         this.user = user;
         user.addPost(this);
     }

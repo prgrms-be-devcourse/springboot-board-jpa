@@ -46,7 +46,7 @@ public class PostService {
 
     public Long newPostSave(final ResponseDto res) {
         final Post postEntity = factory.createPost(res.getTitle(), res.getContent(), userRepository.findById(res.getUserId()).get());
-        return postEntity.getPostId();
+        return postRepository.save(postEntity).getPostId();
     }
 
     public Long update(final PostDto postDto) {

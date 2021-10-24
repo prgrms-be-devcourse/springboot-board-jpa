@@ -1,5 +1,6 @@
 package kdt.cse0518.board.user.service;
 
+import kdt.cse0518.board.user.converter.UserConverter;
 import kdt.cse0518.board.user.dto.UserDto;
 import kdt.cse0518.board.user.entity.User;
 import kdt.cse0518.board.user.factory.UserFactory;
@@ -26,12 +27,16 @@ class UserServiceTest {
     @Autowired
     private UserService service;
     @Autowired
-    private UserFactory userFactory;
+    private UserFactory factory;
+    @Autowired
+    private UserConverter converter;
 
     @BeforeEach
     void setUp() {
-        newUser1 = userFactory.createUser("사람1", 25, "취미1");
-        newUser2 = userFactory.createUser("사람2", 26, "취미2");
+        final User user1 = factory.createUser("사람1", 25, "취미1");
+        newUser1 = service.saveUser(converter.toUserDto(user1));
+        final User user2 = factory.createUser("사람2", 26, "취미2");
+        newUser2 = service.saveUser(converter.toUserDto(user2));
     }
 
     @Test

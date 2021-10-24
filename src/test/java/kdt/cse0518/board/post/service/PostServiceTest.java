@@ -1,15 +1,14 @@
 package kdt.cse0518.board.post.service;
 
+import kdt.cse0518.board.post.converter.PostConverter;
 import kdt.cse0518.board.post.dto.PostDto;
 import kdt.cse0518.board.post.dto.ResponseDto;
 import kdt.cse0518.board.post.entity.Post;
 import kdt.cse0518.board.post.factory.PostFactory;
-import kdt.cse0518.board.post.repository.PostRepository;
 import kdt.cse0518.board.user.converter.UserConverter;
 import kdt.cse0518.board.user.dto.UserDto;
 import kdt.cse0518.board.user.entity.User;
 import kdt.cse0518.board.user.factory.UserFactory;
-import kdt.cse0518.board.user.repository.UserRepository;
 import kdt.cse0518.board.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,17 +30,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class PostServiceTest {
 
     final private Pageable pageable = PageRequest.of(0, 5);
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    PostRepository postRepository;
-    private User newUser1;
-    private User newUser2;
-    private Post newPost1;
+    private User user1;
+    private User user2;
+    private Long newPostId1;
     private Post newPost2;
     private Post newPost3;
     @Autowired
     private UserConverter userConverter;
+    @Autowired
+    private PostConverter postConverter;
     @Autowired
     private UserService userService;
     @Autowired
@@ -53,8 +50,10 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        newUser1 = userFactory.createUser("최승은", 26, "weight training");
-        newPost1 = postFactory.createPost("제목1", "내용1", newUser1);
+        final User newUser1 = userFactory.createUser("최승은", 26, "weight training");
+        user1 = userService.saveUser(userConverter.toUserDto(newUser1));
+        final Post post1 = postFactory.createPost("제목1", "내용1", user1);
+        newPostId1 = postService.newPostSave(postConverter.toResponseDto(postConverter.toPostDto(post1)));
     }
 
     @Test
@@ -62,7 +61,7 @@ class PostServiceTest {
     @DisplayName("postId로 Post를 조회할 수 있다.")
     @Transactional
     void testFindById() {
-        final PostDto finded = postService.findById(newPost1.getPostId());
+        final PostDto finded = postService.findById(newPostId1);
 
         assertThat(finded.getTitle(), is("제목1"));
         assertThat(finded.getContent(), is("내용1"));
@@ -74,12 +73,15 @@ class PostServiceTest {
     @Transactional
     void testFindAllByUser() {
         // Given
-        newUser2 = userFactory.createUser("최승은2", 26, "취미2");
-        newPost2 = postFactory.createPost("제목2", "내용2", newUser1);
-        newPost3 = postFactory.createPost("제목3", "내용3", newUser2);
+        final User newUser2 = userFactory.createUser("최승은2", 26, "취미2");
+        user2 = userService.saveUser(userConverter.toUserDto(newUser2));
+        newPost2 = postFactory.createPost("제목2", "내용2", user1);
+        postService.newPostSave(postConverter.toResponseDto(postConverter.toPostDto(newPost2)));
+        newPost3 = postFactory.createPost("제목3", "내용3", user2);
+        postService.newPostSave(postConverter.toResponseDto(postConverter.toPostDto(newPost3)));
 
         // When
-        final UserDto findedUserDto = userService.findById(newUser1.getUserId());
+        final UserDto findedUserDto = userService.findById(user1.getUserId());
         final Page<PostDto> allPostsByUser = postService.findAllByUser(findedUserDto, pageable);
         final UserDto exceptionUserDto = UserDto.builder().userId(100L).build();
 
@@ -96,9 +98,12 @@ class PostServiceTest {
     @Transactional
     void testFindAll() {
         // Given
-        newUser2 = userFactory.createUser("최승은2", 26, "취미2");
-        newPost2 = postFactory.createPost("제목2", "내용2", newUser1);
-        newPost3 = postFactory.createPost("제목3", "내용3", newUser2);
+        final User newUser2 = userFactory.createUser("최승은2", 26, "취미2");
+        user2 = userService.saveUser(userConverter.toUserDto(newUser2));
+        newPost2 = postFactory.createPost("제목2", "내용2", user2);
+        postService.newPostSave(postConverter.toResponseDto(postConverter.toPostDto(newPost2)));
+        newPost3 = postFactory.createPost("제목3", "내용3", user2);
+        postService.newPostSave(postConverter.toResponseDto(postConverter.toPostDto(newPost3)));
 
         // When
         final Page<PostDto> allPostDto = postService.findAll(pageable);
@@ -116,14 +121,14 @@ class PostServiceTest {
     @Transactional
     void testUpdate() {
         // Given
-        final PostDto findedPostDto = postService.findById(newPost1.getPostId());
+        final PostDto findedPostDto = postService.findById(newPostId1);
 
         // When
         findedPostDto.update("바뀐 제목1", "바뀐 내용1");
         postService.update(findedPostDto);
 
         // Then
-        assertThat(postService.findById(newPost1.getPostId()).getTitle(), is("바뀐 제목1"));
+        assertThat(postService.findById(newPostId1).getTitle(), is("바뀐 제목1"));
     }
 
     @Test
@@ -135,7 +140,7 @@ class PostServiceTest {
         final ResponseDto res = ResponseDto.builder()
                 .title("제목 요청")
                 .content("내용 요청")
-                .userId(newUser1.getUserId())
+                .userId(user1.getUserId())
                 .build();
 
         // When
@@ -143,7 +148,7 @@ class PostServiceTest {
 
         // Then
         assertThat(
-                postService.findAllByUser(userConverter.toUserDto(newUser1), pageable)
+                postService.findAllByUser(userConverter.toUserDto(user1), pageable)
                         .getContent()
                         .get(1)
                         .getTitle(),

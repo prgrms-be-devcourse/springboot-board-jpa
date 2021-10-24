@@ -25,7 +25,7 @@ class UserRepositoryTest {
     @DisplayName("User가 DB에 저장될 수 있다.")
     @Transactional
     void testSaveUser() {
-        factory.createUser("최승은", 26, "weight training");
+        repository.save(factory.createUser("최승은", 26, "weight training"));
         final User userEntity = repository.findAll().get(0);
 
         assertThat(userEntity.getName(), is("최승은"));
@@ -38,8 +38,8 @@ class UserRepositoryTest {
     @Transactional
     void testFindAll() {
         // Given
-        factory.createUser("사람1", 26, "취미1");
-        factory.createUser("사람2", 30, "취미2");
+        repository.save(factory.createUser("사람1", 26, "취미1"));
+        repository.save(factory.createUser("사람2", 30, "취미2"));
 
         // When
         final List<User> allUsers = repository.findAll();

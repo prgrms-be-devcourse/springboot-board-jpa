@@ -8,8 +8,10 @@ import kdt.cse0518.board.post.dto.ResponseDto;
 import kdt.cse0518.board.post.entity.Post;
 import kdt.cse0518.board.post.factory.PostFactory;
 import kdt.cse0518.board.post.service.PostService;
+import kdt.cse0518.board.user.converter.UserConverter;
 import kdt.cse0518.board.user.entity.User;
 import kdt.cse0518.board.user.factory.UserFactory;
+import kdt.cse0518.board.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,21 +43,27 @@ class PostControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
+    private UserService userService;
+    @Autowired
     private PostService postService;
     @Autowired
-    private PostConverter converter;
+    private PostConverter postConverter;
+    @Autowired
+    private UserConverter userConverter;
     @Autowired
     private UserFactory userFactory;
     @Autowired
     private PostFactory postFactory;
 
     private User newUser1;
-    private Post newPost1;
+    private Long newPostId;
 
     @BeforeEach
     void setUp() {
-        newUser1 = userFactory.createUser("사람1", 30, "취미1");
-        newPost1 = postFactory.createPost("제목1", "내용1", newUser1);
+        final User user1 = userFactory.createUser("사람1", 30, "취미1");
+        newUser1 = userService.saveUser(userConverter.toUserDto(user1));
+        final Post post1 = postFactory.createPost("제목1", "내용1", newUser1);
+        newPostId = postService.newPostSave(postConverter.toResponseDto(postConverter.toPostDto(post1)));
     }
 
     @Test
@@ -111,7 +119,7 @@ class PostControllerTest {
     @Test
     @DisplayName("GET /posts/{postId} 동작 확인")
     void testGetPost() throws Exception {
-        mockMvc.perform(get("/api/v1/posts/{postId}", newPost1.getPostId())
+        mockMvc.perform(get("/api/v1/posts/{postId}", newPostId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -154,11 +162,12 @@ class PostControllerTest {
     @DisplayName("POST /posts/{postId} 동작 확인")
     void testUpdate() throws Exception {
         final Post newPost2 = postFactory.createPost("제목1", "내용1", newUser1);
-        final PostDto dto = postService.findById(newPost2.getPostId());
+        final Long newPostId2 = postService.newPostSave(postConverter.toResponseDto(postConverter.toPostDto(newPost2)));
+        final PostDto dto = postService.findById(newPostId2);
         dto.update("바뀐 제목", "바뀐 내용");
-        final RequestDto requestDto = converter.toRequestDto(dto);
+        final RequestDto requestDto = postConverter.toRequestDto(dto);
 
-        mockMvc.perform(put("/api/v1/posts/{postId}", newPost2.getPostId())
+        mockMvc.perform(put("/api/v1/posts/{postId}", newPostId2)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
