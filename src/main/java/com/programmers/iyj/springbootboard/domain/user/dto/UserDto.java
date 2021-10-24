@@ -14,10 +14,9 @@ import javax.validation.constraints.*;
 @EqualsAndHashCode
 public class UserDto {
 
-    @NotNull
     private Long id;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 1, max = 100)
     private String name;
 
