@@ -16,7 +16,6 @@ public class PostDto {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private String modifiedBy;
     private User user;
 
     private PostDto() {

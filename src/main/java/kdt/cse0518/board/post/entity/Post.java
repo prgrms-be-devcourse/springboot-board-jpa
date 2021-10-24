@@ -33,9 +33,6 @@ public class Post {
     @Column(name = "modified_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime modifiedAt;
 
-    @Column(name = "modified_by")
-    private String modifiedBy;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", referencedColumnName = "user_id")
     private User user;
