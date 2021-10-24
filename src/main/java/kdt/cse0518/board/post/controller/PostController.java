@@ -4,10 +4,10 @@ import kdt.cse0518.board.common.api.ApiResponse;
 import kdt.cse0518.board.post.converter.PostConverter;
 import kdt.cse0518.board.post.dto.PostDto;
 import kdt.cse0518.board.post.dto.RequestDto;
+import kdt.cse0518.board.post.dto.ResponseDto;
 import kdt.cse0518.board.post.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,16 +19,6 @@ public class PostController {
     public PostController(final PostService postService, final PostConverter converter) {
         this.postService = postService;
         this.converter = converter;
-    }
-
-    @ExceptionHandler
-    private ApiResponse<String> exceptionHandle(final Exception exception) {
-        return ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
-    }
-
-    @ExceptionHandler(NullPointerException.class)
-    private ApiResponse<String> notFoundHandle(final NullPointerException exception) {
-        return ApiResponse.fail(HttpStatus.NOT_FOUND.value(), exception.getMessage());
     }
 
     @GetMapping
@@ -48,8 +38,8 @@ public class PostController {
 //    }
 
     @PostMapping
-    public ApiResponse<Long> insert(@RequestBody final PostDto postDto) {
-        return ApiResponse.ok(postService.newRequestDtoSave(postDto));
+    public ApiResponse<Long> insert(@RequestBody final ResponseDto res) {
+        return ApiResponse.ok(postService.newPostSave(res));
     }
 
     @PutMapping("/{postId}")

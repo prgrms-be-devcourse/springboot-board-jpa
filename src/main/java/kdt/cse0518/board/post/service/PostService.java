@@ -2,6 +2,7 @@ package kdt.cse0518.board.post.service;
 
 import kdt.cse0518.board.post.converter.PostConverter;
 import kdt.cse0518.board.post.dto.PostDto;
+import kdt.cse0518.board.post.dto.ResponseDto;
 import kdt.cse0518.board.post.entity.Post;
 import kdt.cse0518.board.post.factory.PostFactory;
 import kdt.cse0518.board.post.repository.PostRepository;
@@ -43,8 +44,8 @@ public class PostService {
                 .map(converter::toPostDto);
     }
 
-    public Long newRequestDtoSave(final PostDto postDto) {
-        final Post postEntity = factory.createPost(postDto.getTitle(), postDto.getContent(), postDto.getUser());
+    public Long newPostSave(final ResponseDto res) {
+        final Post postEntity = factory.createPost(res.getTitle(), res.getContent(), userRepository.findById(res.getUserId()).get());
         return postEntity.getPostId();
     }
 

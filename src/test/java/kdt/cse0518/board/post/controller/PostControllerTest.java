@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kdt.cse0518.board.post.converter.PostConverter;
 import kdt.cse0518.board.post.dto.PostDto;
 import kdt.cse0518.board.post.dto.RequestDto;
+import kdt.cse0518.board.post.dto.ResponseDto;
 import kdt.cse0518.board.post.entity.Post;
 import kdt.cse0518.board.post.factory.PostFactory;
 import kdt.cse0518.board.post.service.PostService;
 import kdt.cse0518.board.user.entity.User;
 import kdt.cse0518.board.user.factory.UserFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
+@Slf4j
 class PostControllerTest {
 
     @Autowired
@@ -114,8 +117,8 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(document("getPost_by_postId",
                         responseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("data.userId"),
-                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("data.postId"),
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("data"),
                                 fieldWithPath("data.postId").type(JsonFieldType.NUMBER).description("data.postId"),
                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("data.title"),
                                 fieldWithPath("data.content").type(JsonFieldType.STRING).description("data.content"),
@@ -128,19 +131,21 @@ class PostControllerTest {
     @Test
     @DisplayName("POST /posts 동작 확인")
     void testInsert() throws Exception {
-        final Post newPost2 = postFactory.createPost("제목1", "내용1", newUser1);
-        final PostDto dto = postService.findById(newPost2.getPostId());
-        final RequestDto requestDto = converter.toRequestDto(dto);
+        final ResponseDto res = ResponseDto.builder()
+                .title("제목 요청")
+                .content("내용 요청")
+                .userId(newUser1.getUserId())
+                .build();
 
         mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestDto)))
+                        .content(objectMapper.writeValueAsString(res)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("insertPost",
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
-                                fieldWithPath("data").type(JsonFieldType.STRING).description("data"),
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("data"),
                                 fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("serverDatetime")
                         )));
     }

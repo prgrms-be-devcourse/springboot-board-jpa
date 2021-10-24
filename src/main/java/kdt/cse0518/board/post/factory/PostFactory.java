@@ -22,7 +22,6 @@ public class PostFactory {
                 .content(content)
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
-                .modifiedBy(user.getName())
                 .build();
         newPost.setUser(user);
         return repository.save(newPost);

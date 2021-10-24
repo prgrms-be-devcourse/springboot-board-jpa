@@ -1,6 +1,7 @@
 package kdt.cse0518.board.post.service;
 
 import kdt.cse0518.board.post.dto.PostDto;
+import kdt.cse0518.board.post.dto.ResponseDto;
 import kdt.cse0518.board.post.entity.Post;
 import kdt.cse0518.board.post.factory.PostFactory;
 import kdt.cse0518.board.post.repository.PostRepository;
@@ -21,7 +22,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -132,17 +132,14 @@ class PostServiceTest {
     @Transactional
     void testNewRequestDtoSave() {
         // Given
-        final PostDto requestPostDto = PostDto.builder()
+        final ResponseDto res = ResponseDto.builder()
                 .title("제목 요청")
                 .content("내용 요청")
-                .createdAt(LocalDateTime.now())
-                .modifiedAt(LocalDateTime.now())
-                .modifiedBy(newUser1.getName())
-                .user(newUser1)
+                .userId(newUser1.getUserId())
                 .build();
 
         // When
-        postService.newRequestDtoSave(requestPostDto);
+        postService.newPostSave(res);
 
         // Then
         assertThat(

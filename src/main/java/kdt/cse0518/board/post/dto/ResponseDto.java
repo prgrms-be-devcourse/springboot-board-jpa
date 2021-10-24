@@ -10,9 +10,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ResponseDto {
-    private Long postId;
     private String title;
     private String content;
+    private Long userId;
 
     private ResponseDto() {
     }
