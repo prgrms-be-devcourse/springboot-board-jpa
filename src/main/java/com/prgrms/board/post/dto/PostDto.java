@@ -13,14 +13,15 @@ import javax.validation.constraints.NotBlank;
 public class PostDto {
     private Long id;
 
-    @NotBlank(message = "제목을 입력해주세요.")
+    @NotBlank(message = "enter the title.")
     @Length(max = 50)
     private String title;
 
-    @NotBlank(message = "내용을 입력해주세요.")
+    @NotBlank(message = "enter the content.")
     @Length(max = 500)
     private String content;
 
+    @NotBlank(message = "enter the user.")
     private UserDto userDto;
 
     @Builder

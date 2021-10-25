@@ -1,6 +1,6 @@
 package com.prgrms.board.domain.post;
 
-import com.prgrms.board.common.BaseEntity;
+import com.prgrms.board.common.domain.BaseEntity;
 import com.prgrms.board.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;

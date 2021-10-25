@@ -13,11 +13,11 @@ import javax.validation.constraints.NotBlank;
 public class UserDto {
     private Long id;
 
-    @NotBlank(message = "이름을 입력해주세요.")
+    @NotBlank(message = "enter the name.")
     @Length(max = 30)
     private String name;
 
-    @NotBlank(message = "나이를 입력해주세요.")
+    @NotBlank(message = "enter the age.")
     private int age;
 
     private String hobby;
