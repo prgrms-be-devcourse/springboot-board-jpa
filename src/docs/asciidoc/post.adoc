@@ -1,0 +1,23 @@
+== 게시글
+
+=== 게시글 생성
+
+=== /posts
+
+.Request
+include::{snippets}/create-post/http-request.adoc[]
+
+.Response
+include::{snippets}/create-post/http-response.adoc[]
+include::{snippets}/create-post/response-fields.adoc[]
+
+=== 게시글 하나 조회
+
+=== /posts/{postId}
+
+.Request
+include::{snippets}/get-one-post/http-request.adoc[]
+
+.Response
+include::{snippets}/get-one-post/http-response.adoc[]
+include::{snippets}/get-one-post/response-fields.adoc[]
