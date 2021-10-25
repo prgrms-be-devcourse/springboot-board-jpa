@@ -6,10 +6,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Getter
-@Entity
-@Table(name = "post")
 @SQLDelete(sql = "UPDATE post SET deleted = true WHERE post_id=?")
 @Where(clause = "deleted=false")
+@Table(name = "post")
+@Entity
 public class Post extends BaseEntity {
 
     @Id
@@ -39,7 +39,6 @@ public class Post extends BaseEntity {
         var newPost = new Post(title, content);
         newPost.changeUser(user);
         return newPost;
-
     }
 
     public void changePost(String title, String content) {
@@ -54,7 +53,6 @@ public class Post extends BaseEntity {
         this.user = user;
         this.user.addPost(this);
     }
-
 
     @Override
     public String toString() {

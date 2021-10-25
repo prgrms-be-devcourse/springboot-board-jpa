@@ -31,6 +31,4 @@ public enum ErrorCode {
     public int getStatus() {
         return status;
     }
-
-
 }

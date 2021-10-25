@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 
 @Getter
-@Setter
 public class PostDetailDto {
 
     private Long id;
@@ -40,6 +40,7 @@ public class PostDetailDto {
     public PostDetailDto() {
     }
 
+    @Builder
     public PostDetailDto(Long id, String title, String content, String createdBy,
         LocalDateTime createdDate, String lastModifiedBy, LocalDateTime lastModifiedDate,
         UserDto userDto) {
@@ -52,5 +53,4 @@ public class PostDetailDto {
         this.lastModifiedDate = lastModifiedDate;
         this.userDto = userDto;
     }
-
 }

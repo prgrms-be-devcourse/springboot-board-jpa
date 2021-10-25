@@ -39,7 +39,6 @@ public class ErrorResponse {
         return new ErrorResponse(code);
     }
 
-
     @Getter
     public static class CustomFieldError {
         private final String field;
@@ -62,6 +61,4 @@ public class ErrorResponse {
                 .collect(Collectors.toList());
         }
     }
-
-
 }

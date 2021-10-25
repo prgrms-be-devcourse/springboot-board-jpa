@@ -43,5 +43,4 @@ public class PostConverter {
             userConverter.convertUserDto(post.getUser())
         );
     }
-
 }

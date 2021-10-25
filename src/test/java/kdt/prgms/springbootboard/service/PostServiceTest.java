@@ -26,13 +26,13 @@ import org.springframework.data.domain.PageRequest;
 class PostServiceTest {
 
     @InjectMocks
-    PostService postService;
+    private PostService postService;
 
     @Mock
-    PostRepository postRepository;
+    private PostRepository postRepository;
 
     @Mock
-    PostConverter postConvertor;
+    private PostConverter postConvertor;
 
     private User user;
 

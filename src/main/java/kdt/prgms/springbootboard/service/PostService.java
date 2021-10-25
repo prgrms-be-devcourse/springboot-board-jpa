@@ -57,5 +57,4 @@ public class PostService {
             .orElseThrow(() -> new PostNotFoundException(
                 MessageFormat.format("post({0})", postId)));
     }
-
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("api/posts")
+@RequestMapping("api/v1/posts")
 public class PostRestController {
 
     private final PostService postService;
@@ -21,26 +21,24 @@ public class PostRestController {
         this.postService = postService;
     }
 
-    @PostMapping("/v1")
+    @PostMapping("")
     public ResponseEntity<PostDetailDto> create(@RequestBody @Valid PostDto postDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.save(postDto));
     }
 
-    @GetMapping("/v1")
+    @GetMapping("")
     public ResponseEntity<Page<PostDto>> getPosts(Pageable pageable) {
         return ResponseEntity.ok(postService.findAll(pageable));
     }
 
-    @GetMapping("v1/{postId}")
+    @GetMapping("/{postId}")
     public ResponseEntity<PostDetailDto> getPostDetail(@PathVariable long postId) {
         return ResponseEntity.ok(postService.findOne(postId));
     }
 
-    @PostMapping("v1/{postId}")
+    @PostMapping("/{postId}")
     public ResponseEntity<PostDetailDto> updatePost(@PathVariable long postId,
         @RequestBody @Valid PostDto postDto) {
         return ResponseEntity.ok(postService.update(postId, postDto));
     }
-
-
 }

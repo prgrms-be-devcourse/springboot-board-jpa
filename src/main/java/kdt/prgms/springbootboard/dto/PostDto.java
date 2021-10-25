@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class PostDto {
 
     private Long id;
@@ -28,12 +28,7 @@ public class PostDto {
     public PostDto() {
     }
 
-    public PostDto(String title, String content, UserDto userDto) {
-        this.title = title;
-        this.content = content;
-        this.userDto = userDto;
-    }
-
+    @Builder
     public PostDto(Long id, String title, String content,
         UserDto userDto) {
         this.id = id;

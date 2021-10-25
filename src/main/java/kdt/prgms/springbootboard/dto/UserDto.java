@@ -5,11 +5,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class UserDto {
     private Long id;
 
@@ -24,10 +24,10 @@ public class UserDto {
     public UserDto() {
     }
 
+    @Builder
     public UserDto(Long id, String name, int age) {
         this.id = id;
         this.name = name;
         this.age = age;
     }
-
 }
