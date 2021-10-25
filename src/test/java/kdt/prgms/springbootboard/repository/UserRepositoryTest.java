@@ -24,7 +24,7 @@ class UserRepositoryTest {
     private TestEntityManager entityManager;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Test
     void 유저가_없으면_빈_결과값이_정상() {

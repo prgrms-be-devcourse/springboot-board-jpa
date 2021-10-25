@@ -8,10 +8,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Getter
-@Entity
-@Table(name = "user")
 @SQLDelete(sql = "UPDATE user SET deleted = true WHERE user_id=?")
 @Where(clause = "deleted=false")
+@Table(name = "user")
+@Entity
 public class User extends BaseEntity {
 
     @Id
@@ -56,7 +56,6 @@ public class User extends BaseEntity {
     public void removePost(Post post) {
         this.posts.remove(post);
     }
-
 
     @Override
     public String toString() {
