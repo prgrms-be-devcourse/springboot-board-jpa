@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -36,7 +34,9 @@ public class SimpleUserService implements UserService{
 
         // 등록
         final User willSaveUser = addUserRequestDto.convertToEntity();
-        userRepository.save(willSaveUser);
+        final User savedUser = userRepository.save(willSaveUser);
+
+        return savedUser.getId();
     }
 
     @Override
