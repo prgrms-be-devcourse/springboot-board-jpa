@@ -3,12 +3,8 @@ package com.programmers.iyj.springbootboard.domain.post.domain;
 import com.programmers.iyj.springbootboard.domain.model.BaseEntity;
 import com.programmers.iyj.springbootboard.domain.user.domain.User;
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
@@ -18,7 +14,7 @@ import java.util.Objects;
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "post_id")
     private Long id;
 
