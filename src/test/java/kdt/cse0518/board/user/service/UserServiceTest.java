@@ -1,5 +1,6 @@
 package kdt.cse0518.board.user.service;
 
+import javassist.NotFoundException;
 import kdt.cse0518.board.user.converter.UserConverter;
 import kdt.cse0518.board.user.dto.UserDto;
 import kdt.cse0518.board.user.entity.User;
@@ -53,7 +54,7 @@ class UserServiceTest {
     @Test
     @DisplayName("User를 Id로 조회할 수 있다.")
     @Transactional
-    void testFindById() {
+    void testFindById() throws NotFoundException {
         assertThat(service.findById(newUser1.getUserId()).getName(), is("사람1"));
         assertThat(service.findById(newUser2.getUserId()).getName(), is("사람2"));
     }
@@ -81,7 +82,7 @@ class UserServiceTest {
     @Test
     @DisplayName("User를 수정할 수 있다.")
     @Transactional
-    void testUpdate() {
+    void testUpdate() throws NotFoundException {
         // Given
         final UserDto userDto = service.findById(newUser2.getUserId());
 

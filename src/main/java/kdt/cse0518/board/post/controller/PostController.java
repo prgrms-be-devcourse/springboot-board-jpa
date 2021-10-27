@@ -1,5 +1,6 @@
 package kdt.cse0518.board.post.controller;
 
+import javassist.NotFoundException;
 import kdt.cse0518.board.common.api.ApiResponse;
 import kdt.cse0518.board.post.converter.PostConverter;
 import kdt.cse0518.board.post.dto.PostDto;
@@ -28,7 +29,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ApiResponse<RequestDto> getPost(@PathVariable final Long postId) {
+    public ApiResponse<RequestDto> getPost(@PathVariable final Long postId) throws NotFoundException {
         return ApiResponse.ok(converter.toRequestDto(postService.findById(postId)));
     }
 
@@ -46,7 +47,7 @@ public class PostController {
     public ApiResponse<Long> update(
             @PathVariable final Long postId,
             @RequestBody final PostDto postDto
-    ) throws NullPointerException {
+    ) throws NotFoundException {
         return ApiResponse.ok(postService.update(postDto));
     }
 }

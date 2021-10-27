@@ -1,5 +1,6 @@
 package kdt.cse0518.board.post.service;
 
+import javassist.NotFoundException;
 import kdt.cse0518.board.post.converter.PostConverter;
 import kdt.cse0518.board.post.dto.PostDto;
 import kdt.cse0518.board.post.dto.ResponseDto;
@@ -27,14 +28,14 @@ public class PostService {
         this.factory = factory;
     }
 
-    public PostDto findById(final Long postId) {
+    public PostDto findById(final Long postId) throws NotFoundException {
         return converter.toPostDto(postRepository.findById(postId)
-                .orElseThrow(() -> new NullPointerException("Id에 해당하는 Post가 없습니다.")));
+                .orElseThrow(() -> new NotFoundException("Id에 해당하는 Post가 없습니다.")));
     }
 
-    public Page<PostDto> findAllByUser(final UserDto userDto, final Pageable pageable) {
+    public Page<PostDto> findAllByUser(final UserDto userDto, final Pageable pageable) throws NotFoundException {
         final User userEntity = userRepository.findById(userDto.getUserId())
-                .orElseThrow(() -> new NullPointerException("Id에 해당하는 User가 없습니다."));
+                .orElseThrow(() -> new NotFoundException("Id에 해당하는 User가 없습니다."));
         final Page<Post> postsByUser = postRepository.findByUser(userEntity, pageable);
         return postsByUser.map(converter::toPostDto);
     }
@@ -49,9 +50,9 @@ public class PostService {
         return postRepository.save(postEntity).getPostId();
     }
 
-    public Long update(final PostDto postDto) {
+    public Long update(final PostDto postDto) throws NotFoundException {
         final Post postEntity = postRepository.findById(postDto.getPostId())
-                .orElseThrow(() -> new NullPointerException("Id에 해당하는 Post가 없습니다."));
+                .orElseThrow(() -> new NotFoundException("Id에 해당하는 Post가 없습니다."));
         postEntity.update(postDto.getTitle(), postDto.getContent());
         return postRepository.save(postEntity).getPostId();
     }

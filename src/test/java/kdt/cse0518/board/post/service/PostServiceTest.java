@@ -1,5 +1,6 @@
 package kdt.cse0518.board.post.service;
 
+import javassist.NotFoundException;
 import kdt.cse0518.board.post.converter.PostConverter;
 import kdt.cse0518.board.post.dto.PostDto;
 import kdt.cse0518.board.post.dto.ResponseDto;
@@ -60,7 +61,7 @@ class PostServiceTest {
     @Order(1)
     @DisplayName("postId로 Post를 조회할 수 있다.")
     @Transactional
-    void testFindById() {
+    void testFindById() throws NotFoundException {
         final PostDto finded = postService.findById(newPostId1);
 
         assertThat(finded.getTitle(), is("제목1"));
@@ -71,7 +72,7 @@ class PostServiceTest {
     @Order(2)
     @DisplayName("해당 User가 작성한 Posts를 전체 조회할 수 있다.")
     @Transactional
-    void testFindAllByUser() {
+    void testFindAllByUser() throws NotFoundException {
         // Given
         final User newUser2 = userFactory.createUser("최승은2", 26, "취미2");
         user2 = userService.saveUser(userConverter.toUserDto(newUser2));
@@ -89,7 +90,7 @@ class PostServiceTest {
         assertThat(allPostsByUser.getContent().size(), is(2));
         assertThat(allPostsByUser.getContent().get(0).getTitle(), is("제목1"));
         assertThat(allPostsByUser.getContent().get(1).getTitle(), is("제목2"));
-        assertThrows(NullPointerException.class, () -> postService.findAllByUser(exceptionUserDto, pageable));
+        assertThrows(NotFoundException.class, () -> postService.findAllByUser(exceptionUserDto, pageable));
     }
 
     @Test
@@ -119,7 +120,7 @@ class PostServiceTest {
     @Order(4)
     @DisplayName("post를 수정할 수 있다.")
     @Transactional
-    void testUpdate() {
+    void testUpdate() throws NotFoundException {
         // Given
         final PostDto findedPostDto = postService.findById(newPostId1);
 
@@ -135,7 +136,7 @@ class PostServiceTest {
     @Order(5)
     @DisplayName("client의 새로운 post 생성 요청을 처리할 수 있다.")
     @Transactional
-    void testNewRequestDtoSave() {
+    void testNewRequestDtoSave() throws NotFoundException {
         // Given
         final ResponseDto res = ResponseDto.builder()
                 .title("제목 요청")

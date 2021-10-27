@@ -1,5 +1,6 @@
 package kdt.cse0518.board.user.service;
 
+import javassist.NotFoundException;
 import kdt.cse0518.board.user.converter.UserConverter;
 import kdt.cse0518.board.user.dto.UserDto;
 import kdt.cse0518.board.user.entity.User;
@@ -26,9 +27,9 @@ public class UserService {
                 .map(converter::toUserDto);
     }
 
-    public UserDto findById(final Long userid) {
+    public UserDto findById(final Long userid) throws NotFoundException {
         final User userEntity = repository.findById(userid)
-                .orElseThrow(() -> new NullPointerException("Id에 해당하는 User가 없습니다."));
+                .orElseThrow(() -> new NotFoundException("Id에 해당하는 User가 없습니다."));
         return converter.toUserDto(userEntity);
     }
 
@@ -42,9 +43,9 @@ public class UserService {
         return repository.save(userEntity).getUserId();
     }
 
-    public Long update(final UserDto userDto) {
+    public Long update(final UserDto userDto) throws NotFoundException {
         final User userEntity = repository.findById(userDto.getUserId())
-                .orElseThrow(() -> new NullPointerException("Id에 해당하는 User가 없습니다."));
+                .orElseThrow(() -> new NotFoundException("Id에 해당하는 User가 없습니다."));
         userEntity.update(userDto.getName(), userDto.getAge(), userDto.getHobby());
         return repository.save(userEntity).getUserId();
     }
