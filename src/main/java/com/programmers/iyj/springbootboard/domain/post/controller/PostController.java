@@ -1,4 +1,4 @@
-package com.programmers.iyj.springbootboard.domain.post.api;
+package com.programmers.iyj.springbootboard.domain.post.controller;
 
 import com.programmers.iyj.springbootboard.domain.post.dto.PostDto;
 import com.programmers.iyj.springbootboard.domain.post.service.PostService;
@@ -7,13 +7,14 @@ import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-public class PostApi {
+public class PostController {
 
     private final PostService postService;
 

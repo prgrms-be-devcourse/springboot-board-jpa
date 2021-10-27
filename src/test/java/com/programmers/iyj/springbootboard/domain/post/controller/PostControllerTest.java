@@ -1,7 +1,6 @@
-package com.programmers.iyj.springbootboard.domain.post.api;
+package com.programmers.iyj.springbootboard.domain.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.programmers.iyj.springbootboard.domain.post.domain.Post;
 import com.programmers.iyj.springbootboard.domain.post.dto.PostDto;
 import com.programmers.iyj.springbootboard.domain.post.service.PostService;
 import com.programmers.iyj.springbootboard.domain.user.domain.Hobby;
@@ -15,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,8 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureRestDocs
-@WebMvcTest(PostApi.class)
-class PostApiTest {
+@WebMvcTest(PostController.class)
+class PostControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
