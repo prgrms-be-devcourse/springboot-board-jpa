@@ -1,45 +1,34 @@
 package com.assignment.bulletinboard.post.converter;
 
 import com.assignment.bulletinboard.post.Post;
-import com.assignment.bulletinboard.post.dto.PostDto;
-import com.assignment.bulletinboard.user.User;
-import com.assignment.bulletinboard.user.dto.UserDto;
+import com.assignment.bulletinboard.post.dto.PostSaveDto;
+import com.assignment.bulletinboard.post.dto.PostUpdateDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostConverter {
 
-    public Post convertToPost(PostDto postDto) {
+    public Post convertToPost(PostSaveDto postSaveDto) {
         return Post.builder()
-                .id(postDto.getId())
-                .title(postDto.getTitle())
-                .content(postDto.getContent())
+                .id(postSaveDto.getId())
+                .title(postSaveDto.getTitle())
+                .content(postSaveDto.getContent())
                 .build();
     }
 
-    public User convertToUser(UserDto userDto) {
-        return User.builder()
-                .id(userDto.getId())
-                .age(userDto.getAge())
-                .name(userDto.getName())
-                .hobby(userDto.getHobby())
+    public Post ConvertUpdateDtoToPost(PostUpdateDto postUpdateDto) {
+        return Post.builder()
+                .id(postUpdateDto.getId())
+                .title(postUpdateDto.getTitle())
+                .content(postUpdateDto.getContent())
                 .build();
     }
 
-    public PostDto convertToPostDto (Post post) {
-        return PostDto.builder()
+    public PostSaveDto convertToPostDto (Post post) {
+        return PostSaveDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .build();
-    }
-
-    public UserDto convertToUserDto (User user) {
-        return UserDto.builder()
-                .id(user.getId())
-                .age(user.getAge())
-                .name(user.getName())
-                .hobby(user.getHobby())
                 .build();
     }
 }

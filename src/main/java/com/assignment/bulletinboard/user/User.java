@@ -5,6 +5,8 @@ import com.assignment.bulletinboard.post.Post;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,28 +21,35 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "post_id")
+    @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 30)
     private String name;
 
-    @Column(name = "age")
+    @Size(min = 14, max = 100)
+    @Column(name = "age", nullable = false)
     private int age;
 
-    @Column(name = "hobby")
+    @Column(name = "hobby", nullable = true, length = 50)
     private String hobby;
 
     public void changeUserName(String name){
         this.name = name;
+        LocalDateTime now = LocalDateTime.now();
+        setUpdatedAt(now);
     }
 
     public void changeUserAge(int age){
         this.age = age;
+        LocalDateTime now = LocalDateTime.now();
+        setUpdatedAt(now);
     }
 
     public void changeUserHobby(String hobby) {
         this.hobby = hobby;
+        LocalDateTime now = LocalDateTime.now();
+        setUpdatedAt(now);
     }
 
     @OneToMany(mappedBy = "user")

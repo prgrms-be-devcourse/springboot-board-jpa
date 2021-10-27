@@ -5,6 +5,7 @@ import com.assignment.bulletinboard.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -17,22 +18,26 @@ public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "user_id")
+    @Column(name = "post_id")
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false, length = 50)
     private String title;
 
     @Lob
-    @Column(name = "content")
+    @Column(name = "content", nullable = false)
     private String content;
 
     public void changeTitle(String title) {
         this.title = title;
+        LocalDateTime now = LocalDateTime.now();
+        setUpdatedAt(now);
     }
 
     public void changeContent(String content) {
         this.content = content;
+        LocalDateTime now = LocalDateTime.now();
+        setUpdatedAt(now);
     }
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

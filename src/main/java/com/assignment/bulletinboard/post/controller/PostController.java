@@ -1,57 +1,52 @@
 package com.assignment.bulletinboard.post.controller;
 
-import com.assignment.bulletinboard.ApiResponse;
-import com.assignment.bulletinboard.post.dto.PostDto;
+import com.assignment.bulletinboard.api.ApiResponse;
+import com.assignment.bulletinboard.post.dto.PostSaveDto;
+import com.assignment.bulletinboard.post.dto.PostUpdateDto;
 import com.assignment.bulletinboard.post.service.PostService;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@ResponseStatus(HttpStatus.OK)
 public class PostController {
 
     private final PostService postService;
 
-    @ExceptionHandler(NotFoundException.class)
-    public ApiResponse<String> notFoundHandler (NotFoundException e) {
-        return ApiResponse.fail(404, e.getMessage());
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ApiResponse<String> internalServerErrorHandler (Exception e) {
-        return ApiResponse.fail(500, e.getMessage());
-    }
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/posts")
-    public ApiResponse<Long> addPost(@RequestBody PostDto postDto) {
-        Long postId = postService.save(postDto);
+    public ApiResponse<Long> addPost(@RequestBody @Valid PostSaveDto postSaveDto) {
+        Long postId = postService.save(postSaveDto);
         return ApiResponse.ok(postId);
     }
 
     @PostMapping("/posts/{id}")
-    public ApiResponse<Long> updatePost(
-            @PathVariable Long id,
-            @RequestBody PostDto postDto
-    ) throws NotFoundException {
-        return ApiResponse.ok(postService.update(postDto));
+    public ApiResponse<Long> updatePost(@PathVariable Long id, @RequestBody PostUpdateDto postUpdateDto) {
+        return ApiResponse.ok(postService.update(postUpdateDto));
     }
 
     @GetMapping("/posts/{id}")
-    public ApiResponse<PostDto> getPost(
-            @PathVariable Long id
-    ) throws NotFoundException {
+    public ApiResponse<PostSaveDto> getPost(@PathVariable Long id) {
         return ApiResponse.ok(postService.findOne(id));
     }
 
     @GetMapping("/posts")
-    public ApiResponse<Page<PostDto>> getAllPost(
-            Pageable pageable
-    ) {
+    public ApiResponse<Page<PostSaveDto>> getAllPost(Pageable pageable) {
         return ApiResponse.ok(postService.findAll(pageable));
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/posts/{id}")
+    public ApiResponse<Long> deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
+        return ApiResponse.ok(null);
     }
 }

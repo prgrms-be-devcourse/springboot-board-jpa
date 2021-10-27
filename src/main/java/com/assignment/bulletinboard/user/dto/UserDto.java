@@ -16,12 +16,12 @@ public class UserDto {
 
     private Long id;
 
-    @NotBlank
-    @Length(max = 20)
+    @NotBlank(message = "이름은 비워둘 수 없습니다.")
+    @Length(max = 20, message = "이름은 최대 20자를 넘을 수 없습니다.")
     private String name;
 
-    @Min(14)
-    @Max(100)
+    @Min(value = 14, message = "나이는 14미만일 수 없습니다.")
+    @Max(value = 100, message = "나이는 100을 넘을 수 없습니다.")
     private int age;
 
     private String hobby;

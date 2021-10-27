@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class PostDto {
+public class PostSaveDto {
 
     private Long id;
 
-    @NotBlank
-    @Length(max = 30)
+    @NotBlank(message = "제목을 입력해주세요.")
+    @Length(max = 30, message = "제목은 최대 30자를 넘을 수 없습니다.")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "내용을 입력해주세요.")
     private String content;
 
     private String createdBy;

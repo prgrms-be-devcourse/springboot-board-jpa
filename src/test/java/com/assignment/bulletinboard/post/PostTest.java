@@ -75,10 +75,10 @@ class PostTest {
         postRepository.save(post3);
     }
 
-    @AfterEach
-    void tearDown() {
-        postRepository.deleteAll();
-    }
+//    @AfterEach
+//    void tearDown() {
+//        postRepository.deleteAll();
+//    }
 
     @Test
     @DisplayName("Post 를 조회할 수 있다.")
@@ -92,7 +92,7 @@ class PostTest {
     @DisplayName("모든 Post 를 조회할 수 있다.")
     void read_AllPost() {
         List<Post> allPost = postRepository.findAll();
-        System.out.println(allPost.size());
+        log.info(String.valueOf(allPost.size()));
         allPost.forEach(post -> log.info(post.getContent()));
 
     }

@@ -31,8 +31,6 @@ public class UserTest {
                 .name("홍길동")
                 .hobby("축구")
                 .build();
-        user1.setCreatedAt(LocalDateTime.now());
-        user1.setCreatedBy("admin");
 
         userRepository.save(user1);
 
@@ -52,7 +50,7 @@ public class UserTest {
     @DisplayName("User를 조회할 수 있다.")
     void find_user() {
         List<User> findAllUser = userRepository.findAll();
-        findAllUser.stream().forEach(user -> log.info(user.getName()));
+        findAllUser.stream().forEach(user -> log.info(String.valueOf(user.getCreatedAt())));
     }
 
     @Test
