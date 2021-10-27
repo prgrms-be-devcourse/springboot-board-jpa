@@ -3,8 +3,10 @@ package kdt.prgrms.devrun.user.service;
 import kdt.prgrms.devrun.common.dto.DuplicationCheckResult;
 import kdt.prgrms.devrun.common.exception.DuplicatedEmailException;
 import kdt.prgrms.devrun.common.exception.DuplicatedLoginIdException;
+import kdt.prgrms.devrun.common.exception.UserNotFoundException;
 import kdt.prgrms.devrun.domain.User;
 import kdt.prgrms.devrun.user.dto.AddUserRequestDto;
+import kdt.prgrms.devrun.user.dto.DetailUserDto;
 import kdt.prgrms.devrun.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class SimpleUserService implements UserService{
 
     private final UserRepository userRepository;
+
+    @Override
+    public DetailUserDto getUserById(Long userId) {
+        final User foundUser = userRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException());
+
+        return DetailUserDto.builder()
+            .userId(foundUser.getId())
+            .age(foundUser.getAge())
+            .email(foundUser.getEmail())
+            .loginId(foundUser.getLoginId())
+            .name(foundUser.getName())
+            .build();
+    }
 
     @Transactional
     @Override
