@@ -2,13 +2,14 @@ package com.programmers.springbootboard.member.domain;
 
 import com.programmers.springbootboard.common.domain.BaseEntity;
 import com.programmers.springbootboard.member.domain.vo.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Builder
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Member extends BaseEntity<Long> {
     @Id
@@ -31,38 +32,10 @@ public class Member extends BaseEntity<Long> {
     @Embedded
     private Posts posts;
 
-    protected Member() {
-
-    }
-
     public void update(Name name, Age age, Hobby hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
         lastModifiedId(this.getId());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Email getEmail() {
-        return email;
-    }
-
-    public Name getName() {
-        return name;
-    }
-
-    public Age getAge() {
-        return age;
-    }
-
-    public Hobby getHobby() {
-        return hobby;
-    }
-
-    public Posts getPosts() {
-        return posts;
     }
 }

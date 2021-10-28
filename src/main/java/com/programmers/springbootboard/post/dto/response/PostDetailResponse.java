@@ -1,10 +1,7 @@
 package com.programmers.springbootboard.post.dto.response;
 
-import com.programmers.springbootboard.annotation.ThreadSafety;
 import lombok.Builder;
-import lombok.Data;
 
-@ThreadSafety
 @Builder
 public class PostDetailResponse {
     private final Long postId;

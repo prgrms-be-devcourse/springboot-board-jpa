@@ -2,7 +2,10 @@ package com.programmers.springbootboard.member.domain.vo;
 
 import com.programmers.springbootboard.error.ErrorMessage;
 import com.programmers.springbootboard.error.exception.InvalidArgumentException;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -10,6 +13,8 @@ import javax.persistence.Transient;
 import java.util.regex.Pattern;
 
 @Embeddable
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "name")
 public class Name {
 
@@ -18,10 +23,6 @@ public class Name {
 
     @Column(name = "member_name", nullable = false)
     private String name;
-
-    protected Name() {
-
-    }
 
     public Name(String name) {
         validate(name);
@@ -33,9 +34,4 @@ public class Name {
             throw new InvalidArgumentException(ErrorMessage.INVALID_MEMBER_NAME);
         }
     }
-
-    public String getName() {
-        return name;
-    }
-
 }

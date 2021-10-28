@@ -1,12 +1,10 @@
 package com.programmers.springbootboard.common.dto;
 
-import com.programmers.springbootboard.annotation.ThreadSafety;
 import lombok.NonNull;
 import org.springframework.hateoas.EntityModel;
 
 import java.time.LocalDateTime;
 
-@ThreadSafety
 public class ResponseDto<T> {
     @NonNull
     private final String message;

@@ -1,12 +1,10 @@
 package com.programmers.springbootboard.error;
 
-import com.programmers.springbootboard.annotation.ThreadSafety;
 import lombok.NonNull;
 
 import java.time.LocalDateTime;
 
 
-@ThreadSafety
 public class ErrorResponseDto {
     @NonNull
     private final String message;

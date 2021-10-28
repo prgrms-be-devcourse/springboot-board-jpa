@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-    //TODO :: 파사드 레이어 진행해보기
     private final MemberRepository memberRepository;
     private final MemberConverter memberConverter;
 
@@ -34,10 +33,10 @@ public class MemberService {
             throw new DuplicationArgumentException(ErrorMessage.DUPLICATION_MEMBER_EMAIL);
         }
 
-        Member member = memberConverter.toMember(bundle);
-        member.addByInformation(member.getId());
+        Member memberInstance = memberConverter.toMember(bundle);
+        memberInstance.addCreatedAndLastModifiedMember(memberInstance.getId());
 
-        Member memberEntity = memberRepository.save(member);
+        Member memberEntity = memberRepository.save(memberInstance);
         return memberConverter.toMemberSignResponse(memberEntity);
     }
 
@@ -45,28 +44,8 @@ public class MemberService {
         return memberRepository.existsByEmail(email);
     }
 
-    @Transactional
-    public MemberDeleteResponse delete(MemberDeleteBundle bundle) {
-        Member member = memberRepository.findById(bundle.getMemberId())
-                .orElseThrow(() -> {
-                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-                });
-        memberRepository.deleteById(bundle.getMemberId());
-        return memberConverter.toMemberDeleteResponse(member.getId(), member.getEmail());
-    }
-
-    @Transactional
-    public MemberUpdateResponse update(MemberUpdateBundle bundle) {
-        Member member = memberRepository.findById(bundle.getMemberId())
-                .orElseThrow(() -> {
-                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-                });
-        member.update(bundle.getName(), bundle.getAge(), bundle.getHobby());
-        return memberConverter.toMemberUpdateResponse(member);
-    }
-
     @Transactional(readOnly = true)
-    public MemberDetailResponse findById(MemberFindBundle bundle) {
+    public MemberDetailResponse find(MemberFindBundle bundle) {
         return memberRepository.findById(bundle.getId())
                 .map(memberConverter::toMemberDetailResponse)
                 .orElseThrow(() -> {
@@ -80,15 +59,23 @@ public class MemberService {
                 .map(memberConverter::toMemberDetailResponse);
     }
 
-    // TODO 필요없는 코드가 test를 위해서??? 수정하기!
     @Transactional
-    public void deleteAll() {
-        memberRepository.deleteAll();
+    public MemberUpdateResponse update(MemberUpdateBundle bundle) {
+        Member member = memberRepository.findById(bundle.getId())
+                .orElseThrow(() -> {
+                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+                });
+        member.update(bundle.getName(), bundle.getAge(), bundle.getHobby());
+        return memberConverter.toMemberUpdateResponse(member);
     }
 
-    // 이건 속임수!!! TEST-CODE, 테스터블하게 구성하자!!!
-    @Transactional(readOnly = true)
-    public long count() {
-        return memberRepository.count();
+    @Transactional
+    public MemberDeleteResponse delete(MemberDeleteBundle bundle) {
+        Member member = memberRepository.findById(bundle.getMemberId())
+                .orElseThrow(() -> {
+                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+                });
+        memberRepository.deleteById(bundle.getMemberId());
+        return memberConverter.toMemberDeleteResponse(member.getId(), member.getEmail());
     }
 }

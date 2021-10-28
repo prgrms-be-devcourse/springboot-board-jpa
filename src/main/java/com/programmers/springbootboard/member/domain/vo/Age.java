@@ -2,7 +2,10 @@ package com.programmers.springbootboard.member.domain.vo;
 
 import com.programmers.springbootboard.error.ErrorMessage;
 import com.programmers.springbootboard.error.exception.InvalidArgumentException;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -10,6 +13,8 @@ import javax.persistence.Transient;
 import java.util.regex.Pattern;
 
 @Embeddable
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "age")
 public class Age {
     @Transient
@@ -17,9 +22,6 @@ public class Age {
 
     @Column(name = "member_age", nullable = false)
     private Integer age;
-
-    protected Age() {
-    }
 
     public Age(String age) {
         validate(age);
@@ -35,11 +37,7 @@ public class Age {
     private int parsingAge(String age) {
         return Integer.parseInt(age);
     }
-
-    public int getAge() {
-        return age;
-    }
-
+    
     @Override
     public String toString() {
         return String.valueOf(age);

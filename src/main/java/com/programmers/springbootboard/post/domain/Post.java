@@ -36,7 +36,7 @@ public class Post extends BaseEntity<Long> {
 
     public void addPost(Member member) {
         this.member = member;
-        this.addByInformation(member.getId());
+        this.addCreatedAndLastModifiedMember(member.getId());
         member.getPosts().addPost(this);
     }
 

@@ -1,10 +1,10 @@
 package com.programmers.springbootboard.member.dto.response;
 
-import com.programmers.springbootboard.annotation.ThreadSafety;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NonNull;
 
-@ThreadSafety
+@Getter
 @Builder
 public class MemberSignResponse {
     @NonNull
@@ -17,24 +17,4 @@ public class MemberSignResponse {
     private final Integer age;
     @NonNull
     private final String hobby;
-
-    public Long getMemberId() {
-        return memberId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public String getHobby() {
-        return hobby;
-    }
 }

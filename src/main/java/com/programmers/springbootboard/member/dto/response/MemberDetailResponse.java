@@ -2,39 +2,21 @@ package com.programmers.springbootboard.member.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NonNull;
 
-@Data
+// lombok을 쓰지 않을거면, 아에 쓰지 말자!!
+@Getter
 @Builder
 public class MemberDetailResponse {
     @NonNull
-    private Long memberId;
+    private final Long memberId;
     @NonNull
-    private String email;
+    private final String email;
     @NonNull
-    private String name;
+    private final String name;
     @NonNull
-    private String age;
+    private final String age;
     @NonNull
-    private String hobby;
-
-    public Long getMemberId() {
-        return memberId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public String getHobby() {
-        return hobby;
-    }
+    private final String hobby;
 }

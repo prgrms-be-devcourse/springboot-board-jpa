@@ -1,14 +1,12 @@
 package com.programmers.springbootboard.member.dto.bundle;
 
-import com.programmers.springbootboard.annotation.ThreadSafety;
 import lombok.Builder;
+import lombok.Getter;
 
-@ThreadSafety
+// 메서드가 아니라 엔티티에 따라 dto 긔긔
+
+@Getter
 @Builder
 public class MemberFindBundle {
     private final Long id;
-
-    public Long getId() {
-        return id;
-    }
 }

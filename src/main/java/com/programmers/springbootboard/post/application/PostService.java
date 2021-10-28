@@ -21,6 +21,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+// 포스트만 !!
+// @Deprecated <- 신기
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -29,6 +31,10 @@ public class PostService {
     private final PostConverter postConverter;
     private final PostRepository postRepository;
 
+    // post 안에 들어가는 layer --> //.....
+    // 파사드 레
+    // 파사드 레이어 -> Component 레이어를 담
+    // Member와 Post를 따로 나눌 클래스를 만들어서 사용
     @Transactional
     public PostInsertResponse insert(PostInsertBundle bundle) {
         Member member = memberRepository.findByEmail(bundle.getEmail())

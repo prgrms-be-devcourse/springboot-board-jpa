@@ -65,7 +65,7 @@ public class MemberConverter {
 
     public MemberUpdateBundle toMemberUpdateBundle(Long id, MemberUpdateRequest request) {
         return MemberUpdateBundle.builder()
-                .memberId(id)
+                .id(id)
                 .name(new Name(request.getName()))
                 .age(new Age(request.getAge()))
                 .hobby(new Hobby(request.getHobby()))
