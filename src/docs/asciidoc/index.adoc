@@ -1,0 +1,108 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+= Board API Documentation
+:toc:
+
+== User API
+
+=== User 등록
+
+==== POST /api/v1/users
+
+.Request
+include::{snippets}/UserController/insertUser/http-request.adoc[]
+include::{snippets}/UserController/insertUser/request-fields.adoc[]
+
+.Response
+include::{snippets}/UserController/insertUser/http-response.adoc[]
+include::{snippets}/UserController/insertUser/response-fields.adoc[]
+
+=== User 조회
+
+==== GET /api/v1/users/{id}
+
+.Request
+include::{snippets}/UserController/getUser/http-request.adoc[]
+
+.Response
+include::{snippets}/UserController/getUser/http-response.adoc[]
+include::{snippets}/UserController/getUser/response-fields.adoc[]
+
+=== User 수정
+
+==== PUT /api/v1/users
+
+.Request
+include::{snippets}/UserController/updateUser/http-request.adoc[]
+include::{snippets}/UserController/updateUser/request-fields.adoc[]
+
+.Response
+include::{snippets}/UserController/updateUser/http-response.adoc[]
+include::{snippets}/UserController/updateUser/response-fields.adoc[]
+
+=== User 삭제
+
+==== DELETE /api/v1/users/{id}
+
+.Request
+include::{snippets}/UserController/deleteUser/http-request.adoc[]
+
+.Response
+include::{snippets}/UserController/deleteUser/http-response.adoc[]
+include::{snippets}/UserController/deleteUser/response-fields.adoc[]
+
+
+
+
+
+
+== POST API
+
+=== POST 등록
+
+==== POST /api/v1/posts
+
+.Request
+include::{snippets}/PostController/insertPost/http-request.adoc[]
+include::{snippets}/PostController/insertPost/request-fields.adoc[]
+
+.Response
+include::{snippets}/PostController/insertPost/http-response.adoc[]
+include::{snippets}/PostController/insertPost/response-fields.adoc[]
+
+=== POST 조회
+
+==== GET /api/v1/posts/{id}
+
+.Request
+include::{snippets}/PostController/getPost/http-request.adoc[]
+
+.Response
+include::{snippets}/PostController/getPost/http-response.adoc[]
+include::{snippets}/PostController/getPost/response-fields.adoc[]
+
+=== POST 수정
+
+==== PUT /api/v1/posts
+
+.Request
+include::{snippets}/PostController/updatePost/http-request.adoc[]
+include::{snippets}/PostController/updatePost/request-fields.adoc[]
+
+.Response
+include::{snippets}/PostController/updatePost/http-response.adoc[]
+include::{snippets}/PostController/updatePost/response-fields.adoc[]
+
+=== POST 삭제
+
+==== DELETE /api/v1/posts/{id}
+
+.Request
+include::{snippets}/PostController/deletePost/http-request.adoc[]
+
+.Response
+include::{snippets}/PostController/deletePost/http-response.adoc[]
+include::{snippets}/PostController/deletePost/response-fields.adoc[]
