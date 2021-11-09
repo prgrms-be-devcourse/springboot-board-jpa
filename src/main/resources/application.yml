@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/board?useSSL=false
-    username: root
-    password: test1234
+    url:
+    username:
+    password:
   h2:
     console:
       enabled: true
