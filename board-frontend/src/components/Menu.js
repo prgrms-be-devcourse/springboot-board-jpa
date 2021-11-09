@@ -19,7 +19,7 @@ function Menu() {
   return (
     <div >
       <div className="div_menu">
-        <Link to="/board/1">게시판</Link>
+        <Link to={`/board?page=1&sort=id,DESC&search=&keyword=`}>게시판</Link>
         &nbsp;&nbsp;&nbsp;
         <Link to="/mypage">마이페이지</Link>
         &nbsp;&nbsp;&nbsp;

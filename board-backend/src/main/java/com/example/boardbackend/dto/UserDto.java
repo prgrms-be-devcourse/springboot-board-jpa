@@ -1,5 +1,7 @@
 package com.example.boardbackend.dto;
 
+import com.example.boardbackend.domain.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.validation.constraints.*;
@@ -7,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
     private Long id;
 
@@ -32,4 +35,18 @@ public class UserDto {
     private String hobby;
 
     private LocalDateTime createdAt;
+
+    // ---------------------------------------------------------------
+
+    static public UserDto of(User user){
+        return UserDto.builder()
+                .id(user.getId())
+                .email(user.getEmail().getAddress())
+                .password(user.getPassword())
+                .name(user.getName())
+                .age(user.getAge())
+                .hobby(user.getHobby())
+                .createdAt(user.getCreatedAt())
+                .build();
+    }
 }

@@ -1,19 +1,20 @@
 package com.example.boardbackend.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.example.boardbackend.dto.PostDto;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
 @Entity
 @Table(name = "post")
-public class Post extends BaseEntity{
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +25,7 @@ public class Post extends BaseEntity{
     @Lob
     @Column(name = "content", nullable = false)
     private String content;
-    
+
     /**
      * @ColumnDefault는 DDL에만 관여
      * default는 컬럼=null이 insert될때가 아닌 insert문에 해당 컬럼이 아예 빠져있을때 작동되는것
@@ -38,4 +39,37 @@ public class Post extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false, referencedColumnName = "id")
     private User user;
+
+    // ---------------------------------------------------------------
+
+    private Post(Long id, String title, String content, Long view, User user, LocalDateTime createdAt) {
+        super(createdAt);
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.view = view;
+        this.user = user;
+    }
+
+    static public Post of(PostDto postDto){
+        return new Post(
+                postDto.getId(),
+                postDto.getTitle(),
+                postDto.getContent(),
+                postDto.getView(),
+                User.of(postDto.getUserDto()),
+                postDto.getCreatedAt()
+        );
+    }
+
+    // ---------------------------------------------------------------
+
+    public void updatePost(String newTitle, String newContent) {
+        this.title = newTitle;
+        this.content = newContent;
+    }
+
+    public void updateView(Long newView){
+        this.view = newView;
+    }
 }

@@ -1,7 +1,6 @@
 package com.example.boardbackend.controller;
 
 import com.example.boardbackend.dto.PostDto;
-import com.example.boardbackend.common.converter.ResponseConverter;
 import com.example.boardbackend.dto.request.UpdatePostRequest;
 import com.example.boardbackend.dto.request.UpdateViewRequest;
 import com.example.boardbackend.dto.response.BoardResponse;
@@ -13,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,26 +22,24 @@ import java.util.stream.Collectors;
 @RestController
 public class PostController {
     private final PostService postService;
-    private final ResponseConverter responseConverter;
 
     // 게시물 생성
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@Valid  @RequestBody PostDto postDto) {
-        PostDto response = postService.savePost(postDto);
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto request) {
+        PostDto response = postService.savePost(request);
         return ResponseEntity.ok(response);
     }
 
     // 게시물 전체 조회 (페이징)
     @GetMapping
-    public ResponseEntity<Page<BoardResponse>> getAllPosts(Pageable pageable){
-        Page<BoardResponse> response = postService.findPostsAll(pageable)
-                .map(responseConverter::convertToBoard);
+    public ResponseEntity<Page<BoardResponse>> getAllPosts(Pageable pageable) {
+        Page<BoardResponse> response = postService.findPostsAll(pageable);
         return ResponseEntity.ok(response);
     }
 
     // 총 게시글 수 조회
     @GetMapping("/total")
-    public ResponseEntity<Long> getTotalCount(){
+    public ResponseEntity<Long> getTotalCount() {
         Long response = postService.countPostsAll();
         return ResponseEntity.ok(response);
     }
@@ -48,9 +47,7 @@ public class PostController {
     // user id로 게시물 조회
     @GetMapping("/user/{id}")
     public ResponseEntity<List<BoardResponse>> getUserPosts(@PathVariable("id") Long userId) {
-        List<BoardResponse> response = postService.findPostsByUserId(userId).stream()
-                .map(responseConverter::convertToBoard)
-                .collect(Collectors.toList());
+        List<BoardResponse> response = postService.findPostsByUserId(userId);
         return ResponseEntity.ok(response);
     }
 
@@ -65,11 +62,9 @@ public class PostController {
     @PatchMapping("/{id}")
     public ResponseEntity<PostDto> updatePost(
             @PathVariable("id") Long id,
-            @Valid @RequestBody UpdatePostRequest updatePostRequest
+            @Valid @RequestBody UpdatePostRequest request
     ) {
-        String newTitle = updatePostRequest.getTitle();
-        String newContent = updatePostRequest.getContent();
-        PostDto response = postService.updatePostById(id, newTitle, newContent);
+        PostDto response = postService.updatePostById(id, request);
         return ResponseEntity.ok(response);
     }
 
@@ -77,10 +72,9 @@ public class PostController {
     @PatchMapping("/{id}/view")
     public ResponseEntity<Long> updateView(
             @PathVariable("id") Long id,
-            @RequestBody UpdateViewRequest updateViewRequest
+            @Valid @RequestBody UpdateViewRequest request
     ) {
-        System.out.println(updateViewRequest.getNewView());
-        Long response = postService.updateViewById(id, updateViewRequest.getNewView());
+        Long response = postService.updateViewById(id, request);
         return ResponseEntity.ok(response);
     }
 
@@ -90,5 +84,17 @@ public class PostController {
         postService.deletePostById(id);
         return ResponseEntity.ok().build();
     }
+
+    // 검색
+    @GetMapping("/search")
+    public ResponseEntity<Page<BoardResponse>> searchPost(
+            @RequestParam("searchType") SearchType searchType,
+            @RequestParam(value = "keyword") @NotBlank String keyword,
+            Pageable pageable
+    ) {
+        Page<BoardResponse> response = postService.findPostsByKeyword(searchType, keyword, pageable);
+        return ResponseEntity.ok(response);
+    }
+
 
 }

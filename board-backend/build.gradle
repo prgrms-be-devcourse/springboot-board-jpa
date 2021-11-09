@@ -8,7 +8,7 @@ plugins {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 
 configurations {
 	compileOnly {
@@ -21,60 +21,74 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// lombok
     implementation 'org.projectlombok:lombok:1.18.20'
-	implementation 'org.projectlombok:lombok:1.18.20'
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// jpa
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// h2
+	implementation "com.h2database:h2"
+
+	// mysql
+	runtimeOnly 'mysql:mysql-connector-java'
+
 	// restdocs mockmvc
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
 	// bean validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-// snippets 경로 전역변수 설정
+// 빌드시 *-plain.jar 생성하지 않기
+jar {
+	enabled = false
+}
+
+// ---------------------------- ( adoc 생성 ) ----------------------------
+
+// snippets 생성될 경로 변수 생성
 ext {
 	set('snippetsDir', file("build/generated-snippets"))
 }
 
-// 테스트시 빌드 -> snippetsDir 경로로 이동
+// 테스트시에 해당 경로로 결과물 output
 test {
 	outputs.dir snippetsDir
 	useJUnitPlatform()
 }
+
+// .adoc 실행 태스크
 asciidoctor {
 	inputs.dir snippetsDir
 	dependsOn test
 }
 
+// ---------------------------- ( html 변환 ) ----------------------------
 
-// html로 변환하기
-bootJar {
-	dependsOn asciidoctor
-	copy {
-		from "${asciidoctor.outputDir}"
-		into 'BOOT-INF/classes/templates'
-	}
-}
-
+// But!! 위의 방법을 사용시 캐시때문에 html 덮어쓰기가 잘 안될수도 있음 따라서 아래와 같은 방법 사용
+// 1. build -> copyDocument 태스크 실행
+// 2. asciidoctor 실행시 기존 html 미리 삭제 (doFirst)
+// 3. 그리고 다시 html을 static/docs 하위로 북붙
 asciidoctor.doFirst {
-	delete file('src/main/resources/templates')
+	delete file('src/main/resources/static/docs')
 }
 
 task copyDocument(type: Copy) {
 	dependsOn asciidoctor
 	from file("build/docs/asciidoc")
-	into file("src/main/resources/templates")
+	into file("src/main/resources/static/docs")
 }
 
 build {
 	dependsOn copyDocument
 }
-
-
 
