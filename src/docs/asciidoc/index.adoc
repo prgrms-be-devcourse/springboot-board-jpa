@@ -1,0 +1,6 @@
+= BBS API Documentation
+
+회원, 게시글 서비스 API 문서입니다.
+
+. <<user.adoc#_title, 회원>>
+. <<post.adoc#_title, 게시글>>

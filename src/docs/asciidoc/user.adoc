@@ -1,0 +1,71 @@
+[#_title]
+= User API Documentation
+:toc:
+
+User 서비스 API 문서입니다.
+
+== User 정보 조회
+
+주어진 식별자의 사용자 정보를 조회하는 API 입니다.
+
+====
+GET /users/{name}
+====
+
+=== API 요청
+include::{snippets}/UserController/readUser/path-parameters.adoc[]
+
+=== API 응답
+include::{snippets}/UserController/readUser/response-body.adoc[]
+include::{snippets}/UserController/readUser/response-fields.adoc[]
+
+
+[#user_create]
+== User 생성
+
+사용자를 생성하는 API 입니다.
+
+====
+POST /users
+====
+
+=== API 요청
+include::{snippets}/UserController/createUser/request-body.adoc[]
+include::{snippets}/UserController/createUser/request-fields.adoc[]
+
+=== API 응답
+include::{snippets}/UserController/createUser/response-body.adoc[]
+include::{snippets}/UserController/createUser/response-fields.adoc[]
+
+
+== User 갱신
+
+사용자 정보를 변경하는 API 입니다.
+
+====
+PUT /users/{name}
+====
+
+=== API 요청
+include::{snippets}/UserController/updateUser/path-parameters.adoc[]
+include::{snippets}/UserController/updateUser/request-body.adoc[]
+include::{snippets}/UserController/updateUser/request-fields.adoc[]
+
+=== API 응답
+include::{snippets}/UserController/updateUser/response-body.adoc[]
+include::{snippets}/UserController/updateUser/response-fields.adoc[]
+
+
+== User 삭제
+
+사용자를 삭제하는 API 입니다.
+
+====
+DELETE /users/{name}
+====
+
+=== API 요청
+include::{snippets}/UserController/deleteUser/path-parameters.adoc[]
+
+=== API 응답
+include::{snippets}/UserController/deleteUser/response-body.adoc[]
