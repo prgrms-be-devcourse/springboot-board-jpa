@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue(generator = "POST_ID_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long id;
 
@@ -25,8 +25,8 @@ public class Post extends BaseEntity {
     @Lob
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", foreignKey = @ForeignKey(name = "USER_ID_SEQ"))
     private User user;
 
     public void setUser(User user) {

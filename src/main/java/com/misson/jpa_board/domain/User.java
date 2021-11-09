@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "user")
 public class User extends BaseEntity {
     @Id
-    @GeneratedValue(generator = "USER_ID_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
     private String name;
@@ -23,7 +23,7 @@ public class User extends BaseEntity {
     @Embedded
     private Hobby hobby;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private final List<Post> posts = new ArrayList<>();
 
     public List<Post> getPosts() {
