@@ -41,4 +41,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_REPOSITORY }}
-          tags: ${GITHUB_SHA::7}
+          tags: spring_img
