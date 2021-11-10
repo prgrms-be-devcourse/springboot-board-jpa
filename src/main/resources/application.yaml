@@ -26,7 +26,7 @@ spring:
 
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/our_home;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:~/board;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
 
@@ -35,5 +35,21 @@ spring:
 spring:
   config:
     activate:
+      on-profile: dev
+    import: classpath:dev-db.yaml
+
+---
+
+spring:
+  config:
+    activate:
       on-profile: prod
-    import: classpath:prod-db.yaml
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate  # create / validate / update

@@ -1,6 +1,6 @@
 # --------- 직접 추가 ---------
 
-prod-db.yaml
+dev-db.yaml
 *.html
 
 # --------- intelliJ 기본 설정 ---------
