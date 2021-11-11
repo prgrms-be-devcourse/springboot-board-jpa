@@ -19,11 +19,8 @@ public class PostDto {
         this.userId = userId;
     }
 
-    public void setTitle(String title) {
+    public void changePost(String title, String content) {
         this.title = title;
-    }
-
-    public void setContent(String content) {
         this.content = content;
     }
 }

@@ -67,8 +67,7 @@ class PostServiceTest {
     @Test
     void postChange() throws NotFoundException {
         PostDto postDto = postService.postFindById(postNumber);
-        postDto.setContent("Hello");
-        postDto.setTitle("World");
+        postDto.changePost("World", "Hello");
 
         PostDto changedPost = postService.postChange(postNumber, postDto);
 
