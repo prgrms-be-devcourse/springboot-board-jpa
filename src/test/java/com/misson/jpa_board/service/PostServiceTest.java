@@ -26,11 +26,11 @@ import static org.hamcrest.Matchers.is;
 class PostServiceTest {
 
     @Autowired
-    PostService postService;
+    private PostService postService;
     @Autowired
-    PostConverter postConverter;
+    private PostConverter postConverter;
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     private PostDto postDto;
     private UserDto userDto;
