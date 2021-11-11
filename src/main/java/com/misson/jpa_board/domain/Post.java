@@ -37,11 +37,9 @@ public class Post extends BaseEntity {
         user.getPosts().add(this);
     }
 
-    public void changeTitle(String title) {
+    public void changePost(String title, String content) {
         this.title = title;
-    }
-
-    public void changeContent(String content) {
         this.content = content;
     }
+
 }

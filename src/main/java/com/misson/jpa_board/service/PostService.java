@@ -53,8 +53,7 @@ public class PostService {
     @Transactional
     public PostDto postChange(Long id, PostDto postDto) {
         Post post = postRepository.findById(id).orElseThrow(() -> new NoSuchElementException("아이디와 일치하는 게시물이 없습니다."));
-        post.changeTitle(postDto.getTitle());
-        post.changeContent(postDto.getContent());
+        post.changePost(postDto.getTitle(), postDto.getContent());
         return postConverter.convertPostDto(post);
     }
 
