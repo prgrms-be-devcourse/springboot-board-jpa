@@ -17,7 +17,6 @@ public class PostConverter {
         this.userConverter = userConverter;
     }
 
-    // dto -> entity
     public Post convertToPostCreateRequest(PostCreateRequest postDto, User user) {
         Post post = Post.builder()
                 .title(postDto.getTitle())
@@ -36,7 +35,6 @@ public class PostConverter {
                 .build();
     }
 
-    // entity -> dto
     public PostDto convertPostDto(Post post) {
         return PostDto.builder()
                 .id(post.getId())
