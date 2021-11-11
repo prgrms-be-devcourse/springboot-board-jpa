@@ -90,19 +90,16 @@ class PostRestControllerTest {
         mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/{id}", postId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.title", is("제목학원")))
-                .andExpect(jsonPath("$.data.content", is("내용은 뭐로하지")))
+                .andExpect(jsonPath("$.title", is("제목학원")))
+                .andExpect(jsonPath("$.content", is("내용은 뭐로하지")))
                 .andDo(print())
                 .andDo(document("postFindById",
                         pathParameters(parameterWithName("id").description(JsonFieldType.NUMBER).description("postId"))
                         , responseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
-                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("serverDateTime"),
-                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
-                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("postId"),
-                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("userId")
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 번호"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 아이디")
                         )
                 ));
     }
@@ -119,8 +116,8 @@ class PostRestControllerTest {
                         .content(objectMapper.writeValueAsString(postDto))
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.title", is("수정된 제목2")))
-                .andExpect(jsonPath("$.data.content", is("수정된 내용2")))
+                .andExpect(jsonPath("$.title", is("수정된 제목2")))
+                .andExpect(jsonPath("$.content", is("수정된 내용2")))
                 .andDo(print())
                 .andDo(document("changePost",
                         pathParameters(parameterWithName("id").description(JsonFieldType.NUMBER).description("postId"))
@@ -131,12 +128,10 @@ class PostRestControllerTest {
                                 fieldWithPath("userId").type(JsonFieldType.NUMBER).description("userId")
                         ),
                         responseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
-                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("serverDateTime"),
-                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("postId"),
-                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("userId")
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("postId"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("userId")
                         )
                 ));
     }
@@ -161,7 +156,7 @@ class PostRestControllerTest {
                         .content(objectMapper.writeValueAsString(createPostDto))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document(
                         "insertPost",
@@ -170,11 +165,7 @@ class PostRestControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                                 fieldWithPath("userId").type(JsonFieldType.NUMBER).description("userId")
                         ),
-                        responseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
-                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("serverDateTime"),
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("postId")
-                        )
+                        responseBody()
                 ));
     }
 
@@ -199,31 +190,30 @@ class PostRestControllerTest {
                                 fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("pageSize")
                         )
                         , responseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
-                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("serverDateTime"),
-                                fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("postId"),
-                                fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("data.content[].userId").type(JsonFieldType.NUMBER).description("userId"),
-                                fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER).description("pageNumber"),
-                                fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER).description("pageSize"),
-                                fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("empty 여부"),
-                                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted 여부"),
-                                fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("unsorted 여부"),
-                                fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("offset"),
-                                fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("paged"),
-                                fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("unpaged"),
-                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("totalPages"),
-                                fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("size"),
-                                fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("number"),
-                                fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("empty"),
-                                fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted"),
-                                fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("unsorted"),
-                                fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("first"),
-                                fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("last"),
-                                fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements"),
-                                fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
-                                fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("empty")
+
+                                fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("postId"),
+                                fieldWithPath("content[].title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("content[].content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("content[].userId").type(JsonFieldType.NUMBER).description("userId"),
+                                fieldWithPath("pageable.pageNumber").type(JsonFieldType.NUMBER).description("pageNumber"),
+                                fieldWithPath("pageable.pageSize").type(JsonFieldType.NUMBER).description("pageSize"),
+                                fieldWithPath("pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("empty 여부"),
+                                fieldWithPath("pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted 여부"),
+                                fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("unsorted 여부"),
+                                fieldWithPath("pageable.offset").type(JsonFieldType.NUMBER).description("offset"),
+                                fieldWithPath("pageable.paged").type(JsonFieldType.BOOLEAN).description("paged"),
+                                fieldWithPath("pageable.unpaged").type(JsonFieldType.BOOLEAN).description("unpaged"),
+                                fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("totalPages"),
+                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("size"),
+                                fieldWithPath("number").type(JsonFieldType.NUMBER).description("number"),
+                                fieldWithPath("sort.empty").type(JsonFieldType.BOOLEAN).description("empty"),
+                                fieldWithPath("sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted"),
+                                fieldWithPath("sort.unsorted").type(JsonFieldType.BOOLEAN).description("unsorted"),
+                                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("first"),
+                                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("last"),
+                                fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements"),
+                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
+                                fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("empty")
                         )
                 ));
     }
