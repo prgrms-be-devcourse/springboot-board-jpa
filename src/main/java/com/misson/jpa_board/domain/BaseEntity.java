@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 public class BaseEntity {
-    @Column(name = "userId")
+    @Column(name = "created_by")
     private Long userId;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
