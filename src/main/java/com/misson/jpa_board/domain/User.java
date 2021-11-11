@@ -3,6 +3,8 @@ package com.misson.jpa_board.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,9 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
     private String name;
-    private int age;
+
+    @Min(0)
+    private BigDecimal age;
 
     @Embedded
     private Hobby hobby;
