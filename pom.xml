@@ -126,6 +126,12 @@
                     <excludes>
                         <!-- Exclude class from test coverage -->
                         <exclude>**/*com/poogle/board/*Application.class</exclude>
+                        <exclude>com/poogle/board/controller/ApiError.class</exclude>
+                        <exclude>com/poogle/board/controller/ApiResult.class</exclude>
+                        <exclude>com/poogle/board/controller/GeneralExceptionHandler.class</exclude>
+                        <exclude>com/poogle/board/util/*</exclude>
+                        <exclude>com/poogle/board/converter/*</exclude>
+                        <exclude>com/poogle/board/error/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -155,14 +161,6 @@
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
                                             <minimum>0.50</minimum>
-                                        </limit>
-                                    </limits>
-                                    <element>METHOD</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>LINE</counter>
-                                            <value>TOTALCOUNT</value>
-                                            <maximum>30</maximum>
                                         </limit>
                                     </limits>
                                 </rule>
