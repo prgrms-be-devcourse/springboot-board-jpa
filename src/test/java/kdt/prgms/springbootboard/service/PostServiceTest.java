@@ -38,7 +38,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        user = User.createUser("tester#1", 10);
+        var user = new User("tester#1", 1);
     }
 
     @Test
@@ -46,7 +46,7 @@ class PostServiceTest {
         //given
         var pageRequest = PageRequest.of(0, 10);
         var posts = LongStream.range(0, 20)
-            .mapToObj(i -> Post.createPost("title#" + i, "content#" + i, user))
+            .mapToObj(i -> new Post("title#" + i, "content#" + i, user))
             .collect(Collectors.toList());
         given(postRepository.findAll(pageRequest)).willReturn(new PageImpl<>(posts));
 

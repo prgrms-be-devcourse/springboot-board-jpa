@@ -58,7 +58,7 @@ class PostRestControllerTest {
 
     @BeforeAll
     void setup() {
-        testUser = userRepository.save(User.createUser("tester", 20));
+        testUser = userRepository.save(new User("tester", 20));
     }
 
     @Test
@@ -178,7 +178,7 @@ class PostRestControllerTest {
     void 게시글의_작성자가_존재하지_않으면_생성_요청_실패가_정상() throws Exception {
         // given
         var postDto = createPostDto(
-            User.createUser("non exist user", 20),
+            new User("non exist user", 20),
             "title",
             "content",
             1

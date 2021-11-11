@@ -1,11 +1,21 @@
 package kdt.prgms.springbootboard.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE post SET deleted = true WHERE post_id=?")
 @Where(clause = "deleted=false")
 @Table(name = "post")
@@ -27,40 +37,14 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
-    protected Post() {
-    }
-
-    private Post(String title, String content) {
+    public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
-    }
-
-    public static Post createPost(String title, String content, User user) {
-        var newPost = new Post(title, content);
-        newPost.changeUser(user);
-        return newPost;
+        this.user = user;
     }
 
     public void changePost(String title, String content) {
         this.title = title;
         this.content = content;
-    }
-
-    public void changeUser(User user) {
-        if (this.user != null) {
-            this.user.removePost(this);
-        }
-        this.user = user;
-        this.user.addPost(this);
-    }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-            "id=" + id +
-            ", title='" + title + '\'' +
-            ", content='" + content + '\'' +
-            ", user=" + user +
-            "} " + super.toString();
     }
 }

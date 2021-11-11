@@ -2,9 +2,12 @@ package kdt.prgms.springbootboard.domain;
 
 import java.util.Objects;
 import javax.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class Hobby {
 
@@ -15,16 +18,9 @@ public class Hobby {
     @Enumerated(EnumType.STRING)
     private HobbyType hobbyType;
 
-    protected Hobby() {
-    }
-
-    private Hobby(String name, HobbyType hobbyType) {
+    public Hobby(String name, HobbyType hobbyType) {
         this.name = name;
         this.hobbyType = hobbyType;
-    }
-
-    public static Hobby createHobby(String name, HobbyType hobbyType) {
-        return new Hobby(name, hobbyType);
     }
 
     @Override

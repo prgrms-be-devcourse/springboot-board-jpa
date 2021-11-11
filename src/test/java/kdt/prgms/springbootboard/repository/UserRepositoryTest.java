@@ -42,7 +42,7 @@ class UserRepositoryTest {
         var userAge = 20;
 
         //when
-        var user = userRepository.save(User.createUser(userName, userAge));
+        var user = userRepository.save(new User(userName, userAge));
 
         //then
         log.info("created user: {}", user);
@@ -59,13 +59,13 @@ class UserRepositoryTest {
     @Test
     void 전체_유저_조회_성공() {
         //given
-        var user1 = User.createUser("tester#1", 1);
+        var user1 = new User("tester#1", 1);
         entityManager.persist(user1);
 
-        var user2 = User.createUser("tester#2", 2);
+        var user2 = new User("tester#2", 2);
         entityManager.persist(user2);
 
-        var user3 = User.createUser("tester#3", 3);
+        var user3 = new User("tester#3", 3);
         entityManager.persist(user3);
 
         //when
@@ -86,7 +86,7 @@ class UserRepositoryTest {
     @Test
     void 유저_아이디로_조회_성공() {
         //given
-        var user = User.createUser("tester#1", 1);
+        var user = new User("tester#1", 1);
         entityManager.persist(user);
 
         //when
@@ -99,10 +99,10 @@ class UserRepositoryTest {
     @Test
     void 유저_이름으로_조회_성공() {
         //given
-        var user1 = User.createUser("tester#1", 1);
+        var user1 = new User("tester#1", 1);
         entityManager.persist(user1);
 
-        var user2 = User.createUser("tester#2", 2);
+        var user2 = new User("tester#2", 2);
         entityManager.persist(user2);
 
         //when
@@ -115,14 +115,14 @@ class UserRepositoryTest {
     @Test
     void 유저_정보_변경_성공() {
         //given
-        var user = User.createUser("tester#1", 1);
+        var user = new User("tester#1", 1);
         entityManager.persist(user);
 
         //when
         user.changeUserProfile(
             "changed" + user.getName(),
             user.getAge() + 1,
-            Hobby.createHobby("soccer", HobbyType.SPORTS)
+            new Hobby("soccer", HobbyType.SPORTS)
         );
         var foundUser = userRepository.findById(user.getId()).get();
 
@@ -134,10 +134,10 @@ class UserRepositoryTest {
     @Test
     void 아이디로_유저_삭제_성공() {
         //given
-        var user1 = User.createUser("tester#1", 1);
+        var user1 = new User("tester#1", 1);
         entityManager.persist(user1);
 
-        var user2 = User.createUser("tester#2", 2);
+        var user2 = new User("tester#2", 2);
         entityManager.persist(user2);
 
         //when
