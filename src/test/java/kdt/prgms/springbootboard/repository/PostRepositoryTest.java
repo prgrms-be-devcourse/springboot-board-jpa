@@ -1,25 +1,24 @@
 package kdt.prgms.springbootboard.repository;
 
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
-import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDateTime;
 import kdt.prgms.springbootboard.global.config.JpaAuditingConfiguration;
 import kdt.prgms.springbootboard.domain.*;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.Import;
 
 
 @Slf4j
-@DataJpaTest(includeFilters = @Filter(
-    type = ASSIGNABLE_TYPE,
-    classes = JpaAuditingConfiguration.class
-))
+@Import(JpaAuditingConfiguration.class)
+@DataJpaTest
 class PostRepositoryTest {
 
     @Autowired
@@ -33,21 +32,32 @@ class PostRepositoryTest {
     @BeforeEach
     void setUp() {
         user = new User("tester#1", 1);
-    }
-
-    @Test
-    void 게시글이_없으면_빈_결과값이_정상() {
-        //when
-        var allPosts = postRepository.findAll();
-
-        //then
-        assertThat(allPosts, empty());
-    }
-
-    @Test
-    void 게시글_생성_성공() {
-        //given
         entityManager.persist(user);
+    }
+
+    @Test
+    @DisplayName("BaseEntity 생성 테스트")
+    void baseEntityAuditingTest() {
+        //Given
+        var now = LocalDateTime.now().minusMinutes(1);
+        var post = new Post("testTitle#1", "testContent#1", user);
+        entityManager.persist(post);
+
+        //When
+        var foundPost = postRepository.findById(post.getId()).get();
+
+        //Then
+        SoftAssertions.assertSoftly(softAssertions -> {
+                softAssertions.assertThat(foundPost.getCreatedDate()).isAfter(now);
+                softAssertions.assertThat(foundPost.getLastModifiedDate()).isAfter(now);
+            }
+        );
+    }
+
+    @Test
+    @DisplayName("게시글 생성 테스트")
+    void savePostTest() {
+        //given
         var postTitle = "testTitle#1";
         var postContent = "testContent#1";
 
@@ -56,64 +66,14 @@ class PostRepositoryTest {
 
         //then
         log.info("created post: {}", newPost);
-        assertThat(newPost, hasProperty("id", notNullValue()));
-        assertThat(newPost, hasProperty("title", is(postTitle)));
-        assertThat(newPost, hasProperty("content", is(postContent)));
-        assertThat(newPost, hasProperty("deleted", is(false)));
-        assertThat(newPost, hasProperty("createdBy", notNullValue()));
-        assertThat(newPost, hasProperty("createdDate", notNullValue()));
-        assertThat(newPost, hasProperty("lastModifiedBy", notNullValue()));
-        assertThat(newPost, hasProperty("lastModifiedDate", notNullValue()));
+        assertThat(newPost.getId()).isNotNull();
     }
 
-    @Test
-    void 전체_게시글_조회_성공() {
-        //given
-        entityManager.persist(user);
-
-        var post1 = new Post("testTitle#1", "testContent#1", user);
-        entityManager.persist(post1);
-
-        var post2 = new Post("testTitle#2", "testContent#2", user);
-        entityManager.persist(post2);
-
-        //when
-        var allPosts = postRepository.findAll();
-
-        //then
-        assertThat(allPosts, hasSize(2));
-        assertThat(
-            allPosts,
-            containsInAnyOrder(
-                samePropertyValuesAs(post1),
-                samePropertyValuesAs(post2)
-            )
-        );
-    }
 
     @Test
-    void 게시글_아이디로_조회_성공() {
+    @DisplayName("게시글 제목으로 조회 테스트")
+    void findPostsByTitleTest() {
         //given
-        entityManager.persist(user);
-
-        var post1 = new Post("testTitle#1", "testContent#1", user);
-        entityManager.persist(post1);
-
-        var post2 = new Post("testTitle#2", "testContent#2", user);
-        entityManager.persist(post2);
-
-        //when
-        var foundPost = postRepository.findById(post2.getId()).get();
-
-        //then
-        assertThat(foundPost, samePropertyValuesAs(post2));
-    }
-
-    @Test
-    void 게시글_제목으로_조회_성공() {
-        //given
-        entityManager.persist(user);
-
         var post1 = new Post("testTitle#1", "testContent#1", user);
         entityManager.persist(post1);
 
@@ -124,14 +84,15 @@ class PostRepositoryTest {
         entityManager.persist(post3);
 
         //when
-        var posts = postRepository.findByTitleContaining("Title");
+        var foundPosts = postRepository.findByTitleContaining("Title");
 
         //then
-        assertThat(posts, hasSize(2));
+        assertThat(foundPosts).hasSize(2);
     }
 
     @Test
-    void 게시글_정보_변경_성공() {
+    @DisplayName("게시글 수정 테스트")
+    void changePostTest() {
         //given
         entityManager.persist(user);
 
@@ -146,17 +107,17 @@ class PostRepositoryTest {
         var foundPost = postRepository.findById(post.getId()).get();
 
         //then
-        assertThat(post, samePropertyValuesAs(foundPost));
-
+        SoftAssertions.assertSoftly(softAssertions -> {
+                softAssertions.assertThat(foundPost.getTitle()).isEqualTo(post.getTitle());
+                softAssertions.assertThat(foundPost.getContent()).isEqualTo(post.getContent());
+            }
+        );
     }
 
     @Test
-    void 아이디로_게시글_삭제_성공() {
+    @DisplayName("게시글 아이디로 soft delete 테스트")
+    void softDeletePostByIdTest() {
         //given
-        entityManager.persist(user);
-        entityManager.flush();
-        entityManager.clear();
-
         var post1 = new Post("testTitle#1", "testContent#1", user);
         entityManager.persist(post1);
 
@@ -165,12 +126,10 @@ class PostRepositoryTest {
 
         //when
         postRepository.deleteById(post1.getId());
+
         var allPosts = postRepository.findAll();
 
         //then
-        assertThat(allPosts, hasSize(1));
-        assertThat(allPosts, containsInAnyOrder(samePropertyValuesAs(post2)));
-
+        assertThat(allPosts).hasSize(1);
     }
-
 }
