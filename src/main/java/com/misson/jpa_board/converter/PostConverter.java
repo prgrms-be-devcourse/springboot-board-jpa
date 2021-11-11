@@ -28,19 +28,15 @@ public class PostConverter {
     }
 
     public PostDto convertPostDtoFromPostCreateRequest(PostCreateRequest postCreateRequest) {
-        return PostDto.builder()
-                .content(postCreateRequest.getContent())
-                .title(postCreateRequest.getTitle())
-                .userId(postCreateRequest.getUserId())
-                .build();
+        return new PostDto(postCreateRequest.getTitle(),
+                postCreateRequest.getContent(),
+                postCreateRequest.getUserId());
     }
 
     public PostDto convertPostDto(Post post) {
-        return PostDto.builder()
-                .id(post.getId())
-                .content(post.getContent())
-                .title(post.getTitle())
-                .userId(userConverter.convertUserDto(post.getUser()).getId())
-                .build();
+        return new PostDto(post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                userConverter.convertUserDto(post.getUser()).getId());
     }
 }
