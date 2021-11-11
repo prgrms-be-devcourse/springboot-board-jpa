@@ -33,10 +33,10 @@ public class PostService {
     }
 
     @Transactional
-    public Long save(PostCreateRequest postDto) throws NotFoundException {
+    public Long save(PostCreateRequest postDto) throws NoSuchElementException {
         User user = userRepository
                 .findById(postDto.getUserId())
-                .orElseThrow(() -> new NotFoundException("아이디와 일치하는 회원이 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("아이디와 일치하는 회원이 없습니다."));
         Post post = postConverter.convertToPostCreateRequest(postDto, user);
         Post postEntity = postRepository.save(post);
         return postEntity.getId();
