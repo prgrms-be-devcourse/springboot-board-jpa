@@ -1,21 +1,22 @@
-package com.board.project.user.domain;
+package com.board.project.domain;
 
+import com.board.project.common.BaseEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
-public class User {
+public class User extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "name", length = 30)
@@ -33,5 +34,9 @@ public class User {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+    }
+
+    public User() {
+
     }
 }
