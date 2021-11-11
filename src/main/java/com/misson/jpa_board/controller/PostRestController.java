@@ -32,9 +32,9 @@ public class PostRestController {
     }
 
     @PostMapping
-    public ApiResponse<Long> save(@RequestBody PostCreateRequest postDto) throws NotFoundException {
+    public ApiResponse<Long> save(@RequestBody PostCreateRequest PostCreateRequest) throws NotFoundException {
         log.info("게시글 작성");
-        return ApiResponse.ok(postService.save(postDto));
+        return ApiResponse.ok(postService.save(PostCreateRequest));
     }
 
     @PutMapping("/{id}")
