@@ -1,9 +1,9 @@
 package com.misson.jpa_board.controller;
 
-import com.misson.jpa_board.ApiResponse;
 import com.misson.jpa_board.dto.UserDto;
 import com.misson.jpa_board.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +19,9 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ApiResponse<Long> save(@RequestBody UserDto userDto) {
+    public ResponseEntity<Long> save(@RequestBody UserDto userDto) {
         log.info("회원 추가");
         UserDto insertedUser = userService.save(userDto);
-        return ApiResponse.ok(insertedUser.getId());
+        return ResponseEntity.ok(insertedUser.getId());
     }
 }

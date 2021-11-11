@@ -15,7 +15,7 @@ include::{snippets}/insertPost/request-fields.adoc[]
 
 .Response
 include::{snippets}/insertPost/http-response.adoc[]
-include::{snippets}/insertPost/response-fields.adoc[]
+
 
 '''
 
