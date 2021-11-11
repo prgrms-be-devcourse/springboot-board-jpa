@@ -5,12 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class PostDto {
+public class PostSaveRequestDto {
 
     private Long id;
 
@@ -23,17 +25,14 @@ public class PostDto {
 
     @NotNull
     @JsonProperty("user")
-    private UserDto userDto;
-
-    public PostDto() {
-    }
+    private SimpleUserDto simpleUserDto;
 
     @Builder
-    public PostDto(Long id, String title, String content,
-        UserDto userDto) {
+    public PostSaveRequestDto(Long id, String title, String content,
+        SimpleUserDto simpleUserDto) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.userDto = userDto;
+        this.simpleUserDto = simpleUserDto;
     }
 }

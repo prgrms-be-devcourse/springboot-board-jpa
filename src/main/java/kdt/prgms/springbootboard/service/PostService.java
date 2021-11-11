@@ -2,8 +2,8 @@ package kdt.prgms.springbootboard.service;
 
 import java.text.MessageFormat;
 import kdt.prgms.springbootboard.converter.PostConverter;
-import kdt.prgms.springbootboard.dto.PostDetailDto;
-import kdt.prgms.springbootboard.dto.PostDto;
+import kdt.prgms.springbootboard.dto.PostDetailResponseDto;
+import kdt.prgms.springbootboard.dto.PostSaveRequestDto;
 import kdt.prgms.springbootboard.global.error.exception.PostNotFoundException;
 import kdt.prgms.springbootboard.global.error.exception.UserNotFoundException;
 import kdt.prgms.springbootboard.repository.PostRepository;
@@ -18,40 +18,43 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
     private final PostRepository postRepository;
+
     private final UserRepository userRepository;
+
     private final PostConverter postConverter;
 
     public PostService(
         PostRepository postRepository,
         UserRepository userRepository,
-        PostConverter postConverter) {
+        PostConverter postConverter
+    ) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.postConverter = postConverter;
     }
 
     @Transactional
-    public PostDetailDto save(PostDto postDto) {
-        var foundUser = userRepository.findByName(postDto.getUserDto().getName())
-            .orElseThrow(() -> new UserNotFoundException(postDto.getUserDto().getName()));
-        var newPost = postConverter.convertPost(postDto, foundUser);
+    public PostDetailResponseDto save(PostSaveRequestDto postSaveRequestDto) {
+        var foundUser = userRepository.findByName(postSaveRequestDto.getSimpleUserDto().getName())
+            .orElseThrow(() -> new UserNotFoundException(postSaveRequestDto.getSimpleUserDto().getName()));
+        var newPost = postConverter.convertPost(postSaveRequestDto, foundUser);
         return postConverter.convertPostDetailDto(postRepository.save(newPost));
     }
 
     @Transactional
-    public PostDetailDto update(Long postId, PostDto postDto) {
+    public PostDetailResponseDto update(Long postId, PostSaveRequestDto postSaveRequestDto) {
         var foundPost = postRepository.findById(postId)
             .orElseThrow(() -> new PostNotFoundException(
-                MessageFormat.format("{0}({1})", postDto.getTitle(), postDto.getId())));
-        foundPost.changePost(postDto.getTitle(), postDto.getContent());
+                MessageFormat.format("{0}({1})", postSaveRequestDto.getTitle(), postSaveRequestDto.getId())));
+        foundPost.changePost(postSaveRequestDto.getTitle(), postSaveRequestDto.getContent());
         return postConverter.convertPostDetailDto(foundPost);
     }
 
-    public Page<PostDto> findAll(Pageable pageable) {
+    public Page<PostSaveRequestDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable).map(postConverter::convertPostDto);
     }
 
-    public PostDetailDto findOne(Long postId) {
+    public PostDetailResponseDto findOne(Long postId) {
         return postRepository.findById(postId)
             .map(postConverter::convertPostDetailDto)
             .orElseThrow(() -> new PostNotFoundException(
