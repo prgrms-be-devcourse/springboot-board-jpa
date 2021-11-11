@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -25,7 +26,7 @@ public class PostRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> save(@RequestBody PostCreateRequest PostCreateRequest) throws NoSuchElementException {
+    public ResponseEntity<Long> save(@RequestBody @Validated PostCreateRequest PostCreateRequest) throws NoSuchElementException {
         log.info("게시글 작성");
         Long savedId = postService.save(PostCreateRequest);
         URI uri = URI.create("/posts");
