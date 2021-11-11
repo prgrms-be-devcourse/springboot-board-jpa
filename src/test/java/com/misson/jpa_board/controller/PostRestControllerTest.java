@@ -7,7 +7,6 @@ import com.misson.jpa_board.dto.PostDto;
 import com.misson.jpa_board.dto.UserDto;
 import com.misson.jpa_board.service.PostService;
 import com.misson.jpa_board.service.UserService;
-import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -57,8 +55,10 @@ class PostRestControllerTest {
 
     private Long postId;
 
+    private PostCreateRequest postCreateRequest;
+
     @BeforeEach
-    void save_test() throws NotFoundException {
+    void saveEntity() {
         UserDto createUser = UserDto.builder()
                 .age(28)
                 .name("choi")
@@ -66,22 +66,13 @@ class PostRestControllerTest {
                 .build();
         UserDto insertedUser = userService.save(createUser);
 
-        PostCreateRequest createPostDto = PostCreateRequest.builder()
+        postCreateRequest = PostCreateRequest.builder()
                 .title("제목학원")
                 .content("내용은 뭐로하지")
                 .userId(insertedUser.getId())
                 .build();
 
-        postId = postService.save(createPostDto);
-
-        PostDto postDto = postService.postFindById(postId);
-
-        assertThat(insertedUser.getAge(), is(createUser.getAge()));
-        assertThat(insertedUser.getName(), is(createUser.getName()));
-        assertThat(insertedUser.getHobby(), is(createUser.getHobby()));
-        assertThat(postId, is(postDto.getId()));
-        assertThat(postDto.getTitle(), is(createPostDto.getTitle()));
-        assertThat(postDto.getContent(), is(createPostDto.getContent()));
+        postId = postService.save(postCreateRequest);
     }
 
     @Test
@@ -108,8 +99,7 @@ class PostRestControllerTest {
     @DisplayName("게시글 수정")
     void postChanged() throws Exception {
         PostDto postDto = postService.postFindById(postId);
-        postDto.setTitle("수정된 제목2");
-        postDto.setContent("수정된 내용2");
+        postDto.changePost("수정된 제목2", "수정된 내용2");
 
         mockMvc.perform(RestDocumentationRequestBuilders.put("/posts/{id}", postId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -139,21 +129,8 @@ class PostRestControllerTest {
     @Test
     @DisplayName("게시글 작성")
     void insertPost() throws Exception {
-        UserDto createUser = UserDto.builder()
-                .age(28)
-                .name("choi")
-                .hobby(new Hobby("coding"))
-                .build();
-        UserDto insertedUser = userService.save(createUser);
-
-        PostCreateRequest createPostDto = PostCreateRequest.builder()
-                .title("게시글 작성 테스트")
-                .content("테스트 내용")
-                .userId(insertedUser.getId())
-                .build();
-
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
-                        .content(objectMapper.writeValueAsString(createPostDto))
+                        .content(objectMapper.writeValueAsString(postCreateRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isCreated())
