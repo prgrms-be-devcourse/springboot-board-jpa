@@ -2,8 +2,8 @@ package kdt.prgms.springbootboard.converter;
 
 import kdt.prgms.springbootboard.domain.Post;
 import kdt.prgms.springbootboard.domain.User;
-import kdt.prgms.springbootboard.dto.PostDetailDto;
-import kdt.prgms.springbootboard.dto.PostDto;
+import kdt.prgms.springbootboard.dto.PostDetailResponseDto;
+import kdt.prgms.springbootboard.dto.PostSaveRequestDto;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,15 +15,15 @@ public class PostConverter {
         this.userConverter = userConverter;
     }
 
-    public Post convertPost(PostDto postDto, User user) {
+    public Post convertPost(PostSaveRequestDto postSaveRequestDto, User user) {
         return new Post(
-            postDto.getTitle(),
-            postDto.getContent(),
+            postSaveRequestDto.getTitle(),
+            postSaveRequestDto.getContent(),
             user);
     }
 
-    public PostDto convertPostDto(Post post) {
-        return new PostDto(
+    public PostSaveRequestDto convertPostDto(Post post) {
+        return new PostSaveRequestDto(
             post.getId(),
             post.getTitle(),
             post.getContent(),
@@ -31,8 +31,8 @@ public class PostConverter {
         );
     }
 
-    public PostDetailDto convertPostDetailDto(Post post) {
-        return new PostDetailDto(
+    public PostDetailResponseDto convertPostDetailDto(Post post) {
+        return new PostDetailResponseDto(
             post.getId(),
             post.getTitle(),
             post.getContent(),

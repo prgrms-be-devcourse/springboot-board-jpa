@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.*;
 import kdt.prgms.springbootboard.converter.UserConverter;
 import kdt.prgms.springbootboard.domain.User;
-import kdt.prgms.springbootboard.dto.PostDto;
+import kdt.prgms.springbootboard.dto.PostSaveRequestDto;
 
 import kdt.prgms.springbootboard.repository.UserRepository;
 import kdt.prgms.springbootboard.service.PostService;
@@ -53,7 +53,7 @@ class PostRestControllerTest {
 
     private User testUser;
 
-    private String url = "/api/v1/posts";
+    private final String url = "/api/v1/posts";
 
 
     @BeforeAll
@@ -62,7 +62,8 @@ class PostRestControllerTest {
     }
 
     @Test
-    void 게시글_생성_요청_성공() throws Exception {
+    @DisplayName("게시글 생성 요청 성공")
+    void createPostTest() throws Exception {
         // given
         var postDto = createPostDto(testUser, "title", "content", 1).get(0);
 
@@ -101,12 +102,13 @@ class PostRestControllerTest {
     }
 
     @Test
-    void 게시글이_제목이_유효하지_않는경우_게시글생성_요청_실패가_정상() throws Exception {
+    @DisplayName("게시글 생성 실패 - 게시글의 제목이 없거나 너무 김")
+    void createPostFailureTest() throws Exception {
         // given
-        var emptyTitlePostDto = PostDto.builder()
+        var emptyTitlePostDto = PostSaveRequestDto.builder()
             .title("")
             .content("content")
-            .userDto(userConverter.convertUserDto(testUser))
+            .simpleUserDto(userConverter.convertUserDto(testUser))
             .build();
 
         // when, then
@@ -175,7 +177,8 @@ class PostRestControllerTest {
     }
 
     @Test
-    void 게시글의_작성자가_존재하지_않으면_생성_요청_실패가_정상() throws Exception {
+    @DisplayName("게시글 생성 실패 - 작성자가 존재하지 않음")
+    void createPostFailureTest2() throws Exception {
         // given
         var postDto = createPostDto(
             new User("non exist user", 20),
@@ -188,6 +191,7 @@ class PostRestControllerTest {
         mockMvc.perform(post(url)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(postDto)))
+            .andExpect(status().isBadRequest())
             .andDo(print())
             .andDo(document("posts-create-invalid-user",
                 preprocessRequest(prettyPrint()),
@@ -212,7 +216,8 @@ class PostRestControllerTest {
 
 
     @Test
-    void 게시글_페이지_요청_성공() throws Exception {
+    @DisplayName("게시글 페이지 요청 성공")
+    void getPostsSuccessTest() throws Exception {
         // given
         createPostDto(testUser, "title#", "content#", 30)
             .forEach(postDto -> postService.save(postDto));
@@ -275,7 +280,8 @@ class PostRestControllerTest {
     }
 
     @Test
-    void 게시글_단건_요청_성공() throws Exception {
+    @DisplayName("게시글 단건 요청 성공")
+    void getPostDetailSuccessTest() throws Exception {
         // given
         var resPostDto = postService.save(
             createPostDto(testUser, "title#", "content#", 1).get(0)
@@ -309,15 +315,16 @@ class PostRestControllerTest {
     }
 
     @Test
-    void 게시글_수정_요청_성공() throws Exception {
+    @DisplayName("게시글 수정 요청 성공")
+    void updatePostSuccessTest() throws Exception {
         // given
         var postDto = createPostDto(testUser, "title#", "content#", 1).get(0);
         var post_id = postService.save(postDto).getId();
 
-        var updatePostDto = PostDto.builder()
+        var updatePostDto = PostSaveRequestDto.builder()
             .title("updated " + postDto.getTitle())
             .content("updated " + postDto.getContent())
-            .userDto(postDto.getUserDto())
+            .simpleUserDto(postDto.getSimpleUserDto())
             .build();
 
         mockMvc
@@ -357,14 +364,13 @@ class PostRestControllerTest {
     }
 
 
-    private List<PostDto> createPostDto(User user, String title, String content, int count) {
+    private List<PostSaveRequestDto> createPostDto(User user, String title, String content, int count) {
         return IntStream.range(0, count).mapToObj(i ->
-            PostDto.builder()
+            PostSaveRequestDto.builder()
                 .title(title + i)
                 .content(content + i)
-                .userDto(userConverter.convertUserDto(user))
+                .simpleUserDto(userConverter.convertUserDto(user))
                 .build()
-        ).collect(Collectors.toCollection(ArrayList::new));
+        ).toList();
     }
-
 }

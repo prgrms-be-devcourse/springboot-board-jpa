@@ -5,12 +5,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class UserDto {
+public class SimpleUserDto {
+
     private Long id;
 
     @NotBlank
@@ -21,11 +24,8 @@ public class UserDto {
     @Positive
     private int age;
 
-    public UserDto() {
-    }
-
     @Builder
-    public UserDto(Long id, String name, int age) {
+    public SimpleUserDto(Long id, String name, int age) {
         this.id = id;
         this.name = name;
         this.age = age;
