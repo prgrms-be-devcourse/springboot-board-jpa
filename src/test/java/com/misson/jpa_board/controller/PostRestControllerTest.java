@@ -36,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
+@Transactional
 @AutoConfigureRestDocs
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
@@ -84,9 +85,8 @@ class PostRestControllerTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("게시글 조회")
-    public void postFindByIdTest() throws Exception {
+    void postFindByIdTest() throws Exception {
         mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/{id}", postId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -108,9 +108,8 @@ class PostRestControllerTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("게시글 수정")
-    public void postChanged() throws Exception {
+    void postChanged() throws Exception {
         PostDto postDto = postService.postFindById(postId);
         postDto.setTitle("수정된 제목2");
         postDto.setContent("수정된 내용2");

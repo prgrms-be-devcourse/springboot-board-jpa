@@ -7,11 +7,9 @@ import com.misson.jpa_board.dto.PostDto;
 import com.misson.jpa_board.dto.UserDto;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @Slf4j
+@Transactional
 @SpringBootTest
 @ActiveProfiles("test")
 class PostServiceTest {
@@ -57,7 +56,6 @@ class PostServiceTest {
     }
 
     @Test
-    @Transactional
     void findById() throws NotFoundException {
         PostDto postDto = postService.postFindById(postNumber);
 
@@ -67,7 +65,6 @@ class PostServiceTest {
     }
 
     @Test
-    @Transactional
     void postChange() throws NotFoundException {
         PostDto postDto = postService.postFindById(postNumber);
         postDto.setContent("Hello");
@@ -80,7 +77,6 @@ class PostServiceTest {
     }
 
     @Test
-    @Transactional
     void findAll() {
         Page<PostDto> all = postService.findAll(PageRequest.of(0, 10));
 
