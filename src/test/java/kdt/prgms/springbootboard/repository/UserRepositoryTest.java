@@ -1,23 +1,22 @@
 package kdt.prgms.springbootboard.repository;
 
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
-import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDateTime;
 import kdt.prgms.springbootboard.global.config.JpaAuditingConfiguration;
 import kdt.prgms.springbootboard.domain.*;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.Import;
 
 @Slf4j
-@DataJpaTest(includeFilters = @Filter(
-    type = ASSIGNABLE_TYPE,
-    classes = JpaAuditingConfiguration.class
-))
+@Import(JpaAuditingConfiguration.class)
+@DataJpaTest
 class UserRepositoryTest {
 
     @Autowired
@@ -27,77 +26,43 @@ class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    void 유저가_없으면_빈_결과값이_정상() {
-        //when
-        var allUsers = userRepository.findAll();
+    @DisplayName("BaseEntity 생성 테스트")
+    void baseEntityAuditingTest() {
+        //Given
+        var now = LocalDateTime.now().minusMinutes(1);
+        var user = new User("tester#1", 1);
+        entityManager.persist(user);
 
-        //then
-        assertThat(allUsers, empty());
+        //When
+        var foundPost = userRepository.findById(user.getId()).get();
+
+        //Then
+        SoftAssertions.assertSoftly(softAssertions -> {
+                softAssertions.assertThat(foundPost.getCreatedDate()).isAfter(now);
+                softAssertions.assertThat(foundPost.getLastModifiedDate()).isAfter(now);
+            }
+        );
     }
 
     @Test
-    void 유저_생성_성공() {
+    @DisplayName("게시글 생성 테스트")
+    void saveUserTest() {
         //given
         var userName = "test";
         var userAge = 20;
 
         //when
-        var user = userRepository.save(new User(userName, userAge));
+        var newUser = userRepository.save(new User(userName, userAge));
 
         //then
-        log.info("created user: {}", user);
-        assertThat(user, hasProperty("id", notNullValue()));
-        assertThat(user, hasProperty("name", is(userName)));
-        assertThat(user, hasProperty("age", is(userAge)));
-        assertThat(user, hasProperty("hobby", nullValue()));
-        assertThat(user, hasProperty("createdBy", notNullValue()));
-        assertThat(user, hasProperty("createdDate", notNullValue()));
-        assertThat(user, hasProperty("lastModifiedBy", notNullValue()));
-        assertThat(user, hasProperty("lastModifiedDate", notNullValue()));
+        log.info("created user: {}", newUser);
+        assertThat(newUser.getId()).isNotNull();
     }
 
-    @Test
-    void 전체_유저_조회_성공() {
-        //given
-        var user1 = new User("tester#1", 1);
-        entityManager.persist(user1);
-
-        var user2 = new User("tester#2", 2);
-        entityManager.persist(user2);
-
-        var user3 = new User("tester#3", 3);
-        entityManager.persist(user3);
-
-        //when
-        var allUsers = userRepository.findAll();
-
-        //then
-        assertThat(allUsers, hasSize(3));
-        assertThat(
-            allUsers,
-            containsInAnyOrder(
-                samePropertyValuesAs(user1),
-                samePropertyValuesAs(user2),
-                samePropertyValuesAs(user3)
-            )
-        );
-    }
 
     @Test
-    void 유저_아이디로_조회_성공() {
-        //given
-        var user = new User("tester#1", 1);
-        entityManager.persist(user);
-
-        //when
-        var foundUser = userRepository.findById(user.getId()).get();
-
-        //then
-        assertThat(foundUser, samePropertyValuesAs(user));
-    }
-
-    @Test
-    void 유저_이름으로_조회_성공() {
+    @DisplayName("유저 이름으로 조회 테스트")
+    void findUsersByNameTest() {
         //given
         var user1 = new User("tester#1", 1);
         entityManager.persist(user1);
@@ -109,11 +74,12 @@ class UserRepositoryTest {
         var foundUser = userRepository.findByName(user2.getName()).get();
 
         //then
-        assertThat(foundUser, samePropertyValuesAs(user2));
+        assertThat(foundUser.getName()).isEqualTo(user2.getName());
     }
 
     @Test
-    void 유저_정보_변경_성공() {
+    @DisplayName("유저 프로필 정보 변경 테스트")
+    void changeUserProfileTest() {
         //given
         var user = new User("tester#1", 1);
         entityManager.persist(user);
@@ -127,12 +93,18 @@ class UserRepositoryTest {
         var foundUser = userRepository.findById(user.getId()).get();
 
         //then
-        assertThat(foundUser, samePropertyValuesAs(user));
+        SoftAssertions.assertSoftly(softAssertions -> {
+                softAssertions.assertThat(foundUser.getName()).isEqualTo(user.getName());
+                softAssertions.assertThat(foundUser.getAge()).isEqualTo(user.getAge());
+                softAssertions.assertThat(foundUser.getHobby()).isEqualTo(user.getHobby());
+            }
+        );
 
     }
 
     @Test
-    void 아이디로_유저_삭제_성공() {
+    @DisplayName("아이디로 유저 soft delete 테스트")
+    void softDeleteUserByIdTest() {
         //given
         var user1 = new User("tester#1", 1);
         entityManager.persist(user1);
@@ -142,15 +114,10 @@ class UserRepositoryTest {
 
         //when
         userRepository.deleteById(user2.getId());
+
         var allUsers = userRepository.findAll();
 
         //then
-        assertThat(allUsers, hasSize(1));
-        assertThat(
-            allUsers,
-            containsInAnyOrder(
-                samePropertyValuesAs(user1)
-            )
-        );
+        assertThat(allUsers).hasSize(1);
     }
 }
