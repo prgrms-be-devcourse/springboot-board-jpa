@@ -22,7 +22,6 @@ public class UserService {
     @Transactional
     public UserDto save(UserDto userDto) {
         User user = userRepository.save(userConverter.convertUser(userDto));
-        user.setInfo(user.getId());
         return userConverter.convertUserDto(user);
     }
 }

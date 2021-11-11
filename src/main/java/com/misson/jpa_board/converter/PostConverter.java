@@ -23,7 +23,6 @@ public class PostConverter {
                 .content(postDto.getContent())
                 .build();
         post.setUser(user);
-        post.setInfo(user.getId());
         return post;
     }
 
