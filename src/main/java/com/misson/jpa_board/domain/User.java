@@ -22,7 +22,7 @@ public class User extends BaseEntity {
     private String name;
 
     @Min(0)
-    private BigDecimal age;
+    private int age;
 
     @Embedded
     private Hobby hobby;
