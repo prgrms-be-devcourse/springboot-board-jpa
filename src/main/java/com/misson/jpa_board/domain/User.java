@@ -30,8 +30,4 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private final List<Post> posts = new ArrayList<>();
 
-    public List<Post> getPosts() {
-        return posts;
-    }
-
 }
