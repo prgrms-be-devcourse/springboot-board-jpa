@@ -1,6 +1,6 @@
 package com.board.project.dto;
 
-import com.board.project.domain.*;
+import com.board.project.domain.Post;
 import java.time.LocalDateTime;
 import lombok.Getter;
 

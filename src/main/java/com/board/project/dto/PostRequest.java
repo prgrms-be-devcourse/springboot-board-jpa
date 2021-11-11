@@ -20,17 +20,17 @@ public class PostRequest {
     @NotNull
     private final Long userId;
 
-    public Post toEntity(User user) {
-        return Post.builder()
-                .title(this.title)
-                .content(this.content)
-                .user(user)
-                .build();
-    }
-
     public PostRequest(String title, String content, Long userId) {
         this.title = title;
         this.content = content;
         this.userId = userId;
+    }
+
+    public Post toEntity(User user) {
+        return Post.builder()
+            .title(this.title)
+            .content(this.content)
+            .user(user)
+            .build();
     }
 }

@@ -1,6 +1,5 @@
 package com.board.project.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -103,8 +102,10 @@ class PostControllerTest {
                     fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
                     fieldWithPath("data.content").type(JsonFieldType.STRING).description("내용"),
                     fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("사용자 식별자"),
-                    fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("createAt"),
-                    fieldWithPath("data.updatedAt").type(JsonFieldType.STRING).description("updatedAt")
+                    fieldWithPath("data.createdAt").type(JsonFieldType.STRING)
+                        .description("createAt"),
+                    fieldWithPath("data.updatedAt").type(JsonFieldType.STRING)
+                        .description("updatedAt")
                 )
             ));
     }
@@ -150,8 +151,10 @@ class PostControllerTest {
                     fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
                     fieldWithPath("data.content").type(JsonFieldType.STRING).description("내용"),
                     fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("사용자 식별자"),
-                    fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("createAt"),
-                    fieldWithPath("data.updatedAt").type(JsonFieldType.STRING).description("updatedAt")
+                    fieldWithPath("data.createdAt").type(JsonFieldType.STRING)
+                        .description("createAt"),
+                    fieldWithPath("data.updatedAt").type(JsonFieldType.STRING)
+                        .description("updatedAt")
                 )
             ));
     }
@@ -199,11 +202,11 @@ class PostControllerTest {
     }
 
     private void createPosts() {
-        IntStream.range(1,10).mapToObj(i -> PostRequest.builder()
+        IntStream.range(1, 10).mapToObj(i -> PostRequest.builder()
             .title("제목")
             .content("내용")
             .userId(userId)
-            .build()).forEach(post-> {
+            .build()).forEach(post -> {
             try {
                 postService.save(post);
             } catch (NotFoundException e) {

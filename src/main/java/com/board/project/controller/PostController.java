@@ -42,8 +42,10 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<PostResponse> updateOne(@PathVariable Long id, @RequestBody PostRequest postDto) throws NotFoundException {
-        return ApiResponse.ok(postService.update(id,postDto));
+    public ApiResponse<PostResponse> updateOne(@PathVariable Long id,
+                                               @RequestBody PostRequest postDto)
+        throws NotFoundException {
+        return ApiResponse.ok(postService.update(id, postDto));
     }
 
     @DeleteMapping("/{id}")

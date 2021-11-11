@@ -23,19 +23,17 @@ import org.springframework.data.domain.PageRequest;
 @SpringBootTest
 @Slf4j
 class PostServiceTest {
+
+    @Autowired
+    PostService service;
+    @Autowired
+    PostRepository postRepository;
+    @Autowired
+    UserRepository userRepository;
     private User user;
     private PostRequest postRequest;
     private Long userId;
     private Long postId;
-
-    @Autowired
-    PostService service;
-
-    @Autowired
-    PostRepository postRepository;
-
-    @Autowired
-    UserRepository userRepository;
 
     @BeforeEach
     void setUp() throws NotFoundException {
@@ -74,18 +72,18 @@ class PostServiceTest {
     @Test
     @DisplayName("게시물을 페이징 처리해서 조회 - 따로 독립적으로 실행 하여야 함.")
     void findPosts() {
-        IntStream.range(1,10).mapToObj(i -> PostRequest.builder()
+        IntStream.range(1, 10).mapToObj(i -> PostRequest.builder()
             .title("제목")
             .content("내용")
             .userId(userId)
-            .build()).forEach(post-> {
+            .build()).forEach(post -> {
             try {
                 service.save(post);
             } catch (NotFoundException e) {
                 e.printStackTrace();
             }
         });
-        PageRequest pageable = PageRequest.of(0,10);
+        PageRequest pageable = PageRequest.of(0, 10);
 
         Page<PostResponse> all = service.findAll(pageable);
 
@@ -102,10 +100,12 @@ class PostServiceTest {
             .userId(userId)
             .build();
 
-        PostResponse update = service.update(postId,updatedPost);
+        PostResponse update = service.update(postId, updatedPost);
 
-        assertThat(postRepository.findById(postId).get().getTitle()).isEqualTo(updatedPost.getTitle());
-        assertThat(postRepository.findById(postId).get().getContent()).isEqualTo(updatedPost.getContent());
+        assertThat(postRepository.findById(postId).get().getTitle()).isEqualTo(
+            updatedPost.getTitle());
+        assertThat(postRepository.findById(postId).get().getContent()).isEqualTo(
+            updatedPost.getContent());
     }
 
     @Test
