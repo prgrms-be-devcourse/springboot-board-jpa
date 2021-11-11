@@ -16,7 +16,7 @@ public class PostConverter {
     }
 
     public Post convertPost(PostDto postDto, User user) {
-        return Post.createPost(
+        return new Post(
             postDto.getTitle(),
             postDto.getContent(),
             user);

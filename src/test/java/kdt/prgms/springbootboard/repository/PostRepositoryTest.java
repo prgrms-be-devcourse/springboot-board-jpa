@@ -32,9 +32,8 @@ class PostRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        user = User.createUser("tester#1", 1);
+        user = new User("tester#1", 1);
     }
-
 
     @Test
     void 게시글이_없으면_빈_결과값이_정상() {
@@ -53,7 +52,7 @@ class PostRepositoryTest {
         var postContent = "testContent#1";
 
         //when
-        var newPost = postRepository.save(Post.createPost(postTitle, postContent, user));
+        var newPost = postRepository.save(new Post(postTitle, postContent, user));
 
         //then
         log.info("created post: {}", newPost);
@@ -72,10 +71,10 @@ class PostRepositoryTest {
         //given
         entityManager.persist(user);
 
-        var post1 = Post.createPost("testTitle#1", "testContent#1", user);
+        var post1 = new Post("testTitle#1", "testContent#1", user);
         entityManager.persist(post1);
 
-        var post2 = Post.createPost("testTitle#2", "testContent#2", user);
+        var post2 = new Post("testTitle#2", "testContent#2", user);
         entityManager.persist(post2);
 
         //when
@@ -97,10 +96,10 @@ class PostRepositoryTest {
         //given
         entityManager.persist(user);
 
-        var post1 = Post.createPost("testTitle#1", "testContent#1", user);
+        var post1 = new Post("testTitle#1", "testContent#1", user);
         entityManager.persist(post1);
 
-        var post2 = Post.createPost("testTitle#2", "testContent#2", user);
+        var post2 = new Post("testTitle#2", "testContent#2", user);
         entityManager.persist(post2);
 
         //when
@@ -115,13 +114,13 @@ class PostRepositoryTest {
         //given
         entityManager.persist(user);
 
-        var post1 = Post.createPost("test#1", "testContent#1", user);
+        var post1 = new Post("testTitle#1", "testContent#1", user);
         entityManager.persist(post1);
 
-        var post2 = Post.createPost("testTitle#2", "testContent#2", user);
+        var post2 = new Post("testTitle#2", "testContent#2", user);
         entityManager.persist(post2);
 
-        var post3 = Post.createPost("testTitle#3", "testContent#3", user);
+        var post3 = new Post("test#3", "testContent#3", user);
         entityManager.persist(post3);
 
         //when
@@ -136,7 +135,7 @@ class PostRepositoryTest {
         //given
         entityManager.persist(user);
 
-        var post = Post.createPost("testTitle#1", "testContent#1", user);
+        var post = new Post("testTitle#1", "testContent#1", user);
         entityManager.persist(post);
 
         //when
@@ -158,10 +157,10 @@ class PostRepositoryTest {
         entityManager.flush();
         entityManager.clear();
 
-        var post1 = Post.createPost("testTitle#1", "testContent#1", user);
+        var post1 = new Post("testTitle#1", "testContent#1", user);
         entityManager.persist(post1);
 
-        var post2 = Post.createPost("testTitle#2", "testContent#2", user);
+        var post2 = new Post("testTitle#2", "testContent#2", user);
         entityManager.persist(post2);
 
         //when

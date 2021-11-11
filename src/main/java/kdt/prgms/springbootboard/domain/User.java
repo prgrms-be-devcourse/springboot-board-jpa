@@ -34,35 +34,14 @@ public class User extends BaseEntity {
     protected User() {
     }
 
-    private User(String name, int age) {
+    public User(String name, int age) {
         this.name = name;
         this.age = age;
-    }
-
-    public static User createUser(String name, int age) {
-        return new User(name, age);
     }
 
     public void changeUserProfile(String name, int age, Hobby hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-    }
-
-    public void addPost(Post post) {
-        this.posts.add(post);
-    }
-
-    public void removePost(Post post) {
-        this.posts.remove(post);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", age=" + age +
-            "} " + super.toString();
     }
 }
