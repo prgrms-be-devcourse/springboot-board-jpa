@@ -43,7 +43,7 @@ class PostServiceTest {
                 .age(28)
                 .hobby(new Hobby("coding"))
                 .build();
-        userDto = userService.insert(user);
+        userDto = userService.save(user);
         log.info("userEntity.getId() : {}", userDto.getId());
 
         PostCreateRequest createPost = PostCreateRequest.builder()

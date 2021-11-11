@@ -21,7 +21,7 @@ public class UserController {
     @PostMapping("/users")
     public ApiResponse<Long> save(@RequestBody UserDto userDto) {
         log.info("회원 추가");
-        UserDto insertedUser = userService.insert(userDto);
+        UserDto insertedUser = userService.save(userDto);
         return ApiResponse.ok(insertedUser.getId());
     }
 }

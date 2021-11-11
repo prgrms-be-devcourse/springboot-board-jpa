@@ -20,7 +20,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto insert(UserDto userDto) {
+    public UserDto save(UserDto userDto) {
         User user = userRepository.save(userConverter.convertUser(userDto));
         user.setInfo(user.getId());
         return userConverter.convertUserDto(user);

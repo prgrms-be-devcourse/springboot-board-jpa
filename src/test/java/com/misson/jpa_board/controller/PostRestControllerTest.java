@@ -64,7 +64,7 @@ class PostRestControllerTest {
                 .name("choi")
                 .hobby(new Hobby("coding"))
                 .build();
-        UserDto insertedUser = userService.insert(createUser);
+        UserDto insertedUser = userService.save(createUser);
 
         PostCreateRequest createPostDto = PostCreateRequest.builder()
                 .title("제목학원")
@@ -149,7 +149,7 @@ class PostRestControllerTest {
                 .name("choi")
                 .hobby(new Hobby("coding"))
                 .build();
-        UserDto insertedUser = userService.insert(createUser);
+        UserDto insertedUser = userService.save(createUser);
 
         PostCreateRequest createPostDto = PostCreateRequest.builder()
                 .title("게시글 작성 테스트")
