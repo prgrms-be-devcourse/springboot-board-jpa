@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Transactional
 @Service
 public class PostService {
 
@@ -20,21 +21,16 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    @Transactional
     public Post write(Post post) {
         return insert(post);
     }
 
-    private Post insert(Post post) {
-        return postRepository.save(post);
-    }
-
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<Post> findPosts(Pageable pageable) {
         return postRepository.findAll(pageable);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Post> findPost(Long id) {
         return postRepository.findById(id);
     }
@@ -48,4 +44,9 @@ public class PostService {
     private Post findPostById(Long id) {
         return postRepository.findById(id).orElseThrow(() -> new NotFoundException(Post.class, id));
     }
+
+    private Post insert(Post post) {
+        return postRepository.save(post);
+    }
+
 }

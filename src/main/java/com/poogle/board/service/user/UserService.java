@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Transactional
 @Service
 public class UserService {
 
@@ -20,7 +21,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    @Transactional
     public User join(User user) {
         return insert(user);
     }
@@ -29,17 +29,16 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<User> findUsers(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<User> findUser(Long id) {
         return userRepository.findById(id);
     }
 
-    @Transactional
     public User modify(Long id, UserRequest user) {
         User foundUser = findUserById(id);
         foundUser.update(user.getName(), user.getAge(), user.getHobby());
