@@ -26,27 +26,22 @@ class UserServiceTest {
     @Autowired
     private UserService userService;
 
-    private String name;
-    private int age;
-    private String hobby;
+    private User user;
 
     @BeforeAll
     void setUp() {
-        name = "tester";
-        age = 27;
-        hobby = "listening music";
-        userService.join(User.of(name, age, hobby));
+        user = User.of("tester", 27, "listening music");
+        userService.join(user);
     }
 
     @Test
     @DisplayName("사용자 추가")
     void create_user() {
-        User user = userService.join(User.of(name, age, hobby));
         assertAll(
                 () -> assertThat(user, is(notNullValue())),
                 () -> assertThat(user.getId(), is(notNullValue())),
-                () -> assertThat(user.getAge(), is(age)),
-                () -> assertThat(user.getHobby(), is(hobby))
+                () -> assertThat(user.getAge(), is(27)),
+                () -> assertThat(user.getHobby(), is("listening music"))
         );
         log.info("[*] Inserted User: {}", user);
     }

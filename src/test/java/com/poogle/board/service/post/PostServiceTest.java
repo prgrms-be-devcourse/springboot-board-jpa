@@ -26,27 +26,22 @@ class PostServiceTest {
     @Autowired
     private PostService postService;
 
-    private String title;
-    private String content;
-    private String writer;
+    private Post post;
 
     @BeforeAll
     void setUp() {
-        title = "title";
-        content = "content";
-        writer = "tester";
-        postService.write(Post.of(title, content, writer));
+        post = Post.of("title", "content", "writer");
+        postService.write(post);
     }
 
     @Test
     @DisplayName("포스트 추가")
     void create_user() {
-        Post post = postService.write(Post.of(title, content, writer));
         assertAll(
                 () -> assertThat(post, is(notNullValue())),
                 () -> assertThat(post.getId(), is(notNullValue())),
-                () -> assertThat(post.getTitle(), is(title)),
-                () -> assertThat(post.getContent(), is(content))
+                () -> assertThat(post.getTitle(), is("title")),
+                () -> assertThat(post.getContent(), is("content"))
         );
         log.info("[*] Inserted post: {}", post);
     }
