@@ -11,9 +11,15 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @Getter
 public class PostRequest {
-    private @NotEmpty String title;
-    private @NotEmpty String content;
-    private @NotEmpty String writer;
+
+    @NotEmpty
+    private String title;
+
+    @NotEmpty
+    private String content;
+
+    @NotEmpty
+    private String writer;
 
     protected PostRequest() {
     }

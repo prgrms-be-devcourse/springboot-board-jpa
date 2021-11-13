@@ -23,6 +23,7 @@ public class ApiResult<T> {
     public static ApiResult<?> ERROR(Throwable throwable, HttpStatus status) {
         return new ApiResult<>(false, null, new ApiError(throwable, status));
     }
+
     public static ApiResult<?> ERROR(String errorMessage, HttpStatus status) {
         return new ApiResult<>(false, null, new ApiError(errorMessage, status));
     }
@@ -30,9 +31,11 @@ public class ApiResult<T> {
     public boolean isSuccess() {
         return success;
     }
+
     public ApiError getError() {
         return error;
     }
+
     public T getResponse() {
         return response;
     }

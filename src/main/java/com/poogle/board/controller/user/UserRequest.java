@@ -12,9 +12,14 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 public class UserRequest {
 
-    private @NotEmpty String name;
-    private @NotEmpty int age;
-    private @NotEmpty String hobby;
+    @NotEmpty
+    private String name;
+
+    @NotEmpty
+    private int age;
+
+    @NotEmpty
+    private String hobby;
 
     protected UserRequest() {
     }

@@ -38,10 +38,14 @@ public class GeneralExceptionHandler {
 
     @ExceptionHandler(ServiceRuntimeException.class)
     public ResponseEntity<?> handleServiceRuntimeException(ServiceRuntimeException e) {
-        if (e instanceof NotFoundException) return newResponse(e, HttpStatus.NOT_FOUND);
-        if (e instanceof UnauthorizedException) return newResponse(e, HttpStatus.UNAUTHORIZED);
-        log.warn("[*] Unexpected service exception occurred: {}", e.getMessage(), e);
-        return newResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        if (e instanceof NotFoundException) {
+            return newResponse(e, HttpStatus.NOT_FOUND);
+        } else if (e instanceof UnauthorizedException) {
+            return newResponse(e, HttpStatus.UNAUTHORIZED);
+        } else {
+            log.warn("[*] Unexpected service exception occurred: {}", e.getMessage(), e);
+            return newResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @ExceptionHandler({

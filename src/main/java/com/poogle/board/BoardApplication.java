@@ -13,13 +13,13 @@ import java.util.UUID;
 @EnableJpaAuditing
 public class BoardApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BoardApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BoardApplication.class, args);
+    }
 
-	@Bean
+    @Bean
     public AuditorAware<String> auditorProvide() {
-	    return () -> Optional.of(UUID.randomUUID().toString());
+        return () -> Optional.of(UUID.randomUUID().toString());
     }
 
 }

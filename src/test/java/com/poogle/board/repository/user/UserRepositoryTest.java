@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class UserRepositoryTest {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("사용자 저장 후 불러오기")
@@ -54,8 +54,6 @@ class UserRepositoryTest {
 
         //then
         User user = userList.get(0);
-        log.info("[*] createdAt: {}", user.getCreatedAt());
-        log.info("[*] modifiedAt: {}", user.getModifiedAt());
         assertAll(
                 () -> assertThat(user.getCreatedAt()).isAfter(now),
                 () -> assertThat(user.getModifiedAt()).isAfter(now)

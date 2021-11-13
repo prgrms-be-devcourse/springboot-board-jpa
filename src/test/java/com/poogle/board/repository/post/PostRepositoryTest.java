@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class PostRepositoryTest {
 
     @Autowired
-    PostRepository postRepository;
+    private PostRepository postRepository;
 
     @Test
     @DisplayName("포스트 저장 후 불러오기")
@@ -53,8 +53,6 @@ class PostRepositoryTest {
 
         //then
         Post post = postList.get(0);
-        log.info("[*] createdAt: {}", post.getCreatedAt());
-        log.info("[*] modifiedAt: {}", post.getModifiedAt());
         assertAll(
                 () -> assertThat(post.getCreatedAt()).isAfter(now),
                 () -> assertThat(post.getModifiedAt()).isAfter(now)
@@ -73,10 +71,6 @@ class PostRepositoryTest {
 
         //then
         Post post = postList.get(0);
-        log.info("[*] createdAt: {}", post.getCreatedAt());
-        log.info("[*] modifiedAt: {}", post.getModifiedAt());
-        log.info("[*] createdBy: {}", post.getCreatedBy());
-        log.info("[*] modifiedBy: {}", post.getModifiedBy());
         assertAll(
                 () -> assertThat(post.getCreatedAt()).isAfter(now),
                 () -> assertThat(post.getModifiedAt()).isAfter(now),

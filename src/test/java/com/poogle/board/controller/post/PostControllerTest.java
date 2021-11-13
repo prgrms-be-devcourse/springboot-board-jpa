@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PostControllerTest {
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -37,18 +37,13 @@ class PostControllerTest {
 
     @BeforeAll
     void setup() {
-        //Given
         PostRequest postRequest = PostRequest.builder()
                 .title("post title")
                 .content("Describe below. It is the content of the post.")
                 .writer("poogle")
                 .build();
 
-        //When
         Post post = postService.write(postRequest.newPost());
-
-        //Then
-        assertThat(post.getId()).isEqualTo(1L);
     }
 
     @Test

@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ApiResult<UserResponse> user(@PathVariable Long id) {
+    public ApiResult<UserResponse> getUser(@PathVariable Long id) {
         return OK(userService.findUser(id)
                 .map(converter::convertUserDto)
                 .orElseThrow(() -> new NotFoundException(User.class, id)));

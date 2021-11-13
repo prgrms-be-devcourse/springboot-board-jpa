@@ -35,7 +35,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ApiResult<PostResponse> post(@PathVariable Long id) {
+    public ApiResult<PostResponse> getPost(@PathVariable Long id) {
         return OK(postService.findPost(id)
                 .map(converter::convertPostDto)
                 .orElseThrow(() -> new NotFoundException(Post.class, id)));

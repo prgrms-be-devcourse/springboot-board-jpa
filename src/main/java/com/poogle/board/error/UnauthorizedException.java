@@ -3,8 +3,9 @@ package com.poogle.board.error;
 import com.poogle.board.util.MessageUtils;
 
 public class UnauthorizedException extends ServiceRuntimeException {
-    public static final String MESSAGE_KEY = "error.auth";
-    public static final String MESSAGE_DETAIL = "error.auth.details";
+
+    private static final String MESSAGE_KEY = "error.auth";
+    private static final String MESSAGE_DETAIL = "error.auth.details";
 
     public UnauthorizedException(String message) {
         super(MESSAGE_KEY, MESSAGE_DETAIL, new Object[]{message});

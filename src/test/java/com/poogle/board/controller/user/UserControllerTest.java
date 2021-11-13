@@ -3,7 +3,10 @@ package com.poogle.board.controller.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poogle.board.model.user.User;
 import com.poogle.board.service.user.UserService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -28,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest {
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -36,18 +38,13 @@ class UserControllerTest {
 
     @BeforeAll
     void setup() {
-        //Given
         UserRequest userRequest = UserRequest.builder()
                 .name("poogle")
                 .age(27)
                 .hobby("listening to music")
                 .build();
 
-        //When
         User user = userService.join(userRequest.newUser());
-
-        //Then
-        assertThat(user.getId()).isEqualTo(1L);
     }
 
     @Test

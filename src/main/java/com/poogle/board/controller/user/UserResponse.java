@@ -17,6 +17,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @AllArgsConstructor
 @Getter
 public class UserResponse {
+
     private Long id;
     private String name;
     private int age;
