@@ -1,10 +1,10 @@
 package com.maenguin.kdtbbs.dto;
 
-import com.maenguin.kdtbbs.exception.ErrorCode;
-import lombok.*;
-import org.springframework.http.HttpStatus;
-
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @ToString(of = {"success", "data", "error"})
@@ -12,8 +12,11 @@ import java.time.LocalDateTime;
 public class ApiResponse<T> {
 
     private boolean success;
+
     private T data;
+
     private ApiError error;
+
     private LocalDateTime serverDateTime;
 
     private ApiResponse(boolean success, T data, ApiError error) {
@@ -37,6 +40,7 @@ public class ApiResponse<T> {
     protected static class ApiError {
 
         private int errorCode;
+
         private String message;
 
         public ApiError(int errorCode, String message) {

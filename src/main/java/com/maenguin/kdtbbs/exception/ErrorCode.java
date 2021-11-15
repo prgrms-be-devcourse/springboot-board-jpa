@@ -10,6 +10,7 @@ public enum ErrorCode {
     POST_NOT_FOUND(101, "Can not find a post");
 
     private final int code;
+
     private final String message;
 
     ErrorCode(int code, String message) {

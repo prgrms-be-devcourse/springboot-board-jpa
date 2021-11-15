@@ -16,15 +16,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @Transactional(readOnly = true)
 public class PostService {
 
     private final PostRepository postRepository;
+
     private final UserRepository userRepository;
+
     private final BBSConverter bbsConverter;
 
     public PostService(PostRepository postRepository, UserRepository userRepository, BBSConverter bbsConverter) {
@@ -35,7 +34,7 @@ public class PostService {
 
     public PostListDto getAllPosts(Pageable pageable) {
         Page<PostDto> page = postRepository.findAll(pageable)
-                .map(bbsConverter::convertToPostDto);
+            .map(bbsConverter::convertToPostDto);
         return new PostListDto(page);
     }
 

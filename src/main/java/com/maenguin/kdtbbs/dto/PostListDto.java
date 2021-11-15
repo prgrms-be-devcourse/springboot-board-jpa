@@ -9,6 +9,7 @@ import java.util.List;
 public class PostListDto {
 
     private List<PostDto> postList;
+
     private PaginationDto pagination;
 
     public PostListDto(Page<PostDto> page) {

@@ -30,21 +30,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest
-@AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @Transactional
 class PostRestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private ObjectMapper objectMapper;
+
     @Autowired
     private PostService postService;
 
     private Long testUserId;
+
     private Long testPostId;
 
     @BeforeEach
@@ -57,7 +60,6 @@ class PostRestControllerTest {
         testPostId = savedUser.getPosts().get(0).getPostId();
     }
 
-    // TODO: 2021-10-19 순서가 보장이 안되는 문제 확인필요
     @Test
     @DisplayName("게시글 목록 페이징 조회 성공 테스트 (page=0, size=3)")
     void searchAllPostsSuccessTest() throws Exception {
@@ -82,9 +84,7 @@ class PostRestControllerTest {
                 .andExpect(jsonPath("$.error", is(nullValue())))
                 .andExpect(jsonPath("$.data.postList").isArray())
                 .andExpect(jsonPath("$.data.postList.length()", is(3)))
-                .andExpect(jsonPath("$.data.postList[0].id", is(no4.intValue())))
-                .andExpect(jsonPath("$.data.postList[1].id", is(no3.intValue())))
-                .andExpect(jsonPath("$.data.postList[2].id", is(no2.intValue())))
+                .andExpect(jsonPath("$.data..id", containsInAnyOrder(no2.intValue(), no3.intValue(), no4.intValue())))
                 .andExpect(jsonPath("$.data.pagination.totalPages", is(2)))
                 .andExpect(jsonPath("$.data.pagination.totalElements", is(4)))
                 .andExpect(jsonPath("$.data.pagination.currentPage", is(0)))
@@ -116,7 +116,6 @@ class PostRestControllerTest {
                 .andExpect(jsonPath("$.error", is(nullValue())))
                 .andExpect(jsonPath("$.data.postList").isArray())
                 .andExpect(jsonPath("$.data.postList.length()", is(1)))
-                .andExpect(jsonPath("$.data.postList[0].id", is(testPostId.intValue())))
                 .andExpect(jsonPath("$.data.pagination.totalPages", is(2)))
                 .andExpect(jsonPath("$.data.pagination.totalElements", is(4)))
                 .andExpect(jsonPath("$.data.pagination.currentPage", is(1)))

@@ -1,10 +1,9 @@
 package com.maenguin.kdtbbs.controller;
 
+import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
-
-import java.util.function.Supplier;
 
 @Slf4j
 @Component

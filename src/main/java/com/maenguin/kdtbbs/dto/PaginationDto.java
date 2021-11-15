@@ -7,9 +7,13 @@ import org.springframework.data.domain.Page;
 public class PaginationDto {
 
     private Integer totalPages;
+
     private Long totalElements;
+
     private Integer currentPage;
+
     private Long offset;
+
     private Integer size;
 
     public PaginationDto(Page page) {
