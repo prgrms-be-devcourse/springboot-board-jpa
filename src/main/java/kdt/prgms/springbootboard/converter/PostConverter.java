@@ -19,7 +19,8 @@ public class PostConverter {
         return new Post(
             postSaveRequestDto.getTitle(),
             postSaveRequestDto.getContent(),
-            user);
+            user
+        );
     }
 
     public PostSaveRequestDto convertPostDto(Post post) {

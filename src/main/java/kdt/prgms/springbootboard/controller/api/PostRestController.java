@@ -1,6 +1,8 @@
 package kdt.prgms.springbootboard.controller.api;
 
+import java.net.URI;
 import javax.validation.Valid;
+import kdt.prgms.springbootboard.domain.Post;
 import kdt.prgms.springbootboard.dto.PostDetailResponseDto;
 import kdt.prgms.springbootboard.dto.PostSaveRequestDto;
 import kdt.prgms.springbootboard.service.PostService;
@@ -21,12 +23,14 @@ public class PostRestController {
         this.postService = postService;
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<PostDetailResponseDto> createPost(@RequestBody @Valid PostSaveRequestDto postSaveRequestDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(postService.save(postSaveRequestDto));
+        PostDetailResponseDto responseDto = postService.save(postSaveRequestDto);
+        URI location = URI.create("api/v1/posts/" + responseDto.getId());
+        return ResponseEntity.created(location).body(responseDto);
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<Page<PostSaveRequestDto>> getPosts(Pageable pageable) {
         return ResponseEntity.ok(postService.findAll(pageable));
     }

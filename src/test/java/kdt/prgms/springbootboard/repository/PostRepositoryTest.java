@@ -25,7 +25,7 @@ class PostRepositoryTest {
     private TestEntityManager entityManager;
 
     @Autowired
-    PostRepository postRepository;
+    private PostRepository postRepository;
 
     private User user;
 
