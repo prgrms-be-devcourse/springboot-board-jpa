@@ -1,7 +1,7 @@
 ## 📌 과제 설명
 JPA를 사용한 게시판 구현
 
-사용 기술 : SpringBoot, JPA, H2
+**사용 기술 : SpringBoot, JPA, H2**
 ## 👩‍💻 요구 사항과 구현 내용
 ### **SpringDataJPA 설정**
 
