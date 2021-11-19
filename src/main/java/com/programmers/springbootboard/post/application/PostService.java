@@ -26,9 +26,11 @@ public class PostService {
     @Transactional
     public PostCreateResponse insert(Member member, Title title, Content content) {
         Post postInstance = Post.of(title, content);
+
         postInstance.addPost(member);
 
         Post postEntity = postRepository.save(postInstance);
+
         return PostResponse.toPostCreateResponse(postEntity);
     }
 
