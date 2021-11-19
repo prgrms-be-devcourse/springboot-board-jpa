@@ -5,6 +5,8 @@ import com.programmers.springbootboard.error.exception.NotFoundException;
 import com.programmers.springbootboard.member.domain.Member;
 import com.programmers.springbootboard.member.infrastructure.MemberRepository;
 import com.programmers.springbootboard.post.domain.Post;
+import com.programmers.springbootboard.post.domain.vo.Content;
+import com.programmers.springbootboard.post.domain.vo.Title;
 import com.programmers.springbootboard.post.dto.PostBundle;
 import com.programmers.springbootboard.post.dto.PostResponse;
 import com.programmers.springbootboard.post.infrastructure.PostRepository;
@@ -19,17 +21,11 @@ import static com.programmers.springbootboard.post.dto.PostResponse.*;
 @Service
 @RequiredArgsConstructor
 public class PostService {
-    private final MemberRepository memberRepository;
     private final PostRepository postRepository;
 
     @Transactional
-    public PostCreateResponse insert(PostBundle bundle) {
-        Member member = memberRepository.findByEmail(bundle.getEmail())
-                .orElseThrow(() -> {
-                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-                });
-
-        Post postInstance = Post.of(bundle.getTitle(), bundle.getContent());
+    public PostCreateResponse insert(Member member, Title title, Content content) {
+        Post postInstance = Post.of(title, content);
         postInstance.addPost(member);
 
         Post postEntity = postRepository.save(postInstance);
@@ -53,26 +49,18 @@ public class PostService {
     }
 
     @Transactional
-    public PostUpdateResponse update(PostBundle bundle) {
-        Member member = memberRepository.findByEmail(bundle.getEmail())
-                .orElseThrow(() -> {
-                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-                });
+    public PostUpdateResponse update(Member member, Long postId, Title title, Content content) {
+        Post post = member.getPosts().findPostById(postId);
 
-        Post post = member.getPosts().findPostById(bundle.getPostId());
-
-        post.update(bundle.getTitle(), bundle.getContent());
+        post.update(title, content);
 
         return toPostUpdateResponse(post);
     }
 
     @Transactional
-    public PostDeleteResponse delete(PostBundle bundle) {
-        Member member = memberRepository.findByEmail(bundle.getEmail())
-                .orElseThrow(() -> {
-                    throw new NotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-                });
-        Post post = member.getPosts().findPostById(bundle.getPostId());
+    public PostDeleteResponse delete(Member member, Long postId) {
+        Post post = member.getPosts().findPostById(postId);
+
         member.getPosts().deletePost(post);
 
         return toPostDeleteResponse(post);
