@@ -25,10 +25,6 @@ public class UserService {
         return insert(user);
     }
 
-    private User insert(User user) {
-        return userRepository.save(user);
-    }
-
     @Transactional(readOnly = true)
     public Page<User> findUsers(Pageable pageable) {
         return userRepository.findAll(pageable);
@@ -48,4 +44,9 @@ public class UserService {
     private User findUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
     }
+
+    private User insert(User user) {
+        return userRepository.save(user);
+    }
+
 }
