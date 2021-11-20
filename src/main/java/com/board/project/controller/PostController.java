@@ -7,6 +7,7 @@ import com.board.project.service.PostService;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,15 +44,15 @@ public class PostController {
 
     @PutMapping("/{id}")
     public ApiResponse<PostResponse> updateOne(@PathVariable Long id,
-                                               @RequestBody PostRequest postDto)
+                                               @RequestBody PostRequest postRequest)
         throws NotFoundException {
-        return ApiResponse.ok(postService.update(id, postDto));
+        return ApiResponse.ok(postService.update(id, postRequest));
     }
 
     @DeleteMapping("/{id}")
-    public ApiResponse<String> removeOne(@PathVariable Long id) throws NotFoundException {
+    public ApiResponse<HttpStatus> removeOne(@PathVariable Long id) throws NotFoundException {
         postService.deleteById(id);
-        return ApiResponse.ok("delete complete");
+        return ApiResponse.ok(HttpStatus.NO_CONTENT);
     }
 
 }

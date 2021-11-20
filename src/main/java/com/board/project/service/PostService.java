@@ -18,9 +18,7 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-
     private final UserRepository userRepository;
-
 
     public PostService(PostRepository postRepository,
                        UserRepository userRepository) {
