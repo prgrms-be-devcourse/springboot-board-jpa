@@ -1,20 +1,30 @@
 # Spring Boot Board
+> Spring Boot + JPA로 게시판 만들기
 
 <br>
 
-## 요구사항
+## 링크
 
-- 회원가입
-- 로그인
-- 마이페이지
-- 게시물 작성
-- 게시물 조회
-    - 페이징 조회
-    - 단건 조회
-- 게시물 수정
-- 게시물 삭제
-- TDD
-    - Rest Docs
+- 게시판 페이지 : https://board.hanjo.xyz 
+- Rest Docs : https://boardapi.hanjo.xyz
+
+<br>
+
+## 기능
+
+- 회원 관련 기능
+   - 회원가입
+   - 로그인
+   - 내 정보 조회
+   - 회원탈퇴
+- 게시판 기능
+   - 게시글 작성
+   - 내 게시글 조회
+   - 게시글 페이징 조회
+   - 게시글 단건 조회
+   - 조회수 업데이트
+   - 게시글 수정
+   - 게시글 삭제
 
 <br>
 
@@ -22,7 +32,7 @@
 
 ### Backend
 
-- Java 16
+- Java 11
 - Spring Boot
 - Gradle
 - JPA
@@ -36,20 +46,23 @@
 
 ### DevOps
 
+- nginx
 - Docker
-- AWS EC2
+- AWS EC2 (Ubuntu)
 - AWS RDS
+- AWS S3 + CloudFront
 
 <br>
 
-## 프로젝트 구조
+## Diagram
 
 ### Architecture
 
-### Package
+![게시판 drawio (1)](https://user-images.githubusercontent.com/71180414/137648777-4dba92e4-b37e-4c87-9d13-0d5e563939b3.png)
+
 
 ### Schema
 
-<br>
+<image width="400" src="https://user-images.githubusercontent.com/71180414/137648537-ca5723f9-bc7d-4b79-82fe-bf5fd63634d2.png">
 
-## Rest API
+<br>

@@ -1,9 +1,28 @@
 body {
   padding:50px;
+  text-align: center;
 }
 
-th, td {
+table{
+  width:70%;
+  margin:0 auto;
+}
+
+th{
   border: 1px solid black;
+  background-color: lightgrey;
+  padding : 10px 10px;
+}
+
+td {
+  border: 1px solid black;
+  padding : 10px 10px;
+}
+
+.div_menu{
+  font-size: 20px;
+  text-align: right;
+  padding-right: 100px;
 }
 
 
@@ -16,8 +35,101 @@ th, td {
   text-align: center;
 }
 
+.div_wrapper_mypage{
+  display: inline-block;
+  width: 300px;
+  border : solid 1px;
+  margin : 10px;
+  padding: 15px;
+  text-align: left;
+}
+
+.div_wrapper_posting{
+  display: inline-block;
+  width: 500px;
+  border : solid 1px;
+  margin : 10px;
+  padding: 15px;
+  text-align: left;
+}
+
+.div_wrapper_post{
+  display: inline-block;
+  width: 500px;
+  border : solid 1px;
+  margin : 10px;
+  padding: 15px;
+  text-align: left;
+}
+
+.div_wrapper_search{
+  display: inline-block;
+  width: 250px;
+  border : solid 1px;
+  margin : 10px;
+  padding: 15px;
+  text-align: center;
+}
+
 .div_result{
   border : solid 1px;
   margin : 10px;
   padding: 15px;
+}
+
+.div_right{
+  float : right;
+  font-size: 18px;
+}
+
+
+
+.table_post{
+  table-layout: fixed;
+  width:70%;
+  margin:0 auto;
+}
+
+.td_content{
+  padding: 50px 50px;
+  word-wrap :break-word;
+}
+
+
+
+.button_page{
+  width: 30px;
+  padding : 4px 4px;
+  border: 1px solid black;
+  background-color: white;
+  cursor: pointer;
+}
+
+.button_recent_page{
+  width: 30px;
+  padding : 4px 4px;
+  border: 1px solid black;
+  background-color: gray;
+}
+
+.button_page_move{
+  margin:0px 6px 0px 6px;
+  width: auto;
+  padding : 4px 4px;
+  border: 1px solid black;
+  background-color: white;
+  cursor: pointer;
+}
+
+.button_sort{
+  font-weight: bold;
+  border: 1px solid black;
+  background-color: white;
+  cursor: pointer;
+}
+
+.button_sort:hover,
+.button_page_move:hover,
+.button_page:hover{
+  background-color: lightgray;
 }

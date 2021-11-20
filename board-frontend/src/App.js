@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import './App.css';
 
 import Login from './views/Login';
-import SignUp from './views/SignUp';
 import Mypage from './views/Mypage';
 import Board from './views/Board';
+import Posting from './views/Posting';
+import Post from './views/Post';
+import UpdatePost from './views/UpdatePost';
 
 
 function App() {
@@ -13,9 +15,11 @@ function App() {
     <BrowserRouter>
 
       <Route path="/" component={ Login } exact />
-      <Route path="/signup" component={ SignUp } exact />
       <Route path="/mypage" component={ Mypage } exact />
       <Route path="/board" component={ Board } exact />
+      <Route path="/posting" component={ Posting } exact />
+      <Route path="/post/:postId" component={ Post } exact />
+      <Route path="/update-post/:postId" component={ UpdatePost } exact />
 
     </BrowserRouter>
   );

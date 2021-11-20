@@ -1,0 +1,132 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+:toc: left
+
+= Board API RestDocs
+
+|===
+| 환경 | Domain
+
+| local | http://localhost:8080
+| prod | http://15.165.69.116:8080 +
+        https://boardapi.hanjo.xyz/
+|===
+
+== 사용자 (User)
+
+=== 회원가입
+'''
+
+`*Request*`
+
+include::{snippets}/user/sign-up/http-request.adoc[]
+include::{snippets}/user/sign-up/request-fields.adoc[]
+
+`*Response*`
+include::{snippets}/user/sign-up/http-response.adoc[]
+include::{snippets}/user/sign-up/response-fields.adoc[]
+
+=== 로그인
+'''
+
+`*Request*`
+
+include::{snippets}/user/login/http-request.adoc[]
+include::{snippets}/user/login/request-fields.adoc[]
+
+`*Response*`
+include::{snippets}/user/login/http-response.adoc[]
+include::{snippets}/user/login/response-fields.adoc[]
+
+=== 내 정보 조회
+'''
+
+`*Request*`
+
+include::{snippets}/user/get/http-request.adoc[]
+
+`*Response*`
+include::{snippets}/user/get/http-response.adoc[]
+include::{snippets}/user/get/response-fields.adoc[]
+
+=== 회원탈퇴
+'''
+
+`*Request*`
+
+include::{snippets}/user/delete/http-request.adoc[]
+
+`*Response*`
+include::{snippets}/user/delete/http-response.adoc[]
+
+== 게시판 (Post)
+
+=== 게시글 작성
+'''
+
+`*Request*`
+
+include::{snippets}/post/create/http-request.adoc[]
+include::{snippets}/post/create/request-fields.adoc[]
+
+`*Response*`
+include::{snippets}/post/create/http-response.adoc[]
+include::{snippets}/post/create/response-fields.adoc[]
+
+=== 내 게시글 조회
+'''
+
+`*Request*`
+
+include::{snippets}/post/get_userId/http-request.adoc[]
+
+`*Response*`
+include::{snippets}/post/get_userId/http-response.adoc[]
+include::{snippets}/post/get_userId/response-fields.adoc[]
+
+=== 게시글 정보 조회 (단건)
+'''
+
+`*Request*`
+
+include::{snippets}/post/get_postId/http-request.adoc[]
+
+`*Response*`
+include::{snippets}/post/get_postId/http-response.adoc[]
+include::{snippets}/post/get_postId/response-fields.adoc[]
+
+=== 게시글 페이징 조회 (다건)
+'''
+
+`*Request*`
+
+include::{snippets}/post/get_pageable/http-request.adoc[]
+
+`*Response*`
+include::{snippets}/post/get_pageable/http-response.adoc[]
+include::{snippets}/post/get_pageable/response-fields.adoc[]
+
+=== 게시글 수정
+'''
+
+`*Request*`
+
+include::{snippets}/post/update/http-request.adoc[]
+include::{snippets}/post/update/request-fields.adoc[]
+
+`*Response*`
+include::{snippets}/post/update/http-response.adoc[]
+include::{snippets}/post/update/response-fields.adoc[]
+
+=== 게시글 삭제
+'''
+
+`*Request*`
+
+include::{snippets}/post/delete/http-request.adoc[]
+
+`*Response*`
+include::{snippets}/post/delete/http-response.adoc[]
