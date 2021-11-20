@@ -16,15 +16,15 @@ public class ApiResult<T> {
         this.error = error;
     }
 
-    public static <T> ApiResult<T> OK(T response) {
+    public static <T> ApiResult<T> ok(T response) {
         return new ApiResult<>(true, response, null);
     }
 
-    public static ApiResult<?> ERROR(Throwable throwable, HttpStatus status) {
+    public static <T> ApiResult<T> fail(Throwable throwable, HttpStatus status) {
         return new ApiResult<>(false, null, new ApiError(throwable, status));
     }
 
-    public static ApiResult<?> ERROR(String errorMessage, HttpStatus status) {
+    public static <T> ApiResult<T> fail(String errorMessage, HttpStatus status) {
         return new ApiResult<>(false, null, new ApiError(errorMessage, status));
     }
 

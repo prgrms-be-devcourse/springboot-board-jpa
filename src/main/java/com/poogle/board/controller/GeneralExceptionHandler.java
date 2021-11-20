@@ -11,7 +11,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import static com.poogle.board.controller.ApiResult.ERROR;
+import static com.poogle.board.controller.ApiResult.fail;
 
 @Slf4j
 @ControllerAdvice
@@ -20,7 +20,7 @@ public class GeneralExceptionHandler {
     private ResponseEntity<ApiResult<?>> newResponse(Throwable throwable, HttpStatus status) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
-        return new ResponseEntity<>(ERROR(throwable, status), headers, status);
+        return new ResponseEntity<>(fail(throwable, status), headers, status);
     }
 
     @ExceptionHandler({

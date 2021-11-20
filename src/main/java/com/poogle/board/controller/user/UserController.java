@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import static com.poogle.board.controller.ApiResult.OK;
+import static com.poogle.board.controller.ApiResult.ok;
 
 @RestController
 @RequestMapping("api/users")
@@ -25,12 +25,12 @@ public class UserController {
 
     @PostMapping
     public ApiResult<UserResponse> join(@RequestBody UserRequest request) {
-        return OK(converter.convertUserDto(userService.join(request.newUser())));
+        return ok(converter.convertUserDto(userService.join(request.newUser())));
     }
 
     @GetMapping
     public ApiResult<Page<UserResponse>> list(Pageable pageable) {
-        return OK(
+        return ok(
                 userService.findUsers(pageable)
                         .map(converter::convertUserDto)
         );
@@ -38,7 +38,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ApiResult<UserResponse> getUser(@PathVariable Long id) {
-        return OK(userService.findUser(id)
+        return ok(userService.findUser(id)
                 .map(converter::convertUserDto)
                 .orElseThrow(() -> new NotFoundException(User.class, id)));
     }
@@ -47,7 +47,7 @@ public class UserController {
     public ApiResult<UserResponse> update(
             @PathVariable Long id,
             @RequestBody UserRequest request) {
-        return OK(converter.convertUserDto(userService.modify(id, request)));
+        return ok(converter.convertUserDto(userService.modify(id, request)));
     }
 
 }

@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import static com.poogle.board.controller.ApiResult.OK;
+import static com.poogle.board.controller.ApiResult.ok;
 
 @RestController
 @RequestMapping("api/posts")
@@ -25,18 +25,18 @@ public class PostController {
 
     @PostMapping
     public ApiResult<PostResponse> posting(@RequestBody PostRequest request) {
-        return OK(converter.convertPostDto(postService.write(request.newPost())));
+        return ok(converter.convertPostDto(postService.write(request.newPost())));
     }
 
     @GetMapping
     public ApiResult<Page<PostResponse>> list(Pageable pageable) {
-        return OK(postService.findPosts(pageable)
+        return ok(postService.findPosts(pageable)
                 .map(converter::convertPostDto));
     }
 
     @GetMapping("/{id}")
     public ApiResult<PostResponse> getPost(@PathVariable Long id) {
-        return OK(postService.findPost(id)
+        return ok(postService.findPost(id)
                 .map(converter::convertPostDto)
                 .orElseThrow(() -> new NotFoundException(Post.class, id)));
     }
@@ -45,6 +45,6 @@ public class PostController {
     public ApiResult<PostResponse> update(
             @PathVariable Long id,
             @RequestBody PostRequest request) {
-        return OK(converter.convertPostDto(postService.modify(id, request)));
+        return ok(converter.convertPostDto(postService.modify(id, request)));
     }
 }
