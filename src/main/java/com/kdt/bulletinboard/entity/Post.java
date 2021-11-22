@@ -29,25 +29,10 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public void setUser(User user) {
-        if (Objects.nonNull(this.user)) {
-            this.user.getPosts().remove(this);
-        }
-
-        this.user = user;
-        user.getPosts().add(this);
-    }
-
-    public Post(String title, String createdBy) {
-        this.title = title;
-        this.setCratedAt(LocalDateTime.now());
-        this.setCreatedBy(createdBy);
-    }
-
     public Post(String title, String content, String createdBy) {
         this.title = title;
         this.content = content;
-        this.setCratedAt(LocalDateTime.now());
+        this.setCreatedAt(LocalDateTime.now());
         this.setCreatedBy(createdBy);
     }
 
@@ -55,6 +40,15 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
         return id;
+    }
+
+    public void setUser(User user) {
+        if (Objects.nonNull(this.user)) {
+            this.user.getPosts().remove(this);
+        }
+
+        this.user = user;
+        user.getPosts().add(this);
     }
 
 }

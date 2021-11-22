@@ -109,6 +109,7 @@ class PostControllerTest {
                 .content("This is updated Post")
                 .userDto(userDto)
                 .build();
+
         mockMvc.perform(put("/posts/{id}", newPostDto.getId())
                         .content(objectMapper.writeValueAsString(newPostDto))
                         .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())

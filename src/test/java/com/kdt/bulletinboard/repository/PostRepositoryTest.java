@@ -18,7 +18,7 @@ import javax.transaction.Transactional;
 class PostPersistenceTest {
 
     @Autowired
-    EntityManagerFactory entityManagerFactory;
+    private EntityManagerFactory entityManagerFactory;
 
     @Test
     @DisplayName("양방향 저장 테스트")

@@ -25,6 +25,7 @@ public class PostService {
     public Long save(PostDto postDto) {
         Post post = postConverter.convertToPost(postDto);
         Post saved = postRepository.save(post);
+
         return saved.getId();
     }
 
@@ -49,6 +50,8 @@ public class PostService {
                     return id;
                 })
                 .orElseThrow(() -> new NotFoundException("해당 포스트를 찾을 수 없습니다."));
+
         return id;
     }
+
 }

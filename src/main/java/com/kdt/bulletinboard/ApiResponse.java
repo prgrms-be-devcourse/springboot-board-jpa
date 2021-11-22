@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ApiResponse<T> {
 
+    private static final int STATUS_OK = 200;
     private int statusCode;
     private T data;
 
@@ -25,7 +26,7 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> ok(T data) {
-        return new ApiResponse<>(200, data);
+        return new ApiResponse<>(STATUS_OK, data);
     }
 
     public static <T> ApiResponse<T> fail(int statusCode, T data) {

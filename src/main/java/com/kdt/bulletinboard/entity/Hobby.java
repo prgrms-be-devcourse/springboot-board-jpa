@@ -1,6 +1,7 @@
 package com.kdt.bulletinboard.entity;
 
 public enum Hobby {
+
     SINGING,
     JOGGING,
     CLIMBING,
@@ -12,4 +13,5 @@ public enum Hobby {
     PLAYING_PIANO,
     PLAYING_SPORTS,
     LISTENING_MUSIC
+
 }

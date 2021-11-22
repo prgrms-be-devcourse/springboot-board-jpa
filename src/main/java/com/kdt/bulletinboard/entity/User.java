@@ -29,22 +29,16 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "id")
     private List<Post> posts = new ArrayList<>();
 
-    //연관관계 편의 메서드
-    public void addPost(Post post) {
-        post.setUser(this);
-    }
-
-    public User(String userName, String createBy) {
-        this.userName = userName;
-        this.setCratedAt(LocalDateTime.now());
-        this.setCreatedBy(createBy);
-    }
-
     public User(String userName, Hobby hobby, String createBy) {
         this.userName = userName;
         this.hobby = hobby;
-        this.setCratedAt(LocalDateTime.now());
+        this.setCreatedAt(LocalDateTime.now());
         this.setCreatedBy(createBy);
+    }
+
+    //연관관계 편의 메서드
+    public void addPost(Post post) {
+        post.setUser(this);
     }
 
 }

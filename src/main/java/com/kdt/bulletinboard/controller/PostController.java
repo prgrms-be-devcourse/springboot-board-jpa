@@ -4,36 +4,39 @@ import com.kdt.bulletinboard.ApiResponse;
 import com.kdt.bulletinboard.dto.PostDto;
 import com.kdt.bulletinboard.service.PostService;
 import javassist.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+@RequestMapping(value = "/posts")
 @RestController
 public class PostController {
 
-    @Autowired
-    private PostService postService;
+    private final PostService postService;
 
-    @PostMapping("/posts")
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
+    @PostMapping
     public ApiResponse<Long> write(@RequestBody PostDto postDto) {
         Long id = postService.save(postDto);
         return ApiResponse.ok(id);
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public ApiResponse<PostDto> findOnePost(@PathVariable Long id) throws NotFoundException {
         PostDto foundPost = postService.findOnePost(id);
         return ApiResponse.ok(foundPost);
     }
 
-    @GetMapping("/posts")
+    @GetMapping
     public ApiResponse<Page<PostDto>> findAllPost(Pageable pageable) {
         return ApiResponse.ok(postService.findAllPost(pageable));
     }
 
-    @PutMapping("/posts/{id}")
+    @PutMapping("/{id}")
     public ApiResponse<Long> updatePost(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
         return ApiResponse.ok(postService.updatePost(id, postDto));
     }
@@ -47,4 +50,5 @@ public class PostController {
     private ApiResponse<String> notFoundHandle(NotFoundException exception) {
         return ApiResponse.fail(HttpStatus.NOT_FOUND.value(), exception.getMessage());
     }
+
 }

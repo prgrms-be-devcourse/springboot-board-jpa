@@ -2,7 +2,7 @@ version: '3'
 services:
   local-db:
     platform: linux/x86_64
-    image: library/mysql:5.7
+    image: library/mysql:8.0.27
     container_name: bulletinboard
     restart: always
     ports:
