@@ -6,8 +6,9 @@ import com.kdt.bulletinboard.service.PostService;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RequestMapping(value = "/posts")
 @RestController
@@ -20,7 +21,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ApiResponse<Long> write(@RequestBody PostDto postDto) {
+    public ApiResponse<Long> write(@Valid @RequestBody PostDto postDto) {
         Long id = postService.save(postDto);
         return ApiResponse.ok(id);
     }
@@ -37,18 +38,8 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<Long> updatePost(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
+    public ApiResponse<Long> updatePost(@PathVariable Long id, @Valid @RequestBody PostDto postDto) throws NotFoundException {
         return ApiResponse.ok(postService.updatePost(id, postDto));
-    }
-
-    @ExceptionHandler
-    private ApiResponse<String> exceptionHandle(Exception exception) {
-        return ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    private ApiResponse<String> notFoundHandle(NotFoundException exception) {
-        return ApiResponse.fail(HttpStatus.NOT_FOUND.value(), exception.getMessage());
     }
 
 }

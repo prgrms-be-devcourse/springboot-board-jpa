@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 
 @Service
 public class PostService {
@@ -29,14 +29,14 @@ public class PostService {
         return saved.getId();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PostDto findOnePost(Long id) throws NotFoundException {
         return postRepository.findById(id)
                 .map(postConverter::convertToPostDto)
                 .orElseThrow(() -> new NotFoundException("해당 포스트를 찾을 수 없습니다."));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PostDto> findAllPost(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(postConverter::convertToPostDto);
