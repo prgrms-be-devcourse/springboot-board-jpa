@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 public class KdtbbsApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(KdtbbsApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(KdtbbsApplication.class, args);
+    }
 
 }

@@ -15,25 +15,25 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    private ResponseEntity<ApiResponse<?>> newResponseEntity(Throwable throwable, HttpStatus status) {
+    private ResponseEntity<ApiResponse<?>> createResponseEntity(Throwable throwable, HttpStatus status) {
         String message = Arrays.stream(throwable.getStackTrace()).map(StackTraceElement::toString)
             .collect(Collectors.joining(", "));
-        return newResponseEntity(ErrorCode.UNHANDLED.getCode(), message, status);
+        return createResponseEntity(ErrorCode.UNHANDLED.getCode(), message, status);
     }
 
-    private ResponseEntity<ApiResponse<?>> newResponseEntity(int errorCode, String message, HttpStatus status) {
+    private ResponseEntity<ApiResponse<?>> createResponseEntity(int errorCode, String message, HttpStatus status) {
         return new ResponseEntity<>(ApiResponse.error(errorCode, message), status);
     }
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ApiResponse<?>> handleBusinessException(BusinessException e) {
         log.error("businessException exception occurred: {}", e.getMessage(), e);
-        return newResponseEntity(e.getErrorCode().getCode(), e.getMessage(), HttpStatus.BAD_REQUEST);
+        return createResponseEntity(e.getErrorCode().getCode(), e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({Exception.class, RuntimeException.class})
     public ResponseEntity<?> handleException(Exception e) {
         log.error("Unexpected exception occurred: {}", e.getMessage(), e);
-        return newResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        return createResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

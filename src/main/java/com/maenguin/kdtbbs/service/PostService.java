@@ -40,7 +40,8 @@ public class PostService {
 
     @Transactional
     public PostDto getPostById(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(" for id:" + postId));
+        Post post = postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFoundException(" for id:" + postId));
         post.increaseView();
         return bbsConverter.convertToPostDto(post);
     }
@@ -48,7 +49,8 @@ public class PostService {
     @Transactional
     public PostAddResDto savePost(PostAddDto postAddDto) {
         Long userId = postAddDto.getUserId();
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(" for id: " + userId));
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException(" for id: " + userId));
         Post post = bbsConverter.convertToPost(postAddDto);
         post.changeUser(user);
         Post entity = postRepository.save(post);
@@ -57,7 +59,8 @@ public class PostService {
 
     @Transactional
     public PostAddResDto editPost(Long postId, PostAddDto postAddDto) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(" for id:" + postId));
+        Post post = postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFoundException(" for id:" + postId));
         post.editPost(postAddDto.getTitle(), postAddDto.getContent());
         return new PostAddResDto(post.getPostId());
     }
