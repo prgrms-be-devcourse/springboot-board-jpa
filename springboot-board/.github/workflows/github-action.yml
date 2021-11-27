@@ -13,7 +13,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      working-directory : ./springboot-board
+    
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
