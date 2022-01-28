@@ -33,13 +33,14 @@ public class CommentService {
         User user = activeUser(commentRequest.getUserId());
         Post post = findPost(postId);
 
-        return commentRepository.save(
-            Comment.builder()
-                .content(commentRequest.getContent())
-                .post(post)
-                .writer(user)
-                .build()
-        ).getId();
+		Comment comment = Comment.builder()
+								 .content(commentRequest.getContent())
+								 .post(post)
+								 .writer(user)
+								 .build();
+		post.addComment(comment);
+
+		return comment.getId();
     }
 
     @Transactional
