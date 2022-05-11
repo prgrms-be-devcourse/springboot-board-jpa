@@ -3,12 +3,14 @@ package com.study.board.domain.post.domain;
 import com.study.board.domain.support.auditing.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static lombok.AccessLevel.PROTECTED;
+import static org.springframework.util.StringUtils.hasText;
 
 /**
  * 게시글
@@ -31,9 +33,9 @@ public class Post extends BaseEntity {
     private String content;
 
     private Post(Long id, String title, String content) {
-        checkNotNull(title, "title - null 이 될 수 없음");
+        checkArgument(hasText(title), "title - 글자를 가져야함");
         checkArgument(title.length() <= 255, "title 길이 - 255 이하 여야함");
-        checkNotNull(content, "content - null 이 될 수 없음");
+        checkArgument(hasText(content), "content - 글자를 가져야함");
 
         this.id = id;
         this.title = title;
