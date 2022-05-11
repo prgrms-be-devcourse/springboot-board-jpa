@@ -13,9 +13,6 @@ import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 import static org.springframework.util.StringUtils.hasText;
 
-/**
- * 게시글
- */
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -52,4 +49,5 @@ public class Post extends BaseEntity {
     public static Post create(String title, String content, User writer){
         return new Post(null, title, content, writer);
     }
+
 }

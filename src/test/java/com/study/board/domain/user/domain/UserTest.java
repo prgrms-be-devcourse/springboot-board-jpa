@@ -56,4 +56,5 @@ class UserTest {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> User.create("득윤", Optional.of(hobby)));
     }
+
 }

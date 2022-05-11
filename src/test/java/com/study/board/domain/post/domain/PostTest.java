@@ -48,4 +48,5 @@ class PostTest {
         assertThatNullPointerException()
                 .isThrownBy(() -> Post.create("제목", "내용", null));
     }
+
 }
