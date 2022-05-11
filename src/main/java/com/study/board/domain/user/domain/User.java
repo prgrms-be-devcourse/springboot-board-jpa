@@ -19,6 +19,9 @@ import static org.springframework.util.StringUtils.hasText;
 @NoArgsConstructor(access = PROTECTED)
 public class User extends BaseEntity {
 
+    private static final int USER_NAME_MAX_LENGTH = 50;
+    private static final int USER_HOBBY_MAX_LENGTH = 50;
+
     @Id
     @GeneratedValue
     @Column(name = "post_id")
@@ -32,9 +35,9 @@ public class User extends BaseEntity {
 
     private User(Long id, String name, String hobby) {
         checkArgument(hasText(name), "name - 글자를 가져야함");
-        checkArgument(name.length() <= 50, "name 길이 - 50 이하 여야함");
+        checkArgument(name.length() <= USER_NAME_MAX_LENGTH, "name 길이 - " + USER_NAME_MAX_LENGTH + " 이하 여야함");
         if (hobby != null) {
-            checkArgument(hobby.length() <= 50, "hobby 길이 - 50 이하 여야함");
+            checkArgument(hobby.length() <= USER_HOBBY_MAX_LENGTH, "hobby 길이 - " + USER_HOBBY_MAX_LENGTH + " 이하 여야함");
         }
 
         this.id = id;
