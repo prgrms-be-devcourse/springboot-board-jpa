@@ -47,9 +47,10 @@ public class User extends BaseEntity {
     }
 
     public static User create(String name, Optional<String> hobby) {
-        checkNotNull(hobby, "hobby optional - null 이 될 수 없음");
-
         return new User(null, name, hobby.orElse(null));
     }
 
+    public Optional<String> getHobby() {
+        return Optional.ofNullable(hobby);
+    }
 }
