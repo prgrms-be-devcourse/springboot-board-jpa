@@ -6,8 +6,8 @@ import java.util.Optional;
 
 public class Fixture {
 
-    public static User user() {
-        return User.create("득윤", Optional.empty());
+    public static User createUser() {
+        return User.create("득윤", null);
     }
 
 }

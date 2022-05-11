@@ -18,14 +18,9 @@ import static org.springframework.util.StringUtils.hasText;
 @NoArgsConstructor(access = PROTECTED)
 public class Post extends BaseEntity {
 
-    private static final int POST_TITLE_MAX_LENGTH = 255;
+    public static final int POST_TITLE_MAX_LENGTH = 255;
 
-    @Id
-    @GeneratedValue
-    @Column(name = "post_id")
-    private Long id;
-
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 255)
     private String title;
 
     @Lob
@@ -36,20 +31,19 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User writer;
 
-    private Post(Long id, String title, String content, User writer) {
+    private Post(String title, String content, User writer) {
         checkArgument(hasText(title), "title - 글자를 가져야함");
         checkArgument(title.length() <= POST_TITLE_MAX_LENGTH, "title 길이 - " + POST_TITLE_MAX_LENGTH + " 이하 여야함");
         checkArgument(hasText(content), "content - 글자를 가져야함");
         checkNotNull(writer, "writer - null 이 될 수 없음");
 
-        this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
     }
 
     public static Post create(String title, String content, User writer) {
-        return new Post(null, title, content, writer);
+        return new Post(title, content, writer);
     }
 
 }
