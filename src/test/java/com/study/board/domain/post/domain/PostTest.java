@@ -30,9 +30,10 @@ class PostTest {
 
     @Test
     void 제목의_길이가_255_보다_크면_생성실패() {
-        String title = RandomString.make(256);
+        String title = RandomString.make(255 + 1);
+
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> Post.create(null, "내용"));
+                .isThrownBy(() -> Post.create(title, "내용"));
     }
 
     @NullAndEmptySource
