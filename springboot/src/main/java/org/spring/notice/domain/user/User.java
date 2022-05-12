@@ -2,14 +2,16 @@ package org.spring.notice.domain.user;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.spring.notice.domain.BaseEntity;
+import org.spring.notice.domain.post.Post;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.text.MessageFormat.format;
@@ -41,7 +43,10 @@ public class User extends BaseEntity {
     @Column(length = 50)
     private String hobby;
 
-    private User(String uuid, String name, int age, String hobby){
+    @OneToMany(mappedBy = "user")
+    private final List<Post> posts = new ArrayList<>();
+
+    private User(String uuid, String name, int age, String hobby, String createdBy){
         checkArgument(isValidUuid(uuid), "유효하지 않은 UUID 입니다");
 
         checkArgument(hasText(name), "name은 비어있으면 안됩니다");
@@ -62,10 +67,18 @@ public class User extends BaseEntity {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+        this.createdBy = createdBy;
+
     }
 
     public static User create(String uuid, String name, int age, String hobby){
-        return new User(uuid, name, age, hobby);
+        return new User(uuid, name, age, hobby, "");
+    }
+
+    public User withCreatedBy(String createdBy){
+        this.createdBy = createdBy;
+
+        return this;
     }
 
 }
