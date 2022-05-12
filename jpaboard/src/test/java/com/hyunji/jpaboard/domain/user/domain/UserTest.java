@@ -31,19 +31,19 @@ class UserTest {
 
     @ParameterizedTest
     @NullAndEmptySource
-    void user_name이_공백_혹은_null이면_예외를_던진다(String name) {
+    void name이_공백_혹은_null이면_예외를_던진다(String name) {
         assertThatIllegalArgumentException().isThrownBy(() -> User.create(name, 10, "hobby"));
     }
 
     @ParameterizedTest
     @ValueSource(ints = {0, -1})
-    void user_age가_0이하면_예외를_던진다(int age) {
+    void age가_0이하면_예외를_던진다(int age) {
         assertThatIllegalArgumentException().isThrownBy(() -> User.create("user01", age, "hobby"));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
-    void user_hobby가_공백_혹은_null이면_예외를_던진다(String hobby) {
+    void hobby가_공백_혹은_null이면_예외를_던진다(String hobby) {
         assertThatIllegalArgumentException().isThrownBy(() -> User.create("user01", 10, hobby));
     }
 }
