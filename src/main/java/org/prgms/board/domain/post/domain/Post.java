@@ -58,14 +58,14 @@ public class Post {
 	private void validatePost(String title, String content) {
 		checkArgument(Objects.nonNull(title) && title.length() > 0 && title.length() <= MAX_TITLE_LENGTH,
 			"제목은 1자 이상255자 이하이어야 합니다.");
-		checkNotNull(content, "내용은 필수입니다.");
+		checkArgument(Objects.nonNull(content) && content.length() > 0, "내용은 필수입니다.");
 	}
 
-	public Post create(String title, String content) {
+	public static Post create(String title, String content) {
 		return new Post(title, content);
 	}
 
-	public void updatePost(String title, String content){
+	public void updatePost(String title, String content) {
 		validatePost(title, content);
 
 		this.title = title;

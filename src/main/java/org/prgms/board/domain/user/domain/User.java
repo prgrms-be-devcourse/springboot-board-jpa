@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
-	public static final int MAX_USER_NAME_LENGTH = 10;
+	public static final int MAX_USER_NAME_LENGTH = 30;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,12 +51,12 @@ public class User {
 	}
 
 	private void validateInfo(String name, int age) {
-		checkArgument(name != null && name.length() > 0 && name.length() <= MAX_USER_NAME_LENGTH,
+		checkArgument(Objects.nonNull(name) && name.length() > 0 && name.length() <= MAX_USER_NAME_LENGTH,
 			"이름의 길이는 1자 이상 10자 이하여야 합니다.");
-		checkNotNull(age, "나이 항목은 필수입니다.");
+		checkArgument(Objects.nonNull(age) && age > 0, "나이 항목은 필수입니다.");
 	}
 
-	public User create(String name, int age) {
+	public static User create(String name, int age) {
 		return new User(name, age);
 	}
 
