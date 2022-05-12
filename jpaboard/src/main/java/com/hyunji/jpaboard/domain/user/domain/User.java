@@ -2,15 +2,13 @@ package com.hyunji.jpaboard.domain.user.domain;
 
 import com.hyunji.jpaboard.model.BaseEntity;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -19,10 +17,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 @DynamicUpdate
 @Entity
 public class User extends BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -33,8 +27,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String hobby;
 
-    @Builder
-    public User(String name, int age, String hobby) {
+    private User(String name, int age, String hobby) {
         checkArgument(Strings.isNotBlank(name), "name 공백 불가");
         checkArgument(age > 0, "age 0 이하 불가");
         checkArgument(Strings.isNotBlank(hobby), "hobby 공백 불가");
@@ -42,5 +35,9 @@ public class User extends BaseEntity {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+    }
+
+    public static User create(String name, int age, String hobby) {
+        return new User(name, age, hobby);
     }
 }
