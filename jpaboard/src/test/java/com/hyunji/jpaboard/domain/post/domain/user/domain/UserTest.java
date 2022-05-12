@@ -1,5 +1,6 @@
-package com.hyunji.jpaboard.domain.user.domain;
+package com.hyunji.jpaboard.domain.post.domain.user.domain;
 
+import com.hyunji.jpaboard.domain.user.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
