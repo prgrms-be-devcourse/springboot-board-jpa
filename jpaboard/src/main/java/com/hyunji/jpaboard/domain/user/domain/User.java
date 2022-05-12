@@ -22,7 +22,7 @@ public class User {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -43,13 +43,13 @@ public class User {
     @Builder
     public User(String name, int age, String hobby, String createdBy) {
         checkArgument(Strings.isNotBlank(name), "name 공백 불가");
-        checkArgument(age > 0);
+        checkArgument(age > 0, "age 0 이하 불가");
         checkArgument(Strings.isNotBlank(hobby), "hobby 공백 불가");
+        checkArgument(Strings.isNotBlank(createdBy), "createdBy 공백 불가");
 
         this.name = name;
         this.age = age;
         this.hobby = hobby;
         this.createdBy = createdBy;
     }
-
 }
