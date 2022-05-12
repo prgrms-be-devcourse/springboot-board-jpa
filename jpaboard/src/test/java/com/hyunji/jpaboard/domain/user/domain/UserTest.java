@@ -19,20 +19,18 @@ class UserTest {
         String name = "user01";
         int age = 100;
         String hobby = "hobby";
-        String createdBy = "user01";
 
         User user = User.builder()
                 .name(name)
                 .age(100)
                 .hobby(hobby)
-                .createdBy(createdBy)
                 .build();
 
         assertThat(user.getId()).isNull();
         assertThat(user.getCreatedAt()).isNull();
         assertThat(user).isNotNull()
-                .extracting(User::getName, User::getAge, User::getCreatedBy)
-                .isEqualTo(List.of(name, age, createdBy));
+                .extracting(User::getName, User::getAge)
+                .isEqualTo(List.of(name, age));
     }
 
     @ParameterizedTest
@@ -42,7 +40,6 @@ class UserTest {
                 .name(name)
                 .age(100)
                 .hobby("hobby")
-                .createdBy("user01")
                 .build());
     }
 
@@ -53,7 +50,6 @@ class UserTest {
                 .name("user01")
                 .age(age)
                 .hobby("hobby")
-                .createdBy("user01")
                 .build());
     }
 
@@ -64,18 +60,6 @@ class UserTest {
                 .name("user01")
                 .age(100)
                 .hobby(hobby)
-                .createdBy("user01")
-                .build());
-    }
-
-    @ParameterizedTest
-    @NullAndEmptySource
-    void user_createdBy가_공백_혹은_null이면_예외를_던진다(String createdBy) {
-        assertThatIllegalArgumentException().isThrownBy(() -> User.builder()
-                .name("user01")
-                .age(100)
-                .hobby("hobby")
-                .createdBy(createdBy)
                 .build());
     }
 }

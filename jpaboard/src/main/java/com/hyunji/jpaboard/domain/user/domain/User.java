@@ -1,5 +1,6 @@
 package com.hyunji.jpaboard.domain.user.domain;
 
+import com.hyunji.jpaboard.model.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,14 +14,13 @@ import java.time.LocalDateTime;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-@DynamicUpdate
 @Getter
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+@DynamicUpdate
+@Entity
+public class User extends BaseEntity {
 
     @Id
-    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -33,23 +33,14 @@ public class User {
     @Column(nullable = false)
     private String hobby;
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false, updatable = false)
-    private String createdBy;
-
     @Builder
-    public User(String name, int age, String hobby, String createdBy) {
+    public User(String name, int age, String hobby) {
         checkArgument(Strings.isNotBlank(name), "name 공백 불가");
         checkArgument(age > 0, "age 0 이하 불가");
         checkArgument(Strings.isNotBlank(hobby), "hobby 공백 불가");
-        checkArgument(Strings.isNotBlank(createdBy), "createdBy 공백 불가");
 
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        this.createdBy = createdBy;
     }
 }
