@@ -48,20 +48,28 @@ public class Post {
 	private LocalDateTime createdAt;
 
 	private Post(String title, String content) {
-		checkArgument(validateTitle(title), "제목은 1자 이상255자 이하이어야 합니다.");
-		checkNotNull(content, "내용은 필수입니다.");
+		validatePost(title, content);
 
 		this.title = title;
 		this.content = content;
 		this.createdAt = LocalDateTime.now();
 	}
 
-	private boolean validateTitle(String title) {
-		return Objects.nonNull(title) && title.length() > 0 && title.length() <= MAX_TITLE_LENGTH;
+	private void validatePost(String title, String content) {
+		checkArgument(Objects.nonNull(title) && title.length() > 0 && title.length() <= MAX_TITLE_LENGTH,
+			"제목은 1자 이상255자 이하이어야 합니다.");
+		checkNotNull(content, "내용은 필수입니다.");
 	}
 
 	public Post create(String title, String content) {
 		return new Post(title, content);
+	}
+
+	public void updatePost(String title, String content){
+		validatePost(title, content);
+
+		this.title = title;
+		this.content = content;
 	}
 
 	// 얀관관계 편의 메서드 START

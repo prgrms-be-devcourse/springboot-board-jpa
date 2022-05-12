@@ -36,22 +36,34 @@ public class User {
 	@Column(nullable = false)
 	private int age;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL , orphanRemoval = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Post> posts = new ArrayList<>();
 
 	private LocalDateTime createdAt;
 
 	private User(String name, int age) {
-		checkArgument(name != null && name.length() <= MAX_USER_NAME_LENGTH, "이름의 길이는 1자 이상 10자 이하여야 합니다.");
-		checkNotNull(age, "나이 항목은 필수입니다.");
+		validateInfo(name, age);
 
 		this.name = name;
 		this.age = age;
 		this.createdAt = LocalDateTime.now();
 	}
 
+	private void validateInfo(String name, int age) {
+		checkArgument(name != null && name.length() > 0 && name.length() <= MAX_USER_NAME_LENGTH,
+			"이름의 길이는 1자 이상 10자 이하여야 합니다.");
+		checkNotNull(age, "나이 항목은 필수입니다.");
+	}
+
 	public User create(String name, int age) {
 		return new User(name, age);
+	}
+
+	public void updateUser(String name, int age) {
+		validateInfo(name, age);
+
+		this.name = name;
+		this.age = age;
 	}
 
 	// 얀관관계 편의 메서드 START
