@@ -6,9 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.time.LocalDateTime.now;
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 import static org.springframework.util.StringUtils.hasText;
@@ -27,6 +29,9 @@ public class Post extends BaseEntity {
     @Column(name = "content", nullable = false)
     private String content;
 
+    @Column(name = "written_date_time", updatable = false)
+    private LocalDateTime writtenDateTime;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User writer;
@@ -40,6 +45,7 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
         this.writer = writer;
+        this.writtenDateTime = now();
     }
 
     public static Post create(String title, String content, User writer) {

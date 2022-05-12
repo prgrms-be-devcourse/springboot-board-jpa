@@ -13,13 +13,14 @@ import static org.assertj.core.api.Assertions.*;
 class PostTest {
 
     @Test
-    void 생성_성공_auditing_적용_x() {
+    void 생성_성공() {
         User writer = createUser();
         Post post = Post.create("제목", "내용", writer);
 
         assertThat(post.getId()).isNull();
         assertThat(post.getTitle()).isEqualTo("제목");
         assertThat(post.getContent()).isEqualTo("내용");
+        assertThat(post.getWrittenDateTime()).isNotNull();
         assertThat(post.getWriter().getId()).isEqualTo(writer.getId());
         assertThat(post.getWriter().getName()).isEqualTo(writer.getName());
         assertThat(post.getWriter().getHobby()).isEqualTo(writer.getHobby());

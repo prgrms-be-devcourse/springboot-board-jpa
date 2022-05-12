@@ -13,14 +13,12 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 class UserTest {
 
     @Test
-    void 생성_성공_auditing_적용_x() {
+    void 생성_성공() {
         User user = User.create("득윤", "체스");
 
         assertThat(user.getId()).isNull();
         assertThat(user.getName()).isEqualTo("득윤");
         assertThat(user.getHobby()).isEqualTo("체스");
-        assertThat(user.getCreatedAt()).isNull();
-        assertThat(user.getCreatedBy()).isNull();
     }
 
     @NullAndEmptySource
