@@ -1,6 +1,7 @@
 package com.hyunji.jpaboard.domain.post.domain;
 
 import com.hyunji.jpaboard.domain.user.domain.User;
+import com.hyunji.jpaboard.model.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,11 +20,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 @Entity
-public class Post {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Post extends BaseEntity {
 
     @Column(nullable = false)
     private String title;
