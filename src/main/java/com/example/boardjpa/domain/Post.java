@@ -20,8 +20,7 @@ public class Post extends BaseEntity{
     protected Post() {
     }
 
-    public Post(Long id, String title, String content, User user) {
-        this.id = id;
+    public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
         setUser(user);
@@ -35,6 +34,10 @@ public class Post extends BaseEntity{
         }
         this.user = user;
         user.getPosts().add(this);
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Long getId() {

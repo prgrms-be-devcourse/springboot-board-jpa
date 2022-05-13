@@ -21,8 +21,7 @@ public class User extends BaseEntity {
     protected User() {
     }
 
-    public User(Long id, String name, Integer age, String hobby) {
-        this.id = id;
+    public User(String name, Integer age, String hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
