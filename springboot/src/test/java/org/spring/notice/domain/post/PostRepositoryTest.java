@@ -1,9 +1,9 @@
 package org.spring.notice.domain.post;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.spring.notice.domain.user.User;
+import org.spring.notice.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -11,26 +11,35 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.spring.notice.fixture.Fixture.createUser;
+import static org.spring.notice.fixture.Fixture.getUser;
 
 @SpringBootTest
 @Transactional
 class PostRepositoryTest {
 
-    private final Post post1 = Post.write("테스트1", "테스트 내용", createUser());
-    private final Post post2 = Post.write("테스트2", "테스트 내용2", createUser());
-    private final Post post3 = Post.write("테스트3", "테스트 내용3", createUser());
-    private final Post post4 = Post.write("테스트1", "블라블라블라", createUser());
-    private final Post post5 = Post.write("테스트2", "오오홍", createUser());
+    private Post post1;
+    private Post post2;
+    private Post post3;
+    private Post post4;
+    private Post post5;
 
     @Autowired
     PostRepository postRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @BeforeEach
     void setup(){
-        postRepository.save(post1);
-        postRepository.save(post2);
-        postRepository.save(post3);
+        User savedUser = userRepository.save(getUser());
+
+        post1 = Post.write("테스트1", "테스트 내용", savedUser);
+        post2 = Post.write("테스트2", "테스트 내용2", savedUser);
+        post3 = Post.write("테스트3", "테스트 내용3", savedUser);
+        post4 = Post.write("테스트1", "블라블라블라", savedUser);
+        post5 = Post.write("테스트2", "오오홍", savedUser);
+
+        postRepository.saveAll(List.of(post1, post2, post3, post4, post5));
     }
 
     @Test
