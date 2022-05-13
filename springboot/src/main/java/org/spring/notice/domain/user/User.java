@@ -3,6 +3,7 @@ package org.spring.notice.domain.user;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.spring.notice.domain.BaseEntity;
 import org.spring.notice.domain.post.Post;
 
@@ -19,6 +20,7 @@ import static org.springframework.util.StringUtils.hasText;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="user")
+@ToString(of= {"name", "age", "hobby"})
 public class User extends BaseEntity {
     public static final int NAME_MAX_LENGTH = 30;
     public static final int HOBBY_MAX_LENGTH = 30;

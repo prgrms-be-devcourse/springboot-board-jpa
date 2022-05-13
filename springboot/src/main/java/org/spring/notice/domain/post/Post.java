@@ -1,8 +1,6 @@
 package org.spring.notice.domain.post;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.spring.notice.domain.BaseEntity;
 import org.spring.notice.domain.user.User;
 
@@ -16,6 +14,8 @@ import static org.springframework.util.StringUtils.hasText;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="post")
+@ToString(of={"title", "content"})
+@EqualsAndHashCode(of="id", callSuper = false)
 public class Post extends BaseEntity {
 
     /* 게시글 아이디 */
@@ -31,7 +31,7 @@ public class Post extends BaseEntity {
     @Lob
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
 
