@@ -22,7 +22,6 @@ class PostTest {
     Post post = Post.builder()
         .title(title)
         .content(content)
-        .createdAt(createdAt)
         .createdBy(createdBy)
         .build();
 
@@ -30,7 +29,7 @@ class PostTest {
     assertThat(post.getId()).isNull();
     assertThat(post.getTitle()).isEqualTo(title);
     assertThat(post.getContent()).isEqualTo(content);
-    assertThat(post.getCreatedAt()).isEqualTo(createdAt);
+    assertThat(post.getCreatedAt()).isNull();
     assertThat(post.getCreatedBy()).isEqualTo(createdBy);
 
   }

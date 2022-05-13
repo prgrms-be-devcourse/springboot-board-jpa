@@ -1,6 +1,5 @@
 package com.programmers.epicblues.jpa_board.entity;
 
-import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name = "user")
-public class User {
+public class User extends CommonFieldEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,16 +21,12 @@ public class User {
   private String name;
   private int age;
   private String hobby;
-  private String createdBy;
-  private LocalDateTime createdAt;
 
   @Builder
-  public User(String name, int age, String hobby, String createdBy, LocalDateTime createdAt) {
-    this.id = null;
+  public User(String name, int age, String hobby, String createdBy) {
     this.name = name;
     this.age = age;
     this.hobby = hobby;
-    this.createdAt = createdAt;
     this.createdBy = createdBy;
   }
 }

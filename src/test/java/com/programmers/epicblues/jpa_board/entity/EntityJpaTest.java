@@ -2,7 +2,6 @@ package com.programmers.epicblues.jpa_board.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDateTime;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterEach;
@@ -40,16 +39,18 @@ class EntityJpaTest {
     User user = User.builder()
         .age(30)
         .hobby("책")
-        .createdAt(LocalDateTime.now())
         .name("민성")
         .createdBy("sa").build();
+    assertThat(user.getId()).isNull();
 
     // When
     entityManager.getTransaction().begin();
     entityManager.persist(user);
     entityManager.getTransaction().commit();
+
     // Then
     assertThat(user.getId()).isNotNull();
+    assertThat(user.getCreatedAt()).isNotNull();
   }
 
   @Test
@@ -60,14 +61,15 @@ class EntityJpaTest {
     Post post = Post.builder()
         .title("제목")
         .content("contents!")
-        .createdAt(LocalDateTime.now())
         .createdBy("민성")
         .build();
+    assertThat(post.getId()).isNull();
     // When
     entityManager.getTransaction().begin();
     entityManager.persist(post);
     entityManager.getTransaction().commit();
     // Then
     assertThat(post.getId()).isNotNull();
+    assertThat(post.getCreatedAt()).isNotNull();
   }
 }

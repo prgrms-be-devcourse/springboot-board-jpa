@@ -11,7 +11,6 @@ class UserTest {
   @Test
   @DisplayName("User는 요구사항에 맞는 속성을 가져야 한다.")
   void user_should_meet_all_requirements() {
-    // id는 database에서 auto_increment이므로 생성자에서 생성하지 않는다.
     // Given
     String name = "Minsung";
     int age = 30;
@@ -20,15 +19,15 @@ class UserTest {
     LocalDateTime createdAt = LocalDateTime.now();
 
     // When
-    User user = new User(name, age, hobby, createdBy, createdAt);
+    User user = new User(name, age, hobby, createdBy);
 
     // Then
     assertThat(user.getId()).isNull();
     assertThat(user.getName()).isEqualTo(name);
     assertThat(user.getAge()).isEqualTo(age);
     assertThat(user.getHobby()).isEqualTo(hobby);
+    assertThat(user.getCreatedAt()).isNull();
     assertThat(user.getCreatedBy()).isEqualTo(createdBy);
-    assertThat(user.getCreatedAt()).isEqualTo(createdAt);
 
   }
 
