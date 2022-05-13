@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name:  com.mysql.cj.jdbc.Driver
+    url:  jdbc:mysql://localhost:3306/mysql
+    hikari:
+      username: "root"
+      password: "samho101"
+  jpa:
+    generate-ddl: true
+    database: mysql
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate.format_sql: true
