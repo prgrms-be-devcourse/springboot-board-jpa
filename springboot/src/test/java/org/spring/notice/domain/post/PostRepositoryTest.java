@@ -3,9 +3,11 @@ package org.spring.notice.domain.post;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.spring.notice.domain.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,5 +40,20 @@ class PostRepositoryTest {
         List<Post> posts = postRepository.findByTitle("테스트1");
 
         assertThat(posts).containsExactly(post1);
+    }
+
+    @Test
+    @Transactional
+    void getUserFromPost(){
+        // Given
+        List<Post> posts = postRepository.findByTitle("테스트1");
+
+        // When
+        User user = posts.get(0).getUser();
+
+        // Then
+        assertThat(user.getName()).isEqualTo(createUser().getName());
+        assertThat(user.getAge()).isEqualTo(createUser().getAge());
+        assertThat(user.getHobby()).isEqualTo(createUser().getHobby());
     }
 }
