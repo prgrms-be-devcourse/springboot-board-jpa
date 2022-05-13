@@ -63,6 +63,7 @@ class UserTest {
         String id = UUID.randomUUID().toString();
         User user = User.create(id, "테스트 유저", 10, "코딩");
 
-        assertThat(user.getUuid()).isEqualTo(id);
+        assertThat(user).usingRecursiveComparison().isEqualTo(
+                User.create(id, "테스트 유저", 10, "코딩"));
     }
 }

@@ -35,8 +35,8 @@ class PostTest {
     void 작성성공() {
         Post post = Post.write("테스트 제목", "테스트 내용", createUser());
 
-        assertThat(post.getTitle()).isEqualTo("테스트 제목");
-        assertThat(post.getContent()).isEqualTo("테스트 내용");
-        assertThat(post.getUser()).usingRecursiveComparison().isEqualTo(createUser());
+        assertThat(post)
+                .usingRecursiveComparison()
+                .isEqualTo(Post.write("테스트 제목", "테스트 내용", createUser()));
     }
 }

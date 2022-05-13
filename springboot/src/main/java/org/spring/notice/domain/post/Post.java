@@ -31,9 +31,9 @@ public class Post extends BaseEntity {
     @Lob
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="user_id", referencedColumnName = "id")
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name="writer_id", referencedColumnName = "id")
+    private User writer;
 
     private Post(String title, String content, User writer){
         checkArgument(hasText(title), "제목이 공란입니다");
@@ -41,9 +41,9 @@ public class Post extends BaseEntity {
 
         this.title = title;
         this.content = content;
-        this.user = writer;
+        this.writer = writer;
 
-        this.user.getPosts().add(this);
+        this.writer.getPosts().add(this);
     }
 
     public static Post write(String title, String content, User writer){
