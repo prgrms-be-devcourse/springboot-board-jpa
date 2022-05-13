@@ -9,10 +9,9 @@ import org.junit.jupiter.api.Test;
 class UserTest {
 
   @Test
-  @DisplayName("사용자 엔터티는 요구사항에 맞는 속성을 가져야 한다.")
-  void test() {
+  @DisplayName("User는 요구사항에 맞는 속성을 가져야 한다.")
+  void user_should_meet_all_requirements() {
     // id는 database에서 auto_increment이므로 생성자에서 생성하지 않는다.
-    // created_at은
     // Given
     String name = "Minsung";
     int age = 30;

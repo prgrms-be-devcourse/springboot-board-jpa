@@ -10,27 +10,24 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@Getter
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "post")
+@Getter
+@NoArgsConstructor
+public class Post {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  private String name;
-  private int age;
-  private String hobby;
-  private String createdBy;
+  private String title;
+  private String content;
   private LocalDateTime createdAt;
+  private String createdBy;
 
   @Builder
-  public User(String name, int age, String hobby, String createdBy, LocalDateTime createdAt) {
-    this.id = null;
-    this.name = name;
-    this.age = age;
-    this.hobby = hobby;
+  public Post(String title, String content, LocalDateTime createdAt, String createdBy) {
+    this.title = title;
+    this.content = content;
     this.createdAt = createdAt;
     this.createdBy = createdBy;
   }
