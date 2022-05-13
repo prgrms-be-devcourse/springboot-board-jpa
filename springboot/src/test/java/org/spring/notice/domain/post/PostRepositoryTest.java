@@ -6,6 +6,8 @@ import org.spring.notice.domain.user.User;
 import org.spring.notice.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -54,5 +56,17 @@ class PostRepositoryTest {
         assertThat(test1_posts).containsExactlyInAnyOrder(post1, post4);
         assertThat(test2_posts).hasSize(2);
         assertThat(test2_posts).containsExactlyInAnyOrder(post2, post5);
+    }
+
+    @Test
+    void pageFindAllTest() {
+        //Given
+        // When
+        Page<Post> page1 = postRepository.findAll(PageRequest.of(0, 3));
+        Page<Post> page2 = postRepository.findAll(PageRequest.of(1, 3));
+
+        // Then
+        assertThat(page1.getContent()).hasSize(3);
+        assertThat(page2.getContent()).hasSize(2);
     }
 }
