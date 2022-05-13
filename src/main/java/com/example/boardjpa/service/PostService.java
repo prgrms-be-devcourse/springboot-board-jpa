@@ -7,7 +7,6 @@ import com.example.boardjpa.dto.PostResponseDto;
 import com.example.boardjpa.dto.UpdatePostRequestDto;
 import com.example.boardjpa.repository.PostRepository;
 import com.example.boardjpa.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,11 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Service
 public class PostService {
-    @Autowired
-    PostRepository postRepository;
+    private final PostRepository postRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+    }
 
     public Page<PostResponseDto> getPosts(Pageable pageable) {
         return postRepository
