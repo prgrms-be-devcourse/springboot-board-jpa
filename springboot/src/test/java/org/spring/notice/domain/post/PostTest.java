@@ -1,5 +1,6 @@
 package org.spring.notice.domain.post;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
@@ -7,6 +8,7 @@ import org.spring.notice.domain.user.User;
 
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 
@@ -27,5 +29,14 @@ class PostTest {
         assertThatNullPointerException().isThrownBy(
                 () -> Post.write("테스트 제목", "aaaa", null)
         );
+    }
+
+    @Test
+    void 작성성공() {
+        Post post = Post.write("테스트 제목", "테스트 내용", user);
+
+        assertThat(post.getTitle()).isEqualTo("테스트 제목");
+        assertThat(post.getContent()).isEqualTo("테스트 내용");
+        assertThat(post.getUser()).usingRecursiveComparison().isEqualTo(user);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 @SpringBootTest
@@ -55,5 +56,13 @@ class UserTest {
                         "abc", "name",
                         3, "취미")
         );
+    }
+
+    @Test
+    void 정상유저_생성() {
+        String id = UUID.randomUUID().toString();
+        User user = User.create(id, "테스트 유저", 10, "코딩");
+
+        assertThat(user.getUuid()).isEqualTo(id);
     }
 }

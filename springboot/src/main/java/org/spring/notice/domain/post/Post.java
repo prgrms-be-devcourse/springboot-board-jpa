@@ -31,7 +31,7 @@ public class Post extends BaseEntity {
     @Lob
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
 
@@ -41,7 +41,6 @@ public class Post extends BaseEntity {
 
         this.title = title;
         this.content = content;
-        this.createdBy = writer.getName();
         this.user = writer;
 
         this.user.getPosts().add(this);
