@@ -2,6 +2,7 @@ package com.programmers.epicblues.jpa_board.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.programmers.epicblues.jpa_board.EntityFixture;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,21 @@ class PostTest {
     assertThat(post.getCreatedAt()).isNull();
     assertThat(post.getCreatedBy()).isEqualTo(createdBy);
 
+  }
+
+  @Test
+  @DisplayName("Post가 User를 할당할 경우, User의 Post 목록에도 Post가 등록되어 있어야 한다.")
+  void assign_user_test() {
+
+    // Given
+    var post = EntityFixture.getFirstPost();
+    var user = EntityFixture.getUser();
+
+    // When
+    post.assignUser(user);
+
+    // Then
+    assertThat(user.contains(post)).isTrue();
   }
 
 }
