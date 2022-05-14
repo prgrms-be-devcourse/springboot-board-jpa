@@ -1,0 +1,19 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+
+== 게시판
+
+=== 게시글 작성
+
+=== POST /api/v1/posts
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
