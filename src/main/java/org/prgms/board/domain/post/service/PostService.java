@@ -14,7 +14,7 @@ public interface PostService {
 	PostDto.Response getOnePost(Long postId);
 
 	/** 게시글 작성 **/
-	void writePost(PostDto.Write writeDto);
+	PostDto.Response writePost(PostDto.Write writeDto);
 
 	/** 게시글 수정 **/
 	void updatePost(PostDto.Update updateDto);
