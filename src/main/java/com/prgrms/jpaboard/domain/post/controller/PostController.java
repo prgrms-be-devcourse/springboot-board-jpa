@@ -1,5 +1,6 @@
 package com.prgrms.jpaboard.domain.post.controller;
 
+import com.prgrms.jpaboard.domain.post.dto.PostDetailDto;
 import com.prgrms.jpaboard.domain.post.dto.PostListDto;
 import com.prgrms.jpaboard.domain.post.dto.PostRequestDto;
 import com.prgrms.jpaboard.domain.post.service.PostService;
@@ -34,6 +35,17 @@ public class PostController {
         PostListDto postListDto = postService.getPosts(pageParamDto.getPage(), pageParamDto.getPerPage());
 
         ResponseDto responseDto = new ResponseDto(HttpStatus.OK.value(), "get posts successfully", postListDto);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseDto);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDto> getPost(@PathVariable Long id) {
+        PostDetailDto postDetailDto = postService.getPost(id);
+
+        ResponseDto responseDto = new ResponseDto(HttpStatus.OK.value(), "get post successfully", postDetailDto);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

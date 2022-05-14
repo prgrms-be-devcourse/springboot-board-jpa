@@ -2,10 +2,8 @@ package com.prgrms.jpaboard.domain.post.service;
 
 import com.prgrms.jpaboard.domain.post.domain.Post;
 import com.prgrms.jpaboard.domain.post.domain.PostRepository;
-import com.prgrms.jpaboard.domain.post.dto.PostListDto;
-import com.prgrms.jpaboard.domain.post.dto.PostRequestDto;
-import com.prgrms.jpaboard.domain.post.dto.PostDto;
-import com.prgrms.jpaboard.domain.post.dto.UserInfoDto;
+import com.prgrms.jpaboard.domain.post.dto.*;
+import com.prgrms.jpaboard.domain.post.exception.PostNotFoundException;
 import com.prgrms.jpaboard.domain.user.domain.User;
 import com.prgrms.jpaboard.domain.user.domain.UserRepository;
 import com.prgrms.jpaboard.domain.user.exception.UserNotFoundException;
@@ -63,5 +61,18 @@ public class PostService {
                 .collect(Collectors.toList());
 
         return new PostListDto(metadata, posts);
+    }
+
+    @Transactional(readOnly = true)
+    public PostDetailDto getPost(Long id) {
+        Post post = postRepository.findByIdWithUser(id).orElseThrow(() -> new PostNotFoundException());
+
+        return PostDetailDto.postDetailDtoBuilder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .createdAt(post.getCreatedAt())
+                .user(new UserInfoDto(post.getUser().getId(), post.getUser().getName()))
+                .build();
     }
 }

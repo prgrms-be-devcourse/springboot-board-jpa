@@ -1,5 +1,6 @@
 package com.prgrms.jpaboard.global.exception;
 
+import com.prgrms.jpaboard.domain.post.exception.PostNotFoundException;
 import com.prgrms.jpaboard.domain.user.domain.User;
 import com.prgrms.jpaboard.domain.user.exception.UserNotFoundException;
 import com.prgrms.jpaboard.global.common.response.ErrorResponseDto;
@@ -37,6 +38,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleUserNotFundException(UserNotFoundException e) {
         final ErrorResponseDto errorResponseDto = ErrorResponseDto.singleError(ErrorCode.USER_NOT_FOUND);
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(errorResponseDto);
+    }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handlePostNotFoundException(PostNotFoundException e) {
+        final ErrorResponseDto errorResponseDto = ErrorResponseDto.singleError(ErrorCode.POST_NOT_FOUND);
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)

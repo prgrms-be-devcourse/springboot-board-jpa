@@ -123,7 +123,7 @@ class PostRepositoryTest {
     }
 
     @Test
-    @DisplayName("게시물 조회 테스트(with user)")
+    @DisplayName("게시물 페이징 조회 테스트(with user)")
     void testFindAllWithUser() {
         User user = userRepository.findAll().get(0);
 
@@ -139,6 +139,26 @@ class PostRepositoryTest {
         postRepository.save(post);
         Page<Post> postPagingResult = postRepository.findAllWithUser(PageRequest.of(0, 10));
         assertThat(postPagingResult.getContent().size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("게시물 단건 조회 테스트(with user)")
+    void testFindByIdWithUser() {
+        User user = userRepository.findAll().get(0);
+
+        Post post = Post.builder()
+                .title("제목")
+                .content("주요 컨텐츠...")
+                .createdBy(user.getId().toString())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+        post.setUser(user);
+
+        Post savedPost = postRepository.save(post);
+        Optional<Post> retPost = postRepository.findByIdWithUser(savedPost.getId());
+
+        assertThat(retPost).isNotEmpty();
     }
 
 }
