@@ -16,7 +16,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
     private String name;
 
     private int age;
@@ -88,6 +88,11 @@ public class User extends BaseEntity {
         public User build() {
             return new User(createdBy, createdAt, updatedAt, id, name, age, hobby);
         }
+    }
+
+    public void updateName(String name) {
+        this.name = name;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void updateAge(int age) {
