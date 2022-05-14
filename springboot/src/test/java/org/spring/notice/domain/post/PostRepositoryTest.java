@@ -66,7 +66,7 @@ class PostRepositoryTest {
         Page<Post> page2 = postRepository.findAll(PageRequest.of(1, 3));
 
         // Then
-        assertThat(page1.getContent()).hasSize(3);
-        assertThat(page2.getContent()).hasSize(2);
+        assertThat(page1.getContent()).containsExactly(post1, post2, post3);
+        assertThat(page2.getContent()).containsExactly(post4, post5);
     }
 }
