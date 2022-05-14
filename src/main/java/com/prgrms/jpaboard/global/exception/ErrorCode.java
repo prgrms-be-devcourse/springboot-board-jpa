@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
-    BAD_REQUEST(HttpStatus.BAD_REQUEST.value(), "wrong input");
+    BAD_REQUEST(HttpStatus.BAD_REQUEST.value(), "wrong input"),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "can't find a user");
 
     private final int status;
     private final String message;

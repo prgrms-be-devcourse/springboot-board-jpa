@@ -1,7 +1,7 @@
-package com.prgrms.jpaboard.domain.user.controller;
+package com.prgrms.jpaboard.domain.post.controller;
 
-import com.prgrms.jpaboard.domain.user.dto.UserRequestDto;
-import com.prgrms.jpaboard.domain.user.service.UserService;
+import com.prgrms.jpaboard.domain.post.dto.PostRequestDto;
+import com.prgrms.jpaboard.domain.post.service.PostService;
 import com.prgrms.jpaboard.global.common.response.ResponseDto;
 import com.prgrms.jpaboard.global.common.response.ResultDto;
 import lombok.RequiredArgsConstructor;
@@ -13,18 +13,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/posts")
 @RestController
-public class UserController {
-    private final UserService userService;
+public class PostController {
+    private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<ResponseDto> createUser(@Validated @RequestBody UserRequestDto userRequestDto) {
-        ResultDto result = userService.createUser(userRequestDto);
+    public ResponseEntity<ResponseDto> createPost(@Validated @RequestBody PostRequestDto postRequestDto){
+        ResultDto result = postService.createPost(postRequestDto);
 
-        ResponseDto responseDto = new ResponseDto(HttpStatus.CREATED.value(), "user created successfully", result);
+        ResponseDto responseDto = new ResponseDto(HttpStatus.CREATED.value(), "post created successfully", result);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

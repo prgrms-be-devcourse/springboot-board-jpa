@@ -1,5 +1,7 @@
 package com.prgrms.jpaboard.global.exception;
 
+import com.prgrms.jpaboard.domain.user.domain.User;
+import com.prgrms.jpaboard.domain.user.exception.UserNotFoundException;
 import com.prgrms.jpaboard.global.common.response.ErrorResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(org.springframework.validation.BindException.class)
     public ResponseEntity<ErrorResponseDto> handleBindException(BindException e) {
         final ErrorResponseDto errorResponse = ErrorResponseDto.multipleError(ErrorCode.BAD_REQUEST, e.getBindingResult());
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleUserNotFundException(UserNotFoundException e) {
+        final ErrorResponseDto errorResponseDto = ErrorResponseDto.singleError(ErrorCode.USER_NOT_FOUND);
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(errorResponseDto);
     }
 }
