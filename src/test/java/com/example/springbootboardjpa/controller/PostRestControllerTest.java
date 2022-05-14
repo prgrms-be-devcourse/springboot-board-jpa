@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -32,13 +31,13 @@ class PostRestControllerTest {
     @Test
     void create() throws Exception {
         PostDto postDto = PostDto.builder()
-                .title("인사")
-                .content("안녕하세요")
+                .title("Hello")
+                .content("nice to meet you")
                 .customer(
                         CustomerDto.builder()
-                                .name("김산타")
+                                .name("santa")
                                 .age(20)
-                                .hobby("책읽기")
+                                .hobby("writing")
                                 .build()
                 )
                 .build();

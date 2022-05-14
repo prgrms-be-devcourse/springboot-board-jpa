@@ -3,9 +3,9 @@ ifndef::snippets[]
 :snippets: ../../build/generated-snippets
 endif::[]
 
-== 게시판
+== Post API
 
-=== 게시글 작성
+=== Create Post
 
 === POST /api/v1/posts
 
