@@ -107,7 +107,7 @@ class EntityJpaTest {
 
   @Test
   @DisplayName("영속화된 User,Post들을 컨텍스트에서 분리시킨 뒤, User만 find를 통해 새로 가져올 경우 user를 통해 Post들도 조회할 수 있다")
-  void test() {
+  void relation_detach_test() {
 
     // Given
     USER_FIXTURE.addPost(POST_FIXTURE_1);
