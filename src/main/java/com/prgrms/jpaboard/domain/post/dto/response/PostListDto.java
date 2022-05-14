@@ -1,4 +1,4 @@
-package com.prgrms.jpaboard.domain.post.dto;
+package com.prgrms.jpaboard.domain.post.dto.response;
 
 import com.prgrms.jpaboard.global.common.response.MetaDataDto;
 import lombok.Getter;

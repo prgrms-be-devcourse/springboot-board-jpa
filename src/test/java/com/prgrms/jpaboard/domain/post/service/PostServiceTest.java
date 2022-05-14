@@ -2,7 +2,9 @@ package com.prgrms.jpaboard.domain.post.service;
 
 import com.prgrms.jpaboard.domain.post.domain.Post;
 import com.prgrms.jpaboard.domain.post.domain.PostRepository;
-import com.prgrms.jpaboard.domain.post.dto.PostRequestDto;
+import com.prgrms.jpaboard.domain.post.dto.request.PostCreateDto;
+import com.prgrms.jpaboard.domain.post.dto.request.PostUpdateDto;
+import com.prgrms.jpaboard.domain.post.exception.PostNotFoundException;
 import com.prgrms.jpaboard.domain.user.domain.User;
 import com.prgrms.jpaboard.domain.user.domain.UserRepository;
 import com.prgrms.jpaboard.domain.user.exception.UserNotFoundException;
@@ -28,7 +30,7 @@ class PostServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    private PostRequestDto postRequestDto = new PostRequestDto(1L, "제목", "내용");
+    private PostCreateDto postCreateDto = new PostCreateDto(1L, "제목", "내용");
 
     private User user = User.builder()
             .id(1L)
@@ -38,13 +40,19 @@ class PostServiceTest {
             .id(1L)
             .build();
 
+    private Post post2 = Post.builder()
+            .id(1L)
+            .build();
+
+    private PostUpdateDto postUpdateDto = new PostUpdateDto("수정된 제목", "수정된 내용");
+
     @Test
     @DisplayName("게시글 작성 예외 테스트")
     void testCreatePostException() {
-        when(userRepository.findById(postRequestDto.getUserId())).thenThrow(new UserNotFoundException());
+        when(userRepository.findById(postCreateDto.getUserId())).thenThrow(new UserNotFoundException());
 
         try{
-            postService.createPost(postRequestDto);
+            postService.createPost(postCreateDto);
         }catch (UserNotFoundException e) {
             verify(postRepository, never()).save(any());
         }
@@ -53,10 +61,10 @@ class PostServiceTest {
     @Test
     @DisplayName("게시글 작성 테스트")
     void testCreatePost() {
-        when(userRepository.findById(postRequestDto.getUserId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(postCreateDto.getUserId())).thenReturn(Optional.of(user));
         when(postRepository.save(any())).thenReturn(post);
 
-        postService.createPost(postRequestDto);
+        postService.createPost(postCreateDto);
 
         verify(postRepository).save(any());
     }

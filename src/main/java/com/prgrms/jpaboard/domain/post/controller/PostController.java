@@ -1,8 +1,9 @@
 package com.prgrms.jpaboard.domain.post.controller;
 
-import com.prgrms.jpaboard.domain.post.dto.PostDetailDto;
-import com.prgrms.jpaboard.domain.post.dto.PostListDto;
-import com.prgrms.jpaboard.domain.post.dto.PostRequestDto;
+import com.prgrms.jpaboard.domain.post.dto.request.PostUpdateDto;
+import com.prgrms.jpaboard.domain.post.dto.response.PostDetailDto;
+import com.prgrms.jpaboard.domain.post.dto.response.PostListDto;
+import com.prgrms.jpaboard.domain.post.dto.request.PostCreateDto;
 import com.prgrms.jpaboard.domain.post.service.PostService;
 import com.prgrms.jpaboard.global.common.response.ResponseDto;
 import com.prgrms.jpaboard.global.common.response.ResultDto;
@@ -20,8 +21,8 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<ResponseDto> createPost(@Validated @RequestBody PostRequestDto postRequestDto){
-        ResultDto result = postService.createPost(postRequestDto);
+    public ResponseEntity<ResponseDto> createPost(@Validated @RequestBody PostCreateDto postCreateDto){
+        ResultDto result = postService.createPost(postCreateDto);
 
         ResponseDto responseDto = new ResponseDto(HttpStatus.CREATED.value(), "post created successfully", result);
 
@@ -46,6 +47,17 @@ public class PostController {
         PostDetailDto postDetailDto = postService.getPost(id);
 
         ResponseDto responseDto = new ResponseDto(HttpStatus.OK.value(), "get post successfully", postDetailDto);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseDto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseDto> updatePost(@PathVariable Long id, @RequestBody PostUpdateDto postUpdateDto) {
+        ResultDto result = postService.updatePost(id, postUpdateDto);
+
+        ResponseDto responseDto = new ResponseDto(HttpStatus.OK.value(), "post updated successfully", result);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

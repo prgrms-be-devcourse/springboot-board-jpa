@@ -2,7 +2,12 @@ package com.prgrms.jpaboard.domain.post.service;
 
 import com.prgrms.jpaboard.domain.post.domain.Post;
 import com.prgrms.jpaboard.domain.post.domain.PostRepository;
-import com.prgrms.jpaboard.domain.post.dto.*;
+import com.prgrms.jpaboard.domain.post.dto.request.PostCreateDto;
+import com.prgrms.jpaboard.domain.post.dto.request.PostUpdateDto;
+import com.prgrms.jpaboard.domain.post.dto.response.PostDetailDto;
+import com.prgrms.jpaboard.domain.post.dto.response.PostDto;
+import com.prgrms.jpaboard.domain.post.dto.response.PostListDto;
+import com.prgrms.jpaboard.domain.post.dto.response.UserInfoDto;
 import com.prgrms.jpaboard.domain.post.exception.PostNotFoundException;
 import com.prgrms.jpaboard.domain.user.domain.User;
 import com.prgrms.jpaboard.domain.user.domain.UserRepository;
@@ -10,10 +15,8 @@ import com.prgrms.jpaboard.domain.user.exception.UserNotFoundException;
 import com.prgrms.jpaboard.global.common.response.MetaDataDto;
 import com.prgrms.jpaboard.global.common.response.ResultDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +31,11 @@ public class PostService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ResultDto createPost(PostRequestDto postRequestDto) {
-        User user = userRepository.findById(postRequestDto.getUserId())
+    public ResultDto createPost(PostCreateDto postCreateDto) {
+        User user = userRepository.findById(postCreateDto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException());
 
-        Post post = postRequestDto.toEntity();
+        Post post = postCreateDto.toEntity();
         post.setUser(user);
 
         Post savedPost = postRepository.save(post);
@@ -74,5 +77,14 @@ public class PostService {
                 .createdAt(post.getCreatedAt())
                 .user(new UserInfoDto(post.getUser().getId(), post.getUser().getName()))
                 .build();
+    }
+
+    @Transactional
+    public ResultDto updatePost(Long id, PostUpdateDto postUpdateDto) {
+        Post post = postRepository.findByIdWithUser(id).orElseThrow(() -> new PostNotFoundException());
+        post.updateTitle(postUpdateDto.getTitle());
+        post.updateContent(postUpdateDto.getContent());
+
+        return ResultDto.updateResult(id);
     }
 }

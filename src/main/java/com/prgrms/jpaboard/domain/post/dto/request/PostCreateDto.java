@@ -1,4 +1,4 @@
-package com.prgrms.jpaboard.domain.post.dto;
+package com.prgrms.jpaboard.domain.post.dto.request;
 
 import com.prgrms.jpaboard.domain.post.domain.Post;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
-public class PostRequestDto {
+public class PostCreateDto {
     @NotNull
     private Long userId;
 
@@ -20,7 +20,7 @@ public class PostRequestDto {
     @NotBlank
     private String content;
 
-    public PostRequestDto(Long userId, String title, String content) {
+    public PostCreateDto(Long userId, String title, String content) {
         this.userId = userId;
         this.title = title;
         this.content = content;
