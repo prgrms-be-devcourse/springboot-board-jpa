@@ -8,6 +8,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Getter
 @Entity
 public class Post extends BaseEntity {
@@ -22,7 +24,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -74,7 +76,7 @@ public class Post extends BaseEntity {
         }
 
         public PostBuilder updatedAt(LocalDateTime updatedAt) {
-            this.createdAt = updatedAt;
+            this.updatedAt = updatedAt;
             return this;
         }
 

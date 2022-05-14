@@ -36,14 +36,11 @@ class UserRepositoryTest {
     @Test
     @DisplayName("수정 테스트")
     void testUpdate() {
-        // when
         User createdUser = userRepository.save(user);
 
-        // given
         User retUser = userRepository.findById(createdUser.getId()).get();
         retUser.updateAge(26);
 
-        // then
         User retUser2 = userRepository.findById(createdUser.getId()).get();
         assertThat(retUser2.getAge()).isEqualTo(26);
         assertThat(retUser2.getUpdatedAt()).isNotEqualTo(retUser2.getCreatedAt());
