@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import org.prgms.board.domain.post.domain.Post;
+import org.springframework.util.StringUtils;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,31 +27,36 @@ import lombok.NoArgsConstructor;
 public class User {
 	public static final int MAX_USER_NAME_LENGTH = 30;
 
+	/** 사용자 식별 번호 **/
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	/** 사용자 이름 **/
 	@Column(length = MAX_USER_NAME_LENGTH, nullable = false, unique = true)
 	private String name;
 
+	/** 사용자 나이 **/
 	@Column(nullable = false)
 	private int age;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	/** 사용자 게시글 목록**/
+	@OneToMany(mappedBy = "writer")
 	private List<Post> posts = new ArrayList<>();
 
+	/** 사용자 생성 일자 **/
 	private LocalDateTime createdAt;
 
 	private User(String name, int age) {
-		validateInfo(name, age);
+		validateUserInfo(name, age);
 
 		this.name = name;
 		this.age = age;
 		this.createdAt = LocalDateTime.now();
 	}
 
-	private void validateInfo(String name, int age) {
-		checkArgument(Objects.nonNull(name) && name.length() > 0 && name.length() <= MAX_USER_NAME_LENGTH,
+	private void validateUserInfo(String name, Integer age) {
+		checkArgument(StringUtils.hasText(name) && name.length() <= MAX_USER_NAME_LENGTH,
 			"이름의 길이는 1자 이상 10자 이하여야 합니다.");
 		checkArgument(Objects.nonNull(age) && age > 0, "나이 항목은 필수입니다.");
 	}
@@ -61,17 +66,10 @@ public class User {
 	}
 
 	public void updateUser(String name, int age) {
-		validateInfo(name, age);
+		validateUserInfo(name, age);
 
 		this.name = name;
 		this.age = age;
 	}
 
-	// 얀관관계 편의 메서드 START
-
-	public void setPost(Post post) {
-		post.setUser(this);
-	}
-
-	// 연관관계 편의 메서드 END
 }
