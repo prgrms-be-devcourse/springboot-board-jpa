@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -118,6 +120,25 @@ class PostRepositoryTest {
 
         Optional<Post> retPost = postRepository.findById(savedPost.getId());
         assertThat(retPost).isEmpty();
+    }
+
+    @Test
+    @DisplayName("게시물 조회 테스트(with user)")
+    void testFindAllWithUser() {
+        User user = userRepository.findAll().get(0);
+
+        Post post = Post.builder()
+                .title("제목")
+                .content("주요 컨텐츠...")
+                .createdBy(user.getId().toString())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+        post.setUser(user);
+
+        postRepository.save(post);
+        Page<Post> postPagingResult = postRepository.findAllWithUser(PageRequest.of(0, 10));
+        assertThat(postPagingResult.getContent().size()).isEqualTo(1);
     }
 
 }
