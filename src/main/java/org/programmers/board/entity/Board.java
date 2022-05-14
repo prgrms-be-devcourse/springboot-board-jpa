@@ -1,5 +1,8 @@
 package org.programmers.board.entity;
 
+import org.programmers.board.entity.vo.Content;
+import org.programmers.board.entity.vo.Title;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -12,33 +15,35 @@ public class Board extends BaseEntity {
     @Column(name = "board_id")
     private Long id;
 
-    private String title;
+    @Embedded
+    private Title title;
 
-    private String content;
+    @Embedded
+    private Content content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "created_by", referencedColumnName = "user_id")
     private User user;
 
     protected Board() {
 
     }
 
-    public Board(String title, String content, User user) {
+    public Board(Title title, Content content, User user) {
         this.title = title;
         this.content = content;
-        this.user = user;
+        setUser(user);
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getTitle() {
+    public Title getTitle() {
         return title;
     }
 
-    public String getContent() {
+    public Content getContent() {
         return content;
     }
 

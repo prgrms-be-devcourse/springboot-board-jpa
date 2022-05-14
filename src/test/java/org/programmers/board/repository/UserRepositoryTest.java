@@ -97,7 +97,7 @@ class UserRepositoryTest {
     @DisplayName("유저 삭제 테스트")
     void deleteTest() {
         User user = new User(new UserName("지웅"), 27, "독서");
-        User save = userRepository.save(user);
+        userRepository.save(user);
 
         userRepository.deleteById(user.getId());
 

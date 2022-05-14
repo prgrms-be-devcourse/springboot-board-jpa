@@ -4,6 +4,7 @@ import org.programmers.board.entity.vo.UserName;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,7 +24,7 @@ public class User extends BaseEntity {
     private String hobby;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Board> boards;
+    private List<Board> boards = new ArrayList<>();
 
     protected User() {
 
