@@ -26,14 +26,18 @@ class UserTest {
 		assertThat(user.getAge()).isEqualTo(age);
 	}
 
-	@DisplayName("User 생성 실패 테스트")
+	@DisplayName("name이 1글자 이상, 30자 이하가 아닐 때 User 생성 실패 테스트")
 	@Test
 	void create_user_fail() {
 		// name test
 		assertThrows(IllegalArgumentException.class, () -> User.create(null, 25));
 		assertThrows(IllegalArgumentException.class, () -> User.create("", 25));
+		assertThrows(IllegalArgumentException.class, () -> User.create("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 25)); // 31자
+	}
 
-		// age test
+	@DisplayName("age가 양수가 아닐 때 User 생성 실패 테스트")
+	@Test
+	void create_user_fail_with_invalid_age() {
 		assertThrows(IllegalArgumentException.class, () -> User.create("seung han", 0));
 		assertThrows(IllegalArgumentException.class, () -> User.create("seung han", -1));
 	}
@@ -58,43 +62,29 @@ class UserTest {
 		assertThat(user.getAge()).isEqualTo(updateAge);
 	}
 
-	@DisplayName("User update 실패 테스트")
+	@DisplayName("name이 1글자 이상, 30자 이하가 아닐 때 User update 실패 테스트")
 	@Test
-	void update_user_fail() {
-		// given
+	void update_user_fail_with_invalid_name() {
 		String name = "seung han";
 		int age = 25;
 
 		final User user = User.create(name, age);
 
-		// name test
 		assertThrows(IllegalArgumentException.class, () -> user.updateUser(null, 25));
 		assertThrows(IllegalArgumentException.class, () -> user.updateUser("", 25));
 
-		// age test
+	}
+
+	@DisplayName("age가 양수가 아닐 때 User update 실패 테스트")
+	@Test
+	void update_user_fail() {
+		String name = "seung han";
+		int age = 25;
+
+		final User user = User.create(name, age);
+
 		assertThrows(IllegalArgumentException.class, () -> user.updateUser("seung han", 0));
 		assertThrows(IllegalArgumentException.class, () -> user.updateUser("seung han", -1));
 	}
 
-	@DisplayName("setPost 테스트")
-	@Test
-	void setPost_test() {
-		// given
-		String name = "seung han";
-		int age = 25;
-
-		final User user = User.create(name, age);
-
-		// when
-		String title = "title1";
-		String content = "this is content";
-		final Post post = Post.create(title, content);
-
-		user.setPost(post);
-
-		// then
-		assertThat(user.getPosts()).extracting("id", "title", "content")
-			.containsExactly(tuple(post.getId(), post.getTitle(), post.getContent()));
-
-	}
 }
