@@ -6,10 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import prgrms.project.post.repository.UserRepository;
+import prgrms.project.post.service.DefaultPage;
 import prgrms.project.post.util.mapper.HobbyMapper;
 import prgrms.project.post.util.mapper.UserMapper;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static java.util.stream.Collectors.toSet;
@@ -41,8 +41,8 @@ public class DefaultUserService implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserDto> searchAll(Pageable pageable) {
-        return userRepository.findAllBy(pageable).map(userMapper::toDto).toList();
+    public DefaultPage<UserDto> searchAll(Pageable pageable) {
+        return DefaultPage.of(userRepository.findUsersAll(pageable).map(userMapper::toDto));
     }
 
     @Override

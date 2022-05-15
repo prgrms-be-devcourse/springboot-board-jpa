@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import prgrms.project.post.repository.PostRepository;
+import prgrms.project.post.service.DefaultPage;
 import prgrms.project.post.util.mapper.PostMapper;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -38,8 +38,8 @@ public class DefaultPostService implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<PostDto> searchAll(Pageable pageable) {
-        return postRepository.findPostsAll(pageable).map(postMapper::toDto).toList();
+    public DefaultPage<PostDto> searchAll(Pageable pageable) {
+        return DefaultPage.of(postRepository.findPostsAll(pageable).map(postMapper::toDto));
     }
 
     @Override

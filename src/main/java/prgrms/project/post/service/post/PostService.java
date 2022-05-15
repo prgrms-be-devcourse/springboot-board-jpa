@@ -1,8 +1,7 @@
 package prgrms.project.post.service.post;
 
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
+import prgrms.project.post.service.DefaultPage;
 
 public interface PostService {
 
@@ -10,7 +9,7 @@ public interface PostService {
 
     PostDto searchById(Long id);
 
-    List<PostDto> searchAll(Pageable pageable);
+    DefaultPage<PostDto> searchAll(Pageable pageable);
 
     Long updatePost(Long id, PostDto postRequestDto);
 

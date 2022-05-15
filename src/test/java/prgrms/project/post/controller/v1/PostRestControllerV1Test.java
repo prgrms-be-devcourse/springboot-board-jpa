@@ -143,16 +143,21 @@ class PostRestControllerV1Test {
                         responseFields(
                                 fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
                                 fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
-                                fieldWithPath("data").type(ARRAY).description("데이터"),
-                                fieldWithPath("data[0].id").type(NUMBER).description("게시판아이디"),
-                                fieldWithPath("data[0].title").type(STRING).description("게시판제목"),
-                                fieldWithPath("data[0].content").type(STRING).description("게시판내용"),
-                                fieldWithPath("data[0].user").type(OBJECT).description("회원"),
-                                fieldWithPath("data[0].user.id").type(NUMBER).description("회원아이디"),
-                                fieldWithPath("data[0].user.name").type(STRING).description("회원이름"),
-                                fieldWithPath("data[0].user.age").type(NUMBER).description("회원나이"),
-                                fieldWithPath("data[0].user.hobbies").type(ARRAY).description("회원취미목록"),
-                                fieldWithPath("data[0].user.hobbies[0].hobby").type(STRING).description("회원취미")
+                                fieldWithPath("data").type(OBJECT).description("데이터"),
+                                fieldWithPath("data.content").type(ARRAY).description("컨텐츠"),
+                                fieldWithPath("data.content[0].id").type(NUMBER).description("게시판아이디"),
+                                fieldWithPath("data.content[0].title").type(STRING).description("게시판제목"),
+                                fieldWithPath("data.content[0].content").type(STRING).description("게시판내용"),
+                                fieldWithPath("data.content[0].user").type(OBJECT).description("회원"),
+                                fieldWithPath("data.content[0].user.id").type(NUMBER).description("회원아이디"),
+                                fieldWithPath("data.content[0].user.name").type(STRING).description("회원이름"),
+                                fieldWithPath("data.content[0].user.age").type(NUMBER).description("회원나이"),
+                                fieldWithPath("data.content[0].user.hobbies").type(ARRAY).description("회원취미목록"),
+                                fieldWithPath("data.content[0].user.hobbies[0].hobby").type(STRING).description("회원취미"),
+                                fieldWithPath("data.pageNumber").type(NUMBER).description("페이지넘버"),
+                                fieldWithPath("data.pageSize").type(NUMBER).description("페이지사이즈"),
+                                fieldWithPath("data.first").type(BOOLEAN).description("처음"),
+                                fieldWithPath("data.last").type(BOOLEAN).description("끝")
                         )
                     )
                 );

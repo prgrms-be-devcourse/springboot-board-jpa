@@ -5,10 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import prgrms.project.post.controller.response.DefaultApiResponse;
+import prgrms.project.post.service.DefaultPage;
 import prgrms.project.post.service.user.UserDto;
 import prgrms.project.post.service.user.UserService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -28,7 +27,7 @@ public class UserRestControllerV1 {
     }
 
     @GetMapping
-    public DefaultApiResponse<List<UserDto>> searchAllUser(Pageable pageable) {
+    public DefaultApiResponse<DefaultPage<UserDto>> searchAllUser(Pageable pageable) {
         return DefaultApiResponse.ok(userService.searchAll(pageable));
     }
 

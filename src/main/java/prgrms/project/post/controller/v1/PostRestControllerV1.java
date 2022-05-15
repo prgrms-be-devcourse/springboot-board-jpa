@@ -5,10 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import prgrms.project.post.controller.response.DefaultApiResponse;
+import prgrms.project.post.service.DefaultPage;
 import prgrms.project.post.service.post.PostDto;
 import prgrms.project.post.service.post.PostService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -28,7 +27,7 @@ public class PostRestControllerV1 {
     }
 
     @GetMapping
-    public DefaultApiResponse<List<PostDto>> searchAllPosts(Pageable pageable) {
+    public DefaultApiResponse<DefaultPage<PostDto>> searchAllPosts(Pageable pageable) {
         return DefaultApiResponse.ok(postService.searchAll(pageable));
     }
 
