@@ -11,40 +11,40 @@ import prgrms.project.post.service.user.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserRestControllerV1 {
 
     private final UserService userService;
 
-    @PostMapping("/users")
+    @PostMapping
     public DefaultApiResponse<Long> registerUser(@RequestBody @Validated UserDto userDto) {
         return DefaultApiResponse.ok(userService.registerUser(userDto));
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public DefaultApiResponse<UserDto> searchUser(@PathVariable Long userId) {
         return DefaultApiResponse.ok(userService.searchById(userId));
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public DefaultApiResponse<List<UserDto>> searchAllUser(Pageable pageable) {
         return DefaultApiResponse.ok(userService.searchAll(pageable));
     }
 
-    @PutMapping("/users/{userId}")
+    @PutMapping("/{userId}")
     public DefaultApiResponse<Long> updateUser(@PathVariable Long userId, @RequestBody @Validated UserDto userDto) {
         return DefaultApiResponse.ok(userService.updateUser(userId, userDto));
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/{userId}")
     public DefaultApiResponse<Boolean> deleteUser(@PathVariable Long userId) {
         userService.deleteById(userId);
 
         return DefaultApiResponse.ok(true);
     }
 
-    @DeleteMapping("/users")
+    @DeleteMapping
     public DefaultApiResponse<Boolean> deleteAllUsers() {
         userService.deleteAll();
 
