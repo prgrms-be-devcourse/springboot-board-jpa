@@ -1,4 +1,4 @@
-package com.study.board.domain.support.auditing;
+package com.study.board.domain.support.base;
 
 import lombok.Getter;
 

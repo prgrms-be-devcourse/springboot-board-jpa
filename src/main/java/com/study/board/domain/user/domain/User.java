@@ -1,6 +1,6 @@
 package com.study.board.domain.user.domain;
 
-import com.study.board.domain.support.auditing.BaseEntity;
+import com.study.board.domain.support.base.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
