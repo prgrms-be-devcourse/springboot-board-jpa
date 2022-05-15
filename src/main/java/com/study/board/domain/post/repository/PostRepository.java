@@ -1,5 +1,6 @@
-package com.study.board.domain.post.domain;
+package com.study.board.domain.post.repository;
 
+import com.study.board.domain.post.domain.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

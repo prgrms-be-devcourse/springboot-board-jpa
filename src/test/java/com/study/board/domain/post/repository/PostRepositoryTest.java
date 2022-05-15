@@ -1,7 +1,9 @@
-package com.study.board.domain.post.domain;
+package com.study.board.domain.post.repository;
 
+import com.study.board.domain.post.domain.Post;
+import com.study.board.domain.post.repository.PostRepository;
 import com.study.board.domain.user.domain.User;
-import com.study.board.domain.user.domain.UserRepository;
+import com.study.board.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
