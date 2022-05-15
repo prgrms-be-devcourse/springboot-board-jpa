@@ -28,21 +28,34 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Post findById(Long postId){
-        return postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
+        return findPostById(postId);
     }
 
     public Post write(String title, String content, Long writerId){
-        User user = userRepository.findById(writerId).orElseThrow(() -> new UserNotFoundException(writerId));
+        User user = findUserById(writerId);
 
         return postRepository.save(Post.create(title, content, user));
     }
 
     public Post edit(Long postId, String title, String content, Long editorId){
-        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
+        User editor = findUserById(editorId);
+        Post post = findPostById(postId);
 
-        if(post.hasOfWriterId(editorId)){
-            return post.update(title, content);
-        }else{
+        checkEditable(postId, editor, post);
+
+        return post.update(title, content);
+    }
+
+    private User findUserById(Long writerId) {
+        return userRepository.findById(writerId).orElseThrow(() -> new UserNotFoundException(writerId));
+    }
+
+    private Post findPostById(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
+    }
+
+    private void checkEditable(Long postId, User editor, Post post) {
+        if(!post.hasOfWriter(editor)) {
             throw new PostEditAccessDeniedException(postId);
         }
     }

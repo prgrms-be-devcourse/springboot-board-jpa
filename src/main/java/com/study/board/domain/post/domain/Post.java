@@ -52,13 +52,13 @@ public class Post extends BaseEntity {
         return new Post(title, content, writer);
     }
 
-    public boolean hasOfWriterId(Long writerId) {
-        return writerId.equals(writer.getId());
-    }
-
     public Post update(String title, String content) {
         this.title = title;
         this.content = content;
         return this;
+    }
+
+    public boolean hasOfWriter(User writer) {
+        return writer.getId().equals(this.writer.getId());
     }
 }
