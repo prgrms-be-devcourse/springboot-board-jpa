@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.study.board.domain.post.domain.PostTest.assertPost;
+import static com.study.board.domain.post.domain.PostTest.assertWriter;
 import static com.study.board.fixture.Fixture.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -51,26 +53,22 @@ class PostServiceTest {
         List<Post> posts = postService.findAll();
 
         assertThat(posts).hasSize(2);
-        assertThat(posts).extracting(Post::getId).containsExactly(writtenPostId1, writtenPostId2);
-        assertThat(posts).extracting(Post::getTitle).containsExactly("제목1", "제목2");
-        assertThat(posts).extracting(Post::getContent).containsExactly("내용1", "내용2");
-        assertThat(posts).extracting(Post::getWrittenDateTime).doesNotContainNull();
+        Post post1 = posts.get(0);
+        Post post2 = posts.get(1);
 
-        Long writerId1 = posts.get(0).getWriter().getId();
-        Long writerId2 = posts.get(0).getWriter().getId();
-        assertThat(writerId1).isNotNull();
-        assertThat(writerId1).isEqualTo(writerId2);
-        assertThat(posts).extracting(Post::getWriter).extracting(User::getName).containsExactly("득윤", "득윤");
-        assertThat(posts).extracting(Post::getWriter).extracting(User::getHobby).containsExactly("체스", "체스");
+        assertPost(post1, "제목1", "내용1");
+        assertWriter(post1.getWriter(), writer.getId());
+
+        assertPost(post2, "제목2", "내용2");
+        assertWriter(post2.getWriter(), writer.getId());
     }
 
     @Test
     void 아이디로_게시글_조회_성공() {
-        Long postId = postRepository.save(Post.create("제목", "내용", writer)).getId();
-        Post post = postService.findById(postId);
+        Post post = postService.findById(writtenPostId2);
 
-        assertPost(post, "제목", "내용");
-        assertWriter(post.getWriter());
+        assertPost(post, "제목2", "내용2");
+        assertWriter(post.getWriter(), writer.getId());
     }
 
 
@@ -87,11 +85,11 @@ class PostServiceTest {
         Post writtenPost = postService.write("제목", "내용", writer.getId());
 
         assertPost(writtenPost, "제목", "내용");
-        assertWriter(writtenPost.getWriter());
+        assertWriter(writtenPost.getWriter(), writer.getId());
 
         Post foundPost = postRepository.findById(writtenPost.getId()).get();
         assertPost(foundPost, "제목", "내용");
-        assertWriter(foundPost.getWriter());
+        assertWriter(foundPost.getWriter(), writer.getId());
     }
 
     @Test
@@ -108,11 +106,11 @@ class PostServiceTest {
 
         assertThat(editedPost.getId()).isEqualTo(writtenPostId1);
         assertPost(editedPost, "수정제목", "수정내용");
-        assertWriter(editedPost.getWriter());
+        assertWriter(editedPost.getWriter(), writer.getId());
 
         Post foundPostAfterEdit = postRepository.findById(writtenPostId1).get();
         assertPost(foundPostAfterEdit, "수정제목", "수정내용");
-        assertWriter(foundPostAfterEdit.getWriter());
+        assertWriter(foundPostAfterEdit.getWriter(), writer.getId());
     }
 
     @Test
@@ -137,18 +135,5 @@ class PostServiceTest {
 
         assertThatThrownBy(() -> postService.edit(writtenPostId1, "수정제목", "수정내용", anotherUserId))
                 .isInstanceOf(PostEditAccessDeniedException.class);
-    }
-
-    void assertPost(Post post, String title, String content) {
-        assertThat(post.getId()).isNotNull();
-        assertThat(post.getTitle()).isEqualTo(title);
-        assertThat(post.getContent()).isEqualTo(content);
-        assertThat(post.getWrittenDateTime()).isNotNull();
-    }
-
-    void assertWriter(User writer) {
-        assertThat(writer.getId()).isEqualTo(this.writer.getId());
-        assertThat(writer.getName()).isEqualTo("득윤");
-        assertThat(writer.getHobby()).isEqualTo("체스");
     }
 }
