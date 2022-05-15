@@ -13,3 +13,6 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 1.  여러분 repo는 알아서 해주시고 😀(본인 레포니 main으로 하셔두 되져)
 2.  prgrms-be-devcourse/spring-board 레포로 PR시 branch는 본인 username을 적어주세요 :)  
 base repo : `여기repo` base : `username` ← head repo : `여러분repo` compare : `main`
+
+## 미션에서 학습한 부분
+1. FetchType.LAZY를 사용한 이유는 1:N 관계에서 1 부분을 조회할 때 EAGAR 형식이면 N관게까지 같이 조회를 해버린다. 이 때 FetchType.LAZY를 통해Proxy 객체를 만들어 조회가 되지 않도록 한다.이는 1번만 조회하면 될 것을 조회할때마다 N부분을 추가로 조회하여 N+1 문제가 발생하는 것을 방지할 때 주로 사용한다.
