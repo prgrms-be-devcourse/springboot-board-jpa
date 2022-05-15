@@ -19,7 +19,7 @@ public class PostApiController {
         this.postService = postService;
     }
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void addPost(@RequestBody @Valid PostAddRequest postAddRequest) {
 
