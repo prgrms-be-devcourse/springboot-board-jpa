@@ -54,9 +54,4 @@ public class DefaultPostService implements PostService {
     public void deleteById(Long id) {
         postRepository.deleteById(id);
     }
-
-    @Override
-    public void deleteAll() {
-        postRepository.deleteAllInBatch();
-    }
 }

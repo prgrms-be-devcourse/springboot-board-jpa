@@ -43,11 +43,4 @@ public class UserRestControllerV1 {
 
         return DefaultApiResponse.ok(true);
     }
-
-    @DeleteMapping
-    public DefaultApiResponse<Boolean> deleteAllUsers() {
-        userService.deleteAll();
-
-        return DefaultApiResponse.ok(true);
-    }
 }

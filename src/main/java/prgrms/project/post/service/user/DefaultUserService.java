@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import prgrms.project.post.repository.HobbyRepository;
-import prgrms.project.post.repository.PostRepository;
 import prgrms.project.post.repository.UserRepository;
 import prgrms.project.post.util.mapper.HobbyMapper;
 import prgrms.project.post.util.mapper.UserMapper;
@@ -23,8 +21,6 @@ import static java.util.stream.Collectors.toSet;
 public class DefaultUserService implements UserService {
 
     private final UserRepository userRepository;
-    private final HobbyRepository hobbyRepository;
-    private final PostRepository postRepository;
     private final UserMapper userMapper;
     private final HobbyMapper hobbyMapper;
 
@@ -60,12 +56,5 @@ public class DefaultUserService implements UserService {
     @Override
     public void deleteById(Long id) {
         userRepository.deleteById(id);
-    }
-
-    @Override
-    public void deleteAll() {
-        postRepository.deleteAllInBatch();
-        hobbyRepository.deleteAllInBatch();
-        userRepository.deleteAllInBatch();
     }
 }

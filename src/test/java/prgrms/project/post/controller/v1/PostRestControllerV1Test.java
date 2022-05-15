@@ -1,7 +1,6 @@
 package prgrms.project.post.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.MultiValueMap;
 import prgrms.project.post.domain.post.Post;
 import prgrms.project.post.domain.user.Hobby;
 import prgrms.project.post.domain.user.User;
@@ -22,7 +20,6 @@ import prgrms.project.post.service.post.PostDto;
 import prgrms.project.post.service.post.PostService;
 import prgrms.project.post.util.mapper.UserMapper;
 
-import java.util.Map;
 import java.util.Set;
 
 import static java.sql.JDBCType.ARRAY;
