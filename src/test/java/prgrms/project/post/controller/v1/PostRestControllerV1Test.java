@@ -73,13 +73,6 @@ class PostRestControllerV1Test {
         postId = savedPost.getId();
     }
 
-    @AfterEach
-    void cleanup() {
-        postRepository.deleteAll();
-        userRepository.deleteAll();
-    }
-
-
     @Test
     @DisplayName("Post 를 등록한다.")
     void testSavePost() throws Exception {
