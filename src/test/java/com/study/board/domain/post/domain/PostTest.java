@@ -34,7 +34,7 @@ class PostTest {
     }
 
     @Test
-    void 제목의_길이가_255_보다_크면_생성실패() {
+    void 제목의_길이가_제한_보다_크면_생성실패() {
         String title = RandomString.make(POST_TITLE_MAX_LENGTH + 1);
 
         assertThatIllegalArgumentException()

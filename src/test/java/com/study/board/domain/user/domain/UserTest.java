@@ -29,7 +29,7 @@ class UserTest {
     }
 
     @Test
-    void 이름의_길이가_50_보다_크면_생성실패() {
+    void 이름의_길이가_제한_보다_크면_생성실패() {
         String name = RandomString.make(USER_NAME_MAX_LENGTH + 1);
 
         assertThatIllegalArgumentException()
@@ -37,7 +37,7 @@ class UserTest {
     }
 
     @Test
-    void 취미의_길이가_50_보다_크면_생성실패() {
+    void 취미의_길이가_제한_보다_크면_생성실패() {
         String hobby = RandomString.make(USER_HOBBY_MAX_LENGTH + 1);
 
         assertThatIllegalArgumentException()
