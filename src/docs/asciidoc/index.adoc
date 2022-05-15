@@ -1,0 +1,65 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 회원
+
+=== 회원 생성
+==== [POST] /api/v1/users
+
+.Request
+include::{snippets}/user-create/http-request.adoc[]
+include::{snippets}/user-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-create/http-response.adoc[]
+include::{snippets}/user-create/response-fields.adoc[]
+
+
+== 게시글
+
+=== 게시글 페이징 조회
+==== [GET] /api/v1/posts?page={page}&perPage={perPage}
+
+.Request
+include::{snippets}/post-paging-get/http-request.adoc[]
+include::{snippets}/post-paging-get/request-parameters.adoc[]
+
+.Response
+include::{snippets}/post-paging-get/http-response.adoc[]
+include::{snippets}/post-paging-get/response-fields.adoc[]
+
+=== 게시글 단건 조회
+==== [GET] /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-get/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get/http-response.adoc[]
+include::{snippets}/post-get/response-fields.adoc[]
+
+
+=== 게시글 작성
+==== [POST] /api/v1/posts
+
+.Request
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+=== 게시글 수정
+==== [PUT] /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
