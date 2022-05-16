@@ -60,4 +60,13 @@ public class PostService {
 	private Supplier<ServiceException.NotFoundResource> supplyNotFoundException(Long postId) {
 		return () -> new ServiceException.NotFoundResource(postId + "를 가진 게시글을 찾을 수 없습니다.");
 	}
+
+	@Transactional
+	public void softDeleteOne(Long postId) {
+		Post target = postRepository.findById(postId)
+				.orElseThrow(
+						supplyNotFoundException(postId)
+				);
+		target.softDelete();
+	}
 }

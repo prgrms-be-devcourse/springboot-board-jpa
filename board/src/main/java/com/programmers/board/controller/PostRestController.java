@@ -39,8 +39,8 @@ public class PostRestController {
 	}
 
 	@DeleteMapping("/{post_id}")
-	public ResponseEntity<String> removeOne(@PathVariable("post_id")Long postId){
-		postService.deleteOne(postId);
+	public ResponseEntity<String> softDeleteOne(@PathVariable("post_id")Long postId){
+		postService.softDeleteOne(postId);
 		return ResponseEntity.ok("삭제가 완료되었습니다.");
 	}
 
