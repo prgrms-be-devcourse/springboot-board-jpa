@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.prgms.board.domain.user.domain.User;
 import org.prgms.board.domain.user.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,51 +26,44 @@ class UserServiceImplTest {
 		String name = "seunghan";
 		int age = 25;
 
-		final UserDto.Save saveDto = new UserDto.Save(name, age);
-
 		//when
-		final UserDto.Response response = userService.saveUser(saveDto);
+		final User savedUser = userService.saveUser(name, age);
 
 		//then
-		assertThat(response.getName()).isEqualTo(name);
-		assertThat(response.getAge()).isEqualTo(age);
+		assertThat(savedUser.getName()).isEqualTo(name);
+		assertThat(savedUser.getAge()).isEqualTo(age);
 	}
 
 	@DisplayName("사용자 update test")
 	@Test
 	void update_user_test() {
 		// given
-		final UserDto.Save saveDto = new UserDto.Save("seunghan", 25);
-
-		final UserDto.Response savedUserResponse = userService.saveUser(saveDto);
+		final User savedUser = userService.saveUser("seunghan", 25);
 
 		//when
 		String updateName = "afterUpdateName";
 		int updateAge = 100;
 
-		final UserDto.Update updateDto = new UserDto.Update(updateName, updateAge, savedUserResponse.getId());
-		userService.updateUser(updateDto);
+		userService.updateUser(updateName, updateAge, savedUser.getId());
 
 		//then
-		final UserDto.Response response = userService.getUser(savedUserResponse.getId());
+		final User findUser = userService.findUser(savedUser.getId());
 
-		assertThat(response.getName()).isEqualTo(updateName);
-		assertThat(response.getAge()).isEqualTo(updateAge);
+		assertThat(findUser.getName()).isEqualTo(updateName);
+		assertThat(findUser.getAge()).isEqualTo(updateAge);
 	}
 
 	@DisplayName("사용자 delete test")
 	@Test
 	void delete_user_test() {
 		// given
-		final UserDto.Save saveDto = new UserDto.Save("seunghan", 25);
-
-		final UserDto.Response savedUserResponse = userService.saveUser(saveDto);
+		final User savedUser = userService.saveUser("seunghan", 25);
 
 		//when
-		userService.deleteUser(savedUserResponse.getId());
+		userService.deleteUser(savedUser.getId());
 
 		//then
-		assertThrows(IllegalStateException.class, () -> userService.getUser(savedUserResponse.getId()));
+		assertThrows(IllegalStateException.class, () -> userService.findUser(savedUser.getId()));
 
 	}
 

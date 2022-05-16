@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.prgms.board.domain.post.domain.Post;
 import org.prgms.board.domain.post.dto.PostDto;
 import org.prgms.board.domain.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,43 +50,39 @@ class PostServiceImplTest {
 		String title = "title";
 		String content = "this is content.";
 
-		final PostDto.Write writeDto = new PostDto.Write(title, content, user.getId());
-
 		//when
-		final PostDto.Response savedPost = postService.writePost(writeDto);
+		final Post savedPost = postService.writePost(title, content, user.getId());
 
 		//then
-		final PostDto.Response response = postService.getOnePost(savedPost.getId());
+		final Post post = postService.findPost(savedPost.getId());
 
-		assertThat(response.getTitle()).isEqualTo(title);
-		assertThat(response.getContent()).isEqualTo(content);
-		assertThat(response.getWriter().getName()).isEqualTo(user.getName());
-		assertThat(response.getWriter().getAge()).isEqualTo(user.getAge());
+		assertThat(post.getTitle()).isEqualTo(title);
+		assertThat(post.getContent()).isEqualTo(content);
+		assertThat(post.getWriter().getName()).isEqualTo(user.getName());
+		assertThat(post.getWriter().getAge()).isEqualTo(user.getAge());
 	}
 
 	@DisplayName("게시글 수정 테스트")
 	@Test
 	void update_write_test() {
 		// given
-		final PostDto.Write writeDto = new PostDto.Write("title", "this is content.", user.getId());
-
-		final PostDto.Response savedPost = postService.writePost(writeDto);
+		final Post savedPost = postService.writePost("title", "this is content.", user.getId());
 
 		//when
 		String updateTitle = "updated Title";
 		String updateContent = "updated Content";
 
-		final PostDto.Update updateDto = new PostDto.Update(updateTitle, updateContent, savedPost.getId());
-
-		postService.updatePost(updateDto);
+		postService.updatePost(updateTitle, updateContent, savedPost.getId());
+		em.flush();
+		em.clear(); // 영속성 컨텍스트 초기화
 
 		//then
-		final PostDto.Response response = postService.getOnePost(savedPost.getId());
+		final Post findPost = postService.findPost(savedPost.getId());
 
-		assertThat(response.getTitle()).isEqualTo(updateTitle);
-		assertThat(response.getContent()).isEqualTo(updateContent);
-		assertThat(response.getWriter().getName()).isEqualTo(user.getName());
-		assertThat(response.getWriter().getAge()).isEqualTo(user.getAge());
+		assertThat(findPost.getTitle()).isEqualTo(updateTitle);
+		assertThat(findPost.getContent()).isEqualTo(updateContent);
+		assertThat(findPost.getWriter().getName()).isEqualTo(user.getName());
+		assertThat(findPost.getWriter().getAge()).isEqualTo(user.getAge());
 	}
 
 	@DisplayName("게시글 페이징 기능 테스트")
@@ -100,7 +97,7 @@ class PostServiceImplTest {
 		final PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "id"));
 
 		// when
-		final Page<PostDto.Response> response = postService.getPostPage(pageRequest);
+		final Page<Post> response = postService.getPostPage(pageRequest);
 
 		// then
 		final List<String> titles = IntStream.rangeClosed(1, size)
@@ -115,9 +112,10 @@ class PostServiceImplTest {
 	/** Paging 테스트를 위한 post 세팅 **/
 	private void initPosts() {
 		for (int i = 1; i <= 100; ++i) {
-			final PostDto.Write writeDto = new PostDto.Write("title" + i, "content" + i, user.getId());
+			String title = "title" + i;
+			String content = "content" + i;
 
-			postService.writePost(writeDto);
+			postService.writePost(title, content, user.getId());
 		}
 	}
 }
