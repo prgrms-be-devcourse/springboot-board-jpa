@@ -1,16 +1,16 @@
 package com.study.board.domain.post.repository;
 
 import com.study.board.domain.post.domain.Post;
-import com.study.board.domain.post.repository.PostRepository;
 import com.study.board.domain.user.domain.User;
 import com.study.board.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 
 import static com.study.board.domain.post.domain.PostTest.assertPost;
 import static com.study.board.domain.post.domain.PostTest.assertWriter;
@@ -38,20 +38,23 @@ class PostRepositoryTest {
 
         postRepository.save(Post.create("제목1", "내용1", writer));
         postRepository.save(Post.create("제목2", "내용2", writer));
+
+        em.flush();
+        em.clear();
     }
 
     @Test
     void 전체_조회_성공() {
-        List<Post> posts = postRepository.findAll();
+        Page<Post> posts = postRepository.findAll(Pageable.ofSize(2));
 
-        assertThat(posts).hasSize(2);
-        Post post1 = posts.get(0);
-        Post post2 = posts.get(1);
+        assertThat(posts.getTotalElements()).isEqualTo(2);
+        Post post1 = posts.getContent().get(0);
+        Post post2 = posts.getContent().get(1);
 
         assertPost(post1, "제목1", "내용1");
-        assertPost(post2, "제목2", "내용2");
-
         assertWriter(post1.getWriter(), writer.getId());
+
+        assertPost(post2, "제목2", "내용2");
         assertWriter(post2.getWriter(), writer.getId());
     }
 

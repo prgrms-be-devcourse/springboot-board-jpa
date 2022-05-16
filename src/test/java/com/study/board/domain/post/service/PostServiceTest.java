@@ -11,9 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import javax.persistence.EntityManager;
 
 import static com.study.board.domain.post.domain.PostTest.assertPost;
 import static com.study.board.domain.post.domain.PostTest.assertWriter;
@@ -35,6 +37,9 @@ class PostServiceTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    EntityManager em;
+
     User writer;
     Long writtenPostId1;
     Long writtenPostId2;
@@ -46,15 +51,18 @@ class PostServiceTest {
 
         writtenPostId1 = postRepository.save(Post.create("제목1", "내용1", writer)).getId();
         writtenPostId2 = postRepository.save(Post.create("제목2", "내용2", writer)).getId();
+
+        em.flush();
+        em.clear();
     }
 
     @Test
-    void 전체_게시글_조회_성공() {
-        List<Post> posts = postService.findAll();
+    void 전체_게시글_페이징_조회_성공() {
+        Page<Post> posts = postService.findAll(Pageable.ofSize(2));
 
-        assertThat(posts).hasSize(2);
-        Post post1 = posts.get(0);
-        Post post2 = posts.get(1);
+        assertThat(posts.getTotalElements()).isEqualTo(2);
+        Post post1 = posts.getContent().get(0);
+        Post post2 = posts.getContent().get(1);
 
         assertPost(post1, "제목1", "내용1");
         assertWriter(post1.getWriter(), writer.getId());
