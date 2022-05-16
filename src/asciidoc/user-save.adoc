@@ -7,7 +7,7 @@ endif::[]
 
 === 주문 생성
 
-=== /orders/{uuid}
+=== post /user
 
 .Request
 include::{snippets}/user-save/http-request.adoc[]

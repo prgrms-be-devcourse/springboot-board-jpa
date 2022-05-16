@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,8 +46,8 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("")
-    public void Test() throws Exception {
+    @DisplayName("유저 생성 저장")
+    public void createUserTest() throws Exception {
 
         //given
         UserDto userDto = UserDto.builder()
@@ -75,8 +76,66 @@ class UserControllerTest {
                                 fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
                         )
                 ));
+    }
 
-        //then
+    @Test
+    @DisplayName("유저 목록 조회")
+    public void searchUserTest() throws Exception {
+
+        //given
+        for (int i = 0; i < 20; i++) {
+            UserDto userDto = UserDto.builder()
+                    .name("name" + i)
+                    .age(10)
+                    .hobby("hobby")
+                    .build();
+            userService.saveUser(userDto);
+        }
+
+        //when
+        mockMvc.perform(get("/user")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("user-find-all",
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("data"),
+                                fieldWithPath("data.content[]").type(JsonFieldType.ARRAY).description("data.content[]"),
+                                fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("data.content[].id"),
+                                fieldWithPath("data.content[].name").type(JsonFieldType.STRING).description("data.content[].name"),
+                                fieldWithPath("data.content[].age").type(JsonFieldType.NUMBER).description("data.content[].age"),
+                                fieldWithPath("data.content[].hobby").type(JsonFieldType.STRING).description("data.content[].hobby"),
+
+                                fieldWithPath("data.sort").type(JsonFieldType.OBJECT).description("data.sort"),
+                                fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("data.sort.empty"),
+                                fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("data.sort.unsorted"),
+                                fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("data.sort.sorted"),
+
+                                fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("data.numberOfElements"),
+                                fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("data.empty"),
+
+                                fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("data.last"),
+                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("data.totalPages"),
+                                fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("data.totalElements"),
+                                fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("data.first"),
+                                fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("data.size"),
+                                fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("data.number"),
+
+                                fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("data.pageable"),
+                                fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("data.pageable.offset"),
+                                fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER).description("data.pageable.pageNumber"),
+                                fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER).description("data.pageable.pageSize"),
+                                fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("data.pageable.paged"),
+                                fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("data.pageable.unpaged"),
+
+                                fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("data.pageable.sort"),
+                                fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("data.pageable.sort.empty"),
+                                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("data.pageable.sort.sorted"),
+                                fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("data.pageable.sort.unsorted"),
+                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("serverDateTime")
+                        )
+                ));
     }
 
 

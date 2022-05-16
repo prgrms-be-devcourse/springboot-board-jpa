@@ -1,0 +1,18 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 주문
+
+=== 주문 생성
+
+=== get /user
+
+.Request
+include::{snippets}/user-find-all/http-request.adoc[]
+include::{snippets}/user-find-all/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-find-all/http-response.adoc[]
+include::{snippets}/user-find-all/response-fields.adoc[]
