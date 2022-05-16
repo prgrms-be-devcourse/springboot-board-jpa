@@ -1,11 +1,8 @@
 package com.kdt.boardMission.domain;
 
 import com.kdt.boardMission.domain.superClass.Created;
-import com.sun.istack.NotNull;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
