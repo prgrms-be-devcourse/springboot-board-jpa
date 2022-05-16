@@ -36,20 +36,14 @@ public class PostService {
         return save.getId();
     }
 
-    public void updateTitle(PostDto postDto) throws NotFoundException {
+    public void updatePost(PostDto postDto) throws NotFoundException {
         Optional<Post> postById = postRepository.findById(postDto.getId());
         if (postById.isEmpty()) {
             throw new NotFoundException("존재하지 않는 게시물입니다.");
         }
         postById.get().updateTitle(postDto.getTitle());
-    }
-
-    public void updateContent(PostDto postDto) throws NotFoundException {
-        Optional<Post> postById = postRepository.findById(postDto.getId());
-        if (postById.isEmpty()) {
-            throw new NotFoundException("존재하지 않는 게시물입니다.");
-        }
         postById.get().updateContent(postDto.getContent());
+
     }
 
     public void deletePost(PostDto postDto) throws NotFoundException {

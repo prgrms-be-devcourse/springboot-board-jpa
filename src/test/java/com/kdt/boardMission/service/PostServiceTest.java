@@ -82,7 +82,7 @@ class PostServiceTest {
 
         //when
         postDtoById.setTitle("new title");
-        postService.updateTitle(postDtoById);
+        postService.updatePost(postDtoById);
 
         //then
         assertThat(postService.findById(postId).getTitle()).isEqualTo("new title");
@@ -90,7 +90,7 @@ class PostServiceTest {
 
 
     @Test
-    @DisplayName("타이틀 업데이트")
+    @DisplayName("컨텐츠 업데이트")
     public void updateContentTest() throws Exception {
 
         //given
@@ -103,7 +103,7 @@ class PostServiceTest {
 
         //when
         postDtoById.setContent("new content");
-        postService.updateContent(postDtoById);
+        postService.updatePost(postDtoById);
 
         //then
         assertThat(postService.findById(postId).getContent()).isEqualTo("new content");
