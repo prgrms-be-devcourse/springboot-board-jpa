@@ -42,4 +42,8 @@ public class User extends Created {
     public void updateHobby(String newHobby) {
         this.hobby = newHobby;
     }
+
+    public void updateAge(int newAge) {
+        this.age = newAge;
+    }
 }

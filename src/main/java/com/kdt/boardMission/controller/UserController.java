@@ -51,7 +51,7 @@ public class UserController {
 
     @PutMapping("/user/edit")
     public ApiResponse<UserDto> editHobby(@RequestBody UserDto userDto) throws NotFoundException {
-        userService.updateUserHobby(userDto);
+        userService.updateUser(userDto);
         return ApiResponse.ok(userDto);
     }
 }

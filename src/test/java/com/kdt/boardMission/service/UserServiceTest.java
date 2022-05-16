@@ -148,7 +148,7 @@ class UserServiceTest {
         userDto.setHobby("new hobby");
 
         //when
-        userService.updateUserHobby(userDto);
+        userService.updateUser(userDto);
 
         //then
         assertThat(userService.findUserById(USER_DEFAULT_ID).getHobby()).isEqualTo("new hobby");
