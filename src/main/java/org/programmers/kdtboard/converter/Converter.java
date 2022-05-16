@@ -9,17 +9,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class Converter {
 
-	public static PostResponse postConverter(Post post) {
+	public PostResponse postConverter(Post post) {
 		return new PostResponse(post.getId(), post.getTitle(), post.getContent(),
 			post.getCreatedAt(), post.getCreatedBy(), post.getUser().getId());
 	}
 
-	public static UserResponseDto userConverter(User user) {
+	public UserResponseDto userConverter(User user) {
 		return new UserResponseDto(user.getId(), user.getName(), user.getAge(), user.getHobby(), user.getCreatedAt(),
 			user.getCreatedBy());
 	}
 
-	public static User userDtoConverter(UserResponseDto userResponseDto) {
+	public User userDtoConverter(UserResponseDto userResponseDto) {
 		return User.create(userResponseDto.id(), userResponseDto.name(), userResponseDto.age(), userResponseDto.hobby(),
 			userResponseDto.createdAt(), userResponseDto.createdBy());
 	}

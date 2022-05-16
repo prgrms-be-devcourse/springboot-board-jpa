@@ -16,24 +16,4 @@ public class ErrorResponse {
 		this.code = errorCodeMessage.name();
 		this.message = errorCodeMessage.getMessage();
 	}
-
-	public LocalDateTime getTimestamp() {
-		return timestamp;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public String getError() {
-		return error;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public String getMessage() {
-		return message;
-	}
 }

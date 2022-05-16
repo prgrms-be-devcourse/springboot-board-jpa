@@ -5,11 +5,10 @@ import org.springframework.http.HttpStatus;
 public class ApiResponse<T> {
 
 	private final T data;
-	private final HttpStatus httpStatus;
+	private final HttpStatus httpStatus = HttpStatus.OK;
 
 	private ApiResponse(T data) {
 		this.data = data;
-		this.httpStatus = HttpStatus.OK;
 	}
 
 	public static <T> ApiResponse<T> ok(T data) {
