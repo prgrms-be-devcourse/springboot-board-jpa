@@ -28,6 +28,14 @@ public class UserService {
         return save.getId();
     }
 
+    public void updateUserHobby(UserDto userDto) throws NotFoundException {
+        Optional<User> byId = userRepository.findById(userDto.getId());
+        if (byId.isEmpty()) {
+            throw new NotFoundException("해당 아이디를 가진 유저가 없습니다.");
+        }
+        byId.get().updateHobby(userDto.getHobby());
+    }
+
     public void deleteUser(UserDto userDto) {
         userRepository.deleteById(userDto.getId());
     }

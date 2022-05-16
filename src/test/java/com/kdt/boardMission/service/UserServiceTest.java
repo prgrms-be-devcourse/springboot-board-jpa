@@ -40,8 +40,11 @@ class UserServiceTest {
         userDto.setName(DEFAULT_USER_NAME);
         userDto.setAge(DEFAULT_USER_AGE);
         userDto.setHobby(DEFAULT_USER_HOBBY);
-        userService.saveUser(userDto);
+        USER_DEFAULT_ID = userService.saveUser(userDto);
+
     }
+
+    long USER_DEFAULT_ID;
 
     @Test
     @DisplayName("user 저장 및 조회")
@@ -130,6 +133,24 @@ class UserServiceTest {
         assertThat(all.getTotalPages()).isEqualTo(3);
         assertThat(all.isFirst()).isTrue();
         assertThat(all.hasNext()).isTrue();
+    }
+
+    @Test
+    @DisplayName("Hobby 업데이트")
+    public void updateHobbyTest() throws Exception {
+
+        //given
+        UserDto userDto = new UserDto();
+        userDto.setId(USER_DEFAULT_ID);
+        userDto.setName(DEFAULT_USER_NAME);
+        userDto.setAge(DEFAULT_USER_AGE);
+        userDto.setHobby("new hobby");
+
+        //when
+        userService.updateUserHobby(userDto);
+
+        //then
+        assertThat(userService.findUserById(USER_DEFAULT_ID).getHobby()).isEqualTo("new hobby");
     }
 
 }
