@@ -11,7 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Where(clause = "deleteYn=0")
+@Where(clause = "delete_yn=0")
 @DynamicUpdate
 @AttributeOverride(name = "id", column = @Column(name = "customer_id"))
 @Entity

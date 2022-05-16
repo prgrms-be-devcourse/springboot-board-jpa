@@ -14,9 +14,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-@ToString
 @Getter
-@Where(clause = "deleteYn=0")
+@Where(clause = "delete_yn=0")
 @DynamicUpdate
 @AttributeOverride(name = "id", column = @Column(name = "post_id"))
 @Entity
@@ -33,7 +32,7 @@ public class Post extends BaseEntity {
 	@ToString.Exclude
 	private Customer customer;
 
-	@Column(nullable = false)
+	@Column(nullable = false,name = "delete_yn")
 	private boolean deleteYn = false;
 
 	@Builder
@@ -45,4 +44,6 @@ public class Post extends BaseEntity {
 
 	protected Post() {
 	}
+
+
 }
