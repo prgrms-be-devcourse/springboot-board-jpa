@@ -15,6 +15,14 @@ public class PostConverter {
 				.build();
 	}
 
+	public Post toDomain(PostDto.Update updateDto) {
+		return Post.builder()
+				.title(updateDto.title())
+				.content(updateDto.content())
+				.build();
+	}
+
+
 	public PostDto.Response toResponse(Post post) {
 		return PostDto.Response.builder()
 				.title(post.getTitle())

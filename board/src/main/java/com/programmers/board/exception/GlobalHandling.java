@@ -22,4 +22,11 @@ public class GlobalHandling {
 		return CLIENT_MESSAGE;
 	}
 
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(DomainException.ConstraintException.class)
+	public String handleConstraintException(DomainException.ConstraintException e) {
+		log.warn("도메인을 생성할 제약 조건을 위반하였습니다. {} ", e.getMessage());
+		return CLIENT_MESSAGE;
+	}
+
 }

@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
 
+import com.programmers.board.exception.DomainException;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -32,7 +34,7 @@ public class Post extends BaseEntity {
 	@ToString.Exclude
 	private Customer customer;
 
-	@Column(nullable = false,name = "delete_yn")
+	@Column(nullable = false, name = "delete_yn")
 	private boolean deleteYn = false;
 
 	@Builder
@@ -45,5 +47,20 @@ public class Post extends BaseEntity {
 	protected Post() {
 	}
 
+	public Post update(Post updateDtoToPost) {
+		if (updateDtoToPost.getTitle().isBlank() || updateDtoToPost.getContent().isBlank()) {
+			throw new DomainException.ConstraintException("title 과 content 는 최소 1자 이상 존재해야만 합니다..");
+		}
 
+		this.title = updateDtoToPost.getTitle();
+		this.content = updateDtoToPost.getContent();
+
+		return this;
+	}
+
+	public Post softDelete() {
+		this.deleteYn = true;
+
+		return this;
+	}
 }

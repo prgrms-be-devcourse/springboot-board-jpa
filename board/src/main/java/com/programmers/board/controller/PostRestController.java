@@ -27,6 +27,12 @@ public class PostRestController {
 		return postService.save(postDto);
 	}
 
+	@PostMapping("/{post_id}")
+	public PostDto.Response update(@Valid PostDto.Update updateDto) {
+		return postService.update(updateDto);
+	}
+
+
 	@GetMapping("/{post_id}")
 	public PostDto.Response findOne(@PathVariable("post_id") Long postId) {
 		return postService.findOne(postId);

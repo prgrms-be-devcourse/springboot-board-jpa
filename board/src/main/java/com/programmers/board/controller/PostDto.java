@@ -15,6 +15,15 @@ public class PostDto {
 	}
 
 	@Builder
+	public record Update(
+			Long id,
+			String title,
+			String content
+	) {
+
+	}
+
+	@Builder
 	public record Response(
 			Long id,
 			String title,

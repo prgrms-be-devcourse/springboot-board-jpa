@@ -1,5 +1,7 @@
 package com.programmers.board.Service;
 
+import java.util.function.Supplier;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +33,7 @@ public class PostService {
 	public PostDto.Response findOne(Long postId) {
 		Post foundPost = postRepository.findById(postId)
 				.orElseThrow(
-						() -> new ServiceException.NotFoundResource(postId + "를 가진 게시글을 찾을 수 없습니다.")
+						supplyNotFoundException(postId)
 				);
 		return converter.toResponse(foundPost);
 	}
@@ -39,13 +41,23 @@ public class PostService {
 	public void deleteOne(Long postId) {
 		Post removing = postRepository.findById(postId)
 				.orElseThrow(
-						() -> new ServiceException.NotFoundResource(postId + "를 가진 게시글을 찾을 수 없습니다.")
+						supplyNotFoundException(postId)
 				);
 		postRepository.delete(removing);
 	}
 
-	public PostDto.Response Update(PostDto.Update update) {
+	public PostDto.Response update(PostDto.Update updateDto) {
+		Post target = postRepository.findById(updateDto.id())
+				.orElseThrow(
+						supplyNotFoundException(updateDto.id())
+				);
+		Post updateDtoToPost = converter.toDomain(updateDto);
+		Post update = target.update(updateDtoToPost);
 
-		return null;
+		return converter.toResponse(update);
+	}
+
+	private Supplier<ServiceException.NotFoundResource> supplyNotFoundException(Long postId) {
+		return () -> new ServiceException.NotFoundResource(postId + "를 가진 게시글을 찾을 수 없습니다.");
 	}
 }
