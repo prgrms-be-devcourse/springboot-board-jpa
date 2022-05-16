@@ -1,9 +1,7 @@
 package org.programmers.kdtboard.domain.post;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,14 +19,14 @@ public class Post extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 30)
 	private String title;
 
 	@Lob
 	@Column(nullable = false)
 	private String content;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 
@@ -37,16 +35,15 @@ public class Post extends BaseEntity {
 		this.content = content;
 	}
 
-	protected Post() {
-
-	}
+	protected Post() {}
 
 	public static Post create(String title, String content) {
 		return new Post(title, content);
 	}
 
-	public void changeContent(String content) {
+	public void update(String title, String content) {
 		this.content = content;
+		this.title = title;
 	}
 
 	public void setUser(User user) {

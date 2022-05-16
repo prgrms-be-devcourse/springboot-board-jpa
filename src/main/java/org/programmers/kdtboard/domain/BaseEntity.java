@@ -19,8 +19,7 @@ public class BaseEntity {
 	private LocalDateTime createdAt;
 
 	@CreatedBy
-	@Column(updatable = false)
-	private LocalDateTime createdBy;
+	private String createdBy;
 
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
@@ -30,11 +29,11 @@ public class BaseEntity {
 		this.createdAt = createdAt;
 	}
 
-	public LocalDateTime getCreatedBy() {
+	public String getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(LocalDateTime createdBy) {
+	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
 }

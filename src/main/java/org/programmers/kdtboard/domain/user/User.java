@@ -1,5 +1,7 @@
 package org.programmers.kdtboard.domain.user;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,12 +29,25 @@ public class User extends BaseEntity {
 		this.hobby = hobby;
 	}
 
-	public User() {
+	private User(Long id, String name, int age, String hobby, LocalDateTime createdAt, String createdBy) {
+		this.id = id;
+		this.name = name;
+		this.age = age;
+		this.hobby = hobby;
+		this.setCreatedAt(createdAt);
+		this.setCreatedBy(createdBy);
+	}
+
+	protected User() {
 
 	}
 
 	public static User create(String name, int age, String hobby) {
 		return new User(name, age, hobby);
+	}
+
+	public static User create(Long id, String name, int age, String hobby, LocalDateTime createdAt, String createdBy) {
+		return new User(id, name, age, hobby, createdAt, createdBy);
 	}
 
 	public Long getId() {
@@ -50,5 +65,4 @@ public class User extends BaseEntity {
 	public String getHobby() {
 		return hobby;
 	}
-
 }
