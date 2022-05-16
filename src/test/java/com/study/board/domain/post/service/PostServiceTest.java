@@ -17,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import static com.study.board.domain.post.domain.PostTest.assertPost;
-import static com.study.board.domain.post.domain.PostTest.assertWriter;
+import static com.study.board.domain.post.domain.PostTest.*;
 import static com.study.board.fixture.Fixture.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -60,23 +59,20 @@ class PostServiceTest {
     void 전체_게시글_페이징_조회_성공() {
         Page<Post> posts = postService.findAll(Pageable.ofSize(2));
 
-        assertThat(posts.getTotalElements()).isEqualTo(2);
         Post post1 = posts.getContent().get(0);
         Post post2 = posts.getContent().get(1);
 
-        assertPost(post1, "제목1", "내용1");
-        assertWriter(post1.getWriter(), writer.getId());
+        assertThat(posts.getTotalElements()).isEqualTo(2);
 
-        assertPost(post2, "제목2", "내용2");
-        assertWriter(post2.getWriter(), writer.getId());
+        assertPostWithWriter(post1, "제목1", "내용1", writer.getId());
+        assertPostWithWriter(post2, "제목2", "내용2", writer.getId());
     }
 
     @Test
     void 아이디로_게시글_조회_성공() {
         Post post = postService.findById(writtenPostId2);
 
-        assertPost(post, "제목2", "내용2");
-        assertWriter(post.getWriter(), writer.getId());
+        assertPostWithWriter(post, "제목2", "내용2", writer.getId());
     }
 
 
@@ -90,14 +86,18 @@ class PostServiceTest {
 
     @Test
     void 게시글_작성_성공() {
+        //write 의 리턴 값 검증
         Post writtenPost = postService.write("제목", "내용", writer.getId());
 
-        assertPost(writtenPost, "제목", "내용");
-        assertWriter(writtenPost.getWriter(), writer.getId());
+        assertPostWithWriter(writtenPost, "제목", "내용", writer.getId());
 
+        em.flush();
+        em.clear();
+
+        //write 후 정상적으로 삽입 되었는지 검증
         Post foundPost = postRepository.findById(writtenPost.getId()).get();
-        assertPost(foundPost, "제목", "내용");
-        assertWriter(foundPost.getWriter(), writer.getId());
+
+        assertPostWithWriter(foundPost, "제목", "내용", writer.getId());
     }
 
     @Test
@@ -110,15 +110,19 @@ class PostServiceTest {
 
     @Test
     void 게시글_수정_성공() {
+        //edit 의 리턴 값 검증
         Post editedPost = postService.edit(writtenPostId1, "수정제목", "수정내용", writer.getId());
 
         assertThat(editedPost.getId()).isEqualTo(writtenPostId1);
-        assertPost(editedPost, "수정제목", "수정내용");
-        assertWriter(editedPost.getWriter(), writer.getId());
+        assertPostWithWriter(editedPost, "수정제목", "수정내용", writer.getId());
 
+        em.flush();
+        em.clear();
+
+        //edit 후 정상적으로 업데이트 되었는지 검증
         Post foundPostAfterEdit = postRepository.findById(writtenPostId1).get();
-        assertPost(foundPostAfterEdit, "수정제목", "수정내용");
-        assertWriter(foundPostAfterEdit.getWriter(), writer.getId());
+
+        assertPostWithWriter(foundPostAfterEdit, "수정제목", "수정내용", writer.getId());
     }
 
     @Test

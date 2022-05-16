@@ -68,4 +68,9 @@ public class PostTest {
         assertThat(writer.getName()).isEqualTo("득윤");
         assertThat(writer.getHobby()).isEqualTo("체스");
     }
+
+    public static void assertPostWithWriter(Post post, String title, String content, Long expectedWriterId) {
+        assertPost(post, title, content);
+        assertWriter(post.getWriter(), expectedWriterId);
+    }
 }

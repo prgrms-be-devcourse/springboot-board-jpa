@@ -12,8 +12,7 @@ import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 
-import static com.study.board.domain.post.domain.PostTest.assertPost;
-import static com.study.board.domain.post.domain.PostTest.assertWriter;
+import static com.study.board.domain.post.domain.PostTest.assertPostWithWriter;
 import static com.study.board.fixture.Fixture.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -48,27 +47,20 @@ class PostRepositoryTest {
         Page<Post> posts = postRepository.findAll(Pageable.ofSize(2));
 
         assertThat(posts.getTotalElements()).isEqualTo(2);
-        Post post1 = posts.getContent().get(0);
-        Post post2 = posts.getContent().get(1);
-
-        assertPost(post1, "제목1", "내용1");
-        assertWriter(post1.getWriter(), writer.getId());
-
-        assertPost(post2, "제목2", "내용2");
-        assertWriter(post2.getWriter(), writer.getId());
+        assertPostWithWriter(posts.getContent().get(0), "제목1", "내용1", writer.getId());
+        assertPostWithWriter(posts.getContent().get(1), "제목2", "내용2", writer.getId());
     }
 
     @Test
     void 아이디로_조회_성공() {
         Long postId = postRepository.save(Post.create("제목", "내용", writer)).getId();
-        //clear persistence context to see generated query
+
         em.flush();
         em.clear();
 
         Post post = postRepository.findById(postId).get();
 
-        assertPost(post, "제목", "내용");
-        assertWriter(post.getWriter(), writer.getId());
+        assertPostWithWriter(post, "제목", "내용", writer.getId());
     }
 
     @Test
