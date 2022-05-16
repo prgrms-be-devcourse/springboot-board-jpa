@@ -37,8 +37,9 @@ public class Post extends BaseEntity {
     protected Post() {
     }
 
-    private Post(String createdBy, LocalDateTime createdAt, Title title, Content content, User user) {
+    public Post(String createdBy, LocalDateTime createdAt, Long id, Title title, Content content, User user) {
         super(createdBy, createdAt);
+        this.id = id;
         this.title = title;
         this.content = content;
         this.user = user;
@@ -48,7 +49,7 @@ public class Post extends BaseEntity {
         String createdBy = user.getName().getName();
         Title postTitle = new Title(title);
         Content postContent = new Content(content);
-        return new Post(createdBy, LocalDateTime.now(), postTitle, postContent, user);
+        return new Post(createdBy, LocalDateTime.now(), null, postTitle, postContent, user);
     }
 
     public void changeUser(User user) {
@@ -63,4 +64,7 @@ public class Post extends BaseEntity {
         this.content = new Content(content);
     }
 
+    public boolean isNotSameUser(User user) {
+        return !this.user.equals(user);
+    }
 }
