@@ -1,21 +1,15 @@
 package com.kdt.boardMission.service;
 
-import com.kdt.boardMission.domain.User;
 import com.kdt.boardMission.dto.UserDto;
 import com.kdt.boardMission.repository.UserRepository;
 import javassist.NotFoundException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-
-import java.awt.print.Pageable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,7 +35,6 @@ class UserServiceTest {
         userDto.setAge(DEFAULT_USER_AGE);
         userDto.setHobby(DEFAULT_USER_HOBBY);
         USER_DEFAULT_ID = userService.saveUser(userDto);
-
     }
 
     long USER_DEFAULT_ID;
@@ -95,8 +88,16 @@ class UserServiceTest {
         //given
         PageRequest pageRequest = PageRequest.of(0, 10);
 
+        for (int i = 0; i < 20; i++) {
+            UserDto userDto = new UserDto();
+            userDto.setName("userName" + i);
+            userDto.setAge(20);
+            userDto.setHobby("nonononono");
+            userService.saveUser(userDto);
+        }
+
         //when
-        Page<UserDto> byNamePage = userService.findUserByName("fault", pageRequest);
+        Page<UserDto> byNamePage = userService.findUserByName("au", pageRequest);
 
         //then
         assertThat(byNamePage.getSize()).isEqualTo(10);
@@ -152,5 +153,4 @@ class UserServiceTest {
         //then
         assertThat(userService.findUserById(USER_DEFAULT_ID).getHobby()).isEqualTo("new hobby");
     }
-
 }

@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query(value = "select p from Post p where p.title like %:title%", countQuery = "select count(p) from Post p")
+    @Query(value = "select p from Post p where p.title like %:title%")
     Page<Post> findByTitle(@Param("title") String title, Pageable pageable);
+
 }

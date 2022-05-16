@@ -17,7 +17,6 @@ import java.util.Optional;
 
 import static com.kdt.boardMission.domain.Post.createPost;
 import static com.kdt.boardMission.dto.PostDto.convertPostDto;
-import static com.kdt.boardMission.dto.UserDto.convertUser;
 
 @Service
 @Transactional
@@ -60,6 +59,14 @@ public class PostService {
         }
         postById.get().deletePost();
         postRepository.deleteById(postDto.getId());
+    }
+
+    public PostDto findById(long postId) throws NotFoundException {
+        Optional<Post> byId = postRepository.findById(postId);
+        if (byId.isEmpty()) {
+            throw new NotFoundException("게시물이 없습니다.");
+        }
+        return convertPostDto(byId.get());
     }
 
     public Page<PostDto> findByTitle(String title, Pageable pageable) {
