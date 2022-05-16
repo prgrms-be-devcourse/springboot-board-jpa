@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.prgrms.board.domain.user.domain.User;
 import org.prgrms.board.domain.user.requset.UserCreateRequest;
+import org.prgrms.board.domain.user.response.UserSearchResponse;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -15,4 +16,11 @@ public interface UserMapper {
       @Mapping(source = "email", target = "email.value")
     })
     User toEntity(UserCreateRequest request);
+
+    @Mappings({
+            @Mapping(source = "name.firstName", target = "firstName"),
+            @Mapping(source = "name.lastName", target = "lastName"),
+            @Mapping(source = "email.value", target = "email"),
+    })
+    UserSearchResponse toSearchResponse(User user);
 }

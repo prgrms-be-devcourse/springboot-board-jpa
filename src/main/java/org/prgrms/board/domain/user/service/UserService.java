@@ -6,6 +6,7 @@ import org.prgrms.board.domain.user.mapper.UserMapper;
 import org.prgrms.board.domain.user.repository.UserRepository;
 import org.prgrms.board.domain.user.requset.UserCreateRequest;
 import org.prgrms.board.domain.user.requset.UserLoginRequest;
+import org.prgrms.board.domain.user.response.UserSearchResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +25,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User findById(long userId) {
-        return userRepository.findById(userId)
+    public UserSearchResponse findById(long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(USER_NOT_EXIST));
+        return userMapper.toSearchResponse(user);
     }
 
     @Transactional
