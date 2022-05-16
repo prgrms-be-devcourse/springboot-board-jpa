@@ -35,4 +35,17 @@ public class PostService {
 				);
 		return converter.toResponse(foundPost);
 	}
+
+	public void deleteOne(Long postId) {
+		Post removing = postRepository.findById(postId)
+				.orElseThrow(
+						() -> new ServiceException.NotFoundResource(postId + "를 가진 게시글을 찾을 수 없습니다.")
+				);
+		postRepository.delete(removing);
+	}
+
+	public PostDto.Response Update(PostDto.Update update) {
+
+		return null;
+	}
 }

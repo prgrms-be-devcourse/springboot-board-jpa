@@ -2,6 +2,8 @@ package com.programmers.board.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,12 @@ public class PostRestController {
 	@GetMapping("/{post_id}")
 	public PostDto.Response findOne(@PathVariable("post_id") Long postId) {
 		return postService.findOne(postId);
+	}
+
+	@DeleteMapping("/{post_id}")
+	public ResponseEntity<String> removeOne(@PathVariable("post_id")Long postId){
+		postService.deleteOne(postId);
+		return ResponseEntity.ok("삭제가 완료되었습니다.");
 	}
 
 }
