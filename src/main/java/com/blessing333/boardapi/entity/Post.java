@@ -27,7 +27,7 @@ public class Post extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User createdBy;
 
     public static Post createNewPost(String title, String content, User createBy){
@@ -38,8 +38,18 @@ public class Post extends BaseEntity {
         return post;
     }
 
+    public void changeTitle(String title){
+        if(title.length() < 2)
+            throw new PostUpdateFailException("title length should over 2");
+        this.title = title;
+    }
+
+    public void changeContent(String content){
+        this.content = content;
+    }
+
     private void setTitle(String title){
-        if(title == null || title.length() < 2)
+        if(title.length() < 2)
             throw new PostCreateFailException("title length should over 2");
         this.title = title;
     }
