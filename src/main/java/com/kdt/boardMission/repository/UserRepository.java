@@ -14,5 +14,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "select u from User u where u.name like %:name%", countQuery = "select count(u) from User u")
     Page<User> findByName(@Param("name") String name, Pageable pageable);
-
 }
