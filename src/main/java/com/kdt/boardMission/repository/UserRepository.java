@@ -12,6 +12,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query(value = "select u from User u where u.name like %:name%", countQuery = "select count(u) from User u")
+    @Query(value = "select u from User u where u.name like %:name%")
     Page<User> findByName(@Param("name") String name, Pageable pageable);
 }
