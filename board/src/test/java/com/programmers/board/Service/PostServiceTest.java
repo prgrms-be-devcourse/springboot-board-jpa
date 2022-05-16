@@ -1,6 +1,9 @@
 package com.programmers.board.Service;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
+
+import java.util.Optional;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -11,10 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.programmers.board.controller.PostDto;
 import com.programmers.board.domain.Post;
@@ -49,13 +52,14 @@ class PostServiceTest {
 				.build();
 
 		PostDto.Response postToResponse = PostDto.Response.builder()
+				.id(dtoToPost.getId())
 				.title(dtoToPost.getTitle())
 				.content(dtoToPost.getContent())
 				.build();
 
-		BDDMockito.given(postConverter.toDomain(saveDto)).willReturn(dtoToPost);
-		BDDMockito.given(postRepository.save(dtoToPost)).willReturn(dtoToPost);
-		BDDMockito.given(postConverter.toResponse(dtoToPost)).willReturn(postToResponse);
+		given(postConverter.toDomain(saveDto)).willReturn(dtoToPost);
+		given(postRepository.save(dtoToPost)).willReturn(dtoToPost);
+		given(postConverter.toResponse(dtoToPost)).willReturn(postToResponse);
 
 		//when
 		PostDto.Response saved = postService.save(saveDto);
@@ -66,6 +70,42 @@ class PostServiceTest {
 		assertThat(saved.content()).isEqualTo(dtoToPost.getContent());
 		assertThat(saved.title()).isEqualTo(saveDto.title());
 		assertThat(saved.content()).isEqualTo(saveDto.content());
+	}
+
+	/**
+	 * note : issue
+	 */
+	@Test
+	@DisplayName("특정 post 조회 _ id")
+	void testFoundOne() {
+		//given
+		long savedId = 1L;
+		Post testPost = Post.builder()
+				.title("test title")
+				.content("test contents ... ")
+				.build();
+
+		ReflectionTestUtils.setField(testPost, "id", savedId);
+
+		PostDto.Response postToResponse = PostDto.Response.builder()
+				.id(testPost.getId())
+				.title(testPost.getTitle())
+				.content(testPost.getContent())
+				.createdAt(testPost.getCreatedAt())
+				.updatedAt(testPost.getUpdatedAt())
+				.createdBy(testPost.getCreatedBy())
+				.updatedBy(testPost.getUpdatedBy())
+				.build();
+
+		given(postRepository.findById(savedId)).willReturn(Optional.of(testPost));
+		given(postConverter.toResponse(testPost)).willReturn(postToResponse);
+
+		//when
+		PostDto.Response response = postService.findOne(savedId);
+
+		//then
+		Assertions.assertNotNull(response);
+		MatcherAssert.assertThat(response, Matchers.samePropertyValuesAs(postToResponse));
 	}
 
 }
