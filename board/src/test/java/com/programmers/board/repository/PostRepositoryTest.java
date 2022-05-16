@@ -14,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.github.javafaker.Faker;
 import com.programmers.board.config.JpaAuditConfig;
@@ -53,7 +52,6 @@ class PostRepositoryTest {
 				.build();
 		//when
 		Post saved = postRepository.save(saving);
-		tem.flush();
 
 		//then
 		Assertions.assertNotNull(saved);
@@ -63,15 +61,30 @@ class PostRepositoryTest {
 	@Order(20)
 	@Test
 	@DisplayName("계시판 id로 조회")
-	void testFindById(){
-	    //given
+	void testFindById() {
+		//given
 
-	    //when
+		//when
 		Post foundPost = postRepository.findById(saving.getId())
 				.orElseThrow(() -> new ServiceException.NotFoundResource("post 가 존재하지 않습니다."));
 		//then
 		Assertions.assertNotNull(foundPost);
-		MatcherAssert.assertThat(foundPost,Matchers.samePropertyValuesAs(saving));
+		MatcherAssert.assertThat(foundPost, Matchers.samePropertyValuesAs(saving));
+	}
+
+	@Order(40)
+	@Test
+	@DisplayName("게시판 id로 삭제")
+	void testDeleteById() {
+		//given
+
+		//when
+		postRepository.delete(saving);
+		//then
+
+		Assertions.assertThrows(ServiceException.NotFoundResource.class, () ->
+						postRepository.findById(saving.getId()).orElseThrow(() -> new ServiceException.NotFoundResource("")),
+				"not found resources...");
 	}
 
 }
