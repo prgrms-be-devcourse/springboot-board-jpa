@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 import static com.kdt.boardMission.dto.UserDto.convertUser;
@@ -30,12 +29,11 @@ public class UserService {
     }
 
     public void deleteUser(UserDto userDto) {
-        User user = convertUser(userDto);
-        userRepository.delete(user);
+        userRepository.deleteById(userDto.getId());
     }
 
-    public UserDto findUserById(UserDto userDto) throws NotFoundException {
-        Optional<User> byId = userRepository.findById(userDto.getId());
+    public UserDto findUserById(long userId) throws NotFoundException {
+        Optional<User> byId = userRepository.findById(userId);
         if (byId.isEmpty()) {
             throw new NotFoundException("해당 아이디를 가진 유저가 없습니다.");
         }
@@ -43,8 +41,7 @@ public class UserService {
         return convertUserDto(user);
     }
 
-    public Page<UserDto> findUserByName(UserDto userDto, Pageable pageable) {
-        String name = userDto.getName();
+    public Page<UserDto> findUserByName(String name, Pageable pageable) {
         return userRepository.findByName(name, pageable).map(UserDto::convertUserDto);
     }
 
