@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import static com.study.board.domain.post.domain.PostTest.*;
+import static com.study.board.domain.post.domain.PostTest.assertPostWithWriter;
 import static com.study.board.fixture.Fixture.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

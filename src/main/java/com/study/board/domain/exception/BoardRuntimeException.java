@@ -1,6 +1,6 @@
 package com.study.board.domain.exception;
 
-public class BoardRuntimeException extends RuntimeException{
+public class BoardRuntimeException extends RuntimeException {
 
     public BoardRuntimeException() {
         super();

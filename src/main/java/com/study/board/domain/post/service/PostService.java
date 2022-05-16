@@ -27,17 +27,17 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Post findById(Long postId){
+    public Post findById(Long postId) {
         return findPostById(postId);
     }
 
-    public Post write(String title, String content, Long writerId){
+    public Post write(String title, String content, Long writerId) {
         User user = findUserById(writerId);
 
         return postRepository.save(Post.create(title, content, user));
     }
 
-    public Post edit(Long postId, String title, String content, Long editorId){
+    public Post edit(Long postId, String title, String content, Long editorId) {
         User editor = findUserById(editorId);
         Post post = findPostById(postId);
 
@@ -55,7 +55,7 @@ public class PostService {
     }
 
     private void checkEditable(Long postId, User editor, Post post) {
-        if(!post.hasOfWriter(editor)) {
+        if (!post.hasOfWriter(editor)) {
             throw new PostEditAccessDeniedException(postId);
         }
     }
