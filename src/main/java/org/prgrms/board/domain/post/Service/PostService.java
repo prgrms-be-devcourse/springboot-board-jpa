@@ -8,7 +8,7 @@ import org.prgrms.board.domain.post.repository.PostRepository;
 import org.prgrms.board.domain.post.request.PostCreateRequest;
 import org.prgrms.board.domain.post.request.PostUpdateRequest;
 import org.prgrms.board.domain.post.response.PostSearchResponse;
-import org.prgrms.board.domain.user.domain.User;
+import org.prgrms.board.domain.user.response.UserSearchResponse;
 import org.prgrms.board.domain.user.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,8 +46,8 @@ public class PostService {
 
     @Transactional
     public void save(PostCreateRequest createRequest, long userId) {
-        User user = userService.findById(userId);
-        Post post = postMapper.toEntity(createRequest, user);
+        UserSearchResponse userResponse = userService.findById(userId);
+        Post post = postMapper.toEntity(createRequest, userResponse.getId());
         postRepository.save(post);
     }
 

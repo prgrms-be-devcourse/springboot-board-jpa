@@ -7,6 +7,7 @@ import org.prgrms.board.domain.post.domain.Post;
 import org.prgrms.board.domain.post.request.PostCreateRequest;
 import org.prgrms.board.domain.post.response.PostSearchResponse;
 import org.prgrms.board.domain.user.domain.User;
+import org.prgrms.board.domain.user.response.UserSearchResponse;
 
 @Mapper(componentModel = "spring")
 public interface PostMapper {
@@ -19,5 +20,8 @@ public interface PostMapper {
     })
     PostSearchResponse toSearchResponse(Post post);
 
-    Post toEntity(PostCreateRequest request, User user);
+    @Mappings({
+            @Mapping(source = "userId", target = "user.id")
+    })
+    Post toEntity(PostCreateRequest postRequest, Long userId);
 }
