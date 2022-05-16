@@ -1,5 +1,7 @@
 package com.programmers.board.repository;
 
+import java.time.LocalDateTime;
+
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -38,7 +40,7 @@ class PostRepositoryTest {
 	/**
 	 * NOTE :
 	 *  insert 쿼리가 안날라간다..
-	 *  쓰기 지연 저장소에 있다가 rollback 할 것을 알고 쿼리 최적화 해주는 것 같다.
+	 *  sol : 쓰기 지연 저장소에 있다가 rollback 할 것을 알고 쿼리 최적화 해주는 것 같다.
 	 */
 	@Rollback(value = false)
 	@Order(10)
@@ -72,9 +74,47 @@ class PostRepositoryTest {
 		MatcherAssert.assertThat(foundPost, Matchers.samePropertyValuesAs(saving));
 	}
 
-	@Order(40)
+	@Order(30)
+	@Rollback(value = false)
 	@Test
-	@DisplayName("게시판 id로 삭제")
+	@DisplayName("게시판 title, content update")
+	void testUpdate() {
+		//given
+		Post requestUpdate = Post.builder()
+				.title(faker.artist().name())
+				.content(faker.superhero().name())
+				.build();
+		//when
+		Post foundPost = postRepository.findById(saving.getId()).orElseThrow(RuntimeException::new);
+		Post updated = foundPost.update(requestUpdate);
+		Post result = postRepository.findById(foundPost.getId()).orElseThrow(RuntimeException::new);
+		//then
+		org.assertj.core.api.Assertions.assertThat(result.getTitle()).isEqualTo(requestUpdate.getTitle());
+		org.assertj.core.api.Assertions.assertThat(result.getContent()).isEqualTo(requestUpdate.getContent());
+
+	}
+
+	@Order(40)
+	@Rollback(value = false)
+	@Test
+	@DisplayName("게시판 id로 soft delete")
+	void testSoftDeleteById() {
+		//given
+
+		//when
+		Post savedPost = postRepository.findById(saving.getId()).orElseThrow(RuntimeException::new);
+		savedPost.softDelete();
+		Post softDeletedPost = postRepository.findById(saving.getId()).orElseThrow(RuntimeException::new);
+		//then
+
+		Assertions.assertNotNull(softDeletedPost);
+		Assertions.assertTrue(softDeletedPost.isDeleteYn());
+
+	}
+
+	@Order(50)
+	@Test
+	@DisplayName("게시판 id로 실제 삭제")
 	void testDeleteById() {
 		//given
 
