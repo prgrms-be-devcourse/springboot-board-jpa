@@ -29,14 +29,16 @@ class PostRepositoryTest {
     EntityManager em;
 
     User writer;
+    Long writtenPostId1;
+    Long writtenPostId2;
 
     @BeforeEach
     void setUp() {
         writer = createUser();
         userRepository.save(writer);
 
-        postRepository.save(Post.create("제목1", "내용1", writer));
-        postRepository.save(Post.create("제목2", "내용2", writer));
+        writtenPostId1 = postRepository.save(Post.create("제목1", "내용1", writer)).getId();
+        writtenPostId2 = postRepository.save(Post.create("제목2", "내용2", writer)).getId();
 
         em.flush();
         em.clear();
@@ -53,14 +55,9 @@ class PostRepositoryTest {
 
     @Test
     void 아이디로_조회_성공() {
-        Long postId = postRepository.save(Post.create("제목", "내용", writer)).getId();
+        Post post = postRepository.findById(writtenPostId2).get();
 
-        em.flush();
-        em.clear();
-
-        Post post = postRepository.findById(postId).get();
-
-        assertPostWithWriter(post, "제목", "내용", writer.getId());
+        assertPostWithWriter(post, "제목2", "내용2", writer.getId());
     }
 
     @Test
