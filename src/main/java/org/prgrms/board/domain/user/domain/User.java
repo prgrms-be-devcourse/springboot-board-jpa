@@ -35,7 +35,8 @@ public class User extends BaseEntity {
     private List<Post> posts = new ArrayList<>();
 
     @Builder
-    public User(Name name, int age, Email email, String password) {
+    public User(Long id, Name name, int age, Email email, String password) {
+        this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
