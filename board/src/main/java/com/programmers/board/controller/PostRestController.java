@@ -2,6 +2,8 @@ package com.programmers.board.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,4 +24,10 @@ public class PostRestController {
 	public PostDto.Response create(@Valid PostDto.Save postDto) {
 		return postService.save(postDto);
 	}
+
+	@GetMapping("/{post_id}")
+	public PostDto.Response findOne(@PathVariable("post_id") Long postId) {
+		return postService.findOne(postId);
+	}
+
 }

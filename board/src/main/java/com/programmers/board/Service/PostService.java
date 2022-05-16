@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.programmers.board.controller.PostDto;
 import com.programmers.board.domain.Post;
+import com.programmers.board.exception.ServiceException;
 import com.programmers.board.repository.PostRepository;
 
 @Transactional(readOnly = true)
@@ -27,4 +28,11 @@ public class PostService {
 		return converter.toResponse(saved);
 	}
 
+	public PostDto.Response findOne(Long postId) {
+		Post foundPost = postRepository.findById(postId)
+				.orElseThrow(
+						() -> new ServiceException.NotFoundResource(postId + "를 가진 게시글을 찾을 수 없습니다.")
+				);
+		return converter.toResponse(foundPost);
+	}
 }
