@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 
-import static com.study.board.domain.post.domain.PostTest.assertPostWithWriter;
+import static com.study.board.domain.post.AssertPost.assertPostWithWriter;
 import static com.study.board.fixture.Fixture.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
