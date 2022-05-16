@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.programmers'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = "16"
 
 configurations {
     compileOnly {
@@ -19,17 +19,27 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // web
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
+    // jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    //devtool
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    // db
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    // faker
+    implementation 'com.github.javafaker:javafaker:1.0.2'
+    // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+targetCompatibility = JavaVersion.VERSION_16
