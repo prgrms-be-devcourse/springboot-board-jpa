@@ -16,6 +16,7 @@ public class PostDto {
 
 	@Builder
 	public record Response(
+			Long id,
 			String title,
 			String writer,
 			String content,
