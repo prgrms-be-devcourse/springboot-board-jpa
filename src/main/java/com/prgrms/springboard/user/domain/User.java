@@ -41,8 +41,9 @@ public class User extends BaseEntity {
     protected User() {
     }
 
-    private User(String createdBy, LocalDateTime createdAt, Name name, Age age, Hobby hobby) {
+    public User(String createdBy, LocalDateTime createdAt, Long id, Name name, Age age, Hobby hobby) {
         super(createdBy, createdAt);
+        this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;
@@ -52,7 +53,7 @@ public class User extends BaseEntity {
         Name userName = new Name(name);
         Age userAge = new Age(age);
         Hobby userHobby = new Hobby(hobby);
-        return new User(name, LocalDateTime.now(), userName, userAge, userHobby);
+        return new User(name, LocalDateTime.now(), null, userName, userAge, userHobby);
     }
 
     public void addPost(Post post) {
