@@ -38,6 +38,14 @@ class PostControllerTest {
     ObjectMapper objectMapper;
 
     @Test
+    void testInvalidApi() throws Exception {
+        mockMvc.perform(get("/api/v1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
     void testCreatePost() throws Exception {
         //Given
         User user = userRepository
@@ -70,6 +78,14 @@ class PostControllerTest {
     }
 
     @Test
+    void testFindInvalidPost() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/{postId}", 11)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
     void testFindPosts() throws Exception {
         //Given
         User user = userRepository
@@ -87,22 +103,21 @@ class PostControllerTest {
                 .andDo(print());
     }
 
-    //TODO 추후 에러 원인 파악 및 수정 필요
-//    @Test
-//    void testUpdatePost() throws Exception {
-//        //Given
-//        User user = userRepository
-//                .save(new User("박상혁", 25, "음주"));
-//        Long postId = postController
-//                .createPost(new CreatePostRequestDto("제목", "내용", user.getId()))
-//                .getBody();
-//
-//        //When //Then
-//        UpdatePostRequestDto updatePostRequestDto = new UpdatePostRequestDto("바뀐 내용");
-//        mockMvc.perform(post("/api/v1/posts/{postId}", postId)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(updatePostRequestDto)))
-//                .andExpect(status().isOk())
-//                .andDo(print());
-//    }
+    @Test
+    void testUpdatePost() throws Exception {
+        //Given
+        User user = userRepository
+                .save(new User("박상혁", 25, "음주"));
+        Long postId = postController
+                .createPost(new CreatePostRequestDto("제목", "내용", user.getId()))
+                .getBody();
+
+        //When //Then
+        UpdatePostRequestDto updatePostRequestDto = new UpdatePostRequestDto("바뀐 내용");
+        mockMvc.perform(post("/api/v1/posts/{postId}", postId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatePostRequestDto)))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 }
