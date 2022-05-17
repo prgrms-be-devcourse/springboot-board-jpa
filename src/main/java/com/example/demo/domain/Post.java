@@ -12,15 +12,15 @@ import javax.persistence.*;
 public class Post extends CreatedEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private String id;
+    private Long id;
 
     private String title;
 
     @Lob
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     public Post(String title, String content, User user) {
@@ -28,5 +28,6 @@ public class Post extends CreatedEntity{
         this.content = content;
         this.user = user;
         user.getPosts().add(this);
+        this.addCreator(user.getName());
     }
 }

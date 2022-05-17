@@ -15,4 +15,9 @@ public class CreatedEntity {
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime createdAt;
+
+    protected void addCreator(String createdBy) {
+        this.createdBy = createdBy;
+        createdAt = LocalDateTime.now();
+    }
 }
