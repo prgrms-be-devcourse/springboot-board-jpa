@@ -8,16 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserConverter {
-    public static User getUserFrom(CreateUserRequest request){
+    public User getUserFrom(CreateUserRequest request){
         return new User(request.name(), request.age(), request.hobby());
     }
 
-    public static CreateUserResponse getCreateResponseFrom(User user) {
+    public CreateUserResponse getCreateResponseFrom(User user) {
         return new CreateUserResponse(user.getId(), user.getName(), user.getAge(), user.getHobby(),
             user.getCreatedAt());
     }
 
-    public static FindUserResponse getFindResponseFrom(User user) {
+    public FindUserResponse getFindResponseFrom(User user) {
         return new FindUserResponse(user.getId(), user.getName(), user.getAge(), user.getHobby(),
             user.getCreatedAt(), user.getUpdatedAt());
     }
