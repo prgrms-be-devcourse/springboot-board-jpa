@@ -24,7 +24,7 @@ public class Post extends BaseEntity{
     }
 
     public Post(String title, String content, User user) {
-        if (!Objects.nonNull(title) || title.isBlank() || !Objects.nonNull(user)) {
+        if (Objects.isNull(title) || title.isBlank() || Objects.isNull(user)) {
             throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
         }
         this.title = title;
@@ -43,7 +43,7 @@ public class Post extends BaseEntity{
     }
 
     public void setContent(String content) {
-        if (!Objects.nonNull(content) || content.isBlank()) {
+        if (Objects.isNull(content) || content.isBlank()) {
             throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
         }
         this.content = content;

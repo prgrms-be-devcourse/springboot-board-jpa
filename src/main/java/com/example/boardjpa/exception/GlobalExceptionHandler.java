@@ -1,6 +1,8 @@
 package com.example.boardjpa.exception;
 
+import com.example.boardjpa.exception.custom.FieldBlankException;
 import com.example.boardjpa.exception.custom.RecordNotFoundException;
+import com.example.boardjpa.exception.custom.ValueOutOfRangeException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,6 +18,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RecordNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleRecordNotFoundException(RecordNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getErrorCode());
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
+
+    @ExceptionHandler(FieldBlankException.class)
+    public ResponseEntity<ErrorResponse> handleFieldBlankException(FieldBlankException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getErrorCode());
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
+
+    @ExceptionHandler(ValueOutOfRangeException.class)
+    public ResponseEntity<ErrorResponse> handleValueOutOfRangeException(ValueOutOfRangeException ex) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getErrorCode());
         return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
     }

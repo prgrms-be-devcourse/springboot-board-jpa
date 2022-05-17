@@ -9,7 +9,7 @@ public class UpdatePostRequestDto {
     private String content;
 
     public UpdatePostRequestDto(String content) {
-        if (!Objects.nonNull(content)) {
+        if (Objects.isNull(content)) {
             throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
         }
         this.content = content;
