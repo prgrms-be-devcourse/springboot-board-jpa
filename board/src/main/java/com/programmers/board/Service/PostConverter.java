@@ -1,7 +1,11 @@
 package com.programmers.board.Service;
 
+import java.util.function.Function;
+
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import com.programmers.board.controller.PageResponseDto;
 import com.programmers.board.controller.PostDto;
 import com.programmers.board.domain.Post;
 
@@ -22,7 +26,6 @@ public class PostConverter {
 				.build();
 	}
 
-
 	public PostDto.Response toResponse(Post post) {
 		return PostDto.Response.builder()
 				.title(post.getTitle())
@@ -33,5 +36,10 @@ public class PostConverter {
 				.createdBy(post.getCreatedBy())
 				.updatedBy(post.getUpdatedBy())
 				.build();
+	}
+
+	public PageResponseDto<PostDto.Response, Post> toResponse(Page<Post> pagingPosts) {
+		Function<Post, PostDto.Response> function = this::toResponse;
+		return new PageResponseDto<>(pagingPosts, function);
 	}
 }

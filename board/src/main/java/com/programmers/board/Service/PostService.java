@@ -2,9 +2,14 @@ package com.programmers.board.Service;
 
 import java.util.function.Supplier;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.programmers.board.controller.PageRequestDto;
+import com.programmers.board.controller.PageResponseDto;
 import com.programmers.board.controller.PostDto;
 import com.programmers.board.domain.Post;
 import com.programmers.board.exception.ServiceException;
@@ -68,5 +73,11 @@ public class PostService {
 						supplyNotFoundException(postId)
 				);
 		target.softDelete();
+	}
+
+	public PageResponseDto<PostDto.Response, Post> lookUpAll(PageRequestDto requestDto) {
+		Pageable createdAtDesc = requestDto.getPageable(Sort.by("createdAt").descending());
+		Page<Post> pagingPosts = postRepository.findAll(createdAtDesc);
+		return converter.toResponse(pagingPosts);
 	}
 }
