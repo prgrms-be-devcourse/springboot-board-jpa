@@ -1,7 +1,7 @@
-package com.example.springboardjpa.user;
+package com.example.springboardjpa.user.domain;
 
 import com.example.springboardjpa.domain.BaseEntityCreate;
-import com.example.springboardjpa.post.Post;
+import com.example.springboardjpa.post.domain.Post;
 import lombok.Getter;
 
 import javax.persistence.*;
