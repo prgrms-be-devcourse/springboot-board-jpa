@@ -29,13 +29,13 @@ public class Post extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User createdBy;
+    private User writer;
 
     public static Post createNewPost(String title, String content, User createBy) {
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
-        post.setCreatedBy(createBy);
+        post.setWriter(createBy);
         return post;
     }
 

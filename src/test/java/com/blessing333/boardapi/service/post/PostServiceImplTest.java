@@ -1,13 +1,14 @@
 package com.blessing333.boardapi.service.post;
 
 import com.blessing333.boardapi.TestDataProvider;
+import com.blessing333.boardapi.controller.dto.PostCreateCommands;
 import com.blessing333.boardapi.controller.dto.PostInformation;
 import com.blessing333.boardapi.converter.PostConverter;
 import com.blessing333.boardapi.entity.Post;
 import com.blessing333.boardapi.entity.User;
+import com.blessing333.boardapi.entity.exception.PostCreateFailException;
 import com.blessing333.boardapi.repository.PostRepository;
 import com.blessing333.boardapi.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +25,8 @@ class PostServiceImplTest {
     private PostConverter postConverter;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private TestDataProvider dataProvider;
@@ -33,7 +36,7 @@ class PostServiceImplTest {
 
     @BeforeAll
     void init() {
-        postService = new PostServiceImpl(postRepository, postConverter);
+        postService = new PostServiceImpl(postRepository, userRepository, postConverter);
         defaultUser = dataProvider.insertUserToDb("tester", 20);
     }
 
@@ -49,13 +52,32 @@ class PostServiceImplTest {
         assertThat(postInformation.getId()).isEqualTo(post.getId());
         assertThat(postInformation.getTitle()).isEqualTo(post.getTitle());
         assertThat(postInformation.getContent()).isEqualTo(post.getContent());
-        assertThat(postInformation.getCreatedBy()).isEqualTo(post.getCreatedBy());
+        assertThat(postInformation.getWriter()).isEqualTo(post.getWriter());
     }
 
     @DisplayName("존재하지 않는 게시글 조회를 시도하면 PostNotFoundException 발생")
     @Test
     void loadPostWithInvalidId() {
-        assertThrows(PostNotFoundException.class,() -> postService.loadPostById(-1L));
+        assertThrows(PostNotFoundException.class, () -> postService.loadPostById(-1L));
+    }
+
+    @DisplayName("게시글 생성 테스트")
+    @Test
+    void registerPostTest() {
+        PostCreateCommands postCreateCommands = new PostCreateCommands("title", "content", defaultUser.getId());
+
+        PostInformation postInformation = postService.registerPost(postCreateCommands);
+
+        assertTrue(postRepository.existsById(postInformation.getId()));
+    }
+
+    @DisplayName("잘못된 UserId로 게시글 생성 요청시 PostCreateFailException 생성")
+    @Test
+    void registerPostWithInvalidUserId() {
+        Long invalidUserId = -1L;
+        PostCreateCommands postCreateCommands = new PostCreateCommands("title", "content", invalidUserId);
+
+        assertThrows(PostCreateFailException.class, () -> postService.registerPost(postCreateCommands));
     }
 
 }

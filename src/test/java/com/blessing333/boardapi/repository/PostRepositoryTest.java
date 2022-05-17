@@ -50,7 +50,7 @@ class PostRepositoryTest {
 
         assertThat(post.getTitle()).isEqualTo(postTitle);
         assertThat(post.getContent()).isEqualTo(postContent);
-        assertThat(post.getCreatedBy()).isEqualTo(user);
+        assertThat(post.getWriter()).isEqualTo(user);
     }
 
     @DisplayName("게시글 작성자가 DB에 저장되어있지 않다면 예외가 발생해야한다")
@@ -108,7 +108,7 @@ class PostRepositoryTest {
 
         Assertions.assertDoesNotThrow(()->{
             Post found = postRepository.findPostByIdWithMember(post.getId()).orElseThrow();
-            assertThat(unitUtil.isLoaded(found.getCreatedBy())).isTrue();
+            assertThat(unitUtil.isLoaded(found.getWriter())).isTrue();
         });
     }
 

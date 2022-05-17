@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    @Query("select p from Post as p join fetch p.createdBy m where p.id = :id")
+    @Query("select p from Post as p join fetch p.writer m where p.id = :id")
     Optional<Post> findPostByIdWithMember(@Param("id") Long id);
 }

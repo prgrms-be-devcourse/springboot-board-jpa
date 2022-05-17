@@ -12,7 +12,8 @@ public class PostConverter {
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .createdBy(post.getCreatedBy())
+                .writer(post.getWriter())
+                .createdAt(post.getCreatedAt())
                 .build();
     }
 }

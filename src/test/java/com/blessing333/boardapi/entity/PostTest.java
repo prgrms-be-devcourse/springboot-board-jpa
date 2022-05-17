@@ -18,7 +18,7 @@ class PostTest {
     void testCreatePost(){
         Post post = Post.createNewPost(title,content,user);
 
-        assertThat(post.getCreatedBy()).isEqualTo(user);
+        assertThat(post.getWriter()).isEqualTo(user);
         assertThat(post.getTitle()).isEqualTo(title);
         assertThat(post.getContent()).isEqualTo(content);
     }
