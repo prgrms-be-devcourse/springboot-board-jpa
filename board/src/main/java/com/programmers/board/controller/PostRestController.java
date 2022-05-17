@@ -43,7 +43,7 @@ public class PostRestController {
 	}
 
 	@GetMapping("")
-	public PageResponseDto<PostDto.Response, Post> findAll(PageRequestDto requestDto) {
+	public PageResponseDto<PostDto.Response, Post> findAll(@Valid PageRequestDto requestDto) {
 		return postService.lookUpAll(requestDto);
 	}
 
