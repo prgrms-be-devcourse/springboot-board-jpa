@@ -65,7 +65,7 @@ class PostServiceTest {
         //then
         assertThat(postService.findById(postId).getTitle()).isEqualTo(postDto.getTitle());
         assertThat(postService.findById(postId).getContent()).isEqualTo(postDto.getContent());
-        assertThat(postService.findById(postId).getUser().getId()).isEqualTo(userDto.getId());
+        assertThat(postService.findById(postId).getUserDto().getId()).isEqualTo(userDto.getId());
     }
 
     @Test

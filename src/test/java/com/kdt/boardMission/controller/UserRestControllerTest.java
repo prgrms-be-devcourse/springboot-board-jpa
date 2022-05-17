@@ -92,6 +92,8 @@ class UserRestControllerTest {
 
         //when
         mockMvc.perform(get("/user")
+                        .param("page", String.valueOf(0))
+                        .param("size", String.valueOf(10))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -153,6 +155,8 @@ class UserRestControllerTest {
         //when
         mockMvc.perform(get("/user")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .param("page", String.valueOf(0))
+                        .param("size", String.valueOf(10))
                         .param("name","am"))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -198,7 +202,7 @@ class UserRestControllerTest {
     }
 
     @Test
-    @DisplayName("유저 아이디로 조회")
+    @DisplayName("유저 아이디로 단건 조회")
     public void findByIdTest() throws Exception {
 
         //given
