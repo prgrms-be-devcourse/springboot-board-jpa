@@ -5,6 +5,8 @@ import com.example.boardjpa.domain.User;
 import com.example.boardjpa.dto.CreatePostRequestDto;
 import com.example.boardjpa.dto.PostResponseDto;
 import com.example.boardjpa.dto.UpdatePostRequestDto;
+import com.example.boardjpa.exception.ErrorCode;
+import com.example.boardjpa.exception.custom.RecordNotFoundException;
 import com.example.boardjpa.repository.PostRepository;
 import com.example.boardjpa.repository.UserRepository;
 import org.springframework.data.domain.Page;
@@ -35,7 +37,9 @@ public class PostService {
                 postRepository
                         .findById(postId)
                         .orElseThrow(
-                                () -> new RuntimeException("해당 id의 post가 존재하지 않습니다.")
+                                () -> new RecordNotFoundException(
+                                        "해당 id의 post가 존재하지 않습니다."
+                                        , ErrorCode.POST_NOT_FOUND)
                         )
         );
     }
@@ -46,7 +50,9 @@ public class PostService {
                         createPostRequestDto
                                 .getUserId()
                 ).orElseThrow(
-                        () -> new RuntimeException("해당 id의 user가 존재하지 않습니다.")
+                        () -> new RecordNotFoundException(
+                                "해당 id의 user가 존재하지 않습니다."
+                                , ErrorCode.USER_NOT_FOUND)
                 );
         return postRepository.save(
                 new Post(createPostRequestDto.getTitle()
@@ -58,7 +64,9 @@ public class PostService {
     public void updatePost(Long postId, UpdatePostRequestDto updatePostRequestDto) {
         Post post = postRepository
                 .findById(postId)
-                .orElseThrow(() -> new RuntimeException("해당 id의 post가 존재하지 않습니다.")
+                .orElseThrow(() -> new RecordNotFoundException(
+                        "해당 id의 post가 존재하지 않습니다."
+                        , ErrorCode.POST_NOT_FOUND)
                 );
         post.setContent(updatePostRequestDto.getContent());
     }
