@@ -38,13 +38,13 @@ public class V1UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FindUserResponse> update(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
+    public ResponseEntity<FindUserResponse> modify(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
         FindUserResponse response = userService.updateOne(id, request);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<FindUserResponse> remove(@PathVariable Long id) {
+    public ResponseEntity<Object> remove(@PathVariable Long id) {
         userService.deleteOne(id);
         return ResponseEntity.noContent().build();
     }
