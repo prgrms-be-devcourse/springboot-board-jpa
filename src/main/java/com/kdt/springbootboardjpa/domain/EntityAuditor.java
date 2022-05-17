@@ -18,6 +18,6 @@ public class EntityAuditor implements AuditorAware<String> {
         if (uri.matches("^/api")) {
             return Optional.of("api");
         }
-        return Optional.empty();
+        return Optional.of("test");
     }
 }

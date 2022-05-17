@@ -1,11 +1,16 @@
 package com.kdt.springbootboardjpa.domain;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Table(name = "posts")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
     @Id
@@ -23,11 +28,23 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public void setUser(User user){
-        this.user = user;
-        user.addPost(this);
+    public void changeTitle(String title) {
+        this.title = title;
     }
 
-    public Post() {
+    public void changeContent(String content) {
+        this.content = content;
+    }
+
+    @Builder
+    public Post(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
+        setUser(user);
+    }
+
+    private void setUser(User user){
+        this.user = user;
+        user.addPost(this);
     }
 }
