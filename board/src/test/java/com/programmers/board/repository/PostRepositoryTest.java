@@ -1,6 +1,8 @@
 package com.programmers.board.repository;
 
-import java.time.LocalDateTime;
+import java.awt.print.Pageable;
+import java.util.List;
+import java.util.stream.Stream;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -15,10 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.util.Assert;
 
 import com.github.javafaker.Faker;
 import com.programmers.board.config.JpaAuditConfig;
+import com.programmers.board.controller.PageRequestDto;
 import com.programmers.board.domain.Post;
 import com.programmers.board.exception.ServiceException;
 
@@ -125,6 +132,40 @@ class PostRepositoryTest {
 		Assertions.assertThrows(ServiceException.NotFoundResource.class, () ->
 						postRepository.findById(saving.getId()).orElseThrow(() -> new ServiceException.NotFoundResource("")),
 				"not found resources...");
+	}
+
+	@Order(60)
+	@Test
+	@Rollback(value = false)
+	@DisplayName("게시판 전체 조회 [페이징]")
+	void testFindAll() {
+
+		//given
+
+		int requestPageNumber = 4;
+		int pageSize = 10;
+
+		List<Post> demos = Stream.generate(() -> {
+			return Post.builder()
+					.title(faker.superhero().name())
+					.content(faker.superhero().descriptor())
+					.build();
+		}).limit(90).toList();
+		postRepository.saveAll(demos);
+
+		PageRequest requestPage = PageRequest.of(requestPageNumber - 1, pageSize, Sort.by("createdAt").descending());
+
+		//when
+		Page<Post> pages = postRepository.findAll(requestPage);
+
+		//then
+		Assertions.assertNotNull(pages);
+		org.assertj.core.api.Assertions.assertThat(pages.getContent()).hasSize(10);
+		org.assertj.core.api.Assertions.assertThat(pages.getTotalPages()).isEqualTo(9);
+		org.assertj.core.api.Assertions.assertThat(pages.getTotalElements()).isEqualTo(90);
+		org.assertj.core.api.Assertions.assertThat(pages.getPageable().getPageNumber()).isEqualTo(requestPageNumber - 1);
+		org.assertj.core.api.Assertions.assertThat(pages.getPageable().getSort().isSorted()).isEqualTo(true);
+
 	}
 
 }
