@@ -7,7 +7,7 @@ endif::[]
 
 === 고객 id로 단일 조회
 
-=== get /user/{userId}
+=== GET /user/{userId}
 
 .Request
 include::{snippets}/user-find-userId/http-request.adoc[]

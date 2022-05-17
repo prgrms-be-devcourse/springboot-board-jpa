@@ -7,7 +7,7 @@ endif::[]
 
 === 고객 수정
 
-=== put /user/edit
+=== PUT /user/edit
 
 .Request
 include::{snippets}/user-edit/http-request.adoc[]

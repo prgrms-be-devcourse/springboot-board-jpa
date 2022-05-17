@@ -7,7 +7,7 @@ endif::[]
 
 === 고객 검색 (이름)
 
-=== get /user?name={name}
+=== GET /user?name={name}
 
 .Request
 include::{snippets}/user-find-name/http-request.adoc[]

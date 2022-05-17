@@ -7,7 +7,7 @@ endif::[]
 
 === 고객 전체 조회
 
-=== get /user
+=== GET /user
 
 .Request
 include::{snippets}/user-find-all/http-request.adoc[]
