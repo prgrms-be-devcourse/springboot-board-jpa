@@ -5,11 +5,15 @@ import com.blessing333.boardapi.controller.dto.PostInformation;
 
 import com.blessing333.boardapi.service.post.PostService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +23,13 @@ public class PostApiController {
     @GetMapping("/api/v1/posts/{id}")
     public ResponseEntity<PostInformation> getPost(@PathVariable Long id) {
         PostInformation postInformation = postService.loadPostById(id);
+        return ResponseEntity.ok(postInformation);
+    }
+
+    @GetMapping("/api/v1/posts")
+    //TODO: 잘못된 page,size 요청에 대해서 별도의 예외 처리를 해야하는지?
+    public ResponseEntity<Page<PostInformation>> getPostsWithPaging(Pageable pageable) {
+        Page<PostInformation> postInformation = postService.loadPostsWithPaging(pageable);
         return ResponseEntity.ok(postInformation);
     }
 

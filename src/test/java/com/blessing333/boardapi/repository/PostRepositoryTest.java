@@ -3,6 +3,8 @@ package com.blessing333.boardapi.repository;
 import com.blessing333.boardapi.TestDataProvider;
 import com.blessing333.boardapi.entity.Post;
 import com.blessing333.boardapi.entity.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,7 +68,7 @@ class PostRepositoryTest {
     @Test
     void testPostInquiryWithPaging() {
         User user = dataProvider.insertUserToDb(userName, userAge);
-        save20PostToDB(user);
+        dataProvider.insert20PostToDB(user);
         Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
 
         Page<Post> result = postRepository.findAll(pageable);
@@ -112,11 +114,5 @@ class PostRepositoryTest {
         });
     }
 
-    private void save20PostToDB(User user) {
-        for (int i = 1; i <= 20; i++) {
-            String content = Integer.toString(i);
-            Post post = Post.createNewPost("titile", content, user);
-            postRepository.save(post);
-        }
-    }
+
 }

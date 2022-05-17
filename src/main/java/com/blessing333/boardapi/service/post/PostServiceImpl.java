@@ -9,6 +9,8 @@ import com.blessing333.boardapi.entity.exception.PostCreateFailException;
 import com.blessing333.boardapi.repository.PostRepository;
 import com.blessing333.boardapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,12 @@ public class PostServiceImpl implements PostService {
         Optional<Post> foundPost = postRepository.findPostByIdWithMember(id);
         Post post = foundPost.orElseThrow(() -> new PostNotFoundException("post not exist"));
         return converter.fromPost(post);
+    }
+
+    @Override
+    public Page<PostInformation> loadPostsWithPaging(Pageable pageable) {
+        Page<Post> found = postRepository.findAll(pageable);
+        return found.map(converter::fromPost);
     }
 
     @Override

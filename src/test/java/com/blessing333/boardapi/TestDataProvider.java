@@ -27,4 +27,12 @@ public class TestDataProvider {
         User user = User.createUser(userName, userAge);
         return userRepository.save(user);
     }
+
+    public void insert20PostToDB(User user) {
+        for (int i = 1; i <= 20; i++) {
+            String content = Integer.toString(i);
+            Post post = Post.createNewPost("title", content, user);
+            postRepository.save(post);
+        }
+    }
 }

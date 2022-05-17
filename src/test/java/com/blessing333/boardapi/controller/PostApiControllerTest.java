@@ -109,6 +109,7 @@ class PostApiControllerTest {
                         .content(json))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
+
         assertNotNull(mvcResult.getResolvedException().getMessage());
     }
 

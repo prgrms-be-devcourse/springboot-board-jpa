@@ -12,6 +12,7 @@ import com.blessing333.boardapi.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -27,10 +28,8 @@ class PostServiceImplTest {
     private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private TestDataProvider dataProvider;
-
     private PostService postService;
     private User defaultUser;
 
