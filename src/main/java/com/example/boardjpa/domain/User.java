@@ -27,7 +27,7 @@ public class User extends BaseEntity {
     }
 
     public User(String name, Integer age, String hobby) {
-        if (name.isBlank() || !Objects.nonNull(age)) {
+        if (!Objects.nonNull(name) || !Objects.nonNull(age)) {
             throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
         }
         if (age <= 0 || age > 150) {

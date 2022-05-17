@@ -24,11 +24,11 @@ public class Post extends BaseEntity{
     }
 
     public Post(String title, String content, User user) {
-        if (title.isBlank() || !Objects.nonNull(user)) {
+        if (!Objects.nonNull(title) || title.isBlank() || !Objects.nonNull(user)) {
             throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
         }
         this.title = title;
-        this.content = content;
+        setContent(content);
         setUser(user);
         this.setCreatedAt(LocalDateTime.now());
         this.setCreatedBy(user.getName());
@@ -43,6 +43,9 @@ public class Post extends BaseEntity{
     }
 
     public void setContent(String content) {
+        if (!Objects.nonNull(content) || content.isBlank()) {
+            throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
+        }
         this.content = content;
     }
 

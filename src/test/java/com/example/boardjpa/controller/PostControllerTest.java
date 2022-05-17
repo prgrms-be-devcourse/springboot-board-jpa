@@ -3,6 +3,7 @@ package com.example.boardjpa.controller;
 import com.example.boardjpa.domain.User;
 import com.example.boardjpa.dto.CreatePostRequestDto;
 import com.example.boardjpa.dto.UpdatePostRequestDto;
+import com.example.boardjpa.exception.custom.FieldBlankException;
 import com.example.boardjpa.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -55,10 +57,27 @@ class PostControllerTest {
 
         //When //Then
         mockMvc.perform(post("/api/v1/posts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createPostRequestDto)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createPostRequestDto)))
                 .andExpect(status().isOk())
                 .andDo(print());
+    }
+
+    @Test
+    void testCreateWithNoTitle() {
+        //Given
+        User user = userRepository
+                .save(new User("박상혁", 25, "음주"));
+        assertThatThrownBy(() -> new CreatePostRequestDto(
+                null, "내용", user.getId()))
+                .isInstanceOf(FieldBlankException.class);
+    }
+
+    @Test
+    void testCreateWithNoUser() {
+        assertThatThrownBy(() -> new CreatePostRequestDto(
+                "제목", "내용", null))
+                .isInstanceOf(FieldBlankException.class);
     }
 
     @Test
@@ -67,12 +86,13 @@ class PostControllerTest {
         User user = userRepository
                 .save(new User("박상혁", 25, "음주"));
         Long postId = postController
-                .createPost(new CreatePostRequestDto("제목", "내용", user.getId()))
+                .createPost(new CreatePostRequestDto(
+                        "제목", "내용", user.getId()))
                 .getBody();
 
         //When //Then
         mockMvc.perform(get("/api/v1/posts/{postId}", postId)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -91,7 +111,8 @@ class PostControllerTest {
         User user = userRepository
                 .save(new User("박상혁", 25, "음주"));
         Long postId = postController
-                .createPost(new CreatePostRequestDto("제목", "내용", user.getId()))
+                .createPost(new CreatePostRequestDto(
+                        "제목", "내용", user.getId()))
                 .getBody();
 
         //When //Then
@@ -109,15 +130,33 @@ class PostControllerTest {
         User user = userRepository
                 .save(new User("박상혁", 25, "음주"));
         Long postId = postController
-                .createPost(new CreatePostRequestDto("제목", "내용", user.getId()))
+                .createPost(new CreatePostRequestDto(
+                        "제목", "내용", user.getId()))
                 .getBody();
 
         //When //Then
-        UpdatePostRequestDto updatePostRequestDto = new UpdatePostRequestDto("바뀐 내용");
+        UpdatePostRequestDto updatePostRequestDto
+                = new UpdatePostRequestDto("바뀐 내용");
         mockMvc.perform(post("/api/v1/posts/{postId}", postId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatePostRequestDto)))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
+    @Test
+    void testUpdateWithNoContent() {
+        //Given
+        User user = userRepository
+                .save(new User("박상혁", 25, "음주"));
+        Long postId = postController
+                .createPost(new CreatePostRequestDto(
+                        "제목", "내용", user.getId()))
+                .getBody();
+
+        //When //Then
+        assertThatThrownBy(() -> new UpdatePostRequestDto(null))
+                .isInstanceOf(FieldBlankException.class);
+    }
+
 }
