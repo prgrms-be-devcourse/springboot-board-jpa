@@ -6,6 +6,7 @@ import com.example.boardjpa.dto.UpdatePostRequestDto;
 import com.example.boardjpa.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,8 @@ public class PostController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Page<PostResponseDto>> showPosts(@RequestParam Integer startPage, @RequestParam Integer endPage) {
-        PageRequest pageRequest = PageRequest.of(startPage, endPage);
-        return ResponseEntity.ok(postService.getPosts(pageRequest));
+    public ResponseEntity<Page<PostResponseDto>> showPosts(Pageable pageable) {
+        return ResponseEntity.ok(postService.getPosts(pageable));
     }
 
     @PostMapping("")
