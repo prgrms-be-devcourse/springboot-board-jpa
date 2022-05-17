@@ -44,7 +44,7 @@ class UserRestControllerTest {
     }
 
     @Test
-    @DisplayName("유저 생성 저장")
+    @DisplayName("유저 생성 저장 Post /user")
     public void createUserTest() throws Exception {
 
         //given
@@ -77,7 +77,7 @@ class UserRestControllerTest {
     }
 
     @Test
-    @DisplayName("유저 목록 조회")
+    @DisplayName("유저 목록 전체 조회 Get /user")
     public void searchUserTest() throws Exception {
 
         //given
@@ -139,7 +139,7 @@ class UserRestControllerTest {
     }
 
     @Test
-    @DisplayName("유저 목록 이름으로 조회")
+    @DisplayName("유저 목록 이름으로 조회 Get /user?name={name}")
     public void searchUserByNameTest() throws Exception {
 
         //given
@@ -202,7 +202,7 @@ class UserRestControllerTest {
     }
 
     @Test
-    @DisplayName("유저 아이디로 단건 조회")
+    @DisplayName("유저 아이디로 단건 조회 Get /user/{userId}")
     public void findByIdTest() throws Exception {
 
         //given
@@ -232,7 +232,7 @@ class UserRestControllerTest {
     }
 
     @Test
-    @DisplayName("수정하기")
+    @DisplayName("수정하기 Put /user/edit")
     public void editUserTest() throws Exception {
 
         //given
@@ -268,6 +268,4 @@ class UserRestControllerTest {
                         )
                 ));
     }
-
-
 }
