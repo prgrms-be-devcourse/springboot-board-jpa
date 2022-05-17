@@ -51,10 +51,6 @@ public class Post extends BaseEntity {
     return Objects.hash(id, title, content, user);
   }
 
-  public void changeContent(String newContent) {
-    this.content = newContent;
-  }
-
   public void removeUser() {
     if (this.user != null) {
       var removeTarget = this.user;
@@ -69,5 +65,13 @@ public class Post extends BaseEntity {
     if (!user.contains(this)) {
       user.addPost(this);
     }
+  }
+
+  public void updateTitle(String title) {
+    this.title = title;
+  }
+
+  public void updateContent(String content) {
+    this.content = content;
   }
 }

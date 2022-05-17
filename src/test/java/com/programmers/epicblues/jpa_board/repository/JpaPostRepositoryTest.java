@@ -55,7 +55,7 @@ class JpaPostRepositoryTest {
     var maybePersistedPost = jpaPostRepository.save(post);
 
     // When
-    maybePersistedPost.changeContent("babo");
+    maybePersistedPost.updateContent("babo");
 
     //Then
     var queriedPost = jpaPostRepository.findById(maybePersistedPost.getId()).orElseThrow();
@@ -73,7 +73,7 @@ class JpaPostRepositoryTest {
     var persistedPost = jpaPostRepository.save(post);
 
     // When
-    persistedPost.changeContent("babo");
+    persistedPost.updateContent("babo");
 
     //Then
     var queriedPost = jpaPostRepository.findById(persistedPost.getId()).orElseThrow();

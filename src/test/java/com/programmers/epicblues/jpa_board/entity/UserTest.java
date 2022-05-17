@@ -3,7 +3,6 @@ package com.programmers.epicblues.jpa_board.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.programmers.epicblues.jpa_board.EntityFixture;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +16,6 @@ class UserTest {
     int age = 30;
     String hobby = "맛집 탐방";
     String createdBy = "민성";
-    LocalDateTime createdAt = LocalDateTime.now();
 
     // When
     User user = new User(name, age, hobby, createdBy);

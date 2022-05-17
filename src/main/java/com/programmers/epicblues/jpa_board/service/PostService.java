@@ -1,5 +1,6 @@
 package com.programmers.epicblues.jpa_board.service;
 
+import com.programmers.epicblues.jpa_board.dto.PostResponse;
 import com.programmers.epicblues.jpa_board.entity.Post;
 import com.programmers.epicblues.jpa_board.entity.User;
 import com.programmers.epicblues.jpa_board.repository.JpaPostRepository;
@@ -36,5 +37,18 @@ public class PostService {
 
     postRepository.save(post);
 
+  }
+
+  public PostResponse updatePost(long postId, String title, String content) {
+    var targetPost = postRepository.findById(postId).orElseThrow();
+    targetPost.updateTitle(title);
+    targetPost.updateContent(content);
+    postRepository.save(targetPost);
+    return new PostResponse(postId, title, content);
+  }
+
+  public PostResponse getPostById(long postId) {
+    var queriedPost = postRepository.findById(postId).orElseThrow();
+    return new PostResponse(queriedPost.getId(), queriedPost.getTitle(), queriedPost.getContent());
   }
 }
