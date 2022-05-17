@@ -1,7 +1,7 @@
 package com.programmers.board.core.post.application;
 
-import com.programmers.board.core.post.application.dto.PostDto;
-import com.programmers.board.core.post.application.mapper.PostMapper;
+import com.programmers.board.core.post.application.dto.CreateRequestPost;
+import com.programmers.board.core.post.application.dto.ResponsePost;
 import com.programmers.board.core.post.domain.Post;
 import com.programmers.board.core.post.domain.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,37 +17,36 @@ import javax.persistence.EntityNotFoundException;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final PostMapper postMapper;
 
     @Transactional
-    public PostDto save(PostDto postDto){
-        Post post = postMapper.convertToEntity(postDto);
+    public ResponsePost save(CreateRequestPost createRequestPost){
+        Post post = createRequestPost.toEntity();
         Post savedPost = postRepository.save(post);
-        return postMapper.convertToDto(savedPost);
+        return ResponsePost.of(post);
     }
 
     @Transactional
-    public PostDto findOne(Long id){
+    public ResponsePost findOne(Long id){
         return postRepository.findById(id)
-                .map(postMapper::convertToDto)
-                .orElseThrow(() -> new EntityNotFoundException("포스팅이 없습니다."));
+                .map(ResponsePost::of)
+                .orElseThrow(()-> new EntityNotFoundException("id와 일치하는 포스팅이 없습니다."));
     }
 
     @Transactional
-    public Page<PostDto> findPosts(Pageable pageable){
+    public Page<ResponsePost> findPosts(Pageable pageable){
         return postRepository.findAll(pageable)
-                .map(postMapper::convertToDto);
+                .map(ResponsePost::of);
     }
 
     @Transactional
-    public PostDto update(Long id, PostDto postDto){
+    public ResponsePost update(Long id, CreateRequestPost postDto){
         Post retrievedPost = postRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("포스팅이 없습니다."));
 
         retrievedPost.updateTitle(postDto.getTitle());
         retrievedPost.updateContent(postDto.getContent());
 
-        return postMapper.convertToDto(retrievedPost);
+        return ResponsePost.of(retrievedPost);
     }
 
 }
