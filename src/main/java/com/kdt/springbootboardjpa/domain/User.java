@@ -1,6 +1,7 @@
 package com.kdt.springbootboardjpa.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,4 +33,10 @@ public class User extends BaseEntity{
         posts.add(post);
     }
 
+    @Builder
+    public User(String username, int age, String hobby) {
+        this.username = username;
+        this.age = age;
+        this.hobby = hobby;
+    }
 }
