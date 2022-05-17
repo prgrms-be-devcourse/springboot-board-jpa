@@ -1,0 +1,59 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 포스트
+
+=== 포스트 단건 조회
+
+==== GET /api/v1/posts/{postId}
+
+.Request
+
+include::{snippets}/find-post/http-request.adoc[]
+
+.Response
+
+include::{snippets}/find-post/http-response.adoc[]
+include::{snippets}/find-post/response-fields.adoc[]
+
+=== 포스트 다건 조회
+
+==== GET /api/v1/posts?page={page}&size={size}
+
+.Request
+
+include::{snippets}/find-posts/http-request.adoc[]
+
+.Response
+
+include::{snippets}/find-posts/http-response.adoc[]
+include::{snippets}/find-posts/response-fields.adoc[]
+
+=== 포스트 생성
+
+==== POST /api/v1/posts
+
+.Request
+
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+=== 포스트 업데이트
+
+==== POST /api/v1/posts/{postId}
+
+.Request
+
+include::{snippets}/update-post/http-request.adoc[]
+include::{snippets}/update-post/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/update-post/http-response.adoc[]

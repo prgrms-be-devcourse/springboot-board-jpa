@@ -1,13 +1,12 @@
 package com.example.boardjpa.controller;
 
-import com.example.boardjpa.dto.CreatePostRequestDto;
-import com.example.boardjpa.dto.PostResponseDto;
-import com.example.boardjpa.dto.UpdatePostRequestDto;
+import com.example.boardjpa.dto.*;
 import com.example.boardjpa.service.PostService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RequestMapping("/api/v1/posts")
 @RestController
@@ -19,12 +18,21 @@ public class PostController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Page<PostResponseDto>> showPosts(Pageable pageable) {
-        return ResponseEntity.ok(postService.getPosts(pageable));
+    public ResponseEntity<PostsResponseDto> showPosts(
+            @RequestParam(required = false) Integer page
+            , @RequestParam(required = false) Integer size) {
+        if (Objects.isNull(page)) {
+            page = 0;
+        }
+        if (Objects.isNull(size)) {
+            size = 0;
+        }
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return ResponseEntity.ok(postService.getPosts(pageRequest));
     }
 
     @PostMapping("")
-    public ResponseEntity<Long> createPost(@RequestBody CreatePostRequestDto createPostRequestDto) {
+    public ResponseEntity<CreatePostResponseDto> createPost(@RequestBody CreatePostRequestDto createPostRequestDto) {
         return ResponseEntity.ok(postService.createPost(createPostRequestDto));
     }
 

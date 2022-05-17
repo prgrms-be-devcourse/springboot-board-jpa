@@ -1,16 +1,12 @@
 package com.example.boardjpa.service;
 
 import com.example.boardjpa.domain.User;
-import com.example.boardjpa.dto.CreatePostRequestDto;
-import com.example.boardjpa.dto.PostResponseDto;
-import com.example.boardjpa.dto.UpdatePostRequestDto;
-import com.example.boardjpa.dto.UserResponseDto;
+import com.example.boardjpa.dto.*;
 import com.example.boardjpa.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +41,7 @@ class PostServiceTest {
                 , content
                 , user.getId()
         );
-        Long postId = postService.createPost(request);
+        Long postId = postService.createPost(request).getPostId();
 
         //then
         PostResponseDto foundPost = postService.getPostById(postId);
@@ -75,7 +71,7 @@ class PostServiceTest {
                 title
                 , content
                 , user.getId()
-        ));
+        )).getPostId();
 
         //when
         String changedContent = "변경된 내용입니다.";
@@ -109,12 +105,12 @@ class PostServiceTest {
                     title + i
                     , content + i
                     , user.getId()
-            ));
+            )).getPostId();
         }
         PageRequest page = PageRequest.of(0, 10);
 
         //Then
-        Page<PostResponseDto> all = postService.getPosts(page);
-        assertThat(all).hasSize(10);
+        PostsResponseDto all = postService.getPosts(page);
+        assertThat(all.getPosts()).hasSize(10);
     }
 }

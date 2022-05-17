@@ -5,6 +5,7 @@ import com.example.boardjpa.dto.CreatePostRequestDto;
 import com.example.boardjpa.dto.UpdatePostRequestDto;
 import com.example.boardjpa.exception.custom.FieldBlankException;
 import com.example.boardjpa.repository.UserRepository;
+import com.example.boardjpa.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,13 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -31,7 +35,7 @@ class PostControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private PostController postController;
+    private PostService postService;
 
     @Autowired
     UserRepository userRepository;
@@ -60,7 +64,25 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createPostRequestDto)))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-create"
+                                , requestFields(
+                                        fieldWithPath("title")
+                                                .type(JsonFieldType.STRING)
+                                                .description("title")
+                                        , fieldWithPath("content")
+                                                .type(JsonFieldType.STRING)
+                                                .description("content")
+                                        , fieldWithPath("userId")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("userId")
+                                ), responseFields(
+                                        fieldWithPath("postId")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("postId")
+                                )
+                        )
+                );
     }
 
     @Test
@@ -85,16 +107,55 @@ class PostControllerTest {
         //Given
         User user = userRepository
                 .save(new User("박상혁", 25, "음주"));
-        Long postId = postController
+        Long postId = postService
                 .createPost(new CreatePostRequestDto(
                         "제목", "내용", user.getId()))
-                .getBody();
+                .getPostId();
 
         //When //Then
         mockMvc.perform(get("/api/v1/posts/{postId}", postId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print()).andDo(document("find-post",
+                        responseFields(
+                                fieldWithPath("id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("postId")
+                                , fieldWithPath("title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("title")
+                                , fieldWithPath("content")
+                                        .type(JsonFieldType.STRING)
+                                        .description("content")
+                                , fieldWithPath("user")
+                                        .type(JsonFieldType.OBJECT)
+                                        .description("user")
+                                , fieldWithPath("createdAt")
+                                        .type(JsonFieldType.STRING)
+                                        .description("createdAt")
+                                , fieldWithPath("createdBy")
+                                        .type(JsonFieldType.STRING)
+                                        .description("createdBy")
+                                , fieldWithPath("user.id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("user.id")
+                                , fieldWithPath("user.name")
+                                        .type(JsonFieldType.STRING)
+                                        .description("user.name")
+                                , fieldWithPath("user.age")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("user.age")
+                                , fieldWithPath("user.hobby")
+                                        .type(JsonFieldType.STRING)
+                                        .description("user.hobby")
+                                , fieldWithPath("user.createdAt")
+                                        .type(JsonFieldType.STRING)
+                                        .description("user.createdAt")
+                                , fieldWithPath("user.createdBy")
+                                        .type(JsonFieldType.STRING)
+                                        .description("user.createdBy")
+                        )
+                ));
     }
 
     @Test
@@ -110,10 +171,10 @@ class PostControllerTest {
         //Given
         User user = userRepository
                 .save(new User("박상혁", 25, "음주"));
-        Long postId = postController
+        Long postId = postService
                 .createPost(new CreatePostRequestDto(
                         "제목", "내용", user.getId()))
-                .getBody();
+                .getPostId();
 
         //When //Then
         mockMvc.perform(get("/api/v1/posts")
@@ -121,7 +182,56 @@ class PostControllerTest {
                         .param("size", String.valueOf(10))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(print()).andDo(document("find-posts"
+                        , responseFields(
+                                fieldWithPath("page")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("page")
+                                , fieldWithPath("size")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("size")
+                                , fieldWithPath("posts[]")
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("posts")
+                                , fieldWithPath("posts[].id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("posts.postId")
+                                , fieldWithPath("posts[].title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("posts.title")
+                                , fieldWithPath("posts[].content")
+                                        .type(JsonFieldType.STRING)
+                                        .description("posts.content")
+                                , fieldWithPath("posts[].user")
+                                        .type(JsonFieldType.OBJECT)
+                                        .description("posts.user")
+                                , fieldWithPath("posts[].createdAt")
+                                        .type(JsonFieldType.STRING)
+                                        .description("posts.createdAt")
+                                , fieldWithPath("posts[].createdBy")
+                                        .type(JsonFieldType.STRING)
+                                        .description("posts.createdBy")
+                                , fieldWithPath("posts[].user.id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("posts.user.id")
+                                , fieldWithPath("posts[].user.name")
+                                        .type(JsonFieldType.STRING)
+                                        .description("posts.user.name")
+                                , fieldWithPath("posts[].user.age")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("posts.user.age")
+                                , fieldWithPath("posts[].user.hobby")
+                                        .type(JsonFieldType.STRING)
+                                        .description("posts.user.hobby")
+                                , fieldWithPath("posts[].user.createdAt")
+                                        .type(JsonFieldType.STRING)
+                                        .description("posts.user.createdAt")
+                                , fieldWithPath("posts[].user.createdBy")
+                                        .type(JsonFieldType.STRING)
+                                        .description("posts.user.createdBy")
+                        )
+                ));
     }
 
     @Test
@@ -129,10 +239,10 @@ class PostControllerTest {
         //Given
         User user = userRepository
                 .save(new User("박상혁", 25, "음주"));
-        Long postId = postController
+        Long postId = postService
                 .createPost(new CreatePostRequestDto(
                         "제목", "내용", user.getId()))
-                .getBody();
+                .getPostId();
 
         //When //Then
         UpdatePostRequestDto updatePostRequestDto
@@ -141,7 +251,13 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatePostRequestDto)))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("update-post"
+                        , requestFields(
+                                fieldWithPath("content")
+                                        .type(JsonFieldType.STRING)
+                                        .description("content")
+                        )));
     }
 
     @Test
@@ -149,10 +265,10 @@ class PostControllerTest {
         //Given
         User user = userRepository
                 .save(new User("박상혁", 25, "음주"));
-        Long postId = postController
+        Long postId = postService
                 .createPost(new CreatePostRequestDto(
                         "제목", "내용", user.getId()))
-                .getBody();
+                .getPostId();
 
         //When //Then
         assertThatThrownBy(() -> new UpdatePostRequestDto(null))
