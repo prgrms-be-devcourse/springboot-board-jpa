@@ -1,5 +1,8 @@
 package com.example.boardjpa.domain;
 
+import com.example.boardjpa.exception.ErrorCode;
+import com.example.boardjpa.exception.custom.FieldBlankException;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -21,6 +24,9 @@ public class Post extends BaseEntity{
     }
 
     public Post(String title, String content, User user) {
+        if (title.isBlank() || !Objects.nonNull(user)) {
+            throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
+        }
         this.title = title;
         this.content = content;
         setUser(user);

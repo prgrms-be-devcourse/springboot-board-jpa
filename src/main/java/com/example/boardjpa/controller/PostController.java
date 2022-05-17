@@ -5,7 +5,6 @@ import com.example.boardjpa.dto.PostResponseDto;
 import com.example.boardjpa.dto.UpdatePostRequestDto;
 import com.example.boardjpa.service.PostService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
