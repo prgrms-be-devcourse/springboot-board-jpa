@@ -2,6 +2,9 @@ package com.programmers.epicblues.jpa_board;
 
 import com.programmers.epicblues.jpa_board.entity.Post;
 import com.programmers.epicblues.jpa_board.entity.User;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -9,15 +12,17 @@ import lombok.NoArgsConstructor;
 public class EntityFixture {
 
   public static Post getFirstPost() {
-    return Post.builder().content("내용2").title("제목2")
-        .createdBy("민수")
-        .build();
+    return Post.builder().content("내용2").title("제목2").build();
   }
 
   public static Post getSecondPost() {
-    return Post.builder().content("내용1").title("제목1")
-        .createdBy("민성")
-        .build();
+    return Post.builder().content("내용1").title("제목1").build();
+  }
+
+  public static List<Post> getPostList() {
+    return Stream.of(1, 2, 3, 4, 5, 6)
+        .map(i -> Post.builder().title(String.valueOf(i)).content(String.valueOf(i)).build())
+        .collect(Collectors.toList());
   }
 
   public static User getUser() {

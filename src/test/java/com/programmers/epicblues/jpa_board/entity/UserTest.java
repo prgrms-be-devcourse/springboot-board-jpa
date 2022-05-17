@@ -47,4 +47,18 @@ class UserTest {
     assertThat(post.getUser()).isEqualTo(user);
   }
 
+  @Test
+  @DisplayName("여러 post를 한 번에 추가하면, post에도 user가 등록된다.")
+  void add_posts_test() {
+
+    // Given
+    var user = EntityFixture.getUser();
+    var posts = EntityFixture.getPostList();
+    // When
+    user.addPosts(posts);
+
+    // Then
+    assertThat(posts).allMatch(post -> post.getUser().equals(user));
+  }
+
 }

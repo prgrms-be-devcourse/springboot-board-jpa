@@ -1,5 +1,6 @@
 package com.programmers.epicblues.jpa_board.entity;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "post")
 @Getter
 @NoArgsConstructor
-public class Post extends CommonFieldEntity {
+public class Post extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,10 +28,27 @@ public class Post extends CommonFieldEntity {
   private User user;
 
   @Builder
-  public Post(String title, String content, String createdBy) {
+  public Post(String title, String content) {
     this.title = title;
     this.content = content;
-    this.createdBy = createdBy;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Post)) {
+      return false;
+    }
+    Post post = (Post) o;
+    return Objects.equals(id, post.id) && title.equals(post.title) && content.equals(
+        post.content) && Objects.equals(user, post.user);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, title, content, user);
   }
 
   public void changeContent(String newContent) {
@@ -47,6 +65,7 @@ public class Post extends CommonFieldEntity {
 
   public void assignUser(User user) {
     this.user = user;
+    this.createdBy = user.getName();
     if (!user.contains(this)) {
       user.addPost(this);
     }
