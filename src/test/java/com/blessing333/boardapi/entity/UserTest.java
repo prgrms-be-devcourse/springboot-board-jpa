@@ -1,6 +1,6 @@
 package com.blessing333.boardapi.entity;
 
-import com.blessing333.boardapi.exception.UserCreateFailException;
+import com.blessing333.boardapi.entity.exception.UserCreateFailException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

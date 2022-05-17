@@ -1,6 +1,6 @@
 package com.blessing333.boardapi.entity;
 
-import com.blessing333.boardapi.exception.UserCreateFailException;
+import com.blessing333.boardapi.entity.exception.UserCreateFailException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,14 +30,14 @@ public class User extends BaseEntity {
 
     private String hobby;
 
-    public static User createUser(String name, int age){
+    public static User createUser(String name, int age) {
         User user = new User();
         user.setName(name);
         user.setAge(age);
         return user;
     }
 
-    public static User createUserWithHobby(String name, int age, String hobby){
+    public static User createUserWithHobby(String name, int age, String hobby) {
         User user = new User();
         user.setName(name);
         user.setAge(age);
@@ -45,8 +45,8 @@ public class User extends BaseEntity {
         return user;
     }
 
-    private void setAge(int age){
-        if(age <= 0)
+    private void setAge(int age) {
+        if (age <= 0)
             throw new UserCreateFailException("age should over 0");
         this.age = age;
     }

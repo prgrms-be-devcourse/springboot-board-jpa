@@ -1,6 +1,7 @@
 package com.blessing333.boardapi.entity;
 
-import com.blessing333.boardapi.exception.PostCreateFailException;
+import com.blessing333.boardapi.entity.exception.PostCreateFailException;
+import com.blessing333.boardapi.entity.exception.PostUpdateFailException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,7 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User createdBy;
 
-    public static Post createNewPost(String title, String content, User createBy){
+    public static Post createNewPost(String title, String content, User createBy) {
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
@@ -38,18 +39,18 @@ public class Post extends BaseEntity {
         return post;
     }
 
-    public void changeTitle(String title){
-        if(title.length() < 2)
+    public void changeTitle(String title) {
+        if (title.length() < 2)
             throw new PostUpdateFailException("title length should over 2");
         this.title = title;
     }
 
-    public void changeContent(String content){
+    public void changeContent(String content) {
         this.content = content;
     }
 
-    private void setTitle(String title){
-        if(title.length() < 2)
+    private void setTitle(String title) {
+        if (title.length() < 2)
             throw new PostCreateFailException("title length should over 2");
         this.title = title;
     }

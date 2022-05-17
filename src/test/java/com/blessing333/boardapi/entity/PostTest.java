@@ -1,6 +1,7 @@
 package com.blessing333.boardapi.entity;
 
-import com.blessing333.boardapi.exception.PostCreateFailException;
+import com.blessing333.boardapi.entity.exception.PostCreateFailException;
+import com.blessing333.boardapi.entity.exception.PostUpdateFailException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
