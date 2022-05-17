@@ -69,7 +69,7 @@ class PostRestControllerTest {
     UserDto userDto;
 
     @Test
-    @DisplayName("게시글 작성")
+    @DisplayName("게시글 작성 Post /posts")
     public void doPostTest() throws Exception {
 
         //given
@@ -104,6 +104,47 @@ class PostRestControllerTest {
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
+                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("게시글 수정 Post /posts/{id}")
+    public void editPostTest() throws Exception {
+
+        //given
+        PostDto postDto = PostDto.builder()
+                .title("title")
+                .content("content")
+                .build();
+
+        long postId = postService.savePost(postDto, userDto);
+
+        postDto.setTitle("new Title");
+        postDto.setContent("new Content");
+
+        //when
+        mockMvc.perform(post("/posts/{id}", postId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(postDto))
+                )
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("post-edit",
+                        requestFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("user").type(JsonFieldType.NULL).description("user")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("data.id"),
+                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("data.title"),
+                                fieldWithPath("data.content").type(JsonFieldType.STRING).description("data.content"),
+                                fieldWithPath("data.user").type(JsonFieldType.NULL).description("data.user"),
                                 fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
                         )
                 ));

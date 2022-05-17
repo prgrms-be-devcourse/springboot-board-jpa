@@ -49,7 +49,9 @@ public class PostRestController {
     }
 
     @PostMapping("/posts/{id}")
-    public ApiResponse<PostDto> editPost(@RequestBody PostDto postDto) throws NotFoundException {
+    public ApiResponse<PostDto> editPost(@PathVariable("id") Long id,
+                                         @RequestBody PostDto postDto) throws NotFoundException {
+        postDto.setId(id);
         postService.updatePost(postDto);
         return ApiResponse.ok(postDto);
     }
