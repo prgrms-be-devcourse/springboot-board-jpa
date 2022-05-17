@@ -1,6 +1,5 @@
 package com.programmers.board.controller;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 
 import org.hibernate.validator.constraints.Range;
