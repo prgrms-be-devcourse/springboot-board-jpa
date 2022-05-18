@@ -43,7 +43,7 @@ public class DataSourceConfig {
                                                                      JpaProperties jpaProperties) {
     LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
     em.setDataSource(dataSource);
-    em.setPackagesToScan("com.prgrms.springbootjpa.domain");
+    em.setPackagesToScan("com.sdardew.board.domain");
     em.setJpaVendorAdapter(jpaVendorAdapter);
 
     Properties properties = new Properties();

@@ -12,4 +12,4 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
         query.in_clause_parameter_padding: true
         hbm2ddl:
-          auto: create-drop
+          auto: create
