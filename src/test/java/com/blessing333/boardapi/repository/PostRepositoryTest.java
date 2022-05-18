@@ -3,8 +3,6 @@ package com.blessing333.boardapi.repository;
 import com.blessing333.boardapi.TestDataProvider;
 import com.blessing333.boardapi.entity.Post;
 import com.blessing333.boardapi.entity.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -99,7 +97,7 @@ class PostRepositoryTest {
         });
     }
 
-    @DisplayName("Id로 Post와 Member fetch join")
+    @DisplayName("게시글 작성자 정보와 같이 게시글 정보를 조회한다")
     @Test
     void joinTest() {
         PersistenceUnitUtil unitUtil = emf.getPersistenceUnitUtil();
@@ -109,7 +107,7 @@ class PostRepositoryTest {
         em.clear();
 
         Assertions.assertDoesNotThrow(()->{
-            Post found = postRepository.findPostByIdWithMember(post.getId()).orElseThrow();
+            Post found = postRepository.findPostWithMemberById(post.getId()).orElseThrow();
             assertThat(unitUtil.isLoaded(found.getWriter())).isTrue();
         });
     }

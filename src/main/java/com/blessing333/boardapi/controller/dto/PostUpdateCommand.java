@@ -9,11 +9,11 @@ import javax.validation.constraints.Size;
 
 @Getter
 @RequiredArgsConstructor
-public class PostCreateCommands {
+public class PostUpdateCommand {
+    @NotNull(message = "id could not be null")
+    private final Long id;
     @Size(min = 2, message = "title length should over 2")
     private final String title;
     @NotBlank(message = "content could not be blank")
     private final String content;
-    @NotNull(message = "userId could not be null")
-    private final Long userId;
 }

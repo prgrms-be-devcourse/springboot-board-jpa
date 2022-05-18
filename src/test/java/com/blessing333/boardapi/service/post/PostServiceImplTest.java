@@ -1,8 +1,9 @@
 package com.blessing333.boardapi.service.post;
 
 import com.blessing333.boardapi.TestDataProvider;
-import com.blessing333.boardapi.controller.dto.PostCreateCommands;
+import com.blessing333.boardapi.controller.dto.PostCreateCommand;
 import com.blessing333.boardapi.controller.dto.PostInformation;
+import com.blessing333.boardapi.controller.dto.PostUpdateCommand;
 import com.blessing333.boardapi.converter.PostConverter;
 import com.blessing333.boardapi.entity.Post;
 import com.blessing333.boardapi.entity.User;
@@ -12,8 +13,9 @@ import com.blessing333.boardapi.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManagerFactory;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,12 +62,12 @@ class PostServiceImplTest {
         assertThrows(PostNotFoundException.class, () -> postService.loadPostById(-1L));
     }
 
-    @DisplayName("게시글 생성 테스트")
+    @DisplayName("게시글 생성")
     @Test
     void registerPostTest() {
-        PostCreateCommands postCreateCommands = new PostCreateCommands("title", "content", defaultUser.getId());
+        PostCreateCommand postCreateCommand = new PostCreateCommand("title", "content", defaultUser.getId());
 
-        PostInformation postInformation = postService.registerPost(postCreateCommands);
+        PostInformation postInformation = postService.registerPost(postCreateCommand);
 
         assertTrue(postRepository.existsById(postInformation.getId()));
     }
@@ -74,9 +76,24 @@ class PostServiceImplTest {
     @Test
     void registerPostWithInvalidUserId() {
         Long invalidUserId = -1L;
-        PostCreateCommands postCreateCommands = new PostCreateCommands("title", "content", invalidUserId);
+        PostCreateCommand postCreateCommand = new PostCreateCommand("title", "content", invalidUserId);
 
-        assertThrows(PostCreateFailException.class, () -> postService.registerPost(postCreateCommands));
+        assertThrows(PostCreateFailException.class, () -> postService.registerPost(postCreateCommand));
+    }
+
+    @DisplayName("게시글 수정")
+    @Test
+    void updatePost() {
+        Post post = dataProvider.insertPostToDb("before", "before update", defaultUser);
+        String changedTitle = "after";
+        String changedContent = "after update";
+        PostUpdateCommand postUpdateCommand = new PostUpdateCommand(post.getId(), changedTitle, changedContent);
+
+        postService.updatePost(postUpdateCommand);
+
+        Post found = postRepository.findById(post.getId()).orElseThrow();
+        assertThat(found.getTitle()).isEqualTo(changedTitle);
+        assertThat(found.getContent()).isEqualTo(changedContent);
     }
 
 }

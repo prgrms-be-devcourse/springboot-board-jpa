@@ -3,6 +3,7 @@ package com.blessing333.boardapi.controller;
 import com.blessing333.boardapi.controller.dto.ErrorResult;
 import com.blessing333.boardapi.entity.exception.DomainException;
 import com.blessing333.boardapi.entity.exception.PostCreateFailException;
+import com.blessing333.boardapi.entity.exception.PostUpdateFailException;
 import com.blessing333.boardapi.service.post.PostNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class PostApiExceptionHandler {
     private static final String HANDLER_NAME = "[PostApiExceptionHandler]";
 
     @ExceptionHandler(DomainException.class)
-    public ResponseEntity<ErrorResult> handleIllegalArgumentException(DomainException e) {
+    public ResponseEntity<ErrorResult> handleDomainException(DomainException e) {
         log.error(HANDLER_NAME, e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResult(e.getMessage()));
     }
@@ -38,7 +39,13 @@ public class PostApiExceptionHandler {
     }
 
     @ExceptionHandler(PostCreateFailException.class)
-    public ResponseEntity<ErrorResult> handlePostNotFoundException(PostCreateFailException e) {
+    public ResponseEntity<ErrorResult> handlePostCreateFailException(PostCreateFailException e) {
+        log.error(HANDLER_NAME, e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResult(e.getMessage()));
+    }
+
+    @ExceptionHandler(PostUpdateFailException.class)
+    public ResponseEntity<ErrorResult> handlePostUpdateFailException(PostUpdateFailException e) {
         log.error(HANDLER_NAME, e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResult(e.getMessage()));
     }
