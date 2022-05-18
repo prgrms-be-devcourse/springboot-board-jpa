@@ -3,11 +3,11 @@ package org.prgrms.board.domain.post.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.prgrms.board.domain.user.response.UserSearchResponse;
 
 import java.time.LocalDateTime;
 
+@Builder
 @AllArgsConstructor
 @Getter
 public class PostSearchResponse {

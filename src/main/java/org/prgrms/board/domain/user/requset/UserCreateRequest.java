@@ -1,13 +1,14 @@
 package org.prgrms.board.domain.user.requset;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class UserCreateRequest {
@@ -18,6 +19,7 @@ public class UserCreateRequest {
     @Size(max = 10)
     private String lastName;
     @NotNull
+    @Positive
     private int age;
     @NotBlank
     @Email
