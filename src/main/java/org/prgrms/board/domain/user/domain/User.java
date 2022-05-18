@@ -29,17 +29,25 @@ public class User extends BaseEntity {
     @Embedded
     private Email email;
 
-    private String password;
+    @Embedded
+    private Password password;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
     @Builder
-    public User(Long id, Name name, int age, Email email, String password) {
+    public User(Long id, Name name, int age, Email email, Password password) {
+        validateAge(age);
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
         this.password = password;
+    }
+
+    private void validateAge(int age) {
+        if(age <= 0) {
+            throw new IllegalArgumentException("나이는 0이하가 될 수 없습니다.");
+        }
     }
 }
