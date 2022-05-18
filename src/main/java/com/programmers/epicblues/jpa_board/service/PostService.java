@@ -43,12 +43,12 @@ public class PostService {
     var targetPost = postRepository.findById(postId).orElseThrow();
     targetPost.updateTitle(title);
     targetPost.updateContent(content);
-    postRepository.save(targetPost);
-    return new PostResponse(postId, title, content);
+    var savedPost = postRepository.save(targetPost);
+    return PostResponse.from(savedPost);
   }
 
   public PostResponse getPostById(long postId) {
     var queriedPost = postRepository.findById(postId).orElseThrow();
-    return new PostResponse(queriedPost.getId(), queriedPost.getTitle(), queriedPost.getContent());
+    return PostResponse.from(queriedPost);
   }
 }

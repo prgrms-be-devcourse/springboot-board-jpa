@@ -55,4 +55,8 @@ public class User extends BaseEntity {
   public void addPosts(List<Post> posts) {
     posts.forEach(this::addPost);
   }
+
+  public void setId(long id) {
+    this.id = id;
+  }
 }

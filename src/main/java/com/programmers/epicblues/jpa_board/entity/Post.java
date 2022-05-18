@@ -33,6 +33,10 @@ public class Post extends BaseEntity {
     this.content = content;
   }
 
+  public void setId(Long id) {
+    this.id = id;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

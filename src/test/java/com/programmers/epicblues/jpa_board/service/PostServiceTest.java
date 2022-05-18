@@ -120,9 +120,15 @@ class PostServiceTest {
     long postId = 1L;
     String updatedTitle = "updated title";
     String updatedContent = "updated content";
+    var user = EntityFixture.getUser();
+    user.setId(1L);
+    var targetPost = EntityFixture.getFirstPost();
+    targetPost.assignUser(user);
+    targetPost.setId(postId);
 
     // When
-    when(postRepository.findById(postId)).thenReturn(Optional.of(EntityFixture.getFirstPost()));
+    when(postRepository.findById(postId)).thenReturn(Optional.of(targetPost));
+    when(postRepository.save(targetPost)).thenReturn(targetPost);
     PostResponse upsertResult = postService.updatePost(postId, updatedTitle, updatedContent);
 
     // Then
@@ -140,9 +146,13 @@ class PostServiceTest {
     // Given
     var postId = 1L;
     var queriedPost = EntityFixture.getFirstPost();
+    var user = EntityFixture.getUser();
+    queriedPost.assignUser(user);
+    queriedPost.setId(postId);
 
     // When
     when(postRepository.findById(postId)).thenReturn(Optional.of(queriedPost));
+
     var postResponse = postService.getPostById(postId);
 
     // Then

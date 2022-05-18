@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+/*
+  학습 테스트
+ */
+
 @SpringBootTest
 @Transactional
 class EntityJpaTest {
