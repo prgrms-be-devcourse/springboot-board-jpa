@@ -1,7 +1,7 @@
 package testutil;
 
-import com.programmers.epicblues.jpa_board.entity.Post;
-import com.programmers.epicblues.jpa_board.entity.User;
+import com.programmers.epicblues.board.entity.Post;
+import com.programmers.epicblues.board.entity.User;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;

@@ -2,14 +2,14 @@ package testutil;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.programmers.epicblues.jpa_board.entity.LongIdHolder;
-import com.programmers.epicblues.jpa_board.entity.User;
+import com.programmers.epicblues.board.entity.LongIdHolder;
+import com.programmers.epicblues.board.entity.User;
 import java.lang.reflect.Field;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /*
-  테스트 전용 id 변경 인터페이스
+  테스트 전용 id 변경 유틸 클래스
  */
 public class FieldSetter {
 
@@ -25,6 +25,7 @@ public class FieldSetter {
     idField.setAccessible(false);
   }
 
+  // TODO 2: Test용 util 클래스에 대한 테스트 위치는 어디가 좋을까요?
   static class FieldSetterTest {
 
     @Test
