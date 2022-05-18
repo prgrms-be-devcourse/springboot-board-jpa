@@ -50,10 +50,6 @@ public class Post extends BaseEntity {
     }
 
     private void assignUser(User user) {
-        if (Objects.nonNull(this.user)) {
-            this.user.getPosts().remove(this);
-        }
-
         this.user = user;
         user.getPosts().add(this);
     }
