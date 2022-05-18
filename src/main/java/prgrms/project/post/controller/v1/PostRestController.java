@@ -12,7 +12,7 @@ import prgrms.project.post.service.post.PostService;
 @RestController
 @RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
-public class PostRestControllerV1 {
+public class PostRestController {
 
     private final PostService postService;
 

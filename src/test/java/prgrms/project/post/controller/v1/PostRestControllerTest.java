@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @SpringBootTest
 @Transactional
-class PostRestControllerV1Test {
+class PostRestControllerTest {
 
     @Autowired
     MockMvc mockMvc;
