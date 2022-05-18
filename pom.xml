@@ -48,17 +48,17 @@
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>1.5.8</version>
+                <version>2.2.2</version>
                 <executions>
                     <execution>
-                        <id>generate-docs</id>
+                        <id>asciidoc-to-html</id>
                         <phase>prepare-package</phase>
                         <goals>
                             <goal>process-asciidoc</goal>
                         </goals>
                         <configuration>
-                            <backend>html</backend>
-                            <doctype>book</doctype>
+                            <backend>html5</backend>
+                            <sourceHighlighter>coderay</sourceHighlighter>
                         </configuration>
                     </execution>
                 </executions>
