@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "users")
 public class User extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +21,13 @@ public class User extends BaseEntity{
     @Column(name = "username", length = 20)
     private String username;
 
-    @Column(name = "age")
+    @Column(name = "age", nullable = false)
     private int age;
 
     @Column(name = "hobby", length = 35)
     private String hobby;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
 
     public void addPost(Post post) {
