@@ -25,7 +25,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends BaseEntity {
-    @Column(name = "name", nullable = false, length = 16)
+    @Column(name = "name", nullable = false, length = 16, updatable = false)
     private String name;
 
     @Column(name = "age", nullable = false)

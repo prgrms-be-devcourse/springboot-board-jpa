@@ -1,11 +1,8 @@
 package com.springboard.post.service;
 
-import com.springboard.common.exception.FindFailException;
+import com.springboard.common.exception.*;
 import com.springboard.post.util.PostConverter;
-import com.springboard.post.dto.CreatePostRequest;
-import com.springboard.post.dto.CreatePostResponse;
-import com.springboard.post.dto.FindPostResponse;
-import com.springboard.post.dto.UpdatePostRequest;
+import com.springboard.post.dto.*;
 import com.springboard.post.entity.Post;
 import com.springboard.post.repository.PostRepository;
 import com.springboard.user.entity.User;

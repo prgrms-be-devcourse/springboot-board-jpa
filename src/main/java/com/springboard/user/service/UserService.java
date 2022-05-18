@@ -1,10 +1,7 @@
 package com.springboard.user.service;
 
-import com.springboard.common.exception.FindFailException;
-import com.springboard.user.dto.CreateUserRequest;
-import com.springboard.user.dto.CreateUserResponse;
-import com.springboard.user.dto.FindUserResponse;
-import com.springboard.user.dto.UpdateUserRequest;
+import com.springboard.common.exception.*;
+import com.springboard.user.dto.*;
 import com.springboard.user.entity.User;
 import com.springboard.user.repository.UserRepository;
 import com.springboard.user.util.UserConverter;
@@ -21,28 +18,28 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
 
-    public FindUserResponse findOne(Long id) {
+    public UserResponse findOne(Long id) {
         User user = userRepository.findById(id).orElseThrow(FindFailException::new);
-        return userConverter.getFindResponseFrom(user);
+        return userConverter.getResponseFrom(user);
     }
 
-    public Page<FindUserResponse> findAll(Pageable pageable) {
-        return userRepository.findAll(pageable).map(userConverter::getFindResponseFrom);
+    public Page<UserResponse> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable).map(userConverter::getResponseFrom);
     }
 
     @Transactional
-    public CreateUserResponse save(CreateUserRequest request) {
+    public UserResponse save(UserRequest request) {
         User user = userRepository.save(userConverter.getUserFrom(request));
-        return userConverter.getCreateResponseFrom(user);
+        return userConverter.getResponseFrom(user);
     }
 
     @Transactional
-    public FindUserResponse updateOne(Long id, UpdateUserRequest request) {
+    public UserResponse updateOne(Long id, UserRequest request) {
         User user = userRepository.findById(id).orElseThrow(FindFailException::new);
         user.setAge(request.age());
         user.setHobby(request.hobby());
         User response = userRepository.save(user);
-        return userConverter.getFindResponseFrom(response);
+        return userConverter.getResponseFrom(response);
     }
 
     @Transactional

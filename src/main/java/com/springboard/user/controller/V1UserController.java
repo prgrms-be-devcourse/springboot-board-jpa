@@ -1,9 +1,6 @@
 package com.springboard.user.controller;
 
-import com.springboard.user.dto.CreateUserRequest;
-import com.springboard.user.dto.CreateUserResponse;
-import com.springboard.user.dto.FindUserResponse;
-import com.springboard.user.dto.UpdateUserRequest;
+import com.springboard.user.dto.*;
 import com.springboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,26 +17,26 @@ public class V1UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<Page<FindUserResponse>> getAll(Pageable pageable) {
-        Page<FindUserResponse> response = userService.findAll(pageable);
+    public ResponseEntity<Page<UserResponse>> getAll(Pageable pageable) {
+        Page<UserResponse> response = userService.findAll(pageable);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
-    public ResponseEntity<CreateUserResponse> register(@RequestBody CreateUserRequest request) {
-        CreateUserResponse response = userService.save(request);
+    public ResponseEntity<UserResponse> register(@RequestBody UserRequest request) {
+        UserResponse response = userService.save(request);
         return ResponseEntity.created(URI.create("/api/v1/users/" + response.id())).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FindUserResponse> getOne(@PathVariable Long id) {
-        FindUserResponse response = userService.findOne(id);
+    public ResponseEntity<UserResponse> getOne(@PathVariable Long id) {
+        UserResponse response = userService.findOne(id);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FindUserResponse> modify(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
-        FindUserResponse response = userService.updateOne(id, request);
+    public ResponseEntity<UserResponse> modify(@PathVariable Long id, @RequestBody UserRequest request) {
+        UserResponse response = userService.updateOne(id, request);
         return ResponseEntity.ok(response);
     }
 
