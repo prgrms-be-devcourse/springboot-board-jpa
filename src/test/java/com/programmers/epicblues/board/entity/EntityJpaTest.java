@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import util.EntityFixture;
 
 /*
@@ -18,7 +17,6 @@ import util.EntityFixture;
  */
 
 @SpringBootTest
-@Transactional
 class EntityJpaTest {
 
   private final User USER_FIXTURE = EntityFixture.getUser();

@@ -1,5 +1,6 @@
 package com.programmers.epicblues.board.service;
 
+import com.programmers.epicblues.board.dto.PostRequest;
 import com.programmers.epicblues.board.dto.PostResponse;
 import com.programmers.epicblues.board.entity.Post;
 import com.programmers.epicblues.board.entity.User;
@@ -27,19 +28,19 @@ public class PostService {
     return PostResponse.from(postRepository.findAll(pageRequest).getContent());
   }
 
-  public void createPost(Long userId, String title, String content) {
+  public PostResponse createPost(Long userId, String title, String content) {
     User user = userRepository.findById(userId).orElseThrow();
     Post post = Post.builder().content(content).title(title).build();
     post.assignUser(user);
 
-    postRepository.save(post);
+    return PostResponse.from(postRepository.save(post));
 
   }
 
-  public PostResponse updatePost(long postId, String title, String content) {
+  public PostResponse updatePost(Long postId, PostRequest postRequest) {
     var targetPost = postRepository.findById(postId).orElseThrow();
-    targetPost.updateTitle(title);
-    targetPost.updateContent(content);
+    targetPost.updateTitle(postRequest.getTitle());
+    targetPost.updateContent(postRequest.getContent());
     var savedPost = postRepository.save(targetPost);
     return PostResponse.from(savedPost);
   }

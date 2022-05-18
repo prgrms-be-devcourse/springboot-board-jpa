@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,6 +12,7 @@ import static util.EntityFixture.getFirstPost;
 import static util.EntityFixture.getPostList;
 import static util.EntityFixture.getUser;
 
+import com.programmers.epicblues.board.dto.PostRequest;
 import com.programmers.epicblues.board.dto.PostResponse;
 import com.programmers.epicblues.board.entity.Post;
 import com.programmers.epicblues.board.entity.User;
@@ -63,36 +65,46 @@ class PostServiceTest {
   @Test
   @Transactional
   @DisplayName("사용자 id와 title, content로 새로운 post를 만들고 postRepository에 성공적으로 위임할 수 있어야 한다.")
-  void test_create_post() {
+  void test_create_post() throws NoSuchFieldException, IllegalAccessException {
 
     // given
     User user = getUser();
-    Post post = getFirstPost();
+    FieldSetter.assignId(user, 1L);
+    Post createdPost = getFirstPost();
+    user.addPost(createdPost);
     var postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
     // when
     when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
-    postService.createPost(user.getId(), post.getTitle(), post.getContent());
+    when(postRepository.save(any())).thenReturn(createdPost);
+    postService.createPost(user.getId(), createdPost.getTitle(), createdPost.getContent());
 
     // then
     verify(postRepository, times(1)).save(postArgumentCaptor.capture());
     Post capturedPost = postArgumentCaptor.getValue();
     assertThat(capturedPost.getUser().getId()).isEqualTo(user.getId());
-    assertThat(capturedPost.getContent()).isEqualTo(post.getContent());
+    assertThat(capturedPost.getContent()).isEqualTo(createdPost.getContent());
 
   }
 
   @Test
   @Transactional
   @DisplayName("Post를 만들 때 주어진 사용자ID가 유효하지 않을 경우에만 RuntimeException을 발생시켜야 한다.")
-  void test_create_post_with_invalid_user_id() {
+  void test_create_post_with_invalid_user_id() throws NoSuchFieldException, IllegalAccessException {
 
     // given
     Long validUserId = 4L;
     Long invalidUserId = 5L;
 
+    var postId = 1L;
+    var postToSave = EntityFixture.getFirstPost();
+    var user = EntityFixture.getUser();
+    postToSave.assignUser(user);
+    FieldSetter.assignId(postToSave, postId);
+
     // when
-    when(userRepository.findById(validUserId)).thenReturn(Optional.of(getUser()));
+    when(userRepository.findById(validUserId)).thenReturn(Optional.of(user));
+    when(postRepository.save(any())).thenReturn(postToSave);
 
     // then
     assertThatCode(() -> postService.createPost(invalidUserId, "무효", "무효"))
@@ -109,8 +121,10 @@ class PostServiceTest {
     long postId = 1L;
     String updatedTitle = "updated title";
     String updatedContent = "updated content";
+
     var user = EntityFixture.getUser();
     FieldSetter.assignId(user, 1L);
+
     var targetPost = EntityFixture.getFirstPost();
     targetPost.assignUser(user);
     FieldSetter.assignId(targetPost, postId);
@@ -118,7 +132,8 @@ class PostServiceTest {
     // When
     when(postRepository.findById(postId)).thenReturn(Optional.of(targetPost));
     when(postRepository.save(targetPost)).thenReturn(targetPost);
-    PostResponse upsertResult = postService.updatePost(postId, updatedTitle, updatedContent);
+    PostResponse upsertResult = postService.updatePost(postId,
+        new PostRequest(updatedTitle, updatedContent));
 
     // Then
     verify(postRepository, times(1)).findById(postId);

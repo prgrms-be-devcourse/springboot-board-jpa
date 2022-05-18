@@ -1,8 +1,10 @@
 package com.programmers.epicblues.board.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +34,7 @@ import util.EntityFixture;
 @Transactional
 class PostControllerTest {
 
-  final String GET_POSTS_URL = "/posts";
+  final String BASE_URL = "/posts";
 
   @Autowired
   private MockMvc mockMvc;
@@ -56,7 +58,7 @@ class PostControllerTest {
     var params = new MultiValueMapAdapter<>(Map.of("page", List.of(page), "size", List.of(size)));
 
     // When
-    ResultActions resultActions = mockMvc.perform(get(GET_POSTS_URL).params(params));
+    ResultActions resultActions = mockMvc.perform(get(BASE_URL).params(params));
 
     // Then 요청한 페이지(from, volume)에 맞는 post를 반환해야 한다.
     int fromIndex = Integer.parseInt(page) * Integer.parseInt(size);
@@ -79,7 +81,7 @@ class PostControllerTest {
 
     // When
     ResultActions resultActions = mockMvc.perform(
-        get(GET_POSTS_URL).param("page", page).param("size", size)).andDo(print());
+        get(BASE_URL).param("page", page).param("size", size)).andDo(print());
 
     // Then
     resultActions.andExpectAll(
@@ -106,7 +108,7 @@ class PostControllerTest {
     savedPost = savedUser.getPosts().get(0);
 
     // When
-    ResultActions resultActions = mockMvc.perform(get(GET_POSTS_URL + "/" + savedPost.getId()));
+    ResultActions resultActions = mockMvc.perform(get(BASE_URL + "/" + savedPost.getId()));
 
     // Then
     resultActions.andDo(print()).andExpectAll(
@@ -126,13 +128,133 @@ class PostControllerTest {
     Map<String, String> expectedResponse = Map.of("message", "Invalid id");
 
     // When
-    ResultActions resultActions = mockMvc.perform(get(GET_POSTS_URL + "/1"));
+    ResultActions resultActions = mockMvc.perform(get(BASE_URL + "/1"));
 
     // Then
     resultActions.andDo(print()).andExpectAll(
         status().isNotFound(),
         content().contentType(MediaType.APPLICATION_JSON),
         content().json(json.writeValueAsString(expectedResponse))
+    );
+
+  }
+
+  @Test
+  @DisplayName("id와 입력값들을 받아서 post를 수정하고 수정한 결과물을 응답으로 받아야 한다.")
+  void test_update_post() throws Exception {
+
+    // Given
+    User savedUser = EntityFixture.getUser();
+    Post savedPost = EntityFixture.getFirstPost();
+    savedUser.addPost(savedPost);
+    savedUser = userRepository.save(savedUser);
+    savedPost = savedUser.getPosts().get(0);
+
+    var targetPostId = savedPost.getId();
+    var updatedTitle = "updated!";
+    var updatedContent = "updatedContent!";
+    var requestPayload = json.writeValueAsString(
+        Map.of("title", updatedTitle, "content", updatedContent));
+
+    // When
+    ResultActions resultActions = mockMvc.perform(
+        post(BASE_URL + "/" + targetPostId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestPayload)
+    );
+
+    // Then
+    resultActions.andDo(print()).andExpectAll(
+        status().isOk(),
+        content().contentType(MediaType.APPLICATION_JSON),
+        jsonPath("$.title").value(updatedTitle),
+        jsonPath("$.content").value(updatedContent),
+        jsonPath("$.authorId").value(savedUser.getId())
+    );
+  }
+
+  @Test
+  @DisplayName("update 요청 매개변수가 잘못됐을 경우, 400 Bad Request 예외와 안내 메시지를 던져야 한다.")
+  void test_update_post_with_wrong_payload() throws Exception {
+
+    // Given
+    String id = "0";
+    String wrongContent = "d";
+    String wrongTitle = "t";
+    String wrongPayload = json.writeValueAsString(
+        Map.of("title", wrongTitle, "content", wrongContent));
+
+    // When
+    ResultActions resultActions = mockMvc.perform(
+        post(BASE_URL + "/" + id)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(wrongPayload));
+
+    // Then
+    resultActions.andDo(print()).andExpectAll(
+        status().isBadRequest(),
+        content().contentType(MediaType.APPLICATION_JSON),
+        jsonPath("$.content").exists(),
+        jsonPath("$.title").exists(),
+        jsonPath("$.postId").exists()
+    );
+
+  }
+
+  @Test
+  @DisplayName("post 생성 요청에 대한 응답으로 완성된 post 정보들을 주어야 한다.")
+  void create_post_success_case() throws Exception {
+
+    // Given
+    var persistedUser = EntityFixture.getUser();
+    var savedUserId = userRepository.save(persistedUser).getId();
+    var title = "newTitle";
+    var content = "newContent";
+    var requestPayload = json.writeValueAsString(
+        Map.of("userId", savedUserId.toString(), "title", title, "content", content));
+
+    // When
+    ResultActions resultActions = mockMvc.perform(
+        post(BASE_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestPayload));
+
+    // Then
+    resultActions.andDo(print()).andExpectAll(
+        status().isOk(),
+        content().contentType(MediaType.APPLICATION_JSON),
+        jsonPath("$.content").value(content),
+        jsonPath("$.title").value(title),
+        jsonPath("$.createdAt").exists(),
+        jsonPath("$.createdBy").value(persistedUser.getName())
+    );
+
+  }
+
+  @Test
+  @DisplayName("post 생성 요청 매개변수가 잘못되었을 경우 400 상태 코드와 입력 오류 내용을 반환해야 한다.")
+  void test_create_post_with_wrong_arguments() throws Exception {
+
+    // Given
+    String wrongId = "0";
+    String wrongContent = "d";
+    String wrongTitle = "t";
+    String wrongPayload = json.writeValueAsString(
+        Map.of("userId", wrongId, "title", wrongTitle, "content", wrongContent));
+
+    // When
+    ResultActions resultActions = mockMvc.perform(
+        post(BASE_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(wrongPayload));
+
+    // Then
+    resultActions.andDo(print()).andExpectAll(
+        status().isBadRequest(),
+        content().contentType(MediaType.APPLICATION_JSON),
+        jsonPath("$.content").exists(),
+        jsonPath("$.title").exists(),
+        jsonPath("$.userId").exists()
     );
 
   }

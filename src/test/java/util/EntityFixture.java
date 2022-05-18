@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 public class EntityFixture {
 
   public static Post getFirstPost() {
-    return Post.builder().content("내용2").title("제목2").build();
+    return Post.builder().content("내용1").title("제목1").build();
   }
 
   public static Post getSecondPost() {
-    return Post.builder().content("내용1").title("제목1").build();
+    return Post.builder().content("내용2").title("제목2").build();
   }
 
   public static List<Post> getPostList() {

@@ -22,7 +22,8 @@ public class RestControllerExceptionHandler {
     log.error("InvalidRequestArgumentException", exception);
     return exception.getBindingResult().getAllErrors().stream().collect(
         Collectors.toMap(
-            error -> ((FieldError) error).getField(),
+            error -> (error instanceof FieldError) ? ((FieldError) error).getField()
+                : error.getObjectName(),
             error -> error.getDefaultMessage() == null ? "No Message" : error.getDefaultMessage()));
   }
 
