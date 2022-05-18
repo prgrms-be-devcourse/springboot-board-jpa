@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,5 +96,48 @@ class RestPostControllerTest {
 
     }
 
+    @Test
+    @Transactional
+    @DisplayName("사용자 empty로 일어난 인가되지 않은 동작 예외 테스트 ")
+    void unAuthorizationAccessExceptionTest() throws Exception{
+
+        //given
+        var request = new PostCreateRequest("access-exception", "==", "none");
+        var body = objecctMapper.writeValueAsString(request);
+
+        mockMvc.perform(post("/api/v1/posts")
+                        .content(body)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("code").value(HttpStatus.BAD_REQUEST.name()))
+                .andExpect(jsonPath("status").value(401))
+                .andDo(print());
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("잘못된 인자 입력으로 일어난 NoSuchElement 예외 테스트")
+    void noSuchElementExceptionTest() throws Exception{
+
+        //getPost
+        mockMvc.perform(get("/api/v1/posts/10"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("code").value(HttpStatus.NOT_FOUND.name()))
+                .andExpect(jsonPath("status").value(404))
+                .andDo(print());
+
+        //editPost
+        var dto = service.findPost(1L);
+        dto.setTitle("update-title-exeption");
+        var body = objecctMapper.writeValueAsString(dto);
+
+        mockMvc.perform(post("/api/v1/posts/10")
+                .content(body)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("code").value(HttpStatus.NOT_FOUND.name()))
+                .andExpect(jsonPath("status").value(404))
+                .andDo(print());
+    }
 
 }
