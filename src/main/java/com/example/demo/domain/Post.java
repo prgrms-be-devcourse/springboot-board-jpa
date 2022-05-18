@@ -30,4 +30,8 @@ public class Post extends CreatedEntity{
         user.getPosts().add(this);
         this.addCreator(user.getName());
     }
+    public void changeTitleAndContent(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

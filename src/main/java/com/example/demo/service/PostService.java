@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class PostService {
 
@@ -40,5 +42,15 @@ public class PostService {
     public Page<PostDto> findAllByPage(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(postConverter::convertPostDto);
+    }
+
+    @Transactional
+    public PostDto updateTitleAndContent(PostDto postDto, Long postId) throws NotFoundException {
+        Optional<Post> findPost = postRepository.findById(postId);
+        findPost.orElseThrow(() -> new NotFoundException("없는 데이터는 수정 할 수 없습니다."));
+
+        Post post = findPost.get();
+        post.changeTitleAndContent(postDto.getTitle(), postDto.getContent());
+        return postConverter.convertPostDto(post);
     }
 }

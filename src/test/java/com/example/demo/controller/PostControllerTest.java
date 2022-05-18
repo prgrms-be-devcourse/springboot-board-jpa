@@ -3,7 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.dto.PostDto;
 import com.example.demo.dto.UserDto;
 import com.example.demo.service.PostService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.jfr.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.Random;
 
@@ -35,10 +41,17 @@ class PostControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
     private Long savedPostId;
 
     @BeforeEach
     void setUpSave() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                .addFilters(new CharacterEncodingFilter("UTF-8", true))
+                .build();
+
         UserDto userDto = UserDto.builder()
                 .name("jamie")
                 .age(3)
@@ -100,6 +113,26 @@ class PostControllerTest {
                         .param("page", String.valueOf(0))
                         .param("size", String.valueOf(10))
                         .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void updateTitleAndContent() throws Exception {
+        UserDto userDto = UserDto.builder()
+                .name("jamie")
+                .age(3)
+                .hobby("dance")
+                .build();
+        PostDto postDto = PostDto.builder()
+                .title("change_title")
+                .content("변경된 내용입니다. change_contents")
+                .userDto(userDto)
+                .build();
+
+        mockMvc.perform(post("/posts/{id}", savedPostId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

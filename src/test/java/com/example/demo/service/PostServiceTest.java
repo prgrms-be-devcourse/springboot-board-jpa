@@ -73,4 +73,22 @@ class PostServiceTest {
         Page<PostDto> allByPage = postService.findAllByPage(pageRequest);
         assertThat(allByPage.getTotalElements()).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("post의 제목과 내용을 수정한다")
+    void updateOne() throws NotFoundException {
+        UserDto userDto = UserDto.builder()
+                .name("change_name")
+                .age(100)
+                .hobby("hair change")
+                .build();
+        PostDto postDto = PostDto.builder()
+                .title("this is changed title")
+                .content("this is changed contents")
+                .userDto(userDto)
+                .build();
+        PostDto updatedPost = postService.updateTitleAndContent(postDto, postId);
+
+        assertThat(updatedPost.getTitle()).isEqualTo("this is changed title");
+    }
 }

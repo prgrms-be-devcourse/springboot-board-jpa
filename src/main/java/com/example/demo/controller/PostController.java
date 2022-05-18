@@ -39,4 +39,10 @@ public class PostController {
         Page<PostDto> allByPage = postService.findAllByPage(pageable);
         return ApiResponse.ok(allByPage);
     }
+
+    @PostMapping("/posts/{id}")
+    public ApiResponse<PostDto> updateTitleAndContent(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
+        PostDto updatedDto = postService.updateTitleAndContent(postDto, id);
+        return ApiResponse.ok(updatedDto);
+    }
 }
