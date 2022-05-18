@@ -28,4 +28,8 @@ public class Content {
             throw new InvalidContentFormatException(INVALID_CONTENT_FORMAT_EXP_MSG);
         }
     }
+    
+    public String getContent() {
+        return content;
+    }
 }

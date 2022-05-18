@@ -11,8 +11,7 @@ import com.prgrms.hyuk.domain.user.Hobby;
 import com.prgrms.hyuk.domain.user.Name;
 import com.prgrms.hyuk.domain.user.User;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -22,10 +21,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
 @TestInstance(Lifecycle.PER_CLASS)
-public class MappingTest {
-
-    @Autowired
-    private EntityManagerFactory emf;
+class MappingTest {
 
     @Autowired
     private EntityManager em;
@@ -34,12 +30,8 @@ public class MappingTest {
 
     private Post post;
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
-        var em = emf.createEntityManager();
-        var transaction = em.getTransaction();
-        transaction.begin();
-
         user = new User(
             new Name("eunhyuk"),
             new Age(26),
@@ -53,8 +45,8 @@ public class MappingTest {
         post.assignUser(user);
         em.persist(post);
 
-        transaction.commit();
-        em.close();
+        em.flush();
+        em.clear();
     }
 
     @Test

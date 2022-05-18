@@ -8,6 +8,7 @@ import com.prgrms.hyuk.domain.user.Hobby;
 import com.prgrms.hyuk.domain.user.Name;
 import com.prgrms.hyuk.domain.user.User;
 import com.prgrms.hyuk.dto.PostCreateRequest;
+import com.prgrms.hyuk.dto.PostDto;
 import com.prgrms.hyuk.dto.UserDto;
 import org.springframework.stereotype.Component;
 
@@ -31,5 +32,14 @@ public class Converter {
         post.assignUser(user);
 
         return post;
+    }
+
+    public PostDto toPostDto(Post post) {
+        return new PostDto(
+            post.getId(),
+            post.getTitle().getTitle(),
+            post.getContent().getContent(),
+            post.getUser().getName().getName()
+        );
     }
 }

@@ -1,8 +1,11 @@
 package com.prgrms.hyuk.service;
 
 import com.prgrms.hyuk.dto.PostCreateRequest;
+import com.prgrms.hyuk.dto.PostDto;
 import com.prgrms.hyuk.repository.PostRepository;
 import com.prgrms.hyuk.service.converter.Converter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,4 +27,10 @@ public class PostService {
         var savedPost = postRepository.save(post);
         return savedPost.getId();
     }
+
+    public Page<PostDto> findPosts(Pageable pageable) {
+        return postRepository.findAll(pageable)
+            .map(converter::toPostDto);
+    }
+
 }

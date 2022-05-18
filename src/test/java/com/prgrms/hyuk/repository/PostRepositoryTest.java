@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
 class PostRepositoryTest {
@@ -39,7 +40,6 @@ class PostRepositoryTest {
             new Name("eunhyuk"),
             new Age(26),
             Hobby.SOCCER);
-        em.persist(user);
 
         post = new Post(
             new Title("hello world title...."),
@@ -57,5 +57,12 @@ class PostRepositoryTest {
     @DisplayName("save() 쿼리 확인")
     void testSaveQuery() {
         postRepository.save(post);
+    }
+
+    @Test
+    @DisplayName("findAll(page) 쿼리 확인")
+    void testFindAllWithPaging() {
+        var pageRequest = PageRequest.of(1, 5);
+        postRepository.findAll(pageRequest);
     }
 }
