@@ -1,8 +1,5 @@
 package com.programmers.epicblues.jpa_board.service;
 
-import static com.programmers.epicblues.jpa_board.EntityFixture.getFirstPost;
-import static com.programmers.epicblues.jpa_board.EntityFixture.getPostList;
-import static com.programmers.epicblues.jpa_board.EntityFixture.getUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -10,8 +7,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static testutil.EntityFixture.getFirstPost;
+import static testutil.EntityFixture.getPostList;
+import static testutil.EntityFixture.getUser;
 
-import com.programmers.epicblues.jpa_board.EntityFixture;
 import com.programmers.epicblues.jpa_board.dto.PostResponse;
 import com.programmers.epicblues.jpa_board.entity.Post;
 import com.programmers.epicblues.jpa_board.entity.User;
@@ -30,6 +29,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
+import testutil.EntityFixture;
+import testutil.FieldModifier;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
@@ -114,17 +115,18 @@ class PostServiceTest {
 
   @Test
   @DisplayName("Post 수정 요청이 성공할 경우 수정된 결과물을 반환해야 한다.")
-  void should_query_postById_before_update_post() {
+  void should_query_postById_before_update_post()
+      throws NoSuchFieldException, IllegalAccessException {
 
     // Given
     long postId = 1L;
     String updatedTitle = "updated title";
     String updatedContent = "updated content";
     var user = EntityFixture.getUser();
-    user.setId(1L);
+    FieldModifier.assignId(user, 1L);
     var targetPost = EntityFixture.getFirstPost();
     targetPost.assignUser(user);
-    targetPost.setId(postId);
+    FieldModifier.assignId(targetPost, postId);
 
     // When
     when(postRepository.findById(postId)).thenReturn(Optional.of(targetPost));
@@ -141,14 +143,15 @@ class PostServiceTest {
 
   @Test
   @DisplayName("getPostById를 호출하면 PostId를 사용해서 repository의 findById를 호출해야 한다.")
-  void getPostById_delegates_repository_findById() {
+  void getPostById_delegates_repository_findById()
+      throws NoSuchFieldException, IllegalAccessException {
 
     // Given
     var postId = 1L;
     var queriedPost = EntityFixture.getFirstPost();
     var user = EntityFixture.getUser();
     queriedPost.assignUser(user);
-    queriedPost.setId(postId);
+    FieldModifier.assignId(queriedPost, postId);
 
     // When
     when(postRepository.findById(postId)).thenReturn(Optional.of(queriedPost));

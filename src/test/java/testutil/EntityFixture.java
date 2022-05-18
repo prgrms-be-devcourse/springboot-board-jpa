@@ -1,4 +1,4 @@
-package com.programmers.epicblues.jpa_board;
+package testutil;
 
 import com.programmers.epicblues.jpa_board.entity.Post;
 import com.programmers.epicblues.jpa_board.entity.User;

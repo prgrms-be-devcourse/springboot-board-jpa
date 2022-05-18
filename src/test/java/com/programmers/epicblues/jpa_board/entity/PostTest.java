@@ -2,9 +2,9 @@ package com.programmers.epicblues.jpa_board.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.programmers.epicblues.jpa_board.EntityFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import testutil.EntityFixture;
 
 class PostTest {
 

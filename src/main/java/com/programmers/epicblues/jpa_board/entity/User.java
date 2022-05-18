@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends BaseEntity implements LongIdHolder {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,7 +56,4 @@ public class User extends BaseEntity {
     posts.forEach(this::addPost);
   }
 
-  public void setId(long id) {
-    this.id = id;
-  }
 }

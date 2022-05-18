@@ -2,7 +2,6 @@ package com.programmers.epicblues.jpa_board.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.programmers.epicblues.jpa_board.EntityFixture;
 import com.programmers.epicblues.jpa_board.entity.BaseEntity;
 import com.programmers.epicblues.jpa_board.entity.Post;
 import java.util.Comparator;
@@ -16,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
+import testutil.EntityFixture;
 
 /*
  학습 테스트
