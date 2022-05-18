@@ -4,12 +4,15 @@ import com.kdt.springbootboardjpa.converter.PostConverter;
 import com.kdt.springbootboardjpa.domain.Post;
 import com.kdt.springbootboardjpa.domain.dto.PostCreateRequest;
 import com.kdt.springbootboardjpa.domain.dto.PostDTO;
+import com.kdt.springbootboardjpa.exception.UnAuthorizationAccessException;
 import com.kdt.springbootboardjpa.repository.PostRepository;
 import com.kdt.springbootboardjpa.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class PostService {
@@ -25,9 +28,10 @@ public class PostService {
         this.converter = converter;
     }
 
-    //TODO Exception
     public PostDTO findPost(long id) {
-        return postRepository.findById(id).map(converter::convertPostDTO).orElseThrow();
+        return postRepository.findById(id).map(converter::convertPostDTO).orElseThrow(
+                () -> new NoSuchElementException(MessageFormat.format("ID {0}에 대한 검색 결과가 없습니다.", id))
+        );
     }
 
     public List<PostDTO> findAllPosts() {
@@ -37,7 +41,7 @@ public class PostService {
     public void makePost(PostCreateRequest request) {
         var found = userRepository.findByUsername(request.getUsername());
         if (found.isEmpty()) {
-            //TODO Exception
+            throw new UnAuthorizationAccessException(MessageFormat.format("{0}는 존재하지 않는 유저입니다.", request.getUsername()));
         }
         postRepository.save(converter.convertPost(request, found.get()));
     }
@@ -46,11 +50,10 @@ public class PostService {
     public void editPost(long id, PostDTO postDTO) {
         var found = postRepository.findById(id);
         if (found.isEmpty()) {
-            //TODO exception
+            throw new NoSuchElementException(MessageFormat.format("ID {0}에 대한 검색 결과가 없습니다. ", id));
         }
         Post post = found.get();
         post.changeTitle(postDTO.getTitle());
         post.changeContent(postDTO.getContent());
     }
-
 }
