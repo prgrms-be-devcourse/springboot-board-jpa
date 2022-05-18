@@ -93,4 +93,14 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.statusCode").value(404))
                 .andDo(print());
     }
+
+    @Test
+    void getAllByPageTest() throws Exception {
+        mockMvc.perform(get("/posts")
+                        .param("page", String.valueOf(0))
+                        .param("size", String.valueOf(10))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 }

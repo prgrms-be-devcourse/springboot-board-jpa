@@ -4,6 +4,8 @@ import com.example.demo.converter.PostConverter;
 import com.example.demo.domain.Post;
 import com.example.demo.dto.PostDto;
 import com.example.demo.repository.PostRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,5 +34,11 @@ public class PostService {
         Post post = postConverter.convertPost(postDto);
         Post savedPost = postRepository.save(post);
         return savedPost.getId();
+    }
+
+    @Transactional
+    public Page<PostDto> findAllByPage(Pageable pageable) {
+        return postRepository.findAll(pageable)
+                .map(postConverter::convertPostDto);
     }
 }
