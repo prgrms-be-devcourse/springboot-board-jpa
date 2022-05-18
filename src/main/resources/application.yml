@@ -1,0 +1,11 @@
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/board_mgmt
+    username: root
+    password: root1234!

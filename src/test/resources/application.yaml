@@ -1,0 +1,19 @@
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/board_mgmt;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl_auto: create-drop
+    show-sql: true
+    properties:
+      hibernate.format_sql: false
