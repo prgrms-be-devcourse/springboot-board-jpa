@@ -34,7 +34,6 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private int age;
 
-    @BatchSize(size = 100)
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private final Set<Hobby> hobbies = new HashSet<>();
 

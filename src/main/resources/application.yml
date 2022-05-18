@@ -8,6 +8,7 @@ spring:
     database: h2
     properties:
       hibernate:
+        default_batch_fetch_size: 200
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
     hibernate:
