@@ -3,6 +3,7 @@ package com.prgrms.hyuk.domain.post;
 import com.prgrms.hyuk.domain.BaseEntity;
 import com.prgrms.hyuk.domain.user.User;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,7 +28,7 @@ public class Post extends BaseEntity {
     @Embedded
     private Content content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
