@@ -13,7 +13,8 @@ public interface UserMapper {
     @Mappings({
       @Mapping(source = "firstName", target = "name.firstName"),
       @Mapping(source = "lastName", target = "name.lastName"),
-      @Mapping(source = "email", target = "email.value")
+      @Mapping(source = "email", target = "email.value"),
+      @Mapping(source = "password", target = "password.value")
     })
     User toEntity(UserCreateRequest request);
 
