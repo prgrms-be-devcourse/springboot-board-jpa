@@ -40,7 +40,6 @@ public class PostService {
         return PostResponse.of(post);
     }
 
-    @Transactional(readOnly = true)
     public void deleteOne(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(NotFoundException::new);
         postRepository.delete(post);
