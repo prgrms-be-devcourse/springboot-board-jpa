@@ -18,7 +18,6 @@ import java.util.NoSuchElementException;
 public class PostService {
 
     private final PostRepository postRepository;
-
     private final UserRepository userRepository;
     private final PostConverter converter;
 

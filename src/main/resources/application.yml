@@ -13,3 +13,8 @@ spring:
         dialect:
         hbm2ddl:
           auto: none
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force-response: true

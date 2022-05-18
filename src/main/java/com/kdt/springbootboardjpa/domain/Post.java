@@ -6,15 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Getter
-@Table(name = "posts")
+@Table(name = "post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @Column(name = "title", nullable = false)
@@ -44,6 +45,9 @@ public class Post extends BaseEntity {
     }
 
     private void setUser(User user){
+        if (Objects.nonNull(this.user)) {
+            this.user.getPosts().remove(this);
+        }
         this.user = user;
         user.addPost(this);
     }
