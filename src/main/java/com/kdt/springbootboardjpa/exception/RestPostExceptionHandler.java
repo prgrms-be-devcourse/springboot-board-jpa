@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice
@@ -15,7 +16,7 @@ import java.util.NoSuchElementException;
 @Slf4j
 public class RestPostExceptionHandler {
 
-    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UnAuthorizationAccessException.class)
     public ErrorResponse handleUnAuthorization(UnAuthorizationAccessException e) {
         log.info(e.getMessage());

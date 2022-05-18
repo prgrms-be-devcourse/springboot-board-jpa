@@ -37,6 +37,7 @@ public class PostService {
         return postRepository.findAll().stream().map(converter::convertPostDTO).toList();
     }
 
+    @Transactional
     public void makePost(PostCreateRequest request) {
         var found = userRepository.findByUsername(request.getUsername());
         if (found.isEmpty()) {

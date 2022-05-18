@@ -15,7 +15,7 @@ public class EntityAuditor implements AuditorAware<String> {
         var request = ((ServletRequestAttributes)
                 RequestContextHolder.currentRequestAttributes()).getRequest();
         String uri = request.getRequestURI().toString();
-        if (uri.matches("^/api")) {
+        if (uri.startsWith("/api")) {
             return Optional.of("api");
         }
         return Optional.of("test");
