@@ -26,7 +26,8 @@ public class Post extends BaseEntity {
     private User user;
 
     @Builder
-    public Post(String title, String content, User user) {
+    public Post(Long id, String title, String content, User user) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.user = user;
@@ -35,5 +36,9 @@ public class Post extends BaseEntity {
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
