@@ -32,9 +32,10 @@ public class UserService {
     }
 
     @Transactional
-    public void save(UserCreateRequest createRequest) {
+    public long save(UserCreateRequest createRequest) {
         User user = userMapper.toEntity(createRequest);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return savedUser.getId();
     }
 
     @Transactional(readOnly = true)

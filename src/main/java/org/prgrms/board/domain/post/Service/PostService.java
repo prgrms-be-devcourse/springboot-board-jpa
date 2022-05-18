@@ -45,26 +45,29 @@ public class PostService {
     }
 
     @Transactional
-    public void save(PostCreateRequest createRequest, long userId) {
+    public long save(PostCreateRequest createRequest, long userId) {
         UserSearchResponse userResponse = userService.findById(userId);
         Post post = postMapper.toEntity(createRequest, userResponse.getId());
-        postRepository.save(post);
+        Post savedPost = postRepository.save(post);
+        return savedPost.getId();
     }
 
     @Transactional
-    public void update(long postId, PostUpdateRequest updateRequest) {
+    public long update(long postId, PostUpdateRequest updateRequest) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostException(POST_NOT_EXIST));
         post.update(updateRequest.getTitle(), updateRequest.getContent());
         log.info("Post updated, id: {}", postId);
+        return postId;
     }
 
     @Transactional
-    public void delete(long postId) {
+    public long delete(long postId) {
         postRepository.findById(postId)
                 .orElseThrow(() -> new PostException(POST_NOT_EXIST));
         postRepository.deleteById(postId);
         log.info("Post deleted, id: {}", postId);
+        return postId;
     }
 
 }
