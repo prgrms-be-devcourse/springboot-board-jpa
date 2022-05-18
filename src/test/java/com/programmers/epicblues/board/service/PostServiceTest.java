@@ -7,9 +7,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static testutil.EntityFixture.getFirstPost;
-import static testutil.EntityFixture.getPostList;
-import static testutil.EntityFixture.getUser;
+import static util.EntityFixture.getFirstPost;
+import static util.EntityFixture.getPostList;
+import static util.EntityFixture.getUser;
 
 import com.programmers.epicblues.board.dto.PostResponse;
 import com.programmers.epicblues.board.entity.Post;
@@ -27,8 +27,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
-import testutil.EntityFixture;
-import testutil.FieldSetter;
+import util.EntityFixture;
+import util.FieldSetter;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {

@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMapAdapter;
-import testutil.EntityFixture;
+import util.EntityFixture;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -120,7 +120,7 @@ class PostControllerTest {
 
   @Test
   @DisplayName("postId가 유효하지 않을 경우 404(Not Found)가 담긴 응답을 반환해야 한다.")
-  void test() throws Exception {
+  void test_getById_responds_with_not_found_status_code_with_payload() throws Exception {
 
     // Given
     Map<String, String> expectedResponse = Map.of("message", "Invalid id");

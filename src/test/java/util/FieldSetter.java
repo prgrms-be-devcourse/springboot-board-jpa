@@ -1,4 +1,4 @@
-package testutil;
+package util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +25,7 @@ public class FieldSetter {
     idField.setAccessible(false);
   }
 
-  // TODO 2: Test용 util 클래스에 대한 테스트 위치는 어디가 좋을까요?
+  // TODO 2: 테스트 전용 util 클래스에 대한 테스트 위치는 어디가 좋을까요?
   static class FieldSetterTest {
 
     @Test

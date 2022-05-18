@@ -1,4 +1,4 @@
-package testutil;
+package util;
 
 import com.programmers.epicblues.board.entity.Post;
 import com.programmers.epicblues.board.entity.User;
