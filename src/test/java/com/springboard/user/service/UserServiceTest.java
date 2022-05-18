@@ -71,7 +71,7 @@ class UserServiceTest {
     }
 
     @Nested
-    @DisplayName("findOne() : 사용자 목록 조회 테스트")
+    @DisplayName("findAll() : 사용자 목록 조회 테스트")
     class FindAllTest {
         List<UserRequest> expectedList = new ArrayList<>();
 
