@@ -1,4 +1,4 @@
-package com.prgrms.board;
+package com.prgrms.board.common;
 
 import lombok.Getter;
 

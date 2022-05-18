@@ -1,4 +1,4 @@
-package com.prgrms.board.config.exception;
+package com.prgrms.board.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

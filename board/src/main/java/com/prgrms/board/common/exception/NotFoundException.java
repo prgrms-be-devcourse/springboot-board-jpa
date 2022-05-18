@@ -1,4 +1,4 @@
-package com.prgrms.board.config.exception;
+package com.prgrms.board.common.exception;
 
 public class NotFoundException extends RuntimeException {
 }
