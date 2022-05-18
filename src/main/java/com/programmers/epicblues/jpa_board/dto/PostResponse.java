@@ -2,6 +2,8 @@ package com.programmers.epicblues.jpa_board.dto;
 
 import com.programmers.epicblues.jpa_board.entity.Post;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -35,6 +37,10 @@ public class PostResponse {
         .createdBy(post.getCreatedBy())
         .id(post.getId())
         .build();
+  }
+
+  public static List<PostResponse> from(List<Post> postList) {
+    return postList.stream().map(PostResponse::from).collect(Collectors.toUnmodifiableList());
   }
 
 }

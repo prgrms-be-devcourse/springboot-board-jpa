@@ -6,12 +6,12 @@ import com.programmers.epicblues.jpa_board.entity.User;
 import com.programmers.epicblues.jpa_board.repository.JpaPostRepository;
 import com.programmers.epicblues.jpa_board.repository.JpaUserRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
+@Service
 public class PostService {
 
   private final JpaPostRepository postRepository;
@@ -24,13 +24,7 @@ public class PostService {
 
   public List<PostResponse> getPosts(PageRequest pageRequest) {
 
-    return postRepository.findAll(pageRequest).getContent().stream().map(PostResponse::from)
-        .collect(Collectors.toUnmodifiableList());
-  }
-
-  public List<PostResponse> getPosts() {
-    return postRepository.findAll(Sort.by("createdAt").descending()).stream()
-        .map(PostResponse::from).collect(Collectors.toList());
+    return PostResponse.from(postRepository.findAll(pageRequest).getContent());
   }
 
   public void createPost(Long userId, String title, String content) {

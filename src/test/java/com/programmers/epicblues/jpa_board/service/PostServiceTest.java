@@ -16,7 +16,6 @@ import com.programmers.epicblues.jpa_board.entity.Post;
 import com.programmers.epicblues.jpa_board.entity.User;
 import com.programmers.epicblues.jpa_board.repository.JpaPostRepository;
 import com.programmers.epicblues.jpa_board.repository.JpaUserRepository;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import testutil.EntityFixture;
 import testutil.FieldSetter;
@@ -60,19 +58,6 @@ class PostServiceTest {
 
     //then
     verify(postRepository, times(1)).findAll(pageRequest);
-  }
-
-  @Test
-  @DisplayName("findAll()은 repository에게 생성날짜 기준으로 정렬된 post 목록 요청을 위임해야 한다.")
-  void find_all_posts_without_page_option() {
-
-    // Given
-    List<Post> posts = getPostList();
-    // When
-    postService.getPosts();
-
-    // Then
-    verify(postRepository, times(1)).findAll(Sort.by("createdAt").descending());
   }
 
   @Test
