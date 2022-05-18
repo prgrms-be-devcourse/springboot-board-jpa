@@ -5,7 +5,7 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED(405, "C002", "해당 HTTP 메소드를 지원하지 않습니다."),
     POST_NOT_EXIST(400, "P001", "존재하지 않는 게시글입니다."),
     USER_NOT_EXIST(400, "U001", "존재하지 않는 사용자입니다."),
-    PASSWORD_INCORRECT(400, "P001", "비밀번호가 일치하지 않습니다.");
+    PASSWORD_INCORRECT(400, "PW001", "비밀번호가 일치하지 않습니다.");
 
     private final int status;
     private final String code;
