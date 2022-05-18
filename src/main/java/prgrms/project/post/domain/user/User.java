@@ -25,6 +25,7 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = AUTO)
+    @Column(name = "user_id", unique = true, nullable = false, updatable = false)
     private Long id;
 
     @Column(nullable = false, length = 100)

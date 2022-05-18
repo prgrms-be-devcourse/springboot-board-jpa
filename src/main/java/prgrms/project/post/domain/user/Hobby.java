@@ -16,12 +16,14 @@ public class Hobby {
 
     @Id
     @GeneratedValue(strategy = AUTO)
+    @Column(name = "hobby_id", unique = true, nullable = false, updatable = false)
     private Long id;
 
+    @Column(nullable = false, length = 30)
     private String hobby;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public Hobby(String hobby) {

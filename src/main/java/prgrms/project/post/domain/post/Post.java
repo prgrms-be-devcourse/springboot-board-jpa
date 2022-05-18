@@ -20,6 +20,7 @@ public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = AUTO)
+    @Column(name = "post_id", unique = true, nullable = false, updatable = false)
     private Long id;
 
     @Column(nullable = false, length = 100)
@@ -30,7 +31,7 @@ public class Post extends BaseEntity {
     String content;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Builder
