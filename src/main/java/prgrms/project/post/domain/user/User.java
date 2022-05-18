@@ -49,7 +49,7 @@ public class User extends BaseEntity {
         registerHobby(hobbies);
     }
 
-    public User update(String name, int age, Set<Hobby> hobbies) {
+    public User updateUserInfo(String name, int age, Set<Hobby> hobbies) {
         this.name = name;
         this.age = age;
         registerHobby(hobbies);

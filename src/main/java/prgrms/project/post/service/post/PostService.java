@@ -42,7 +42,7 @@ public class PostService {
     @Transactional
     public Long updatePost(Long id, PostDto postDto) {
         var retrievedPost = postRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Can't find post"));
-        var updatedPost = retrievedPost.update(postDto.title(), postDto.content());
+        var updatedPost = retrievedPost.updateTitleAndContent(postDto.title(), postDto.content());
 
         return postRepository.save(updatedPost).getId();
     }

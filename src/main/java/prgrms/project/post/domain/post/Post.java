@@ -7,7 +7,6 @@ import prgrms.project.post.domain.BaseEntity;
 import prgrms.project.post.domain.user.User;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.AUTO;
@@ -42,7 +41,7 @@ public class Post extends BaseEntity {
         this.assignUser(user);
     }
 
-    public Post update(String title, String content) {
+    public Post updateTitleAndContent(String title, String content) {
         this.title = title;
         this.content = content;
 

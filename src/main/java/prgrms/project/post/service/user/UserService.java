@@ -45,7 +45,7 @@ public class UserService {
     @Transactional
     public Long updateUser(Long userId, UserDto userDto) {
         var retrievedUser = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("Can't find any userDto"));
-        var updatedUser = retrievedUser.update(userDto.name(), userDto.age(), userDto.hobbies().stream().map(hobbyMapper::toEntity).collect(toSet()));
+        var updatedUser = retrievedUser.updateUserInfo(userDto.name(), userDto.age(), userDto.hobbies().stream().map(hobbyMapper::toEntity).collect(toSet()));
 
         return userRepository.save(updatedUser).getId();
     }
