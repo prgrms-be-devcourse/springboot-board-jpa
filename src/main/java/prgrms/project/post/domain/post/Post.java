@@ -23,11 +23,11 @@ public class Post extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, length = 100)
-    String title;
+    private String title;
 
     @Lob
     @Column(nullable = false)
-    String content;
+    private String content;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id", nullable = false)
