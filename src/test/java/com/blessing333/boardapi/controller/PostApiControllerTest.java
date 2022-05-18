@@ -12,11 +12,13 @@ import com.blessing333.boardapi.repository.PostRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -26,11 +28,17 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PostApiControllerTest {
     @Autowired
@@ -61,7 +69,50 @@ class PostApiControllerTest {
                         .param("size", "5")
                         .param("sort", "createdAt,desc"))
                 .andExpect(status().is2xxSuccessful())
-                .andReturn();
+                .andDo(document("post-list",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestParameters(
+                                parameterWithName("page").description("The page to retrieve"),
+                                parameterWithName("size").description("The size per page"),
+                                parameterWithName("sort").description("sort")
+                        ),
+                        responseFields(
+                                fieldWithPath("content.[]").type(JsonFieldType.ARRAY).description("content"),
+                                fieldWithPath("content.[].id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("content.[].title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("content.[].content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("content.[].createdAt").type(JsonFieldType.STRING).description("date"),
+                                fieldWithPath("content.[].writer").type(JsonFieldType.OBJECT).description("writer"),
+                                fieldWithPath("content.[].writer.createdAt").type(JsonFieldType.STRING).description("writer create"),
+                                fieldWithPath("content.[].writer.id").type(JsonFieldType.NUMBER).description("writer id"),
+                                fieldWithPath("content.[].writer.name").type(JsonFieldType.STRING).description("writer name"),
+                                fieldWithPath("content.[].writer.age").type(JsonFieldType.NUMBER).description("writer age"),
+                                fieldWithPath("content.[].writer.hobby").type(JsonFieldType.NULL).description("writer hobby"),
+                                fieldWithPath("pageable").type(JsonFieldType.OBJECT).description("paging"),
+                                fieldWithPath("pageable.sort").type(JsonFieldType.OBJECT).description("paging"),
+                                fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("unsorted"),
+                                fieldWithPath("pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted"),
+                                fieldWithPath("pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("empty"),
+                                fieldWithPath("pageable.pageNumber").type(JsonFieldType.NUMBER).description("pageNumber"),
+                                fieldWithPath("pageable.pageSize").type(JsonFieldType.NUMBER).description("pageSize"),
+                                fieldWithPath("pageable.offset").type(JsonFieldType.NUMBER).description("offset"),
+                                fieldWithPath("pageable.paged").type(JsonFieldType.BOOLEAN).description("paged"),
+                                fieldWithPath("pageable.unpaged").type(JsonFieldType.BOOLEAN).description("unpaged"),
+                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("total element"),
+                                fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description("number of element"),
+                                fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("total page"),
+                                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("last"),
+                                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("first"),
+                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("size"),
+                                fieldWithPath("number").type(JsonFieldType.NUMBER).description("number"),
+                                fieldWithPath("sort").type(JsonFieldType.OBJECT).description("number"),
+                                fieldWithPath("sort.unsorted").type(JsonFieldType.BOOLEAN).description("unsorted"),
+                                fieldWithPath("sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted"),
+                                fieldWithPath("sort.empty").type(JsonFieldType.BOOLEAN).description("empty"),
+                                fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("empty")
+                        )
+                ));
     }
 
     @DisplayName("id로 단일 게시글 조회 요청시 게시글 정보 반환")
@@ -69,6 +120,21 @@ class PostApiControllerTest {
     void getPostInformation() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/api/v1/posts/" + testPost.getId()))
                 .andExpect(status().is2xxSuccessful())
+                .andDo(document("post-inquiry",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("post id"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("createdDate"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("writer.createdAt").type(JsonFieldType.STRING).description("writer create"),
+                                fieldWithPath("writer.id").type(JsonFieldType.NUMBER).description("writer id"),
+                                fieldWithPath("writer.name").type(JsonFieldType.STRING).description("writer name"),
+                                fieldWithPath("writer.age").type(JsonFieldType.NUMBER).description("writer age"),
+                                fieldWithPath("writer.hobby").type(JsonFieldType.NULL).description("writer hobby")
+                        )
+                ))
                 .andReturn();
 
         String jsonString = mvcResult.getResponse().getContentAsString();
@@ -103,6 +169,26 @@ class PostApiControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isCreated())
+                .andDo(document("post-create",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("userId")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("post id"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("createdDate"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("writer.createdAt").type(JsonFieldType.STRING).description("writer create"),
+                                fieldWithPath("writer.id").type(JsonFieldType.NUMBER).description("writer id"),
+                                fieldWithPath("writer.name").type(JsonFieldType.STRING).description("writer name"),
+                                fieldWithPath("writer.age").type(JsonFieldType.NUMBER).description("writer age"),
+                                fieldWithPath("writer.hobby").type(JsonFieldType.NULL).description("writer hobby")
+                        )
+                ))
                 .andReturn();
 
         String jsonString = mvcResult.getResponse().getContentAsString();
