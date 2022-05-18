@@ -41,7 +41,7 @@ public class PostService {
     @Transactional
     public ResponsePost update(Long id, CreateRequestPost postDto){
         Post retrievedPost = postRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("포스팅이 없습니다."));
+                .orElseThrow(()-> new EntityNotFoundException("id와 일치하는 포스팅이 없습니다."));
 
         retrievedPost.updateTitle(postDto.getTitle());
         retrievedPost.updateContent(postDto.getContent());
