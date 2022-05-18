@@ -1,0 +1,57 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+
+== Post API
+
+=== Create Post
+
+=== POST /api/v1/posts
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+=== Update Post
+
+=== POST /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+=== Read Post
+
+=== GET /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-read/http-request.adoc[]
+include::{snippets}/post-read/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-read/http-response.adoc[]
+include::{snippets}/post-read/response-fields.adoc[]
+
+=== Delete Post
+
+=== DELETE /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-delete/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-delete/http-response.adoc[]
+include::{snippets}/post-delete/response-fields.adoc[]
