@@ -57,11 +57,10 @@ public class User extends BaseEntity {
     }
 
     public void addPost(Post post) {
-        post.changeUser(this);
         this.posts.add(post);
     }
 
-    public void removePost(Post post) {
-        this.posts.remove(post);
+    public boolean isSame(User user) {
+        return this.id.equals(user.id);
     }
 }

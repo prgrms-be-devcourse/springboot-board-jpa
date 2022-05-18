@@ -1,7 +1,6 @@
 package com.prgrms.springboard.post.domain;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -43,6 +42,7 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
         this.user = user;
+        user.addPost(this);
     }
 
     public static Post of(String title, String content, User user) {
@@ -52,19 +52,12 @@ public class Post extends BaseEntity {
         return new Post(createdBy, LocalDateTime.now(), null, postTitle, postContent, user);
     }
 
-    public void changeUser(User user) {
-        if (Objects.nonNull(this.user)) {
-            this.user.removePost(this);
-        }
-        this.user = user;
-    }
-
     public void changePostInformation(String title, String content) {
         this.title = new Title(title);
         this.content = new Content(content);
     }
 
     public boolean isNotSameUser(User user) {
-        return !this.user.equals(user);
+        return !this.user.isSame(user);
     }
 }
