@@ -35,6 +35,7 @@ public class User extends BaseEntity {
     }
 
     public User(Name name, Age age, Hobby hobby) {
+        super("");
         this.name = name;
         this.age = age;
         this.hobby = hobby;
