@@ -10,14 +10,19 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 public class CreateRequestPost {
+
     private String title;
+
     private String content;
+
     private UserDto userDto;
 
     public Post toEntity() {
-        return Post.builder()
+        Post post = Post.builder()
                 .title(this.title)
                 .content(this.title)
                 .build();
+        post.setUser(userDto.toEntity());
+        return post;
     }
 }

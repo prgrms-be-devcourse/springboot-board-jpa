@@ -1,13 +1,12 @@
 package com.programmers.board.core.post.application.dto;
 
 import com.programmers.board.core.post.domain.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class ResponsePost {
     
     private Long id;
