@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 @Service
+@Transactional(readOnly = true)
 public class PostService {
     @Autowired
     private PostRepository postRepository;
@@ -23,13 +24,11 @@ public class PostService {
         return result.getId();
     }
 
-    @Transactional
     public Page<PostDto> readAll(Pageable pageable) {
         Page<PostDto> result = postRepository.findAll(pageable).map(PostConverter::toPostDto);
         return result;
     }
 
-    @Transactional
     public PostDto read(Long id) {
         PostDto result = PostConverter.toPostDto(postRepository.findById(id).orElseThrow(()-> new RuntimeException("not exist")));
         return result;

@@ -24,7 +24,6 @@ public class PostConverter {
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
         post.setCustomer(PostConverter.toCustomer(postDto.getCustomer()));
-        post.getCustomer().setPosts(post);
         post.setCratedAt(LocalDateTime.now());
         post.setCreatedBy(postDto.getCustomer().getName());
         return post;

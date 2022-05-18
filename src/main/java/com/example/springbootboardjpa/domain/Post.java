@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -25,4 +25,9 @@ public class Post extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+        customer.setPosts(this);
+    }
 }
