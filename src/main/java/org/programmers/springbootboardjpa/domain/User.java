@@ -1,37 +1,45 @@
 package org.programmers.springbootboardjpa.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
-    public User(String name, int age) {
+    public User(String nickname, Name name, Age age) {
+        this.nickname = nickname;
         this.name = name;
         this.age = age;
     }
 
-    public User(String name, int age, String hobby) {
+    public User(String nickname, Name name, Age age, UserInterests interest) {
+        this.nickname = nickname;
         this.name = name;
         this.age = age;
-        this.hobby = hobby;
+        this.interest = interest;
     }
 
     @Id
     @GeneratedValue
     private Long userId;
+
+    //TODO: 닉네임을 클래스화할 필요성 고려
     @Column(nullable = false)
-    private String name;
+    private String nickname;
+
+    @Embedded
     @Column(nullable = false)
-    private int age;
-    private String hobby;
+    private Name name;
+
+    @Embedded
+    @Column(nullable = false)
+    private Age age;
+
+    @Embedded
+    private UserInterests interest;
 }
