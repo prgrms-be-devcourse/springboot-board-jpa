@@ -24,7 +24,7 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
   - [X] 연관관계 매핑
     - [X] 연관관계 편의 메서드 작성
   - [ ] 설계도 문서화
-- [ ] 게시글 Repository 개발
+- [ ] 게시글 Repository 개발 (Spring Data JPA 이용)
 - API 개발
   - 게시글 조회
     - [ ] 페이징 조회 (GET "/posts")
