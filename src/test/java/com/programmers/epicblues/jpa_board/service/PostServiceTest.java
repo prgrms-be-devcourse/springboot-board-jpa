@@ -30,7 +30,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import testutil.EntityFixture;
-import testutil.FieldModifier;
+import testutil.FieldSetter;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
@@ -45,19 +45,21 @@ class PostServiceTest {
   private PostService postService;
 
   @Test
-  @DisplayName("2개를 보관하는 두 번째 페이지를 반환해야 한다.")
-  void find_all_post_with_page() {
+  @DisplayName("2개를 보관하는 두 번째 페이지를 반환하는 요청을 postRepository에 위임해야 한다.")
+  void find_all_post_with_page() throws NoSuchFieldException, IllegalAccessException {
+    // given
+    PageRequest pageRequest = PageRequest.of(0, 2);
+    var expectedPostList = getPostList().subList(0, 1);
+    var user = getUser();
+    FieldSetter.assignId(user, 1L);
+    user.addPosts(expectedPostList);
 
-    // Given
-    List<Post> posts = getPostList();
+    // when
+    when(postRepository.findAll(pageRequest)).thenReturn(new PageImpl<>(expectedPostList));
+    postService.getPosts(pageRequest);
 
-    // When
-    when(postRepository.findAll(PageRequest.of(1, 2))).thenReturn(
-        new PageImpl<>(List.of(posts.get(2), posts.get(3))));
-    List<Post> queriedPosts = postService.getPosts(PageRequest.of(1, 2));
-
-    // Then
-    assertThat(queriedPosts).contains(posts.get(2), posts.get(3));
+    //then
+    verify(postRepository, times(1)).findAll(pageRequest);
   }
 
   @Test
@@ -123,10 +125,10 @@ class PostServiceTest {
     String updatedTitle = "updated title";
     String updatedContent = "updated content";
     var user = EntityFixture.getUser();
-    FieldModifier.assignId(user, 1L);
+    FieldSetter.assignId(user, 1L);
     var targetPost = EntityFixture.getFirstPost();
     targetPost.assignUser(user);
-    FieldModifier.assignId(targetPost, postId);
+    FieldSetter.assignId(targetPost, postId);
 
     // When
     when(postRepository.findById(postId)).thenReturn(Optional.of(targetPost));
@@ -151,7 +153,7 @@ class PostServiceTest {
     var queriedPost = EntityFixture.getFirstPost();
     var user = EntityFixture.getUser();
     queriedPost.assignUser(user);
-    FieldModifier.assignId(queriedPost, postId);
+    FieldSetter.assignId(queriedPost, postId);
 
     // When
     when(postRepository.findById(postId)).thenReturn(Optional.of(queriedPost));
