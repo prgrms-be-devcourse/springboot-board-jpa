@@ -30,7 +30,7 @@ public class Post extends BaseEntity {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.user = user;
+        changeUser(user);
     }
 
     public void update(String title, String content) {
@@ -38,7 +38,11 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public void setUser(User user) {
+    public void changeUser(User user) {
+        if(this.user != null) {
+            this.user.getPosts().remove(this);
+        }
         this.user = user;
+        user.getPosts().add(this);
     }
 }

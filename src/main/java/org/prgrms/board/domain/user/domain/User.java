@@ -32,7 +32,7 @@ public class User extends BaseEntity {
     @Embedded
     private Password password;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
     @Builder
@@ -49,5 +49,9 @@ public class User extends BaseEntity {
         if(age <= 0) {
             throw new IllegalArgumentException("나이는 0이하가 될 수 없습니다.");
         }
+    }
+
+    public void addPost(Post post) {
+        post.changeUser(this);
     }
 }
