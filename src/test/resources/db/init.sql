@@ -2,3 +2,4 @@ set FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE post;
 TRUNCATE TABLE user;
 set FOREIGN_KEY_CHECKS = 1;
+alter sequence HIBERNATE_SEQUENCE restart with 1
