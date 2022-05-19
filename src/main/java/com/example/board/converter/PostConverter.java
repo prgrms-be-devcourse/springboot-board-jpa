@@ -4,29 +4,23 @@ import com.example.board.domain.Post;
 import com.example.board.domain.User;
 import com.example.board.dto.PostDto;
 import com.example.board.dto.UserDto;
+import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
-
+@Component
 public class PostConverter {
     public Post convertPost(PostDto postDto) {
-        return Post.builder()
-                .id(postDto.getId())
-                .title(postDto.getTitle())
-                .content(postDto.getContent())
-                .author(this.convertUser(postDto.getAuthor()))
-                .build();
+        return new Post(
+                postDto.getTitle(),
+                postDto.getContent(),
+                this.convertUser(postDto.getAuthor()));
     }
 
     private User convertUser(UserDto userDto) {
-        return User.builder()
-                .id(userDto.getId())
-                .name(userDto.getName())
-                .age(userDto.getAge())
-                .hobby(userDto.getHobby())
-                .posts(userDto.getPostDtos().stream()
-                        .map(this::convertPost)
-                        .collect(Collectors.toList()))
-                .build();
+        return new User(
+                userDto.getId(),
+                userDto.getName(),
+                userDto.getAge(),
+                userDto.getHobby());
     }
 
     public PostDto convertPostDto(Post post) {
@@ -44,9 +38,6 @@ public class PostConverter {
                 .name(user.getName())
                 .age(user.getAge())
                 .hobby(user.getHobby())
-                .postDtos(user.getPosts().stream()
-                        .map(this::convertPostDto)
-                        .collect(Collectors.toList()))
                 .build();
     }
 }
