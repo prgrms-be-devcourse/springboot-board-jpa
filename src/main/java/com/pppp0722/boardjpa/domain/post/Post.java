@@ -1,6 +1,7 @@
 package com.pppp0722.boardjpa.domain.post;
 
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,12 +28,11 @@ public class Post extends BaseEntity {
     @Column(name = "title", length = 50, nullable = false)
     private String title;
 
-    @Lob
     @Column(name = "content", nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user", referencedColumnName = "id")
     private User user;
 
     public void setUser(User user) {

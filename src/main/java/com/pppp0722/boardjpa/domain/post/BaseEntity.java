@@ -9,11 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class BaseEntity {
-
-    @Column(name = "created_by")
-    private LocalDateTime createdAt;
+public class BaseEntity {
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime createdAt;
+
+    @Column(name = "created_by")
     private String createdBy;
 }

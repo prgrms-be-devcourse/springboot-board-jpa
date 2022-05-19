@@ -4,8 +4,16 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+
 spring:
   datasource:
     url: jdbc:mysql://localhost/board_mgmt
     username: root
     password: root1234!
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate.format_sql: false
