@@ -16,7 +16,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 public class UserApiController {
 
     private final UserService userService;
@@ -25,7 +25,7 @@ public class UserApiController {
         this.userService = userService;
     }
 
-    @PostMapping("/sign-up")
+    @PostMapping
     public ResponseEntity<HttpStatus> signUp(@Valid @RequestBody UserCreateRequest createRequest) {
         userService.save(createRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
