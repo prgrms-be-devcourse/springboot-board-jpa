@@ -22,6 +22,7 @@ public interface UserMapper {
             @Mapping(source = "name.firstName", target = "firstName"),
             @Mapping(source = "name.lastName", target = "lastName"),
             @Mapping(source = "email.value", target = "email"),
+            @Mapping(source = "id", target = "userId")
     })
     UserSearchResponse toSearchResponse(User user);
 }
