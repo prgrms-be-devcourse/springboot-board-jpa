@@ -16,7 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "org.prgrms.kdt.controller")
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @Override
@@ -44,13 +44,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(EntityNotFoundException.class)
-  public ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
+  protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
     log.error(ex.getMessage());
     return ResponseEntity.badRequest().body(ApiResponse.fail(ErrorCode.ENTITY_NOT_FOUND));
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<Object> handleServer(Exception ex) {
+  protected ResponseEntity<Object> handleServer(Exception ex) {
     log.error("예상하지 못한 에러가 발생했습니다 : {}", ex.getMessage());
     return ResponseEntity.internalServerError()
         .body(ApiResponse.fail(ErrorCode.INTERNAL_SERVER_ERROR));
