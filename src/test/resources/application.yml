@@ -1,19 +1,23 @@
 spring:
+  sql:
+    init:
+      mode: never
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:dev
+    url: jdbc:h2:mem:test
     name: sa
-  h2:
-    console:
-      enabled: true
   jpa:
     generate-ddl: true
-    show-sql: true
     properties:
       hibernate:
         jdbc:
           batch_size: 20
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
     database: h2
     open-in-view: false
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true

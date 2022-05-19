@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -26,6 +27,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 class PostRepositoryTest {
     private static final String postTitle = "title";
     private static final String postContent = "content";
@@ -106,11 +108,9 @@ class PostRepositoryTest {
         em.flush();
         em.clear();
 
-        Assertions.assertDoesNotThrow(()->{
+        Assertions.assertDoesNotThrow(() -> {
             Post found = postRepository.findPostWithMemberById(post.getId()).orElseThrow();
             assertThat(unitUtil.isLoaded(found.getWriter())).isTrue();
         });
     }
-
-
 }

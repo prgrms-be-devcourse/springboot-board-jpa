@@ -14,7 +14,7 @@ endif::[]
 == Post
 
 [[resources-post-create]]
-=== Post 생성
+=== 게시글 생성
 
 ==== HTTP request
 

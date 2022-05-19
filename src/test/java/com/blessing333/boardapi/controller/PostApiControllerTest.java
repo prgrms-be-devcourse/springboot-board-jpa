@@ -34,6 +34,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -69,6 +70,7 @@ class PostApiControllerTest {
                         .param("size", "5")
                         .param("sort", "createdAt,desc"))
                 .andExpect(status().is2xxSuccessful())
+                .andDo(print())
                 .andDo(document("post-list",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
