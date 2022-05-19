@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class UserSearchResponse {
-    private long id;
+    private long userId;
     private String firstName;
     private String lastName;
     private int age;
