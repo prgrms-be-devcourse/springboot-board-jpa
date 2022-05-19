@@ -15,6 +15,7 @@ import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseBody;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
@@ -95,26 +96,24 @@ class PostControllerTest {
                     parameterWithName("size").description("페이지 크기")
                 ),
                 responseFields(
-                    fieldWithPath("statusCode").type(NUMBER).description("HTTP 상태 코드"),
-                    fieldWithPath("serverDateTime").type(STRING).description("서버 응답 시간"),
-                    fieldWithPath("data.content[].id").type(NUMBER).description("게시글 ID"),
-                    fieldWithPath("data.content[].title").type(STRING).description("게시글 제목"),
-                    fieldWithPath("data.content[].content").type(STRING).description("게시글 내용"),
-                    fieldWithPath("data.content[].createdBy").type(STRING).description("게시글 생성자"),
-                    fieldWithPath("data.content[].createdAt").type(STRING).description("게시글 생성시간"),
-                    fieldWithPath("data.content[].updatedAt").type(STRING).description("게시글 수정시간"),
-                    fieldWithPath("data.pageable").type(STRING).description("페이지"),
-                    fieldWithPath("data.last").type(BOOLEAN).description("마지막 페이지 여부"),
-                    fieldWithPath("data.totalPages").type(NUMBER).description("전체 페이지 수"),
-                    fieldWithPath("data.totalElements").type(NUMBER).description("전체 게시글 수"),
-                    fieldWithPath("data.size").type(NUMBER).description("페이지 크기"),
-                    fieldWithPath("data.number").type(NUMBER).description("페이지 번호"),
-                    fieldWithPath("data.sort.empty").type(BOOLEAN).description("정렬 설정 여부"),
-                    fieldWithPath("data.sort.sorted").type(BOOLEAN).description("정렬 여부"),
-                    fieldWithPath("data.sort.unsorted").type(BOOLEAN).description("비정렬 여부"),
-                    fieldWithPath("data.first").type(BOOLEAN).description("첫 페이지 여부"),
-                    fieldWithPath("data.numberOfElements").type(NUMBER).description("게시글 개수"),
-                    fieldWithPath("data.empty").type(BOOLEAN).description("빈 값 여부")
+                    fieldWithPath("content[].id").type(NUMBER).description("게시글 ID"),
+                    fieldWithPath("content[].title").type(STRING).description("게시글 제목"),
+                    fieldWithPath("content[].content").type(STRING).description("게시글 내용"),
+                    fieldWithPath("content[].createdBy").type(STRING).description("게시글 생성자"),
+                    fieldWithPath("content[].createdAt").type(STRING).description("게시글 생성시간"),
+                    fieldWithPath("content[].updatedAt").type(STRING).description("게시글 수정시간"),
+                    fieldWithPath("pageable").type(STRING).description("페이지"),
+                    fieldWithPath("last").type(BOOLEAN).description("마지막 페이지 여부"),
+                    fieldWithPath("totalPages").type(NUMBER).description("전체 페이지 수"),
+                    fieldWithPath("totalElements").type(NUMBER).description("전체 게시글 수"),
+                    fieldWithPath("size").type(NUMBER).description("페이지 크기"),
+                    fieldWithPath("number").type(NUMBER).description("페이지 번호"),
+                    fieldWithPath("sort.empty").type(BOOLEAN).description("정렬 설정 여부"),
+                    fieldWithPath("sort.sorted").type(BOOLEAN).description("정렬 여부"),
+                    fieldWithPath("sort.unsorted").type(BOOLEAN).description("비정렬 여부"),
+                    fieldWithPath("first").type(BOOLEAN).description("첫 페이지 여부"),
+                    fieldWithPath("numberOfElements").type(NUMBER).description("게시글 개수"),
+                    fieldWithPath("empty").type(BOOLEAN).description("빈 값 여부")
                 )
             )
         );
@@ -139,14 +138,12 @@ class PostControllerTest {
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 responseFields(
-                    fieldWithPath("statusCode").type(NUMBER).description("HTTP 상태 코드"),
-                    fieldWithPath("data.id").type(NUMBER).description("게시글 ID"),
-                    fieldWithPath("data.title").type(STRING).description("게시글 제목"),
-                    fieldWithPath("data.content").type(STRING).description("게시글 내용"),
-                    fieldWithPath("data.createdAt").type(STRING).description("게시글 생성 시간"),
-                    fieldWithPath("data.updatedAt").type(STRING).description("게시글 수정 시간"),
-                    fieldWithPath("data.createdBy").type(STRING).description("게시글 생성자"),
-                    fieldWithPath("serverDateTime").type(STRING).description("서버 응답 시간")
+                    fieldWithPath("id").type(NUMBER).description("게시글 ID"),
+                    fieldWithPath("title").type(STRING).description("게시글 제목"),
+                    fieldWithPath("content").type(STRING).description("게시글 내용"),
+                    fieldWithPath("createdAt").type(STRING).description("게시글 생성 시간"),
+                    fieldWithPath("updatedAt").type(STRING).description("게시글 수정 시간"),
+                    fieldWithPath("createdBy").type(STRING).description("게시글 생성자")
                 )
             )
         );
@@ -167,7 +164,7 @@ class PostControllerTest {
             .content(objectMapper.writeValueAsString(postRequest))
             .header(AUTHORIZATION, "1")
         )
-        .andExpect(status().isOk())
+        .andExpect(status().isCreated())
         .andDo(print())
         .andDo(document("create-post",
                 preprocessRequest(prettyPrint()),
@@ -180,9 +177,7 @@ class PostControllerTest {
                     fieldWithPath("content").type(STRING).description("게시글 내용")
                 ),
                 responseFields(
-                    fieldWithPath("statusCode").type(NUMBER).description("HTTP 상태 코드"),
-                    fieldWithPath("data").type(NUMBER).description("게시글 ID"),
-                    fieldWithPath("serverDateTime").type(STRING).description("서버 응답 시간")
+                    fieldWithPath("id").type(NUMBER).description("게시글 ID")
                 )
             )
         );
@@ -207,9 +202,8 @@ class PostControllerTest {
                     fieldWithPath("content").type(STRING).description("게시글 내용")
                 ),
                 responseFields(
-                    fieldWithPath("statusCode").type(NUMBER).description("HTTP 상태 코드"),
-                    fieldWithPath("data").type(STRING).description("에러 메시지"),
-                    fieldWithPath("serverDateTime").type(STRING).description("서버 응답 시간")
+                    fieldWithPath("type").type(STRING).description("에러 타입"),
+                    fieldWithPath("message").type(STRING).description("에러 메시지")
                 )
             )
         );
@@ -234,9 +228,7 @@ class PostControllerTest {
                     fieldWithPath("content").type(STRING).description("게시글 내용")
                 ),
                 responseFields(
-                    fieldWithPath("statusCode").type(NUMBER).description("HTTP 상태 코드"),
-                    fieldWithPath("data").type(NUMBER).description("게시글 ID"),
-                    fieldWithPath("serverDateTime").type(STRING).description("서버 응답 시간")
+                    fieldWithPath("id").type(NUMBER).description("게시글 ID")
                 )
             )
         );
