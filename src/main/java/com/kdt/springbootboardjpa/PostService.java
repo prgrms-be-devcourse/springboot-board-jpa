@@ -8,6 +8,8 @@ import com.kdt.springbootboardjpa.exception.PostNotFoundException;
 import com.kdt.springbootboardjpa.exception.UserNotFoundException;
 import com.kdt.springbootboardjpa.repository.PostRepository;
 import com.kdt.springbootboardjpa.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +35,8 @@ public class PostService {
         );
     }
 
-    public List<PostDTO> findAllPosts() {
-        return postRepository.findAll().stream().map(converter::convertPostDTO).toList();
+    public Page<PostDTO> findAllPosts(Pageable pageable) {
+        return postRepository.findAll(pageable).map(converter::convertPostDTO);
     }
 
     @Transactional

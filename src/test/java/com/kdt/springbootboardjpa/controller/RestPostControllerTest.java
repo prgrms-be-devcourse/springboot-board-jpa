@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,10 +38,10 @@ class RestPostControllerTest {
 
     @Test
     @Transactional
-    @DisplayName("ID를 통한 GET post")
+    @DisplayName("ID를 통한 GET 테스트")
     void getPostByIdTest() throws Exception {
 
-        //when
+        //given
         var dto = service.findPost(1L);
 
         //then
@@ -48,6 +50,25 @@ class RestPostControllerTest {
                 .andExpect(jsonPath("username").value(dto.getUsername()))
                 .andExpect(jsonPath("title").value(dto.getTitle()))
                 .andExpect(jsonPath("content").value(dto.getContent()))
+                .andDo(print());
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("Pageble을 이용한 GET 테스트")
+    void getPostByPagebleTest() throws Exception{
+
+        //given
+        var pageble = PageRequest.of(0, 10, Sort.by("createdAt").descending());
+        var dto = service.findAllPosts(pageble);
+
+        //then
+        mockMvc.perform(get("/api/v1/posts")
+                        .param("page", "0")
+                        .param("size", "10")
+                        .param("sort", "createdAt,desc"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("content[0].title").value(dto.getContent().get(0).getTitle()))
                 .andDo(print());
     }
 
@@ -114,7 +135,7 @@ class RestPostControllerTest {
     void postNotFoundExceptionTest() throws Exception{
 
         //getPost
-        Long requestId = 1L;
+        Long requestId = 10L;
         mockMvc.perform(get("/api/v1/posts/{id}", requestId))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("code").value(HttpStatus.NOT_FOUND.name()))

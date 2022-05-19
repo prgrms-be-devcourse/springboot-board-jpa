@@ -5,6 +5,7 @@ import com.kdt.springbootboardjpa.domain.Post;
 import com.kdt.springbootboardjpa.domain.User;
 import com.kdt.springbootboardjpa.domain.dto.PostCreateRequest;
 import com.kdt.springbootboardjpa.domain.dto.PostDTO;
+import com.kdt.springbootboardjpa.exception.PostNotFoundException;
 import com.kdt.springbootboardjpa.exception.UserNotFoundException;
 import com.kdt.springbootboardjpa.repository.PostRepository;
 import com.kdt.springbootboardjpa.repository.UserRepository;
@@ -14,7 +15,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -94,14 +99,17 @@ class PostServiceTest {
         when(converter.convertPostDTO(p2)).thenReturn(dto2);
         when(converter.convertPostDTO(p3)).thenReturn(dto3);
 
-        when(postRepository.findAll()).thenReturn(List.of(p1, p2, p3));
+        Page<Post> posts = new PageImpl<>(List.of(p1, p2, p3));
+
+        var pageble = PageRequest.of(1, 10);
+        when(postRepository.findAll(pageble)).thenReturn(posts);
 
         //when
-        var found = postService.findAllPosts();
+        var found = postService.findAllPosts(pageble);
 
         //then
-        assertThat(found, hasSize(3));
-        assertThat(found, samePropertyValuesAs(List.of(dto1, dto2, dto3)));
+        assertThat(found.getTotalElements(), is(3L));
+        assertThat(found, samePropertyValuesAs(new PageImpl<>(List.of(dto1, dto2, dto3))));
     }
 
     @Test
@@ -115,18 +123,18 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("NoSuchElementException 테스트")
-    void noSucheElementTest(){
+    @DisplayName("PostNotFoundException 테스트")
+    void pageNotFoundTest(){
         //given
         when(postRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> postService.findPost(2L));
-        assertThrows(NoSuchElementException.class, () -> postService.editPost(1L, dto));
+        assertThrows(PostNotFoundException.class, () -> postService.findPost(2L));
+        assertThrows(PostNotFoundException.class, () -> postService.editPost(1L, dto));
     }
 
     @Test
-    @DisplayName("UnAuthorizationAccessException 테스트")
-    void unAuthorizationTest(){
+    @DisplayName("UserNotFoundException 테스트")
+    void userNotFoundTest(){
 
         //given
         var request = new PostCreateRequest("exception-title", "--", "throwww");
