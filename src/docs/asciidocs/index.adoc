@@ -26,6 +26,19 @@ include::{snippets}/post-create/request-fields.adoc[]
 include::{snippets}/post-query/http-response.adoc[]
 include::{snippets}/post-query/response-fields.adoc[]
 
+[[resources-post-update]]
+=== 게시글 수정
+
+==== HTTP request
+
+include::{snippets}/post-create/request-fields.adoc[]
+include::{snippets}/post-update/http-request.adoc[]
+
+==== HTTP response
+
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
 [[resources-post-inquiry]]
 === 단일 게시글 조회
 

@@ -217,7 +217,6 @@ class PostApiControllerTest {
                 .andReturn();
 
         assertTrue(Objects.requireNonNull(mvcResult.getResolvedException()).getClass().isAssignableFrom(MethodArgumentNotValidException.class));
-        assertNotNull(mvcResult.getResolvedException().getMessage());
     }
 
     @DisplayName("잘못된 UserId로 게시글 생성 요청시 PostCreateFailException 생성, 400에러 코드 반환")
@@ -241,14 +240,40 @@ class PostApiControllerTest {
     @DisplayName("게시글 수정 요청시 게시글을 수정하고 수정된 게시글 정보를 반환한다")
     @Test
     void update() throws Exception {
-        PostUpdateCommand postUpdateCommand = new PostUpdateCommand(testPost.getId(), "change", "content change");
+        String changedTitle = "change";
+        String changedContent = "changed content";
+        PostUpdateCommand postUpdateCommand = new PostUpdateCommand(testPost.getId(), changedTitle, changedContent);
         String jsonString = mapper.writeValueAsString(postUpdateCommand);
         MvcResult mvcResult = mockMvc.perform(put("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonString))
                 .andExpect(status().is2xxSuccessful())
+                .andDo(document("post-update",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("userId"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("content")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("post id"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("createdDate"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("writer.createdAt").type(JsonFieldType.STRING).description("writer create"),
+                                fieldWithPath("writer.id").type(JsonFieldType.NUMBER).description("writer id"),
+                                fieldWithPath("writer.name").type(JsonFieldType.STRING).description("writer name"),
+                                fieldWithPath("writer.age").type(JsonFieldType.NUMBER).description("writer age"),
+                                fieldWithPath("writer.hobby").type(JsonFieldType.NULL).description("writer hobby")
+                        )
+                ))
                 .andReturn();
 
+        String resultString = mvcResult.getResponse().getContentAsString();
+        PostInformation postInformation = mapper.readValue(resultString, PostInformation.class);
+        assertThat(postInformation.getTitle()).isEqualTo(changedTitle);
+        assertThat(postInformation.getContent()).isEqualTo(changedContent);
     }
 
     @DisplayName("잘못된 게시글id로 수정 요청시 PostUpdateFailException 발생, 400코드 반환")

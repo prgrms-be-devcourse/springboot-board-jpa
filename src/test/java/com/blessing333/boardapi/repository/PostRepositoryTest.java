@@ -33,6 +33,7 @@ class PostRepositoryTest {
     private static final String postContent = "content";
     private static final String userName = "content";
     private static final int userAge = 28;
+
     @Autowired
     private PostRepository postRepository;
     @Autowired
