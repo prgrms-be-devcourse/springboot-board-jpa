@@ -1,5 +1,6 @@
 package com.kdt.prgrms.board.domain.user.entity;
 
+import com.kdt.prgrms.board.domain.BaseEntity;
 import com.kdt.prgrms.board.domain.user.Hobby;
 
 import javax.persistence.*;
@@ -7,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
