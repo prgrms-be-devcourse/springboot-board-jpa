@@ -4,7 +4,7 @@ import org.prgrms.board.domain.post.Service.PostService;
 import org.prgrms.board.domain.post.request.PostCreateRequest;
 import org.prgrms.board.domain.post.request.PostUpdateRequest;
 import org.prgrms.board.domain.post.response.PostSearchResponse;
-import org.springframework.data.domain.Page;
+import org.prgrms.board.global.dto.PageDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/api/v1/posts")
 public class PostApiController {
 
     private final PostService postService;
@@ -26,7 +26,7 @@ public class PostApiController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PostSearchResponse>> getAll(
+    public ResponseEntity<PageDto<PostSearchResponse>> getAll(
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return new ResponseEntity<>(postService.findAll(pageable), HttpStatus.OK);
     }

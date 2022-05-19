@@ -10,10 +10,13 @@ import org.prgrms.board.domain.post.request.PostUpdateRequest;
 import org.prgrms.board.domain.post.response.PostSearchResponse;
 import org.prgrms.board.domain.user.response.UserSearchResponse;
 import org.prgrms.board.domain.user.service.UserService;
+import org.prgrms.board.global.dto.PageDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 import static org.prgrms.board.global.exception.ErrorCode.POST_NOT_EXIST;
 
@@ -32,9 +35,19 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostSearchResponse> findAll(Pageable pageable) {
-        return postRepository.findAll(pageable)
-                .map(postMapper::toSearchResponse);
+    public PageDto<PostSearchResponse> findAll(Pageable pageable) {
+        Page<Post> allPages = postRepository.findAll(pageable);
+        return PageDto.<PostSearchResponse>builder()
+                .content(allPages.getContent()
+                        .stream()
+                        .map(postMapper::toSearchResponse)
+                        .collect(Collectors.toList()))
+                .totalElements(allPages.getTotalElements())
+                .totalPages(allPages.getTotalPages())
+                .offset(allPages.getPageable().getOffset())
+                .pageSize(allPages.getPageable().getPageSize())
+                .pageNumber(allPages.getPageable().getPageNumber())
+                .build();
     }
 
     @Transactional(readOnly = true)
@@ -47,8 +60,9 @@ public class PostService {
     @Transactional
     public long save(PostCreateRequest createRequest, long userId) {
         UserSearchResponse userResponse = userService.findById(userId);
-        Post post = postMapper.toEntity(createRequest, userResponse.getId());
+        Post post = postMapper.toEntity(createRequest, userResponse);
         Post savedPost = postRepository.save(post);
+        userService.addPost(userId, savedPost);
         return savedPost.getId();
     }
 
@@ -69,5 +83,4 @@ public class PostService {
         log.info("Post deleted, id: {}", postId);
         return postId;
     }
-
 }
