@@ -1,0 +1,84 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+= 게시글
+
+== 게시글 생성
+
+== /api/v1/posts/
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+== 게시글 조회
+
+=== 단건 조회
+
+== /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-findOne/http-request.adoc[]
+include::{snippets}/post-findOne/path-parameters.adoc[]
+
+
+.Response
+include::{snippets}/post-findOne/http-response.adoc[]
+include::{snippets}/post-findOne/response-fields.adoc[]
+
+=== 존재하지 않는 게시글 조회 시
+
+.Request
+include::{snippets}/post-notFoundError/http-request.adoc[]
+include::{snippets}/post-notFoundError/path-parameters.adoc[]
+
+
+.Response
+include::{snippets}/post-notFoundError/http-response.adoc[]
+include::{snippets}/post-notFoundError/response-fields.adoc[]
+
+=== 게시글 페이징 조회
+
+== /api/v1/posts/
+
+.Request
+include::{snippets}/post-page/http-request.adoc[]
+include::{snippets}/post-page/request-parameters.adoc[]
+
+
+.Response
+include::{snippets}/post-page/http-response.adoc[]
+include::{snippets}/post-page/response-fields.adoc[]
+
+== 게시글 수정
+
+== /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-modify/http-request.adoc[]
+include::{snippets}/post-modify/path-parameters.adoc[]
+include::{snippets}/post-modify/request-fields.adoc[]
+
+
+.Response
+include::{snippets}/post-modify/http-response.adoc[]
+include::{snippets}/post-modify/response-fields.adoc[]
+
+=== 작성자가 아닐 시
+
+.Request
+include::{snippets}/post-permissionError/http-request.adoc[]
+include::{snippets}/post-permissionError/path-parameters.adoc[]
+include::{snippets}/post-permissionError/request-fields.adoc[]
+
+
+.Response
+include::{snippets}/post-permissionError/http-response.adoc[]
+include::{snippets}/post-permissionError/response-fields.adoc[]

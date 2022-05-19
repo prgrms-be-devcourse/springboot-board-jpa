@@ -1,0 +1,43 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+= 회원
+
+== 회원 생성
+
+== api/v1/users/
+
+.Request
+include::{snippets}/user-save/http-request.adoc[]
+include::{snippets}/user-save/request-fields.adoc[]
+
+
+.Response
+include::{snippets}/user-save/http-response.adoc[]
+include::{snippets}/user-save/response-fields.adoc[]
+
+== 회원 단건 조회
+
+== api/v1/users/{id}
+
+.Request
+include::{snippets}/user-findOne/http-request.adoc[]
+include::{snippets}/user-findOne/path-parameters.adoc[]
+
+
+.Response
+include::{snippets}/user-findOne/http-response.adoc[]
+include::{snippets}/user-findOne/response-fields.adoc[]
+
+== 존재하지 않는 회원 조회시
+
+.Request
+include::{snippets}/user-notFound/http-request.adoc[]
+include::{snippets}/user-notFound/path-parameters.adoc[]
+
+
+.Response
+include::{snippets}/user-notFound/http-response.adoc[]
+include::{snippets}/user-notFound/response-fields.adoc[]
