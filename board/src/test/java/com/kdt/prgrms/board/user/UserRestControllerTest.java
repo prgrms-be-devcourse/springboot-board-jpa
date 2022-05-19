@@ -55,7 +55,7 @@ public class UserRestControllerTest {
                 final Map<String, Object> map = new HashMap<>();
                 map.put("name", null);
                 map.put("age", 1);
-                map.put("Hobby", 1);
+                map.put("Hobby", "MUSIC");
 
                 MockHttpServletRequestBuilder request = post(url)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -77,7 +77,7 @@ public class UserRestControllerTest {
                 final Map<String, Object> map = new HashMap<>();
                 map.put("name", "");
                 map.put("age", 1);
-                map.put("Hobby", 1);
+                map.put("Hobby", "MUSIC");
 
                 MockHttpServletRequestBuilder request = post(url)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -99,7 +99,7 @@ public class UserRestControllerTest {
                 final Map<String, Object> map = new HashMap<>();
                 map.put("name", "  ");
                 map.put("age", 1);
-                map.put("Hobby", 1);
+                map.put("Hobby", "MUSIC");
 
                 MockHttpServletRequestBuilder request = post(url)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -121,7 +121,29 @@ public class UserRestControllerTest {
                 final Map<String, Object> map = new HashMap<>();
                 map.put("name", "jaehee");
                 map.put("age", -10);
-                map.put("hobby", 1);
+                map.put("hobby", "MUSIC");
+
+                MockHttpServletRequestBuilder request = post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(map));
+
+                mockMvc.perform(request)
+                        .andExpect(status().isBadRequest());
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하지 않는 취미 user 생성 요청을 받으면")
+        class ContextNotExistAddRequest {
+
+            @Test
+            @DisplayName("400 BadRequest 응답을 반환한다.")
+            void itReturnBadRequest() throws Exception {
+
+                final Map<String, Object> map = new HashMap<>();
+                map.put("name", "jaehee");
+                map.put("age", 10);
+                map.put("hobby", "WOW!!");
 
                 MockHttpServletRequestBuilder request = post(url)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -166,7 +188,7 @@ public class UserRestControllerTest {
                 final Map<String, Object> map = new HashMap<>();
                 map.put("name", "jaehee");
                 map.put("age", 3);
-                map.put("hobby", 0);
+                map.put("hobby", "MUSIC");
 
                 MockHttpServletRequestBuilder request = post(url)
                         .contentType(MediaType.APPLICATION_JSON)
