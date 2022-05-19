@@ -26,6 +26,7 @@ import com.prgrms.springboard.post.domain.vo.Title;
 import com.prgrms.springboard.post.dto.CreatePostRequest;
 import com.prgrms.springboard.post.dto.ModifyPostRequest;
 import com.prgrms.springboard.post.dto.PostResponse;
+import com.prgrms.springboard.post.dto.PostsResponse;
 import com.prgrms.springboard.post.exception.PostNotFoundExcpetion;
 import com.prgrms.springboard.post.exception.UserNotHavePermission;
 import com.prgrms.springboard.user.domain.User;
@@ -100,10 +101,10 @@ class PostServiceTest {
         given(postRepository.findAll(pageable)).willReturn(posts);
 
         // when
-        Page<PostResponse> postResponses = postService.findAll(pageable);
+        PostsResponse postResponses = postService.findAll(pageable);
 
         // then
-        assertThat(postResponses).hasSize(2)
+        assertThat(postResponses.getPosts()).hasSize(2)
             .extracting("id")
             .containsExactly(1L, 2L);
     }

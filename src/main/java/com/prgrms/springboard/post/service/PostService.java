@@ -10,6 +10,7 @@ import com.prgrms.springboard.post.domain.PostRepository;
 import com.prgrms.springboard.post.dto.CreatePostRequest;
 import com.prgrms.springboard.post.dto.ModifyPostRequest;
 import com.prgrms.springboard.post.dto.PostResponse;
+import com.prgrms.springboard.post.dto.PostsResponse;
 import com.prgrms.springboard.post.exception.PostNotFoundExcpetion;
 import com.prgrms.springboard.post.exception.UserNotHavePermission;
 import com.prgrms.springboard.user.domain.User;
@@ -44,9 +45,11 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostResponse> findAll(Pageable pageable) {
-        return postRepository.findAll(pageable)
-            .map(PostResponse::from);
+    public PostsResponse findAll(Pageable pageable) {
+        Page<PostsResponse.PagePostResponse> posts = postRepository.findAll(pageable)
+            .map(PostsResponse.PagePostResponse::from);
+
+        return PostsResponse.of(posts);
     }
 
     public void modifyPost(Long id, ModifyPostRequest postRequest) {
