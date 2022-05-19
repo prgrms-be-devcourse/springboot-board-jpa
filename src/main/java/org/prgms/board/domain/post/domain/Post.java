@@ -31,6 +31,7 @@ public class Post {
 	/** 게시글 식별 번호 **/
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "post_id")
 	private Long id;
 
 	/** 게시글 제목 **/
