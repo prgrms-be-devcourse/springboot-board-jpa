@@ -41,7 +41,7 @@ public class PostService {
         User editor = findUserById(editorId);
         Post post = findPostById(postId);
 
-        checkEditable(postId, editor, post);
+        post.checkEditable(postId, editor);
 
         return post.update(title, content);
     }
@@ -54,9 +54,4 @@ public class PostService {
         return postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
     }
 
-    private void checkEditable(Long postId, User editor, Post post) {
-        if (!post.hasOfWriter(editor)) {
-            throw new PostEditAccessDeniedException(postId);
-        }
-    }
 }

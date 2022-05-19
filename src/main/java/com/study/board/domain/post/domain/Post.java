@@ -1,5 +1,6 @@
 package com.study.board.domain.post.domain;
 
+import com.study.board.domain.exception.PostEditAccessDeniedException;
 import com.study.board.domain.support.base.BaseEntity;
 import com.study.board.domain.user.domain.User;
 import lombok.Getter;
@@ -54,7 +55,13 @@ public class Post extends BaseEntity {
         return this;
     }
 
-    public boolean hasOfWriter(User writer) {
+    public void checkEditable(Long postId, User editor) {
+        if (!hasOfWriter(editor)) {
+            throw new PostEditAccessDeniedException(postId);
+        }
+    }
+
+    private boolean hasOfWriter(User writer) {
         return writer.getId().equals(this.writer.getId());
     }
 }
