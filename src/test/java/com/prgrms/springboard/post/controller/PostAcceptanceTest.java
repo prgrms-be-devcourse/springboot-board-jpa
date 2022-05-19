@@ -10,57 +10,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.jdbc.Sql;
 
+import com.prgrms.springboard.AcceptanceTest;
 import com.prgrms.springboard.post.dto.CreatePostRequest;
 import com.prgrms.springboard.post.dto.ModifyPostRequest;
 import com.prgrms.springboard.post.dto.PostResponse;
 import com.prgrms.springboard.post.dto.PostsResponse;
 
 import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 
-@ExtendWith(RestDocumentationExtension.class)
 @Sql({"classpath:db/init.sql", "classpath:db/data_user.sql"})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PostAcceptanceTest {
+class PostAcceptanceTest extends AcceptanceTest {
 
     private static final CreatePostRequest CREATE_POST_REQUEST = new CreatePostRequest(1L, "제목입니다.", "내용입니다.");
     private static final ModifyPostRequest MODIFY_POST_REQUEST = new ModifyPostRequest(1L, "수정 제목입니다.", "수정 내용입니다.");
-
-    @LocalServerPort
-    int port;
-
-    private RequestSpecification spec;
-
-    @BeforeEach
-    public void setup(RestDocumentationContextProvider restDocumentation) {
-        RestAssured.port = port;
-        this.spec = new RequestSpecBuilder().addFilter(documentationConfiguration(restDocumentation))
-            .build();
-    }
+    private static final String POST_URI = "api/v1/posts";
 
     @DisplayName("게시글을 작성한다.")
     @Test
     void createPost() {
         // given
         // when
-        ExtractableResponse<Response> response = RestAssured.given(this.spec).log().all()
+        ExtractableResponse<Response> createResponse = RestAssured.given(this.spec).log().all()
             .body(CREATE_POST_REQUEST)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .filter(document("post-save",
@@ -75,21 +55,21 @@ class PostAcceptanceTest {
                     fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
                 )
             ))
-            .when().post("api/v1/posts")
+            .when().post(POST_URI)
             .then().log().all()
             .extract();
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(response.jsonPath().getLong("data")).isEqualTo(1L);
+        assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(extractId(createResponse)).isEqualTo(1L);
     }
 
     @DisplayName("게시글을 단건 조회한다.")
     @Test
     void findPost() {
         // given
-        ExtractableResponse<Response> createResponse = createPostResponse(CREATE_POST_REQUEST);
-        Long postId = getPostId(createResponse);
+        ExtractableResponse<Response> createResponse = post(POST_URI, CREATE_POST_REQUEST);
+        Long postId = extractId(createResponse);
 
         // when
         ExtractableResponse<Response> findResponse = RestAssured.given(this.spec).log().all()
@@ -151,7 +131,7 @@ class PostAcceptanceTest {
         // then
         assertAll(
             () -> assertThat(findResponse.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value()),
-            () -> assertThat(findResponse.jsonPath().getString("data")).isEqualTo("ID가 2인 게시글은 없습니다.")
+            () -> assertThat(extractMessage(findResponse)).isEqualTo("ID가 2인 게시글은 없습니다.")
         );
 
     }
@@ -161,7 +141,7 @@ class PostAcceptanceTest {
     void findPosts() {
         // given
         for (int i = 0; i < 30; i++) {
-            createPostResponse(CREATE_POST_REQUEST);
+            post(POST_URI, CREATE_POST_REQUEST);
         }
         Map<String, Object> params = new HashMap<>();
         params.put("page", 1);
@@ -213,8 +193,9 @@ class PostAcceptanceTest {
     @Test
     void modifyPost() {
         // given
-        ExtractableResponse<Response> createResponse = createPostResponse(CREATE_POST_REQUEST);
-        Long postId = getPostId(createResponse);
+        ExtractableResponse<Response> createResponse = post(POST_URI, CREATE_POST_REQUEST);
+        String uri = createResponse.header("LOCATION");
+        Long postId = extractId(createResponse);
 
         // when
         ExtractableResponse<Response> modifyResponse = RestAssured.given(this.spec).log().all()
@@ -240,10 +221,10 @@ class PostAcceptanceTest {
             .extract();
 
         // then
-        PostResponse postResponse = findPostResponse(postId).jsonPath().getObject("data", PostResponse.class);
+        PostResponse postResponse = get(uri).jsonPath().getObject("data", PostResponse.class);
         assertAll(
             () -> assertThat(modifyResponse.statusCode()).isEqualTo(HttpStatus.OK.value()),
-            () -> assertThat(modifyResponse.jsonPath().getString("data")).isEqualTo("정상적으로 수정되었습니다."),
+            () -> assertThat(extractMessage(modifyResponse)).isEqualTo("정상적으로 수정되었습니다."),
             () -> assertThat(postResponse.getTitle()).isEqualTo(MODIFY_POST_REQUEST.getTitle()),
             () -> assertThat(postResponse.getContent()).isEqualTo(MODIFY_POST_REQUEST.getContent())
         );
@@ -253,8 +234,8 @@ class PostAcceptanceTest {
     @Test
     void modifyPost_Forbidden() {
         // given
-        ExtractableResponse<Response> createResponse = createPostResponse(CREATE_POST_REQUEST);
-        Long postId = getPostId(createResponse);
+        ExtractableResponse<Response> createResponse = post(POST_URI, CREATE_POST_REQUEST);
+        Long postId = extractId(createResponse);
 
         // when
         ExtractableResponse<Response> modifyResponse = RestAssured.given(this.spec).log().all()
@@ -282,28 +263,8 @@ class PostAcceptanceTest {
         // then
         assertAll(
             () -> assertThat(modifyResponse.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value()),
-            () -> assertThat(modifyResponse.jsonPath().getString("data")).isEqualTo("ID가 2인 회원은 해당 글을 수정할 권한이 없습니다.")
+            () -> assertThat(extractMessage(modifyResponse)).isEqualTo("ID가 2인 회원은 해당 글을 수정할 권한이 없습니다.")
         );
-    }
-
-    private Long getPostId(ExtractableResponse<Response> createResponse) {
-        return createResponse.jsonPath().getObject("data", Long.class);
-    }
-
-    private ExtractableResponse<Response> createPostResponse(CreatePostRequest postRequest) {
-        return RestAssured.given().log().all()
-            .body(postRequest)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when().post("api/v1/posts")
-            .then().log().all()
-            .extract();
-    }
-
-    private ExtractableResponse<Response> findPostResponse(Long postId) {
-        return RestAssured.given(this.spec).log().all()
-            .when().get("api/v1/posts/{id}", postId)
-            .then().log().all()
-            .extract();
     }
 
 }
