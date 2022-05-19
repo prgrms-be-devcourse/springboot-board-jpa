@@ -6,7 +6,6 @@ import lombok.Getter;
 public enum ErrorCode {
 
     NOT_AUTHORIZED(401, "Operation Not Authorized"),
-    INTERNAL_ERROR(500, "Internal Server Error"),
     ENTITY_NOT_FOUND(404, "ENTITY Not Found");
 
     private final int status;
