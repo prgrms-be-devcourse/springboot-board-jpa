@@ -9,14 +9,14 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import static com.study.board.domain.post.AssertPost.assertPostCreation;
 import static com.study.board.domain.post.AssertPost.assertWriter;
 import static com.study.board.domain.post.domain.Post.POST_TITLE_MAX_LENGTH;
-import static com.study.board.fixture.Fixture.createUser;
+import static com.study.board.fixture.Fixture.sampleUser;
 import static org.assertj.core.api.Assertions.*;
 
 public class PostTest {
 
     @Test
     void 생성_성공() {
-        User writer = createUser();
+        User writer = sampleUser();
         Post post = new Post("제목", "내용", writer);
 
         assertPostCreation(post);
@@ -27,7 +27,7 @@ public class PostTest {
     @ParameterizedTest
     void 제목이_null_이거나_비어있으면_생성실패(String title) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> new Post(title, "내용", createUser()));
+                .isThrownBy(() -> new Post(title, "내용", sampleUser()));
     }
 
     @Test
@@ -35,14 +35,14 @@ public class PostTest {
         String title = RandomString.make(POST_TITLE_MAX_LENGTH + 1);
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> new Post(title, "내용", createUser()));
+                .isThrownBy(() -> new Post(title, "내용", sampleUser()));
     }
 
     @NullAndEmptySource
     @ParameterizedTest
     void 내용이_null_이거나_비어있으면_생성실패(String content) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> new Post("제목", content, createUser()));
+                .isThrownBy(() -> new Post("제목", content, sampleUser()));
     }
 
     @Test

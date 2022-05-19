@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 import static com.study.board.domain.post.AssertPost.assertPostWithWriter;
-import static com.study.board.fixture.Fixture.createUser;
+import static com.study.board.fixture.Fixture.sampleUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
@@ -45,7 +45,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        writer = createUser();
+        writer = sampleUser();
         userRepository.save(writer);
 
         writtenPostId1 = postRepository.save(new Post("제목1", "내용1", writer)).getId();
