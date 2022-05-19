@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:h2:~/test
+    username: sa
+  h2:
+    console:
+      enabled: true
+  jpa:
+    generate-ddl: true
+    database: H2
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        hbm2ddl:
+          auto: create-drop
