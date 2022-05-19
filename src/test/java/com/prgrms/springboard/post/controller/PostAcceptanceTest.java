@@ -38,7 +38,7 @@ import io.restassured.specification.RequestSpecification;
 @ExtendWith(RestDocumentationExtension.class)
 @Sql({"classpath:db/init.sql", "classpath:db/data_user.sql"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PostControllerTest {
+class PostAcceptanceTest {
 
     private static final CreatePostRequest CREATE_POST_REQUEST = new CreatePostRequest(1L, "제목입니다.", "내용입니다.");
     private static final ModifyPostRequest MODIFY_POST_REQUEST = new ModifyPostRequest(1L, "수정 제목입니다.", "수정 내용입니다.");
