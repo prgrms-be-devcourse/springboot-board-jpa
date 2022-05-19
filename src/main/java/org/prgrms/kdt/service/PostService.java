@@ -29,6 +29,7 @@ public class PostService {
   public Long createPost(Long userId, PostRequest request) {
     User user = userRepository.getById(userId);
     Post post = mapper.of(request, user);
+
     return postRepository.save(post).getId();
   }
 
@@ -39,6 +40,7 @@ public class PostService {
             format("ID: {0}의 게시글을 찾을 수 없습니다", postId)));
     post.changeTitle(request.title());
     post.changeContent(request.content());
+
     return post.getId();
   }
 

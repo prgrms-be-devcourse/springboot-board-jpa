@@ -23,12 +23,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
     String userId = request.getHeader("Authorization");
+
     if (userId != null) {
       CurrentUser currentUser = userRepository.findById(Long.parseLong(userId))
           .map(mapper::of)
           .orElseThrow(() -> new EntityNotFoundException(format("ID: {0}의 유저를 찾을 수 없습니다", userId)));
       request.getServletContext().setAttribute("currentUser", currentUser);
     }
+
     return HandlerInterceptor.super.preHandle(request, response, handler);
   }
 }

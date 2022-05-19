@@ -24,6 +24,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       ServletRequestBindingException ex, HttpHeaders headers, HttpStatus status,
       WebRequest request) {
     log.error("필요한 헤더 값을 입력하지 않았습니다. {}", ex.getMessage());
+
     return ResponseEntity.badRequest().body(ErrorResponse.of(ErrorCode.BAD_REQUEST));
   }
 
@@ -40,18 +41,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
       HttpHeaders headers, HttpStatus status, WebRequest request) {
     log.error("잘못된 입력값으로 요청했습니다. {}", ex.getTarget());
+
     return ResponseEntity.badRequest().body(ErrorResponse.of(ErrorCode.BAD_REQUEST));
   }
 
   @ExceptionHandler(EntityNotFoundException.class)
   protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
     log.error(ex.getMessage());
+
     return ResponseEntity.badRequest().body(ErrorResponse.of(ErrorCode.ENTITY_NOT_FOUND));
   }
 
   @ExceptionHandler(Exception.class)
   protected ResponseEntity<Object> handleServer(Exception ex) {
     log.error("예상하지 못한 에러가 발생했습니다 : {}", ex.getMessage());
+
     return ResponseEntity.internalServerError()
         .body(ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR));
   }

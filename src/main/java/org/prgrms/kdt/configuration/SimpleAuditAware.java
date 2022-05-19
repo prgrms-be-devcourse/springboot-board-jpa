@@ -16,6 +16,7 @@ public class SimpleAuditAware implements AuditorAware<String> {
   @Override
   public Optional<String> getCurrentAuditor() {
     CurrentUser user = (CurrentUser) context.getAttribute("currentUser");
+
     return Optional.of(user.name());
   }
 }
