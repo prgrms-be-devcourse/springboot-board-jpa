@@ -11,7 +11,7 @@ public enum ErrorCode {
     private final int status;
     private final String message;
 
-    private ErrorCode(int status, String message) {
+    ErrorCode(int status, String message) {
         this.status = status;
         this.message = message;
     }
