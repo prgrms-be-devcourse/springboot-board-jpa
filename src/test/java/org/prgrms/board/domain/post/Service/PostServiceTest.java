@@ -153,6 +153,9 @@ class PostServiceTest {
         long savedId = postService.save(createRequest,userId);
         //then
         assertThat(savedId).isEqualTo(postId);
+        verify(userService, times(1)).findById(anyLong());
+        verify(postRepository, times(1)).save(any());
+        verify(userService, times(1)).addPost(anyLong(), any());
     }
 
     @Nested
@@ -181,6 +184,7 @@ class PostServiceTest {
             long updatedId = postService.update(1L, updateRequest);
             //then
             assertThat(updatedId).isEqualTo(1L);
+            verify(postRepository, times(1)).findById(anyLong());
         }
 
         @Test
@@ -189,7 +193,6 @@ class PostServiceTest {
             when(postRepository.findById(anyLong())).thenReturn(Optional.empty());
             //when
             PostUpdateRequest updateRequest = new PostUpdateRequest("수정된 제목", "수정된 본문");
-
             //then
             assertThatThrownBy(() -> postService.update(1L, updateRequest))
                     .isInstanceOf(PostException.class)

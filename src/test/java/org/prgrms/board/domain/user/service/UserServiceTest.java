@@ -101,6 +101,7 @@ class UserServiceTest {
         long savedId = userService.save(createRequest);
         //then
         assertThat(savedId).isEqualTo(userId);
+        verify(userRepository, times(1)).save(any());
     }
 
     @Nested
@@ -128,6 +129,8 @@ class UserServiceTest {
             long loginId = userService.login(loginRequest);
             //then
             assertThat(loginId).isEqualTo(userId);
+            verify(userRepository, times(1)).findByEmail(any());
+            verify(userRepository, times(1)).findByPassword(any());
         }
 
         @Test
