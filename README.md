@@ -2,6 +2,7 @@
 
 ## Build
 
-- java 18
-- gradle
-- spring data JPA
+- Java 18
+- Gradle
+- Spring Boot Starter Web
+- Spring data JPA
