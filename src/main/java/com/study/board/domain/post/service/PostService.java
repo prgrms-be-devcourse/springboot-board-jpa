@@ -34,7 +34,7 @@ public class PostService {
     public Post write(String title, String content, Long writerId) {
         User user = findUserById(writerId);
 
-        return postRepository.save(Post.create(title, content, user));
+        return postRepository.save(new Post(title, content, user));
     }
 
     public Post edit(Long postId, String title, String content, Long editorId) {

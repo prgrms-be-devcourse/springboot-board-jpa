@@ -36,7 +36,7 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User writer;
 
-    private Post(String title, String content, User writer) {
+    public Post(String title, String content, User writer) {
         checkArgument(hasText(title), "title - 글자를 가져야함");
         checkArgument(title.length() <= POST_TITLE_MAX_LENGTH, "title 길이 - " + POST_TITLE_MAX_LENGTH + " 이하 여야함");
         checkArgument(hasText(content), "content - 글자를 가져야함");
@@ -46,10 +46,6 @@ public class Post extends BaseEntity {
         this.content = content;
         this.writer = writer;
         this.writtenDateTime = now();
-    }
-
-    public static Post create(String title, String content, User writer) {
-        return new Post(title, content, writer);
     }
 
     public Post update(String title, String content) {

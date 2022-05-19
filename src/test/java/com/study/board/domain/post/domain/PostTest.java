@@ -17,7 +17,7 @@ public class PostTest {
     @Test
     void 생성_성공() {
         User writer = createUser();
-        Post post = Post.create("제목", "내용", writer);
+        Post post = new Post("제목", "내용", writer);
 
         assertPostCreation(post);
         assertWriter(post.getWriter(), null);
@@ -27,7 +27,7 @@ public class PostTest {
     @ParameterizedTest
     void 제목이_null_이거나_비어있으면_생성실패(String title) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> Post.create(title, "내용", createUser()));
+                .isThrownBy(() -> new Post(title, "내용", createUser()));
     }
 
     @Test
@@ -35,19 +35,19 @@ public class PostTest {
         String title = RandomString.make(POST_TITLE_MAX_LENGTH + 1);
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> Post.create(title, "내용", createUser()));
+                .isThrownBy(() -> new Post(title, "내용", createUser()));
     }
 
     @NullAndEmptySource
     @ParameterizedTest
     void 내용이_null_이거나_비어있으면_생성실패(String content) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> Post.create("제목", content, createUser()));
+                .isThrownBy(() -> new Post("제목", content, createUser()));
     }
 
     @Test
     void 작성자가_null_이면_생성_실패() {
         assertThatNullPointerException()
-                .isThrownBy(() -> Post.create("제목", "내용", null));
+                .isThrownBy(() -> new Post("제목", "내용", null));
     }
 }

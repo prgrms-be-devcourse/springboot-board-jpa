@@ -48,8 +48,8 @@ class PostServiceTest {
         writer = createUser();
         userRepository.save(writer);
 
-        writtenPostId1 = postRepository.save(Post.create("제목1", "내용1", writer)).getId();
-        writtenPostId2 = postRepository.save(Post.create("제목2", "내용2", writer)).getId();
+        writtenPostId1 = postRepository.save(new Post("제목1", "내용1", writer)).getId();
+        writtenPostId2 = postRepository.save(new Post("제목2", "내용2", writer)).getId();
 
         em.flush();
         em.clear();
