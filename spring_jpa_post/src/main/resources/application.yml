@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost/post
-    username: root
-    password: a123456789
+    username:
+    password:
   jpa:
     show-sql: true
     open-in-view: false
