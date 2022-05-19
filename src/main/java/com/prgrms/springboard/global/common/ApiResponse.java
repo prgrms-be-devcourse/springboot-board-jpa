@@ -2,6 +2,8 @@ package com.prgrms.springboard.global.common;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpStatus;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
@@ -22,15 +24,11 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> ok(T data) {
-        return new ApiResponse<>(200, data);
+        return new ApiResponse<>(HttpStatus.OK.value(), data);
     }
 
     public static <T> ApiResponse<T> created(T data) {
-        return new ApiResponse<>(201, data);
-    }
-
-    public static <T> ApiResponse<T> noContent(T data) {
-        return new ApiResponse<>(204, data);
+        return new ApiResponse<>(HttpStatus.CREATED.value(), data);
     }
 
     public static <T> ApiResponse<T> fail(int statusCode, T data) {
