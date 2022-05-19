@@ -1,12 +1,9 @@
 package org.prgms.board.domain.post.service;
 
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
 import org.prgms.board.domain.post.domain.Post;
 import org.prgms.board.domain.post.domain.PostRepository;
-import org.prgms.board.domain.post.dto.PostDto;
 import org.prgms.board.domain.user.domain.User;
 import org.prgms.board.domain.user.domain.UserRepository;
 import org.springframework.data.domain.Page;
@@ -48,7 +45,7 @@ public class PostServiceImpl implements PostService {
 		final Post findPost = postRepository.findById(postId)
 			.orElseThrow(() -> new IllegalStateException("해당하는 게시글이 존재하지 않습니다. postId : " + postId));
 
-		findPost.updatePost(title,content);
+		findPost.updatePost(title, content);
 	}
 
 }

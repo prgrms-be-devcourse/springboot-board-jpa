@@ -3,54 +3,44 @@ package org.prgms.board.domain.user.service;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import javax.transaction.Transactional;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.prgms.board.domain.BaseTest;
 import org.prgms.board.domain.user.domain.User;
-import org.prgms.board.domain.user.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-@Transactional
-class UserServiceImplTest {
+class UserServiceImplTest extends BaseTest {
 
 	@Autowired
 	UserService userService;
 
-	@DisplayName("사용자 save test")
 	@Test
-	void save_user_test() {
-		// given
-		String name = "seunghan";
-		int age = 25;
-
-		//when
-		final User savedUser = userService.saveUser(name, age);
-
-		//then
-		assertThat(savedUser.getName()).isEqualTo(name);
-		assertThat(savedUser.getAge()).isEqualTo(age);
-	}
-
-	@DisplayName("사용자 update test")
-	@Test
-	void update_user_test() {
-		// given
+	void 사용자_Save_테스트() {
+		// when
 		final User savedUser = userService.saveUser("seunghan", 25);
-
-		//when
-		String updateName = "afterUpdateName";
-		int updateAge = 100;
-
-		userService.updateUser(updateName, updateAge, savedUser.getId());
+		clearPersistenceContext();
 
 		//then
 		final User findUser = userService.findUser(savedUser.getId());
 
-		assertThat(findUser.getName()).isEqualTo(updateName);
-		assertThat(findUser.getAge()).isEqualTo(updateAge);
+		assertThat(findUser.getName()).isEqualTo("seunghan");
+		assertThat(findUser.getAge()).isEqualTo(25);
+	}
+
+	@Test
+	void 사용자_수정_테스트() {
+		// given
+		final User savedUser = userService.saveUser("seunghan", 25);
+
+		//when
+		userService.updateUser("updatedName", 20, savedUser.getId());
+		clearPersistenceContext();
+
+		//then
+		final User findUser = userService.findUser(savedUser.getId());
+
+		assertThat(findUser.getName()).isEqualTo("updatedName");
+		assertThat(findUser.getAge()).isEqualTo(20);
 	}
 
 	@DisplayName("사용자 delete test")
@@ -61,10 +51,10 @@ class UserServiceImplTest {
 
 		//when
 		userService.deleteUser(savedUser.getId());
+		clearPersistenceContext();
 
 		//then
 		assertThrows(IllegalStateException.class, () -> userService.findUser(savedUser.getId()));
-
 	}
 
 }

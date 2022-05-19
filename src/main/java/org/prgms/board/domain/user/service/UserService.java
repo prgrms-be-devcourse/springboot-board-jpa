@@ -13,7 +13,6 @@ public interface UserService {
 	/** 사용자 삭제 **/
 	void deleteUser(Long userId);
 
-
 	/** 사용자 수정 **/
 	void updateUser(String name, int age, Long userId);
 
