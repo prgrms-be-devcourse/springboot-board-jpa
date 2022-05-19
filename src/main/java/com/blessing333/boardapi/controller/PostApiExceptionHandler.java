@@ -1,7 +1,6 @@
 package com.blessing333.boardapi.controller;
 
 import com.blessing333.boardapi.controller.dto.ErrorResult;
-import com.blessing333.boardapi.entity.exception.DomainException;
 import com.blessing333.boardapi.entity.exception.PostCreateFailException;
 import com.blessing333.boardapi.entity.exception.PostUpdateFailException;
 import com.blessing333.boardapi.service.post.PostNotFoundException;
@@ -58,5 +57,4 @@ public class PostApiExceptionHandler {
         log.error(HANDLER_NAME, e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResult(e.getMessage()));
     }
-
 }

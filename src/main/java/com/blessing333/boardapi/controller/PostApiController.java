@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,8 @@ public class PostApiController {
     private final PostService postService;
 
     @GetMapping("/api/v1/posts")
-    //TODO: 잘못된 page,size 요청에 대해서 별도의 예외 처리를 해야하는지?
-    public ResponseEntity<Page<PostInformation>> getPostsWithPaging(Pageable pageable) {
+    public ResponseEntity<Page<PostInformation>> getPostsWithPaging(
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<PostInformation> postInformation = postService.loadPostsWithPaging(pageable);
         return ResponseEntity.ok(postInformation);
     }

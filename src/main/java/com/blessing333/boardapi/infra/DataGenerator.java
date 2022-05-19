@@ -20,6 +20,7 @@ public class DataGenerator {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
 
+    //TODO: 질문 3. 어플리케이션이 실행될 때 생성해야할 데이터가 있을 경우, 데이터를 생성하는법
     @PostConstruct
     @Transactional
     public void initDefaultData() {
