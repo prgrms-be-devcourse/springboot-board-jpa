@@ -26,6 +26,15 @@ public class User extends BaseTimeEntity {
         this.interests = interest;
     }
 
+    public User(Long userId, String nickname, Password password, Name name, Age age, UserInterests interests) {
+        this.userId = userId;
+        this.nickname = nickname;
+        this.password = password;
+        this.name = name;
+        this.age = age;
+        this.interests = interests;
+    }
+
     @Id
     @GeneratedValue
     private Long userId;
@@ -48,4 +57,13 @@ public class User extends BaseTimeEntity {
 
     @Embedded
     private UserInterests interests;
+
+    public User updateUser(User userAfterAppliedForm) {
+        this.nickname = userAfterAppliedForm.getNickname();
+        this.password = userAfterAppliedForm.getPassword();
+        this.name = userAfterAppliedForm.getName();
+        this.age = userAfterAppliedForm.getAge();
+        this.interests = userAfterAppliedForm.getInterests();
+        return this;
+    }
 }

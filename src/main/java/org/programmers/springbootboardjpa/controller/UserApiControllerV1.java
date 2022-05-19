@@ -1,19 +1,21 @@
 package org.programmers.springbootboardjpa.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.programmers.springbootboardjpa.controller.dto.IdResponse;
 import org.programmers.springbootboardjpa.controller.dto.UserCreateForm;
-import org.programmers.springbootboardjpa.controller.dto.UserDto;
-import org.programmers.springbootboardjpa.domain.User;
+import org.programmers.springbootboardjpa.controller.dto.UserDtoV1;
+import org.programmers.springbootboardjpa.controller.dto.UserUpdateFormV1;
 import org.programmers.springbootboardjpa.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+public class UserApiControllerV1 {
 
     private final UserService userService;
 
@@ -26,10 +28,21 @@ public class UserController {
         return ResponseEntity.created(URI.create("/api/v1/users/" + id)).body(new IdResponse(id));
     }
 
+    //TODO: REST 스타일이 나은지, me -> 연결되게 하는 것이 나은지
     @GetMapping("/api/v1/users/{id}")
-    public UserDto users(@PathVariable("id") Long userId) {
-        User user = userService.findUserWith(userId);
+    public UserDtoV1 showUserDetails(@PathVariable("id") Long userId) {
+        //TODO: 사용자가 설정한 공개 범위에 따라 다르게 공개
+        return UserDtoV1.from(userService.findUserWith(userId));
+    }
 
-        return null;
+    @PutMapping("/api/v1/users/{id}")
+    public UserDtoV1 setUserData(@PathVariable("id") Long userId, @RequestBody UserUpdateFormV1 userUpdateForm) {
+        return UserDtoV1.from(userService.modifyUserdata(userUpdateForm));
+    }
+
+    @DeleteMapping("/api/v1/users/{id}")
+    public ResponseEntity<Object> deleteUser(@PathVariable("id") Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.ok().build();
     }
 }
