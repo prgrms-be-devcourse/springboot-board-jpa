@@ -1,6 +1,5 @@
 package com.study.board.domain.post.service;
 
-import com.study.board.domain.exception.PostEditAccessDeniedException;
 import com.study.board.domain.exception.PostNotFoundException;
 import com.study.board.domain.exception.UserNotFoundException;
 import com.study.board.domain.post.domain.Post;
@@ -41,7 +40,7 @@ public class PostService {
         User editor = findUserById(editorId);
         Post post = findPostById(postId);
 
-        post.checkEditable(postId, editor);
+        post.checkUpdatable(editor);
 
         return post.update(title, content);
     }

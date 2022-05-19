@@ -66,9 +66,9 @@ public class Post extends BaseEntity {
         checkArgument(hasText(content), "content - 글자를 가져야함");
     }
 
-    public void checkEditable(Long postId, User editor) {
+    public void checkUpdatable(User editor) {
         if (!hasOfWriter(editor)) {
-            throw new PostEditAccessDeniedException(postId);
+            throw new PostEditAccessDeniedException(getId());
         }
     }
 
