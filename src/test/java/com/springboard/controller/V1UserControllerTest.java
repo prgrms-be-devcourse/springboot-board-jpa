@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@DisplayName("User E2E 테스트")
+@DisplayName("User API 테스트")
 class V1UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
