@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResponse<String> handleNotValidException(MethodArgumentNotValidException e) {
-        return ApiResponse.fail(HttpStatus.BAD_REQUEST.value(), bindingResultMessage(e));
+        return ApiResponse.fail(HttpStatus.BAD_REQUEST.value(), extractErrorMessage(e));
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
         return ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버에서 에러가 발생했습니다.");
     }
 
-    private String bindingResultMessage(MethodArgumentNotValidException exception) {
+    private String extractErrorMessage(MethodArgumentNotValidException exception) {
         return exception.getBindingResult().getAllErrors().get(0).getDefaultMessage();
     }
 }
