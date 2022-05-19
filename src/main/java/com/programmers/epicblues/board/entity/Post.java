@@ -43,12 +43,12 @@ public class Post extends BaseEntity implements LongIdHolder {
     }
     Post post = (Post) o;
     return Objects.equals(id, post.id) && title.equals(post.title) && content.equals(
-        post.content) && Objects.equals(user, post.user);
+        post.content);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, content, user);
+    return Objects.hash(id, title, content);
   }
 
   public void removeUser() {

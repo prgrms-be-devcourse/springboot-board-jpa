@@ -63,18 +63,18 @@
       <plugin>
         <groupId>org.asciidoctor</groupId>
         <artifactId>asciidoctor-maven-plugin</artifactId>
-        <version>1.5.8</version>
+        <version>2.2.2</version>
+        <configuration>
+          <outputDirectory>src/main/resources/static/docs</outputDirectory>
+          <sourceDirectory>src/docs/asciidoc</sourceDirectory>
+        </configuration>
         <executions>
           <execution>
-            <id>generate-docs</id>
-            <phase>prepare-package</phase>
+            <id>asciidoc-to-html</id>
+            <phase>generate-resources</phase>
             <goals>
               <goal>process-asciidoc</goal>
             </goals>
-            <configuration>
-              <backend>html</backend>
-              <doctype>book</doctype>
-            </configuration>
           </execution>
         </executions>
         <dependencies>
@@ -85,18 +85,7 @@
           </dependency>
         </dependencies>
       </plugin>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-            </exclude>
-          </excludes>
-        </configuration>
-      </plugin>
+
     </plugins>
   </build>
 

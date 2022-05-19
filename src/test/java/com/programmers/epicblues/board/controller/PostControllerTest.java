@@ -1,5 +1,9 @@
 package com.programmers.epicblues.board.controller;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -20,9 +24,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,17 +38,24 @@ import util.EntityFixture;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @Transactional
 class PostControllerTest {
 
+  private static final ResponseFieldsSnippet POST_RESPONSE_FIELDS_SNIPPET =
+      responseFields(
+          fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+          fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+          fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 ID"),
+          fieldWithPath("authorId").type(JsonFieldType.NUMBER).description("작성자 ID"),
+          fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+          fieldWithPath("createdBy").type(JsonFieldType.STRING).description("작성자")
+      );
   final String BASE_URL = "/posts";
-
   @Autowired
   private MockMvc mockMvc;
-
   @Autowired
   private JpaUserRepository userRepository;
-
   @Autowired
   private ObjectMapper json;
 
@@ -69,7 +83,16 @@ class PostControllerTest {
         status().isOk(),
         content().contentType(MediaType.APPLICATION_JSON),
         content().json(json.writeValueAsString(expectedResponse))
-    );
+    ).andDo(document("post-get-page",
+        responseFields(
+            fieldWithPath("[].title").type(JsonFieldType.STRING).description("제목"),
+            fieldWithPath("[].content").type(JsonFieldType.STRING).description("내용"),
+            fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("게시글 ID"),
+            fieldWithPath("[].authorId").type(JsonFieldType.NUMBER).description("작성자 ID"),
+            fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+            fieldWithPath("[].createdBy").type(JsonFieldType.STRING).description("작성자")
+        )
+    ));
 
   }
 
@@ -92,9 +115,16 @@ class PostControllerTest {
                 Matchers.containsString("\"size\""),
                 Matchers.containsString("\"page\""))
         )
-    );
+    ).andDo(document("post-get-page-failure",
+        responseFields(
+            fieldWithPath("size").type(JsonFieldType.STRING).description("잘못된 size 입력값 설명"),
+            fieldWithPath("page").type(JsonFieldType.STRING).description("잘못된 page 입력값 설명")
+        )
+    ));
 
   }
+
+  // TODO : 질문 1. 테스트를 짜실 때 성공 case vs 에외 case 우선순위 추천?
 
   @Test
   @DisplayName("등록된 postId를 통해 성공적으로 post를 가져올 수 있어야 한다.")
@@ -115,10 +145,9 @@ class PostControllerTest {
         status().isOk(),
         content().contentType(MediaType.APPLICATION_JSON),
         content().json(json.writeValueAsString(PostResponse.from(savedPost)))
-    );
+    ).andDo(document("post-get-id", POST_RESPONSE_FIELDS_SNIPPET));
+    ;
   }
-
-  // TODO : 질문 1. 테스트를 짜실 때 성공 case vs 에외 case 우선순위 추천?
 
   @Test
   @DisplayName("postId가 유효하지 않을 경우 404(Not Found)가 담긴 응답을 반환해야 한다.")
@@ -135,7 +164,12 @@ class PostControllerTest {
         status().isNotFound(),
         content().contentType(MediaType.APPLICATION_JSON),
         content().json(json.writeValueAsString(expectedResponse))
-    );
+    ).andDo(document("post-get-id-failure",
+        responseFields(
+            fieldWithPath("message").type(JsonFieldType.STRING).description("설명")
+        )
+    ));
+    ;
 
   }
 
@@ -170,7 +204,13 @@ class PostControllerTest {
         jsonPath("$.title").value(updatedTitle),
         jsonPath("$.content").value(updatedContent),
         jsonPath("$.authorId").value(savedUser.getId())
-    );
+    ).andDo(document("post-update",
+        requestFields(
+            fieldWithPath("title").type(JsonFieldType.STRING).description("수정 제목"),
+            fieldWithPath("content").type(JsonFieldType.STRING).description("수정 내용")
+        ),
+        POST_RESPONSE_FIELDS_SNIPPET));
+    ;
   }
 
   @Test
@@ -197,6 +237,16 @@ class PostControllerTest {
         jsonPath("$.content").exists(),
         jsonPath("$.title").exists(),
         jsonPath("$.postId").exists()
+    ).andDo(document("post-update-failure",
+        requestFields(
+            fieldWithPath("title").type(JsonFieldType.STRING).description("수정 제목"),
+            fieldWithPath("content").type(JsonFieldType.STRING).description("수정 내용")
+        ),
+        responseFields(
+            fieldWithPath("content").type(JsonFieldType.STRING).description("잘못된 content 입력값 설명"),
+            fieldWithPath("title").type(JsonFieldType.STRING).description("잘못된 title 입력값 설명"),
+            fieldWithPath("postId").type(JsonFieldType.STRING).description("잘못된 postId 입력값 설명")
+        ))
     );
 
   }
@@ -211,7 +261,7 @@ class PostControllerTest {
     var title = "newTitle";
     var content = "newContent";
     var requestPayload = json.writeValueAsString(
-        Map.of("userId", savedUserId.toString(), "title", title, "content", content));
+        Map.of("userId", savedUserId, "title", title, "content", content));
 
     // When
     ResultActions resultActions = mockMvc.perform(
@@ -227,7 +277,13 @@ class PostControllerTest {
         jsonPath("$.title").value(title),
         jsonPath("$.createdAt").exists(),
         jsonPath("$.createdBy").value(persistedUser.getName())
-    );
+    ).andDo(document("post-create",
+        requestFields(
+            fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 ID"),
+            fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+            fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
+        ),
+        POST_RESPONSE_FIELDS_SNIPPET));
 
   }
 
@@ -236,7 +292,7 @@ class PostControllerTest {
   void test_create_post_with_wrong_arguments() throws Exception {
 
     // Given
-    String wrongId = "0";
+    Long wrongId = 0L;
     String wrongContent = "d";
     String wrongTitle = "t";
     String wrongPayload = json.writeValueAsString(
@@ -255,7 +311,18 @@ class PostControllerTest {
         jsonPath("$.content").exists(),
         jsonPath("$.title").exists(),
         jsonPath("$.userId").exists()
-    );
+    ).andDo(document("post-create-failure",
+        requestFields(
+            fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 ID"),
+            fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+            fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
+        ),
+        responseFields(
+            fieldWithPath("content").type(JsonFieldType.STRING).description("잘못된 content 입력값 설명"),
+            fieldWithPath("title").type(JsonFieldType.STRING).description("잘못된 title 입력값 설명"),
+            fieldWithPath("userId").type(JsonFieldType.STRING).description("잘못된 userId 입력값 설명")
+        )));
+    ;
 
   }
 

@@ -1,0 +1,98 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시글
+
+=== 게시글 ID 조회
+
+==== GET /posts/[postId]
+
+==== 성공
+
+.Request
+include::{snippets}/post-get-id/http-request.adoc[]
+include::{snippets}/post-get-id/request-body.adoc[]
+
+.Response
+include::{snippets}/post-get-id/http-response.adoc[]
+include::{snippets}/post-get-id/response-fields.adoc[]
+
+==== 실패
+
+.Request
+include::{snippets}/post-get-id-failure/http-request.adoc[]
+include::{snippets}/post-get-id-failure/request-body.adoc[]
+
+.Response
+include::{snippets}/post-get-id-failure/http-response.adoc[]
+include::{snippets}/post-get-id-failure/response-fields.adoc[]
+
+=== 게시글 페이징 조회
+
+==== GET /posts/?page=[page]&size=[size]
+
+==== 성공
+
+.Request
+include::{snippets}/post-get-page/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get-page/http-response.adoc[]
+include::{snippets}/post-get-page/response-fields.adoc[]
+
+==== 실패
+
+.Request
+include::{snippets}/post-get-page-failure/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get-page-failure/http-response.adoc[]
+include::{snippets}/post-get-page-failure/response-fields.adoc[]
+
+=== 게시글 작성
+
+==== POST /posts
+
+==== 성공
+
+.Request
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+==== 실패
+
+.Request
+include::{snippets}/post-create-failure/http-request.adoc[]
+include::{snippets}/post-create-failure/request-fields.adoc[]
+.Response
+include::{snippets}/post-create-failure/http-response.adoc[]
+include::{snippets}/post-create-failure/response-fields.adoc[]
+
+=== 게시글 수정
+
+==== POST /posts/[postId]
+
+==== 성공
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+==== 실패
+
+.Request
+include::{snippets}/post-update-failure/http-request.adoc[]
+include::{snippets}/post-update-failure/request-fields.adoc[]
+.Response
+include::{snippets}/post-update-failure/http-response.adoc[]
+include::{snippets}/post-update-failure/response-fields.adoc[]

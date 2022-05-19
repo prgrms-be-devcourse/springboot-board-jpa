@@ -33,6 +33,7 @@ class EntityJpaTest {
 
   @AfterEach
   void tearDown() {
+    entityManager.getTransaction().rollback();
     entityManager.close();
   }
 
@@ -46,7 +47,6 @@ class EntityJpaTest {
     // When
     entityManager.getTransaction().begin();
     entityManager.persist(USER_FIXTURE);
-    entityManager.getTransaction().commit();
 
     // Then
     assertThat(USER_FIXTURE.getId()).isNotNull();
@@ -62,7 +62,6 @@ class EntityJpaTest {
     // When
     entityManager.getTransaction().begin();
     entityManager.persist(POST_FIXTURE_1);
-    entityManager.getTransaction().commit();
     // Then
     assertThat(POST_FIXTURE_1.getId()).isNotNull();
     assertThat(POST_FIXTURE_1.getCreatedAt()).isNotNull();
@@ -79,7 +78,6 @@ class EntityJpaTest {
     // When
     entityManager.getTransaction().begin();
     entityManager.persist(USER_FIXTURE);
-    entityManager.getTransaction().commit();
 
     // Then
     assertThat(entityManager.contains(POST_FIXTURE_1)).isTrue();
@@ -96,10 +94,8 @@ class EntityJpaTest {
     USER_FIXTURE.addPost(POST_FIXTURE_2);
     entityManager.getTransaction().begin();
     entityManager.persist(USER_FIXTURE);
-    entityManager.getTransaction().commit();
 
     // When
-    entityManager.getTransaction().begin();
     USER_FIXTURE.removePostById(POST_FIXTURE_1.getId());
     entityManager.getTransaction().commit();
     // Then
@@ -117,7 +113,6 @@ class EntityJpaTest {
     entityManager.getTransaction().begin();
     entityManager.persist(USER_FIXTURE);
     entityManager.getTransaction().commit();
-
     // When
     entityManager.detach(USER_FIXTURE);
 
@@ -125,6 +120,11 @@ class EntityJpaTest {
     var queriedUser = entityManager.find(User.class, USER_FIXTURE.getId());
     assertThat(queriedUser).isNotEqualTo(USER_FIXTURE);
     assertThat(queriedUser.getPosts()).hasSize(2);
+
+    // extra tearDown
+    entityManager.getTransaction().begin();
+    entityManager.remove(queriedUser);
+    entityManager.getTransaction().commit();
   }
 
 }

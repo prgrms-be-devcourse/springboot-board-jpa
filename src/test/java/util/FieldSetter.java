@@ -13,8 +13,7 @@ import org.junit.jupiter.api.Test;
  */
 public class FieldSetter {
 
-  private FieldSetter() throws NoSuchMethodException {
-    throw new NoSuchMethodException();
+  private FieldSetter() {
   }
 
   public static void assignId(LongIdHolder idHolder, Long newId)
