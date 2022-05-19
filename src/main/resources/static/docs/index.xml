@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?asciidoc-toc?>
+<?asciidoc-numbered?>
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
+<info>
+<title>포스트</title>
+<date>2022-05-19</date>
+</info>
+<section xml:id="_포스트">
+<title>포스트</title>
+<section xml:id="_포스트_생성">
+<title>포스트 생성</title>
+<section xml:id="_posts">
+<title>/posts</title>
+<formalpara>
+<title>Request</title>
+<para>
+<programlisting language="http" linenumbering="unnumbered">POST /api/v1/posts HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 238
+Host: localhost:8080
+
+{"id":null,"title":"훈기의 여행 Sample","content":"여행을 합니다 Sample.","userDTO":{"id":null,"name":"김훈기2","age":27,"hobby":"게임2","postDTOs":null,"createdAt":null,"createdBy":null},"createdAt":null,"createdBy":null}</programlisting>
+</para>
+</formalpara>
+<informaltable frame="all" rowsep="1" colsep="1">
+<tgroup cols="3">
+<colspec colname="col_1" colwidth="33.3333*"/>
+<colspec colname="col_2" colwidth="33.3333*"/>
+<colspec colname="col_3" colwidth="33.3334*"/>
+<thead>
+<row>
+<entry align="left" valign="top">Path</entry>
+<entry align="left" valign="top">Type</entry>
+<entry align="left" valign="top">Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry align="left" valign="top"><simpara><literal>title</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>String</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>Title</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>id</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>ID</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>content</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>String</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>Content</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.id</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userID</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.name</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>String</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userName</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.age</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Number</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userAge</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.hobby</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>String</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userHobby</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.postDTOs</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userPosts</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.createdAt</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userCreatedAt</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.createdBy</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userCreatedBy</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>createdAt</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>postCreatedAt</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>createdBy</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>postCreatedBy</simpara></entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+<programlisting language="http" linenumbering="unnumbered">POST /api/v1/posts HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 212
+Host: localhost:8080
+
+{"id":null,"title":"훈기의 여행2","content":"여행을 합니다.2","userDTO":{"id":3,"name":null,"age":null,"hobby":null,"postDTOs":null,"createdAt":null,"createdBy":null},"createdAt":null,"createdBy":null}</programlisting>
+<informaltable frame="all" rowsep="1" colsep="1">
+<tgroup cols="3">
+<colspec colname="col_1" colwidth="33.3333*"/>
+<colspec colname="col_2" colwidth="33.3333*"/>
+<colspec colname="col_3" colwidth="33.3334*"/>
+<thead>
+<row>
+<entry align="left" valign="top">Path</entry>
+<entry align="left" valign="top">Type</entry>
+<entry align="left" valign="top">Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry align="left" valign="top"><simpara><literal>title</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>String</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>Title</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>id</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>ID</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>content</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>String</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>Content</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.id</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Number</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userID</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.name</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userName</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.age</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userAge</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.hobby</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userHobby</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.postDTOs</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userPosts</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.createdAt</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userCreatedAt</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>userDTO.createdBy</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>userCreatedBy</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>createdAt</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>postCreatedAt</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>createdBy</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Null</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>postCreatedBy</simpara></entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+<formalpara>
+<title>Response</title>
+<para>
+<programlisting language="http" linenumbering="unnumbered">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 66
+
+{"statusCode":200,"data":4,"serverDateTime":"2022-05-19 18:43:13"}</programlisting>
+</para>
+</formalpara>
+<informaltable frame="all" rowsep="1" colsep="1">
+<tgroup cols="3">
+<colspec colname="col_1" colwidth="33.3333*"/>
+<colspec colname="col_2" colwidth="33.3333*"/>
+<colspec colname="col_3" colwidth="33.3334*"/>
+<thead>
+<row>
+<entry align="left" valign="top">Path</entry>
+<entry align="left" valign="top">Type</entry>
+<entry align="left" valign="top">Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry align="left" valign="top"><simpara><literal>statusCode</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Number</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>상태코드</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>data</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Number</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>데이터</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>serverDateTime</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>String</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>응답시간</simpara></entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+<programlisting language="http" linenumbering="unnumbered">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 66
+
+{"statusCode":200,"data":5,"serverDateTime":"2022-05-19 18:56:03"}</programlisting>
+<informaltable frame="all" rowsep="1" colsep="1">
+<tgroup cols="3">
+<colspec colname="col_1" colwidth="33.3333*"/>
+<colspec colname="col_2" colwidth="33.3333*"/>
+<colspec colname="col_3" colwidth="33.3334*"/>
+<thead>
+<row>
+<entry align="left" valign="top">Path</entry>
+<entry align="left" valign="top">Type</entry>
+<entry align="left" valign="top">Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry align="left" valign="top"><simpara><literal>statusCode</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Number</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>상태코드</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>data</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>Number</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>데이터</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>serverDateTime</literal></simpara></entry>
+<entry align="left" valign="top"><simpara><literal>String</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>응답시간</simpara></entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</section>
+</section>
+</section>
+</article>
