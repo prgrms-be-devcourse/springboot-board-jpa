@@ -14,17 +14,14 @@ public class CreateUserRequest {
 
     @NotBlank(message = "이름은 비거나 공백만 있을 수 없습니다.")
     @Length(max = 10, message = "이름은 {max}글자 이하여야합니다.")
-    private String name;
+    private final String name;
 
     @PositiveOrZero(message = "나이는 양수 또는 0이여야 합니다.")
-    private int age;
+    private final int age;
 
     @NotBlank(message = "취미는 비거나 공백만 있을 수 없습니다.")
     @Length(max = 15, message = "취미는 {max}글자 이하여야합니다.")
-    private String hobby;
-
-    protected CreateUserRequest() {
-    }
+    private final String hobby;
 
     public CreateUserRequest(String name, int age, String hobby) {
         this.name = name;
