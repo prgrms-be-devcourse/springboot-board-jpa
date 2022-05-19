@@ -1,0 +1,24 @@
+spring:
+  h2:
+    console:
+      enalbed: true
+  jpa:
+    generate-ddl: true
+    database: h2
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        query.in_caluse_parameter_padding: true
+        hbm2ddl:
+          auto: create-drop
+  output:
+    ansi:
+      enabled: always
+
+logging:
+  level:
+    org.springframework.web.client: debug
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
