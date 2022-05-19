@@ -1,7 +1,10 @@
 package com.prgrms.hyuk.service;
 
+import static com.prgrms.hyuk.exception.ExceptionMessage.INVALID_POST_ID_EXP_MSG;
+
 import com.prgrms.hyuk.dto.PostCreateRequest;
 import com.prgrms.hyuk.dto.PostDto;
+import com.prgrms.hyuk.exception.InvalidPostIdException;
 import com.prgrms.hyuk.repository.PostRepository;
 import com.prgrms.hyuk.service.converter.Converter;
 import org.springframework.data.domain.Page;
@@ -31,6 +34,12 @@ public class PostService {
     public Page<PostDto> findPosts(Pageable pageable) {
         return postRepository.findAll(pageable)
             .map(converter::toPostDto);
+    }
+
+    public PostDto findPost(Long id) {
+        return postRepository.findById(id)
+            .map(converter::toPostDto)
+            .orElseThrow(() -> new InvalidPostIdException(INVALID_POST_ID_EXP_MSG));
     }
 
 }

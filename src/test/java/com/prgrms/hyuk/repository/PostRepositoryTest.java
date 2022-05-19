@@ -65,4 +65,10 @@ class PostRepositoryTest {
         var pageRequest = PageRequest.of(1, 5);
         postRepository.findAll(pageRequest);
     }
+
+    @Test
+    @DisplayName("findById() 쿼리 확인")
+    void testFindById() {
+        postRepository.findById(1L);
+    }
 }
