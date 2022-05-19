@@ -5,7 +5,7 @@ import com.kdt.springbootboardjpa.domain.Post;
 import com.kdt.springbootboardjpa.domain.User;
 import com.kdt.springbootboardjpa.domain.dto.PostCreateRequest;
 import com.kdt.springbootboardjpa.domain.dto.PostDTO;
-import com.kdt.springbootboardjpa.exception.UnAuthorizationAccessException;
+import com.kdt.springbootboardjpa.exception.UserNotFoundException;
 import com.kdt.springbootboardjpa.repository.PostRepository;
 import com.kdt.springbootboardjpa.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -133,7 +133,7 @@ class PostServiceTest {
 
         when(userRepository.findByUsername(anyString())).thenReturn(Optional.empty());
 
-        assertThrows(UnAuthorizationAccessException.class,
+        assertThrows(UserNotFoundException.class,
                 () -> postService.makePost(request));
     }
 }

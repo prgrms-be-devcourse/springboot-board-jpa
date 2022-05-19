@@ -34,12 +34,6 @@ class RestPostControllerTest {
     @Autowired
     private ObjectMapper objecctMapper;
 
-    @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
     @Test
     @Transactional
     @DisplayName("ID를 통한 GET post")
@@ -49,7 +43,7 @@ class RestPostControllerTest {
         var dto = service.findPost(1L);
 
         //then
-        mockMvc.perform(get("/api/v1/posts/1"))
+        mockMvc.perform(get("/api/v1/posts/{id}", dto.getPostId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("username").value(dto.getUsername()))
                 .andExpect(jsonPath("title").value(dto.getTitle()))
@@ -87,7 +81,7 @@ class RestPostControllerTest {
         var body = objecctMapper.writeValueAsString(dto);
 
         //then
-        mockMvc.perform(post("/api/v1/posts/1")
+        mockMvc.perform(post("/api/v1/posts/{id}", dto.getPostId())
                         .content(body)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -120,7 +114,8 @@ class RestPostControllerTest {
     void postNotFoundExceptionTest() throws Exception{
 
         //getPost
-        mockMvc.perform(get("/api/v1/posts/10"))
+        Long requestId = 1L;
+        mockMvc.perform(get("/api/v1/posts/{id}", requestId))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("code").value(HttpStatus.NOT_FOUND.name()))
                 .andExpect(jsonPath("status").value(404))
@@ -131,7 +126,7 @@ class RestPostControllerTest {
         dto.setTitle("update-title-exeption");
         var body = objecctMapper.writeValueAsString(dto);
 
-        mockMvc.perform(post("/api/v1/posts/10")
+        mockMvc.perform(post("/api/v1/posts/{id}", requestId)
                 .content(body)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
