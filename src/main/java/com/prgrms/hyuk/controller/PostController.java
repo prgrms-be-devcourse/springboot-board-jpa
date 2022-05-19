@@ -3,6 +3,7 @@ package com.prgrms.hyuk.controller;
 import com.prgrms.hyuk.dto.ApiResponse;
 import com.prgrms.hyuk.dto.PostCreateRequest;
 import com.prgrms.hyuk.dto.PostDto;
+import com.prgrms.hyuk.dto.PostUpdateRequest;
 import com.prgrms.hyuk.exception.InvalidPostIdException;
 import com.prgrms.hyuk.service.PostService;
 import org.springframework.data.domain.Page;
@@ -42,5 +43,13 @@ public class PostController {
     @GetMapping("/posts/{id}")
     public ApiResponse<PostDto> getOne(@PathVariable Long id) {
         return ApiResponse.ok(postService.findPost(id));
+    }
+
+    @PostMapping("/posts/{id}")
+    public ApiResponse<Long> updatePost(
+        @PathVariable Long id,
+        @RequestBody PostUpdateRequest postUpdateRequest
+    ) {
+        return ApiResponse.ok(postService.updatePost(id, postUpdateRequest));
     }
 }

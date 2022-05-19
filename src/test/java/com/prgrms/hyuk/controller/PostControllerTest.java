@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.hyuk.dto.PostCreateRequest;
 import com.prgrms.hyuk.dto.PostDto;
+import com.prgrms.hyuk.dto.PostUpdateRequest;
 import com.prgrms.hyuk.dto.UserDto;
 import com.prgrms.hyuk.exception.InvalidPostIdException;
 import com.prgrms.hyuk.service.PostService;
@@ -42,6 +43,8 @@ class PostControllerTest {
     @DisplayName("게시글 생성")
     void testSave() throws Exception {
         //given
+        given(postService.create(any(PostCreateRequest.class))).willReturn(1L);
+
         var postCreateRequest = new PostCreateRequest(
             "this is title ...",
             "content",
@@ -51,8 +54,6 @@ class PostControllerTest {
                 "soccer"
             )
         );
-
-        given(postService.create(any(PostCreateRequest.class))).willReturn(1L);
 
         //when
         //then
@@ -134,6 +135,56 @@ class PostControllerTest {
         //then
         mockMvc.perform(get("/posts/1"))
             .andExpect(jsonPath("$.statusCode").value(String.valueOf(HttpStatus.NOT_FOUND.value())))
+            .andExpect(jsonPath("$.data").value(INVALID_POST_ID_EXP_MSG.getMessage()))
+            .andExpect(jsonPath("$.serverDatetime").exists());
+    }
+
+    @Test
+    @DisplayName("게시글 업데이트 - 성공")
+    void testUpdatePostSuccess() throws Exception {
+        //given
+        given(postService.updatePost(anyLong(), any(PostUpdateRequest.class)))
+            .willReturn(1L);
+
+        var id = 1L;
+        var postUpdateRequest = new PostUpdateRequest(
+            "this is updated title...",
+            "this is updated content..."
+        );
+
+        //when
+        //then
+        mockMvc.perform(post("/posts/{id}", String.valueOf(id))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(postUpdateRequest)))
+            .andExpect(jsonPath("$.statusCode").value("200"))
+            .andExpect(jsonPath("$.data").value(String.valueOf(id)))
+            .andExpect(jsonPath("$.serverDatetime").exists());
+    }
+
+    @Test
+    @DisplayName("게시글 업데이트 - 실패")
+    void testUpdatePostFailBecauseInvalidPostId() throws Exception {
+        //given
+        given(postService.updatePost(anyLong(), any(PostUpdateRequest.class)))
+            .will(
+                invocation -> {
+                    throw new InvalidPostIdException(INVALID_POST_ID_EXP_MSG);
+                }
+            );
+
+        var id = 1L;
+        var postUpdateRequest = new PostUpdateRequest(
+            "this is updated title...",
+            "this is updated content..."
+        );
+
+        //when
+        //then
+        mockMvc.perform(post("/posts/{id}", String.valueOf(id))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(postUpdateRequest)))
+            .andExpect(jsonPath("$.statusCode").value(HttpStatus.NOT_FOUND.value()))
             .andExpect(jsonPath("$.data").value(INVALID_POST_ID_EXP_MSG.getMessage()))
             .andExpect(jsonPath("$.serverDatetime").exists());
     }

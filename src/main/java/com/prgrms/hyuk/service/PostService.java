@@ -46,13 +46,13 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto updatePost(Long id, PostUpdateRequest postUpdateRequest) {
+    public Long updatePost(Long id, PostUpdateRequest postUpdateRequest) {
         var post = postRepository.findById(id)
             .orElseThrow(() -> new InvalidPostIdException(INVALID_POST_ID_EXP_MSG));
 
         post.editTitle(new Title(postUpdateRequest.getTitle()));
         post.editContent(new Content(postUpdateRequest.getContent()));
 
-        return converter.toPostDto(post);
+        return post.getId();
     }
 }
