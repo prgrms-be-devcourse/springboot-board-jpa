@@ -4,6 +4,7 @@ import com.kdt.springbootboardjpa.converter.PostConverter;
 import com.kdt.springbootboardjpa.domain.Post;
 import com.kdt.springbootboardjpa.domain.dto.PostCreateRequest;
 import com.kdt.springbootboardjpa.domain.dto.PostDTO;
+import com.kdt.springbootboardjpa.domain.dto.PostUpdateRequest;
 import com.kdt.springbootboardjpa.exception.PostNotFoundException;
 import com.kdt.springbootboardjpa.exception.UserNotFoundException;
 import com.kdt.springbootboardjpa.repository.PostRepository;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.List;
 
 @Service
 public class PostService {
@@ -49,13 +49,13 @@ public class PostService {
     }
 
     @Transactional
-    public void editPost(long id, PostDTO postDTO) {
+    public void editPost(long id, PostUpdateRequest request) {
         var found = postRepository.findById(id);
         if (found.isEmpty()) {
             throw new PostNotFoundException(MessageFormat.format("ID {0}에 대한 검색 결과가 없습니다. ", id));
         }
         Post post = found.get();
-        post.changeTitle(postDTO.getTitle());
-        post.changeContent(postDTO.getContent());
+        post.changeTitle(request.getTitle());
+        post.changeContent(request.getContent());
     }
 }

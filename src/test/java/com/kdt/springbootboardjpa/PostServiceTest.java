@@ -5,6 +5,7 @@ import com.kdt.springbootboardjpa.domain.Post;
 import com.kdt.springbootboardjpa.domain.User;
 import com.kdt.springbootboardjpa.domain.dto.PostCreateRequest;
 import com.kdt.springbootboardjpa.domain.dto.PostDTO;
+import com.kdt.springbootboardjpa.domain.dto.PostUpdateRequest;
 import com.kdt.springbootboardjpa.exception.PostNotFoundException;
 import com.kdt.springbootboardjpa.exception.UserNotFoundException;
 import com.kdt.springbootboardjpa.repository.PostRepository;
@@ -19,9 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,6 +57,7 @@ class PostServiceTest {
             .build();
 
     PostDTO dto = new PostDTO(1L, title, content, "hj");
+    PostUpdateRequest request = new PostUpdateRequest(title, content);
 
     @Test
     @DisplayName("게시글 검색 테스트")
@@ -91,6 +91,7 @@ class PostServiceTest {
         var p2 = new Post("post2", "--", user);
         var p3 = new Post("post3", "--", user);
 
+        new PostDTO(1L, "title", "content", "username");
         var dto1 = new PostDTO(1, "post1", "--", user.getUsername());
         var dto2 = new PostDTO(2, "post2", "--", user.getUsername());
         var dto3 = new PostDTO(3, "post3", "--", user.getUsername());
@@ -117,8 +118,8 @@ class PostServiceTest {
     void editPostTest(){
         when(postRepository.findById(1L)).thenReturn(Optional.of(post));
 
-        var newDTO = new PostDTO(1L, "new-title", "new-content", user.getUsername());
-        postService.editPost(1L, newDTO);
+        var newRequest = new PostUpdateRequest("new-title", "new-content");
+        postService.editPost(1L, newRequest);
         verify(postRepository).findById(1L);
     }
 
@@ -129,7 +130,7 @@ class PostServiceTest {
         when(postRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(PostNotFoundException.class, () -> postService.findPost(2L));
-        assertThrows(PostNotFoundException.class, () -> postService.editPost(1L, dto));
+        assertThrows(PostNotFoundException.class, () -> postService.editPost(1L, request));
     }
 
     @Test

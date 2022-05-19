@@ -3,6 +3,7 @@ package com.kdt.springbootboardjpa.controller;
 import com.kdt.springbootboardjpa.PostService;
 import com.kdt.springbootboardjpa.domain.dto.PostCreateRequest;
 import com.kdt.springbootboardjpa.domain.dto.PostDTO;
+import com.kdt.springbootboardjpa.domain.dto.PostUpdateRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -41,8 +42,8 @@ public class RestPostController {
     }
 
     @PostMapping("/posts/{id}")
-    public ResponseEntity<String> editPost(@PathVariable("id") long id, @RequestBody PostDTO postDTO) {
-        postService.editPost(id, postDTO);
+    public ResponseEntity<String> editPost(@PathVariable("id") long id, @RequestBody PostUpdateRequest request) {
+        postService.editPost(id, request);
         return new ResponseEntity<>("수정 성공", HttpStatus.OK);
     }
 }
