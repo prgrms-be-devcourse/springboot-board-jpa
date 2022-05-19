@@ -24,7 +24,7 @@ public class FieldSetter {
     idField.setAccessible(false);
   }
 
-  // TODO 2: 테스트 전용 util 클래스에 대한 테스트 위치는 어디가 좋을까요?
+  // TODO 2: PR 질문
   static class FieldSetterTest {
 
     @Test

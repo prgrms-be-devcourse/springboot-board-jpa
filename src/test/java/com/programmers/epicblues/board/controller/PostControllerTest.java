@@ -54,6 +54,7 @@ class PostControllerTest {
   final String BASE_URL = "/posts";
   @Autowired
   private MockMvc mockMvc;
+  // TODO 3: PR 질문
   @Autowired
   private JpaUserRepository userRepository;
   @Autowired
@@ -123,8 +124,6 @@ class PostControllerTest {
     ));
 
   }
-
-  // TODO : 질문 1. 테스트를 짜실 때 성공 case vs 에외 case 우선순위 추천?
 
   @Test
   @DisplayName("등록된 postId를 통해 성공적으로 post를 가져올 수 있어야 한다.")
