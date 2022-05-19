@@ -1,7 +1,6 @@
 package com.hyunji.jpaboard.model;
 
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -19,8 +18,4 @@ public abstract class BaseEntity {
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
-
-    @CreatedBy
-    @Column(updatable = false)
-    private String createdBy;
 }
