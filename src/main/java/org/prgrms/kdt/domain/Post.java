@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,6 +23,7 @@ public class Post extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = AUTO)
+  @Column(name = "post_Id", unique = true, nullable = false, updatable = false)
   private Long id;
 
   @NotNull
@@ -30,10 +32,11 @@ public class Post extends BaseEntity {
   private String title;
 
   @NotNull
-  @Column(nullable = false, columnDefinition = "TEXT")
+  @Column(name = "content", nullable = false, columnDefinition = "TEXT")
   private String content;
 
   @ManyToOne(fetch = LAZY)
+  @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
   @Builder
