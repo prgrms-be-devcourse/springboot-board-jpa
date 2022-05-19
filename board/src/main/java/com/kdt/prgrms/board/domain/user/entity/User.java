@@ -19,7 +19,6 @@ public class User {
     @NotNull
     private int age;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private Hobby hobby;
 
