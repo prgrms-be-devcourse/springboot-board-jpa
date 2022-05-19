@@ -8,11 +8,12 @@ import lombok.Getter;
 
 @Getter
 public class ApiResponse<T> {
-    private int statusCode;
-    private T data;
+
+    private final int statusCode;
+    private final T data;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime serverDateTime;
+    private final LocalDateTime serverDateTime;
 
     public ApiResponse(int statusCode, T data) {
         this.statusCode = statusCode;

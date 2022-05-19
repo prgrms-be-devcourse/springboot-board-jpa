@@ -37,7 +37,7 @@ public class User extends BaseEntity {
     private Hobby hobby;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private final List<Post> posts = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
 
     protected User() {
     }

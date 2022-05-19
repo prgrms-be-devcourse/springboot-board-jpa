@@ -16,15 +16,16 @@ public class Hobby {
     private static final String HOBBY_NOT_BE_NULL_AND_BLANK_MESSAGE = "취미는 null 이거나 공백만 있을 수 없습니다.";
     private static final String HOBBY_OVER_MAX_LENGTH = "취미는 글자수가 15를 초과할 수 없습니다.";
     private static final int HOBBY_MAX_LENGTH = 15;
-    @Column(length = 15, nullable = false)
-    private String hobby;
+
+    @Column(name = "hobby", length = 15, nullable = false)
+    private String value;
 
     protected Hobby() {
     }
 
-    public Hobby(String hobby) {
-        this.hobby = hobby;
-        validateHobby(hobby);
+    public Hobby(String value) {
+        this.value = value;
+        validateHobby(value);
     }
 
     private void validateHobby(String hobby) {
@@ -44,12 +45,12 @@ public class Hobby {
         if (o == null || getClass() != o.getClass())
             return false;
         Hobby hobby1 = (Hobby)o;
-        return getHobby().equals(hobby1.getHobby());
+        return this.getValue().equals(hobby1.getValue());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getHobby());
+        return Objects.hash(this.getValue());
     }
 
 }

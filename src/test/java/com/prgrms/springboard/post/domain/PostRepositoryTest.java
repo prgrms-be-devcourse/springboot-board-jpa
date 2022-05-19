@@ -38,7 +38,7 @@ class PostRepositoryTest {
         // when
         // then
         assertThat(post).isNotNull();
-        assertThat(post.getCreatedBy()).isEqualTo(user.getName().getName());
+        assertThat(post.getCreatedBy()).isEqualTo(user.getName().getValue());
     }
 
     @DisplayName("게시글을 저장한다.")

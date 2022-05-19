@@ -10,6 +10,7 @@ import lombok.Getter;
 
 @Getter
 public class PostsResponse {
+
     private final long totalRowCount;
     private final int pageSize;
     private final int pageNumber;
@@ -54,7 +55,7 @@ public class PostsResponse {
                 post.getId(),
                 post.getTitle().getTitle(),
                 post.getContent().getContent(),
-                post.getUser().getName().getName()
+                post.getUser().getName().getValue()
             );
         }
     }

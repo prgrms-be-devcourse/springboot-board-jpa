@@ -22,9 +22,9 @@ public class UserResponse {
     public static UserResponse from(User user) {
         return new UserResponse(
             user.getId(),
-            user.getName().getName(),
-            user.getAge().getAge(),
-            user.getHobby().getHobby()
+            user.getName().getValue(),
+            user.getAge().getValue(),
+            user.getHobby().getValue()
         );
     }
 

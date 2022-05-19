@@ -20,6 +20,7 @@ import lombok.Getter;
 @Getter
 @Entity
 public class Post extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,7 +47,7 @@ public class Post extends BaseEntity {
     }
 
     public static Post of(String title, String content, User user) {
-        String createdBy = user.getName().getName();
+        String createdBy = user.getName().getValue();
         Title postTitle = new Title(title);
         Content postContent = new Content(content);
         return new Post(createdBy, LocalDateTime.now(), null, postTitle, postContent, user);

@@ -12,18 +12,19 @@ import lombok.Getter;
 @Getter
 @Embeddable
 public class Age {
+
     private static final String AGE_NOT_BE_NEGATIVE_MESSAGE = "나이는 음수가 될 수 없습니다.";
     private static final int AGE_MIN_VALUE = 0;
 
     @Column(name = "age", nullable = false)
-    private int age;
+    private int value;
 
     protected Age() {
     }
 
-    public Age(int age) {
-        this.age = age;
-        validateAge(age);
+    public Age(int value) {
+        this.value = value;
+        validateAge(value);
     }
 
     private void validateAge(int age) {
@@ -39,11 +40,11 @@ public class Age {
         if (o == null || getClass() != o.getClass())
             return false;
         Age age1 = (Age)o;
-        return getAge() == age1.getAge();
+        return this.getValue() == age1.getValue();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAge());
+        return Objects.hash(this.getValue());
     }
 }

@@ -18,14 +18,14 @@ public class Name {
     private static final int NAME_MAX_LENGTH = 10;
 
     @Column(name = "name", length = 10, nullable = false)
-    private String name;
+    private String value;
 
     protected Name() {
     }
 
-    public Name(String name) {
-        this.name = name;
-        validateName(name);
+    public Name(String value) {
+        this.value = value;
+        validateName(value);
     }
 
     private void validateName(String name) {
@@ -45,11 +45,11 @@ public class Name {
         if (o == null || getClass() != o.getClass())
             return false;
         Name name1 = (Name)o;
-        return getName().equals(name1.getName());
+        return this.getValue().equals(name1.getValue());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName());
+        return Objects.hash(this.getValue());
     }
 }

@@ -29,7 +29,7 @@ class UserRepositoryTest {
         // when
         // then
         assertThat(user).isNotNull();
-        assertThat(user.getCreatedBy()).isEqualTo(user.getName().getName());
+        assertThat(user.getCreatedBy()).isEqualTo(user.getName().getValue());
     }
 
     @Sql(scripts = {"classpath:db/data_user.sql", "classpath:db/data_post.sql"})
