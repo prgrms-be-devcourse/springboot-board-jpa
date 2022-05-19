@@ -7,13 +7,10 @@ import lombok.Getter;
 @Getter
 public class UserResponse {
 
-    private Long id;
-    private String name;
-    private int age;
-    private String hobby;
-
-    protected UserResponse() {
-    }
+    private final Long id;
+    private final String name;
+    private final int age;
+    private final String hobby;
 
     public UserResponse(Long id, String name, int age, String hobby) {
         this.id = id;

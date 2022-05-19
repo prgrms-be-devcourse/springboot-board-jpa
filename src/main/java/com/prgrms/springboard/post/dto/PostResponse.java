@@ -8,19 +8,16 @@ import lombok.Getter;
 @Getter
 public class PostResponse {
 
-    private Long id;
-    private String title;
-    private String content;
-    private UserResponse userResponse;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final UserResponse user;
 
-    protected PostResponse() {
-    }
-
-    public PostResponse(Long id, String title, String content, UserResponse userResponse) {
+    public PostResponse(Long id, String title, String content, UserResponse user) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.userResponse = userResponse;
+        this.user = user;
     }
 
     public static PostResponse from(Post post) {
