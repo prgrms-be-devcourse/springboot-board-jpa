@@ -1,10 +1,11 @@
 package com.example.jpaboard.domain.user;
 
 import com.example.jpaboard.domain.BaseTimeEntity;
-import org.springframework.lang.NonNull;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -13,7 +14,7 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @NonNull
+    @NotNull
     private String name;
 
     private int age;

@@ -3,7 +3,9 @@ package com.example.jpaboard.domain.post;
 import com.example.jpaboard.domain.BaseTimeEntity;
 import com.example.jpaboard.domain.user.User;
 import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -13,14 +15,14 @@ public class Post extends BaseTimeEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @NonNull
+    @NotNull
     private String title;
 
-    @NonNull
+    @NotNull
     @Lob
     private String content;
 
-    @NonNull
+    @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
