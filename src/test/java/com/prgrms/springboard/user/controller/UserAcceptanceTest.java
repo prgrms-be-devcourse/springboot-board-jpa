@@ -24,8 +24,9 @@ import io.restassured.response.Response;
 @Sql("classpath:db/init.sql")
 class UserAcceptanceTest extends AcceptanceTest {
 
-    private static final String USERS_URI = "/api/v1/users";
     private static final CreateUserRequest CREATE_USER_REQUEST = new CreateUserRequest("유민환", 26, "낚시");
+    private static final String USERS_URI = "/api/v1/users";
+    private static final String USERS_URI_WITH_ID = USERS_URI + "/{id}";
 
     @DisplayName("회원을 생성한다.")
     @Test
@@ -84,7 +85,7 @@ class UserAcceptanceTest extends AcceptanceTest {
                 )
             ))
             .when()
-            .get("/api/v1/users/{id}", id)
+            .get(USERS_URI_WITH_ID, id)
             .then().log().all()
             .extract();
 

@@ -34,6 +34,7 @@ class PostAcceptanceTest extends AcceptanceTest {
     private static final CreatePostRequest CREATE_POST_REQUEST = new CreatePostRequest(1L, "제목입니다.", "내용입니다.");
     private static final ModifyPostRequest MODIFY_POST_REQUEST = new ModifyPostRequest(1L, "수정 제목입니다.", "수정 내용입니다.");
     private static final String POST_URI = "api/v1/posts";
+    private static final String POST_URI_WITH_ID = POST_URI + "/{id}";
 
     @DisplayName("게시글을 작성한다.")
     @Test
@@ -92,7 +93,7 @@ class PostAcceptanceTest extends AcceptanceTest {
                     fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
                 )
             ))
-            .when().get("api/v1/posts/{id}", postId)
+            .when().get(POST_URI_WITH_ID, postId)
             .then().log().all()
             .extract();
 
@@ -124,7 +125,7 @@ class PostAcceptanceTest extends AcceptanceTest {
                     fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
                 )
             ))
-            .when().get("api/v1/posts/{id}", postId)
+            .when().get(POST_URI_WITH_ID, postId)
             .then().log().all()
             .extract();
 
@@ -173,7 +174,7 @@ class PostAcceptanceTest extends AcceptanceTest {
                     fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
                 )
             ))
-            .when().get("api/v1/posts")
+            .when().get(POST_URI)
             .then().log().all()
             .extract();
 
@@ -216,7 +217,7 @@ class PostAcceptanceTest extends AcceptanceTest {
                     fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
                 )
             ))
-            .when().put("api/v1/posts/{id}", postId)
+            .when().put(POST_URI_WITH_ID, postId)
             .then().log().all()
             .extract();
 
@@ -256,7 +257,7 @@ class PostAcceptanceTest extends AcceptanceTest {
                     fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
                 )
             ))
-            .when().put("api/v1/posts/{id}", postId)
+            .when().put(POST_URI_WITH_ID, postId)
             .then().log().all()
             .extract();
 
