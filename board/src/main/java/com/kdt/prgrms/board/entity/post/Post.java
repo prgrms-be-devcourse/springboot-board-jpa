@@ -1,7 +1,7 @@
-package com.kdt.prgrms.board.domain.post.entity;
+package com.kdt.prgrms.board.entity.post;
 
-import com.kdt.prgrms.board.domain.BaseEntity;
-import com.kdt.prgrms.board.domain.user.entity.User;
+import com.kdt.prgrms.board.entity.BaseEntity;
+import com.kdt.prgrms.board.entity.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

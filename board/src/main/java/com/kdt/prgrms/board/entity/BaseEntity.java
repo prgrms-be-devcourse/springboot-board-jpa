@@ -1,6 +1,5 @@
-package com.kdt.prgrms.board.domain;
+package com.kdt.prgrms.board.entity;
 
-import org.hibernate.validator.internal.util.privilegedactions.LoadClass;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

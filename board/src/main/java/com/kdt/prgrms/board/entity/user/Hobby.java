@@ -1,4 +1,4 @@
-package com.kdt.prgrms.board.domain.user;
+package com.kdt.prgrms.board.entity.user;
 
 public enum Hobby {
 
