@@ -7,6 +7,8 @@ import org.programmers.springbootboardjpa.controller.dto.UserCreateForm;
 import org.programmers.springbootboardjpa.controller.dto.UserDtoV1;
 import org.programmers.springbootboardjpa.controller.dto.UserUpdateFormV1;
 import org.programmers.springbootboardjpa.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,5 +46,10 @@ public class UserApiControllerV1 {
     public ResponseEntity<Object> deleteUser(@PathVariable("id") Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/api/v1/users")
+    public Page<UserDtoV1> showUsersPaged(Pageable pageable) {
+        return userService.findUsersWithPage(pageable).map(UserDtoV1::from);
     }
 }

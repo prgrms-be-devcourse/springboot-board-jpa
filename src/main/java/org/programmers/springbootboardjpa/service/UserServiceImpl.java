@@ -7,6 +7,8 @@ import org.programmers.springbootboardjpa.controller.dto.UserUpdateForm;
 import org.programmers.springbootboardjpa.domain.User;
 import org.programmers.springbootboardjpa.repository.UserRepository;
 import org.programmers.springbootboardjpa.service.exception.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,5 +51,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public Page<User> findUsersWithPage(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }

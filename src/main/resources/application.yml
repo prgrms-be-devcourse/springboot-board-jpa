@@ -4,6 +4,11 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  data:
+    web:
+      pageable:
+        default-page-size: 5
+        max-page-size: 10
 
   jpa:
     show-sql: true
