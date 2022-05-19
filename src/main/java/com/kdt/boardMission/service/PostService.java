@@ -55,6 +55,7 @@ public class PostService {
         postRepository.deleteById(postDto.getId());
     }
 
+    @Transactional(readOnly = true)
     public PostDto findById(long postId) throws NotFoundException {
         Optional<Post> byId = postRepository.findById(postId);
         if (byId.isEmpty()) {
@@ -63,10 +64,12 @@ public class PostService {
         return convertPostDto(byId.get());
     }
 
+    @Transactional(readOnly = true)
     public Page<PostDto> findByTitle(String title, Pageable pageable) {
         return postRepository.findByTitle(title, pageable).map(PostDto::convertPostDto);
     }
 
+    @Transactional(readOnly = true)
     public Page<PostDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable).map(PostDto::convertPostDto);
     }

@@ -41,6 +41,7 @@ public class UserService {
         userRepository.deleteById(userDto.getId());
     }
 
+    @Transactional(readOnly = true)
     public UserDto findUserById(long userId) throws NotFoundException {
         Optional<User> byId = userRepository.findById(userId);
         if (byId.isEmpty()) {
@@ -50,10 +51,12 @@ public class UserService {
         return convertUserDto(user);
     }
 
+    @Transactional(readOnly = true)
     public Page<UserDto> findUserByName(String name, Pageable pageable) {
         return userRepository.findByName(name, pageable).map(UserDto::convertUserDto);
     }
 
+    @Transactional(readOnly = true)
     public Page<UserDto> findAll(Pageable pageable) {
         return userRepository.findAll(pageable).map(UserDto::convertUserDto);
     }
