@@ -1,11 +1,11 @@
-package org.programmers.springbootboardjpa.web;
+package org.programmers.springbootboardjpa.web.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.programmers.springbootboardjpa.web.dto.user.LongIdResponse;
-import org.programmers.springbootboardjpa.web.dto.user.UserCreateFormV1;
-import org.programmers.springbootboardjpa.web.dto.user.UserDtoV1;
-import org.programmers.springbootboardjpa.web.dto.user.UserUpdateFormV1;
+import org.programmers.springbootboardjpa.web.user.dto.user.LongIdResponse;
+import org.programmers.springbootboardjpa.web.user.dto.user.UserCreateFormV1;
+import org.programmers.springbootboardjpa.web.user.dto.user.UserDtoV1;
+import org.programmers.springbootboardjpa.web.user.dto.user.UserUpdateFormV1;
 import org.programmers.springbootboardjpa.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +17,7 @@ import java.net.URI;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class UserApiControllerV1 {
+public class UserApiControllerV1 implements UserApiController {
 
     private final UserService userService;
 

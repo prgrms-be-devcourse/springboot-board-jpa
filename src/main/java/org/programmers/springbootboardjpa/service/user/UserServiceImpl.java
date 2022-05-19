@@ -2,8 +2,8 @@ package org.programmers.springbootboardjpa.service.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.programmers.springbootboardjpa.web.dto.user.UserCreateFormV1;
-import org.programmers.springbootboardjpa.web.dto.user.UserUpdateForm;
+import org.programmers.springbootboardjpa.web.user.dto.user.UserCreateFormV1;
+import org.programmers.springbootboardjpa.web.user.dto.user.UserUpdateForm;
 import org.programmers.springbootboardjpa.domain.user.User;
 import org.programmers.springbootboardjpa.repository.user.UserRepository;
 import org.programmers.springbootboardjpa.service.exception.NotFoundException;

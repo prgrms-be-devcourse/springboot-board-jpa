@@ -1,4 +1,4 @@
-package org.programmers.springbootboardjpa.web.dto.user;
+package org.programmers.springbootboardjpa.web.user.dto.user;
 
 import org.programmers.springbootboardjpa.domain.user.User;
 import org.programmers.springbootboardjpa.domain.user.UserInterests;
