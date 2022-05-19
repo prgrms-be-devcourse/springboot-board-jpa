@@ -1,0 +1,52 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시판
+
+=== 게시판 생성
+
+=== /api/v1/posts
+
+.Request
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-create/http-response.adoc[]
+
+
+=== 게시판 전체 조회
+
+=== /api/v1/posts
+
+.Request
+include::{snippets}/post_getAll/http-request.adoc[]
+
+.Response
+include::{snippets}/post_getAll/http-response.adoc[]
+include::{snippets}/post_getAll/response-fields.adoc[]
+
+=== 게시판 단일 조회
+
+=== /api/v1/posts/{postId}
+
+.Request
+include::{snippets}/post-getOne/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getOne/http-response.adoc[]
+include::{snippets}/post-getOne/response-fields.adoc[]
+
+
+=== 게시판 수정
+
+=== /api/v1/posts{postId}
+
+.Request
+include::{snippets}/post-modify/http-request.adoc[]
+include::{snippets}/post-modify/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-modify/http-response.adoc[]
