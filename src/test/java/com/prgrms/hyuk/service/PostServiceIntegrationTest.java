@@ -13,6 +13,7 @@ import com.prgrms.hyuk.domain.user.Hobby;
 import com.prgrms.hyuk.domain.user.Name;
 import com.prgrms.hyuk.domain.user.User;
 import com.prgrms.hyuk.dto.PostCreateRequest;
+import com.prgrms.hyuk.dto.PostUpdateRequest;
 import com.prgrms.hyuk.dto.UserDto;
 import com.prgrms.hyuk.exception.InvalidPostIdException;
 import com.prgrms.hyuk.repository.PostRepository;
@@ -47,7 +48,7 @@ class PostServiceIntegrationTest {
     void setUpBeforeTests() {
         postService = new PostService(postRepository, new Converter());
     }
-    
+
     @BeforeEach
     void setUp() {
         user = new User(new Name("pang"), new Age(26), Hobby.SOCCER);
@@ -86,17 +87,8 @@ class PostServiceIntegrationTest {
     @DisplayName("게시글 조회 (페이징)")
     void testFindPosts() {
         //given
-        var post1 = new Post(
-            new Title("this is title ..."),
-            new Content("content")
-        );
-        post1.assignUser(user);
-
-        var post2 = new Post(
-            new Title("this is title ..."),
-            new Content("content")
-        );
-        post2.assignUser(user);
+        var post1 = generatePostAssignedByUser(user);
+        var post2 = generatePostAssignedByUser(user);
 
         postRepository.saveAll(List.of(post1, post2));
 
@@ -113,11 +105,7 @@ class PostServiceIntegrationTest {
     @DisplayName("게시글 단건 조회 - 게시글 존재")
     void testFindByIdWhenExist() {
         //given
-        var post = new Post(
-            new Title("this is title..."),
-            new Content("this is content...")
-        );
-        post.assignUser(user);
+        var post = generatePostAssignedByUser(user);
 
         var savedPost = postRepository.save(post);
 
@@ -139,5 +127,56 @@ class PostServiceIntegrationTest {
         assertThatThrownBy(() -> postService.findPost(invalidId))
             .isInstanceOf(InvalidPostIdException.class)
             .hasMessageContaining(INVALID_POST_ID_EXP_MSG.getMessage());
+    }
+
+    @Test
+    @DisplayName("게시글 수정 성공")
+    void testUpdatePostSuccess() {
+        //given
+        var post = generatePostAssignedByUser(user);
+        var savedPost = postRepository.save(post);
+
+        var postUpdateRequest = new PostUpdateRequest(
+            "this is updated title...",
+            "this is updated content...");
+
+        //when
+        postService.updatePost(savedPost.getId(), postUpdateRequest);
+
+        //then
+        var updatedPost = postRepository.findById(savedPost.getId()).get();
+        assertAll(
+            () -> assertThat(updatedPost).isNotNull(),
+            () -> assertThat(updatedPost.getId()).isEqualTo(savedPost.getId()),
+            () -> assertThat(updatedPost.getTitle().getTitle())
+                .isEqualTo(postUpdateRequest.getTitle()),
+            () -> assertThat(updatedPost.getContent()
+                .getContent()).isEqualTo(postUpdateRequest.getContent())
+        );
+    }
+
+    @Test
+    @DisplayName("게시글 수정 실패 - 존재하지 않는 게시글")
+    void testUpdatePostFailBecauseInvalidPostId() {
+        //given
+        Long invalidId = 1L;
+        var postUpdateRequest = new PostUpdateRequest(
+            "this is title...",
+            "this is content...");
+
+        //when
+        //then
+        assertThatThrownBy(() -> postService.updatePost(invalidId, postUpdateRequest))
+            .isInstanceOf(InvalidPostIdException.class)
+            .hasMessageContaining(INVALID_POST_ID_EXP_MSG.getMessage());
+    }
+
+    private Post generatePostAssignedByUser(User user) {
+        var post = new Post(
+            new Title("this is title..."),
+            new Content("this is content...")
+        );
+        post.assignUser(user);
+        return post;
     }
 }

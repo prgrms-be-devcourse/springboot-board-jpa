@@ -51,6 +51,15 @@ public class Post extends BaseEntity {
         user.getPosts().add(this);
     }
 
+    /* 비지니스 로직 */
+    public void editTitle(Title title) {
+        this.title = title;
+    }
+
+    public void editContent(Content content) {
+        this.content = content;
+    }
+
     public Long getId() {
         return id;
     }
