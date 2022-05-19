@@ -1,4 +1,4 @@
-package com.springboard.post.service;
+package com.springboard.service;
 
 import com.springboard.common.exception.FindFailException;
 import com.springboard.post.dto.CreatePostRequest;
@@ -6,6 +6,7 @@ import com.springboard.post.dto.CreatePostResponse;
 import com.springboard.post.dto.FindPostResponse;
 import com.springboard.post.dto.UpdatePostRequest;
 import com.springboard.post.repository.PostRepository;
+import com.springboard.post.service.PostService;
 import com.springboard.user.dto.UserRequest;
 import com.springboard.user.dto.UserResponse;
 import com.springboard.user.repository.UserRepository;

@@ -1,8 +1,9 @@
-package com.springboard.user.service;
+package com.springboard.service;
 
 import com.springboard.common.exception.FindFailException;
 import com.springboard.user.dto.*;
 import com.springboard.user.repository.UserRepository;
+import com.springboard.user.service.UserService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
