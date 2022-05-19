@@ -24,6 +24,7 @@ public class UserService {
         return user.getId();
     }
 
+    @Transactional(readOnly = true)
     public UserResponse findOne(Long id) {
         return userRepository.findById(id)
             .map(UserResponse::from)
