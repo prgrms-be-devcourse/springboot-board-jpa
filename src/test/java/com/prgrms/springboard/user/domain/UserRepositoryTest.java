@@ -32,7 +32,7 @@ class UserRepositoryTest {
         assertThat(user.getCreatedBy()).isEqualTo(user.getName().getName());
     }
 
-    @Sql("classpath:db/data.sql")
+    @Sql(scripts = {"classpath:db/data_user.sql", "classpath:db/data_post.sql"})
     @DisplayName("회원이 작성한 게시글들을 조회할 수 있다.")
     @Test
     void findPostsByUser() {

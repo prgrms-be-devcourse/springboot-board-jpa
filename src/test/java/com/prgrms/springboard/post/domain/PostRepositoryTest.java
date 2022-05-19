@@ -13,7 +13,7 @@ import com.prgrms.springboard.user.domain.User;
 import com.prgrms.springboard.user.domain.UserRepository;
 
 @DataJpaTest
-@Sql("classpath:db/data.sql")
+@Sql("classpath:db/data_user.sql")
 class PostRepositoryTest {
 
     @Autowired
