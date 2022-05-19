@@ -1,0 +1,23 @@
+spring:
+  sql:
+    init:
+      mode: never
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+    name: sa
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 20
+    hibernate:
+      ddl-auto: create-drop
+    database: h2
+    open-in-view: false
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
