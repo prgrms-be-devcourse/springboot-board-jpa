@@ -30,7 +30,7 @@ public class PostService {
     }
 
     @Transactional
-    public Page<PostDto> getAllPost(Pageable pageable) {
+    public Page<PostDto> getAllPostByPage(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(postConverter::convertPostDto);
     }
@@ -45,9 +45,18 @@ public class PostService {
     }
 
     @Transactional
-    public Long writePost(PostDto postDto) {
+    public PostDto updatePost(Long id, PostDto postDto) throws NotFoundException {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("찾는 게시글이 없습니다."));
+
+        post.updatePost(postDto.getTitle(), postDto.getContent());
+        return postConverter.convertPostDto(post);
+    }
+
+    @Transactional
+    public PostDto writePost(PostDto postDto) {
         Post post = postConverter.convertPost(postDto);
         postRepository.save(post);
-        return post.getId();
+        return postConverter.convertPostDto(post);
     }
 }

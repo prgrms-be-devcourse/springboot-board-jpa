@@ -43,7 +43,7 @@ class PostServiceTest {
                 .build();
 
         // when
-        postId = postService.writePost(postDto);
+        postId = postService.writePost(postDto).getId();
 
         // then
         assertThat(postId).isGreaterThan(0);
@@ -66,7 +66,7 @@ class PostServiceTest {
         PageRequest page = PageRequest.of(0, 10);
 
         // when
-        Page<PostDto> all = postService.getAllPost(page);
+        Page<PostDto> all = postService.getAllPostByPage(page);
 
         // then
         assertThat(all.getTotalElements()).isEqualTo(1);
