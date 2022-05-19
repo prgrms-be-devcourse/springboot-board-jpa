@@ -27,7 +27,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
 @TestInstance(Lifecycle.PER_CLASS)
@@ -88,13 +87,11 @@ class PostServiceIntegrationTest {
 
         postRepository.saveAll(List.of(post1, post2));
 
-        var pageRequest = PageRequest.of(1, 4);
-
         //when
-        var posts = postService.findPosts(pageRequest);
+        var posts = postService.findPosts(0, 5);
 
         //then
-        assertThat(posts.getTotalElements()).isEqualTo(2L);
+        assertThat(posts).hasSize(2);
     }
 
     @Test

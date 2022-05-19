@@ -6,14 +6,14 @@ import com.prgrms.hyuk.dto.PostDto;
 import com.prgrms.hyuk.dto.PostUpdateRequest;
 import com.prgrms.hyuk.exception.InvalidPostIdException;
 import com.prgrms.hyuk.service.PostService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,8 +36,11 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ApiResponse<Page<PostDto>> getAll(Pageable pageable) {
-        return ApiResponse.ok(postService.findPosts(pageable));
+    public ApiResponse<List<PostDto>> getAll(
+        @RequestParam(defaultValue = "0") int offset,
+        @RequestParam(defaultValue = "10") int limit
+    ) {
+        return ApiResponse.ok(postService.findPosts(offset, limit));
     }
 
     @GetMapping("/posts/{id}")

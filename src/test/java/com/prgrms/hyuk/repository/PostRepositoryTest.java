@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
 class PostRepositoryTest {
@@ -60,10 +59,16 @@ class PostRepositoryTest {
     }
 
     @Test
-    @DisplayName("findAll(page) 쿼리 확인")
+    @DisplayName("findAll(offset, limit) 쿼리 확인")
     void testFindAllWithPaging() {
-        var pageRequest = PageRequest.of(1, 5);
-        postRepository.findAll(pageRequest);
+        em.persist(post);
+
+        em.flush();
+        em.clear();
+
+        var posts = postRepository.findAll(0, 5);
+
+        posts.forEach(post -> log.info(post.getUser().getName().getName()));
     }
 
     @Test

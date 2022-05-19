@@ -1,7 +1,9 @@
 package com.prgrms.hyuk.controller;
 
 import static com.prgrms.hyuk.exception.ExceptionMessage.INVALID_POST_ID_EXP_MSG;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -21,8 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -83,17 +83,16 @@ class PostControllerTest {
             "pang"
         );
 
-        given(postService.findPosts(any(Pageable.class))).willReturn(
-            new PageImpl<>(List.of(postDto1, postDto2)));
+        given(postService.findPosts(anyInt(), anyInt())).willReturn(List.of(postDto1, postDto2));
 
         //when
         //then
         mockMvc.perform(get("/posts")
-                .param("page", String.valueOf(0))
-                .param("size", String.valueOf(10))
+                .param("offset", String.valueOf(0))
+                .param("limit", String.valueOf(10))
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.statusCode").value("200"))
-            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data", hasSize(2)))
             .andExpect(jsonPath("$.serverDatetime").exists());
     }
 

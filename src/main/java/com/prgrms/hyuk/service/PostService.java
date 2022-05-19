@@ -10,8 +10,8 @@ import com.prgrms.hyuk.dto.PostUpdateRequest;
 import com.prgrms.hyuk.exception.InvalidPostIdException;
 import com.prgrms.hyuk.repository.PostRepository;
 import com.prgrms.hyuk.service.converter.Converter;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +34,10 @@ public class PostService {
         return savedPost.getId();
     }
 
-    public Page<PostDto> findPosts(Pageable pageable) {
-        return postRepository.findAll(pageable)
-            .map(converter::toPostDto);
+    public List<PostDto> findPosts(int offset, int limit) {
+        return postRepository.findAll(offset, limit).stream()
+            .map(converter::toPostDto)
+            .collect(Collectors.toList());
     }
 
     public PostDto findPost(Long id) {
