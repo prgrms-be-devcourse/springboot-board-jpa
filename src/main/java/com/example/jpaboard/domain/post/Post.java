@@ -2,8 +2,6 @@ package com.example.jpaboard.domain.post;
 
 import com.example.jpaboard.domain.BaseTimeEntity;
 import com.example.jpaboard.domain.user.User;
-import org.springframework.lang.NonNull;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import static javax.persistence.FetchType.LAZY;
