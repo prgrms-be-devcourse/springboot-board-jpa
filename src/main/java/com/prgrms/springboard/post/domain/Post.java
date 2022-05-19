@@ -58,6 +58,6 @@ public class Post extends BaseEntity {
     }
 
     public boolean isNotSameUser(User user) {
-        return !this.user.isSame(user);
+        return !this.getUser().isSame(user);
     }
 }
