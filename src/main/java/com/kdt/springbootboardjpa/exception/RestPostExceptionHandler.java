@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 @ResponseBody
@@ -17,8 +15,8 @@ import java.util.NoSuchElementException;
 public class RestPostExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(UnAuthorizationAccessException.class)
-    public ErrorResponse handleUnAuthorization(UnAuthorizationAccessException e) {
+    @ExceptionHandler(UserNotFoundException.class)
+    public ErrorResponse handleUnAuthorization(UserNotFoundException e) {
         log.info(e.getMessage());
         var errorCode = ErrorCode.NOT_AUTHORIZED;
         return ErrorResponse.builder()
@@ -30,8 +28,8 @@ public class RestPostExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NoSuchElementException.class)
-    public ErrorResponse handleEntityNotFound(NoSuchElementException e){
+    @ExceptionHandler(PostNotFoundException.class)
+    public ErrorResponse handleEntityNotFound(PostNotFoundException e){
         log.info(e.getMessage());
         var errorCode = ErrorCode.ENTITY_NOT_FOUND;
         return ErrorResponse.builder()

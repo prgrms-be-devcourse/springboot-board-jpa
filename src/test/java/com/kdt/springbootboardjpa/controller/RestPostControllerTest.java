@@ -98,7 +98,7 @@ class RestPostControllerTest {
 
     @Test
     @Transactional
-    @DisplayName("사용자 empty로 일어난 인가되지 않은 동작 예외 테스트 ")
+    @DisplayName("사용자 NotFound로 일어난 인가되지 않은 동작 예외 테스트 ")
     void unAuthorizationAccessExceptionTest() throws Exception{
 
         //given
@@ -116,8 +116,8 @@ class RestPostControllerTest {
 
     @Test
     @Transactional
-    @DisplayName("잘못된 인자 입력으로 일어난 NoSuchElement 예외 테스트")
-    void noSuchElementExceptionTest() throws Exception{
+    @DisplayName("잘못된 인자 입력으로 일어난 PostNotFound 예외 테스트")
+    void postNotFoundExceptionTest() throws Exception{
 
         //getPost
         mockMvc.perform(get("/api/v1/posts/10"))
