@@ -1,0 +1,56 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시글
+
+=== 게시글 생성
+
+=== /api/v1/posts
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-body.adoc[]
+
+=== 게시글 수정
+
+=== /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-edit/http-request.adoc[]
+include::{snippets}/post-edit/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-edit/http-response.adoc[]
+include::{snippets}/post-edit/response-body.adoc[]
+
+
+=== 게시글 단건 조회
+
+=== /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-by-id/http-request.adoc[]
+
+.Response
+include::{snippets}/post-by-id/http-response.adoc[]
+include::{snippets}/post-by-id/response-body.adoc[]
+
+
+=== 게시글 리스트 조회
+
+=== /api/v1/posts
+
+.Request
+include::{snippets}/post-pageble/http-request.adoc[]
+
+
+.Response
+include::{snippets}/post-pageble/http-response.adoc[]
+include::{snippets}/post-pageble/response-body.adoc[]
