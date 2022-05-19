@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -23,7 +24,7 @@ public class V1UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> register(@RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> register(@RequestBody @Valid UserRequest request) {
         UserResponse response = userService.save(request);
         return ResponseEntity.created(URI.create("/api/v1/users/" + response.id())).body(response);
     }
@@ -35,7 +36,7 @@ public class V1UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> modify(@PathVariable Long id, @RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> modify(@PathVariable Long id, @RequestBody @Valid UserRequest request) {
         UserResponse response = userService.updateOne(id, request);
         return ResponseEntity.ok(response);
     }

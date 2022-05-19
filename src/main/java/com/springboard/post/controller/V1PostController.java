@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -26,7 +27,7 @@ public class V1PostController {
     }
 
     @PostMapping
-    public ResponseEntity<CreatePostResponse> register(@RequestBody CreatePostRequest request) {
+    public ResponseEntity<CreatePostResponse> register(@RequestBody @Valid CreatePostRequest request) {
         CreatePostResponse response = postService.save(request);
         return ResponseEntity.created(URI.create("/api/v1/posts/" + response.id())).body(response);
     }
@@ -38,7 +39,7 @@ public class V1PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FindPostResponse> modify(@PathVariable Long id, @RequestBody UpdatePostRequest request) {
+    public ResponseEntity<FindPostResponse> modify(@PathVariable Long id, @RequestBody @Valid UpdatePostRequest request) {
         FindPostResponse response = postService.updateOne(id, request);
         return ResponseEntity.ok(response);
     }
