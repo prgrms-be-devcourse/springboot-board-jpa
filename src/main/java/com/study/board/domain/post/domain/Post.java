@@ -38,9 +38,8 @@ public class Post extends BaseEntity {
     private User writer;
 
     public Post(String title, String content, User writer) {
-        checkArgument(hasText(title), "title - 글자를 가져야함");
-        checkArgument(title.length() <= POST_TITLE_MAX_LENGTH, "title 길이 - " + POST_TITLE_MAX_LENGTH + " 이하 여야함");
-        checkArgument(hasText(content), "content - 글자를 가져야함");
+        checkTitle(title);
+        checkContent(content);
         checkNotNull(writer, "writer - null 이 될 수 없음");
 
         this.title = title;
@@ -50,9 +49,21 @@ public class Post extends BaseEntity {
     }
 
     public Post update(String title, String content) {
+        checkTitle(title);
+        checkContent(content);
+
         this.title = title;
         this.content = content;
         return this;
+    }
+
+    private void checkTitle(String title) {
+        checkArgument(hasText(title), "title - 글자를 가져야함");
+        checkArgument(title.length() <= POST_TITLE_MAX_LENGTH, "title 길이 - " + POST_TITLE_MAX_LENGTH + " 이하 여야함");
+    }
+
+    private void checkContent(String content) {
+        checkArgument(hasText(content), "content - 글자를 가져야함");
     }
 
     public void checkEditable(Long postId, User editor) {
