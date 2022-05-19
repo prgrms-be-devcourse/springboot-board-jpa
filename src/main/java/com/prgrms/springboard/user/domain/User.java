@@ -36,7 +36,7 @@ public class User extends BaseEntity {
     private Hobby hobby;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private List<Post> posts = new ArrayList<>();
+    private final List<Post> posts = new ArrayList<>();
 
     protected User() {
     }
@@ -61,6 +61,6 @@ public class User extends BaseEntity {
     }
 
     public boolean isSame(User user) {
-        return this.id.equals(user.id);
+        return this.id.equals(user.getId());
     }
 }
