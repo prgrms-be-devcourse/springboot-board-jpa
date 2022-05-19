@@ -2,7 +2,7 @@ package com.hyunji.jpaboard.domain.user.domain;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 @ActiveProfiles("test")
-@DataJpaTest
+@SpringBootTest
 class UserRepositoryTest {
 
     @Autowired
@@ -24,10 +24,9 @@ class UserRepositoryTest {
         userRepository.save(user);
 
         Optional<User> byId = userRepository.findById(user.getId());
-        assertThat(byId).isNotEmpty();
 
+        assertThat(byId).isNotEmpty();
         User saved = byId.get();
-        assertThat(saved).isEqualTo(user);
         assertThat(saved.getId()).isEqualTo(user.getId());
         assertThat(saved.getName()).isEqualTo(user.getName());
         assertThat(saved.getAge()).isEqualTo(user.getAge());
