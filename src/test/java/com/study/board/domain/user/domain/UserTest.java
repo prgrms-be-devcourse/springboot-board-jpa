@@ -14,7 +14,7 @@ class UserTest {
 
     @Test
     void 생성_성공() {
-        User user = User.create("득윤", "체스");
+        User user = new User("득윤", "체스");
 
         assertThat(user.getId()).isNull();
         assertThat(user.getName()).isEqualTo("득윤");
@@ -25,7 +25,7 @@ class UserTest {
     @ParameterizedTest
     void 이름이_null_이거나_비어있으면_생성실패(String name) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> User.create(name, "체스"));
+                .isThrownBy(() -> new User(name, "체스"));
     }
 
     @Test
@@ -33,7 +33,7 @@ class UserTest {
         String name = RandomString.make(USER_NAME_MAX_LENGTH + 1);
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> User.create(name, "체스"));
+                .isThrownBy(() -> new User(name, "체스"));
     }
 
     @Test
@@ -41,7 +41,7 @@ class UserTest {
         String hobby = RandomString.make(USER_HOBBY_MAX_LENGTH + 1);
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> User.create("득윤", hobby));
+                .isThrownBy(() -> new User("득윤", hobby));
     }
 
 }

@@ -143,7 +143,7 @@ class PostServiceTest {
 
     @Test
     void 남의_게시글_수정하려하면_실패() {
-        Long anotherUserId = userRepository.save(User.create("다른 사용자", null)).getId();
+        Long anotherUserId = userRepository.save(new User("다른 사용자", null)).getId();
 
         assertThatThrownBy(() -> postService.edit(writtenPostId1, "수정제목", "수정내용", anotherUserId))
                 .isInstanceOf(PostEditAccessDeniedException.class);
