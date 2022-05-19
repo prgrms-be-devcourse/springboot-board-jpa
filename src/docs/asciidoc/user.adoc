@@ -1,0 +1,37 @@
+== 유저
+
+=== 유저 생성
+
+==== /users
+
+.Request
+
+include::{snippets}/user-create/http-request.adoc[]
+include::{snippets}/user-create/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/user-create/http-response.adoc[]
+
+=== 유저 로그인
+
+==== /users/login
+
+.Request
+
+include::{snippets}/user-login/http-request.adoc[]
+include::{snippets}/user-login/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/user-login/http-response.adoc[]
+
+=== 유저 로그아웃
+
+.Request
+
+include::{snippets}/user-logout/http-request.adoc[]
+
+.Response
+
+include::{snippets}/user-logout/http-response.adoc[]

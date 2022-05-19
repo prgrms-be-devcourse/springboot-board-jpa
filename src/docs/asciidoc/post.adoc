@@ -1,0 +1,65 @@
+
+== 게시글
+
+=== 게시글 단건 조회
+
+==== /posts/{postId}
+
+.Request
+include::{snippets}/post-getOne/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-getOne/http-response.adoc[]
+include::{snippets}/post-getOne/response-fields.adoc[]
+
+=== 게시글 다건 조회
+
+==== /posts
+
+.Request
+include::{snippets}/post-getAll/http-request.adoc[]
+include::{snippets}/post-getAll/request-parameters.adoc[]
+
+.Response
+include::{snippets}/post-getAll/http-response.adoc[]
+include::{snippets}/post-getAll/response-fields.adoc[]
+
+=== 게시글 생성
+
+==== /posts
+
+.Request
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-create/http-response.adoc[]
+
+=== 게시글 수정
+
+==== /posts/{postId}
+
+.Request
+
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-update/http-response.adoc[]
+
+=== 게시글 삭제
+
+==== /posts/{postId}
+
+.Request
+
+include::{snippets}/post-delete/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-delete/http-response.adoc[]
+
+
