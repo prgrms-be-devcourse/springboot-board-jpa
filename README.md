@@ -6,7 +6,7 @@
 
 - datasource
     - prod : mariaDB
-    - prod : h2
+    - test : h2
 
 ### **엔티티 구성**
 
@@ -32,11 +32,15 @@
 
 ### **API를 구현**
 
+#### 사용자
+
 - 사용자 조회
     - 페이징 조회 (GET "/users")
     - 단건 조회 (GET "/users/{id}")
 - 사용자 작성 (POST "/users")
 - 사용자 수정 (PUT "/users/{id}")
+
+#### 게시글
 
 - 게시글 조회
     - 페이징 조회 (GET "/posts")
@@ -45,3 +49,7 @@
 - 게시글 수정 (PUT "/posts/{id}")
 
 ### **REST-DOCS를 이용해서 문서화**
+
+### UML
+
+![image](https://user-images.githubusercontent.com/50647845/169215729-82c50d96-c976-4396-b963-dd20ada52c3f.png)
