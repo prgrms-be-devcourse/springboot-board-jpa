@@ -1,4 +1,4 @@
-package org.programmers.springbootboardjpa.domain.exception;
+package org.programmers.springbootboardjpa.domain.user.exception;
 
 import java.time.LocalDate;
 

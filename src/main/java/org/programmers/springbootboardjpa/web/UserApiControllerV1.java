@@ -1,12 +1,12 @@
-package org.programmers.springbootboardjpa.controller;
+package org.programmers.springbootboardjpa.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.programmers.springbootboardjpa.controller.dto.IdResponse;
-import org.programmers.springbootboardjpa.controller.dto.UserCreateForm;
-import org.programmers.springbootboardjpa.controller.dto.UserDtoV1;
-import org.programmers.springbootboardjpa.controller.dto.UserUpdateFormV1;
-import org.programmers.springbootboardjpa.service.UserService;
+import org.programmers.springbootboardjpa.web.dto.user.LongIdResponse;
+import org.programmers.springbootboardjpa.web.dto.user.UserCreateFormV1;
+import org.programmers.springbootboardjpa.web.dto.user.UserDtoV1;
+import org.programmers.springbootboardjpa.web.dto.user.UserUpdateFormV1;
+import org.programmers.springbootboardjpa.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +23,11 @@ public class UserApiControllerV1 {
 
 
     @PostMapping("/api/v1/users")
-    public ResponseEntity<IdResponse> postUser(@RequestBody UserCreateForm userCreateForm) {
+    public ResponseEntity<LongIdResponse> postUser(@RequestBody UserCreateFormV1 userCreateForm) {
         Long id = userService.registerUser(userCreateForm);
         //TODO PR 포인트: SingletonMap?
         //TODO PR 포인트: 사용자 ID 값은 데이터베이스에서 사용자를 식별할 수 있는 값인데, 노출하면 안 되지 않나? (개인정보보호법) 일단 카카오는 회원 ID를 넘겨줌
-        return ResponseEntity.created(URI.create("/api/v1/users/" + id)).body(new IdResponse(id));
+        return ResponseEntity.created(URI.create("/api/v1/users/" + id)).body(new LongIdResponse(id));
     }
 
     //TODO: REST 스타일이 나은지, me -> 연결되게 하는 것이 나은지

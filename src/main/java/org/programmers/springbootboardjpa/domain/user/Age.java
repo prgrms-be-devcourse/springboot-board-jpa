@@ -1,10 +1,10 @@
-package org.programmers.springbootboardjpa.domain;
+package org.programmers.springbootboardjpa.domain.user;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.programmers.springbootboardjpa.domain.exception.IllegalBirthDateException;
+import org.programmers.springbootboardjpa.domain.user.exception.IllegalBirthDateException;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;

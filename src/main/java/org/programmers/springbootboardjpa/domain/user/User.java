@@ -1,8 +1,9 @@
-package org.programmers.springbootboardjpa.domain;
+package org.programmers.springbootboardjpa.domain.user;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.programmers.springbootboardjpa.domain.BaseTimeEntity;
 
 import javax.persistence.*;
 

@@ -1,4 +1,4 @@
-package org.programmers.springbootboardjpa.domain;
+package org.programmers.springbootboardjpa.domain.user;
 
 import lombok.AccessLevel;
 import lombok.Getter;

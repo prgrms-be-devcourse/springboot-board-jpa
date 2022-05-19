@@ -1,11 +1,11 @@
-package org.programmers.springbootboardjpa.service;
+package org.programmers.springbootboardjpa.service.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.programmers.springbootboardjpa.controller.dto.UserCreateForm;
-import org.programmers.springbootboardjpa.controller.dto.UserUpdateForm;
-import org.programmers.springbootboardjpa.domain.User;
-import org.programmers.springbootboardjpa.repository.UserRepository;
+import org.programmers.springbootboardjpa.web.dto.user.UserCreateFormV1;
+import org.programmers.springbootboardjpa.web.dto.user.UserUpdateForm;
+import org.programmers.springbootboardjpa.domain.user.User;
+import org.programmers.springbootboardjpa.repository.user.UserRepository;
 import org.programmers.springbootboardjpa.service.exception.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Long registerUser(UserCreateForm userCreateForm) {
+    public Long registerUser(UserCreateFormV1 userCreateForm) {
         return userRepository.save(userCreateForm.convertToUser()).getUserId();
     }
 

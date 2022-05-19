@@ -1,6 +1,7 @@
-package org.programmers.springbootboardjpa.controller.dto;
+package org.programmers.springbootboardjpa.web.dto.user;
 
-import org.programmers.springbootboardjpa.domain.*;
+import org.programmers.springbootboardjpa.domain.user.User;
+import org.programmers.springbootboardjpa.domain.user.UserInterests;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

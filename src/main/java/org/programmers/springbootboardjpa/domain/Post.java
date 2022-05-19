@@ -3,6 +3,7 @@ package org.programmers.springbootboardjpa.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.programmers.springbootboardjpa.domain.user.User;
 
 import javax.persistence.*;
 

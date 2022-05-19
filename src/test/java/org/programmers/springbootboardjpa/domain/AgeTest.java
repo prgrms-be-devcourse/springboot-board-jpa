@@ -1,9 +1,9 @@
 package org.programmers.springbootboardjpa.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.programmers.springbootboardjpa.domain.exception.IllegalBirthDateException;
+import org.programmers.springbootboardjpa.domain.user.exception.IllegalBirthDateException;
+import org.programmers.springbootboardjpa.domain.user.Age;
 
 import java.time.LocalDate;
 
