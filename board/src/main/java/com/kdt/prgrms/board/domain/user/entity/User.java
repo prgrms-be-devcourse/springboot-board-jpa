@@ -17,7 +17,6 @@ public class User extends BaseEntity {
     @NotNull
     private String name;
 
-    @NotNull
     private int age;
 
     @Enumerated(EnumType.STRING)
