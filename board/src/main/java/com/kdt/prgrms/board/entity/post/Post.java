@@ -67,7 +67,7 @@ public class Post extends BaseEntity {
         }
     }
 
-    public static PostBuilder builders() {
+    public static PostBuilder builder() {
 
         return new PostBuilder();
     }

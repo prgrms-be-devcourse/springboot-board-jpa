@@ -62,7 +62,7 @@ public class User extends BaseEntity {
         }
     }
 
-    public static UserBuilder builders() {
+    public static UserBuilder builder() {
 
         return new UserBuilder();
     }
