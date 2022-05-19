@@ -11,17 +11,19 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
-    public User(String nickname, Name name, Age age) {
+    public User(String nickname, Password password, Name name, Age age) {
         this.nickname = nickname;
+        this.password = password;
         this.name = name;
         this.age = age;
     }
 
-    public User(String nickname, Name name, Age age, UserInterests interest) {
+    public User(String nickname, Password password, Name name, Age age, UserInterests interest) {
         this.nickname = nickname;
+        this.password = password;
         this.name = name;
         this.age = age;
-        this.interest = interest;
+        this.interests = interest;
     }
 
     @Id
@@ -34,6 +36,10 @@ public class User extends BaseTimeEntity {
 
     @Embedded
     @Column(nullable = false)
+    private Password password;
+
+    @Embedded
+    @Column(nullable = false)
     private Name name;
 
     @Embedded
@@ -41,5 +47,5 @@ public class User extends BaseTimeEntity {
     private Age age;
 
     @Embedded
-    private UserInterests interest;
+    private UserInterests interests;
 }

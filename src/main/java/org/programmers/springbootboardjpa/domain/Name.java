@@ -17,9 +17,9 @@ import java.util.Set;
 @EqualsAndHashCode
 public class Name {
 
-    public Name(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Name(String firstname, String lastname) {
+        this.firstname = firstname;
+        this.lastname = lastname;
     }
 
     private static final Set<Locale> FAMILY_FIRST_LOCALES = new HashSet<>();
@@ -34,17 +34,17 @@ public class Name {
         FAMILY_FIRST_LOCALES.add(Locale.KOREA);
     }
 
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
 
     //TODO: 문자열에 + 연산자 사용하여 성능 감소가 어느 정도일지, 적당히 완성된 이후에 성능 비교
     public String getName() {
-        return firstName + " " + lastName;
+        return firstname + " " + lastname;
     }
 
     public String getName(Locale locale) {
         if (isFamilyNameFirstIn(locale)) {
-            return lastName + " " + firstName;
+            return lastname + " " + firstname;
         }
         return getName();
     }

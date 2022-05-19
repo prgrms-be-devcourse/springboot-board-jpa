@@ -3,12 +3,10 @@ package org.programmers.springbootboardjpa.repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.programmers.springbootboardjpa.domain.Age;
-import org.programmers.springbootboardjpa.domain.Name;
-import org.programmers.springbootboardjpa.domain.Post;
-import org.programmers.springbootboardjpa.domain.User;
+import org.programmers.springbootboardjpa.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -17,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
+@Rollback(value = false)
 class PostRepositoryTest {
 
     @Autowired
@@ -28,7 +27,7 @@ class PostRepositoryTest {
 
     @BeforeEach
     void setTestEntity() {
-        testUser = new User("KinSlayer", new Name("Hamlet", "Prince"), new Age(LocalDate.of(1120, 5, 28)));
+        testUser = new User("KinSlayer", new Password("Shakespeare"), new Name("Hamlet", "Prince"), new Age(LocalDate.of(1120, 5, 28)));
         userRepository.save(testUser);
     }
 

@@ -1,13 +1,13 @@
 package org.programmers.springbootboardjpa.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Access(AccessType.FIELD)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseTimeEntity {
@@ -20,6 +20,7 @@ public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
+    @Getter
     private Long postId;
 
     @Column(nullable = false)

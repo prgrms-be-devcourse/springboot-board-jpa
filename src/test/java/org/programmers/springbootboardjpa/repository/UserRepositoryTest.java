@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.programmers.springbootboardjpa.domain.Age;
 import org.programmers.springbootboardjpa.domain.Name;
+import org.programmers.springbootboardjpa.domain.Password;
 import org.programmers.springbootboardjpa.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,8 +26,8 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setTestEntity() {
-        testUser1 = new User("javaGuru", new Name("Joshua", "Bloch"), new Age(LocalDate.of(1961, 8, 28)));
-        testUser2 = new User("resCogitans", new Name("Descartes", "Rene"), new Age(LocalDate.of(1596, 3, 31)));
+        testUser1 = new User("javaGuru", new Password("effectiveJava"), new Name("Joshua", "Bloch"), new Age(LocalDate.of(1961, 8, 28)));
+        testUser2 = new User("resCogitans", new Password("cogito"), new Name("Descartes", "Rene"), new Age(LocalDate.of(1596, 3, 31)));
         userRepository.save(testUser1);
         userRepository.save(testUser2);
     }
