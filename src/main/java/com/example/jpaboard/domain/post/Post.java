@@ -12,12 +12,15 @@ public class Post extends BaseTimeEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
     @Lob
+    @Column(nullable = false)
     private String content;
 
     @ManyToOne(fetch = LAZY)
+    @Column(nullable = false)
     @JoinColumn(name = "USER_ID")
     private User user;
 
