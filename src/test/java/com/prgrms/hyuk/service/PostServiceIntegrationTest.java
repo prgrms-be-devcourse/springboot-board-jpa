@@ -19,7 +19,6 @@ import com.prgrms.hyuk.exception.InvalidPostIdException;
 import com.prgrms.hyuk.repository.PostRepository;
 import com.prgrms.hyuk.service.converter.Converter;
 import java.util.List;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,9 +37,6 @@ class PostServiceIntegrationTest {
     private PostRepository postRepository;
 
     private PostService postService;
-
-    @Autowired
-    EntityManager em;
 
     private User user;
 
