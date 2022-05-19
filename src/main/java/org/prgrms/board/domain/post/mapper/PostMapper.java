@@ -21,7 +21,11 @@ public interface PostMapper {
     PostSearchResponse toSearchResponse(Post post);
 
     @Mappings({
-            @Mapping(source = "userId", target = "user.id")
+            @Mapping(source = "searchResponse.firstName", target = "user.name.firstName"),
+            @Mapping(source = "searchResponse.lastName", target = "user.name.lastName"),
+            @Mapping(source = "searchResponse.email", target = "user.email.value"),
+            @Mapping(source = "searchResponse.age", target = "user.age"),
+            @Mapping(source = "searchResponse.userId", target = "user.id"),
     })
-    Post toEntity(PostCreateRequest postRequest, Long userId);
+    Post toEntity(PostCreateRequest postRequest, UserSearchResponse searchResponse);
 }
