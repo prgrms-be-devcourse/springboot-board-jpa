@@ -1,6 +1,6 @@
 package com.example.jpaboard.service.post;
 
-import com.example.jpaboard.service.post.dto.PostResponse;
+import com.example.jpaboard.service.dto.post.PostResponse;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 
@@ -11,5 +11,5 @@ public interface PostService {
 
     void save(Long userId, String title, String content);
 
-    PostResponse update(Long id, String title, String content);
+    PostResponse update(Long id, Long userId, String title, String content);
 }
