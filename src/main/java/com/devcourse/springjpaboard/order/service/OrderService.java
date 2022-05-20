@@ -4,7 +4,12 @@ import com.devcourse.springjpaboard.domain.order.Order;
 import com.devcourse.springjpaboard.domain.order.OrderRepository;
 import com.devcourse.springjpaboard.order.converter.OrderConverter;
 import com.devcourse.springjpaboard.order.dto.OrderDto;
+import org.hibernate.boot.MappingNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,11 +37,18 @@ public class OrderService {
     }
 
 
-    public void findAll() {
-
+    @Transactional
+    public OrderDto findOne(String uuid) throws IllegalArgumentException {
+        // 1. 조회를 위한 키 값 인자로 받기
+        // 2. orderRepository.findById(uuid) -> 조회(영속화된 엔티티)
+        return orderRepository.findById(uuid)
+                .map(orderConverter::convertOrderDto)
+                .orElseThrow(() -> new IllegalArgumentException("매칭되는 아이디가 없습니다."));
     }
 
-    public void findOne() {
-
+    @Transactional
+    public Page<OrderDto> findAll(Pageable pageable) {
+        return orderRepository.findAll(pageable)
+                .map(orderConverter::convertOrderDto);
     }
 }
