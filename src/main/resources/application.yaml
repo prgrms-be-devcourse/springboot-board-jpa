@@ -1,1 +1,14 @@
-
+spring:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    generate-ddl: true
+    database: H2
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
