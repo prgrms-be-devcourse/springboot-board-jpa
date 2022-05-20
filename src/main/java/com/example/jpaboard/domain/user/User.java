@@ -1,10 +1,10 @@
 package com.example.jpaboard.domain.user;
 
 import com.example.jpaboard.domain.BaseTimeEntity;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -13,7 +13,7 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private String name;
 
     private int age;

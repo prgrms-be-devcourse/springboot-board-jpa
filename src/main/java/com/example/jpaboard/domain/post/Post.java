@@ -3,6 +3,7 @@ package com.example.jpaboard.domain.post;
 import com.example.jpaboard.domain.BaseTimeEntity;
 import com.example.jpaboard.domain.user.User;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -12,15 +13,15 @@ public class Post extends BaseTimeEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private String title;
 
+    @NotNull
     @Lob
-    @Column(nullable = false)
     private String content;
 
+    @NotNull
     @ManyToOne(fetch = LAZY)
-    @Column(nullable = false)
     @JoinColumn(name = "USER_ID")
     private User user;
 
