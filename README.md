@@ -27,17 +27,17 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 - [X] 게시글 Repository 개발 (Spring Data JPA 이용)
 - API 개발
   - 게시글 조회
-    - [ ] 페이징 조회 (GET "/posts")
+    - [X] 페이징 조회 (GET "/posts")
       - [X] Service, Persistence Layer 개발
       - [X] Controller 개발
       - [X] Repository Layer fetch join으로 리펙토링
-    - [ ] 단건 조회 (Get "/posts/{id}")
+    - [X] 단건 조회 (Get "/posts/{id}")
       - [X] Service, Persistence Layer 개발
       - [X] Controller 개발
-  - [ ] 게시글 작성 (POST "/posts")
+  - [X] 게시글 작성 (POST "/posts")
     - [X] Service, Persistence Layer 개발
     - [X] Controller 개발
-  - [ ] 게시글 수정 (POST ":/posts/{id}")
+  - [X] 게시글 수정 (POST ":/posts/{id}")
     - [X] Service, Persistence Layer 개발
     - [X] Controller 개발
-  - [ ] REST - DOCS 이용 문서화
+  - [X] REST - DOCS 이용 문서화
