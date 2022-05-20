@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserPosts {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> posts = new ArrayList<>();
+    private final List<Post> posts = new ArrayList<>();
 
     public void canPost() {
         validatePostCountByDay(this.posts);
