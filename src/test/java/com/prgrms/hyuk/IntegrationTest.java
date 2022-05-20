@@ -3,6 +3,7 @@ package com.prgrms.hyuk;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -165,7 +166,7 @@ class IntegrationTest {
 
         //when
         //then
-        mockMvc.perform(post("/posts/{id}", String.valueOf(savedPostId))
+        mockMvc.perform(patch("/posts/{id}", String.valueOf(savedPostId))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(postUpdateRequest)))
             .andExpect(jsonPath("$.statusCode").value(String.valueOf(200)))

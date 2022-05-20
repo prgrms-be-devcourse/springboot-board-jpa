@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -153,7 +154,7 @@ class PostControllerTest {
 
         //when
         //then
-        mockMvc.perform(post("/posts/{id}", String.valueOf(id))
+        mockMvc.perform(patch("/posts/{id}", String.valueOf(id))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(postUpdateRequest)))
             .andExpect(jsonPath("$.statusCode").value("200"))
@@ -180,7 +181,7 @@ class PostControllerTest {
 
         //when
         //then
-        mockMvc.perform(post("/posts/{id}", String.valueOf(id))
+        mockMvc.perform(patch("/posts/{id}", String.valueOf(id))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(postUpdateRequest)))
             .andExpect(jsonPath("$.statusCode").value(HttpStatus.NOT_FOUND.value()))

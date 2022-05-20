@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,7 +49,7 @@ public class PostController {
         return ApiResponse.ok(postService.findPost(id));
     }
 
-    @PostMapping("/posts/{id}")
+    @PatchMapping("/posts/{id}")
     public ApiResponse<Long> updatePost(
         @PathVariable Long id,
         @RequestBody PostUpdateRequest postUpdateRequest
