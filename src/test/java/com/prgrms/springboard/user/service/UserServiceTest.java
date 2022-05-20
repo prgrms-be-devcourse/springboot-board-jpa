@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.prgrms.springboard.user.domain.User;
 import com.prgrms.springboard.user.domain.UserRepository;
 import com.prgrms.springboard.user.dto.CreateUserRequest;
-import com.prgrms.springboard.user.dto.UserResponse;
+import com.prgrms.springboard.user.dto.UserDto;
 import com.prgrms.springboard.user.exception.UserNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,7 +52,7 @@ class UserServiceTest {
         given(userRepository.findById(id)).willReturn(Optional.of(createUser()));
 
         // when
-        UserResponse user = userService.findOne(id);
+        UserDto user = userService.findOne(id);
 
         // then
         assertAll(

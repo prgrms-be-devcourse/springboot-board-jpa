@@ -14,24 +14,24 @@ import com.prgrms.springboard.post.dto.PostsResponse;
 import com.prgrms.springboard.post.exception.PostNotFoundExcpetion;
 import com.prgrms.springboard.post.exception.UserNotHavePermission;
 import com.prgrms.springboard.user.domain.User;
-import com.prgrms.springboard.user.domain.UserRepository;
-import com.prgrms.springboard.user.exception.UserNotFoundException;
+import com.prgrms.springboard.user.dto.UserDto;
+import com.prgrms.springboard.user.service.UserService;
 
 @Transactional
 @Service
 public class PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
+    public PostService(PostRepository postRepository, UserService userService) {
         this.postRepository = postRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public Long createPost(CreatePostRequest postRequest) {
-        User user = userRepository.findById(postRequest.getUserId())
-            .orElseThrow(() -> new UserNotFoundException(postRequest.getUserId()));
+        UserDto userDto = userService.findOne(postRequest.getUserId());
+        User user = userDto.toEntity();
 
         Post post = postRepository.save(Post.of(postRequest.getTitle(), postRequest.getContent(), user));
         return post.getId();
@@ -56,8 +56,8 @@ public class PostService {
         Post post = postRepository.findById(id)
             .orElseThrow(() -> new PostNotFoundExcpetion(id));
 
-        User user = userRepository.findById(postRequest.getUserId())
-            .orElseThrow(() -> new UserNotFoundException(postRequest.getUserId()));
+        UserDto userDto = userService.findOne(postRequest.getUserId());
+        User user = userDto.toEntity();
 
         validateUser(post, user);
 

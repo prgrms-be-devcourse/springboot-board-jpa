@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.prgrms.springboard.global.common.ApiResponse;
 import com.prgrms.springboard.user.dto.CreateUserRequest;
+import com.prgrms.springboard.user.dto.UserDto;
 import com.prgrms.springboard.user.dto.UserResponse;
 import com.prgrms.springboard.user.service.UserService;
 
@@ -38,7 +39,7 @@ public class UserController {
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<UserResponse> showUser(@PathVariable Long id) {
-        UserResponse user = userService.findOne(id);
-        return ApiResponse.ok(user);
+        UserDto user = userService.findOne(id);
+        return ApiResponse.ok(user.toResponse());
     }
 }

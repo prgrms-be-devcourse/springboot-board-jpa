@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,11 +30,8 @@ import com.prgrms.springboard.post.dto.PostResponse;
 import com.prgrms.springboard.post.dto.PostsResponse;
 import com.prgrms.springboard.post.exception.PostNotFoundExcpetion;
 import com.prgrms.springboard.post.exception.UserNotHavePermission;
-import com.prgrms.springboard.user.domain.User;
-import com.prgrms.springboard.user.domain.UserRepository;
-import com.prgrms.springboard.user.domain.vo.Age;
-import com.prgrms.springboard.user.domain.vo.Hobby;
-import com.prgrms.springboard.user.domain.vo.Name;
+import com.prgrms.springboard.user.dto.UserDto;
+import com.prgrms.springboard.user.service.UserService;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
@@ -42,7 +40,7 @@ class PostServiceTest {
     private PostRepository postRepository;
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @InjectMocks
     private PostService postService;
@@ -52,14 +50,14 @@ class PostServiceTest {
     void post() {
         // given
         CreatePostRequest postRequest = new CreatePostRequest(1L, "제목입니다.", "내용입니다.");
-        given(userRepository.findById(1L)).willReturn(Optional.of(createUser()));
+        given(userService.findOne(1L)).willReturn(createUserDto());
         given(postRepository.save(any(Post.class))).willReturn(createPost());
 
         // when
         postService.createPost(postRequest);
 
         // then
-        then(userRepository).should(times(1)).findById(1L);
+        then(userService).should(times(1)).findOne(1L);
         then(postRepository).should(times(1)).save(any(Post.class));
     }
 
@@ -115,15 +113,15 @@ class PostServiceTest {
         // given
         Long postId = 1L;
         ModifyPostRequest postRequest = new ModifyPostRequest(1L, "제목", "내용");
+        given(userService.findOne(1L)).willReturn(createUserDto());
         given(postRepository.findById(postId)).willReturn(Optional.of(createPost()));
-        given(userRepository.findById(postRequest.getUserId())).willReturn(Optional.of(createUser()));
 
         // when
         postService.modifyPost(postId, postRequest);
 
         // then
         then(postRepository).should(times(1)).findById(1L);
-        then(userRepository).should(times(1)).findById(1L);
+        then(userService).should(times(1)).findOne(1L);
     }
 
     @DisplayName("해당 글을 쓴 회원이 아니라면 수정 시 예외가 발생한다.")
@@ -133,7 +131,7 @@ class PostServiceTest {
         Long postId = 1L;
         ModifyPostRequest postRequest = new ModifyPostRequest(3L, "제목", "내용");
         given(postRepository.findById(postId)).willReturn(Optional.of(createPost()));
-        given(userRepository.findById(postRequest.getUserId())).willReturn(Optional.of(createOtherUser()));
+        given(userService.findOne(postRequest.getUserId())).willReturn(createOtherUserDto());
 
         // when
         // then
@@ -141,10 +139,6 @@ class PostServiceTest {
             .isInstanceOf(UserNotHavePermission.class)
             .hasMessage("ID가 3인 회원은 해당 글을 수정할 권한이 없습니다.");
 
-    }
-
-    private User createOtherUser() {
-        return new User("아만드", LocalDateTime.now(), 3L, new Name("아만드"), new Age(26), new Hobby("카페"));
     }
 
     private Post createPost() {
@@ -156,6 +150,14 @@ class PostServiceTest {
             new Post("유민환", LocalDateTime.now(), 1L, new Title("제목입니다."), new Content("내용입니다."), createUser()),
             new Post("유민환", LocalDateTime.now(), 2L, new Title("제목2입니다."), new Content("내용2입니다."), createUser())
         );
+    }
+
+    private UserDto createUserDto() {
+        return new UserDto(1L, "유민환", 26, "낚시", new ArrayList<>(), "유민환", LocalDateTime.now());
+    }
+
+    private UserDto createOtherUserDto() {
+        return new UserDto(3L, "아만드", 26, "카페", new ArrayList<>(), "아만드", LocalDateTime.now());
     }
 
 }

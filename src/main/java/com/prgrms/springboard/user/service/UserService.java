@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.prgrms.springboard.user.domain.User;
 import com.prgrms.springboard.user.domain.UserRepository;
 import com.prgrms.springboard.user.dto.CreateUserRequest;
-import com.prgrms.springboard.user.dto.UserResponse;
+import com.prgrms.springboard.user.dto.UserDto;
 import com.prgrms.springboard.user.exception.UserNotFoundException;
 
 @Transactional
@@ -25,9 +25,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserResponse findOne(Long id) {
+    public UserDto findOne(Long id) {
         return userRepository.findById(id)
-            .map(UserResponse::from)
+            .map(UserDto::from)
             .orElseThrow(() -> new UserNotFoundException(id));
     }
 }
