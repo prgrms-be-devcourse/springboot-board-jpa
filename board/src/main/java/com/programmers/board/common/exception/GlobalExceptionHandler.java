@@ -15,38 +15,33 @@ import javax.persistence.EntityNotFoundException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
-    public ApiResponse<ErrorResponse> handleServerException(Exception e){
+    public ErrorResponse handleServerException(Exception e){
         log.error(e.getMessage(), e);
-        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
-        return ApiResponse.fail(errorResponse.getStatus(),errorResponse);
+        return ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    public ApiResponse<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e){
+    public ErrorResponse handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e){
         log.error(e.getMessage(), e);
-        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.METHOD_NOT_ALLOWED);
-        return ApiResponse.fail(errorResponse.getStatus(),errorResponse);
+        return ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ApiResponse<ErrorResponse> handleMethodArgumentNotValidException (MethodArgumentNotValidException e){
+    public ErrorResponse handleMethodArgumentNotValidException (MethodArgumentNotValidException e){
         log.error(e.getMessage(), e);
-        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE);
-        return ApiResponse.fail(errorResponse.getStatus(),errorResponse);
+        return ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE);
     }
 
     @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
-    public ApiResponse<ErrorResponse> handleMethodArgumentNotValidException (MethodArgumentTypeMismatchException e){
+    public ErrorResponse handleMethodArgumentNotValidException (MethodArgumentTypeMismatchException e){
         log.error(e.getMessage(), e);
-        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_TYPE_VALUE);
-        return ApiResponse.fail(errorResponse.getStatus(),errorResponse);
+        return ErrorResponse.of(ErrorCode.INVALID_TYPE_VALUE);
     }
 
     @ExceptionHandler(value = EntityNotFoundException.class)
-    public ApiResponse<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException e){
+    public ErrorResponse handleEntityNotFoundException(EntityNotFoundException e){
         log.error(e.getMessage(), e);
-        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.POST_NOT_FOUND);
-        return ApiResponse.fail(errorResponse.getStatus(),errorResponse);
+        return ErrorResponse.of(ErrorCode.POST_NOT_FOUND);
     }
 
 }
