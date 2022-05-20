@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -147,7 +148,7 @@ class PostControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("post-multiple",
+                .andDo(document("post-get-multiple",
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
                                 fieldWithPath("body").type(JsonFieldType.OBJECT).description("body"),
