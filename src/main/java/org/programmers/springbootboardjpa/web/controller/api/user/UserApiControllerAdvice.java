@@ -1,4 +1,4 @@
-package org.programmers.springbootboardjpa.web.user;
+package org.programmers.springbootboardjpa.web.controller.api.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.programmers.springbootboardjpa.domain.user.exception.IllegalBirthDateException;

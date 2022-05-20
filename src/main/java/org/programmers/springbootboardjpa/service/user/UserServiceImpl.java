@@ -1,12 +1,11 @@
 package org.programmers.springbootboardjpa.service.user;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.programmers.springbootboardjpa.web.user.dto.user.UserCreateFormV1;
-import org.programmers.springbootboardjpa.web.user.dto.user.UserUpdateForm;
 import org.programmers.springbootboardjpa.domain.user.User;
 import org.programmers.springbootboardjpa.repository.user.UserRepository;
 import org.programmers.springbootboardjpa.service.exception.NotFoundException;
+import org.programmers.springbootboardjpa.web.dto.user.UserCreateForm;
+import org.programmers.springbootboardjpa.web.dto.user.UserUpdateForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.function.Supplier;
 
-@Slf4j
 @Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
@@ -24,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Long registerUser(UserCreateFormV1 userCreateForm) {
+    public Long registerUser(UserCreateForm userCreateForm) {
         return userRepository.save(userCreateForm.convertToUser()).getUserId();
     }
 
@@ -41,9 +39,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User modifyUserdata(UserUpdateForm userUpdateForm) {
-        log.info("서비스에서 유저 정보 수정 시작: 유저 데이터 찾아오는 중==");
-        User user = userRepository.findById(userUpdateForm.id()).orElseThrow(throwUserIsNotFound(userUpdateForm.id()));
-        log.info("유저 데이터를 변경하는 중");
+        User user = userRepository.findById(userUpdateForm.userId()).orElseThrow(throwUserIsNotFound(userUpdateForm.userId()));
         return userUpdateForm.applyToUser(user);
     }
 

@@ -1,12 +1,12 @@
-package org.programmers.springbootboardjpa.web.user;
+package org.programmers.springbootboardjpa.web.controller.api.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.programmers.springbootboardjpa.web.user.dto.user.LongIdResponse;
-import org.programmers.springbootboardjpa.web.user.dto.user.UserCreateFormV1;
-import org.programmers.springbootboardjpa.web.user.dto.user.UserDtoV1;
-import org.programmers.springbootboardjpa.web.user.dto.user.UserUpdateFormV1;
 import org.programmers.springbootboardjpa.service.user.UserService;
+import org.programmers.springbootboardjpa.web.dto.LongIdResponse;
+import org.programmers.springbootboardjpa.web.dto.user.UserCreateFormV1;
+import org.programmers.springbootboardjpa.web.dto.user.UserDtoV1;
+import org.programmers.springbootboardjpa.web.dto.user.UserUpdateFormV1;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +37,7 @@ public class UserApiControllerV1 implements UserApiController {
         return UserDtoV1.from(userService.findUserWith(userId));
     }
 
-    @PutMapping("/api/v1/users/{id}")
+    @PatchMapping("/api/v1/users/{id}")
     public UserDtoV1 setUserData(@PathVariable("id") Long userId, @RequestBody UserUpdateFormV1 userUpdateForm) {
         return UserDtoV1.from(userService.modifyUserdata(userUpdateForm));
     }

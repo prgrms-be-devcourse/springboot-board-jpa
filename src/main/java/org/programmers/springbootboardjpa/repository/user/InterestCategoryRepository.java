@@ -4,4 +4,5 @@ import org.programmers.springbootboardjpa.domain.user.InterestCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InterestCategoryRepository extends JpaRepository<InterestCategory, Long> {
+    //TODO: POJO 캐싱 시도
 }

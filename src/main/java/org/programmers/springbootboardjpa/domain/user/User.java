@@ -59,12 +59,12 @@ public class User extends BaseTimeEntity {
     @Embedded
     private UserInterests interests;
 
-    public User updateUser(User userAfterAppliedForm) {
-        this.nickname = userAfterAppliedForm.getNickname();
-        this.password = userAfterAppliedForm.getPassword();
-        this.name = userAfterAppliedForm.getName();
-        this.age = userAfterAppliedForm.getAge();
-        this.interests = userAfterAppliedForm.getInterests();
+    public User update(User userAfterFormApplied) {
+        this.nickname = userAfterFormApplied.getNickname();
+        this.password = userAfterFormApplied.getPassword();
+        this.name = userAfterFormApplied.getName();
+        this.age = userAfterFormApplied.getAge();
+        this.interests = userAfterFormApplied.getInterests();
         return this;
     }
 }
