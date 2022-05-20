@@ -1,1 +1,64 @@
 :hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시물
+
+=== 게시물 생성
+
+===== /api/post/{userId}
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+=== 게시물 조회
+
+===== /api/post/{postId}
+
+.Request
+include::{snippets}/post-getOne/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getOne/http-response.adoc[]
+include::{snippets}/post-getOne/response-fields.adoc[]
+
+=== 게시물 리스트 조회
+
+===== /api/post
+
+.Request
+include::{snippets}/post-getAll/http-request.adoc[]
+
+
+.Response
+include::{snippets}/post-getAll/http-response.adoc[]
+include::{snippets}/post-getAll/response-fields.adoc[]
+
+=== 게시물 업데이트
+
+===== /api/post/{postId}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+=== 게시물 삭제
+
+===== /api/post/{postId}
+
+.Request
+include::{snippets}/post-delete/http-request.adoc[]
+
+.Response
+include::{snippets}/post-delete/http-response.adoc[]
+include::{snippets}/post-delete/response-fields.adoc[]
