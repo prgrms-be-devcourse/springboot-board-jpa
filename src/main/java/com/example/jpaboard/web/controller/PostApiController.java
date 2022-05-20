@@ -32,7 +32,7 @@ public class PostApiController {
 
     @PostMapping
     public void save(@RequestBody @Valid PostSaveRequest request) {
-        postService.save(request.getTitle(), request.getContent());
+        postService.save(request.getUserId(), request.getTitle(), request.getContent());
     }
 
     @PatchMapping("/{id}")

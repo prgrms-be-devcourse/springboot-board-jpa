@@ -20,9 +20,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.*;
 import java.util.stream.Stream;
 import static com.example.jpaboard.exception.ErrorCode.POST_NOT_FOUND;
+import static com.example.jpaboard.exception.ErrorCode.USER_NOT_FOUND;
 import static java.time.LocalDateTime.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -117,7 +119,7 @@ class PostApiControllerTest {
         @DisplayName("게시글을 저장한다")
         void 게시글을_저장한다() throws Exception {
             //given
-            PostSaveRequest request = new PostSaveRequest("제목", "내용");
+            PostSaveRequest request = new PostSaveRequest(1L, "제목", "내용");
 
             //when, then
             mockMvc.perform(post("/api/v1/posts")
@@ -128,13 +130,53 @@ class PostApiControllerTest {
 
         @Nested
         @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+        class 존재하지_않는_사용자라면 {
+            @Test
+            @DisplayName("NotFound 응답을 보낸다")
+            void NotFound_응답을_보낸다() throws Exception {
+                //given
+                PostSaveRequest request = new PostSaveRequest(1L, "제목", "내용");
+                willThrow(new CustomException(USER_NOT_FOUND))
+                        .given(postService).save(anyLong(), anyString(), anyString());
+
+                //when, then
+                mockMvc.perform(post("/api/v1/posts/")
+                       .contentType(MediaType.APPLICATION_JSON)
+                       .content((toJson(request))))
+                       .andExpect(status().isNotFound());
+            }
+        }
+
+        @Nested
+        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+        class 아이디가_없거나_숫자_문자열이_아니라면 {
+            @DisplayName("BadRequest 응답을 보낸다")
+            @ParameterizedTest
+            @ValueSource(strings = {" ", "$", "string"})
+            void BadRequest_응답을_보낸다(String userId) throws Exception {
+                //given
+                Map<String, String> request = Map.of(
+                        "userId", userId,
+                        "title", "제목",
+                        "content", "내용");
+
+                //when, then
+                mockMvc.perform(post("/api/v1/posts/")
+                       .contentType(MediaType.APPLICATION_JSON)
+                       .content((toJson(request))))
+                       .andExpect(status().isBadRequest());
+            }
+        }
+
+        @Nested
+        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
         class 제목이나_내용이_null이거나_빈_값이거나_공백이라면 {
             @DisplayName("BadRequest 응답을 보낸다")
             @ParameterizedTest
             @MethodSource("com.example.jpaboard.web.controller.MethodSourceProvider#provideStrings")
             void BadRequest_응답을_보낸다(String title, String content) throws Exception {
                 //given
-                PostSaveRequest request = new PostSaveRequest(title, content);
+                PostSaveRequest request = new PostSaveRequest(1L, title, content);
 
                 //when, then
                 mockMvc.perform(post("/api/v1/posts")

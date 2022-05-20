@@ -9,7 +9,7 @@ public interface PostService {
 
     PostResponse findById(Long id);
 
-    void save(String title, String content);
+    void save(Long userId, String title, String content);
 
     PostResponse update(Long id, String title, String content);
 }

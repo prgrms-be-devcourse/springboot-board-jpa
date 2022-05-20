@@ -18,7 +18,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void save(String title, String content) {
+    public void save(Long userId, String title, String content) {
 
     }
 
