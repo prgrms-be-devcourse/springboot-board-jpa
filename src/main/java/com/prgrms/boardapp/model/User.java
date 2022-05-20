@@ -7,7 +7,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.prgrms.boardapp.constants.UserErrMsg;
 import org.springframework.util.Assert;
+
+import static com.prgrms.boardapp.utils.CommonValidate.validateNotNullString;
 
 @Entity
 public class User {
@@ -28,6 +31,7 @@ public class User {
     private String hobby;
     @Embedded
     private CommonEmbeddable commonEmbeddable;
+
     public static final int NAME_MAX_LENGTH = 50;
     public static final int AGE_MIN = 0;
 
@@ -49,8 +53,7 @@ public class User {
     }
 
     private void validateName(String name) {
-        Assert.notNull(name, UserErrMsg.NAME_NULL_OR_EMPTY_ERR_MSG.getMessage());
-        Assert.isTrue(!name.trim().isEmpty(), UserErrMsg.NAME_NULL_OR_EMPTY_ERR_MSG.getMessage());
+        validateNotNullString(name);
         Assert.isTrue(name.length() <= NAME_MAX_LENGTH, UserErrMsg.NAME_LENGTH_ERR_MSG.getMessage());
     }
 

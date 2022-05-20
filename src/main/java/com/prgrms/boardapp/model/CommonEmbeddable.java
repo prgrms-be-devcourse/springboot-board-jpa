@@ -3,6 +3,8 @@ package com.prgrms.boardapp.model;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+
+import com.prgrms.boardapp.constants.UserErrMsg;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.util.Assert;
@@ -19,6 +21,7 @@ public class CommonEmbeddable {
     @CreatedDate
     @LastModifiedDate
     private LocalDateTime createdAt;
+
     public static final int CREATED_BY_MAX_LENGTH = 50;
 
     protected CommonEmbeddable() {
@@ -31,7 +34,7 @@ public class CommonEmbeddable {
     }
 
     private void validateCreatedBy(String createdBy) {
-        Assert.isTrue(createdBy.length() <= 50, UserErrMsg.CREATED_LENGTH_ERR_MSG.getMessage());
+        Assert.isTrue(createdBy.length() <= CREATED_BY_MAX_LENGTH, UserErrMsg.CREATED_LENGTH_ERR_MSG.getMessage());
     }
 
     public static CommonEmbeddableBuilder builder() {
