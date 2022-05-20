@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -17,7 +17,7 @@ public class User extends BaseTimeEntity {
     @NotNull
     private String name;
 
-    @Positive
+    @PositiveOrZero
     private int age;
 
     private String hobby;
