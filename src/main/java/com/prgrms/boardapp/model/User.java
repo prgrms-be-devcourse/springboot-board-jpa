@@ -1,10 +1,13 @@
 package com.prgrms.boardapp.model;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.util.Assert;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import org.springframework.util.Assert;
 
 @Entity
 public class User {
@@ -23,37 +26,22 @@ public class User {
     )
     private Integer age;
     private String hobby;
-    @Column(
-            length = 50
-    )
-    private String createdBy;
-    @Column(
-            columnDefinition = "TIMESTAMP"
-    )
-    @CreatedDate
-    private LocalDateTime createdAt;
-
+    @Embedded
+    private CommonEmbeddable commonEmbeddable;
     public static final int NAME_MAX_LENGTH = 50;
-    public static final int CREATED_BY_MAX_LENGTH = 50;
     public static final int AGE_MIN = 0;
 
     protected User() {
     }
 
-    public User(Long id, String name, Integer age, String hobby, String createdBy, LocalDateTime createdAt) {
+    public User(Long id, String name, Integer age, String hobby, CommonEmbeddable commonEmbeddable) {
         this.validateName(name);
         this.validateAge(age);
-        this.validateCreatedBy(createdBy);
         this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        this.createdBy = createdBy;
-        this.createdAt = createdAt;
-    }
-
-    private void validateCreatedBy(String createdBy) {
-        Assert.isTrue(createdBy.length() <= CREATED_BY_MAX_LENGTH, UserErrMsg.CREATED_LENGTH_ERR_MSG.getMessage());
+        this.commonEmbeddable = commonEmbeddable;
     }
 
     private void validateAge(Integer age) {
@@ -86,12 +74,8 @@ public class User {
         return this.hobby;
     }
 
-    public String getCreatedBy() {
-        return this.createdBy;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return this.createdAt;
+    public CommonEmbeddable getCommonEmbeddable() {
+        return this.commonEmbeddable;
     }
 
     public static class UserBuilder {
@@ -99,8 +83,7 @@ public class User {
         private String name;
         private Integer age;
         private String hobby;
-        private String createdBy;
-        private LocalDateTime createdAt;
+        private CommonEmbeddable commonEmbeddable;
 
         UserBuilder() {
         }
@@ -125,22 +108,17 @@ public class User {
             return this;
         }
 
-        public UserBuilder createdBy(final String createdBy) {
-            this.createdBy = createdBy;
-            return this;
-        }
-
-        public UserBuilder createdAt(final LocalDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UserBuilder commonEmbeddable(final CommonEmbeddable commonEmbeddable) {
+            this.commonEmbeddable = commonEmbeddable;
             return this;
         }
 
         public User build() {
-            return new User(this.id, this.name, this.age, this.hobby, this.createdBy, this.createdAt);
+            return new User(this.id, this.name, this.age, this.hobby, this.commonEmbeddable);
         }
 
         public String toString() {
-            return "UserBuilder(id=" + this.id + ", name=" + this.name + ", age=" + this.age + ", hobby=" + this.hobby + ", createdBy=" + this.createdBy + ", createdAt=" + this.createdAt + ")";
+            return "UserBuilder(id=" + this.id + ", name=" + this.name + ", age=" + this.age + ", hobby=" + this.hobby + ", commonEmbeddable=" + this.commonEmbeddable + ")";
         }
     }
 }

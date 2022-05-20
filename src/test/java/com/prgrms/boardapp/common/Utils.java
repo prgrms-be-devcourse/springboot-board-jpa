@@ -1,10 +1,11 @@
 package com.prgrms.boardapp.common;
 
+import com.prgrms.boardapp.model.CommonEmbeddable;
 import com.prgrms.boardapp.model.User;
 
 public class Utils {
 
-    private Utils() {};
+    private Utils() {}
 
     public static User createUser() {
         return  User.builder()
@@ -24,7 +25,11 @@ public class Utils {
         return  User.builder()
                 .name("name")
                 .age(10)
-                .createdBy(createdBy)
+                .commonEmbeddable(CommonEmbeddable
+                        .builder()
+                        .createdBy(createdBy)
+                        .build()
+                )
                 .build();
     }
 

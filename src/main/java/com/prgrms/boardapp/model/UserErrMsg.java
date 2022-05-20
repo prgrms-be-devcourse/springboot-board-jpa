@@ -1,5 +1,6 @@
 package com.prgrms.boardapp.model;
 
+import static com.prgrms.boardapp.model.CommonEmbeddable.CREATED_BY_MAX_LENGTH;
 import static com.prgrms.boardapp.model.User.*;
 
 public enum UserErrMsg {

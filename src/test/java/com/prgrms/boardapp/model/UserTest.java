@@ -11,13 +11,17 @@ class UserTest {
     @Test
     @DisplayName("이름 필드의 MAX를 넘어갈 수 없다.")
     void testNameValidateLength() {
-        assertThrows(IllegalArgumentException.class, () -> createUserWithName("*".repeat(User.NAME_MAX_LENGTH + 1)));
+        String maxOver = "*".repeat(User.NAME_MAX_LENGTH + 1);
+
+        assertThrows(IllegalArgumentException.class, () -> createUserWithName(maxOver));
     }
 
     @Test
     @DisplayName("createdBy 필드는 MAX를 넘어갈 수 없다.")
     void testHobbyValidateLength() {
-        assertThrows(IllegalArgumentException.class, () -> createUserWithCreatedBy("*".repeat(User.CREATED_BY_MAX_LENGTH + 1)));
+        String maxOver = "*".repeat(CommonEmbeddable.CREATED_BY_MAX_LENGTH + 1);
+
+        assertThrows(IllegalArgumentException.class, () -> createUserWithCreatedBy(maxOver));
     }
 
     @Test
