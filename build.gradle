@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.6.7'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id "org.asciidoctor.convert" version "1.5.9.2"
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 group = 'com.su'
@@ -13,6 +13,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
 }
 
 repositories {
@@ -30,12 +31,13 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-jre'
 
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.6.RELEASE'
-    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.6.RELEASE'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.6.RELEASE'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
 ext {
     snippetsDir = file('build/generated-snippets')
 }
@@ -47,10 +49,4 @@ test {
 asciidoctor {
     inputs.dir snippetsDir
     dependsOn test
-}
-task copyDocument(type: Copy) {
-    dependsOn asciidoctor
-
-    from file("build/asciidoc/html5/")
-    into file("src/main/resources/static/docs")
 }
