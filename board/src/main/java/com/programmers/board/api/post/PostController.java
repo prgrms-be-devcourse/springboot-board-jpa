@@ -4,6 +4,7 @@ import com.programmers.board.api.common.ApiResponse;
 import com.programmers.board.core.post.application.PostService;
 import com.programmers.board.core.post.application.dto.CreateRequestPost;
 import com.programmers.board.core.post.application.dto.ResponsePost;
+import com.programmers.board.core.post.application.dto.UpdateRequestPost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,7 @@ public class PostController {
     @PutMapping("/{id}")
     public ApiResponse<ResponsePost> update(
             @PathVariable Long id,
-            @RequestBody CreateRequestPost postDto
+            @RequestBody UpdateRequestPost postDto
     ){
         return ApiResponse.ok(postService.update(id, postDto));
     }
