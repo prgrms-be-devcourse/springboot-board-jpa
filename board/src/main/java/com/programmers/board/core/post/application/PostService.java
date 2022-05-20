@@ -2,6 +2,7 @@ package com.programmers.board.core.post.application;
 
 import com.programmers.board.core.post.application.dto.CreateRequestPost;
 import com.programmers.board.core.post.application.dto.ResponsePost;
+import com.programmers.board.core.post.application.dto.UpdateRequestPost;
 import com.programmers.board.core.post.domain.Post;
 import com.programmers.board.core.post.domain.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class PostService {
     }
 
     @Transactional
-    public ResponsePost update(Long id, CreateRequestPost postDto){
+    public ResponsePost update(Long id, UpdateRequestPost postDto){
         Post retrievedPost = postRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("id와 일치하는 포스팅이 없습니다."));
 
