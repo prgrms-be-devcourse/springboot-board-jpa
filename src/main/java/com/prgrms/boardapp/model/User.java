@@ -1,13 +1,10 @@
 package com.prgrms.boardapp.model;
 
-import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.util.Assert;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class User {
@@ -33,7 +30,7 @@ public class User {
     @Column(
             columnDefinition = "TIMESTAMP"
     )
-    @CreationTimestamp
+    @CreatedDate
     private LocalDateTime createdAt;
 
     public static final int NAME_MAX_LENGTH = 50;
