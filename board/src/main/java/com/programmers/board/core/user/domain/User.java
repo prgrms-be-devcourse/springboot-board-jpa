@@ -1,6 +1,6 @@
 package com.programmers.board.core.user.domain;
 
-import com.programmers.board.core.commmon.entity.BaseEntity;
+import com.programmers.board.core.common.entity.BaseEntity;
 import com.programmers.board.core.post.domain.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
