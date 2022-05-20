@@ -1,6 +1,6 @@
 package com.kdt.jpaboard.domain.board;
 
-import lombok.*;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -10,16 +10,17 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
+
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 @Getter
-public class BaseEntity extends BaseTimeEntity {
+public class BaseTimeEntity {
+    @CreatedDate
+    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP")
+    private LocalDateTime createdAt;
 
-    @Column(name = "created_by")
-    private String createdBy;
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+    @LastModifiedDate
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime updatedAt;
 
 }
