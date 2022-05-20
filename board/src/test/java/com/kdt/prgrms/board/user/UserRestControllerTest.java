@@ -155,7 +155,7 @@ public class UserRestControllerTest {
         }
 
         @Nested
-        @DisplayName("이름이 jaehee, 나이가 3, 취미가 없는 생성 요청을 받으면")
+        @DisplayName("필수 조건이 존재하는 생성 요청을 받으면")
         class ContextUserAddRequest {
 
             @Test
@@ -178,7 +178,7 @@ public class UserRestControllerTest {
         }
 
         @Nested
-        @DisplayName("이름이 jaehee, 나이가 3, 취미가 음악감상인 생성 요청을 받으면")
+        @DisplayName("모든 조건이 존재하는 생성 요청을 받으면")
         class ContextUserExistHobbyAddRequest {
 
             @Test
