@@ -48,12 +48,12 @@ class PostApiControllerTest {
             // given
             List<PostResponse> postResponses = Arrays.asList(new PostResponse(1L, "테스트", "테스트입니다.", "작성자 이름", now()));
             given(postService.findAll(any(Pageable.class)))
-                    .willReturn(postResponses);
+                             .willReturn(postResponses);
 
             // when, then
             mockMvc.perform(get("/api/v1/posts"))
-                    .andExpect(status().isOk())
-                    .andExpect(content().json(toJson(postResponses)));
+                   .andExpect(status().isOk())
+                   .andExpect(content().json(toJson(postResponses)));
         }
 
         @Nested
@@ -64,12 +64,12 @@ class PostApiControllerTest {
             void 빈_리스트를_반환한다() throws Exception {
                 // given
                 given(postService.findAll(any(Pageable.class)))
-                        .willReturn(Collections.EMPTY_LIST);
+                                 .willReturn(Collections.EMPTY_LIST);
 
                 // when, then
                 mockMvc.perform(get("/api/v1/posts"))
-                        .andExpect(status().isOk())
-                        .andExpect(content().json(toJson(Collections.EMPTY_LIST)));
+                       .andExpect(status().isOk())
+                       .andExpect(content().json(toJson(Collections.EMPTY_LIST)));
             }
         }
     }
@@ -84,12 +84,12 @@ class PostApiControllerTest {
             Long id = 1L;
             PostResponse postResponse = new PostResponse(id, "제목", "내용", "작성자", now());
             given(postService.findById(id))
-                    .willReturn(postResponse);
+                             .willReturn(postResponse);
 
             // when, then
             mockMvc.perform(get("/api/v1/posts/" + id))
-                    .andExpect(status().isOk())
-                    .andExpect(content().json(toJson(postResponse)));
+                   .andExpect(status().isOk())
+                   .andExpect(content().json(toJson(postResponse)));
         }
 
         @Nested
@@ -101,11 +101,11 @@ class PostApiControllerTest {
                 // given
                 Long id = 1L;
                 given(postService.findById(anyLong()))
-                        .willThrow(new CustomException(POST_NOT_FOUND));
+                                 .willThrow(new CustomException(POST_NOT_FOUND));
 
                 // when, then
                 mockMvc.perform(get("/api/v1/posts/" + id))
-                        .andExpect(status().isNotFound());
+                       .andExpect(status().isNotFound());
             }
         }
     }
@@ -121,9 +121,9 @@ class PostApiControllerTest {
 
             //when, then
             mockMvc.perform(post("/api/v1/posts")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content((toJson(request))))
-                    .andExpect(status().isOk());
+                   .contentType(MediaType.APPLICATION_JSON)
+                   .content((toJson(request))))
+                   .andExpect(status().isOk());
         }
 
         @Nested
@@ -138,9 +138,9 @@ class PostApiControllerTest {
 
                 //when, then
                 mockMvc.perform(post("/api/v1/posts")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content((toJson(request))))
-                        .andExpect(status().isBadRequest());
+                       .contentType(MediaType.APPLICATION_JSON)
+                       .content((toJson(request))))
+                       .andExpect(status().isBadRequest());
             }
         }
     }
@@ -157,14 +157,14 @@ class PostApiControllerTest {
             String updateContent = "내용";
             PostResponse response = new PostResponse(id, updateTitle, updateContent, "작성자", now());
             given(postService.update(anyLong(), nullable(String.class), nullable(String.class)))
-                    .willReturn(response);
+                             .willReturn(response);
 
             //when, then
             mockMvc.perform(patch("/api/v1/posts/" + id)
-                            .contentType(APPLICATION_FORM_URLENCODED)
-                            .content("title=" + updateTitle + "&content=" + updateContent))
-                    .andExpect(status().isOk())
-                    .andExpect(content().json(toJson(response)));
+                   .contentType(APPLICATION_FORM_URLENCODED)
+                   .content("title=" + updateTitle + "&content=" + updateContent))
+                   .andExpect(status().isOk())
+                   .andExpect(content().json(toJson(response)));
         }
 
         @Nested
@@ -177,7 +177,7 @@ class PostApiControllerTest {
                 //given
                 //when, then
                 mockMvc.perform(patch("/api/v1/posts/" + id))
-                        .andExpect(status().isBadRequest());
+                       .andExpect(status().isBadRequest());
             }
         }
 
@@ -193,9 +193,9 @@ class PostApiControllerTest {
 
                 //when, then
                 mockMvc.perform(patch("/api/v1/posts/" + id)
-                                .contentType(APPLICATION_FORM_URLENCODED)
-                                .content("title=" + title + "&content=" + content))
-                        .andExpect(status().isBadRequest());
+                       .contentType(APPLICATION_FORM_URLENCODED)
+                       .content("title=" + title + "&content=" + content))
+                       .andExpect(status().isBadRequest());
             }
         }
     }
