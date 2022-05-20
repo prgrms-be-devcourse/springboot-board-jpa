@@ -1,6 +1,5 @@
 package com.kdt.jpaboard.domain.board.user;
 
-import javassist.NotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -19,12 +19,10 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final PostConverter postConverter;
-    private final UserConverter userConverter;
 
-    public PostService(PostRepository postRepository, PostConverter postConverter, UserConverter userConverter) {
+    public PostService(PostRepository postRepository, PostConverter postConverter) {
         this.postRepository = postRepository;
         this.postConverter = postConverter;
-        this.userConverter = userConverter;
     }
 
     @Transactional

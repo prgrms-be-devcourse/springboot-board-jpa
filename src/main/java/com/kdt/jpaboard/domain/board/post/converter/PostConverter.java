@@ -21,8 +21,6 @@ public class PostConverter {
                 .content(postDto.getContent())
                 .build();
         posts.updateUserInfo(userConverter.convertUser(postDto.getUserDto()));
-//        posts.setCreatedBy(postDto.getUserDto().getName());
-
         return posts;
     }
 
@@ -34,8 +32,6 @@ public class PostConverter {
 
 
         posts.updateUserInfo(userConverter.convertUser(postDto.getUserDto()));
-//        posts.setCreatedBy(postDto.getUserDto().getName());
-
         return posts;
     }
 
