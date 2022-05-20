@@ -2,17 +2,50 @@
 
 ## 미션 소개 😎
 
-Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수행해봅시다.
+---
 
-## 이곳은 공개 Repo입니다.
+``
+Spring Boot JPA - Rest API를 강의를 듣고,  
+게시판 구현 미션을 수행해봅시다.
+``
 
-1. 여러분의 포트폴리오로 사용하셔도 됩니다.
-2. 때문에 이 repo를 fork한 뒤
-3. 여러분의 개인 Repo에 작업하며
-4. 이 Repo에 PR을 보내어 멘토의 코드 리뷰와 피드백을 받으세요.
+## 요구 사항
 
-## Branch 명명 규칙
+---
+- [x] SpringDataJPA를 설정
+  - datasource : h2
+- [x] 엔티티를 구성한다.
+  - 회원(User)
+    - id(PK)(auto increment)
+    - name
+    - age
+    - hobby
+    - created_at
+    - created_by
+  - 게시글(Post)
+    - id(PK)(auto increment)
+    - title
+    - content
+    - created_at
+    - created_by
+  - 회원과 게시글에 대한 연관관계 설정
+     - 회원과 게시글은 1:N 관계이다.
+  - 게시글 Repository를 구현한다(PostRepository)
 
-1. 여러분 repo는 알아서 해주시고 😀(본인 레포니 main으로 하셔두 되져)
-2. prgrms-be-devcourse/spring-board 레포로 PR시 branch는 본인 username을 적어주세요 :)  
-   base repo : `여기repo` base : `username` ← head repo : `여러분repo` compare : `main`
+- [x] API 구현
+  - 게시글 조회
+    - 페이징 조회(GET "/posts")
+    - 단건 조회(GET "/posts/{id}")
+  - 게시글 작성(POST "/posts")
+  - 게시글 수정(PUT "/posts/{id}")
+
+- [x] REST-DOCS를 이용해서 문서화한다.
+
+## 💡 PR 포인트 & 궁금한 점
+
+---
+
+1. DTO 관련  
+   생성을 할 때는 id 필드가 필요 없고, 업데이트시에는 id 필드가 필요하다고 생각해 dto를 따로 만들어 사용했습니다.  
+   그냥 한가지의 dto만 사용하는 것이 좋을지 궁금합니다.
+2. 
