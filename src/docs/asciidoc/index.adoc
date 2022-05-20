@@ -1,0 +1,63 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+= JPA 게시판 미션
+kimziou77
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== User
+
+=== 유저 생성
+.Request
+include::{snippets}/user-create/http-request.adoc[]
+include::{snippets}/user-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-create/http-response.adoc[]
+include::{snippets}/user-create/response-fields.adoc[]
+
+
+== Post
+
+=== 게시글 생성
+.Request
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+=== 게시글 조회
+==== 페이징 조회
+.Request
+include::{snippets}/post-findAll/http-request.adoc[]
+include::{snippets}/post-findAll/request-parameters.adoc[]
+
+.Response
+include::{snippets}/post-findAll/http-response.adoc[]
+include::{snippets}/post-findAll/response-fields.adoc[]
+
+==== 단건 조회
+.Request
+include::{snippets}/post-findById/http-request.adoc[]
+include::{snippets}/post-findById/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-findById/http-response.adoc[]
+include::{snippets}/post-findById/response-fields.adoc[]
+
+=== 게시글 수정
+.request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
