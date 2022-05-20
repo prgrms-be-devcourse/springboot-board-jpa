@@ -1,13 +1,13 @@
 :hardbreaks:
 ifndef::snippets[]
-:snippets: ../../../target/generated-snippets
+:snippets:/../../target/generated-snippets
 endif::[]
 
 == 포스트
 
 === 포스트 생성
 
-=== /posts
+=== [POST] /posts
 
 .Request
 include::{snippets}/post-save/http-request.adoc[]
@@ -16,3 +16,39 @@ include::{snippets}/post-save/request-fields.adoc[]
 .Response
 include::{snippets}/post-save/http-response.adoc[]
 include::{snippets}/post-save/response-fields.adoc[]
+
+=== 포스트 수정
+
+=== [PUT] /posts/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+=== 포스트 단 건 조회
+
+=== [GET] /posts/{id}
+
+.Request
+include::{snippets}/post-get-one/http-request.adoc[]
+include::{snippets}/post-get-one/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-get-one/http-response.adoc[]
+include::{snippets}/post-get-one/response-fields.adoc[]
+
+=== 포스트 페이지 조회
+
+=== [GET] /posts/
+
+.Request
+include::{snippets}/post-multiple/http-request.adoc[]
+include::{snippets}/post-multiple/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-get-multiple/http-response.adoc[]
+include::{snippets}/post-get-multiple/response-fields.adoc[]
