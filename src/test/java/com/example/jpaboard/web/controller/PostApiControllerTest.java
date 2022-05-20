@@ -2,8 +2,6 @@ package com.example.jpaboard.web.controller;
 
 import com.example.jpaboard.config.ServiceConfiguration;
 import com.example.jpaboard.exception.CustomException;
-import com.example.jpaboard.service.post.dto.PostSaveRequest;
-import com.example.jpaboard.service.post.dto.PostResponse;
 import com.example.jpaboard.service.dto.post.PostSaveRequest;
 import com.example.jpaboard.service.dto.post.PostResponse;
 import com.example.jpaboard.service.post.PostService;
@@ -30,6 +28,7 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @WebMvcTest(value = {PostApiController.class, ServiceConfiguration.class})
 class PostApiControllerTest {
@@ -43,7 +42,6 @@ class PostApiControllerTest {
     private PostService postService;
 
     @Nested
-    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     class findAll메서드는 {
         @Test
         @DisplayName("전체 게시글을 조회한다")
@@ -60,7 +58,6 @@ class PostApiControllerTest {
         }
 
         @Nested
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
         class 조회_결과가_없다면 {
             @Test
             @DisplayName("빈 리스트를 반환한다")
@@ -78,7 +75,6 @@ class PostApiControllerTest {
     }
 
     @Nested
-    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     class findById메서드는 {
         @Test
         @DisplayName("아이디로 게시글 한 건을 조회한다")
@@ -96,7 +92,6 @@ class PostApiControllerTest {
         }
 
         @Nested
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
         class 게시글이_존재하지_않는다면 {
             @Test
             @DisplayName("NotFound 응답을 보낸다")
@@ -114,7 +109,6 @@ class PostApiControllerTest {
     }
 
     @Nested
-    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     class save메서드는 {
         @Test
         @DisplayName("게시글을 저장한다")
@@ -130,7 +124,6 @@ class PostApiControllerTest {
         }
 
         @Nested
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
         class 존재하지_않는_사용자라면 {
             @Test
             @DisplayName("NotFound 응답을 보낸다")
@@ -149,7 +142,6 @@ class PostApiControllerTest {
         }
 
         @Nested
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
         class 아이디가_없거나_숫자_문자열이_아니라면 {
             @DisplayName("BadRequest 응답을 보낸다")
             @ParameterizedTest
@@ -170,7 +162,6 @@ class PostApiControllerTest {
         }
 
         @Nested
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
         class 제목이나_내용이_null이거나_빈_값이거나_공백이라면 {
             @DisplayName("BadRequest 응답을 보낸다")
             @ParameterizedTest
@@ -189,7 +180,6 @@ class PostApiControllerTest {
     }
 
     @Nested
-    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     class update메서드는 {
         @Test
         @DisplayName("게시글을 수정하고 수정된 게시글을 반환한다")
@@ -222,7 +212,7 @@ class PostApiControllerTest {
                 String updateTitle = "제목";
                 String updateContent = "내용";
                 given(postService.update(anyLong(), anyLong(), nullable(String.class), nullable(String.class)))
-                       .willThrow(new CustomException(UNAUTHORIZED_USER));
+                                 .willThrow(new CustomException(UNAUTHORIZED_USER));
 
                 //when, then
                 mockMvc.perform(patch("/api/v1/posts/" + id)
@@ -246,7 +236,6 @@ class PostApiControllerTest {
         }
 
         @Nested
-        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
         class 사용자_아이디가_없거나_숫자_문자열이_아니라면 {
             @DisplayName("BadRequest 응답을 보낸다")
             @ParameterizedTest
@@ -257,13 +246,13 @@ class PostApiControllerTest {
                 String updateTitle = "제목";
                 String updateContent = "내용";
                 given(postService.update(anyLong(), anyLong(), nullable(String.class), nullable(String.class)))
-                        .willThrow(new CustomException(UNAUTHORIZED_USER));
+                                 .willThrow(new CustomException(UNAUTHORIZED_USER));
 
                 //when, then
                 mockMvc.perform(patch("/api/v1/posts/" + id)
-                                .contentType(APPLICATION_FORM_URLENCODED)
-                                .content("userId=" + userId + "&title=" + updateTitle + "&content=" + updateContent))
-                                .andExpect(status().isBadRequest());
+                       .contentType(APPLICATION_FORM_URLENCODED)
+                       .content("userId=" + userId + "&title=" + updateTitle + "&content=" + updateContent))
+                       .andExpect(status().isBadRequest());
             }
         }
 
@@ -285,7 +274,6 @@ class PostApiControllerTest {
             }
         }
     }
-
 
     private String toJson(Object object) {
         try {
