@@ -14,6 +14,11 @@ public class ErrorResponse {
     }
 
     public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode) {
-        return ResponseEntity.status(errorCode.getHttpStatus()).body(new ErrorResponse(errorCode.getHttpStatus().name(), errorCode.getDetail()));
+        return ResponseEntity.status(errorCode.getHttpStatus())
+                             .body(
+                                     new ErrorResponse(
+                                             errorCode.getHttpStatus().name(),
+                                             errorCode.getDetail())
+                             );
     }
 }
