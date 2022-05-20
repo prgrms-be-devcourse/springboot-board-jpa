@@ -33,10 +33,9 @@ public class UserController {
 
     @GetMapping
     public ApiResponse<Slice<UserResponse>> getAll(
-            @RequestParam String hobby,
             Pageable pageable
     ) {
-        Slice<UserResponse> userList = userService.findAllByHobby(hobby, pageable);
+        Slice<UserResponse> userList = userService.findAll(pageable);
         return ApiResponse.ok(userList);
     }
 

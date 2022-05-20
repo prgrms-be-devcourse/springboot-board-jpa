@@ -34,10 +34,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Slice<UserResponse> findAllByHobby(String hobby, Pageable pageable) {
-        Slice<User> users = userRepository.findByHobbyContains(hobby, pageable);
+    public Slice<UserResponse> findAll(Pageable pageable) {
+        Slice<User> users = userRepository.findSliceBy(pageable);
         //FIX how to slice to slice
-        return new SliceImpl<UserResponse>(
+        return new SliceImpl<>(
                 users.getContent().stream().map(UserResponse::of).collect(Collectors.toList()),
                 pageable,
                 users.hasNext()

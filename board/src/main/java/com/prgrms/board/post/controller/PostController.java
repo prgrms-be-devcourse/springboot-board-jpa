@@ -24,6 +24,14 @@ public class PostController {
         return ApiResponse.ok(postResponse);
     }
 
+    @GetMapping("/{postId}")
+    public ApiResponse<PostResponse> getOne(
+            @PathVariable Long postId
+    ) {
+        PostResponse postResponse = postService.findOne(postId);
+        return ApiResponse.ok(postResponse);
+    }
+
     @GetMapping
     public ApiResponse<Slice<PostResponse>> getAll(
             @RequestParam(required = false) String keyword,
@@ -33,11 +41,12 @@ public class PostController {
         return ApiResponse.ok(posts);
     }
 
-    @GetMapping("/{postId}")
-    public ApiResponse<PostResponse> getOne(
-            @PathVariable Long postId
+    @PutMapping("/{postId}")
+    public ApiResponse<PostResponse> updateOne(
+            @PathVariable Long postId,
+            @RequestBody PostRequest postRequest
     ) {
-        PostResponse postResponse = postService.findOne(postId);
+        PostResponse postResponse = postService.updateOne(postId, postRequest);
         return ApiResponse.ok(postResponse);
     }
 

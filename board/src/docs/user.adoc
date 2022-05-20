@@ -1,0 +1,52 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 유저
+
+=== 유저 생성
+
+===== /api/user
+
+.Request
+include::{snippets}/user-save/http-request.adoc[]
+include::{snippets}/user-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-save/http-response.adoc[]
+include::{snippets}/user-save/response-fields.adoc[]
+
+=== 유저 조회
+
+===== /api/user/{userId}
+
+.Request
+include::{snippets}/user-getOne/http-request.adoc[]
+
+.Response
+include::{snippets}/user-getOne/http-response.adoc[]
+include::{snippets}/user-getOne/response-fields.adoc[]
+
+=== 유저 리스트 조회
+
+===== /api/user
+
+.Request
+include::{snippets}/user-getAll/http-request.adoc[]
+
+
+.Response
+include::{snippets}/user-getAll/http-response.adoc[]
+include::{snippets}/user-getAll/response-fields.adoc[]
+
+=== 유저 삭제
+
+===== /api/user/{userId}
+
+.Request
+include::{snippets}/user-delete/http-request.adoc[]
+
+.Response
+include::{snippets}/user-delete/http-response.adoc[]
+include::{snippets}/user-delete/response-fields.adoc[]

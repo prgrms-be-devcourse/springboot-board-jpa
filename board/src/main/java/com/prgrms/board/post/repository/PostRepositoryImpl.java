@@ -15,6 +15,7 @@ import java.util.List;
 
 import static com.prgrms.board.post.domain.QPost.post;
 
+
 @Repository
 @RequiredArgsConstructor
 public class PostRepositoryImpl implements PostRepositoryCustom {

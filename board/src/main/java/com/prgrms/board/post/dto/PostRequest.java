@@ -11,10 +11,10 @@ public class PostRequest {
     private String title;
     private String content;
 
-    public static Post toPost(PostRequest postRequest, User user) {
+    public Post toPost(User user) {
         return Post.builder()
-                .title(postRequest.title)
-                .content(postRequest.content)
+                .title(this.title)
+                .content(this.content)
                 .user(user)
                 .build();
     }

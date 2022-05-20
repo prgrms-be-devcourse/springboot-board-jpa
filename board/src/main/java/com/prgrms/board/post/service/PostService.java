@@ -13,8 +13,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.prgrms.board.post.dto.PostRequest.toPost;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -25,7 +23,7 @@ public class PostService {
     public PostResponse insert(PostRequest postRequest, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         user.getPosts().canPost();
-        Post post = toPost(postRequest, user);
+        Post post = postRequest.toPost(user);
         return PostResponse.of(postRepository.save(post));
     }
 
@@ -40,9 +38,15 @@ public class PostService {
         return PostResponse.of(post);
     }
 
+    public PostResponse updateOne(Long postId, PostRequest postRequest) {
+        Post post = postRepository.findById(postId).orElseThrow(NotFoundException::new);
+        post.changeTitle(postRequest.getTitle());
+        post.changeContent(postRequest.getContent());
+        return PostResponse.of(postRepository.save(post));
+    }
+
     public void deleteOne(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(NotFoundException::new);
         postRepository.delete(post);
     }
-
 }

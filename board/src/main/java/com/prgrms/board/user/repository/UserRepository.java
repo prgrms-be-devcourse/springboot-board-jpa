@@ -6,6 +6,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Slice<User> findByHobbyContains(String hobby, Pageable pageable);
+    Slice<User> findSliceBy(Pageable pageable);
 
 }

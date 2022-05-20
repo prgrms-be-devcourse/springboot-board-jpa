@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import static com.prgrms.board.common.ResponseMessage.MAX_POST_EXCEPTION;
 import static com.prgrms.board.common.ResponseMessage.NOT_FOUND_EXCEPTION;
 
+
 @RestControllerAdvice
 public class ExceptionAdvice {
 
