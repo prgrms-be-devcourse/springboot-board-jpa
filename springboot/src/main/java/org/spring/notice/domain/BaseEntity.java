@@ -16,6 +16,4 @@ public class BaseEntity {
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    protected String createdBy;
 }

@@ -1,27 +1,24 @@
 package org.spring.notice.domain.user;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.spring.notice.domain.BaseEntity;
 import org.spring.notice.domain.post.Post;
 
 import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.text.MessageFormat.format;
-import static org.spring.notice.utils.UuidUtils.isValidUuid;
 import static org.springframework.util.StringUtils.hasText;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="user")
+@ToString(of= {"name", "age", "hobby"})
+@EqualsAndHashCode(of="uuid", callSuper = false)
 public class User extends BaseEntity {
     public static final int NAME_MAX_LENGTH = 30;
     public static final int HOBBY_MAX_LENGTH = 30;
@@ -32,7 +29,7 @@ public class User extends BaseEntity {
     private String uuid;
 
     /* 유저 이름 */
-    @Column(nullable = false, length=30)
+    @Column(nullable = false, length=NAME_MAX_LENGTH)
     private String name;
 
     /* 유저 나이 */
@@ -40,14 +37,18 @@ public class User extends BaseEntity {
     private int age;
 
     /* 유저 취미 */
-    @Column(length = 50)
+    @Column(length = HOBBY_MAX_LENGTH)
     private String hobby;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "writer")
     private final List<Post> posts = new ArrayList<>();
 
-    private User(String uuid, String name, int age, String hobby, String createdBy){
-        checkArgument(isValidUuid(uuid), "유효하지 않은 UUID 입니다");
+    private User(String uuid, String name, int age, String hobby){
+        try{
+            UUID.fromString(uuid); // uuid validation
+        } catch(IllegalArgumentException ex){
+            throw new IllegalArgumentException("uuid 형식이 잘못되었습니다");
+        }
 
         checkArgument(hasText(name), "name은 비어있으면 안됩니다");
         checkArgument(
@@ -62,23 +63,13 @@ public class User extends BaseEntity {
 
         checkArgument(age > 0, "나이는 음수일 수 없습니다");
 
-
         this.uuid = uuid;
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        this.createdBy = createdBy;
-
     }
 
     public static User create(String uuid, String name, int age, String hobby){
-        return new User(uuid, name, age, hobby, "");
+        return new User(uuid, name, age, hobby);
     }
-
-    public User withCreatedBy(String createdBy){
-        this.createdBy = createdBy;
-
-        return this;
-    }
-
 }
