@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@Transactional
 class PostRepositoryTest {
 
     @Autowired
@@ -117,6 +116,7 @@ class PostRepositoryTest {
             user = User.of("su", 24L, "게임");
             post = Post.of("제목", "본문");
             user.addPost(post);
+            userRepository.save(user);
         }
 
         @Test

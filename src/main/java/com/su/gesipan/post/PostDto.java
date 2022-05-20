@@ -1,6 +1,7 @@
 package com.su.gesipan.post;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -12,6 +13,7 @@ public interface PostDto {
         @NotNull
         private Long userId;
         @Size(min = 1, max = 100)
+        @NotBlank
         private String title;
         @Size(max = 1500)
         private String content;
