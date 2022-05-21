@@ -1,4 +1,4 @@
-package com.devcourse.springjpaboard.domain.order;
+package com.devcourse.springjpaboard.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class BaseEntity {
 
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "created_by", nullable = false)
+    private String createdBy;
 
 }
