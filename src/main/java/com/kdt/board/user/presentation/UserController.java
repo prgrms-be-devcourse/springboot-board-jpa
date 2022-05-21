@@ -1,11 +1,11 @@
 package com.kdt.board.user.presentation;
 
 import com.kdt.board.user.application.UserService;
+import com.kdt.board.user.presentation.dto.request.UserRegistrationRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/users")
@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void register() {
-
+    public void register(@RequestBody @Valid final UserRegistrationRequest userRegistrationRequest) {
+        userService.register(userRegistrationRequest.toRequestDto());
     }
 }
