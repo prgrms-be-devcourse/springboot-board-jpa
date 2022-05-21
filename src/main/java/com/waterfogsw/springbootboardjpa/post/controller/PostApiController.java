@@ -5,6 +5,9 @@ import com.waterfogsw.springbootboardjpa.post.controller.dto.PostResponse;
 import com.waterfogsw.springbootboardjpa.post.controller.dto.PostUpdateRequest;
 import com.waterfogsw.springbootboardjpa.post.service.PostService;
 import com.waterfogsw.springbootboardjpa.post.util.PostConverter;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -53,8 +56,10 @@ public class PostApiController {
     }
 
     @GetMapping
-    public List<PostResponse> getAll() {
-        final var posts = postService.getAll();
+    public List<PostResponse> getAll(
+            @PageableDefault(size = 10, sort = {"createdAt"}, direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        final var posts = postService.getAll(pageable);
         return posts.stream()
                 .map(postConverter::toDto)
                 .collect(Collectors.toList());
