@@ -8,6 +8,8 @@ import com.prgrms.springbootboardjpa.service.PostService;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,38 +28,38 @@ public class PostController {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ApiResponse<String> notFoundExceptionHandler(NotFoundException e) {
-        return ApiResponse.fail(404, e.getMessage());
+    public ResponseEntity<ApiResponse<String>> notFoundExceptionHandler(NotFoundException e) {
+        return new ResponseEntity<>(ApiResponse.fail(404, e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
-    public ApiResponse<String> exceptionHandler(Exception e) {
-        return ApiResponse.fail(500, e.getMessage());
+    public ResponseEntity<ApiResponse<String>> exceptionHandler(Exception e) {
+        return new ResponseEntity<>(ApiResponse.fail(500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/posts")
-    public ApiResponse<Long> createPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<ApiResponse<Long>> createPost(@RequestBody PostDto postDto) {
         Long save = postService.save(postDto);
-        return ApiResponse.created(save);
+        return new ResponseEntity<>(ApiResponse.created(save), HttpStatus.CREATED);
     }
 
     @GetMapping("/posts")
-    public ApiResponse<Page<PostDto>> getAllPost(Pageable pageable) {
+    public ResponseEntity<ApiResponse<Page<PostDto>>> getAllPost(Pageable pageable) {
         Page<PostDto> all = postService.findAllPosts(pageable);
-        return ApiResponse.ok(all);
+        return new ResponseEntity<>(ApiResponse.ok(all), HttpStatus.OK);
     }
 
     @GetMapping("/posts/{postId}")
-    public ApiResponse<PostDto> getOnePost(@PathVariable Long postId) throws NotFoundException {
+    public ResponseEntity<ApiResponse<PostDto>> getOnePost(@PathVariable Long postId) throws NotFoundException {
         PostDto one = postService.findById(postId);
-        return ApiResponse.ok(one);
+        return new ResponseEntity<>(ApiResponse.ok(one), HttpStatus.OK);
     }
 
     @PatchMapping("/posts/{postId}")
-    public ApiResponse<Long> updatePostContent(@PathVariable Long postId,
+    public ResponseEntity<ApiResponse<Long>> updatePostContent(@PathVariable Long postId,
         @RequestBody ContentDto contentDto) throws NotFoundException {
         Long update = postService.updateContent(postId, contentDto.content());
-        return ApiResponse.ok(update);
+        return new ResponseEntity<>(ApiResponse.ok(update), HttpStatus.OK);
     }
 
 

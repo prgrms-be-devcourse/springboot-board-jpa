@@ -79,12 +79,12 @@ class PostControllerTest {
         mockMvc.perform(post("/posts")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(postDto)))
-            .andExpect(status().isOk())
+            .andExpect(status().isCreated())
             .andDo(print())
             .andDo(document("save-post",
                 requestFields(
                     fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
-                    fieldWithPath("content").type(JsonFieldType.STRING).description("title"),
+                    fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                     fieldWithPath("userDto").type(JsonFieldType.OBJECT).description("userDto"),
                     fieldWithPath("userDto.name").type(JsonFieldType.STRING)
                         .description("userDto.name"),
@@ -93,8 +93,7 @@ class PostControllerTest {
                     fieldWithPath("userDto.hobby").type(JsonFieldType.STRING)
                         .description("userDto.hobby")
 
-                ),
-                responseFields(
+                ), responseFields(
                     fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태코드"),
                     fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
                     fieldWithPath("timestamp").type(JsonFieldType.STRING).description("응답시간")
@@ -221,6 +220,18 @@ class PostControllerTest {
             ));
     }
 
+    @Test
+    @DisplayName("없는 id에 접근")
+    void not_found_exception_test() throws Exception {
+        ContentDto contentDto = new ContentDto("this is my first change post");
+        mockMvc.perform(patch("/posts/{postId}", 2L)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(contentDto)))
+            .andDo(print())
+            .andExpect(status().isNotFound());
+
+    }
+
 
     @Test
     @Transactional
@@ -232,9 +243,11 @@ class PostControllerTest {
         log.info("id: {}", postRepository.findAll().get(0).getId());
         log.info("id: {}", userRepository.findAll().get(0).getId());
         log.info("content: {}", postRepository.findById(1L).get().getContent());
-
-
     }
+
+
+
+
 
 
 }
