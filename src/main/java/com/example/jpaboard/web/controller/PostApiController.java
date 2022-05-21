@@ -1,9 +1,9 @@
 package com.example.jpaboard.web.controller;
 
-import com.example.jpaboard.service.post.dto.PostSaveRequest;
-import com.example.jpaboard.service.post.dto.PostResponse;
+import com.example.jpaboard.service.dto.post.PostSaveRequest;
+import com.example.jpaboard.service.dto.post.PostResponse;
 import com.example.jpaboard.service.post.PostService;
-import com.example.jpaboard.service.post.dto.PostUpdateRequest;
+import com.example.jpaboard.service.dto.post.PostUpdateRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -37,6 +37,6 @@ public class PostApiController {
 
     @PatchMapping("/{id}")
     public PostResponse update(@PathVariable Long id, @ModelAttribute @Valid PostUpdateRequest request) {
-        return postService.update(id, request.getTitle(), request.getContent());
+        return postService.update(id, request.getUserId(), request.getTitle(), request.getContent());
     }
 }
