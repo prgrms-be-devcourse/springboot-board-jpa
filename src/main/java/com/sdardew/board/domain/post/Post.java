@@ -70,6 +70,10 @@ public class Post {
     user.addPost(this);
   }
 
+  public PostDto toPostDto() {
+    return new PostDto(id, title, content, createAt, user.getId());
+  }
+
   @Override
   public String toString() {
     return "Post{" +

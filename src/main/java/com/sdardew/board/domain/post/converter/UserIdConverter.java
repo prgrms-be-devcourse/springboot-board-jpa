@@ -2,6 +2,7 @@ package com.sdardew.board.domain.post.converter;
 
 import com.sdardew.board.domain.user.User;
 import com.sdardew.board.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.AttributeConverter;
@@ -12,11 +13,14 @@ import java.util.NoSuchElementException;
 @Converter
 public class UserIdConverter implements AttributeConverter<User, Long> {
 
-  private final UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-  public UserIdConverter(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
+//  public UserIdConverter(UserRepository userRepository) {
+//    this.userRepository = userRepository;
+//  }
+
+
 
   @Override
   public Long convertToDatabaseColumn(User user) {

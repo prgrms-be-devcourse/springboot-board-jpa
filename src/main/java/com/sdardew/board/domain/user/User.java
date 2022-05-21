@@ -16,7 +16,7 @@ public class User {
   private String name;
   private Integer age;
   private String hobby;
-  private LocalDateTime createAt;
+  private LocalDateTime createdAt;
   @OneToMany(mappedBy = "user")
   private List<Post> posts = new ArrayList<>();
 
@@ -36,8 +36,8 @@ public class User {
     return hobby;
   }
 
-  public LocalDateTime getCreateAt() {
-    return createAt;
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
   }
 
   public List<Post> getPosts() {
@@ -56,8 +56,8 @@ public class User {
     this.hobby = hobby;
   }
 
-  public void setCreateAt(LocalDateTime createAt) {
-    this.createAt = createAt;
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 
   public void addPost(Post post) {

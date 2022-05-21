@@ -1,7 +1,6 @@
 package com.sdardew.board.repository;
 
 import com.sdardew.board.domain.user.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -32,13 +31,13 @@ class UserRepositoryTest {
     user.setName("user");
     user.setHobby("movie");
     user.setAge(20);
-    user.setCreateAt(LocalDateTime.now());
+    user.setCreatedAt(LocalDateTime.now());
 
     user2 = new User();
     user2.setName("user2");
     user2.setHobby("cooking");
     user2.setAge(22);
-    user2.setCreateAt(LocalDateTime.now());
+    user2.setCreatedAt(LocalDateTime.now());
   }
 
   @AfterEach

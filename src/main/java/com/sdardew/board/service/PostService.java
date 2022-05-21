@@ -2,6 +2,7 @@ package com.sdardew.board.service;
 
 import com.sdardew.board.domain.post.CreatePostDto;
 import com.sdardew.board.domain.post.Post;
+import com.sdardew.board.domain.post.PostDto;
 import com.sdardew.board.repository.PostRepository;
 import com.sdardew.board.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -34,10 +35,10 @@ public class PostService {
   }
 
   @Transactional
-  public Post createPost(CreatePostDto createPostDto) {
+  public PostDto createPost(CreatePostDto createPostDto) {
     Post newPost = convertToPost(createPostDto);
     postRepository.save(newPost);
-    return newPost;
+    return newPost.toPostDto();
   }
 
   public void deleteAll() {

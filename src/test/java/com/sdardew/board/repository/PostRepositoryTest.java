@@ -34,14 +34,14 @@ class PostRepositoryTest {
     user1.setName("user");
     user1.setHobby("movie");
     user1.setAge(20);
-    user1.setCreateAt(LocalDateTime.now());
+    user1.setCreatedAt(LocalDateTime.now());
 
 
     user2 = new User();
     user2.setName("user2");
     user2.setHobby("cooking");
     user2.setAge(22);
-    user2.setCreateAt(LocalDateTime.now());
+    user2.setCreatedAt(LocalDateTime.now());
 
     post1 = new Post();
     post1.setUser(user1);
