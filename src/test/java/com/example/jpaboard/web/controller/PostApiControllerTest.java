@@ -5,7 +5,6 @@ import com.example.jpaboard.exception.CustomException;
 import com.example.jpaboard.service.dto.post.PostSaveRequest;
 import com.example.jpaboard.service.dto.post.PostResponse;
 import com.example.jpaboard.service.post.PostService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.*;
 import java.util.stream.Stream;
 import static com.example.jpaboard.exception.ErrorCode.*;
+import static com.example.jpaboard.web.controller.Common.toJson;
 import static java.time.LocalDateTime.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
@@ -54,7 +54,7 @@ class PostApiControllerTest {
             // when, then
             mockMvc.perform(get("/api/v1/posts"))
                    .andExpect(status().isOk())
-                   .andExpect(content().json(toJson(postResponses)));
+                   .andExpect(content().json(toJson(objectMapper, postResponses)));
         }
 
         @Nested
@@ -69,7 +69,7 @@ class PostApiControllerTest {
                 // when, then
                 mockMvc.perform(get("/api/v1/posts"))
                        .andExpect(status().isOk())
-                       .andExpect(content().json(toJson(Collections.EMPTY_LIST)));
+                       .andExpect(content().json(toJson(objectMapper, Collections.EMPTY_LIST)));
             }
         }
     }
@@ -88,7 +88,7 @@ class PostApiControllerTest {
             // when, then
             mockMvc.perform(get("/api/v1/posts/" + id))
                    .andExpect(status().isOk())
-                   .andExpect(content().json(toJson(postResponse)));
+                   .andExpect(content().json(toJson(objectMapper, postResponse)));
         }
 
         @Nested
@@ -119,7 +119,7 @@ class PostApiControllerTest {
             //when, then
             mockMvc.perform(post("/api/v1/posts")
                    .contentType(MediaType.APPLICATION_JSON)
-                   .content((toJson(request))))
+                   .content((toJson(objectMapper, request))))
                    .andExpect(status().isOk());
         }
 
@@ -136,7 +136,7 @@ class PostApiControllerTest {
                 //when, then
                 mockMvc.perform(post("/api/v1/posts/")
                        .contentType(MediaType.APPLICATION_JSON)
-                       .content((toJson(request))))
+                       .content((toJson(objectMapper, request))))
                        .andExpect(status().isNotFound());
             }
         }
@@ -156,7 +156,7 @@ class PostApiControllerTest {
                 //when, then
                 mockMvc.perform(post("/api/v1/posts/")
                        .contentType(MediaType.APPLICATION_JSON)
-                       .content((toJson(request))))
+                       .content((toJson(objectMapper, request))))
                        .andExpect(status().isBadRequest());
             }
         }
@@ -173,7 +173,7 @@ class PostApiControllerTest {
                 //when, then
                 mockMvc.perform(post("/api/v1/posts")
                        .contentType(MediaType.APPLICATION_JSON)
-                       .content((toJson(request))))
+                       .content((toJson(objectMapper, request))))
                        .andExpect(status().isBadRequest());
             }
         }
@@ -198,7 +198,7 @@ class PostApiControllerTest {
                    .contentType(APPLICATION_FORM_URLENCODED)
                    .content("userId=" + userId + "&title=" + updateTitle + "&content=" + updateContent))
                    .andExpect(status().isOk())
-                   .andExpect(content().json(toJson(response)));
+                   .andExpect(content().json(toJson(objectMapper, response)));
         }
 
         @Nested
@@ -270,14 +270,6 @@ class PostApiControllerTest {
                        .content("userId=" + userId + "&title=" + title + "&content=" + content))
                        .andExpect(status().isBadRequest());
             }
-        }
-    }
-
-    private String toJson(Object object) {
-        try {
-            return objectMapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e.getMessage());
         }
     }
 }
