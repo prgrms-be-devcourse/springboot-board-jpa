@@ -1,5 +1,6 @@
 package com.kdt.prgrms.board.exception;
 
+import com.kdt.prgrms.board.exception.custom.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +31,12 @@ public class GlobalExceptionHandler {
         ResponseEntity<ErrorResponse> result = ErrorResponse.toResponseEntity(INVALID_INPUT_REQUEST);
 
         return ErrorResponse.toResponseEntity(INVALID_INPUT_REQUEST);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFoundException() {
+
+        logger.error("NotFoundException : {}", REQUEST_NOT_FOUND.getMessage());
+        return ErrorResponse.toResponseEntity(REQUEST_NOT_FOUND);
     }
 }
