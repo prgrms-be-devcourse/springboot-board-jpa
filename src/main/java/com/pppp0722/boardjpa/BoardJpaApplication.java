@@ -9,5 +9,4 @@ public class BoardJpaApplication {
     public static void main(String[] args) {
         SpringApplication.run(BoardJpaApplication.class, args);
     }
-
 }

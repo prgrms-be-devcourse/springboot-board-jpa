@@ -1,13 +1,11 @@
-package com.pppp0722.boardjpa.domain.post;
+package com.pppp0722.boardjpa.domain.user;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.pppp0722.boardjpa.domain.BaseEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +17,7 @@ import lombok.Setter;
 public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name", length = 50, nullable = false)
@@ -28,9 +26,6 @@ public class User extends BaseEntity {
     @Column(name = "age", nullable = true)
     private Integer age;
 
-    @Column(name = "hobby", nullable = true)
+    @Column(name = "hobby", length = 50, nullable = true)
     private String hobby;
-
-    @OneToMany(mappedBy = "user")
-    private List<Post> posts = new ArrayList<>();
 }

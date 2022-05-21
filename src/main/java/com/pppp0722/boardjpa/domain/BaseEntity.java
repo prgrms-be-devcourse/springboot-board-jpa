@@ -1,4 +1,4 @@
-package com.pppp0722.boardjpa.domain.post;
+package com.pppp0722.boardjpa.domain;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -13,7 +13,4 @@ public class BaseEntity {
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
-
-    @Column(name = "created_by")
-    private String createdBy;
 }
