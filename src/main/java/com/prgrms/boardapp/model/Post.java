@@ -2,16 +2,12 @@ package com.prgrms.boardapp.model;
 
 import com.prgrms.boardapp.constants.PostErrMsg;
 import com.prgrms.boardapp.utils.CommonValidate;
-
-import javax.persistence.*;
-
-import lombok.Builder;
 import org.springframework.util.Assert;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Builder
 public class Post {
     @Id
     @GeneratedValue(
@@ -81,5 +77,49 @@ public class Post {
         }
         this.user = user;
         user.getPosts().add(this);
+    }
+
+    public static PostBuilder builder() {
+        return new PostBuilder();
+    }
+
+    public static class PostBuilder {
+        private Long id;
+        private String title;
+        private String content;
+        private CommonEmbeddable commonEmbeddable;
+        private User user;
+
+        PostBuilder() {
+        }
+
+        public PostBuilder id(final Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public PostBuilder title(final String title) {
+            this.title = title;
+            return this;
+        }
+
+        public PostBuilder content(final String content) {
+            this.content = content;
+            return this;
+        }
+
+        public PostBuilder commonEmbeddable(final CommonEmbeddable commonEmbeddable) {
+            this.commonEmbeddable = commonEmbeddable;
+            return this;
+        }
+
+        public PostBuilder user(final User user) {
+            this.user = user;
+            return this;
+        }
+
+        public Post build() {
+            return new Post(this.id, this.title, this.content, this.commonEmbeddable, this.user);
+        }
     }
 }

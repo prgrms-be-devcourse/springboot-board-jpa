@@ -1,15 +1,13 @@
 package com.prgrms.boardapp.model;
 
-import javax.persistence.*;
-
 import com.prgrms.boardapp.constants.UserErrMsg;
-import lombok.Builder;
 import org.springframework.util.Assert;
+
+import javax.persistence.*;
 
 import static com.prgrms.boardapp.utils.CommonValidate.validateNotNullString;
 
 @Entity
-@Builder
 public class User {
     @Id
     @GeneratedValue(
@@ -83,5 +81,55 @@ public class User {
 
     public void createPost(Post post) {
         post.changeUser(this);
+    }
+
+    public static UserBuilder builder() {
+        return new UserBuilder();
+    }
+
+    public static class UserBuilder {
+        private Long id;
+        private String name;
+        private Integer age;
+        private String hobby;
+        private CommonEmbeddable commonEmbeddable;
+        private Posts posts;
+
+        UserBuilder() {
+        }
+
+        public UserBuilder id(final Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public UserBuilder name(final String name) {
+            this.name = name;
+            return this;
+        }
+
+        public UserBuilder age(final Integer age) {
+            this.age = age;
+            return this;
+        }
+
+        public UserBuilder hobby(final String hobby) {
+            this.hobby = hobby;
+            return this;
+        }
+
+        public UserBuilder commonEmbeddable(final CommonEmbeddable commonEmbeddable) {
+            this.commonEmbeddable = commonEmbeddable;
+            return this;
+        }
+
+        public UserBuilder posts(final Posts posts) {
+            this.posts = posts;
+            return this;
+        }
+
+        public User build() {
+            return new User(this.id, this.name, this.age, this.hobby, this.commonEmbeddable, this.posts);
+        }
     }
 }
