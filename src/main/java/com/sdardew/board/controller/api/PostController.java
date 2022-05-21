@@ -1,7 +1,6 @@
 package com.sdardew.board.controller.api;
 
 import com.sdardew.board.domain.post.CreatePostDto;
-import com.sdardew.board.domain.post.Post;
 import com.sdardew.board.domain.post.PostDto;
 import com.sdardew.board.domain.post.UpdatePostDto;
 import com.sdardew.board.service.PostService;
