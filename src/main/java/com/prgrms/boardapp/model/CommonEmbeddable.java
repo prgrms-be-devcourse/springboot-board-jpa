@@ -1,6 +1,6 @@
 package com.prgrms.boardapp.model;
 
-import com.prgrms.boardapp.constants.UserErrMsg;
+import com.prgrms.boardapp.constant.UserErrMsg;
 import org.springframework.util.Assert;
 
 import javax.persistence.Column;

@@ -1,4 +1,4 @@
-package com.prgrms.boardapp.utils;
+package com.prgrms.boardapp.util;
 
 import org.springframework.util.Assert;
 

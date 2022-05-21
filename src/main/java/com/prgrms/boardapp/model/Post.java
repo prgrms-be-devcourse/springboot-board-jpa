@@ -1,7 +1,7 @@
 package com.prgrms.boardapp.model;
 
-import com.prgrms.boardapp.constants.PostErrMsg;
-import com.prgrms.boardapp.utils.CommonValidate;
+import com.prgrms.boardapp.constant.PostErrMsg;
+import com.prgrms.boardapp.util.CommonValidate;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;

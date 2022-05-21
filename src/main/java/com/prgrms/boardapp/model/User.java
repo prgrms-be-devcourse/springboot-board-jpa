@@ -1,11 +1,11 @@
 package com.prgrms.boardapp.model;
 
-import com.prgrms.boardapp.constants.UserErrMsg;
+import com.prgrms.boardapp.constant.UserErrMsg;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
 
-import static com.prgrms.boardapp.utils.CommonValidate.validateNotNullString;
+import static com.prgrms.boardapp.util.CommonValidate.validateNotNullString;
 
 @Entity
 public class User {

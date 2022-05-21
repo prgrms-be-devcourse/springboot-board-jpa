@@ -1,5 +1,6 @@
 package com.prgrms.boardapp.common;
 
+import com.prgrms.boardapp.dto.UserDto;
 import com.prgrms.boardapp.model.User;
 
 public class UserCreateUtil {
@@ -35,6 +36,15 @@ public class UserCreateUtil {
         return User.builder()
                 .name("user")
                 .age(age)
+                .build();
+    }
+
+    public static UserDto createUserDto() {
+        return UserDto.builder()
+                .id(userId++)
+                .name("user-name")
+                .hobby("hobby")
+                .age(10)
                 .build();
     }
 }

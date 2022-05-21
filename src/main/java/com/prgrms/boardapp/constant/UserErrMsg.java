@@ -1,4 +1,4 @@
-package com.prgrms.boardapp.constants;
+package com.prgrms.boardapp.constant;
 
 import static com.prgrms.boardapp.model.CommonEmbeddable.CREATED_BY_MAX_LENGTH;
 import static com.prgrms.boardapp.model.User.*;
