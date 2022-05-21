@@ -1,0 +1,8 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 711
+
+{"statusCode":200,"data":{"content":[{"id":10,"title":"제목테스트","content":"내용내용내용내용","user":{"id":9,"name":"YongHoon","age":26,"hobby":"tennis","createdAt":"2022-05-22T03:43:06.235986","updatedAt":"2022-05-22T03:43:06.235986","createdBy":null},"createdAt":"2022-05-22T03:43:06.247993","updatedAt":"2022-05-22T03:43:06.247993","createdBy":null}],"pageable":{"sort":{"empty":true,"sorted":false,"unsorted":true},"offset":0,"pageNumber":0,"pageSize":10,"unpaged":false,"paged":true},"last":true,"totalElements":1,"totalPages":1,"size":10,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},"first":true,"numberOfElements":1,"empty":false},"serverDatetime":"2022-05-22 03:43:06"}
+----
