@@ -1,5 +1,7 @@
 package com.kdt.board.user.application.dto.request;
 
+import com.kdt.board.user.domain.User;
+
 public class UserRegistrationRequestDto {
 
     private final String name;
@@ -12,6 +14,15 @@ public class UserRegistrationRequestDto {
         this.email = builder.email;
         this.age = builder.age;
         this.hobby = builder.hobby;
+    }
+
+    public User toEntity() {
+        return new User.Builder()
+                .name(name)
+                .email(email)
+                .age(age)
+                .hobby(hobby)
+                .build();
     }
 
     public static class Builder {
