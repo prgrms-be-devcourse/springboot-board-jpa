@@ -1,4 +1,4 @@
-package com.study.board.domain.exception;
+package com.study.board.exception;
 
 import java.text.MessageFormat;
 

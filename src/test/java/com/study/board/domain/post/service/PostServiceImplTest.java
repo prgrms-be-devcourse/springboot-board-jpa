@@ -1,6 +1,6 @@
 package com.study.board.domain.post.service;
 
-import com.study.board.domain.exception.BoardNotFoundException;
+import com.study.board.exception.BoardNotFoundException;
 import com.study.board.domain.post.domain.Post;
 import com.study.board.domain.post.repository.PostRepository;
 import com.study.board.domain.user.domain.User;
