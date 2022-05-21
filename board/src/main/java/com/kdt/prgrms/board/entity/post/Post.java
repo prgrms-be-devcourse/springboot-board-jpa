@@ -71,4 +71,24 @@ public class Post extends BaseEntity {
 
         return new PostBuilder();
     }
+
+    public long getId() {
+
+        return id;
+    }
+
+    public String getTitle() {
+
+        return title;
+    }
+
+    public String getContent() {
+
+        return content;
+    }
+
+    public User getUser() {
+
+        return user;
+    }
 }
