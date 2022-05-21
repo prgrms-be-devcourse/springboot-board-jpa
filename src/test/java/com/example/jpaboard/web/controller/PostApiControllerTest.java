@@ -204,21 +204,21 @@ class PostApiControllerTest {
         @Nested
         class 사용자와_게시글의_작성자가_다르다면 {
             @Test
-            @DisplayName("Unauthorized 응답을 보낸다")
-            void UNAUTHORIZED_응답을_보낸다() throws Exception {
+            @DisplayName("Forbidden 응답을 보낸다")
+            void Forbidden_응답을_보낸다() throws Exception {
                 //given
                 Long id = 1L;
                 Long userId = 1L;
                 String updateTitle = "제목";
                 String updateContent = "내용";
                 given(postService.update(anyLong(), anyLong(), nullable(String.class), nullable(String.class)))
-                                 .willThrow(new CustomException(UNAUTHORIZED_USER));
+                                 .willThrow(new CustomException(FORBIDDEN_USER));
 
                 //when, then
                 mockMvc.perform(patch("/api/v1/posts/" + id)
                        .contentType(APPLICATION_FORM_URLENCODED)
                        .content("userId=" + userId + "&title=" + updateTitle + "&content=" + updateContent))
-                       .andExpect(status().isUnauthorized());
+                       .andExpect(status().isForbidden());
             }
         }
 
@@ -245,8 +245,6 @@ class PostApiControllerTest {
                 Long id = 1L;
                 String updateTitle = "제목";
                 String updateContent = "내용";
-                given(postService.update(anyLong(), anyLong(), nullable(String.class), nullable(String.class)))
-                                 .willThrow(new CustomException(UNAUTHORIZED_USER));
 
                 //when, then
                 mockMvc.perform(patch("/api/v1/posts/" + id)
