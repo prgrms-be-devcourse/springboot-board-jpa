@@ -66,7 +66,7 @@ class PostApiControllerTest {
 
                 final var response = mockMvc.perform(request);
                 response.andExpect(status().isCreated());
-                verify(postService).addPost(any());
+                verify(postService).addPost(anyLong(), any());
             }
         }
 
@@ -217,7 +217,7 @@ class PostApiControllerTest {
 
                 final var response = mockMvc.perform(request);
                 response.andExpect(status().isOk());
-                verify(postService).updatePost(anyLong(), any());
+                verify(postService).updatePost(anyLong(), anyLong(), any());
             }
         }
 

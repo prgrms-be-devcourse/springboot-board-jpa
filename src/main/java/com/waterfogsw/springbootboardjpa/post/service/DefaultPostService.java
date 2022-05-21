@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class DefaultPostService implements PostService {
     @Override
-    public void addPost(Post post) {
+    public void addPost(long userId, Post post) {
 
     }
 
@@ -24,7 +24,7 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    public void updatePost(long id, Post post) {
+    public void updatePost(long userId, long postId, Post post) {
 
     }
 }
