@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -24,8 +25,8 @@ public class PostService {
     this.userRepository = userRepository;
   }
 
-  public List<Post> getPosts() {
-    return postRepository.findAll();
+  public List<PostDto> getPosts() {
+    return postRepository.findAll().stream().map(Post::toPostDto).collect(Collectors.toList());
   }
 
   public Post getPost(Long id) {

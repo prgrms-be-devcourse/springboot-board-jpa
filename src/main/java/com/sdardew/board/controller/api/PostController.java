@@ -19,7 +19,7 @@ public class PostController {
   }
 
   @GetMapping
-  public List<Post> getPosts() {
+  public List<PostDto> getPosts() {
     return postService.getPosts();
   }
 
