@@ -1,7 +1,12 @@
 package com.prgrms.boardapp.common;
 
+import com.prgrms.boardapp.dto.PostDto;
 import com.prgrms.boardapp.model.Post;
 import com.prgrms.boardapp.model.User;
+
+import java.time.LocalDateTime;
+
+import static com.prgrms.boardapp.common.UserCreateUtil.createUserDto;
 
 public class PostCreateUtil {
 
@@ -28,6 +33,16 @@ public class PostCreateUtil {
     public static Post createPostWithTitle(String title) {
         return Post.builder()
                 .title(title)
+                .build();
+    }
+
+    public static PostDto createPostDto() {
+        return PostDto.builder()
+                .id(postId++)
+                .createdAt(LocalDateTime.now())
+                .title("title")
+                .content("content")
+                .userDto(createUserDto())
                 .build();
     }
 }
