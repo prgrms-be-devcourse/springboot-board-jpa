@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -63,6 +64,7 @@ class UserApiControllerTest {
         @DisplayName("BadRequest 응답을 보낸다")
         @ParameterizedTest
         @NullAndEmptySource
+        @ValueSource(strings = {" "})
         void BadRequest_응답을_보낸다(String name) throws Exception {
             //given
             String request = toJson(objectMapper, new UserSaveRequest(name, 10, "운동"));
