@@ -1,5 +1,6 @@
 package com.devcourse.springjpaboard.model.user;
 
+import com.devcourse.springjpaboard.model.BaseEntity;
 import com.devcourse.springjpaboard.model.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.util.List;
 @Table(name = "user")
 @Getter
 @Setter
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
@@ -31,4 +32,7 @@ public class User {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Post> posts = new ArrayList<>();
 
+    public void addPost(Post post) {
+        post.setUser(this);
+    }
 }
