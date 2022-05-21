@@ -91,7 +91,7 @@ class PostServiceTest {
             List<PostResponse> posts = postService.findAll(pageRequest);
 
             //then
-            verify(postRepository).findAll(any(Pageable.class));
+            verify(postRepository).findWithPagination(any(Pageable.class));
             assertThat(posts.size()).isEqualTo(2);
         }
 
@@ -121,7 +121,7 @@ class PostServiceTest {
                 PostResponse postResponse = postService.findById(post.getId());
 
                 //then
-                verify(postService).findById(anyLong());
+                verify(postRepository).findById(anyLong());
                 assertThat(postResponse).isNotNull();
             }
 
