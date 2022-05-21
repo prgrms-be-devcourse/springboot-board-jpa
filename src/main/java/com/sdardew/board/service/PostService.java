@@ -29,9 +29,9 @@ public class PostService {
     return postRepository.findAll().stream().map(Post::toPostDto).collect(Collectors.toList());
   }
 
-  public Post getPost(Long id) {
+  public PostDto getPost(Long id) {
     Optional<Post> found = postRepository.findById(id);
-    if(found.isPresent()) return found.get();
+    if(found.isPresent()) return found.get().toPostDto();
     throw new NoSuchElementException("존재하지 않는 PostID입니다");
   }
 
