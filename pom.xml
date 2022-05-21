@@ -32,11 +32,12 @@
             <scope>runtime</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.gavlyukovskiy</groupId>
-            <artifactId>p6spy-spring-boot-starter</artifactId>
-            <version>1.5.7</version>
-        </dependency>
+        <!--        개발 단계이기에 넣어뒀습니다. 최종 PR Close 이후에 삭제하겠습니다. -->
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.gavlyukovskiy</groupId>-->
+        <!--            <artifactId>p6spy-spring-boot-starter</artifactId>-->
+        <!--            <version>1.8.0</version>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -60,12 +61,88 @@
         </dependency>
     </dependencies>
 
+    <!--    <build>-->
+    <!--        <plugins>-->
+    <!--            <plugin>-->
+    <!--                <groupId>org.asciidoctor</groupId>-->
+    <!--                <artifactId>asciidoctor-maven-plugin</artifactId>-->
+    <!--                <version>1.5.8</version>-->
+    <!--                <executions>-->
+    <!--                    <execution>-->
+    <!--                        <id>generate-docs</id>-->
+    <!--                        <phase>package</phase>-->
+    <!--                        <goals>-->
+    <!--                            <goal>process-asciidoc</goal>-->
+    <!--                        </goals>-->
+    <!--                        <configuration>-->
+    <!--                            <backend>html</backend>-->
+    <!--                            <doctype>book</doctype>-->
+    <!--                            <sourceDirectory>target/generated-snippets</sourceDirectory>-->
+    <!--                            <outputDirectory>docs/</outputDirectory>-->
+    <!--                        </configuration>-->
+    <!--                    </execution>-->
+    <!--                </executions>-->
+    <!--                <dependencies>-->
+    <!--                    <dependency>-->
+    <!--                        <groupId>org.springframework.restdocs</groupId>-->
+    <!--                        <artifactId>spring-restdocs-asciidoctor</artifactId>-->
+    <!--                        <version>${spring-restdocs.version}</version>-->
+    <!--                    </dependency>-->
+    <!--                </dependencies>-->
+    <!--            </plugin>-->
+    <!--            <plugin>-->
+    <!--                <groupId>org.springframework.boot</groupId>-->
+    <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+    <!--                <configuration>-->
+    <!--                    <excludes>-->
+    <!--                        <exclude>-->
+    <!--                            <groupId>org.projectlombok</groupId>-->
+    <!--                            <artifactId>lombok</artifactId>-->
+    <!--                        </exclude>-->
+    <!--                    </excludes>-->
+    <!--                </configuration>-->
+    <!--            </plugin>-->
+    <!--        </plugins>-->
+    <!--    </build>-->
+
     <build>
         <plugins>
+            <!--            <plugin>-->
+            <!--                <groupId>org.asciidoctor</groupId>-->
+            <!--                <artifactId>asciidoctor-maven-plugin</artifactId>-->
+            <!--                <version>1.5.8</version>-->
+            <!--                <configuration>-->
+            <!--                    <outputDirectory>docs/</outputDirectory>-->
+            <!--                    <sourceDirectory>target/generated-snippets</sourceDirectory>-->
+            <!--                </configuration>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>asciidoc-to-html</id>-->
+            <!--                        <phase>generate-resources</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>process-asciidoc</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--                <dependencies>-->
+            <!--                    <dependency>-->
+            <!--                        <groupId>org.springframework.restdocs</groupId>-->
+            <!--                        <artifactId>spring-restdocs-asciidoctor</artifactId>-->
+            <!--                        <version>${spring-restdocs.version}</version>-->
+            <!--                    </dependency>-->
+            <!--                </dependencies>-->
+            <!--            </plugin>-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>1.5.8</version>
+                <configuration>
+                    <outputDirectory>docs/output</outputDirectory>
+                    <sourceDirectory>docs/</sourceDirectory>
+                </configuration>
                 <executions>
                     <execution>
                         <id>generate-docs</id>
@@ -87,6 +164,8 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

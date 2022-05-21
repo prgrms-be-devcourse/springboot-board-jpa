@@ -40,7 +40,7 @@ public class Name {
     @Getter
     private String lastname;
 
-    //TODO: 문자열에 + 연산자 사용하여 성능 감소가 어느 정도일지, 적당히 완성된 이후에 성능 비교
+    //TODO: 문자열에 + 연산자 사용해서 생기는 성능 감소가 어느 정도일지, 적당히 완성된 이후에 성능 비교
     public String getFullName() {
         return firstname + " " + lastname;
     }

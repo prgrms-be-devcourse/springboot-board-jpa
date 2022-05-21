@@ -1,0 +1,73 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시글
+
+=== 게시글 생성
+
+=== /posts
+
+.Request
+include::{snippets}/createPost/http-request.adoc[]
+include::{snippets}/createPost/request-body.adoc[]
+include::{snippets}/createPost/request-fields.adoc[]
+
+.Response
+include::{snippets}/createPost/http-response.adoc[]
+include::{snippets}/createPost/response-body.adoc[]
+include::{snippets}/createPost/response-fields.adoc[]
+
+=== 게시글 단건 조회
+
+=== /posts/{id}
+
+.Request
+include::{snippets}/showPost/http-request.adoc[]
+include::{snippets}/showPost/request-body.adoc[]
+
+.Response
+include::{snippets}/showPost/http-response.adoc[]
+include::{snippets}/showPost/response-body.adoc[]
+include::{snippets}/showPost/response-fields.adoc[]
+
+=== 게시글 수정
+
+=== /posts/{id}
+
+.Request
+include::{snippets}/editPost/http-request.adoc[]
+include::{snippets}/editPost/request-body.adoc[]
+include::{snippets}/editPost/request-fields.adoc[]
+
+.Response
+include::{snippets}/editPost/http-response.adoc[]
+include::{snippets}/editPost/response-body.adoc[]
+include::{snippets}/editPost/response-fields.adoc[]
+
+=== 게시글 삭제
+
+=== /posts/{id}
+
+.Request
+include::{snippets}/deletePost/http-request.adoc[]
+include::{snippets}/deletePost/request-body.adoc[]
+
+.Response
+include::{snippets}/deletePost/http-response.adoc[]
+include::{snippets}/deletePost/response-body.adoc[]
+
+=== 게시글 전체 조회
+
+=== /posts?page=?&size=?
+
+.Request
+include::{snippets}/showPostPaged/http-request.adoc[]
+include::{snippets}/showPostPaged/request-body.adoc[]
+include::{snippets}/showPostPaged/request-parameters.adoc[]
+
+.Response
+include::{snippets}/showPostPaged/http-response.adoc[]
+include::{snippets}/showPostPaged/response-body.adoc[]
+include::{snippets}/showPostPaged/response-fields.adoc[]

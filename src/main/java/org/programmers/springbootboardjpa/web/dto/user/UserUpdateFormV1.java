@@ -8,8 +8,9 @@ import org.programmers.springbootboardjpa.domain.user.User;
 import java.time.LocalDate;
 import java.util.List;
 
-public record UserUpdateFormV1(Long userId, String nickname, String password, String firstname, String lastname, LocalDate birthDate, List<String> interests)
-implements UserUpdateForm {
+public record UserUpdateFormV1(Long userId, String nickname, String password, String firstname, String lastname,
+                               LocalDate birthDate, List<String> interests)
+        implements UserUpdateForm {
 
     @Override
     public User applyToUser(User user) {
@@ -23,7 +24,7 @@ implements UserUpdateForm {
                 (isStringFieldAssigned(firstname) && isStringFieldAssigned(lastname)) ? new Name(firstname, lastname) : user.getName(),
                 (birthDate != null) ? new Age(birthDate) : user.getAge(),
                 //TODO: Interest 처리
-                (interests != null && !interests.isEmpty())? user.getInterests() : user.getInterests()));
+                user.getInterests()));
     }
 
     private boolean isStringFieldAssigned(String field) {

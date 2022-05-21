@@ -7,7 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public record UserDtoV1(Long userId, String nickname, String firstname, String lastname, LocalDate birthDate, Optional<UserInterests> interests,
+public record UserDtoV1(Long userId, String nickname, String firstname, String lastname, LocalDate birthDate,
+                        Optional<UserInterests> interests,
                         LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
 
     public static UserDtoV1 from(User user) {

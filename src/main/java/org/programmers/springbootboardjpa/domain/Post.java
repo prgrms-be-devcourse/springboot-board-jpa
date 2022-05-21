@@ -13,8 +13,8 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseTimeEntity {
 
-    //TODO: POST 내용에 대한 유효성 검증
-    
+    //TODO: POST 내용에 대한 유효성 검증, 금칙어 기능 추가
+
     public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;

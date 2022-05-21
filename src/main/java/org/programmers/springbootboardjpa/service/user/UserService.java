@@ -1,9 +1,8 @@
 package org.programmers.springbootboardjpa.service.user;
 
-import org.programmers.springbootboardjpa.web.dto.user.UserCreateForm;
-import org.programmers.springbootboardjpa.web.dto.user.UserCreateFormV1;
-import org.programmers.springbootboardjpa.web.dto.user.UserUpdateForm;
 import org.programmers.springbootboardjpa.domain.user.User;
+import org.programmers.springbootboardjpa.web.dto.user.UserCreateForm;
+import org.programmers.springbootboardjpa.web.dto.user.UserUpdateForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

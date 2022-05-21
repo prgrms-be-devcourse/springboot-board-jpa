@@ -3,7 +3,7 @@ package org.programmers.springbootboardjpa.repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.programmers.springbootboardjpa.domain.*;
+import org.programmers.springbootboardjpa.domain.Post;
 import org.programmers.springbootboardjpa.domain.user.Age;
 import org.programmers.springbootboardjpa.domain.user.Name;
 import org.programmers.springbootboardjpa.domain.user.Password;

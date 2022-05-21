@@ -8,8 +8,9 @@ import org.programmers.springbootboardjpa.domain.user.User;
 import java.time.LocalDate;
 import java.util.List;
 
-public record UserCreateFormV1(String nickname, String password, String firstname, String lastname, LocalDate birthDate, List<String> interests)
-implements UserCreateForm {
+public record UserCreateFormV1(String nickname, String password, String firstname, String lastname, LocalDate birthDate,
+                               List<String> interests)
+        implements UserCreateForm {
 
     @Override
     public User convertToUser() {

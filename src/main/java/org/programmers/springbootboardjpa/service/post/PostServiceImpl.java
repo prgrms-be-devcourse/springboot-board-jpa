@@ -43,7 +43,6 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public Post editPost(PostUpdateForm postUpdateForm) {
-        //TODO: 포스트 작성 중에 게시자 데이터 변경을 생각해야 할까
         Post post = postRepository.findById(postUpdateForm.postId()).orElseThrow(throwPostIsNotFound(postUpdateForm.postId()));
         return postUpdateForm.applyToPost(post);
     }

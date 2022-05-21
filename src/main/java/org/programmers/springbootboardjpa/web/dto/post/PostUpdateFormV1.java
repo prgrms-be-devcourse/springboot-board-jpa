@@ -10,7 +10,7 @@ public record PostUpdateFormV1(Long postId, String title, String content, Long u
         }
         return post.edit(new Post(postId,
                 (isStringFieldAssigned(title)) ? title : post.getTitle(),
-                (isStringFieldAssigned(content)) ? title : post.getContent(),
+                (isStringFieldAssigned(content)) ? content : post.getContent(),
                 post.getUser()));
     }
 

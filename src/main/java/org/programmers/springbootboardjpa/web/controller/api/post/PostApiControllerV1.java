@@ -23,18 +23,18 @@ public class PostApiControllerV1 implements PostApiController {
     private final PostService postService;
 
     @PostMapping("/api/v1/posts")
-    public ResponseEntity<LongIdResponse> postUser(@RequestBody PostCreateFormV1 postCreateForm) {
+    public ResponseEntity<LongIdResponse> createPost(@RequestBody PostCreateFormV1 postCreateForm) {
         Long postId = postService.writePost(postCreateForm);
         return ResponseEntity.created(URI.create("/api/v1/posts/" + postId)).body(new LongIdResponse(postId));
     }
 
     @GetMapping("/api/v1/posts/{id}")
-    public PostDtoV1 showUserDetails(@PathVariable("id") Long postId) {
+    public PostDtoV1 showPost(@PathVariable("id") Long postId) {
         return PostDtoV1.from(postService.findPostWithPostId(postId));
     }
 
     @PatchMapping("/api/v1/posts/{id}")
-    public PostDtoV1 setUserData(@PathVariable("id") Long postId, @RequestBody PostUpdateFormV1 postUpdateForm) {
+    public PostDtoV1 editPost(@PathVariable("id") Long postId, @RequestBody PostUpdateFormV1 postUpdateForm) {
         return PostDtoV1.from(postService.editPost(postUpdateForm));
     }
 

@@ -1,8 +1,6 @@
 package org.programmers.springbootboardjpa.web.controller.api.post;
 
 import lombok.extern.slf4j.Slf4j;
-import org.programmers.springbootboardjpa.domain.user.exception.IllegalBirthDateException;
-import org.programmers.springbootboardjpa.web.controller.api.user.UserApiController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
