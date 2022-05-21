@@ -5,11 +5,11 @@ import com.study.board.domain.user.domain.User;
 
 public class Fixture {
 
-    public static User sampleUser() {
+    public static User createUser() {
         return new User("득윤", "체스");
     }
 
-    public static Post samplePost() {
-        return new Post("제목", "내용", sampleUser());
+    public static Post createPost() {
+        return new Post("제목", "내용", createUser());
     }
 }
