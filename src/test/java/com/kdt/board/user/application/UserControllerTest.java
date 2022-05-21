@@ -19,8 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.HashMap;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -188,6 +187,30 @@ public class UserControllerTest {
                 //then
                 verify(userService, times(1)).register(any(UserRegistrationRequestDto.class));
                 resultActions.andExpect(status().isCreated());
+            }
+        }
+
+        @Nested
+        @DisplayName("IllegalArgumentException 넘어온다면")
+        class Context_with_passed_over_IllegalArgumentException {
+
+            @Test
+            @DisplayName("InternalServerError를 반환한다")
+            void It_response_InternalServerError() throws Exception {
+                //given
+                final HashMap<String, Object> requestMap = new HashMap<>();
+                requestMap.put("name", "test");
+                requestMap.put("email", "test@test.com");
+                requestMap.put("age", "10");
+                requestMap.put("hobby", "test");
+
+                doThrow(new IllegalArgumentException()).when(userService).register(any(UserRegistrationRequestDto.class));
+
+                //when
+                final ResultActions resultActions = registerUserPerform(url, requestMap);
+
+                //then
+                resultActions.andExpect(status().isInternalServerError());
             }
         }
     }
