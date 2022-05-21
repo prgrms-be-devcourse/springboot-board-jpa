@@ -3,7 +3,7 @@ package org.programmers.board.entity;
 import org.programmers.board.entity.vo.Name;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class User extends BaseEntity {
     }
 
     public User(Name name, int age, String hobby) {
-        super(LocalDate.now());
+        super(LocalDateTime.now());
         this.name = name;
         this.age = age;
         this.hobby = hobby;

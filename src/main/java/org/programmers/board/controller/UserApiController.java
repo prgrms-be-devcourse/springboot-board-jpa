@@ -5,10 +5,7 @@ import org.programmers.board.entity.User;
 import org.programmers.board.entity.vo.Name;
 import org.programmers.board.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -21,7 +18,7 @@ public class UserApiController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createNewMember(UserDTO userDTO) {
+    public ResponseEntity<?> createNewMember(@RequestBody UserDTO userDTO) {
         User user = new User(new Name(userDTO.getName()), userDTO.getAge(), userDTO.getHobby());
 
         userService.createUser(user);
@@ -30,7 +27,6 @@ public class UserApiController {
                 user.getName().getName(),
                 user.getAge(),
                 user.getHobby());
-
         return ResponseEntity.ok(response);
     }
 
