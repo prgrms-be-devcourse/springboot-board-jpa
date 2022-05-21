@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import static com.example.jpaboard.exception.ErrorCode.*;
 
-@Transactional
+@Transactional(readOnly = true)
 @Service
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
@@ -42,6 +42,7 @@ public class PostServiceImpl implements PostService {
         return PostResponse.from(post);
     }
 
+    @Transactional
     @Override
     public void save(Long userId, String title, String content) {
         if (userId == null || title == null || content == null) {
@@ -53,6 +54,7 @@ public class PostServiceImpl implements PostService {
         postRepository.save(new Post(title, content, user));
     }
 
+    @Transactional
     @Override
     public PostResponse update(Long id, Long userId, String title, String content) {
         if (id == null || userId == null || title == null || content == null) {
