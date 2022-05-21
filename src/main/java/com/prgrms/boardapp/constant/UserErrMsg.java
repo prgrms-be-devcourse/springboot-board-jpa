@@ -10,7 +10,7 @@ public enum UserErrMsg {
 
     AGE_VALIDATE_ERR("나이는 음수가 될 수 없습니다");
 
-    String message;
+    private final String message;
 
     UserErrMsg(String message) {
         this.message = message;
