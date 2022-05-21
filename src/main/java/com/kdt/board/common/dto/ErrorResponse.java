@@ -4,7 +4,6 @@ import com.kdt.board.common.exception.ErrorCode;
 import org.springframework.validation.BindingResult;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ErrorResponse {
     private String message;
@@ -15,6 +14,11 @@ public class ErrorResponse {
         this.message = code.getMessage();
         this.status = code.getStatus();
         this.errors = errors;
+    }
+
+    private ErrorResponse(ErrorCode code) {
+        this.message = code.getMessage();
+        this.status = code.getStatus();
     }
 
     public String getMessage() {
@@ -31,6 +35,10 @@ public class ErrorResponse {
 
     public static ErrorResponse of(ErrorCode code, BindingResult bindingResult) {
         return new ErrorResponse(code, FieldError.of(bindingResult));
+    }
+
+    public static ErrorResponse of(ErrorCode code) {
+        return new ErrorResponse(code);
     }
 
     public static class FieldError {
@@ -63,7 +71,7 @@ public class ErrorResponse {
                             error.getField(),
                             error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
                             error.getDefaultMessage()))
-                    .collect(Collectors.toList());
+                    .toList();
         }
     }
 }

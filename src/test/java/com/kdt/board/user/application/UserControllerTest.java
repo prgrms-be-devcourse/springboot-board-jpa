@@ -127,6 +127,27 @@ public class UserControllerTest {
         }
 
         @Nested
+        @DisplayName("나이가 문자로 이루어지면")
+        class Context_with_string_age {
+
+            @ParameterizedTest
+            @ValueSource(strings = {"test", "10 1"})
+            @DisplayName("BadRequest를 응답한다.")
+            void It_response_BadRequest(String age) throws Exception {
+                //given
+                final HashMap<String, Object> requestMap = new HashMap<>();
+                requestMap.put("name", "test");
+                requestMap.put("email", age);
+
+                //when
+                final ResultActions resultActions = registerUserPerform(url, requestMap);
+
+                //then
+                resultActions.andExpect(status().isBadRequest());
+            }
+        }
+
+        @Nested
         @DisplayName("유효한 이름(필수값)과 이메일(필수값)이면")
         class Context_with_valid_name_and_email {
 
