@@ -25,7 +25,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @Transactional
 @SpringBootTest(webEnvironment = NONE)
-class PostServiceTest {
+class PostServiceImplTest {
 
     @Autowired
     PostService postService;
