@@ -5,6 +5,7 @@ import com.kdt.prgrms.board.entity.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @Table(name = "posts")
@@ -28,6 +29,17 @@ public class Post extends BaseEntity {
 
     protected Post() {
 
+    }
+
+    public boolean isSameUser(User user) {
+
+        return this.user.equals(user);
+    }
+
+    public void updatePost(String title, String content) {
+
+        this.title = title;
+        this.content = content;
     }
 
     private Post(PostBuilder builder) {
@@ -90,5 +102,30 @@ public class Post extends BaseEntity {
     public User getUser() {
 
         return user;
+    }
+
+    public long getUserId() {
+
+        return user.getId();
+    }
+
+    public String getUserName() {
+
+        return user.getName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return id == post.id;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
     }
 }
