@@ -66,4 +66,12 @@ public class User extends BaseEntity {
 
         return new UserBuilder();
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
