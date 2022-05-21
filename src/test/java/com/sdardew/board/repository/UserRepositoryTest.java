@@ -2,6 +2,7 @@ package com.sdardew.board.repository;
 
 import com.sdardew.board.domain.user.User;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,11 +41,28 @@ class UserRepositoryTest {
     user2.setCreateAt(LocalDateTime.now());
   }
 
+  @AfterEach
+  void afterEach() {
+    userRepository.deleteAll();
+  }
+
   @Test
-  @DisplayName("user 테이블 테스트")
+  @DisplayName("user 테이블 create 테스트")
   void testInsert() {
     userRepository.save(user);
     List<User> all = userRepository.findAll();
     assertThat(all.size()).isEqualTo(1);
+  }
+
+  @Test
+  @DisplayName("user 테이블 delete 테스트")
+  void testDelete() {
+    userRepository.save(user);
+    List<User> all = userRepository.findAll();
+    assertThat(all.size()).isEqualTo(1);
+
+    userRepository.deleteById(user.getId());
+    all = userRepository.findAll();
+    assertThat(all.size()).isEqualTo(0);
   }
 }
