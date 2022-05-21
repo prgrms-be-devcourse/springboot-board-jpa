@@ -26,13 +26,13 @@ public class ErrorResponse {
         return errors;
     }
 
-    private ErrorResponse(final ErrorCode code, final List<FieldError> errors) {
+    private ErrorResponse(ErrorCode code, List<FieldError> errors) {
         this.message = code.getMessage();
         this.status = code.getStatus();
         this.errors = errors;
     }
 
-    public static ErrorResponse of(final ErrorCode code, final BindingResult bindingResult) {
+    public static ErrorResponse of(ErrorCode code, BindingResult bindingResult) {
         return new ErrorResponse(code, FieldError.of(bindingResult));
     }
 
