@@ -5,47 +5,38 @@ import com.prgrms.springbootboardjpa.entity.User;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class Converter {
 
     public Post convertToPostEntity(PostDto postDto) {
         Post post = new Post(
-            postDto.getId(),
             postDto.getTitle(),
-            postDto.getContent(),
-            this.convertToUserEntity(postDto.getAuthor()
-            ));
+            postDto.getContent()
+            );
+
+        post.setAuthor(this.convertToUserEntity(postDto.getUserDto()));
         post.setCreatedAt(LocalDateTime.now());
-        post.setCreatedBy(postDto.getAuthor().getName());
+        post.setCreatedBy(postDto.getUserDto().getName());
 
         return post;
     }
 
     public User convertToUserEntity(UserDto userDto) {
-        List<Post> posts = userDto.getPosts()
-            .stream()
-            .map(this::convertToPostEntity)
-            .collect(Collectors.toList());
-
-        return new User(userDto.getId(), userDto.getName(), userDto.getAge(), userDto.getHobby(),
-            posts);
+        return new User(userDto.getName(), userDto.getAge(), userDto.getHobby());
     }
 
     public PostDto convertToPostDto(Post post) {
 
-        return new PostDto(post.getId(), post.getTitle(), post.getContent(),
+        return new PostDto(post.getTitle(), post.getContent(),
             this.convertToUserDto(post.getAuthor()));
     }
 
     public UserDto convertToUserDto(User user) {
-        List<PostDto> posts = user.getPosts()
-            .stream()
-            .map(this::convertToPostDto)
-            .collect(Collectors.toList());
-
-        return new UserDto(user.getId(), user.getName(), user.getAge(), user.getHobby(), posts);
+        return new UserDto( user.getName(), user.getAge(), user.getHobby());
     }
 
 

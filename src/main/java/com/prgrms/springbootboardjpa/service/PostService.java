@@ -6,6 +6,7 @@ import com.prgrms.springbootboardjpa.dto.PostDto;
 import com.prgrms.springbootboardjpa.entity.Post;
 import com.prgrms.springbootboardjpa.repository.PostRepository;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 public class PostService {
 
     PostRepository postRepository;
@@ -41,7 +43,8 @@ public class PostService {
 
     @Transactional
     public Long save(PostDto postDto) {
-        Post save = postRepository.save(converter.convertToPostEntity(postDto));
+        Post post = converter.convertToPostEntity(postDto);
+        Post save = postRepository.save(post);
         return save.getId();
     }
 

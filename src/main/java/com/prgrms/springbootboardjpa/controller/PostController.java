@@ -2,11 +2,14 @@ package com.prgrms.springbootboardjpa.controller;
 
 
 import com.prgrms.springbootboardjpa.dto.ApiResponse;
+import com.prgrms.springbootboardjpa.dto.ContentDto;
 import com.prgrms.springbootboardjpa.dto.PostDto;
 import com.prgrms.springbootboardjpa.service.PostService;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -37,7 +40,7 @@ public class PostController {
     @PostMapping("/posts")
     public ApiResponse<Long> createPost(@RequestBody PostDto postDto) {
         Long save = postService.save(postDto);
-        return ApiResponse.ok(save);
+        return ApiResponse.created(save);
     }
 
     @GetMapping("/posts")
@@ -54,8 +57,8 @@ public class PostController {
 
     @PatchMapping("/posts/{postId}")
     public ApiResponse<Long> updatePostContent(@PathVariable Long postId,
-        @RequestBody String content) throws NotFoundException {
-        Long update = postService.updateContent(postId, content);
+        @RequestBody ContentDto contentDto) throws NotFoundException {
+        Long update = postService.updateContent(postId, contentDto.content());
         return ApiResponse.ok(update);
     }
 

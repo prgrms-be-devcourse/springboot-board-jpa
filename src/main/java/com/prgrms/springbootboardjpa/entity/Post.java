@@ -1,5 +1,6 @@
 package com.prgrms.springbootboardjpa.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,16 +13,17 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "post")
+@ToString
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="POST_SEQ_GEN")
     private Long id;
 
     private String title;
@@ -29,16 +31,21 @@ public class Post extends BaseEntity {
     @Lob
     private String content;
 
+    public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User author;
+
 
     public void setAuthor(User user) {
         if (this.author != null) {
             this.author.getPosts().remove(this);
         }
-        this.author = author;
+        this.author = user;
         user.getPosts().add(this);
     }
 

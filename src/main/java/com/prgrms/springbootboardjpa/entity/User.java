@@ -1,6 +1,8 @@
 package com.prgrms.springbootboardjpa.entity;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,16 +12,17 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user")
+@ToString
 public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="USER_SEQ_GEN")
     private Long id;
 
     private String name;
@@ -28,8 +31,15 @@ public class User extends BaseEntity {
 
     private String hobby;
 
-    @OneToMany(mappedBy = "author", orphanRemoval = true)
-    private List<Post> posts;
+    public User( String name, int age, String hobby) {
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+    }
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
 
     public void addPost(Post post) {
         post.setAuthor(this);
