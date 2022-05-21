@@ -3,6 +3,8 @@ package com.sdardew.board.service;
 import com.sdardew.board.domain.post.CreatePostDto;
 import com.sdardew.board.domain.post.Post;
 import com.sdardew.board.domain.post.PostDto;
+import com.sdardew.board.domain.post.UpdatePostDto;
+import com.sdardew.board.domain.user.User;
 import com.sdardew.board.repository.PostRepository;
 import com.sdardew.board.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -53,5 +55,16 @@ public class PostService {
     newPost.setCreateAt(LocalDateTime.now());
     newPost.setUser(userRepository.getById(createPostDto.getUserId()));
     return newPost;
+  }
+
+  @Transactional
+  public PostDto updatePost(Long id, UpdatePostDto updatePostDto) {
+    Optional<Post> found = postRepository.findById(id);
+    if(found.isEmpty()) throw new NoSuchElementException("존재하지 않는 post 입니다");
+    Post oldPost = found.get();
+    oldPost.setTitle(updatePostDto.getTitle());
+    oldPost.setContent(updatePostDto.getContent());
+    Post save = postRepository.save(oldPost);
+    return save.toPostDto();
   }
 }

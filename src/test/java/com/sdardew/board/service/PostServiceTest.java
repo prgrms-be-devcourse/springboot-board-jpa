@@ -3,6 +3,7 @@ package com.sdardew.board.service;
 import com.sdardew.board.domain.post.CreatePostDto;
 import com.sdardew.board.domain.post.Post;
 import com.sdardew.board.domain.post.PostDto;
+import com.sdardew.board.domain.post.UpdatePostDto;
 import com.sdardew.board.domain.user.User;
 import com.sdardew.board.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -52,5 +53,20 @@ class PostServiceTest {
     PostDto created = postService.createPost(newPost);
     postService.getPost(created .getId());
     assertThat(created.getTitle()).isEqualTo("title1");
+  }
+
+  @Test
+  @Transactional
+  @DisplayName("Post를 updaste할 수 있다")
+  void testUpdatePost() {
+    userRepository.save(user);
+    PostDto created = postService.createPost(newPost);
+    PostDto oldPost = postService.getPost(created.getId());
+
+    UpdatePostDto updatePost = new UpdatePostDto("new-title", "new=content");
+    postService.updatePost(oldPost.getId(), updatePost);
+
+    PostDto post = postService.getPost(oldPost.getId());
+    assertThat(post.getTitle()).isEqualTo(updatePost.getTitle());
   }
 }

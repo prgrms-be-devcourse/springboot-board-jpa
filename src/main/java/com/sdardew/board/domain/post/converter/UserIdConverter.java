@@ -16,12 +16,6 @@ public class UserIdConverter implements AttributeConverter<User, Long> {
   @Autowired
   private UserRepository userRepository;
 
-//  public UserIdConverter(UserRepository userRepository) {
-//    this.userRepository = userRepository;
-//  }
-
-
-
   @Override
   public Long convertToDatabaseColumn(User user) {
     return user.getId();
