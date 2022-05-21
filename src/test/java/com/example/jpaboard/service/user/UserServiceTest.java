@@ -44,7 +44,7 @@ class UserServiceTest {
         try {
             userId.set(user, id);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
     }
 

@@ -66,13 +66,13 @@ class PostServiceTest {
         try {
             postId.set(post, 1L);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
 
         try {
             userId.set(user, 1L);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
     }
 
