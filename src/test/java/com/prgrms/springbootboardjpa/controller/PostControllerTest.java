@@ -60,7 +60,6 @@ class PostControllerTest {
     UserRepository userRepository;
 
 
-
     @AfterAll
     void close() {
         postRepository.deleteAll();
@@ -77,7 +76,6 @@ class PostControllerTest {
         PostDto postDto = new PostDto("my-post", "this is my first post.",
             userDto);
 
-
         mockMvc.perform(post("/posts")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(postDto)))
@@ -88,9 +86,12 @@ class PostControllerTest {
                     fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
                     fieldWithPath("content").type(JsonFieldType.STRING).description("title"),
                     fieldWithPath("userDto").type(JsonFieldType.OBJECT).description("userDto"),
-                    fieldWithPath("userDto.name").type(JsonFieldType.STRING).description("userDto.name"),
-                    fieldWithPath("userDto.age").type(JsonFieldType.NUMBER).description("userDto.age"),
-                    fieldWithPath("userDto.hobby").type(JsonFieldType.STRING).description("userDto.hobby")
+                    fieldWithPath("userDto.name").type(JsonFieldType.STRING)
+                        .description("userDto.name"),
+                    fieldWithPath("userDto.age").type(JsonFieldType.NUMBER)
+                        .description("userDto.age"),
+                    fieldWithPath("userDto.hobby").type(JsonFieldType.STRING)
+                        .description("userDto.hobby")
 
                 ),
                 responseFields(
@@ -115,34 +116,59 @@ class PostControllerTest {
                 responseFields(
                     fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태코드"),
                     fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
-                    fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("title"),
-                    fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("content"),
-                    fieldWithPath("data.content[].userDto").type(JsonFieldType.OBJECT).description("userDto"),
-                    fieldWithPath("data.content[].userDto.name").type(JsonFieldType.STRING).description("userDto.name"),
-                    fieldWithPath("data.content[].userDto.age").type(JsonFieldType.NUMBER).description("userDto.age"),
-                    fieldWithPath("data.content[].userDto.hobby").type(JsonFieldType.STRING).description("userDto.hobby"),
-                    fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("data.pageable"),
-                    fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("data.pageable.sort"),
-                    fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("data.pageable.sort.empty"),
-                    fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("data.pageable.sort.sorted"),
-                    fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("data.pageable.sort.unsorted"),
-                    fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("data.pageable.offset"),
-                    fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER).description("data.pageable.pageNumber"),
-                    fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER).description("data.pageable.pageSize"),
-                    fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("data.pageable.paged"),
-                    fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("data.pageable.unpaged"),
+                    fieldWithPath("data.content[].title").type(JsonFieldType.STRING)
+                        .description("title"),
+                    fieldWithPath("data.content[].content").type(JsonFieldType.STRING)
+                        .description("content"),
+                    fieldWithPath("data.content[].userDto").type(JsonFieldType.OBJECT)
+                        .description("userDto"),
+                    fieldWithPath("data.content[].userDto.name").type(JsonFieldType.STRING)
+                        .description("userDto.name"),
+                    fieldWithPath("data.content[].userDto.age").type(JsonFieldType.NUMBER)
+                        .description("userDto.age"),
+                    fieldWithPath("data.content[].userDto.hobby").type(JsonFieldType.STRING)
+                        .description("userDto.hobby"),
+                    fieldWithPath("data.pageable").type(JsonFieldType.OBJECT)
+                        .description("data.pageable"),
+                    fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT)
+                        .description("data.pageable.sort"),
+                    fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN)
+                        .description("data.pageable.sort.empty"),
+                    fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN)
+                        .description("data.pageable.sort.sorted"),
+                    fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN)
+                        .description("data.pageable.sort.unsorted"),
+                    fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER)
+                        .description("data.pageable.offset"),
+                    fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER)
+                        .description("data.pageable.pageNumber"),
+                    fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER)
+                        .description("data.pageable.pageSize"),
+                    fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN)
+                        .description("data.pageable.paged"),
+                    fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN)
+                        .description("data.pageable.unpaged"),
                     fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("data.last"),
-                    fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("data.totalPages"),
-                    fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("data.totalElements"),
+                    fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER)
+                        .description("data.totalPages"),
+                    fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER)
+                        .description("data.totalElements"),
                     fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("data.size"),
-                    fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("data.number"),
+                    fieldWithPath("data.number").type(JsonFieldType.NUMBER)
+                        .description("data.number"),
                     fieldWithPath("data.sort").type(JsonFieldType.OBJECT).description("data.sort"),
-                    fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("data.sort.empty"),
-                    fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("data.sort.sorted"),
-                    fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("data.sort.unsorted"),
-                    fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("data.numberOfElements"),
-                    fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("data.first"),
-                    fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("data.empty"),
+                    fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN)
+                        .description("data.sort.empty"),
+                    fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN)
+                        .description("data.sort.sorted"),
+                    fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN)
+                        .description("data.sort.unsorted"),
+                    fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER)
+                        .description("data.numberOfElements"),
+                    fieldWithPath("data.first").type(JsonFieldType.BOOLEAN)
+                        .description("data.first"),
+                    fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN)
+                        .description("data.empty"),
                     fieldWithPath("timestamp").type(JsonFieldType.STRING).description("응답시간")
                 )
             ));
@@ -163,9 +189,12 @@ class PostControllerTest {
                     fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
                     fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
                     fieldWithPath("data.userDto").type(JsonFieldType.OBJECT).description("userDto"),
-                    fieldWithPath("data.userDto.name").type(JsonFieldType.STRING).description("userDto.name"),
-                    fieldWithPath("data.userDto.age").type(JsonFieldType.NUMBER).description("userDto.age"),
-                    fieldWithPath("data.userDto.hobby").type(JsonFieldType.STRING).description("userDto.hobby"),
+                    fieldWithPath("data.userDto.name").type(JsonFieldType.STRING)
+                        .description("userDto.name"),
+                    fieldWithPath("data.userDto.age").type(JsonFieldType.NUMBER)
+                        .description("userDto.age"),
+                    fieldWithPath("data.userDto.hobby").type(JsonFieldType.STRING)
+                        .description("userDto.hobby"),
                     fieldWithPath("timestamp").type(JsonFieldType.STRING).description("응답시간")
                 )
             ));
@@ -200,9 +229,9 @@ class PostControllerTest {
         assertThat(userRepository.findAll().size(), is(1));
         assertThat(postRepository.findAll().size(), is(1));
         assertThat(userRepository.findById(1L).get().getPosts().size(), is(1));
-        log.info("id: {}" , postRepository.findAll().get(0).getId());
-        log.info("id: {}" , userRepository.findAll().get(0).getId());
-        log.info("content: {}" , postRepository.findById(1L).get().getContent());
+        log.info("id: {}", postRepository.findAll().get(0).getId());
+        log.info("id: {}", userRepository.findAll().get(0).getId());
+        log.info("content: {}", postRepository.findById(1L).get().getContent());
 
 
     }

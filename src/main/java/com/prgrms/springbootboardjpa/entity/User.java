@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -22,7 +21,7 @@ import lombok.ToString;
 public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="USER_SEQ_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GEN")
     private Long id;
 
     private String name;
@@ -31,7 +30,7 @@ public class User extends BaseEntity {
 
     private String hobby;
 
-    public User( String name, int age, String hobby) {
+    public User(String name, int age, String hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;

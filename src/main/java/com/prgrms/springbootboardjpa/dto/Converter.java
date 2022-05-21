@@ -3,8 +3,6 @@ package com.prgrms.springbootboardjpa.dto;
 import com.prgrms.springbootboardjpa.entity.Post;
 import com.prgrms.springbootboardjpa.entity.User;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +14,7 @@ public class Converter {
         Post post = new Post(
             postDto.getTitle(),
             postDto.getContent()
-            );
+        );
 
         post.setAuthor(this.convertToUserEntity(postDto.getUserDto()));
         post.setCreatedAt(LocalDateTime.now());
@@ -36,7 +34,7 @@ public class Converter {
     }
 
     public UserDto convertToUserDto(User user) {
-        return new UserDto( user.getName(), user.getAge(), user.getHobby());
+        return new UserDto(user.getName(), user.getAge(), user.getHobby());
     }
 
 
