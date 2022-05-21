@@ -1,6 +1,6 @@
 package com.example.jpaboard.service.post;
 
-import com.example.jpaboard.service.post.dto.PostResponse;
+import com.example.jpaboard.service.dto.post.PostResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -23,7 +23,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse update(Long id, String title, String content) {
+    public PostResponse update(Long id, Long userId, String title, String content) {
         return null;
     }
 }

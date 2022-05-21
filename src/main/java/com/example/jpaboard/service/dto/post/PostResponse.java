@@ -1,4 +1,4 @@
-package com.example.jpaboard.service.post.dto;
+package com.example.jpaboard.service.dto.post;
 
 import java.time.LocalDateTime;
 
