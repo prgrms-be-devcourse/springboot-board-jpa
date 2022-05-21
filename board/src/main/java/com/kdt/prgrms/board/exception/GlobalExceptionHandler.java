@@ -14,10 +14,19 @@ public class GlobalExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler({MethodArgumentNotValidException.class, IllegalArgumentException.class})
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentValidException() {
 
         logger.error("MethodArgumentValidException : {}", INVALID_INPUT_REQUEST.getMessage());
+        ResponseEntity<ErrorResponse> result = ErrorResponse.toResponseEntity(INVALID_INPUT_REQUEST);
+
+        return ErrorResponse.toResponseEntity(INVALID_INPUT_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException() {
+
+        logger.error("IllegalArgumentException : {}", INVALID_INPUT_REQUEST.getMessage());
         ResponseEntity<ErrorResponse> result = ErrorResponse.toResponseEntity(INVALID_INPUT_REQUEST);
 
         return ErrorResponse.toResponseEntity(INVALID_INPUT_REQUEST);
