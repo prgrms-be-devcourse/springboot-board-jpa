@@ -27,6 +27,14 @@ public class User extends BaseEntity {
     private Integer age;
     private String hobby;
 
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     protected User() {
     }
 
