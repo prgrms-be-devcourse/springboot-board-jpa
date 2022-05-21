@@ -2,10 +2,10 @@ package com.kdt.board.user.application.dto.request;
 
 public class UserRegistrationRequestDto {
 
-    private String name;
-    private String email;
-    private int age;
-    private String hobby;
+    private final String name;
+    private final String email;
+    private final int age;
+    private final String hobby;
 
     private UserRegistrationRequestDto(Builder builder) {
         this.name = builder.name;
