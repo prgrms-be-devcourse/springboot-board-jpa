@@ -71,3 +71,7 @@ include::{snippets}/showPostPaged/request-parameters.adoc[]
 include::{snippets}/showPostPaged/http-response.adoc[]
 include::{snippets}/showPostPaged/response-body.adoc[]
 include::{snippets}/showPostPaged/response-fields.adoc[]
+
+=== 에러 코드
+
+include::./errors.adoc[]
