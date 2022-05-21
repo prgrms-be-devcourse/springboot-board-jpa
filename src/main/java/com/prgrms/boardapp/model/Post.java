@@ -2,16 +2,16 @@ package com.prgrms.boardapp.model;
 
 import com.prgrms.boardapp.constants.PostErrMsg;
 import com.prgrms.boardapp.utils.CommonValidate;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+
+import javax.persistence.*;
+
+import lombok.Builder;
 import org.springframework.util.Assert;
 
+import java.util.Objects;
+
 @Entity
+@Builder
 public class Post {
     @Id
     @GeneratedValue(
@@ -31,27 +31,28 @@ public class Post {
     @Embedded
     private CommonEmbeddable commonEmbeddable;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
     public static final int TITLE_MAX_LENGTH = 100;
 
     protected Post() {
     }
 
-    public Post(Long id, String title, String content, CommonEmbeddable commonEmbeddable) {
+    public Post(Long id, String title, String content, CommonEmbeddable commonEmbeddable, User user) {
         this.validateTitle(title);
         CommonValidate.validateNotNullString(content);
         this.id = id;
         this.title = title;
         this.content = content;
         this.commonEmbeddable = commonEmbeddable;
+        this.user = user;
     }
 
     private void validateTitle(String title) {
         CommonValidate.validateNotNullString(title);
         Assert.isTrue(title.length() <= TITLE_MAX_LENGTH, PostErrMsg.TITLE_LENGTH_ERR_MSG.getMessage());
-    }
-
-    public static PostBuilder builder() {
-        return new PostBuilder();
     }
 
     public Long getId() {
@@ -70,41 +71,15 @@ public class Post {
         return this.commonEmbeddable;
     }
 
-    public static class PostBuilder {
-        private Long id;
-        private String title;
-        private String content;
-        private CommonEmbeddable commonEmbeddable;
+    public User getUser() {
+        return user;
+    }
 
-        PostBuilder() {
+    public void changeUser(User user) {
+        if (Objects.nonNull(this.user)) {
+            this.user.getPosts().remove(this);
         }
-
-        public PostBuilder id(final Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public PostBuilder title(final String title) {
-            this.title = title;
-            return this;
-        }
-
-        public PostBuilder content(final String content) {
-            this.content = content;
-            return this;
-        }
-
-        public PostBuilder commonEmbeddable(final CommonEmbeddable commonEmbeddable) {
-            this.commonEmbeddable = commonEmbeddable;
-            return this;
-        }
-
-        public Post build() {
-            return new Post(this.id, this.title, this.content, this.commonEmbeddable);
-        }
-
-        public String toString() {
-            return "PostBuilder(id=" + this.id + ", title=" + this.title + ", content=" + this.content + ", commonEmbeddable=" + this.commonEmbeddable + ")";
-        }
+        this.user = user;
+        user.getPosts().add(this);
     }
 }

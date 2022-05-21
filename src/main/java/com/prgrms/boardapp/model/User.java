@@ -1,18 +1,15 @@
 package com.prgrms.boardapp.model;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.prgrms.boardapp.constants.UserErrMsg;
+import lombok.Builder;
 import org.springframework.util.Assert;
 
 import static com.prgrms.boardapp.utils.CommonValidate.validateNotNullString;
 
 @Entity
+@Builder
 public class User {
     @Id
     @GeneratedValue(
@@ -31,6 +28,8 @@ public class User {
     private String hobby;
     @Embedded
     private CommonEmbeddable commonEmbeddable;
+    @Embedded
+    private Posts posts;
 
     public static final int NAME_MAX_LENGTH = 50;
     public static final int AGE_MIN = 0;
@@ -38,14 +37,15 @@ public class User {
     protected User() {
     }
 
-    public User(Long id, String name, Integer age, String hobby, CommonEmbeddable commonEmbeddable) {
+    public User(Long id, String name, Integer age, String hobby, CommonEmbeddable commonEmbeddable, Posts posts) {
         this.validateName(name);
         this.validateAge(age);
         this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        this.commonEmbeddable = commonEmbeddable;
+        this.commonEmbeddable = (commonEmbeddable == null) ? CommonEmbeddable.builder().build() : commonEmbeddable;
+        this.posts = (posts == null) ? new Posts() : posts;
     }
 
     private void validateAge(Integer age) {
@@ -55,10 +55,6 @@ public class User {
     private void validateName(String name) {
         validateNotNullString(name);
         Assert.isTrue(name.length() <= NAME_MAX_LENGTH, UserErrMsg.NAME_LENGTH_ERR_MSG.getMessage());
-    }
-
-    public static UserBuilder builder() {
-        return new UserBuilder();
     }
 
     public Long getId() {
@@ -77,51 +73,15 @@ public class User {
         return this.hobby;
     }
 
+    public Posts getPosts() {
+        return posts;
+    }
+
     public CommonEmbeddable getCommonEmbeddable() {
         return this.commonEmbeddable;
     }
 
-    public static class UserBuilder {
-        private Long id;
-        private String name;
-        private Integer age;
-        private String hobby;
-        private CommonEmbeddable commonEmbeddable;
-
-        UserBuilder() {
-        }
-
-        public UserBuilder id(final Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public UserBuilder name(final String name) {
-            this.name = name;
-            return this;
-        }
-
-        public UserBuilder age(final Integer age) {
-            this.age = age;
-            return this;
-        }
-
-        public UserBuilder hobby(final String hobby) {
-            this.hobby = hobby;
-            return this;
-        }
-
-        public UserBuilder commonEmbeddable(final CommonEmbeddable commonEmbeddable) {
-            this.commonEmbeddable = commonEmbeddable;
-            return this;
-        }
-
-        public User build() {
-            return new User(this.id, this.name, this.age, this.hobby, this.commonEmbeddable);
-        }
-
-        public String toString() {
-            return "UserBuilder(id=" + this.id + ", name=" + this.name + ", age=" + this.age + ", hobby=" + this.hobby + ", commonEmbeddable=" + this.commonEmbeddable + ")";
-        }
+    public void createPost(Post post) {
+        post.changeUser(this);
     }
 }

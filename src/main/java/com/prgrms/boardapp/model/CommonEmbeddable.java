@@ -1,13 +1,11 @@
 package com.prgrms.boardapp.model;
 
-import java.time.LocalDateTime;
+import com.prgrms.boardapp.constants.UserErrMsg;
+import org.springframework.util.Assert;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-
-import com.prgrms.boardapp.constants.UserErrMsg;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.util.Assert;
+import java.time.LocalDateTime;
 
 @Embeddable
 public class CommonEmbeddable {
@@ -15,11 +13,10 @@ public class CommonEmbeddable {
             length = 50
     )
     private String createdBy;
+
     @Column(
             columnDefinition = "TIMESTAMP"
     )
-    @CreatedDate
-    @LastModifiedDate
     private LocalDateTime createdAt;
 
     public static final int CREATED_BY_MAX_LENGTH = 50;
@@ -30,11 +27,29 @@ public class CommonEmbeddable {
     public CommonEmbeddable(String createdBy, LocalDateTime createdAt) {
         this.validateCreatedBy(createdBy);
         this.createdBy = createdBy;
-        this.createdAt = createdAt;
+        this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
     }
 
     private void validateCreatedBy(String createdBy) {
-        Assert.isTrue(createdBy.length() <= CREATED_BY_MAX_LENGTH, UserErrMsg.CREATED_LENGTH_ERR_MSG.getMessage());
+        if (createdBy != null)
+            Assert.isTrue(createdBy.length() <= CREATED_BY_MAX_LENGTH, UserErrMsg.CREATED_LENGTH_ERR_MSG.getMessage());
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public static int getCreatedByMaxLength() {
+        return CREATED_BY_MAX_LENGTH;
+    }
+
+    @Override
+    public String toString() {
+        return "CommonEmbeddable{" + "createdBy=" + createdBy + ", createdAt=" + createdAt + '}';
     }
 
     public static CommonEmbeddableBuilder builder() {
@@ -60,10 +75,6 @@ public class CommonEmbeddable {
 
         public CommonEmbeddable build() {
             return new CommonEmbeddable(this.createdBy, this.createdAt);
-        }
-
-        public String toString() {
-            return "CommonEmbeddableBuilder(createdBy=" + this.createdBy + ", createdAt=" + this.createdAt + ")";
         }
     }
 }
