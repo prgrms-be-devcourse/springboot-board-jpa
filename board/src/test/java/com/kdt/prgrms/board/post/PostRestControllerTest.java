@@ -127,7 +127,14 @@ public class PostRestControllerTest {
 
         final String url = "/api/v1/posts";
 
-        final List<PostResponse> response = List.of(new PostResponse(1, "jahee", 1, "title", "content"));
+        final List<PostResponse> response = List.of(PostResponse.builder()
+                .userId(1)
+                .postId(1)
+                .userName("jahee")
+                .title("title")
+                .content( "content")
+                .build()
+        );
 
         @Nested
         @DisplayName("get요청을 받으면")
@@ -175,7 +182,13 @@ public class PostRestControllerTest {
 
             long id = 1;
             final String url = "/api/v1/posts/1";
-            final PostResponse response = new PostResponse(1, "jahee", 1, "title", "content");
+            final PostResponse response = PostResponse.builder()
+                    .userId(1)
+                    .postId(1)
+                    .userName("jahee")
+                    .title("title")
+                    .content( "content")
+                    .build();
 
             @Test
             @DisplayName("해당 Post를 json형태로 반환한다.")
