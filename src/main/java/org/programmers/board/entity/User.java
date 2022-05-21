@@ -1,6 +1,6 @@
 package org.programmers.board.entity;
 
-import org.programmers.board.entity.vo.UserName;
+import org.programmers.board.entity.vo.Name;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ public class User extends BaseEntity {
     private Long id;
 
     @Embedded
-    private UserName userName;
+    private Name name;
 
     private int age;
 
@@ -30,9 +30,9 @@ public class User extends BaseEntity {
 
     }
 
-    public User(UserName userName, int age, String hobby) {
+    public User(Name name, int age, String hobby) {
         super(LocalDate.now());
-        this.userName = userName;
+        this.name = name;
         this.age = age;
         this.hobby = hobby;
     }
@@ -45,8 +45,8 @@ public class User extends BaseEntity {
         return id;
     }
 
-    public UserName getUserName() {
-        return userName;
+    public Name getName() {
+        return name;
     }
 
     public int getAge() {

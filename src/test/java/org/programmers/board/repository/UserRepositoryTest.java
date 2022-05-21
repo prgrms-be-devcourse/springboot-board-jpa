@@ -3,7 +3,7 @@ package org.programmers.board.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.programmers.board.entity.User;
-import org.programmers.board.entity.vo.UserName;
+import org.programmers.board.entity.vo.Name;
 import org.programmers.board.exception.TooLongNameException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -26,13 +26,13 @@ class UserRepositoryTest {
     @Test
     @DisplayName("User 저장")
     void saveUser() {
-        User user = new User(new UserName("지웅"), 27, "독서");
+        User user = new User(new Name("지웅"), 27, "독서");
 
         User savedUser = userRepository.save(user);
 
         assertAll(
                 () -> assertThat(savedUser.getId()).isNotNull(),
-                () -> assertThat(savedUser.getUserName().getName()).isEqualTo(user.getUserName().getName()),
+                () -> assertThat(savedUser.getName().getName()).isEqualTo(user.getName().getName()),
                 () -> assertThat(savedUser.getAge()).isEqualTo(user.getAge()),
                 () -> assertThat(savedUser.getHobby()).isEqualTo(user.getHobby())
         );
@@ -43,7 +43,7 @@ class UserRepositoryTest {
     void savedUserFailedByBlank() {
 
         assertThatThrownBy(() ->
-                userRepository.save(new User(new UserName(""), 27, "독서")))
+                userRepository.save(new User(new Name(""), 27, "독서")))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("이름은 공백일 수 없습니다.");
     }
@@ -53,7 +53,7 @@ class UserRepositoryTest {
     void savedUserFailedByLength() {
 
         assertThatThrownBy(() ->
-                userRepository.save(new User(new UserName("엄청나게긴유저네임을입력했다그래서실패한다."), 27, "독서")))
+                userRepository.save(new User(new Name("엄청나게긴유저네임을입력했다그래서실패한다."), 27, "독서")))
                 .isInstanceOf(TooLongNameException.class)
                 .hasMessageContaining("이름이 너무 깁니다. 15자 이하로 해주세요.");
     }
@@ -61,7 +61,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("전체조회 테스트")
     void findAllUser() {
-        User user = new User(new UserName("지웅"), 27, "독서");
+        User user = new User(new Name("지웅"), 27, "독서");
         userRepository.save(user);
 
         List<User> all = userRepository.findAll();
@@ -69,7 +69,7 @@ class UserRepositoryTest {
         assertAll(
                 () -> assertThat(all).hasSize(1),
                 () -> assertThat(all.get(0).getId()).isNotNull(),
-                () -> assertThat(all.get(0).getUserName().getName()).isEqualTo(user.getUserName().getName()),
+                () -> assertThat(all.get(0).getName().getName()).isEqualTo(user.getName().getName()),
                 () -> assertThat(all.get(0).getAge()).isEqualTo(user.getAge()),
                 () -> assertThat(all.get(0).getHobby()).isEqualTo(user.getHobby())
         );
@@ -78,7 +78,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("ID로 유저 조회")
     void findByIdTest() {
-        User user = new User(new UserName("지웅"), 27, "독서");
+        User user = new User(new Name("지웅"), 27, "독서");
         userRepository.save(user);
 
         User savedUser = userRepository.findById(user.getId()).orElseThrow(
@@ -87,7 +87,7 @@ class UserRepositoryTest {
 
         assertAll(
                 () -> assertThat(savedUser.getId()).isNotNull(),
-                () -> assertThat(savedUser.getUserName().getName()).isEqualTo(user.getUserName().getName()),
+                () -> assertThat(savedUser.getName().getName()).isEqualTo(user.getName().getName()),
                 () -> assertThat(savedUser.getAge()).isEqualTo(user.getAge()),
                 () -> assertThat(savedUser.getHobby()).isEqualTo(user.getHobby())
         );
@@ -96,7 +96,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("유저 삭제 테스트")
     void deleteTest() {
-        User user = new User(new UserName("지웅"), 27, "독서");
+        User user = new User(new Name("지웅"), 27, "독서");
         userRepository.save(user);
 
         userRepository.deleteById(user.getId());

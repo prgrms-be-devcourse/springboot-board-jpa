@@ -7,15 +7,16 @@ import javax.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public class UserName {
+public class Name {
 
     @Column(nullable = false, length = 15)
     private String name;
 
-    protected UserName() {
+    protected Name() {
     }
 
-    public UserName(String name) {
+    public Name(String name) {
+        System.out.println(name);
         validateUserName(name);
         this.name = name;
     }
@@ -37,8 +38,8 @@ public class UserName {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserName)) return false;
-        UserName userName = (UserName) o;
+        if (!(o instanceof Name)) return false;
+        Name userName = (Name) o;
         return Objects.equals(name, userName.name);
     }
 
