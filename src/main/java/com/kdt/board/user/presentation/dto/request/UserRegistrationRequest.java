@@ -20,7 +20,7 @@ public class UserRegistrationRequest {
 
     private String hobby;
 
-    protected UserRegistrationRequest() {
+    private UserRegistrationRequest() {
     }
 
     public String getName() {

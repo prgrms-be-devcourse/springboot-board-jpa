@@ -11,7 +11,10 @@ public class ErrorResponse {
     private int status;
     private List<FieldError> errors;
 
-    protected ErrorResponse() {
+    private ErrorResponse(ErrorCode code, List<FieldError> errors) {
+        this.message = code.getMessage();
+        this.status = code.getStatus();
+        this.errors = errors;
     }
 
     public String getMessage() {
@@ -26,12 +29,6 @@ public class ErrorResponse {
         return errors;
     }
 
-    private ErrorResponse(ErrorCode code, List<FieldError> errors) {
-        this.message = code.getMessage();
-        this.status = code.getStatus();
-        this.errors = errors;
-    }
-
     public static ErrorResponse of(ErrorCode code, BindingResult bindingResult) {
         return new ErrorResponse(code, FieldError.of(bindingResult));
     }
@@ -41,7 +38,10 @@ public class ErrorResponse {
         private String value;
         private String reason;
 
-        protected FieldError() {
+        public FieldError(String field, String value, String reason) {
+            this.field = field;
+            this.value = value;
+            this.reason = reason;
         }
 
         public String getField() {
@@ -54,12 +54,6 @@ public class ErrorResponse {
 
         public String getReason() {
             return reason;
-        }
-
-        public FieldError(String field, String value, String reason) {
-            this.field = field;
-            this.value = value;
-            this.reason = reason;
         }
 
         private static List<FieldError> of(BindingResult bindingResult) {
