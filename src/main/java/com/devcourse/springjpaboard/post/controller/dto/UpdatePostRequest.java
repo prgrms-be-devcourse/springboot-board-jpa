@@ -1,4 +1,4 @@
 package com.devcourse.springjpaboard.post.controller.dto;
 
-public record UpdatePostRequest(Long postId, String title, String content) {
+public record UpdatePostRequest(String title, String content) {
 }

@@ -1,4 +1,4 @@
-package com.devcourse.springjpaboard.error;
+package com.devcourse.springjpaboard.exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

@@ -2,9 +2,7 @@ package com.devcourse.springjpaboard.model.user;
 
 import com.devcourse.springjpaboard.model.BaseEntity;
 import com.devcourse.springjpaboard.model.post.Post;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -29,7 +27,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String hobby;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Post> posts = new ArrayList<>();
 
     public void addPost(Post post) {

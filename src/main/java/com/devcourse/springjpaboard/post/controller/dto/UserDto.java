@@ -1,4 +1,4 @@
 package com.devcourse.springjpaboard.post.controller.dto;
 
-public record UserDto(String name, String hobby, int age) {
+public record UserDto(Long id, String name, int age, String hobby) {
 }

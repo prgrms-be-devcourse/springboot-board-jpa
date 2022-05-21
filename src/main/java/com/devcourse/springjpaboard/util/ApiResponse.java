@@ -23,6 +23,7 @@ public class ApiResponse<T> {
     public ApiResponse(int statusCode, T data) {
         this.statusCode = statusCode;
         this.data = data;
+        this.serverDateTime = LocalDateTime.now();
     }
 
     public static <T> ApiResponse<T> ok(HttpStatus status, T data) {
