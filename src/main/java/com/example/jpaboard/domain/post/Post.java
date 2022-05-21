@@ -33,10 +33,10 @@ public class Post extends BaseTimeEntity {
     }
 
     public void update(String title, String content) {
-        if (title != null || !title.isBlank()) {
+        if (title != null && !title.isBlank()) {
             this.title = title;
         }
-        if (content != null || !content.isBlank()) {
+        if (content != null && !content.isBlank()) {
             this.content = content;
         }
     }
