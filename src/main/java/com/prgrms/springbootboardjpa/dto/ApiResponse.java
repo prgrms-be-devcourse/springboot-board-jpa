@@ -23,6 +23,11 @@ public class ApiResponse<T> {
         return new ApiResponse<>(200, data);
     }
 
+    public static <T> ApiResponse<T> created(T data) {
+        return new ApiResponse<>(201, data);
+    }
+
+
     public static <T> ApiResponse<T> fail(int code, T data) {
         return new ApiResponse<>(code, data);
     }
