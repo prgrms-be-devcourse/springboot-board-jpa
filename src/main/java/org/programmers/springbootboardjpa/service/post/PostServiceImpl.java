@@ -40,6 +40,7 @@ public class PostServiceImpl implements PostService {
         return () -> new NotFoundException(postId, "Post");
     }
 
+    //TODO: PR 포인트3, 4
     @Transactional
     @Override
     public Post editPost(PostUpdateForm postUpdateForm) {

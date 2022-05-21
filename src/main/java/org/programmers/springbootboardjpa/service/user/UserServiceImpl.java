@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserService {
         return () -> new NotFoundException(userId, "User");
     }
 
-    //TODO: PR 설명: 버전에 따라 확장하는 지금의 방식 vs 그냥 조회용 Service 따로 만들고 다소 난잡하게 관리하기
     @Transactional
     @Override
     public User modifyUserdata(UserUpdateForm userUpdateForm) {

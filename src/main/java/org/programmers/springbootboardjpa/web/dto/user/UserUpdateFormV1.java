@@ -15,7 +15,7 @@ public record UserUpdateFormV1(Long userId, String nickname, String password, St
     @Override
     public User applyToUser(User user) {
         if (!userId.equals(user.getUserId())) {
-            //TODO: PR 너무 방어적인 코드인지
+            //TODO: 너무 방어적인 코드는 아닐지
             throw new IllegalArgumentException("수정하려는 대상 ID와 주어진 ID가 불일치합니다!");
         }
         return user.update(new User(userId,

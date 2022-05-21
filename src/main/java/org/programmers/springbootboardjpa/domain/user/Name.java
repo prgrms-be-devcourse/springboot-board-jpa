@@ -16,6 +16,7 @@ import java.util.Set;
 @Access(AccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
+//TODO: PR 포인트1
 public class Name {
 
     public Name(String firstname, String lastname) {

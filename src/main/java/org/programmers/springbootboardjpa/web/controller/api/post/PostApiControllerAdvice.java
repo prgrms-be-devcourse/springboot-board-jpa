@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+//TODO: PR 포인트5
 @Slf4j
 @RestControllerAdvice(assignableTypes = PostApiController.class)
 public class PostApiControllerAdvice {

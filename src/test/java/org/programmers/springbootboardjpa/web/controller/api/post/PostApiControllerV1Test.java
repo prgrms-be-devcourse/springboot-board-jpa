@@ -144,6 +144,7 @@ class PostApiControllerV1Test {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postUpdateForm)))
                 .andExpect(status().isOk())
+                //TODO: PR 포인트6
 //                .andExpect(content().string(objectMapper.writeValueAsString(PostDtoV1.from(postService.findPostWithPostId(postId)))))
                 .andDo(print())
                 .andDo(document("editPost", updateFormRequestFieldSnippet, postResponseFieldSnippet));

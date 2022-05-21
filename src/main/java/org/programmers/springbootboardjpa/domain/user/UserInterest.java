@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class UserInterest {
-
+    //TODO: PR 포인트2
     @Id
     @GeneratedValue
     private Long userInterestId;
