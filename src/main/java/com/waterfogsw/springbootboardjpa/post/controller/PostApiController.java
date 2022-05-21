@@ -6,12 +6,10 @@ import com.waterfogsw.springbootboardjpa.post.controller.dto.PostUpdateRequest;
 import com.waterfogsw.springbootboardjpa.post.service.PostService;
 import com.waterfogsw.springbootboardjpa.post.util.PostConverter;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +31,8 @@ public class PostApiController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addPost(@RequestBody @Valid PostAddRequest postAddRequest) {
         final var post = postConverter.toEntity(postAddRequest);
-        postService.addPost(post);
+        final var userId = postAddRequest.userId();
+        postService.addPost(userId, post);
     }
 
     @PutMapping("{id}")
@@ -43,7 +42,8 @@ public class PostApiController {
             @RequestBody @Valid PostUpdateRequest postUpdateRequest
     ) {
         final var post = postConverter.toEntity(postUpdateRequest);
-        postService.updatePost(id, post);
+        final var userId = postUpdateRequest.userId();
+        postService.updatePost(userId, id, post);
     }
 
     @GetMapping("{id}")

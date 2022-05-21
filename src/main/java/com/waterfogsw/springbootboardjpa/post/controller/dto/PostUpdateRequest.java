@@ -16,6 +16,6 @@ public record PostUpdateRequest(
 
         @NotNull(message = "User Id should not be null")
         @Positive(message = "User Id should be positive number")
-        long userId
+        Long userId
 ) {
 }

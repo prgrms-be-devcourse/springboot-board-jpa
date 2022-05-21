@@ -5,11 +5,11 @@ import com.waterfogsw.springbootboardjpa.post.entity.Post;
 import java.util.List;
 
 public interface PostService {
-    void addPost(Post post);
+    void addPost(long userId, Post post);
 
-    Post getOne(long id);
+    Post getOne(long postId);
 
     List<Post> getAll();
 
-    void updatePost(long id, Post post);
+    void updatePost(long userId, long postId, Post post);
 }
