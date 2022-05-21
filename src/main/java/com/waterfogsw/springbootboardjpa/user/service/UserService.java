@@ -4,4 +4,6 @@ import com.waterfogsw.springbootboardjpa.user.entity.User;
 
 public interface UserService {
     void addUser(User User);
+
+    User getOne(long id);
 }
