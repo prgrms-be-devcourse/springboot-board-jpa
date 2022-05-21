@@ -1,9 +1,5 @@
 package com.sdardew.board.domain.post;
 
-import com.sdardew.board.domain.post.converter.UserIdConverter;
-import com.sdardew.board.domain.user.User;
-
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 public class PostDto {
@@ -32,13 +28,5 @@ public class PostDto {
 
   public String getContent() {
     return content;
-  }
-
-  public LocalDateTime getCreateAt() {
-    return createAt;
-  }
-
-  public Long getUserId() {
-    return userId;
   }
 }
