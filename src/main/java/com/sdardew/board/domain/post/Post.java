@@ -1,5 +1,6 @@
 package com.sdardew.board.domain.post;
 
+import com.sdardew.board.domain.post.converter.UserIdConverter;
 import com.sdardew.board.domain.user.User;
 
 import javax.persistence.*;
@@ -12,11 +13,19 @@ public class Post {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Id
   private Long id;
+
+  @Column(name="title")
   private String title;
+
+  @Column(name="content")
   private String content;
+
+  @Column(name="create_at")
   private LocalDateTime createAt;
-  @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
+
+  @ManyToOne
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  @Convert(converter = UserIdConverter.class)
   private User user; // user 테이블과 연관
 
   public Long getId() {
@@ -35,12 +44,9 @@ public class Post {
     return createAt;
   }
 
+  @Convert(converter = UserIdConverter.class)
   public User getUser() {
     return user;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   public void setTitle(String title) {
@@ -61,5 +67,16 @@ public class Post {
     }
     this.user = user;
     user.getPosts().add(this);
+  }
+
+  @Override
+  public String toString() {
+    return "Post{" +
+      "id=" + id +
+      ", title='" + title + '\'' +
+      ", content='" + content + '\'' +
+      ", createAt=" + createAt +
+      ", user=" + user.getId() +
+      '}';
   }
 }
