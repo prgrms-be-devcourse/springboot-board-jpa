@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.programmers.board.entity.Board;
 import org.programmers.board.entity.User;
 import org.programmers.board.entity.vo.Content;
+import org.programmers.board.entity.vo.Name;
 import org.programmers.board.entity.vo.Title;
-import org.programmers.board.entity.vo.UserName;
 import org.programmers.board.exception.EmptyContentException;
 import org.programmers.board.exception.EmptyTitleException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ class BoardRepositoryTest {
 
     @BeforeEach
     void setUser() {
-        user = new User(new UserName("wisehero"), 27, "coding");
+        user = new User(new Name("wisehero"), 27, "coding");
         userRepository.save(user);
     }
 
@@ -111,8 +111,6 @@ class BoardRepositoryTest {
         Optional<Board> findBoard = boardRepository.findById(board.getId());
 
         assertThat(findBoard.isPresent()).isFalse();
-
-//        assertThat(all).hasSize(2);
     }
 
 }

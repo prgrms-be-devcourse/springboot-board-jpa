@@ -4,6 +4,7 @@ import org.programmers.board.entity.vo.Content;
 import org.programmers.board.entity.vo.Title;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -21,18 +22,26 @@ public class Board extends BaseEntity {
     @Embedded
     private Content content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "created_by", referencedColumnName = "user_id")
     private User user;
 
     protected Board() {
-
     }
 
     public Board(Title title, Content content, User user) {
+        super(LocalDateTime.now());
         this.title = title;
         this.content = content;
         setUser(user);
+    }
+
+    public void editTitle(Title title) {
+        this.title = title;
+    }
+
+    public void editContent(Content content) {
+        this.content = content;
     }
 
     public Long getId() {
