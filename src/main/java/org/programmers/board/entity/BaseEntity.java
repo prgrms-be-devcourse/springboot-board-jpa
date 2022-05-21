@@ -2,7 +2,6 @@ package org.programmers.board.entity;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
