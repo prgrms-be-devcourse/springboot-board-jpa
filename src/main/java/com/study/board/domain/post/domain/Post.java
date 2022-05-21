@@ -1,7 +1,7 @@
 package com.study.board.domain.post.domain;
 
 import com.study.board.exception.BoardNotFoundException;
-import com.study.board.domain.support.base.BaseEntity;
+import com.study.board.domain.base.BaseIdEntity;
 import com.study.board.domain.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ import static org.springframework.util.StringUtils.hasText;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Post extends BaseEntity {
+public class Post extends BaseIdEntity {
 
     public static final int POST_TITLE_MAX_LENGTH = 255;
 

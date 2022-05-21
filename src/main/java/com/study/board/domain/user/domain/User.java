@@ -1,6 +1,6 @@
 package com.study.board.domain.user.domain;
 
-import com.study.board.domain.support.base.BaseEntity;
+import com.study.board.domain.base.BaseIdEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +14,7 @@ import static org.springframework.util.StringUtils.hasText;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class User extends BaseEntity {
+public class User extends BaseIdEntity {
 
     public static final int USER_NAME_MAX_LENGTH = 50;
     public static final int USER_HOBBY_MAX_LENGTH = 50;

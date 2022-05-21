@@ -1,4 +1,4 @@
-package com.study.board.domain.support.base;
+package com.study.board.domain.base;
 
 import lombok.Getter;
 
@@ -8,7 +8,7 @@ import javax.persistence.MappedSuperclass;
 
 @Getter
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class BaseIdEntity {
 
     @Id
     @GeneratedValue
