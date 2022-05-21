@@ -16,7 +16,7 @@ public class Post extends BaseEntity {
     private Long id;
 
     @NotBlank
-    @Max(100)
+    @Column(length = 100)
     private String title;
 
     @NotBlank
