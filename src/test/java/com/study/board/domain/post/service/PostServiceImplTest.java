@@ -1,8 +1,6 @@
 package com.study.board.domain.post.service;
 
-import com.study.board.domain.exception.PostEditAccessDeniedException;
-import com.study.board.domain.exception.PostNotFoundException;
-import com.study.board.domain.exception.UserNotFoundException;
+import com.study.board.domain.exception.BoardNotFoundException;
 import com.study.board.domain.post.domain.Post;
 import com.study.board.domain.post.repository.PostRepository;
 import com.study.board.domain.user.domain.User;
@@ -81,7 +79,7 @@ class PostServiceImplTest {
         Long illegalId = -1L;
 
         assertThatThrownBy(() -> postService.findById(illegalId))
-                .isInstanceOf(PostNotFoundException.class);
+                .isInstanceOf(BoardNotFoundException.class);
     }
 
     @Test
@@ -105,7 +103,7 @@ class PostServiceImplTest {
         Long illegalUserId = -1L;
 
         assertThatThrownBy(() -> postService.write("제목", "내용", illegalUserId))
-                .isInstanceOf(UserNotFoundException.class);
+                .isInstanceOf(BoardNotFoundException.class);
     }
 
     @Test
@@ -130,7 +128,7 @@ class PostServiceImplTest {
         Long illegalPostId = -1L;
 
         assertThatThrownBy(() -> postService.edit(illegalPostId, "수정제목", "수정내용", writer.getId()))
-                .isInstanceOf(PostNotFoundException.class);
+                .isInstanceOf(BoardNotFoundException.class);
     }
 
     @Test
@@ -138,7 +136,7 @@ class PostServiceImplTest {
         Long illegalUserId = -1L;
 
         assertThatThrownBy(() -> postService.edit(writtenPostId1, "수정제목", "수정내용", illegalUserId))
-                .isInstanceOf(UserNotFoundException.class);
+                .isInstanceOf(BoardNotFoundException.class);
     }
 
     @Test
@@ -146,6 +144,6 @@ class PostServiceImplTest {
         Long anotherUserId = userRepository.save(new User("다른 사용자", null)).getId();
 
         assertThatThrownBy(() -> postService.edit(writtenPostId1, "수정제목", "수정내용", anotherUserId))
-                .isInstanceOf(PostEditAccessDeniedException.class);
+                .isInstanceOf(BoardNotFoundException.class);
     }
 }

@@ -1,7 +1,6 @@
 package com.study.board.domain.post.service;
 
-import com.study.board.domain.exception.PostNotFoundException;
-import com.study.board.domain.exception.UserNotFoundException;
+import com.study.board.domain.exception.BoardNotFoundException;
 import com.study.board.domain.post.domain.Post;
 import com.study.board.domain.post.repository.PostRepository;
 import com.study.board.domain.user.domain.User;
@@ -46,11 +45,12 @@ public class PostServiceImpl implements PostService {
     }
 
     private User findUserById(Long writerId) {
-        return userRepository.findById(writerId).orElseThrow(() -> new UserNotFoundException(writerId));
+        return userRepository.findById(writerId)
+                .orElseThrow(() -> new BoardNotFoundException(User.class, writerId));
     }
 
     private Post findPostById(Long postId) {
-        return postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new BoardNotFoundException(Post.class, postId));
     }
-
 }

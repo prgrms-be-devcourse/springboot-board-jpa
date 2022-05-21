@@ -1,6 +1,6 @@
 package com.study.board.domain.post.domain;
 
-import com.study.board.domain.exception.PostEditAccessDeniedException;
+import com.study.board.domain.exception.BoardNotFoundException;
 import com.study.board.domain.support.base.BaseEntity;
 import com.study.board.domain.user.domain.User;
 import lombok.Getter;
@@ -68,7 +68,7 @@ public class Post extends BaseEntity {
 
     public void checkUpdatable(User editor) {
         if (!isWrittenBy(editor)) {
-            throw new PostEditAccessDeniedException(getId());
+            throw new BoardNotFoundException(User.class, editor.getId());
         }
     }
 
