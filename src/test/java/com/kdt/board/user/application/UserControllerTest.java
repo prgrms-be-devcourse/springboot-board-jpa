@@ -34,13 +34,13 @@ public class UserControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    UserServiceImpl userService;
+    UserService userService;
 
     @Nested
     @DisplayName("User 등록 요청이 들어올 때")
     class Describe_register_user {
 
-        final String url = "/api/user";
+        final String url = "/api/users";
 
         @Nested
         @DisplayName("이름이 존재하지 않거나 빈 값이면")
