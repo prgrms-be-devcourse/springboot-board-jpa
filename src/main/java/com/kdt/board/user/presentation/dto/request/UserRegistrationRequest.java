@@ -41,10 +41,10 @@ public class UserRegistrationRequest {
 
     public UserRegistrationRequestDto toRequestDto() {
         return new UserRegistrationRequestDto.Builder()
-                .name(this.name)
-                .email(this.email)
-                .age(this.age)
-                .hobby(this.hobby)
+                .name(getName())
+                .email(getEmail())
+                .age(getAge())
+                .hobby(getHobby())
                 .build();
     }
 }
