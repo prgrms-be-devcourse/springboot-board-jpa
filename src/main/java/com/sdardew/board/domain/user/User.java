@@ -1,7 +1,6 @@
 package com.sdardew.board.domain.user;
 
 import com.sdardew.board.domain.post.Post;
-import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,7 +17,7 @@ public class User {
   private Integer age;
   private String hobby;
   private LocalDateTime createAt;
-  @OneToMany(mappedBy = "post")
+  @OneToMany(mappedBy = "user")
   private List<Post> posts = new ArrayList<>();
 
   public Long getId() {
@@ -45,10 +44,6 @@ public class User {
     return posts;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public void setName(String name) {
     this.name = name;
   }
@@ -65,7 +60,7 @@ public class User {
     this.createAt = createAt;
   }
 
-  public void setPosts(List<Post> posts) {
-    this.posts = posts;
+  public void addPost(Post post) {
+    posts.add(post);
   }
 }

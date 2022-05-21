@@ -44,6 +44,7 @@ public class Post {
     return createAt;
   }
 
+
   @Convert(converter = UserIdConverter.class)
   public User getUser() {
     return user;
@@ -66,7 +67,7 @@ public class Post {
       this.user.getPosts().remove(this);
     }
     this.user = user;
-    user.getPosts().add(this);
+    user.addPost(this);
   }
 
   @Override
