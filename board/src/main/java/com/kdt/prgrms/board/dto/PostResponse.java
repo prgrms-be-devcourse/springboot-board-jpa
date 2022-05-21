@@ -19,6 +19,17 @@ public class PostResponse {
         this.content = builder.content;
     }
 
+    public static PostResponse from(Post post) {
+
+        return PostResponse.builder()
+                .userId(post.getUserId())
+                .userName(post.getUserName())
+                .postId(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .build();
+    }
+
     public static class PostResponseBuilder {
 
         private long userId;
