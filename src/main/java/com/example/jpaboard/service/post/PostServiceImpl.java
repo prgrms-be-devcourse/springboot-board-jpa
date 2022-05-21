@@ -8,10 +8,12 @@ import com.example.jpaboard.exception.CustomException;
 import com.example.jpaboard.service.dto.post.PostResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import static com.example.jpaboard.exception.ErrorCode.*;
 
+@Transactional
 @Service
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
