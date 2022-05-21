@@ -67,12 +67,12 @@ public class Post extends BaseEntity {
     }
 
     public void checkUpdatable(User editor) {
-        if (!hasOfWriter(editor)) {
+        if (!isWrittenBy(editor)) {
             throw new PostEditAccessDeniedException(getId());
         }
     }
 
-    private boolean hasOfWriter(User writer) {
+    private boolean isWrittenBy(User writer) {
         return writer.getId().equals(this.writer.getId());
     }
 }
