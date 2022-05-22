@@ -3,7 +3,7 @@ package com.kdt.board.domain.converter;
 import com.kdt.board.domain.model.User;
 import com.kdt.board.domain.repository.PostRepository;
 import com.kdt.board.domain.repository.UserRepository;
-import com.kdt.board.global.exception.LoadEntityException;
+import com.kdt.board.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +17,6 @@ public class ConvertService {
     @Transactional
     public User entityFindById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new LoadEntityException("Entity 를 불러오는 중 예외 발생"));
+                .orElseThrow(() -> new NotFoundException("Entity 를 불러오는 중 예외 발생"));
     }
 }

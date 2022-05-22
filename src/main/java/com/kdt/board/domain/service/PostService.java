@@ -4,7 +4,7 @@ import com.kdt.board.domain.converter.Converter;
 import com.kdt.board.domain.dto.PostDto;
 import com.kdt.board.domain.model.Post;
 import com.kdt.board.domain.repository.PostRepository;
-import com.kdt.board.global.exception.LoadEntityException;
+import com.kdt.board.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +28,7 @@ public class PostService {
     public PostDto.Response findById(Long id) {
         return postRepository.findById(id)
                 .map(converter::convertPostDto)
-                .orElseThrow(() -> new LoadEntityException("Entity 를 불러오는 중 예외 발생"));
+                .orElseThrow(() -> new NotFoundException("Entity 를 불러오는 중 예외 발생"));
     }
 
     @Transactional
@@ -40,7 +40,7 @@ public class PostService {
     @Transactional
     public PostDto.Response update(PostDto.UpdateRequest dto) {
         Post post = postRepository.findById(dto.id())
-                .orElseThrow(() -> new LoadEntityException("Entity 를 불러오는 중 예외 발생"));
+                .orElseThrow(() -> new NotFoundException("Entity 를 불러오는 중 예외 발생"));
         post.update(dto.title(), dto.content());
         return converter.convertPostDto(post);
     }

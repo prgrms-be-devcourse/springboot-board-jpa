@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/posts")
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class PostController {
 
     @PostMapping
     public ApiResponse<PostDto.CheckingIdResponse> save(
-            @RequestBody PostDto.SaveRequest dto
+            @Valid @RequestBody PostDto.SaveRequest dto
     ) {
         Long id = postService.save(dto);
         PostDto.CheckingIdResponse responseData = new PostDto.CheckingIdResponse(id);
@@ -32,7 +34,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<PostDto.Response> getOne(
+    public ApiResponse<PostDto.Response> findById(
             @PathVariable Long id
     ) {
         PostDto.Response findOne = postService.findById(id);
@@ -42,7 +44,7 @@ public class PostController {
 
     @PutMapping
     public ApiResponse<PostDto.Response> update(
-            @RequestBody PostDto.UpdateRequest dto
+            @Valid @RequestBody PostDto.UpdateRequest dto
     ) {
         PostDto.Response updatedDto = postService.update(dto);
         return ApiResponse.ok(updatedDto);

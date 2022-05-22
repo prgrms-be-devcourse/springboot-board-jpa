@@ -4,7 +4,7 @@ import com.kdt.board.domain.converter.Converter;
 import com.kdt.board.domain.dto.UserDto;
 import com.kdt.board.domain.model.User;
 import com.kdt.board.domain.repository.UserRepository;
-import com.kdt.board.global.exception.LoadEntityException;
+import com.kdt.board.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +28,7 @@ public class UserService {
     public UserDto.Response findById(Long id) {
         return userRepository.findById(id)
                 .map(converter::convertUserDto)
-                .orElseThrow(() -> new LoadEntityException("Entity 를 불러오는 중 예외 발생"));
+                .orElseThrow(() -> new NotFoundException("Entity 를 불러오는 중 예외 발생"));
     }
 
     @Transactional
@@ -40,7 +40,7 @@ public class UserService {
     @Transactional
     public UserDto.Response update(UserDto.UpdateRequest dto) {
         User user = userRepository.findById(dto.id())
-                .orElseThrow(() -> new LoadEntityException("Entity 를 불러오는 중 예외 발생"));
+                .orElseThrow(() -> new NotFoundException("Entity 를 불러오는 중 예외 발생"));
         user.update(dto.name(), dto.age(), dto.hobby());
         return converter.convertUserDto(user);
     }

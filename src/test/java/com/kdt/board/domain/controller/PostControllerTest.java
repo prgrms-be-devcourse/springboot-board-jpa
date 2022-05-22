@@ -65,17 +65,12 @@ class PostControllerTest {
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        // given
         UserDto.SaveRequest userDto = new UserDto.SaveRequest("YongHoon", 26, "tennis");
         savedUserId = userService.save(userDto);
 
         PostDto.SaveRequest postDto = new PostDto.SaveRequest("제목테스트", "내용내용내용내용", savedUserId);
 
-        // when
         savedPostId = postService.save(postDto);
-
-        // then
-        assertThat(postRepository.count()).isEqualTo(1L);
     }
 
     @Test

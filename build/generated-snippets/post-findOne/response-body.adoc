@@ -1,4 +1,4 @@
 [source,options="nowrap"]
 ----
-{"statusCode":200,"data":{"id":9,"title":"제목테스트","content":"내용내용내용내용","user":{"id":8,"name":"YongHoon","age":26,"hobby":"tennis","createdAt":"2022-05-22T20:13:47.916231","updatedAt":"2022-05-22T20:13:47.916231","createdBy":null},"createdAt":"2022-05-22T20:13:47.92323","updatedAt":"2022-05-22T20:13:47.92323","createdBy":null},"serverDatetime":"2022-05-22 20:13:47"}
+{"statusCode":200,"data":{"id":9,"title":"제목테스트","content":"내용내용내용내용","user":{"id":8,"name":"YongHoon","age":26,"hobby":"tennis","createdAt":"2022-05-22T21:34:13.215568","updatedAt":"2022-05-22T21:34:13.215568","createdBy":null},"createdAt":"2022-05-22T21:34:13.224569","updatedAt":"2022-05-22T21:34:13.224569","createdBy":null},"serverDatetime":"2022-05-22 21:34:13"}
 ----
