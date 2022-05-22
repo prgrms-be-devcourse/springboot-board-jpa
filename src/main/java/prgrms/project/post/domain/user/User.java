@@ -13,8 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.REMOVE;
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.GenerationType.AUTO;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -34,10 +33,10 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private int age;
 
-    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = PERSIST)
     private final Set<Hobby> hobbies = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = PERSIST)
     private final List<Post> posts = new ArrayList<>();
 
     @Builder
