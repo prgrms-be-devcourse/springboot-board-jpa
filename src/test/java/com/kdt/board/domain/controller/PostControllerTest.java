@@ -16,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +24,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -68,10 +66,10 @@ class PostControllerTest {
     @BeforeEach
     public void beforeEach() throws Exception {
         // given
-        UserDto.Save userDto = new UserDto.Save("YongHoon", 26, "tennis");
+        UserDto.SaveRequest userDto = new UserDto.SaveRequest("YongHoon", 26, "tennis");
         savedUserId = userService.save(userDto);
 
-        PostDto.Save postDto = new PostDto.Save("제목테스트", "내용내용내용내용", savedUserId);
+        PostDto.SaveRequest postDto = new PostDto.SaveRequest("제목테스트", "내용내용내용내용", savedUserId);
 
         // when
         savedPostId = postService.save(postDto);
@@ -180,12 +178,12 @@ class PostControllerTest {
     @DisplayName("/ - Post 를 저장")
     public void saveTest() throws Exception {
         // given
-        PostDto.Save saveDto = new PostDto.Save("새로운제목", "새로운내용", savedUserId);
+        PostDto.SaveRequest saveRequestDto = new PostDto.SaveRequest("새로운제목", "새로운내용", savedUserId);
 
         // when // then
         mockMvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(saveDto))
+                        .content(objectMapper.writeValueAsString(saveRequestDto))
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -195,12 +193,12 @@ class PostControllerTest {
     @DisplayName("post 를 update")
     public void updateTest() throws Exception {
         // given
-        PostDto.Update updateDto = new PostDto.Update(savedPostId, "새로운 제목", "새로운 내용", savedUserId);
+        PostDto.UpdateRequest updateRequestDto = new PostDto.UpdateRequest(savedPostId, "새로운 제목", "새로운 내용", savedUserId);
 
         // when // then
         mockMvc.perform(put("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateDto))
+                        .content(objectMapper.writeValueAsString(updateRequestDto))
                 )
                 .andExpect(status().isOk())
                 .andDo(print());

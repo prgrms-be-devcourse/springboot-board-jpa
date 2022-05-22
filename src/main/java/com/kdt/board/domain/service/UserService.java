@@ -1,9 +1,7 @@
 package com.kdt.board.domain.service;
 
 import com.kdt.board.domain.converter.Converter;
-import com.kdt.board.domain.dto.PostDto;
 import com.kdt.board.domain.dto.UserDto;
-import com.kdt.board.domain.model.Post;
 import com.kdt.board.domain.model.User;
 import com.kdt.board.domain.repository.UserRepository;
 import com.kdt.board.global.exception.LoadEntityException;
@@ -20,7 +18,7 @@ public class UserService {
     private final Converter converter;
 
     @Transactional
-    public Long save(UserDto.Save dto) {
+    public Long save(UserDto.SaveRequest dto) {
         User user = converter.convertUser(dto);
         User entity = userRepository.save(user);
         return entity.getId();
@@ -40,7 +38,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto.Response update(UserDto.Update dto) {
+    public UserDto.Response update(UserDto.UpdateRequest dto) {
         User user = userRepository.findById(dto.id())
                 .orElseThrow(() -> new LoadEntityException("Entity 를 불러오는 중 예외 발생"));
         user.update(dto.name(), dto.age(), dto.hobby());

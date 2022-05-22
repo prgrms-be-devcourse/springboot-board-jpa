@@ -4,13 +4,8 @@ import com.kdt.board.domain.dto.PostDto;
 import com.kdt.board.domain.dto.UserDto;
 import com.kdt.board.domain.model.Post;
 import com.kdt.board.domain.model.User;
-import com.kdt.board.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -18,7 +13,7 @@ public class Converter {
     private final ConvertService convertService;
 
     // dto -> entity
-    public Post convertPost(PostDto.Save postDto) {
+    public Post convertPost(PostDto.SaveRequest postDto) {
         return Post.builder()
                 .title(postDto.title())
                 .content(postDto.content())
@@ -26,7 +21,7 @@ public class Converter {
                 .build();
     }
 
-    public User convertUser(UserDto.Save userDto) {
+    public User convertUser(UserDto.SaveRequest userDto) {
         return User.builder()
                 .name(userDto.name())
                 .age(userDto.age())

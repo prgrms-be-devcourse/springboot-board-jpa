@@ -18,7 +18,7 @@ public class PostService {
     private final Converter converter;
 
     @Transactional
-    public Long save(PostDto.Save dto) {
+    public Long save(PostDto.SaveRequest dto) {
         Post post = converter.convertPost(dto);
         Post entity = postRepository.save(post);
         return entity.getId();
@@ -38,7 +38,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto.Response update(PostDto.Update dto) {
+    public PostDto.Response update(PostDto.UpdateRequest dto) {
         Post post = postRepository.findById(dto.id())
                 .orElseThrow(() -> new LoadEntityException("Entity 를 불러오는 중 예외 발생"));
         post.update(dto.title(), dto.content());

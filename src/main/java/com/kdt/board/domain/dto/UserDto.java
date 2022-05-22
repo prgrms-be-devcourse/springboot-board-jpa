@@ -3,14 +3,14 @@ package com.kdt.board.domain.dto;
 import java.time.LocalDateTime;
 
 public class UserDto {
-    public record Save(
+    public record SaveRequest(
             String name,
             int age,
             String hobby
     ) {
     }
 
-    public record Update(
+    public record UpdateRequest(
             Long id,
             String name,
             int age,

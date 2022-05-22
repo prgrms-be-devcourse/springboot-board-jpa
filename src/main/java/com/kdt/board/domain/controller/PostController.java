@@ -23,11 +23,11 @@ public class PostController {
     }
 
     @PostMapping
-    public ApiResponse<PostDto.CheckingId> save(
-            @RequestBody PostDto.Save dto
+    public ApiResponse<PostDto.CheckingIdResponse> save(
+            @RequestBody PostDto.SaveRequest dto
     ) {
         Long id = postService.save(dto);
-        PostDto.CheckingId responseData = new PostDto.CheckingId(id);
+        PostDto.CheckingIdResponse responseData = new PostDto.CheckingIdResponse(id);
         return ApiResponse.ok(responseData);
     }
 
@@ -42,18 +42,18 @@ public class PostController {
 
     @PutMapping
     public ApiResponse<PostDto.Response> update(
-            @RequestBody PostDto.Update dto
+            @RequestBody PostDto.UpdateRequest dto
     ) {
         PostDto.Response updatedDto = postService.update(dto);
         return ApiResponse.ok(updatedDto);
     }
 
     @DeleteMapping("/{id}")
-    public ApiResponse<PostDto.CheckingId> deleteById(
+    public ApiResponse<PostDto.CheckingIdResponse> deleteById(
             @PathVariable Long id
     ) {
         postService.deleteById(id);
-        PostDto.CheckingId responseData = new PostDto.CheckingId(id);
+        PostDto.CheckingIdResponse responseData = new PostDto.CheckingIdResponse(id);
         return ApiResponse.ok(responseData);
     }
 }

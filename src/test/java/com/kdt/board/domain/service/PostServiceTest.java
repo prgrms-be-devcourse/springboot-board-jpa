@@ -38,10 +38,10 @@ class PostServiceTest {
     @BeforeEach
     public void saveTest() throws Exception {
         // given
-        UserDto.Save userDto = new UserDto.Save("YongHoon", 26, "tennis");
+        UserDto.SaveRequest userDto = new UserDto.SaveRequest("YongHoon", 26, "tennis");
         savedUserId = userService.save(userDto);
 
-        PostDto.Save postDto = new PostDto.Save("제목테스트", "내용내용내용내용", savedUserId);
+        PostDto.SaveRequest postDto = new PostDto.SaveRequest("제목테스트", "내용내용내용내용", savedUserId);
 
         // when
         savedPostId = postService.save(postDto);
@@ -94,7 +94,7 @@ class PostServiceTest {
     @DisplayName("Post Entity 를 update 한다.")
     public void updateTest() throws Exception {
         // given
-        PostDto.Update changedDto = new PostDto.Update(savedPostId,"수정된 타이틀", "수정된 내용내용", savedUserId);
+        PostDto.UpdateRequest changedDto = new PostDto.UpdateRequest(savedPostId,"수정된 타이틀", "수정된 내용내용", savedUserId);
 
         // when
         postService.update(changedDto);
