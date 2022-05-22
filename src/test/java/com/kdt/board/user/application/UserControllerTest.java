@@ -1,7 +1,7 @@
 package com.kdt.board.user.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kdt.board.user.application.dto.request.UserRegistrationRequestDto;
+import com.kdt.board.user.application.dto.request.RegistrationUserRequestDto;
 import com.kdt.board.user.presentation.UserController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -162,7 +162,7 @@ public class UserControllerTest {
                 final ResultActions resultActions = registerUserPerform(url, requestMap);
 
                 //then
-                verify(userService, times(1)).register(any(UserRegistrationRequestDto.class));
+                verify(userService, times(1)).register(any(RegistrationUserRequestDto.class));
                 resultActions.andExpect(status().isCreated());
             }
         }
@@ -185,7 +185,7 @@ public class UserControllerTest {
                 final ResultActions resultActions = registerUserPerform(url, requestMap);
 
                 //then
-                verify(userService, times(1)).register(any(UserRegistrationRequestDto.class));
+                verify(userService, times(1)).register(any(RegistrationUserRequestDto.class));
                 resultActions.andExpect(status().isCreated());
             }
         }
@@ -204,7 +204,7 @@ public class UserControllerTest {
                 requestMap.put("age", "10");
                 requestMap.put("hobby", "test");
 
-                doThrow(new IllegalArgumentException()).when(userService).register(any(UserRegistrationRequestDto.class));
+                doThrow(new IllegalArgumentException()).when(userService).register(any(RegistrationUserRequestDto.class));
 
                 //when
                 final ResultActions resultActions = registerUserPerform(url, requestMap);

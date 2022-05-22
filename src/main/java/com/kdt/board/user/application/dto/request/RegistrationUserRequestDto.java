@@ -2,27 +2,22 @@ package com.kdt.board.user.application.dto.request;
 
 import com.kdt.board.user.domain.User;
 
-public class UserRegistrationRequestDto {
+public class RegistrationUserRequestDto {
 
     private final String name;
     private final String email;
     private final int age;
     private final String hobby;
 
-    private UserRegistrationRequestDto(Builder builder) {
+    private RegistrationUserRequestDto(Builder builder) {
         this.name = builder.name;
         this.email = builder.email;
         this.age = builder.age;
         this.hobby = builder.hobby;
     }
 
-    public User toEntity() {
-        return new User.Builder()
-                .name(name)
-                .email(email)
-                .age(age)
-                .hobby(hobby)
-                .build();
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static class Builder {
@@ -51,8 +46,17 @@ public class UserRegistrationRequestDto {
             return this;
         }
 
-        public UserRegistrationRequestDto build() {
-            return new UserRegistrationRequestDto(this);
+        public RegistrationUserRequestDto build() {
+            return new RegistrationUserRequestDto(this);
         }
+    }
+
+    public User toEntity() {
+        return User.builder()
+                .name(name)
+                .email(email)
+                .age(age)
+                .hobby(hobby)
+                .build();
     }
 }

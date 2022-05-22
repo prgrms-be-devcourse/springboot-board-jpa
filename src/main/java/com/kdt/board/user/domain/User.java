@@ -22,7 +22,7 @@ public class User extends BaseEntity {
     private String email;
 
     @Min(0)
-    private int age;
+    private Integer age;
 
     private String hobby;
 
@@ -55,6 +55,10 @@ public class User extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static class Builder {

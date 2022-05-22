@@ -16,9 +16,9 @@ public class UserRepositoryTest {
 
     @Test
     @DisplayName("save 메서드 테스트")
-    public void save() {
+    void save() {
         // given
-        final User user = new User.Builder()
+        final User user = User.builder()
                 .name("test")
                 .email("test@test.com")
                 .build();

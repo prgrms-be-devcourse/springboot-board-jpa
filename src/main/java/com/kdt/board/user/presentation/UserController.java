@@ -1,7 +1,7 @@
 package com.kdt.board.user.presentation;
 
 import com.kdt.board.user.application.UserService;
-import com.kdt.board.user.presentation.dto.request.UserRegistrationRequest;
+import com.kdt.board.user.presentation.dto.request.RegistrationUserRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void register(@RequestBody @Valid final UserRegistrationRequest userRegistrationRequest) {
-        userService.register(userRegistrationRequest.toRequestDto());
+    public void register(@RequestBody @Valid final RegistrationUserRequest registrationUserRequest) {
+        userService.register(registrationUserRequest.toRequestDto());
     }
 }
