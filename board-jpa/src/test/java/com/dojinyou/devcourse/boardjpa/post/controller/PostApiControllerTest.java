@@ -74,6 +74,7 @@ class PostApiControllerTest {
                 response.andExpect(status().isBadRequest());
                 verify(postService, never()).create(anyLong(), any());
             }
+
             @Test
             void Bad_Request로_응답한다_Content_누락() throws Exception {
                 final Map<String, Object> requestBody = new HashMap<>();
