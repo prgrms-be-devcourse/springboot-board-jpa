@@ -181,7 +181,7 @@ class PostControllerTest {
         PostDto.Save saveDto = new PostDto.Save("새로운제목", "새로운내용", savedUserId);
 
         // when // then
-        mockMvc.perform(post("/save")
+        mockMvc.perform(post("/posts/save")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(saveDto))
                 )
@@ -196,7 +196,7 @@ class PostControllerTest {
         PostDto.Update updateDto = new PostDto.Update(savedPostId, "새로운 제목", "새로운 내용", savedUserId);
 
         // when // then
-        mockMvc.perform(put("/update")
+        mockMvc.perform(put("/posts/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDto))
                 )
@@ -208,10 +208,10 @@ class PostControllerTest {
     @DisplayName("/delete/{id} - id 값에 해당하는 post 제거")
     public void deleteByIdTest() throws Exception {
         // given
-        Long deleteId = savedUserId;
+        Long deleteId = savedPostId;
 
         // when // then
-        mockMvc.perform(delete("/delete/{id}", deleteId)
+        mockMvc.perform(delete("/posts/delete/{id}", deleteId)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())

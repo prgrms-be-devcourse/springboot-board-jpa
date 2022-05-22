@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @RestController
 @RequestMapping("/posts")
 @RequiredArgsConstructor
@@ -23,11 +25,12 @@ public class PostController {
     }
 
     @PostMapping("/save")
-    public ApiResponse<Long> save(
+    public ApiResponse<PostDto.checkingId> save(
             @RequestBody PostDto.Save dto
     ) {
         Long id = postService.save(dto);
-        return ApiResponse.ok(id);
+        PostDto.checkingId responseData = new PostDto.checkingId(id);
+        return ApiResponse.ok(responseData);
     }
 
     @GetMapping("/{id}")
@@ -48,10 +51,11 @@ public class PostController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ApiResponse<Long> deleteById(
+    public ApiResponse<PostDto.checkingId> deleteById(
             @PathVariable Long id
     ) {
         postService.deleteById(id);
-        return ApiResponse.ok(id);
+        PostDto.checkingId responseData = new PostDto.checkingId(id);
+        return ApiResponse.ok(responseData);
     }
 }

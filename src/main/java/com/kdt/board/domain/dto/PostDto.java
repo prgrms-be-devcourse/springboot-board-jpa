@@ -20,6 +20,12 @@ public class PostDto {
     ) {
     }
 
+    public record checkingId(
+            Long id
+    ) {
+
+    }
+
     public record Response(
             Long id,
             String title,

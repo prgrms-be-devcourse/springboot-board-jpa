@@ -4,5 +4,5 @@ HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
 Content-Length: 394
 
-{"statusCode":200,"data":{"id":8,"title":"제목테스트","content":"내용내용내용내용","user":{"id":7,"name":"YongHoon","age":26,"hobby":"tennis","createdAt":"2022-05-22T03:43:05.931991","updatedAt":"2022-05-22T03:43:05.931991","createdBy":null},"createdAt":"2022-05-22T03:43:05.939991","updatedAt":"2022-05-22T03:43:05.939991","createdBy":null},"serverDatetime":"2022-05-22 03:43:06"}
+{"statusCode":200,"data":{"id":9,"title":"제목테스트","content":"내용내용내용내용","user":{"id":8,"name":"YongHoon","age":26,"hobby":"tennis","createdAt":"2022-05-22T15:59:40.671452","updatedAt":"2022-05-22T15:59:40.671452","createdBy":null},"createdAt":"2022-05-22T15:59:40.682497","updatedAt":"2022-05-22T15:59:40.682497","createdBy":null},"serverDatetime":"2022-05-22 15:59:40"}
 ----
