@@ -1,0 +1,83 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 사용자 (User)
+
+=== 사용자 조회
+
+.Request
+include::{snippets}/get-user/http-request.adoc[]
+
+.Response
+include::{snippets}/get-user/http-response.adoc[]
+include::{snippets}/get-user/response-fields.adoc[]
+
+=== 사용자
+
+.Request
+include::{snippets}/get-user-exception/http-request.adoc[]
+
+.Response
+include::{snippets}/get-user-exception/http-response.adoc[]
+include::{snippets}/get-user-exception/response-fields.adoc[]
+
+=== 사용자 생성
+
+.Request
+include::{snippets}/save-user/http-request.adoc[]
+include::{snippets}/save-user/request-fields.adoc[]
+
+.Response
+include::{snippets}/save-user/http-response.adoc[]
+include::{snippets}/save-user/response-fields.adoc[]
+
+== 게시물 (Post)
+
+=== 게시물 단건 조회
+
+.Request
+include::{snippets}/get-post/http-request.adoc[]
+
+.Response
+include::{snippets}/get-post/http-response.adoc[]
+include::{snippets}/get-post/response-fields.adoc[]
+
+=== 모든 게시물 조회
+.Request
+include::{snippets}/get-posts/http-request.adoc[]
+include::{snippets}/get-posts/request-fields.adoc[]
+
+.Response
+include::{snippets}/get-posts/http-response.adoc[]
+include::{snippets}/get-posts/response-fields.adoc[]
+
+=== 게시물 조회 실패
+
+.Request
+include::{snippets}/get-post-exception/http-request.adoc[]
+
+.Response
+include::{snippets}/get-post-exception/http-response.adoc[]
+include::{snippets}/get-post-exception/response-fields.adoc[]
+
+=== 게시물 생성
+
+.Request
+include::{snippets}/save-post/http-request.adoc[]
+include::{snippets}/save-post/request-fields.adoc[]
+
+.Response
+include::{snippets}/save-post/http-response.adoc[]
+include::{snippets}/save-post/response-fields.adoc[]
+
+=== 게시물 수정
+
+.Request
+include::{snippets}/edit-post/http-request.adoc[]
+include::{snippets}/edit-post/request-fields.adoc[]
+
+.Response
+include::{snippets}/edit-post/http-response.adoc[]
+include::{snippets}/edit-post/response-fields.adoc[]
