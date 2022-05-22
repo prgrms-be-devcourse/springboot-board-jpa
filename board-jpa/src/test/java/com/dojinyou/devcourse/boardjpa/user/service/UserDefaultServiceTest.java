@@ -88,7 +88,7 @@ class UserDefaultServiceTest {
 
             }
         }
-        
+
         @Nested
         class 비정상적인_필드값을_포함한_유저생성객체가_들어온다면 {
 
@@ -113,9 +113,9 @@ class UserDefaultServiceTest {
             @ValueSource(ints = {Integer.MIN_VALUE, -1, 0})
             void 예외를_발생시킨다_age(int age) {
                 UserCreateDto invalidAgeUserCreateDto = new UserCreateDto.Builder().name(name)
-                                                                                    .age(age)
-                                                                                    .hobby(hobby)
-                                                                                    .build();
+                                                                                   .age(age)
+                                                                                   .hobby(hobby)
+                                                                                   .build();
 
                 Throwable throwable = catchThrowable(
                         () -> userDefaultService.create(invalidAgeUserCreateDto));
@@ -131,9 +131,9 @@ class UserDefaultServiceTest {
             @ValueSource(strings = {" ", "\t", "\n", "         "})
             void 예외를_발생시킨다_hobby(String hobby) {
                 UserCreateDto invalidHobbyUserCreateDto = new UserCreateDto.Builder().name(name)
-                                                                                    .age(age)
-                                                                                    .hobby(hobby)
-                                                                                    .build();
+                                                                                     .age(age)
+                                                                                     .hobby(hobby)
+                                                                                     .build();
 
                 Throwable throwable = catchThrowable(() -> userDefaultService.create(invalidHobbyUserCreateDto));
 

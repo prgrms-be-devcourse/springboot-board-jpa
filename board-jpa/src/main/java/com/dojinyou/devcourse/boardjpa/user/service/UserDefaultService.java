@@ -34,7 +34,7 @@ public class UserDefaultService implements UserService {
 
     @Override
     public User findById(long id) {
-        if (id <=0 ) {
+        if (id <= 0) {
             throw new IllegalArgumentException();
         }
         return userRepository.findById(id).orElseThrow(NotFoundException::new);

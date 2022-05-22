@@ -69,6 +69,7 @@ class UserApiControllerTest {
                 response.andExpect(status().isBadRequest());
                 verify(userService, never()).create(any());
             }
+
             @Test
             void Bad_Request로_응답한다_hobby누락() throws Exception {
                 final Map<String, Object> requestBody = new HashMap<>();
