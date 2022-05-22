@@ -1,14 +1,14 @@
 package me.prgms.board.post.contoller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.prgms.board.domain.post.Post;
 import me.prgms.board.domain.User;
+import me.prgms.board.domain.post.Post;
 import me.prgms.board.post.dto.CreatePostDto;
 import me.prgms.board.post.dto.UpdatePostDto;
 import me.prgms.board.post.repository.PostRepository;
 import me.prgms.board.post.service.PostService;
-import me.prgms.board.user.repository.UserRepository;
 import me.prgms.board.user.dto.UserDto;
+import me.prgms.board.user.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,15 +18,18 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.validation.ConstraintViolation;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -79,7 +82,17 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(postDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-save",
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                fieldWithPath("userDto").type(JsonFieldType.OBJECT).description("userDto"),
+                                fieldWithPath("userDto.id").type(JsonFieldType.NUMBER).description("userDto.id"),
+                                fieldWithPath("userDto.name").type(JsonFieldType.STRING).description("userDto.name"),
+                                fieldWithPath("userDto.age").type(JsonFieldType.NUMBER).description("userDto.age"),
+                                fieldWithPath("userDto.hobby").type(JsonFieldType.STRING).description("userDto.hobby")
+                        )));
     }
 
     @Test
@@ -131,7 +144,12 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(postDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-update",
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
+                        )));
 
         Optional<Post> post = postRepository.findById(postId);
         assertAll(
@@ -164,7 +182,8 @@ class PostControllerTest {
         mockMvc.perform(get("/posts/{postId}", postId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-get"));
     }
 
     @Test
@@ -192,6 +211,7 @@ class PostControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content", hasSize(3)))
                 .andDo(print());
+
     }
 
     @Test
@@ -206,7 +226,8 @@ class PostControllerTest {
                         .param("size", String.valueOf(2)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.content", hasSize(2)));
+                .andExpect(jsonPath("$.content", hasSize(2)))
+                .andDo(document("post-get-paging"));
     }
 
 }

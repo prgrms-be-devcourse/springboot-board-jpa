@@ -1,0 +1,78 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시글
+
+=== 게시글등록
+
+==== /posts
+
+.Request
+
+include::{snippets}/post-save/http-request.adoc[]
+
+.Request Fields
+
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-save/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-save/response-fields.adoc[]
+
+=== 게시글 수정
+
+==== /posts/{id}
+
+.Request
+
+include::{snippets}/post-update/http-request.adoc[]
+
+.Request Fields
+
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-update/http-response.adoc[]
+
+.Response Body
+
+include::{snippets}/post-update/response-body.adoc[]
+
+=== 게시글조회
+
+==== /posts/{id}
+
+.Request
+
+include::{snippets}/post-get/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-get/http-response.adoc[]
+
+.Response Body
+
+include::{snippets}/post-get/response-body.adoc[]
+
+=== 게시글조회 - 페이징
+
+==== /posts
+
+.Request
+
+include::{snippets}/post-get-paging/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-get-paging/http-response.adoc[]
+
+.Response Body
+
+include::{snippets}/post-get-paging/response-body.adoc[]
