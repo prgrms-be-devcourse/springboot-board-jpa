@@ -6,17 +6,29 @@ import com.prgrms.boardapp.model.Post;
 import com.prgrms.boardapp.model.User;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
-public class PostConverter {
+public class Converter {
 
     public Post convertPost(PostDto postDto) {
-        return Post.builder()
+        Post post = Post.builder()
                 .id(postDto.getId())
                 .content(postDto.getContent())
                 .title(postDto.getTitle())
-                .user(this.convertUser(postDto.getUserDto()))
                 .build();
+        post.changeUser(this.convertUser(postDto.getUserDto()));
+        return post;
+    }
 
+    public User convertUser(UserDto userDto) {
+        return User.builder()
+                .id(userDto.getId())
+                .age(userDto.getAge())
+                .hobby(userDto.getHobby())
+                .name(userDto.getName())
+                .build();
     }
 
     public PostDto convertPostDto(Post post) {
@@ -29,7 +41,7 @@ public class PostConverter {
                 .build();
     }
 
-    private UserDto convertUserDto(User user) {
+    public UserDto convertUserDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .age(user.getAge())
@@ -38,12 +50,11 @@ public class PostConverter {
                 .build();
     }
 
-    private User convertUser(UserDto userDto) {
-        return User.builder()
-                .id(userDto.getId())
-                .age(userDto.getAge())
-                .hobby(userDto.getHobby())
-                .name(userDto.getName())
-                .build();
+    public List<PostDto> convertPostDtoList(User user) {
+        List<PostDto> postDtoList = new ArrayList<>();
+        for (int i = 0; i < user.getPosts().size(); i++) {
+            postDtoList.add(this.convertPostDto(user.getPosts().get(i)));
+        }
+        return postDtoList;
     }
 }

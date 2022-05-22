@@ -1,5 +1,7 @@
 package com.prgrms.boardapp.dto;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class UserDto {
@@ -7,12 +9,14 @@ public class UserDto {
     private String name;
     private Integer age;
     private String hobby;
+    private List<PostDto> postDtoList;
 
-    public UserDto(Long id, String name, Integer age, String hobby) {
+    public UserDto(Long id, String name, Integer age, String hobby, List<PostDto> postDtoList) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+        this.postDtoList = (postDtoList == null) ? new ArrayList<>() : postDtoList;
     }
 
     public Long getId() {
@@ -47,6 +51,14 @@ public class UserDto {
         this.hobby = hobby;
     }
 
+    public List<PostDto> getPostDtoList() {
+        return postDtoList;
+    }
+
+    public void setPostDtoList(List<PostDto> postDtoList) {
+        this.postDtoList = postDtoList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,6 +81,7 @@ public class UserDto {
         private String name;
         private Integer age;
         private String hobby;
+        private List<PostDto> postDtoList;
 
         UserDtoBuilder() {
         }
@@ -93,8 +106,13 @@ public class UserDto {
             return this;
         }
 
+        public UserDtoBuilder postDtoList(final List<PostDto> postDtoList) {
+            this.postDtoList = postDtoList;
+            return this;
+        }
+
         public UserDto build() {
-            return new UserDto(this.id, this.name, this.age, this.hobby);
+            return new UserDto(this.id, this.name, this.age, this.hobby, postDtoList);
         }
     }
 }

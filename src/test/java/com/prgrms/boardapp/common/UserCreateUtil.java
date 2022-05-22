@@ -3,6 +3,8 @@ package com.prgrms.boardapp.common;
 import com.prgrms.boardapp.dto.UserDto;
 import com.prgrms.boardapp.model.User;
 
+import java.util.ArrayList;
+
 public class UserCreateUtil {
 
     private static Long userId = 1L;
@@ -44,6 +46,7 @@ public class UserCreateUtil {
                 .id(userId++)
                 .name("user-name")
                 .hobby("hobby")
+                .postDtoList(new ArrayList<>())
                 .age(10)
                 .build();
     }

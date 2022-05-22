@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import static com.prgrms.boardapp.common.PostCreateUtil.createPost;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
 class PostRepositoryTest {
@@ -30,5 +30,4 @@ class PostRepositoryTest {
                 () -> assertThat(findPost.get().getId()).isEqualTo(savedPost.getId())
         );
     }
-
 }

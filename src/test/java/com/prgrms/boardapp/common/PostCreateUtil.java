@@ -2,7 +2,6 @@ package com.prgrms.boardapp.common;
 
 import com.prgrms.boardapp.dto.PostDto;
 import com.prgrms.boardapp.model.Post;
-import com.prgrms.boardapp.model.User;
 
 import java.time.LocalDateTime;
 

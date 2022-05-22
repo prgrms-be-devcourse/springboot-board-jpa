@@ -42,7 +42,7 @@ public class Post {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.commonEmbeddable = commonEmbeddable;
+        this.commonEmbeddable = commonEmbeddable == null ? CommonEmbeddable.builder().build() : commonEmbeddable;
         this.user = user;
     }
 
@@ -77,6 +77,14 @@ public class Post {
         }
         this.user = user;
         user.getPosts().add(this);
+    }
+
+    public void changeTitle(String title) {
+        this.title = title;
+    }
+
+    public void changeContent(String content) {
+        this.content = content;
     }
 
     public static PostBuilder builder() {

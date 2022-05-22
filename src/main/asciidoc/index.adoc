@@ -39,3 +39,15 @@ include::{snippets}/post-findAll/http-request.adoc[]
 .Response
 include::{snippets}/post-findAll/http-response.adoc[]
 include::{snippets}/post-findAll/response-fields.adoc[]
+
+=== 게시글 수정
+
+=== /posts
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]

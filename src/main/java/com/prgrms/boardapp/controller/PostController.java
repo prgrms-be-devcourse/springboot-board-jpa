@@ -28,6 +28,11 @@ public class PostController {
         return ResponseEntity.ok(body);
     }
 
+    @PatchMapping
+    public ResponseEntity<PostDto> update(@RequestBody PostDto postDto) {
+        return ResponseEntity.ok(postService.update(postDto));
+    }
+
     @GetMapping
     public ResponseEntity<Page<PostDto>> findAll(Pageable pageable) {
         return ResponseEntity.ok(postService.findAll(pageable));
