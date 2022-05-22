@@ -1,5 +1,8 @@
 package com.kdt.board.post.application.dto.request;
 
+import com.kdt.board.post.domain.Post;
+import com.kdt.board.user.domain.User;
+
 public class WritePostRequestDto {
 
     private final Long userId;
@@ -10,6 +13,18 @@ public class WritePostRequestDto {
         this.userId = builder.userId;
         this.title = builder.title;
         this.content = builder.content;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public static Builder builder() {
@@ -39,5 +54,13 @@ public class WritePostRequestDto {
         public WritePostRequestDto build() {
             return new WritePostRequestDto(this);
         }
+    }
+
+    public Post of(User user) {
+        return Post.builder()
+                .title(getTitle())
+                .content(getContent())
+                .user(user)
+                .build();
     }
 }

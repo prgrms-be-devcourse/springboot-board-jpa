@@ -17,4 +17,8 @@ public abstract class BaseEntity {
 
     @LastModifiedDate
     private LocalDateTime modifiedAt;
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

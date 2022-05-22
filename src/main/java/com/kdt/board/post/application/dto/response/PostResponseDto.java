@@ -1,6 +1,9 @@
 package com.kdt.board.post.application.dto.response;
 
+import com.kdt.board.post.domain.Post;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PostResponseDto {
 
@@ -77,5 +80,21 @@ public class PostResponseDto {
         public PostResponseDto build() {
             return new PostResponseDto(this);
         }
+    }
+
+    public static List<PostResponseDto> listOf(List<Post> posts) {
+        return posts.stream()
+                .map(PostResponseDto::from)
+                .toList();
+    }
+
+    public static PostResponseDto from(Post post) {
+        return PostResponseDto.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .author(post.getUser().getName())
+                .createdAt(post.getCreatedAt())
+                .build();
     }
 }
