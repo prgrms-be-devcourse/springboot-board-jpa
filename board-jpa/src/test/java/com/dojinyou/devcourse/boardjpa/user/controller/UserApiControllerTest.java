@@ -54,7 +54,7 @@ class UserApiControllerTest {
                                                              .contentType(MediaType.APPLICATION_JSON)
                                                              .content(toJson(requestBody)));
                 response.andExpect(status().isBadRequest());
-                verify(userService, never()).createUser(any());
+                verify(userService, never()).create(any());
             }
 
             @Test
@@ -67,7 +67,7 @@ class UserApiControllerTest {
                                                              .contentType(MediaType.APPLICATION_JSON)
                                                              .content(toJson(requestBody)));
                 response.andExpect(status().isBadRequest());
-                verify(userService, never()).createUser(any());
+                verify(userService, never()).create(any());
             }
             @Test
             void Bad_Request로_응답한다_hobby누락() throws Exception {
@@ -79,7 +79,7 @@ class UserApiControllerTest {
                                                              .contentType(MediaType.APPLICATION_JSON)
                                                              .content(toJson(requestBody)));
                 response.andExpect(status().isBadRequest());
-                verify(userService, never()).createUser(any());
+                verify(userService, never()).create(any());
             }
         }
 
@@ -98,7 +98,7 @@ class UserApiControllerTest {
                                                              .contentType(MediaType.APPLICATION_JSON)
                                                              .content(toJson(requestBody)));
                 response.andExpect(status().isCreated());
-                verify(userService, atLeastOnce()).createUser(any());
+                verify(userService, atLeastOnce()).create(any());
             }
         }
     }
