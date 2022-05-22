@@ -10,14 +10,6 @@ import org.springframework.stereotype.Component;
 public class PostConverter {
 
     //DTO to Entity
-    public Post convertPost(PostDTO postDTO, User user) {
-        return Post.builder()
-                .user(user)
-                .title(postDTO.getTitle())
-                .content(postDTO.getContent())
-                .build();
-    }
-
     public Post convertPost(PostCreateRequest request, User user) {
         return Post.builder()
                 .user(user)
