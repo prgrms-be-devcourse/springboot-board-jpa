@@ -1,10 +1,10 @@
 package org.programmers.kdtboard.exception;
 
-import org.programmers.kdtboard.controller.response.ErrorCodeMessage;
+import org.programmers.kdtboard.controller.response.ErrorCode;
 import org.programmers.kdtboard.controller.response.ErrorResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,30 +14,31 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleEntityNotFoundException(final EntityNotFoundException e) {
-		log.error("handleEntityNotFoundException : {}", e.getMessage());
+	@ExceptionHandler(NotFoundEntityByIdException.class)
+	public ResponseEntity<ErrorResponse> handleNotFoundEntityByIdException(final NotFoundEntityByIdException e) {
+		log.warn("handleNotFoundEntityByIdException : {}", e.getMessage(), e);
 
 		return ResponseEntity.status(e.getErrorCodeMessage().getStatusCode())
-			.body(new ErrorResponse(e.getErrorCodeMessage()));
+			.body(new ErrorResponse(e.getErrorCodeMessage(), e.getMessage()));
 	}
 
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleBindException(final BindException e) {
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
+		final MethodArgumentNotValidException e) {
 		var bindingResult = e.getBindingResult();
 		var stringBuilder = new StringBuilder();
 
 		for (FieldError fieldError : bindingResult.getFieldErrors()) {
-			stringBuilder.append("에러 필드 : ")
+			stringBuilder.append("에러 필드 -> ")
 				.append(fieldError.getField())
-				.append(" 에러 메세지 : ")
+				.append(", 에러 메세지 -> ")
 				.append(fieldError.getDefaultMessage())
-				.append(" 입력된 값 : ")
+				.append(", 입력된 값 -> ")
 				.append(fieldError.getRejectedValue());
 		}
-		log.error("handleBindException -> {} \n {}", stringBuilder, e.getMessage());
+		log.warn("handleMethodArgumentNotValidException -> {}", stringBuilder, e);
 
-		return ResponseEntity.status(ErrorCodeMessage.INVALID_REQUEST_VALUE.getStatusCode())
-			.body(new ErrorResponse(ErrorCodeMessage.INVALID_REQUEST_VALUE));
+		return ResponseEntity.status(ErrorCode.INVALID_REQUEST_VALUE.getStatusCode())
+			.body(new ErrorResponse(ErrorCode.INVALID_REQUEST_VALUE, stringBuilder.toString()));
 	}
 }
