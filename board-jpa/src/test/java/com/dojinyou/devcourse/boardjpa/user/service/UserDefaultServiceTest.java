@@ -30,10 +30,10 @@ import static org.mockito.Mockito.*;
 class UserDefaultServiceTest {
 
     @Mock
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
     @InjectMocks
-    private final UserDefaultService userDefaultService;
+    private UserDefaultService userDefaultService;
 
 
     private final String name = "testName";
