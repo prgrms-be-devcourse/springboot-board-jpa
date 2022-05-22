@@ -1,7 +1,5 @@
 package com.kdt.board.domain.dto;
 
-import lombok.Builder;
-
 import java.time.LocalDateTime;
 
 public class PostDto {
@@ -20,7 +18,7 @@ public class PostDto {
     ) {
     }
 
-    public record checkingId(
+    public record CheckingId(
             Long id
     ) {
 

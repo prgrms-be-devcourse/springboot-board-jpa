@@ -1,7 +1,6 @@
 package com.kdt.board.domain.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class UserDto {
     public record Save(
