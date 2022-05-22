@@ -25,6 +25,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -175,13 +177,13 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("/save - Post 를 저장")
+    @DisplayName("/ - Post 를 저장")
     public void saveTest() throws Exception {
         // given
         PostDto.Save saveDto = new PostDto.Save("새로운제목", "새로운내용", savedUserId);
 
         // when // then
-        mockMvc.perform(post("/posts/save")
+        mockMvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(saveDto))
                 )
@@ -190,13 +192,13 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("/update/{id} - id 값에 해당하는 post 를 update")
+    @DisplayName("post 를 update")
     public void updateTest() throws Exception {
         // given
         PostDto.Update updateDto = new PostDto.Update(savedPostId, "새로운 제목", "새로운 내용", savedUserId);
 
         // when // then
-        mockMvc.perform(put("/posts/update")
+        mockMvc.perform(put("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDto))
                 )
@@ -205,13 +207,13 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("/delete/{id} - id 값에 해당하는 post 제거")
+    @DisplayName("/{id} - id 값에 해당하는 post 제거")
     public void deleteByIdTest() throws Exception {
         // given
         Long deleteId = savedPostId;
 
         // when // then
-        mockMvc.perform(delete("/posts/delete/{id}", deleteId)
+        mockMvc.perform(delete("/posts/{id}", deleteId)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())

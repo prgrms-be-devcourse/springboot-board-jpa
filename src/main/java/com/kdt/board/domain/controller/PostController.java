@@ -24,7 +24,7 @@ public class PostController {
         return ApiResponse.ok(posts);
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ApiResponse<PostDto.checkingId> save(
             @RequestBody PostDto.Save dto
     ) {
@@ -42,7 +42,7 @@ public class PostController {
     }
 
 
-    @PutMapping("/update")
+    @PutMapping
     public ApiResponse<PostDto.Response> update(
             @RequestBody PostDto.Update dto
     ) {
@@ -50,7 +50,7 @@ public class PostController {
         return ApiResponse.ok(updatedDto);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ApiResponse<PostDto.checkingId> deleteById(
             @PathVariable Long id
     ) {
