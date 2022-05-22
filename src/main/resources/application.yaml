@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${MY_SQL_HOST}:${MY_SQL_PORT}/board
+    username: ${MY_SQL_USER_ID}
+    password: ${MY_SQL_USER_PW}
+  jpa:
+    generate-ddl: true
+    database: mysql
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        query.in_clause_parameter_padding: true
+        hbm2ddl:
+          auto: update
+
+
+#
+#spring:
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:~/test
+#    username: sa
+#    password:
+#  jpa:
+#    generate-ddl: true
+#    database: h2
+#    show-sql: true
+#    open-in-view: false
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.H2Dialect
+#        query.in_clause_parameter_padding: true
+#        hbm2ddl:
+#          auto: update
