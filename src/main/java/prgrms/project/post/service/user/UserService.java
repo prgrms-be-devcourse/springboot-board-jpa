@@ -47,7 +47,7 @@ public class UserService {
         var retrievedUser = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("Can't find any userDto"));
         var updatedUser = retrievedUser.updateUserInfo(userDto.name(), userDto.age(), userDto.hobbies().stream().map(hobbyMapper::toEntity).collect(toSet()));
 
-        return userRepository.save(updatedUser).getId();
+        return updatedUser.getId();
     }
 
     @Transactional
