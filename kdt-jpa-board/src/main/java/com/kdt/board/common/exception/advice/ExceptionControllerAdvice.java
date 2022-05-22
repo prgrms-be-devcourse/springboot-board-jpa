@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class ExceptionControllerAdvice {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler
     public ApiResponse<String>  notFountExceptionHandler (NotFoundException e) {
         log.error("NotFountException", e);
-        return new ApiResponse<String>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return new ApiResponse<String>(HttpStatus.NOT_FOUND.value(), e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
