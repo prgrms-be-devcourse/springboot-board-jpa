@@ -1,12 +1,12 @@
 package com.kdt.board.user.presentation.dto.request;
 
-import com.kdt.board.user.application.dto.request.UserRegistrationRequestDto;
+import com.kdt.board.user.application.dto.request.RegistrationUserRequestDto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
-public class UserRegistrationRequest {
+public class RegistrationUserRequest {
 
     @NotBlank
     private String name;
@@ -20,7 +20,7 @@ public class UserRegistrationRequest {
 
     private String hobby;
 
-    private UserRegistrationRequest() {
+    private RegistrationUserRequest() {
     }
 
     public String getName() {
@@ -39,8 +39,8 @@ public class UserRegistrationRequest {
         return hobby;
     }
 
-    public UserRegistrationRequestDto toRequestDto() {
-        return new UserRegistrationRequestDto.Builder()
+    public RegistrationUserRequestDto toRequestDto() {
+        return RegistrationUserRequestDto.builder()
                 .name(getName())
                 .email(getEmail())
                 .age(getAge())

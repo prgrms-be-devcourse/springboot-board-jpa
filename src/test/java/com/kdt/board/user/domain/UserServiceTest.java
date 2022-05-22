@@ -1,7 +1,7 @@
 package com.kdt.board.user.domain;
 
 import com.kdt.board.user.application.UserServiceImpl;
-import com.kdt.board.user.application.dto.request.UserRegistrationRequestDto;
+import com.kdt.board.user.application.dto.request.RegistrationUserRequestDto;
 import com.kdt.board.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -37,10 +37,10 @@ public class UserServiceTest {
             @DisplayName("IllegalArgumentException이 발생한다.")
             void It_response_() {
                 //given
-                final UserRegistrationRequestDto userRegistrationRequestDto = null;
+                final RegistrationUserRequestDto registrationUserRequestDto = null;
 
                 //when, then
-                assertThrows(IllegalArgumentException.class, () -> userService.register(userRegistrationRequestDto));
+                assertThrows(IllegalArgumentException.class, () -> userService.register(registrationUserRequestDto));
             }
         }
 
@@ -52,13 +52,13 @@ public class UserServiceTest {
             @DisplayName("repository save 메소드를 호출한다.")
             void It_response_() {
                 //given
-                final UserRegistrationRequestDto userRegistrationRequestDto = new UserRegistrationRequestDto.Builder()
+                final RegistrationUserRequestDto registrationUserRequestDto = RegistrationUserRequestDto.builder()
                         .name("test")
                         .email("test@test.com")
                         .build();
 
                 //when
-                userService.register(userRegistrationRequestDto);
+                userService.register(registrationUserRequestDto);
 
                 //then
                 verify(userRepository, times(1)).save(any(User.class));

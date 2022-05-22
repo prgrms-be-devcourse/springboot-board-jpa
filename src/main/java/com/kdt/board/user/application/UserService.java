@@ -1,7 +1,7 @@
 package com.kdt.board.user.application;
 
-import com.kdt.board.user.application.dto.request.UserRegistrationRequestDto;
+import com.kdt.board.user.application.dto.request.RegistrationUserRequestDto;
 
 public interface UserService {
-    void register(UserRegistrationRequestDto userRegistrationRequestDto);
+    void register(RegistrationUserRequestDto registrationUserRequestDto);
 }
