@@ -27,14 +27,6 @@ public class User extends BaseEntity {
     private Integer age;
     private String hobby;
 
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
     protected User() {
     }
 
@@ -50,6 +42,29 @@ public class User extends BaseEntity {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 
     public static class Builder {

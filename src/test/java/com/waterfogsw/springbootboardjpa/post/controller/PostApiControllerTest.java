@@ -400,7 +400,7 @@ class PostApiControllerTest {
                 final var response = mockMvc.perform(request);
 
                 response.andExpect(status().isOk());
-                verify(postService).getAll();
+                verify(postService).getAll(any());
             }
         }
     }
