@@ -7,7 +7,6 @@ import me.prgms.board.post.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,12 +42,12 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> save(@Validated @RequestBody CreatePostDto postDto) {
+    public ResponseEntity<Long> save(@RequestBody CreatePostDto postDto) {
         return ResponseEntity.ok(postService.create(postDto));
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<Long> update(@PathVariable Long postId, @Validated @RequestBody UpdatePostDto postDto) {
+    public ResponseEntity<Long> update(@PathVariable Long postId, @RequestBody UpdatePostDto postDto) {
         return ResponseEntity.ok(postService.update(postId, postDto));
     }
 
