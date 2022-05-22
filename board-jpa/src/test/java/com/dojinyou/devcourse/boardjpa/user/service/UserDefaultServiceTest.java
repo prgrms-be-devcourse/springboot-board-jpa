@@ -30,15 +30,15 @@ import static org.mockito.Mockito.*;
 class UserDefaultServiceTest {
 
     @Mock
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @InjectMocks
-    UserDefaultService userDefaultService;
+    private final UserDefaultService userDefaultService;
 
 
-    String name = "testName";
-    Integer age = 20;
-    String hobby = "testHobby";
+    private final String name = "testName";
+    private final Integer age = 20;
+    private final String hobby = "testHobby";
 
     @Nested
     class 유저_생성_메소드는 {
