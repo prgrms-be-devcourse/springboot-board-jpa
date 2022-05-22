@@ -2,63 +2,70 @@ package org.programmers.kdtboard.service;
 
 import static java.text.MessageFormat.*;
 
-import org.programmers.kdtboard.controller.response.ErrorCodeMessage;
-import org.programmers.kdtboard.converter.Converter;
+import org.programmers.kdtboard.controller.response.ErrorCode;
+import org.programmers.kdtboard.converter.PostConverter;
+import org.programmers.kdtboard.converter.UserConverter;
 import org.programmers.kdtboard.domain.post.Post;
 import org.programmers.kdtboard.domain.post.PostRepository;
-import org.programmers.kdtboard.dto.PostDto.PostCreateRequest;
-import org.programmers.kdtboard.dto.PostDto.PostResponse;
-import org.programmers.kdtboard.dto.PostDto.PostUpdateRequest;
-import org.programmers.kdtboard.exception.EntityNotFoundException;
+import org.programmers.kdtboard.dto.PostDto.PostCreateRequestDto;
+import org.programmers.kdtboard.dto.PostDto.PostResponseDto;
+import org.programmers.kdtboard.dto.PostDto.PostUpdateRequestDto;
+import org.programmers.kdtboard.exception.NotFoundEntityByIdException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
+@Transactional(readOnly = true)
 @Service
 public class PostService {
 
 	private final PostRepository postRepository;
 	private final UserService userService;
-	private final Converter converter;
+	private final PostConverter postConverter;
+	private final UserConverter userConverter;
 
-	public PostService(PostRepository postRepository,
-		UserService userService, Converter converter) {
+	public PostService(PostRepository postRepository, UserService userService,
+		PostConverter postConverter, UserConverter userConverter) {
 		this.postRepository = postRepository;
 		this.userService = userService;
-		this.converter = converter;
+		this.postConverter = postConverter;
+		this.userConverter = userConverter;
 	}
 
-	public PostResponse create(PostCreateRequest postCreateRequest) {
-		var post = Post.create(postCreateRequest.title(), postCreateRequest.content());
+	@Transactional
+	public PostResponseDto create(PostCreateRequestDto postCreateRequest) {
+		var post = Post.builder().title(postCreateRequest.title())
+			.content(postCreateRequest.content())
+			.build();
 		var userResponseDto = this.userService.findById(postCreateRequest.userId());
-		post.setUser(this.converter.userDtoConverter(userResponseDto));
+		post.setUser(userConverter.convertUser(userResponseDto));
 		this.postRepository.save(post);
 
-		return this.converter.postConverter(post);
+		return this.postConverter.convertPostResponse(post);
 	}
 
-	public PostResponse findById(Long id) {
+	public PostResponseDto findById(Long id) {
 		var post = this.postRepository.findById(id)
 			.orElseThrow(
-				() -> new EntityNotFoundException(format("post id : {0}, 없는 id 입니다.", id),
-					ErrorCodeMessage.POST_ID_NOT_FOUND));
+				() -> new NotFoundEntityByIdException(format("post id : {0}, 없는 id 입니다.", id),
+					ErrorCode.POST_ID_NOT_FOUND));
 
-		return this.converter.postConverter(post);
+		return this.postConverter.convertPostResponse(post);
 	}
 
-	public Page<PostResponse> findAll(Pageable pageable) {
-		return this.postRepository.findAll(pageable).map(this.converter::postConverter);
+	public Page<PostResponseDto> findAll(Pageable pageable) {
+		return this.postRepository.findAll(pageable).map(this.postConverter::convertPostResponse);
 	}
 
-	public PostResponse update(Long id, PostUpdateRequest postUpdateRequest) {
+	@Transactional
+	public PostResponseDto update(Long id, PostUpdateRequestDto postUpdateRequest) {
 		var post = this.postRepository.findById(id)
 			.orElseThrow(() ->
-				new EntityNotFoundException(format("post id : {0}, 없는 id 입니다.", id),
-					ErrorCodeMessage.POST_ID_NOT_FOUND));
+				new NotFoundEntityByIdException(format("post id : {0}, 없는 id 입니다.", id),
+					ErrorCode.POST_ID_NOT_FOUND));
 		post.update(postUpdateRequest.title(), postUpdateRequest.content());
 
-		return this.converter.postConverter(post);
+		return this.postConverter.convertPostResponse(post);
 	}
 }
