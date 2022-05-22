@@ -19,7 +19,7 @@ public class UserDefaultService implements UserService {
 
     @Override
     @Transactional
-    public void createUser(UserCreateDto userCreateDto) {
+    public void create(UserCreateDto userCreateDto) {
         if (userCreateDto == null) {
             throw new IllegalArgumentException("유저 생성을 위한 데이터 전달 객체는 빈 객체일 수 없습니다");
         }

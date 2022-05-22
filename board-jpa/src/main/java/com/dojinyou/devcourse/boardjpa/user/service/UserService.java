@@ -5,7 +5,7 @@ import com.dojinyou.devcourse.boardjpa.user.service.dto.UserCreateDto;
 
 public interface UserService {
 
-    void createUser(UserCreateDto userCreateDto);
+    void create(UserCreateDto userCreateDto);
 
     User findById(long id);
 }

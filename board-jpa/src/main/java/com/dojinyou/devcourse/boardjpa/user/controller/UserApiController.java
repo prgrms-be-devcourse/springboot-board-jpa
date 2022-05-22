@@ -22,11 +22,11 @@ public class UserApiController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestBody @Valid UserCreateRequest userCreateRequest) {
-        userService.createUser(new UserCreateDto.Builder().age(userCreateRequest.getAge())
-                                                          .name(userCreateRequest.getName())
-                                                          .hobby(userCreateRequest.getHobby())
-                                                          .build());
+    public void create(@RequestBody @Valid UserCreateRequest userCreateRequest) {
+        userService.create(new UserCreateDto.Builder().age(userCreateRequest.getAge())
+                                                      .name(userCreateRequest.getName())
+                                                      .hobby(userCreateRequest.getHobby())
+                                                      .build());
     }
 
 }

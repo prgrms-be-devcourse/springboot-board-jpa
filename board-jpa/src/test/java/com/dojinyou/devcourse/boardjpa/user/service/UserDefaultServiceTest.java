@@ -50,7 +50,7 @@ class UserDefaultServiceTest {
             @NullSource
             void 예외를_발생시킨다(UserCreateDto userCreateDto) {
 
-                Throwable throwable = catchThrowable(() -> userDefaultService.createUser(userCreateDto));
+                Throwable throwable = catchThrowable(() -> userDefaultService.create(userCreateDto));
 
                 assertThat(throwable).isNotNull()
                                      .isInstanceOf(IllegalArgumentException.class);
@@ -71,7 +71,7 @@ class UserDefaultServiceTest {
             @Test
             void 예외를_발생시킨다_Null_name() {
 
-                Throwable throwable = catchThrowable(() -> userDefaultService.createUser(nullNameUserCreateDto));
+                Throwable throwable = catchThrowable(() -> userDefaultService.create(nullNameUserCreateDto));
 
                 assertThat(throwable).isNotNull()
                                      .isInstanceOf(IllegalArgumentException.class);
@@ -81,7 +81,7 @@ class UserDefaultServiceTest {
             @Test
             void 예외를_발생시킨다_Null_hobby() {
 
-                Throwable throwable = catchThrowable(() -> userDefaultService.createUser(nullHobbyUserCreateDto));
+                Throwable throwable = catchThrowable(() -> userDefaultService.create(nullHobbyUserCreateDto));
 
                 assertThat(throwable).isNotNull()
                                      .isInstanceOf(IllegalArgumentException.class);
@@ -102,7 +102,7 @@ class UserDefaultServiceTest {
                                                                                     .build();
 
                 Throwable throwable = catchThrowable(
-                        () -> userDefaultService.createUser(invalidNameUserCreateDto));
+                        () -> userDefaultService.create(invalidNameUserCreateDto));
 
                 assertThat(throwable).isNotNull()
                                      .isInstanceOf(IllegalArgumentException.class);
@@ -118,7 +118,7 @@ class UserDefaultServiceTest {
                                                                                     .build();
 
                 Throwable throwable = catchThrowable(
-                        () -> userDefaultService.createUser(invalidAgeUserCreateDto));
+                        () -> userDefaultService.create(invalidAgeUserCreateDto));
 
                 assertThat(throwable).isNotNull()
                                      .isInstanceOf(IllegalArgumentException.class);
@@ -135,7 +135,7 @@ class UserDefaultServiceTest {
                                                                                     .hobby(hobby)
                                                                                     .build();
 
-                Throwable throwable = catchThrowable(() -> userDefaultService.createUser(invalidHobbyUserCreateDto));
+                Throwable throwable = catchThrowable(() -> userDefaultService.create(invalidHobbyUserCreateDto));
 
                 assertThat(throwable).isNotNull()
                                      .isInstanceOf(IllegalArgumentException.class);
@@ -153,7 +153,7 @@ class UserDefaultServiceTest {
             @Test
             void UserRepository의_save함수를_호출한다() {
 
-                userDefaultService.createUser(userCreateDto);
+                userDefaultService.create(userCreateDto);
 
                 verify(userRepository, atLeastOnce()).save(any());
             }
