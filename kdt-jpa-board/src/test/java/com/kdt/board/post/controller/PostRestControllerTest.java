@@ -7,10 +7,8 @@ import com.kdt.board.post.domain.Post;
 import com.kdt.board.post.dto.request.PostCreateRequestDto;
 import com.kdt.board.post.dto.request.PostEditRequestDto;
 import com.kdt.board.post.repository.PostRepository;
-import com.kdt.board.post.service.PostService;
 import com.kdt.board.user.domain.User;
 import com.kdt.board.user.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.payload.PayloadDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -61,8 +58,8 @@ class PostRestControllerTest {
             .andDo(MockMvcResultHandlers.print())
             .andDo(MockMvcRestDocumentation.document("get-posts",
                 responseFields(
-                    fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
-                    fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+                    fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
+                    fieldWithPath("data").type(JsonFieldType.OBJECT).description("data"),
                     fieldWithPath("data.content[]").type(JsonFieldType.ARRAY).description("content.desc"),
                     fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("postId"),
                     fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("title"),
@@ -90,7 +87,7 @@ class PostRestControllerTest {
                     fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("data.first"),
                     fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("data.numberOfElements"),
                     fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("data.empty"),
-                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
+                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("serverDateTime")
                 )
             ));
     }
@@ -108,13 +105,13 @@ class PostRestControllerTest {
             .andDo(MockMvcResultHandlers.print())
             .andDo(MockMvcRestDocumentation.document("get-post",
                 responseFields(
-                    fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                    fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
                     fieldWithPath("data").type(JsonFieldType.OBJECT).description("data"),
                     fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("postId"),
                     fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
                     fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
                     fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("userId"),
-                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
+                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("serverDateTime")
                 )
             ));
     }
@@ -174,4 +171,19 @@ class PostRestControllerTest {
             ));
     }
 
+    @Test
+    @DisplayName("존재하지 않는 post 조회시 NotFoundException 발생")
+    void nonFoundExceptionTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+            .andDo(MockMvcResultHandlers.print())
+            .andDo(MockMvcRestDocumentation.document("get-post-exception",
+                responseFields(
+                    fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
+                    fieldWithPath("data").type(JsonFieldType.STRING).description("data"),
+                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("serverDateTime")
+                )
+            ));
+    }
 }

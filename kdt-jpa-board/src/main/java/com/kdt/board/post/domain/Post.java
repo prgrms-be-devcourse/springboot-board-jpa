@@ -3,7 +3,6 @@ package com.kdt.board.post.domain;
 import com.kdt.board.common.value.BaseEntity;
 import com.kdt.board.user.domain.User;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

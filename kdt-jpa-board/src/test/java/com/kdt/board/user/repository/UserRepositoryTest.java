@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 import com.kdt.board.user.domain.User;
 import java.util.Optional;
 import javax.persistence.EntityManager;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

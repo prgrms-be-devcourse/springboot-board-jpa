@@ -13,19 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserRestController {
 
     private final UserService userService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ApiResponse<UserResponseDto> getOne(@PathVariable("id") Long userId) {
         UserResponseDto userResponseDto = userService.findOne(userId);
         return ApiResponse.ok(userResponseDto);
     }
 
-    @PostMapping
+    @PostMapping("/users")
     public ApiResponse<Long> saveUser(@RequestBody UserCreateRequestDto userCreateRequestDto) {
         Long userId = userService.save(userCreateRequestDto);
         return ApiResponse.ok(userId);

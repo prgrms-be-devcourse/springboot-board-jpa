@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kdt.board.user.domain.User;
 import com.kdt.board.user.dto.request.UserCreateRequestDto;
 import com.kdt.board.user.repository.UserRepository;
-import com.kdt.board.user.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +78,22 @@ class UserRestControllerTest {
                     fieldWithPath("data.name").type(JsonFieldType.STRING).description("data.name"),
                     fieldWithPath("data.age").type(JsonFieldType.NUMBER).description("data.age"),
                     fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("data.hobby"),
+                    fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("serverDateTime")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 사용자 조회시 NotFoundException 발생")
+    void nonFoundExceptionTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+            .andDo(MockMvcResultHandlers.print())
+            .andDo(MockMvcRestDocumentation.document("get-user-exception",
+                responseFields(
+                    fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("statusCode"),
+                    fieldWithPath("data").type(JsonFieldType.STRING).description("data"),
                     fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("serverDateTime")
                 )
             ));

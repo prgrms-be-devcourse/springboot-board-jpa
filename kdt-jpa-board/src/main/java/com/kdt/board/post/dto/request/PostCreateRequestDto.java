@@ -1,8 +1,5 @@
 package com.kdt.board.post.dto.request;
 
-import com.kdt.board.user.dto.response.UserResponseDto;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
