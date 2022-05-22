@@ -2,6 +2,7 @@ package prgrms.project.post.controller.v1;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import prgrms.project.post.controller.response.DefaultApiResponse;
@@ -17,29 +18,29 @@ public class PostRestController {
     private final PostService postService;
 
     @PostMapping
-    public DefaultApiResponse<Long> uploadPost(@RequestBody @Validated PostDto postDto) {
-        return DefaultApiResponse.ok(postService.uploadPost(postDto));
+    public ResponseEntity<DefaultApiResponse<Long>> uploadPost(@RequestBody @Validated PostDto postDto) {
+        return ResponseEntity.ok(DefaultApiResponse.of(postService.uploadPost(postDto)));
     }
 
     @GetMapping("/{postId}")
-    public DefaultApiResponse<PostDto> searchPost(@PathVariable Long postId) {
-        return DefaultApiResponse.ok(postService.searchById(postId));
+    public ResponseEntity<DefaultApiResponse<PostDto>> searchPost(@PathVariable Long postId) {
+        return ResponseEntity.ok(DefaultApiResponse.of(postService.searchById(postId)));
     }
 
     @GetMapping
-    public DefaultApiResponse<DefaultPage<PostDto>> searchAllPosts(Pageable pageable) {
-        return DefaultApiResponse.ok(postService.searchAll(pageable));
+    public ResponseEntity<DefaultApiResponse<DefaultPage<PostDto>>> searchAllPosts(Pageable pageable) {
+        return ResponseEntity.ok(DefaultApiResponse.of(postService.searchAll(pageable)));
     }
 
     @PutMapping("/{postId}")
-    public DefaultApiResponse<Long> updatePost(@PathVariable Long postId, @RequestBody @Validated PostDto postDto) {
-        return DefaultApiResponse.ok(postService.updatePost(postId, postDto));
+    public ResponseEntity<DefaultApiResponse<Long>> updatePost(@PathVariable Long postId, @RequestBody @Validated PostDto postDto) {
+        return ResponseEntity.ok(DefaultApiResponse.of(postService.updatePost(postId, postDto)));
     }
 
     @DeleteMapping("/{postId}")
-    public DefaultApiResponse<Boolean> deletePost(@PathVariable Long postId) {
+    public ResponseEntity<DefaultApiResponse<Boolean>> deletePost(@PathVariable Long postId) {
         postService.deleteById(postId);
 
-        return DefaultApiResponse.ok(true);
+        return ResponseEntity.ok(DefaultApiResponse.of(true));
     }
 }
