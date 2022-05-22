@@ -88,7 +88,7 @@ public class User extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age, hobby);
+        return Objects.hash(id);
     }
 
     public static Builder builder() {
