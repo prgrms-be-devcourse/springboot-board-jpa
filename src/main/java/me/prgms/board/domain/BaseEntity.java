@@ -12,6 +12,13 @@ public class BaseEntity {
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime cratedAt;
 
+    public BaseEntity() {}
+
+    public BaseEntity(String createdBy, LocalDateTime cratedAt) {
+        this.createdBy = createdBy;
+        this.cratedAt = cratedAt;
+    }
+
     public String getCreatedBy() {
         return createdBy;
     }
