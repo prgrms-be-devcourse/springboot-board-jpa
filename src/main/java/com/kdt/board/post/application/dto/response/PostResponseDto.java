@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class PostResponseDto {
 
-    private final Long id;
+    private final long id;
     private final String title;
     private final String content;
     private final String author;
@@ -18,7 +18,7 @@ public class PostResponseDto {
         this.createdAt = builder.createdAt;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -43,13 +43,13 @@ public class PostResponseDto {
     }
 
     public static class Builder {
-        private  Long id;
+        private  long id;
         private  String title;
         private  String content;
         private  String author;
         private  LocalDateTime createdAt;
 
-        public Builder id(Long id) {
+        public Builder id(long id) {
             this.id = id;
             return this;
         }
