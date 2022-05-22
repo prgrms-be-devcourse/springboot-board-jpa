@@ -41,7 +41,7 @@ public class UserService {
     public UserDto.Response update(UserDto.UpdateRequest dto) {
         User user = userRepository.findById(dto.id())
                 .orElseThrow(() -> new NotFoundException("Entity 를 불러오는 중 예외 발생"));
-        user.update(dto.name(), dto.age(), dto.hobby());
+        user.updateUser(dto.name(), dto.age(), dto.hobby());
         return converter.convertUserDto(user);
     }
 

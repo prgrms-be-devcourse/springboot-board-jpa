@@ -41,7 +41,6 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    // 연관 관계편의 메서드
     public void changeUser(User user) {
         if (Objects.nonNull(this.user)) {
             this.user.getPosts().remove(this);

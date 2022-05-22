@@ -38,7 +38,7 @@ public class User extends BaseEntity {
         this.hobby = hobby;
     }
 
-    public void update(String name, int age, String hobby) {
+    public void updateUser(String name, int age, String hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;

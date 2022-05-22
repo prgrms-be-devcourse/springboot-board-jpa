@@ -1,18 +1,17 @@
 package com.kdt.board.domain.converter;
 
 import com.kdt.board.domain.model.User;
-import com.kdt.board.domain.repository.PostRepository;
 import com.kdt.board.domain.repository.UserRepository;
 import com.kdt.board.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class ConvertService {
+public class UserConvertService {
     private final UserRepository userRepository;
-    private final PostRepository postRepository;
 
     @Transactional
     public User entityFindById(Long id) {

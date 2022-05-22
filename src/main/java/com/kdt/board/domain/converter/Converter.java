@@ -10,14 +10,13 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class Converter {
-    private final ConvertService convertService;
+    private final UserConvertService userConvertService;
 
-    // dto -> entity
     public Post convertPost(PostDto.SaveRequest postDto) {
         return Post.builder()
                 .title(postDto.title())
                 .content(postDto.content())
-                .user(convertService.entityFindById(postDto.userId()))
+                .user(userConvertService.entityFindById(postDto.userId()))
                 .build();
     }
 
@@ -29,7 +28,6 @@ public class Converter {
                 .build();
     }
 
-    // entity -> dto
     public PostDto.Response convertPostDto(Post post) {
         return new PostDto.Response(
                 post.getId(),
