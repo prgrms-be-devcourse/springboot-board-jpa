@@ -1,11 +1,11 @@
 package com.su.gesipan.post;
 
-import com.su.gesipan.common.audit.BaseEntity;
+import com.su.gesipan.common.audit.BaseCreatorEntity;
 import com.su.gesipan.user.User;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,9 +16,9 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = PROTECTED)
-public class Post extends BaseEntity {
+@Where(clause = "deleted = false")
+public class Post extends BaseCreatorEntity {
 
     @Id @GeneratedValue
     private Long id;
@@ -30,6 +30,7 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User user;
+
 
     // INFO: Post 에서 USER 와 직접적으로 관계맺는 곳은 생성자에서밖에 없다.
     private Post(String title, String content, User user) {

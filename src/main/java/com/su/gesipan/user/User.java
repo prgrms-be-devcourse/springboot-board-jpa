@@ -1,8 +1,9 @@
 package com.su.gesipan.user;
 
-import com.su.gesipan.common.audit.BaseTimeEntity;
+import com.su.gesipan.common.audit.BaseEntity;
 import com.su.gesipan.post.Post;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -17,9 +18,9 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = PROTECTED)
-public class User extends BaseTimeEntity {
+@Where(clause = "deleted = false")
+public class User extends BaseEntity {
 
     @Id @GeneratedValue
     private Long id;
@@ -29,6 +30,7 @@ public class User extends BaseTimeEntity {
     private Long age;
     @Column(length = 50)
     private String hobby;
+
     @ToString.Exclude
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
