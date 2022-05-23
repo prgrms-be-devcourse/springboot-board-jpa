@@ -36,12 +36,9 @@ public class Board extends BaseEntity {
         setUser(user);
     }
 
-    public void editTitle(Title title) {
-        this.title = title;
-    }
-
-    public void editContent(Content content) {
-        this.content = content;
+    public void editBoard(String title, String content) {
+        this.title = new Title(title);
+        this.content = new Content(content);
     }
 
     public Long getId() {
