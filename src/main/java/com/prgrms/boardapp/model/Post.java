@@ -9,29 +9,22 @@ import java.util.Objects;
 
 @Entity
 public class Post {
+
+    public static final int TITLE_MAX_LENGTH = 100;
+
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(
-            length = 100,
-            nullable = false
-    )
+    @Column(length = 100, nullable = false)
     private String title;
     @Lob
-    @Column(
-            nullable = false
-    )
+    @Column(nullable = false)
     private String content;
     @Embedded
     private CommonEmbeddable commonEmbeddable;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
-    public static final int TITLE_MAX_LENGTH = 100;
 
     protected Post() {
     }

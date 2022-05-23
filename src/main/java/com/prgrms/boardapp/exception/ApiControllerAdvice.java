@@ -9,7 +9,6 @@ import javax.persistence.EntityNotFoundException;
 
 @ControllerAdvice
 public class ApiControllerAdvice {
-
     @ExceptionHandler({
             EntityNotFoundException.class
     })

@@ -9,28 +9,22 @@ import static com.prgrms.boardapp.util.CommonValidate.validateNotNullString;
 
 @Entity
 public class User {
+
+    public static final int NAME_MAX_LENGTH = 50;
+    public static final int AGE_MIN = 0;
+
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(
-            nullable = false,
-            length = 50
-    )
+    @Column(nullable = false, length = 50)
     private String name;
-    @Column(
-            nullable = false
-    )
+    @Column(nullable = false)
     private Integer age;
     private String hobby;
     @Embedded
     private CommonEmbeddable commonEmbeddable;
     @Embedded
     private Posts posts;
-
-    public static final int NAME_MAX_LENGTH = 50;
-    public static final int AGE_MIN = 0;
 
     protected User() {
     }

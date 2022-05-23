@@ -13,9 +13,9 @@ import java.util.Map;
 @RequestMapping("/posts")
 public class PostController {
 
-    private final PostService postService;
-
     private static final String SAVE_RESPONSE_KEY = "postId";
+
+    private final PostService postService;
 
     public PostController(PostService postService) {
         this.postService = postService;

@@ -14,10 +14,10 @@ import javax.persistence.EntityNotFoundException;
 @Service
 public class PostService {
 
+    private static final String NOT_FOUND_POST_ERR_MSG = "게시글 정보를 찾을 수 없습니다.";
+
     private final PostRepository postRepository;
     private final Converter converter;
-
-    private static final String NOT_FOUND_POST_ERR_MSG = "게시글 정보를 찾을 수 없습니다.";
 
     public PostService(PostRepository postRepository, Converter converter) {
         this.postRepository = postRepository;

@@ -9,17 +9,13 @@ import java.time.LocalDateTime;
 
 @Embeddable
 public class CommonEmbeddable {
-    @Column(
-            length = 50
-    )
-    private String createdBy;
-
-    @Column(
-            columnDefinition = "TIMESTAMP"
-    )
-    private LocalDateTime createdAt;
 
     public static final int CREATED_BY_MAX_LENGTH = 50;
+
+    @Column(length = 50)
+    private String createdBy;
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime createdAt;
 
     protected CommonEmbeddable() {
     }
@@ -32,7 +28,8 @@ public class CommonEmbeddable {
 
     private void validateCreatedBy(String createdBy) {
         if (createdBy != null)
-            Assert.isTrue(createdBy.length() <= CREATED_BY_MAX_LENGTH, UserErrMsg.CREATED_LENGTH_ERR_MSG.getMessage());
+            Assert.isTrue(createdBy.length() <= CREATED_BY_MAX_LENGTH,
+                    UserErrMsg.CREATED_LENGTH_ERR_MSG.getMessage());
     }
 
     public String getCreatedBy() {
