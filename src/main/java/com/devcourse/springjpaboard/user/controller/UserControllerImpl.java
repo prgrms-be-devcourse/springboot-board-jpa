@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
