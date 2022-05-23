@@ -22,14 +22,14 @@ public class PostService {
         this.postConverter = postConverter;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PostDto getOnePost(Long id) throws NotFoundException {
         return postRepository.findById(id)
                 .map(postConverter::convertPostDto)
                 .orElseThrow(() -> new NotFoundException("찾는 게시글이 없습니다."));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PostDto> getAllPostByPage(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(postConverter::convertPostDto);
