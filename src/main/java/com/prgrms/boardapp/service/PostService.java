@@ -31,13 +31,13 @@ public class PostService {
         return savedPost.getId();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PostDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(converter::convertPostDto);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PostDto findById(Long postId) {
         return postRepository.findById(postId)
                 .map(converter::convertPostDto)
