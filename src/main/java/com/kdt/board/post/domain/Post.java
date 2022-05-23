@@ -23,7 +23,7 @@ public class Post extends BaseEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", updatable = false)
     private User user;
 
     protected Post() {
