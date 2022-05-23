@@ -13,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -66,7 +65,7 @@ class UserControllerImplTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/user")
+                MockMvcRequestBuilders.post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request))
         );
@@ -100,7 +99,7 @@ class UserControllerImplTest {
         doReturn(response).when(userService).findById(request);
         // when
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.get("/user/1")
+                MockMvcRequestBuilders.get("/users/1")
         );
         // then
         resultActions.andExpect(status().isOk())
@@ -125,7 +124,7 @@ class UserControllerImplTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.get("/user/2")
+                MockMvcRequestBuilders.get("/users/2")
         );
         // then
         MvcResult mvcResult = resultActions

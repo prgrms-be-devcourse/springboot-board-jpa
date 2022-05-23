@@ -1,5 +1,7 @@
 package com.devcourse.springjpaboard.post.controller.stub;
 
+import com.devcourse.springjpaboard.model.post.Post;
+import com.devcourse.springjpaboard.model.user.User;
 import com.devcourse.springjpaboard.post.controller.dto.CreatePostRequest;
 import com.devcourse.springjpaboard.post.controller.dto.UpdatePostRequest;
 import com.devcourse.springjpaboard.post.service.dto.PostResponse;
@@ -7,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class PostStubs {
@@ -40,5 +43,16 @@ public class PostStubs {
                         new PostResponse("test-title5", "test-content5")
                 )
         );
+    }
+
+    public static Post post(User user) {
+        Post post = new Post();
+        post.setId(1L);
+        post.setUser(user);
+        post.setTitle("test-title");
+        post.setContent("test-content");
+        post.setCreatedAt(LocalDateTime.now());
+        post.setCreatedBy(user.getName());
+        return post;
     }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/posts")
 public class PostControllerImpl implements PostController {
 
     private final PostService postService;

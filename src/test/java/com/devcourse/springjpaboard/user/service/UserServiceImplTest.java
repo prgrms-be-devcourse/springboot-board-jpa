@@ -2,6 +2,7 @@ package com.devcourse.springjpaboard.user.service;
 
 import com.devcourse.springjpaboard.exception.NotFoundException;
 import com.devcourse.springjpaboard.user.repository.UserRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@Disabled
 class UserServiceImplTest {
 
     @InjectMocks

@@ -15,6 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
@@ -27,8 +29,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.nio.charset.StandardCharsets;
 
 import static com.devcourse.springjpaboard.exception.ExceptionMessage.NOT_FOUND_POST;
 import static com.devcourse.springjpaboard.exception.ExceptionMessage.NOT_FOUND_USER;
@@ -76,7 +76,7 @@ class PostControllerImplTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/post")
+                MockMvcRequestBuilders.post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request))
         );
@@ -109,7 +109,7 @@ class PostControllerImplTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/post")
+                MockMvcRequestBuilders.post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request))
         );
@@ -134,7 +134,7 @@ class PostControllerImplTest {
                 .update(any(Long.class), any(UpdatePostRequest.class));
         // when
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.put("/post/" + requestUser)
+                MockMvcRequestBuilders.put("/posts/" + requestUser)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request))
         );
@@ -168,7 +168,7 @@ class PostControllerImplTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.put("/post/" + requestPost)
+                MockMvcRequestBuilders.put("/posts/" + requestPost)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request))
         );
@@ -191,7 +191,7 @@ class PostControllerImplTest {
                 .findAll(any(Pageable.class));
         // when
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.get("/post")
+                MockMvcRequestBuilders.get("/posts")
                         .param("page", "0")
                         .param("size", "5")
         );
@@ -232,7 +232,7 @@ class PostControllerImplTest {
                 .findOne(any(Long.class));
         // when
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.get("/post/" + requestPost)
+                MockMvcRequestBuilders.get("/posts/" + requestPost)
         );
 
         // then
@@ -259,7 +259,7 @@ class PostControllerImplTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.get("/post/" + requestPost)
+                MockMvcRequestBuilders.get("/posts/" + requestPost)
         );
 
         // then
