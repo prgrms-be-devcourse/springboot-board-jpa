@@ -7,11 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface PostService {
-    PostResponse save(CreatePostRequest dto);
+    PostResponse save(CreatePostRequest createPostRequest);
 
     PostResponse findOne(Long id);
 
     Page<PostResponse> findAll(Pageable pageable);
 
-    PostResponse update(Long id, UpdatePostRequest postDto);
+    PostResponse update(Long id, UpdatePostRequest updatePostRequest);
 }

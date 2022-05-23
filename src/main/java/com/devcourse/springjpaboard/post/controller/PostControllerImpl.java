@@ -1,6 +1,6 @@
 package com.devcourse.springjpaboard.post.controller;
 
-import com.devcourse.springjpaboard.error.NotFoundException;
+import com.devcourse.springjpaboard.exception.NotFoundException;
 import com.devcourse.springjpaboard.post.controller.dto.CreatePostRequest;
 import com.devcourse.springjpaboard.post.controller.dto.UpdatePostRequest;
 import com.devcourse.springjpaboard.post.service.PostService;
@@ -22,34 +22,40 @@ public class PostControllerImpl implements PostController {
         this.postService = postService;
     }
 
+    @Override
     @ExceptionHandler(NotFoundException.class)
     public ApiResponse<String> notFoundHandler(NotFoundException e) {
         return ApiResponse.fail(NOT_FOUND, e.getMessage());
     }
 
+    @Override
     @ExceptionHandler(Exception.class)
     public ApiResponse<String> internalServerError(Exception e) {
         return ApiResponse.fail(INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
-    @GetMapping("/")
+    @Override
+    @GetMapping("")
     public ApiResponse<Page<PostResponse>> getAllPosts(Pageable pageable) {
         Page<PostResponse> posts = postService.findAll(pageable);
         return ApiResponse.ok(OK, posts);
     }
 
+    @Override
     @GetMapping("/{id}")
     public ApiResponse<PostResponse> getPostById(@PathVariable Long id) throws NotFoundException {
         PostResponse post = postService.findOne(id);
         return ApiResponse.ok(OK, post);
     }
 
-    @PostMapping("/")
+    @Override
+    @PostMapping("")
     public ApiResponse<PostResponse> writePost(@RequestBody CreatePostRequest createPostRequest) {
         PostResponse post = postService.save(createPostRequest);
         return ApiResponse.ok(OK, post);
     }
 
+    @Override
     @PutMapping("/{id}")
     public ApiResponse<PostResponse> updatePost(@PathVariable Long id, @RequestBody UpdatePostRequest updatePostRequest)
             throws NotFoundException {

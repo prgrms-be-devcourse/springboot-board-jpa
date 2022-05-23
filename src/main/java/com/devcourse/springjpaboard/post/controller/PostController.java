@@ -1,6 +1,6 @@
 package com.devcourse.springjpaboard.post.controller;
 
-import com.devcourse.springjpaboard.error.NotFoundException;
+import com.devcourse.springjpaboard.exception.NotFoundException;
 import com.devcourse.springjpaboard.post.controller.dto.CreatePostRequest;
 import com.devcourse.springjpaboard.post.controller.dto.UpdatePostRequest;
 import com.devcourse.springjpaboard.post.service.dto.PostResponse;
@@ -22,5 +22,5 @@ public interface PostController {
 
     ApiResponse<String> internalServerError(Exception e);
 
-    public ApiResponse<String> notFoundHandler(NotFoundException e);
+    ApiResponse<String> notFoundHandler(NotFoundException e);
 }
