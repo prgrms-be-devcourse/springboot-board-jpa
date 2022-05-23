@@ -34,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith({MockitoExtension.class, RestDocumentationExtension.class})
-@AutoConfigureRestDocs
 class UserControllerImplTest {
 
     @InjectMocks
@@ -82,7 +81,6 @@ class UserControllerImplTest {
                         ),
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
-                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
                                 fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("아이디"),
                                 fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("data.age").type(JsonFieldType.NUMBER).description("나이"),
@@ -109,7 +107,6 @@ class UserControllerImplTest {
                 .andDo(document("user-find-by-id",
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
-                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
                                 fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("아이디"),
                                 fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("data.age").type(JsonFieldType.NUMBER).description("나이"),
