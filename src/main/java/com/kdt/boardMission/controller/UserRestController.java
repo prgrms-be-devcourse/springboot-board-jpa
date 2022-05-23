@@ -7,6 +7,7 @@ import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -17,41 +18,31 @@ public class UserRestController {
 
     private final UserService userService;
 
-    @ExceptionHandler(NotFoundException.class)
-    public ApiResponse<String> notFoundHandler(NotFoundException e) {
-        return ApiResponse.fail(404, e.getMessage());
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ApiResponse<String> internalServerErrorHandler(Exception e) {
-        return ApiResponse.fail(500, e.getMessage());
-    }
-
     @PostMapping("/user")
-    public ApiResponse<Long> enrollUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<Long> enrollUser(@RequestBody UserDto userDto) {
         long userId = userService.saveUser(userDto);
-        return ApiResponse.ok(userId);
+        return ResponseEntity.ok(userId);
     }
 
     @GetMapping("/user")
-    public ApiResponse<Page<UserDto>> getUserByTitle(@RequestParam("name") Optional<String> name, Pageable pageable) {
+    public ResponseEntity<Page<UserDto>> getUserByTitle(@RequestParam("name") Optional<String> name, Pageable pageable) {
         if (name.isEmpty()) {
-            Page<UserDto> all = userService.findAll(pageable);
-            return ApiResponse.ok(all);
+            Page<UserDto> userDtoPage = userService.findAll(pageable);
+            return ResponseEntity.ok(userDtoPage);
         }
-        Page<UserDto> userByName = userService.findUserByName(name.get(), pageable);
-        return ApiResponse.ok(userByName);
+        Page<UserDto> userDtoPageByName = userService.findUserByName(name.get(), pageable);
+        return ResponseEntity.ok(userDtoPageByName);
     }
 
     @GetMapping("/user/{userId}")
-    public ApiResponse<UserDto> getOne(@PathVariable("userId") Long userId) throws NotFoundException {
-        UserDto userById = userService.findUserById(userId);
-        return ApiResponse.ok(userById);
+    public ResponseEntity<UserDto> getOne(@PathVariable("userId") Long userId) throws NotFoundException {
+        UserDto userDto = userService.findUserById(userId);
+        return ResponseEntity.ok(userDto);
     }
 
     @PutMapping("/user/edit")
-    public ApiResponse<UserDto> editHobby(@RequestBody UserDto userDto) throws NotFoundException {
+    public ResponseEntity<UserDto> editHobby(@RequestBody UserDto userDto) throws NotFoundException {
         userService.updateUser(userDto);
-        return ApiResponse.ok(userDto);
+        return ResponseEntity.ok(userDto);
     }
 }

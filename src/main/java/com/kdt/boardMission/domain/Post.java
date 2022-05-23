@@ -3,12 +3,16 @@ package com.kdt.boardMission.domain;
 import com.kdt.boardMission.domain.superClass.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "post")
 @Getter
+@Where(clause = "is_deleted = false")
+@SQLDelete(sql = "UPDATE post SET is_deleted = true WHERE id = ?")
 @NoArgsConstructor
 public class Post extends BaseEntity {
 

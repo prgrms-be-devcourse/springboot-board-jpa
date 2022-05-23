@@ -9,6 +9,7 @@ import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,42 +18,32 @@ public class PostRestController {
 
     private final PostService postService;
 
-    @ExceptionHandler(NotFoundException.class)
-    public ApiResponse<String> notFoundHandler(NotFoundException e) {
-        return ApiResponse.fail(404, e.getMessage());
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ApiResponse<String> internalServerErrorHandler(Exception e) {
-        return ApiResponse.fail(500, e.getMessage());
-    }
-
     @GetMapping("/posts")
-    public ApiResponse<Page<PostDto>> findAll(Pageable pageable) {
-        Page<PostDto> all = postService.findAll(pageable);
-        return ApiResponse.ok(all);
+    public ResponseEntity<Page<PostDto>> findAll(Pageable pageable) {
+        Page<PostDto> postDtoPage = postService.findAll(pageable);
+        return ResponseEntity.ok(postDtoPage);
     }
 
     @GetMapping("/posts/{id}")
-    public ApiResponse<PostDto> findOne(@PathVariable("id") long id) throws NotFoundException {
-        PostDto byId = postService.findById(id);
-        return ApiResponse.ok(byId);
+    public ResponseEntity<PostDto> findOne(@PathVariable("id") long id) throws NotFoundException {
+        PostDto postDto = postService.findById(id);
+        return ResponseEntity.ok(postDto);
     }
 
     @PostMapping("/posts")
-    public ApiResponse<Long> doPost(@RequestBody CreatePostDto createPostDto) throws NotFoundException {
+    public ResponseEntity<Long> doPost(@RequestBody CreatePostDto createPostDto) throws NotFoundException {
         PostDto postDto = createPostDto.getPostDto();
         UserDto userDto = createPostDto.getUserDto();
 
         long postId = postService.savePost(postDto, userDto);
-        return ApiResponse.ok(postId);
+        return ResponseEntity.ok(postId);
     }
 
     @PostMapping("/posts/{id}")
-    public ApiResponse<PostDto> editPost(@PathVariable("id") Long id,
+    public ResponseEntity<PostDto> editPost(@PathVariable("id") Long id,
                                          @RequestBody PostDto postDto) throws NotFoundException {
         postDto.setId(id);
         postService.updatePost(postDto);
-        return ApiResponse.ok(postDto);
+        return ResponseEntity.ok(postDto);
     }
 }
