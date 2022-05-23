@@ -1,6 +1,5 @@
 package com.dojinyou.devcourse.boardjpa.post.service;
 
-import com.dojinyou.devcourse.boardjpa.common.exception.NotFoundException;
 import com.dojinyou.devcourse.boardjpa.post.respository.PostRepository;
 import com.dojinyou.devcourse.boardjpa.post.service.dto.PostCreateDto;
 import com.dojinyou.devcourse.boardjpa.user.entity.User;
@@ -17,8 +16,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -106,8 +103,8 @@ class PostDefaultServiceTest {
                     "50글자를 넘어가는 엄청나게 길게 작성된 title 012345678901234567890123456789"})
             void 예외를_발생시킨다_Title(String title) {
                 PostCreateDto invalidTitlePostCreateDto = new PostCreateDto.Builder().title(title)
-                                                                                    .content(content)
-                                                                                    .build();
+                                                                                     .content(content)
+                                                                                     .build();
                 when(userService.findById(savedUser.getId())).thenReturn(savedUser);
 
                 Throwable throwable = catchThrowable(
@@ -137,9 +134,9 @@ class PostDefaultServiceTest {
             @ParameterizedTest(name = "{displayName} userId:{0}")
             @ValueSource(longs = {Long.MIN_VALUE, -1L, 0L})
             void 예외를_발생시킨다_user_id(long invalidId) {
-                PostCreateDto validPostCreateDto =  new PostCreateDto.Builder().title(title)
-                                                                               .content(content)
-                                                                               .build();
+                PostCreateDto validPostCreateDto = new PostCreateDto.Builder().title(title)
+                                                                              .content(content)
+                                                                              .build();
 
                 Throwable throwable = catchThrowable(
                         () -> postDefaultService.create(invalidId, validPostCreateDto));
