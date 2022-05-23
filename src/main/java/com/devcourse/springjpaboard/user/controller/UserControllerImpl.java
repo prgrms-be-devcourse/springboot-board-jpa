@@ -5,6 +5,7 @@ import com.devcourse.springjpaboard.user.controller.dto.CreateUserRequest;
 import com.devcourse.springjpaboard.user.controller.dto.UserResponse;
 import com.devcourse.springjpaboard.user.service.UserService;
 import com.devcourse.springjpaboard.util.ApiResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.*;
@@ -21,11 +22,14 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
     public ApiResponse<String> internalServerError(Exception e) {
         return ApiResponse.fail(INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
     @Override
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(NOT_FOUND)
     public ApiResponse<String> notFoundHandler(NotFoundException e) {
         return ApiResponse.fail(NOT_FOUND, e.getMessage());
     }
