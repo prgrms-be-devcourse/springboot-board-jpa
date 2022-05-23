@@ -1,9 +1,11 @@
 package org.programmers.board.controller;
 
-import org.programmers.board.dto.UserDTO;
+import org.programmers.board.dto.MemberCreateRequest;
+import org.programmers.board.dto.MemberCreateResponse;
 import org.programmers.board.entity.User;
 import org.programmers.board.entity.vo.Name;
 import org.programmers.board.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,16 +20,19 @@ public class UserApiController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createNewMember(@RequestBody UserDTO userDTO) {
-        User user = new User(new Name(userDTO.getName()), userDTO.getAge(), userDTO.getHobby());
+    public ResponseEntity<?> createNewMember(@RequestBody MemberCreateRequest memberCreateRequest) {
+        User user = new User(
+                new Name(memberCreateRequest.getName()),
+                memberCreateRequest.getAge(),
+                memberCreateRequest.getHobby());
 
         userService.createUser(user);
 
-        UserDTO response = new UserDTO(
+        MemberCreateResponse response = new MemberCreateResponse(
                 user.getName().getName(),
                 user.getAge(),
                 user.getHobby());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @DeleteMapping
