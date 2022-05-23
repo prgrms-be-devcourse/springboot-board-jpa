@@ -16,7 +16,6 @@ public class PostCreateRequest {
     private String title;
 
     @NotBlank
-    @Length(max = 50)
     private String content;
 
     protected PostCreateRequest() {
