@@ -1,6 +1,5 @@
 package com.kdt.boardMission.controller;
 
-import com.kdt.boardMission.ApiResponse;
 import com.kdt.boardMission.dto.CreatePostDto;
 import com.kdt.boardMission.dto.PostDto;
 import com.kdt.boardMission.dto.UserDto;

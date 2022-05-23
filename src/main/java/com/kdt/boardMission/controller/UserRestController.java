@@ -1,6 +1,5 @@
 package com.kdt.boardMission.controller;
 
-import com.kdt.boardMission.ApiResponse;
 import com.kdt.boardMission.dto.UserDto;
 import com.kdt.boardMission.service.UserService;
 import javassist.NotFoundException;
