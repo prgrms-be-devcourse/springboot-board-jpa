@@ -19,7 +19,7 @@ public class UserCreateUtil {
                 .build();
     }
 
-    public static User createUserWithId() {
+    public synchronized static User createUserWithId() {
         return User.builder()
                 .id(userId++)
                 .name("user")
@@ -41,7 +41,7 @@ public class UserCreateUtil {
                 .build();
     }
 
-    public static UserDto createUserDto() {
+    public synchronized static UserDto createUserDto() {
         return UserDto.builder()
                 .id(userId++)
                 .name("user-name")

@@ -14,6 +14,10 @@ public class PostCreateUtil {
     private PostCreateUtil() {
     }
 
+    private synchronized static void increaseId() {
+        postId++;
+    }
+
     public static Post createPost() {
         return Post.builder()
                 .title("sample title")
@@ -21,7 +25,7 @@ public class PostCreateUtil {
                 .build();
     }
 
-    public static Post createPostWithId() {
+    public synchronized static Post createPostWithId() {
         return Post.builder()
                 .id(postId++)
                 .title("sample title")
@@ -35,7 +39,7 @@ public class PostCreateUtil {
                 .build();
     }
 
-    public static PostDto createPostDto() {
+    public synchronized static PostDto createPostDto() {
         return PostDto.builder()
                 .id(postId++)
                 .createdAt(LocalDateTime.now())
