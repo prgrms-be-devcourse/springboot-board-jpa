@@ -34,7 +34,6 @@ public class User extends BaseEntity {
         this.age = age;
         this.hobby = hobby;
         this.setCreatedBy(name);
-        this.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS));
     }
 
     public User(Long id, String name, int age, String hobby) {

@@ -32,7 +32,6 @@ public class Post extends BaseEntity {
         author.getPosts().add(this);
         this.author = author;
         this.setCreatedBy(author.getName());
-        this.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS));
     }
 
     public void updatePost(String title, String content) {
