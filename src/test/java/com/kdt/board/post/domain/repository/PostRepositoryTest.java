@@ -55,7 +55,7 @@ public class PostRepositoryTest {
                 flushAndClear();
 
                 //when
-                Optional<Post> foundPost = postRepository.findById(Long.MAX_VALUE);
+                final Optional<Post> foundPost = postRepository.findById(Long.MAX_VALUE);
 
                 //then
                 assertThat(foundPost).isEmpty();
@@ -84,10 +84,11 @@ public class PostRepositoryTest {
                 flushAndClear();
 
                 //when
-                Optional<Post> foundPost = postRepository.findById(post.getId());
+                final Optional<Post> foundPost = postRepository.findById(post.getId());
 
                 //then
                 assertThat(foundPost).isNotEmpty();
+                assertThat(foundPost.get()).usingRecursiveComparison().isEqualTo(post);
             }
         }
     }
@@ -104,7 +105,7 @@ public class PostRepositoryTest {
             @DisplayName("Post를 조회한다.")
             void It_response_found_post() {
                 //given
-                final PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
+                final PageRequest pageRequest = PageRequest.of(0, 2, Sort.Direction.DESC, "createdAt");
                 final User firstUser = User.builder()
                         .name("first test")
                         .email("firstTest@test.com")
@@ -125,16 +126,19 @@ public class PostRepositoryTest {
                         .content("second test")
                         .user(secondUser)
                         .build();
-                final List<Post> posts = List.of(firstPost, secondPost);
+                final Post thirdPost = Post.builder()
+                        .title("third test")
+                        .content("third test")
+                        .user(secondUser)
+                        .build();
+                final List<Post> posts = List.of(firstPost, secondPost, thirdPost);
                 postRepository.saveAll(posts);
-                flushAndClear();
 
                 //when
-                List<Post> foundPosts = postRepository.findAllOrderByCreatedAtDesc(pageRequest);
+                final List<Post> foundPosts = postRepository.findAllOrderByCreatedAtDesc(pageRequest);
 
                 //then
-                assertThat(foundPosts.get(0)).usingRecursiveComparison().isEqualTo(posts.get(1));
-                assertThat(foundPosts.get(1)).usingRecursiveComparison().isEqualTo(posts.get(0));
+                assertThat(foundPosts).usingRecursiveComparison().isEqualTo(List.of(posts.get(2), posts.get(1)));
             }
         }
     }
