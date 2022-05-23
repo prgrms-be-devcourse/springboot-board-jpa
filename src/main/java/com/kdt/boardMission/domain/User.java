@@ -1,6 +1,6 @@
 package com.kdt.boardMission.domain;
 
-import com.kdt.boardMission.domain.superClass.Created;
+import com.kdt.boardMission.domain.superClass.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,11 +12,11 @@ import java.util.List;
 @Table(name = "user")
 @Getter
 @NoArgsConstructor
-public class User extends Created {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String name;

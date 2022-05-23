@@ -10,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static com.kdt.boardMission.dto.UserDto.convertUser;
 import static com.kdt.boardMission.dto.UserDto.convertUserDto;
 
@@ -29,12 +27,10 @@ public class UserService {
     }
 
     public void updateUser(UserDto userDto) throws NotFoundException {
-        Optional<User> byId = userRepository.findById(userDto.getId());
-        if (byId.isEmpty()) {
-            throw new NotFoundException("해당 아이디를 가진 유저가 없습니다.");
-        }
-        byId.get().updateHobby(userDto.getHobby());
-        byId.get().updateAge(userDto.getAge());
+        User user = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new NotFoundException("해당 아이디를 가진 유저가 없습니다."));
+        user.updateHobby(userDto.getHobby());
+        user.updateAge(userDto.getAge());
     }
 
     public void deleteUser(UserDto userDto) {
@@ -43,11 +39,8 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserDto findUserById(long userId) throws NotFoundException {
-        Optional<User> byId = userRepository.findById(userId);
-        if (byId.isEmpty()) {
-            throw new NotFoundException("해당 아이디를 가진 유저가 없습니다.");
-        }
-        User user = byId.get();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("해당 아이디를 가진 유저가 없습니다."));
         return convertUserDto(user);
     }
 

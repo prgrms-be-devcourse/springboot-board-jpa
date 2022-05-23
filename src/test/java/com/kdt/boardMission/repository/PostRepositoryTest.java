@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static com.kdt.boardMission.domain.Post.createPost;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -38,7 +37,7 @@ class PostRepositoryTest {
     public void createPostTest() throws Exception {
 
         //given
-        Post post = createPost(user, "title", "content");
+        Post post = new Post(user, "title", "content");
         Post save = postRepository.save(post);
 
         //when
@@ -54,7 +53,7 @@ class PostRepositoryTest {
     public void deletePostTest() throws Exception {
 
         //given
-        Post post = createPost(user, "title", "content");
+        Post post = new Post(user, "title", "content");
         Post save = postRepository.save(post);
 
         //when
@@ -70,7 +69,7 @@ class PostRepositoryTest {
     public void updatePostTest() throws Exception {
 
         //given
-        Post post = createPost(user, "title", "content");
+        Post post = new Post(user, "title", "content");
         Post save = postRepository.save(post);
 
         //when

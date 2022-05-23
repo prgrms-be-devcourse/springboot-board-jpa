@@ -1,7 +1,6 @@
 package com.kdt.boardMission.repository;
 
 import com.kdt.boardMission.domain.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -70,7 +69,8 @@ class UserRepositoryTest {
         repository.save(user);
 
         //then
-        assertThat(repository.findById(user.getId()).get().getHobby()).isEqualTo("newHobby");
+        User updatedUser = repository.findById(user.getId()).orElseThrow(RuntimeException::new);
+        assertThat(updatedUser.getHobby()).isEqualTo("newHobby");
     }
 
     @Test

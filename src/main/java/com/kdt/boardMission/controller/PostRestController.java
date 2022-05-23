@@ -22,8 +22,8 @@ public class PostRestController {
         return ApiResponse.fail(404, e.getMessage());
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ApiResponse<String> interalServerErrorHandler(Exception e) {
+    @ExceptionHandler(Exception.class)
+    public ApiResponse<String> internalServerErrorHandler(Exception e) {
         return ApiResponse.fail(500, e.getMessage());
     }
 

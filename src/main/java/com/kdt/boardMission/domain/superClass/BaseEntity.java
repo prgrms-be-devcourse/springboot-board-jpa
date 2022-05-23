@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Getter
-public class Created {
+public class BaseEntity {
 
     @Column(name = "created_by")
     private String createdBy;

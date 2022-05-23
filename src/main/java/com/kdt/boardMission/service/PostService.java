@@ -13,9 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-import static com.kdt.boardMission.domain.Post.createPost;
 import static com.kdt.boardMission.dto.PostDto.convertPostDto;
 
 @Service
@@ -27,41 +24,32 @@ public class PostService {
     private final UserRepository userRepository;
 
     public long savePost(PostDto postDto, UserDto userDto) throws NotFoundException {
-        Optional<User> userById = userRepository.findById(userDto.getId());
-        if (userById.isEmpty()) {
-            throw new NotFoundException("해당 아이디를 가진 유저가 없습니다.");
-        }
-        Post post = createPost(userById.get(), postDto.getTitle(), postDto.getContent());
-        Post save = postRepository.save(post);
-        return save.getId();
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new NotFoundException("해당 아이디를 가진 유저가 없습니다."));
+        Post post = new Post(user, postDto.getTitle(), postDto.getContent());
+        Post savedPost = postRepository.save(post);
+        return savedPost.getId();
     }
 
     public void updatePost(PostDto postDto) throws NotFoundException {
-        Optional<Post> postById = postRepository.findById(postDto.getId());
-        if (postById.isEmpty()) {
-            throw new NotFoundException("존재하지 않는 게시물입니다.");
-        }
-        postById.get().updateTitle(postDto.getTitle());
-        postById.get().updateContent(postDto.getContent());
+        Post post = postRepository.findById(postDto.getId())
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 게시물입니다."));
+        post.updateTitle(postDto.getTitle());
+        post.updateContent(postDto.getContent());
 
     }
 
     public void deletePost(PostDto postDto) throws NotFoundException {
-        Optional<Post> postById = postRepository.findById(postDto.getId());
-        if (postById.isEmpty()) {
-            throw new NotFoundException("존재하지 않는 게시물입니다.");
-        }
-        postById.get().deletePost();
+        Post post = postRepository.findById(postDto.getId())
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 게시물입니다."));
+        post.deletePost();
         postRepository.deleteById(postDto.getId());
     }
 
     @Transactional(readOnly = true)
     public PostDto findById(long postId) throws NotFoundException {
-        Optional<Post> byId = postRepository.findById(postId);
-        if (byId.isEmpty()) {
-            throw new NotFoundException("게시물이 없습니다.");
-        }
-        return convertPostDto(byId.get());
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("게시물이 없습니다."));
+        return convertPostDto(post);
     }
 
     @Transactional(readOnly = true)

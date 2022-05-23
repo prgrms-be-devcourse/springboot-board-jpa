@@ -5,7 +5,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 
-import static com.kdt.boardMission.domain.Post.createPost;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -32,7 +31,7 @@ class DomainTest {
         User user = new User("name", 10, "hhhho");
 
         //when
-        Post post = createPost(user, "title", "content");
+        Post post = new Post(user, "title", "content");
 
         //then
         assertThat(user.getPosts()).contains(post);
@@ -43,7 +42,7 @@ class DomainTest {
 
         //given
         User user = new User("name", 10, "hhhho");
-        Post post = createPost(user, "title", "content");
+        Post post = new Post(user, "title", "content");
 
         //when
         post.deletePost();

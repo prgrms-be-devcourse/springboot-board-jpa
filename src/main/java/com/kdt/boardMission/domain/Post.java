@@ -1,6 +1,6 @@
 package com.kdt.boardMission.domain;
 
-import com.kdt.boardMission.domain.superClass.Created;
+import com.kdt.boardMission.domain.superClass.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,11 +10,11 @@ import javax.persistence.*;
 @Table(name = "post")
 @Getter
 @NoArgsConstructor
-public class Post extends Created {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String title;
@@ -27,9 +27,10 @@ public class Post extends Created {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Post(String title, String content) {
+    public Post(User user, String title, String content) {
         this.title = title;
         this.content = content;
+        addUser(user);
     }
 
     public void addUser(User user) {
@@ -38,12 +39,6 @@ public class Post extends Created {
         }
         this.user = user;
         user.getPosts().add(this);
-    }
-
-    public static Post createPost(User user, String title, String content) {
-        Post post = new Post(title, content);
-        post.addUser(user);
-        return post;
     }
 
     public void deletePost() {

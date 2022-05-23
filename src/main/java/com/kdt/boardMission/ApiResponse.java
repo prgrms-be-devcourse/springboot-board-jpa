@@ -3,7 +3,6 @@ package com.kdt.boardMission;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import java.time.LocalDateTime;
 
