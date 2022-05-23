@@ -50,7 +50,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("찾는 게시글이 없습니다."));
 
-        post.updatePost(postRequestDto.getTitle(), postRequestDto.getContent());
+        post.updatePost(postRequestDto.title(), postRequestDto.content());
         return postConverter.convertPostResponseDto(post);
     }
 

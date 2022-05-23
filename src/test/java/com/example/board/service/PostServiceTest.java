@@ -37,19 +37,14 @@ class PostServiceTest {
         User user = userRepository.save(new User("name", 25, "hobby"));
         Long userId = user.getId();
 
-        PostRequestDto postRequestDto = PostRequestDto.builder()
-                .title("title")
-                .content("content")
-                .author(UserResponseDto.builder()
-                        .id(userId)
-                        .name("name")
-                        .age(25)
-                        .hobby("hobby")
-                        .build())
-                .build();
+        PostRequestDto postRequestDto = new PostRequestDto(
+                "title",
+                "content",
+                new UserResponseDto(userId, "name", 25, "hobby"));
+
 
         // when
-        postId = postService.writePost(postRequestDto).getId();
+        postId = postService.writePost(postRequestDto).id();
 
         // then
         assertThat(postId).isGreaterThan(0);
@@ -68,7 +63,7 @@ class PostServiceTest {
         PostResponseDto postResponseDto = postService.getOnePost(postId);
 
         // then
-        assertThat(postResponseDto.getId()).isEqualTo(postId);
+        assertThat(postResponseDto.id()).isEqualTo(postId);
     }
 
     @Test
@@ -89,11 +84,11 @@ class PostServiceTest {
         PostResponseDto postResponseDto = postService.getOnePost(postId);
 
         // when
-        postService.updatePost(postResponseDto.getId(), "new-Title", "new-Content");
+        postService.updatePost(postResponseDto.id(), "new-Title", "new-Content");
 
         // then
         PostResponseDto updated = postService.getOnePost(postId);
-        assertThat(updated.getTitle()).isEqualTo("new-Title");
-        assertThat(updated.getContent()).isEqualTo("new-Content");
+        assertThat(updated.title()).isEqualTo("new-Title");
+        assertThat(updated.content()).isEqualTo("new-Content");
     }
 }

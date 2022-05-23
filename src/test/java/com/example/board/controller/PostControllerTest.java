@@ -57,19 +57,13 @@ class PostControllerTest {
         User user = userRepository.save(new User("name", 25, "hobby"));
         userId = user.getId();
 
-        PostRequestDto postRequestDto = PostRequestDto.builder()
-                .title("title")
-                .content("content")
-                .author(UserResponseDto.builder()
-                        .id(userId)
-                        .name("name")
-                        .age(25)
-                        .hobby("hobby")
-                        .build())
-                .build();
+        PostRequestDto postRequestDto = new PostRequestDto(
+                "title",
+                "content",
+                new UserResponseDto(userId, "name", 25, "hobby"));
 
         // when
-        postId = postService.writePost(postRequestDto).getId();
+        postId = postService.writePost(postRequestDto).id();
 
         // then
         assertThat(postId).isGreaterThan(0);
@@ -152,25 +146,18 @@ class PostControllerTest {
 
     @Test
     void saveTest() throws Exception {
-        PostResponseDto postResponseDto = PostResponseDto.builder()
-                .title("new-title")
-                .content("new-content")
-                .author(UserResponseDto.builder()
-                        .id(userId)
-                        .name("new-name")
-                        .age(25)
-                        .hobby("new-hobby")
-                        .build())
-                .build();
+        PostRequestDto postRequestDto = new PostRequestDto(
+                "new-title",
+                "new-content",
+                new UserResponseDto(userId, "name", 25, "hobby"));
 
         mockMvc.perform(post("/posts")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(postResponseDto)))
+                .content(objectMapper.writeValueAsString(postRequestDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("writePost",
                         requestFields(
-                                fieldWithPath("id").type(JsonFieldType.NULL).description("postId"),
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                                 fieldWithPath("author").type(JsonFieldType.OBJECT).description("author"),

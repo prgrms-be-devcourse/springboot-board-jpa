@@ -1,13 +1,10 @@
 package com.example.board.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+public record UserResponseDto (
+        Long id,
+        String name,
+        int age,
+        String hobby
+){
 
-@Getter
-@Builder
-public class UserResponseDto {
-    private Long id;
-    private String name;
-    private int age;
-    private String hobby;
 }

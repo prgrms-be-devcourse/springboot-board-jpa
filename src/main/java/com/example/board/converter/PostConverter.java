@@ -11,34 +11,32 @@ import org.springframework.stereotype.Component;
 public class PostConverter {
     public Post convertPost(PostRequestDto postRequestDto) {
         return new Post(
-                postRequestDto.getTitle(),
-                postRequestDto.getContent(),
-                this.convertUser(postRequestDto.getAuthor()));
+                postRequestDto.title(),
+                postRequestDto.content(),
+                this.convertUser(postRequestDto.author()));
     }
 
     private User convertUser(UserResponseDto userResponseDto) {
         return new User(
-                userResponseDto.getId(),
-                userResponseDto.getName(),
-                userResponseDto.getAge(),
-                userResponseDto.getHobby());
+                userResponseDto.id(),
+                userResponseDto.name(),
+                userResponseDto.age(),
+                userResponseDto.hobby());
     }
 
     public PostResponseDto convertPostResponseDto(Post post) {
-        return PostResponseDto.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .author(this.convertUserResponseDto(post.getAuthor()))
-                .build();
+        return new PostResponseDto(
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                this.convertUserResponseDto(post.getAuthor()));
     }
 
     private UserResponseDto convertUserResponseDto(User user) {
-        return UserResponseDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .age(user.getAge())
-                .hobby(user.getHobby())
-                .build();
+        return new UserResponseDto(
+                user.getId(),
+                user.getName(),
+                user.getAge(),
+                user.getHobby());
     }
 }

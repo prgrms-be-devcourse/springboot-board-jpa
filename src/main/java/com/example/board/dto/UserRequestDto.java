@@ -1,12 +1,9 @@
 package com.example.board.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+public record UserRequestDto (
+        String name,
+        int age,
+        String hobby
+){
 
-@Getter
-@Builder
-public class UserRequestDto {
-    private String name;
-    private int age;
-    private String hobby;
 }
