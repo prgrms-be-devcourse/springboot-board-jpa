@@ -2,6 +2,7 @@ package com.su.gesipan.post;
 
 import com.su.gesipan.common.audit.BaseEntity;
 import com.su.gesipan.user.User;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -15,6 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = PROTECTED)
 public class Post extends BaseEntity {
 

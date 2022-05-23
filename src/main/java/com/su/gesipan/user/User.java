@@ -17,6 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = PROTECTED)
 public class User extends BaseTimeEntity {
 
