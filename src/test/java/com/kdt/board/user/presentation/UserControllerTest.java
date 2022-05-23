@@ -1,8 +1,8 @@
-package com.kdt.board.user.application;
+package com.kdt.board.user.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kdt.board.user.application.UserService;
 import com.kdt.board.user.application.dto.request.RegistrationUserRequestDto;
-import com.kdt.board.user.presentation.UserController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

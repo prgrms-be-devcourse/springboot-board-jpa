@@ -3,13 +3,31 @@ package com.kdt.board.post.application.dto.request;
 public class EditPostRequestDto {
 
     private final Long userId;
+    private final Long postId;
     private final String title;
     private final String content;
 
-    private EditPostRequestDto(Builder builder) {
+    private EditPostRequestDto(Builder builder, Long postId) {
         this.userId = builder.userId;
+        this.postId = postId;
         this.title = builder.title;
         this.content = builder.content;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public Long getPostId() {
+        return postId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public static Builder builder() {
@@ -43,7 +61,7 @@ public class EditPostRequestDto {
         }
 
         public EditPostRequestDto build() {
-            return new EditPostRequestDto(this);
+            return new EditPostRequestDto(this, postId);
         }
     }
 }

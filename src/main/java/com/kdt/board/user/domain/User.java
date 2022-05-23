@@ -30,6 +30,7 @@ public class User extends BaseEntity {
     }
 
     private User(Builder builder) {
+        this.id = builder.id;
         this.name = builder.name;
         this.email = builder.email;
         this.age = builder.age;
@@ -38,6 +39,10 @@ public class User extends BaseEntity {
 
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -62,10 +67,16 @@ public class User extends BaseEntity {
     }
 
     public static class Builder {
+        private Long id;
         private String name;
         private String email;
         private int age;
         private String hobby;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
 
         public Builder name(String name) {
             this.name = name;

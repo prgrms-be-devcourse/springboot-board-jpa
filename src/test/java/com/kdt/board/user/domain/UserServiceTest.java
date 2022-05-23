@@ -35,7 +35,7 @@ public class UserServiceTest {
 
             @Test
             @DisplayName("IllegalArgumentException이 발생한다.")
-            void It_response_() {
+            void It_response_IllegalArgumentException() {
                 //given
                 final RegistrationUserRequestDto registrationUserRequestDto = null;
 
@@ -46,11 +46,11 @@ public class UserServiceTest {
 
         @Nested
         @DisplayName("전달인자가 null이 아닌 정상적인 값이면")
-        class Context_with_ {
+        class Context_with_normally_argument {
 
             @Test
             @DisplayName("repository save 메소드를 호출한다.")
-            void It_response_() {
+            void It_response_call_save() {
                 //given
                 final RegistrationUserRequestDto registrationUserRequestDto = RegistrationUserRequestDto.builder()
                         .name("test")
