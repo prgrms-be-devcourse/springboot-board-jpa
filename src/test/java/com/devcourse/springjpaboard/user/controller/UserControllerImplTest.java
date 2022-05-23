@@ -6,8 +6,6 @@ import com.devcourse.springjpaboard.user.controller.dto.UserResponse;
 import com.devcourse.springjpaboard.user.controller.stub.UserStubs;
 import com.devcourse.springjpaboard.user.service.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +15,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -24,13 +25,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static com.devcourse.springjpaboard.exception.ExceptionMessage.NOT_FOUND_USER;
-import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith({MockitoExtension.class, RestDocumentationExtension.class})
 @AutoConfigureRestDocs
 class UserControllerImplTest {
 
@@ -42,13 +45,17 @@ class UserControllerImplTest {
 
     private MockMvc mockMvc;
 
+    private final ObjectMapper mapper = new ObjectMapper();
+
     @BeforeEach
-    public void init() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+    public void init(RestDocumentationContextProvider restDocumentationContextProvider) {
+        mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .apply(documentationConfiguration(restDocumentationContextProvider))
+                .build();
     }
 
     @Test
-    @DisplayName("회원가입 성공 테스트")
+    @DisplayName("회원가입 테스트")
     void createUserTest() throws Exception {
         // given
         CreateUserRequest request = UserStubs.createUserRequest();
@@ -62,15 +69,27 @@ class UserControllerImplTest {
         ResultActions resultActions = mockMvc.perform(
                 MockMvcRequestBuilders.post("/user")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new Gson().toJson(request))
+                        .content(mapper.writeValueAsString(request))
         );
 
         // then
         resultActions.andExpect(status().isOk())
-                .andExpect(jsonPath("data.id", response.id()).exists())
-                .andExpect(jsonPath("data.name", response.name()).exists())
-                .andExpect(jsonPath("data.age", response.age()).exists())
-                .andExpect(jsonPath("data.hobby", response.hobby()).exists());
+                .andDo(document("user-save",
+                        requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("String"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("int"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("String")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("아이디"),
+                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("data.age").type(JsonFieldType.NUMBER).description("나이"),
+                                fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("취미"),
+                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
+                        )
+                ));
     }
 
     @Test
@@ -86,27 +105,35 @@ class UserControllerImplTest {
                 MockMvcRequestBuilders.get("/user/1")
         );
         // then
-        MvcResult mvcResult = resultActions
-                .andExpect(status().isOk())
-                .andReturn();
-        JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
-        String data = jsonObject.getString("data");
-        ObjectMapper mapper = new ObjectMapper();
-        UserResponse mvcResponse = mapper.readValue(data, UserResponse.class);
-        assertThat(mvcResponse).usingRecursiveComparison().isEqualTo(response);
+        resultActions.andExpect(status().isOk())
+                .andDo(document("user-find-by-id",
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("아이디"),
+                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("data.age").type(JsonFieldType.NUMBER).description("나이"),
+                                fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("취미"),
+                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
+                        )
+                ));
     }
 
     @Test
     @DisplayName("존재하지 않는 회원 ID로 조회시 예외 발생 테스트")
     void getUserByIdFailTest() throws Exception {
         // given
-        Long request = 3L;
+        Long request = 2L;
+        doThrow(new NotFoundException(NOT_FOUND_USER)).when(userService).findById(request);
 
         // when
-        when(userService.findById(request)).thenThrow(new NotFoundException(NOT_FOUND_USER));
-
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get("/user/2")
+        );
         // then
-        assertThatExceptionOfType(NotFoundException.class)
-                .isThrownBy(() -> userService.findById(request));
+        MvcResult mvcResult = resultActions
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("data").exists())
+                .andReturn();
     }
 }
