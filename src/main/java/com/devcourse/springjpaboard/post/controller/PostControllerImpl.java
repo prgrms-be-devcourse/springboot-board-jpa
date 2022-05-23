@@ -24,12 +24,14 @@ public class PostControllerImpl implements PostController {
 
     @Override
     @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(NOT_FOUND)
     public ApiResponse<String> notFoundHandler(NotFoundException e) {
         return ApiResponse.fail(NOT_FOUND, e.getMessage());
     }
 
     @Override
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
     public ApiResponse<String> internalServerError(Exception e) {
         return ApiResponse.fail(INTERNAL_SERVER_ERROR, e.getMessage());
     }
