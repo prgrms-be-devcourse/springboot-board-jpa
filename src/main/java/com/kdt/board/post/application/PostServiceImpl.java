@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
@@ -38,7 +39,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    @Transactional
     public List<PostResponseDto> getAll(Pageable pageable) {
         if (pageable == null) {
             throw new IllegalArgumentException();
@@ -48,7 +48,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    @Transactional
     public PostResponseDto getOne(long id) {
         final Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
         return PostResponseDto.from(post);
