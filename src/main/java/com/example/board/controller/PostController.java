@@ -1,6 +1,7 @@
 package com.example.board.controller;
 
-import com.example.board.dto.PostDto;
+import com.example.board.dto.PostRequestDto;
+import com.example.board.dto.PostResponseDto;
 import com.example.board.service.PostService;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.data.domain.Page;
@@ -18,26 +19,26 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public ResponseEntity<PostDto> getOnePost(@PathVariable Long id) throws NotFoundException {
-        PostDto post = postService.getOnePost(id);
+    public ResponseEntity<PostResponseDto> getOnePost(@PathVariable Long id) throws NotFoundException {
+        PostResponseDto post = postService.getOnePost(id);
         return ResponseEntity.ok(post);
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<Page<PostDto>> getAllPost(Pageable pageable) {
-        Page<PostDto> posts = postService.getAllPostByPage(pageable);
+    public ResponseEntity<Page<PostResponseDto>> getAllPost(Pageable pageable) {
+        Page<PostResponseDto> posts = postService.getAllPostByPage(pageable);
         return ResponseEntity.ok(posts);
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<PostDto> savePost(@RequestBody PostDto postDto) {
-        PostDto saved = postService.writePost(postDto);
+    public ResponseEntity<PostResponseDto> savePost(@RequestBody PostRequestDto postRequestDto) {
+        PostResponseDto saved = postService.writePost(postRequestDto);
         return ResponseEntity.ok(saved);
     }
 
     @PostMapping("/posts/{id}")
-    public ResponseEntity<PostDto> updatePost(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
-        PostDto updated = postService.updatePost(id, postDto);
+    public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) throws NotFoundException {
+        PostResponseDto updated = postService.updatePost(id, postRequestDto);
         return ResponseEntity.ok(updated);
     }
 }

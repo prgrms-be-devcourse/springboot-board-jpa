@@ -1,13 +1,14 @@
 package com.example.board.controller;
 
 import com.example.board.domain.User;
-import com.example.board.dto.PostDto;
-import com.example.board.dto.UserDto;
+import com.example.board.dto.PostRequestDto;
+import com.example.board.dto.PostResponseDto;
+import com.example.board.dto.UserResponseDto;
+import com.example.board.repository.PostRepository;
 import com.example.board.repository.UserRepository;
 import com.example.board.service.PostService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.ibatis.javassist.NotFoundException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ class PostControllerTest {
     private UserRepository userRepository;
 
     @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
     ObjectMapper objectMapper;
 
     private Long postId;
@@ -53,10 +57,10 @@ class PostControllerTest {
         User user = userRepository.save(new User("name", 25, "hobby"));
         userId = user.getId();
 
-        PostDto postDto = PostDto.builder()
+        PostRequestDto postRequestDto = PostRequestDto.builder()
                 .title("title")
                 .content("content")
-                .author(UserDto.builder()
+                .author(UserResponseDto.builder()
                         .id(userId)
                         .name("name")
                         .age(25)
@@ -65,10 +69,15 @@ class PostControllerTest {
                 .build();
 
         // when
-        postId = postService.writePost(postDto).getId();
+        postId = postService.writePost(postRequestDto).getId();
 
         // then
         assertThat(postId).isGreaterThan(0);
+    }
+
+    @AfterEach
+    void tearDown() {
+        postRepository.deleteAllInBatch();
     }
 
     @Test
@@ -143,10 +152,10 @@ class PostControllerTest {
 
     @Test
     void saveTest() throws Exception {
-        PostDto postDto = PostDto.builder()
+        PostResponseDto postResponseDto = PostResponseDto.builder()
                 .title("new-title")
                 .content("new-content")
-                .author(UserDto.builder()
+                .author(UserResponseDto.builder()
                         .id(userId)
                         .name("new-name")
                         .age(25)
@@ -156,7 +165,7 @@ class PostControllerTest {
 
         mockMvc.perform(post("/posts")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(postDto)))
+                .content(objectMapper.writeValueAsString(postResponseDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("writePost",
@@ -185,11 +194,11 @@ class PostControllerTest {
 
     @Test
     void updateTest() throws Exception {
-        PostDto postDto = postService.getOnePost(postId);
+        PostResponseDto postResponseDto = postService.getOnePost(postId);
 
         mockMvc.perform(RestDocumentationRequestBuilders.post("/posts/{id}", postId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postDto)))
+                        .content(objectMapper.writeValueAsString(postResponseDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("updatePost",

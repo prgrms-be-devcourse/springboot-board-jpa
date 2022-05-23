@@ -2,7 +2,8 @@ package com.example.board.service;
 
 import com.example.board.converter.PostConverter;
 import com.example.board.domain.Post;
-import com.example.board.dto.PostDto;
+import com.example.board.dto.PostRequestDto;
+import com.example.board.dto.PostResponseDto;
 import com.example.board.repository.PostRepository;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.data.domain.Page;
@@ -23,40 +24,40 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostDto getOnePost(Long id) throws NotFoundException {
+    public PostResponseDto getOnePost(Long id) throws NotFoundException {
         return postRepository.findById(id)
-                .map(postConverter::convertPostDto)
+                .map(postConverter::convertPostResponseDto)
                 .orElseThrow(() -> new NotFoundException("찾는 게시글이 없습니다."));
     }
 
     @Transactional(readOnly = true)
-    public Page<PostDto> getAllPostByPage(Pageable pageable) {
+    public Page<PostResponseDto> getAllPostByPage(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(postConverter::convertPostDto);
+                .map(postConverter::convertPostResponseDto);
     }
 
     @Transactional
-    public PostDto updatePost(Long id, String title, String content) throws NotFoundException {
+    public PostResponseDto updatePost(Long id, String title, String content) throws NotFoundException {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("찾는 게시글이 없습니다."));
 
         post.updatePost(title, content);
-        return postConverter.convertPostDto(post);
+        return postConverter.convertPostResponseDto(post);
     }
 
     @Transactional
-    public PostDto updatePost(Long id, PostDto postDto) throws NotFoundException {
+    public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto) throws NotFoundException {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("찾는 게시글이 없습니다."));
 
-        post.updatePost(postDto.getTitle(), postDto.getContent());
-        return postConverter.convertPostDto(post);
+        post.updatePost(postRequestDto.getTitle(), postRequestDto.getContent());
+        return postConverter.convertPostResponseDto(post);
     }
 
     @Transactional
-    public PostDto writePost(PostDto postDto) {
-        Post post = postConverter.convertPost(postDto);
+    public PostResponseDto writePost(PostRequestDto postRequestDto) {
+        Post post = postConverter.convertPost(postRequestDto);
         postRepository.save(post);
-        return postConverter.convertPostDto(post);
+        return postConverter.convertPostResponseDto(post);
     }
 }

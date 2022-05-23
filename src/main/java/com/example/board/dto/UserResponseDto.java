@@ -5,10 +5,9 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class PostDto {
+public class UserResponseDto {
     private Long id;
-    private String title;
-    private String content;
-    private UserDto author;
+    private String name;
+    private int age;
+    private String hobby;
 }
-

@@ -2,38 +2,39 @@ package com.example.board.converter;
 
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
-import com.example.board.dto.PostDto;
-import com.example.board.dto.UserDto;
+import com.example.board.dto.PostRequestDto;
+import com.example.board.dto.PostResponseDto;
+import com.example.board.dto.UserResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostConverter {
-    public Post convertPost(PostDto postDto) {
+    public Post convertPost(PostRequestDto postRequestDto) {
         return new Post(
-                postDto.getTitle(),
-                postDto.getContent(),
-                this.convertUser(postDto.getAuthor()));
+                postRequestDto.getTitle(),
+                postRequestDto.getContent(),
+                this.convertUser(postRequestDto.getAuthor()));
     }
 
-    private User convertUser(UserDto userDto) {
+    private User convertUser(UserResponseDto userResponseDto) {
         return new User(
-                userDto.getId(),
-                userDto.getName(),
-                userDto.getAge(),
-                userDto.getHobby());
+                userResponseDto.getId(),
+                userResponseDto.getName(),
+                userResponseDto.getAge(),
+                userResponseDto.getHobby());
     }
 
-    public PostDto convertPostDto(Post post) {
-        return PostDto.builder()
+    public PostResponseDto convertPostResponseDto(Post post) {
+        return PostResponseDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .author(this.convertUserDto(post.getAuthor()))
+                .author(this.convertUserResponseDto(post.getAuthor()))
                 .build();
     }
 
-    private UserDto convertUserDto(User user) {
-        return UserDto.builder()
+    private UserResponseDto convertUserResponseDto(User user) {
+        return UserResponseDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .age(user.getAge())
