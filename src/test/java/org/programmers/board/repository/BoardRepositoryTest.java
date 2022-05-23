@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BoardRepositoryTest {
 
-    User user;
+    private User user;
     @Autowired
     private BoardRepository boardRepository;
     @Autowired

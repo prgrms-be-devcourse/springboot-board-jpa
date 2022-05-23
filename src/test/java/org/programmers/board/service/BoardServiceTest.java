@@ -33,8 +33,8 @@ class BoardServiceTest {
     @Autowired
     BoardService boardService;
 
-    Board board;
-    User user;
+    private Board board;
+    private User user;
 
     @BeforeEach
     void setup() {

@@ -25,7 +25,7 @@ class UserServiceTest {
     @Autowired
     UserService userService;
 
-    User user;
+    private User user;
 
     @BeforeEach
     void setup() {
