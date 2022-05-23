@@ -1,7 +1,7 @@
-package com.kdt.board.user.domain;
+package com.kdt.board.user.application;
 
-import com.kdt.board.user.application.UserServiceImpl;
 import com.kdt.board.user.application.dto.request.RegistrationUserRequestDto;
+import com.kdt.board.user.domain.User;
 import com.kdt.board.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
