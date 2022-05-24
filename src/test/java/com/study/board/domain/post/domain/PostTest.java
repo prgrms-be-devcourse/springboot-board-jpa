@@ -11,7 +11,7 @@ import static com.study.board.fixture.Fixture.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
-public class PostTest {
+class PostTest {
 
     @Test
     void 생성_성공() {
