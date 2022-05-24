@@ -2,7 +2,9 @@ package com.prgrms.hyuk.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import java.net.URI;
 import java.time.LocalDateTime;
+import org.springframework.http.HttpStatus;
 
 public class ApiResponse<T> {
 
@@ -19,6 +21,10 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> ok(T data) {
         return new ApiResponse<>(200, data);
+    }
+
+    public static ApiResponse<URI> created(URI location) {
+        return new ApiResponse<>(HttpStatus.CREATED.value(), location);
     }
 
     public static <T> ApiResponse<T> fail(int statusCode, T errData) {

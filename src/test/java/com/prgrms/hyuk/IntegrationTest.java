@@ -23,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -80,7 +81,7 @@ class IntegrationTest {
         mockMvc.perform(post("/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(postCreateRequest)))
-            .andExpect(jsonPath("$.statusCode").value("200"))
+            .andExpect(jsonPath("$.statusCode").value(HttpStatus.CREATED.value()))
             .andDo(document("post-save",
                 requestFields(
                     fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
@@ -95,7 +96,7 @@ class IntegrationTest {
                 ),
                 responseFields(
                     fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
-                    fieldWithPath("data").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                    fieldWithPath("data").type(JsonFieldType.STRING).description("생성 게시글 조회 URL"),
                     fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("서버시간")
                 )
             ));

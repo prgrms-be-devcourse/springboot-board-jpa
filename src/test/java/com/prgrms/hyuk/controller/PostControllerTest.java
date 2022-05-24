@@ -45,7 +45,8 @@ class PostControllerTest {
     @DisplayName("게시글 생성")
     void testSave() throws Exception {
         //given
-        given(postService.create(any(PostCreateRequest.class))).willReturn(1L);
+        Long postId = 1L;
+        given(postService.create(any(PostCreateRequest.class))).willReturn(postId);
 
         var postCreateRequest = new PostCreateRequest(
             "this is title ...",
@@ -62,8 +63,8 @@ class PostControllerTest {
         mockMvc.perform(post("/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(postCreateRequest)))
-            .andExpect(jsonPath("$.statusCode").value("200"))
-            .andExpect(jsonPath("$.data").value("1"))
+            .andExpect(jsonPath("$.statusCode").value(HttpStatus.CREATED.value()))
+            .andExpect(jsonPath("$.data").value("/posts/" + postId))
             .andExpect(jsonPath("$.serverDatetime").exists());
     }
 

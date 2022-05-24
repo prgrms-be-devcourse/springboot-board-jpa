@@ -5,6 +5,7 @@ import com.prgrms.hyuk.dto.PostCreateRequest;
 import com.prgrms.hyuk.dto.PostDto;
 import com.prgrms.hyuk.dto.PostUpdateRequest;
 import com.prgrms.hyuk.service.PostService;
+import java.net.URI;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,8 +25,8 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public ApiResponse<Long> save(@RequestBody PostCreateRequest postCreateRequest) {
-        return ApiResponse.ok(postService.create(postCreateRequest));
+    public ApiResponse<URI> save(@RequestBody PostCreateRequest postCreateRequest) {
+        return ApiResponse.created(URI.create("/posts/" + postService.create(postCreateRequest)));
     }
 
     @GetMapping("/posts")
