@@ -10,8 +10,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "post")
 public class Post {
-  @GeneratedValue(strategy = GenerationType.AUTO)
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
   @Column(name="title")
