@@ -1,6 +1,7 @@
 package com.prgrms.springbootboardjpa.user.entity;
 
 import com.prgrms.springbootboardjpa.DatetimeEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
