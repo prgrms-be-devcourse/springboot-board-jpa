@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @MappedSuperclass
 public abstract class CreatedInfo {
-    @Column(nullable = false)
+    @Column
     private String createdBy;
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;

@@ -1,15 +1,16 @@
 package com.programmers.board.entity;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "posts")
+@NoArgsConstructor
 public class Post extends CreatedInfo{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -25,11 +26,18 @@ public class Post extends CreatedInfo{
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+        setCreatedAt(LocalDateTime.now());
+    }
+
     public void setUser(User user) {
         if (Objects.nonNull(this.user)) {
             user.getPosts().remove(this);
         }
         this.user = user;
+        this.setCreatedBy(user.getName());
         user.getPosts().add(this);
     }
 }
