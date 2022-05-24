@@ -22,7 +22,7 @@ public class Post extends CreatedInfo{
     @Column(insertable = false, updatable = false)
     private Long userId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
