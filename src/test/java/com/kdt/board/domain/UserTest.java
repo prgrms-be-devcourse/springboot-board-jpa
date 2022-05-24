@@ -1,6 +1,7 @@
 package com.kdt.board.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,4 +24,13 @@ class UserTest {
         assertThat(user.getPosts().get(0).getTitle()).isEqualTo(post.getTitle());
     }
 
+    @Test
+    void userAge_비정상_Test() {
+        //given
+        User user = new User();
+        //when //then
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            user.setAge(0);
+        });
+    }
 }

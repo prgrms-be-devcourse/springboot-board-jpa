@@ -28,6 +28,9 @@ public class User extends BaseEntity {
     }
 
     public void setAge(Integer age) {
+        if (age < 1) {
+            throw new IllegalArgumentException();
+        }
         this.age = age;
     }
 
