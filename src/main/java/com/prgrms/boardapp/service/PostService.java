@@ -1,6 +1,5 @@
 package com.prgrms.boardapp.service;
 
-import com.prgrms.boardapp.converter.Converter;
 import com.prgrms.boardapp.dto.PostDto;
 import com.prgrms.boardapp.model.Post;
 import com.prgrms.boardapp.repository.PostRepository;
@@ -11,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
+import static com.prgrms.boardapp.constant.PostErrMsg.NOT_FOUND_POST_ERR_MSG;
+
 @Service
 public class PostService {
-
-    private static final String NOT_FOUND_POST_ERR_MSG = "게시글 정보를 찾을 수 없습니다.";
 
     private final PostRepository postRepository;
     private final Converter converter;
@@ -41,13 +40,13 @@ public class PostService {
     public PostDto findById(Long postId) {
         return postRepository.findById(postId)
                 .map(converter::convertPostDto)
-                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_POST_ERR_MSG));
+                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_POST_ERR_MSG.getMessage()));
     }
 
     @Transactional
     public PostDto update(PostDto postDto) {
         Post savedPost = postRepository.findById(postDto.getId())
-                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_POST_ERR_MSG));
+                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_POST_ERR_MSG.getMessage()));
         savedPost.changeTitle(postDto.getTitle());
         savedPost.changeContent(postDto.getContent());
         return postDto;
