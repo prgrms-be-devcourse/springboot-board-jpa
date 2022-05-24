@@ -29,13 +29,11 @@ class PostRepositoryTest {
     @Autowired
     private EntityManager em;
 
-    private User user;
-
     private Post post;
 
     @BeforeEach
     void setUp() {
-        user = new User(
+        User user = new User(
             new Name("eunhyuk"),
             new Age(26),
             Hobby.SOCCER);
