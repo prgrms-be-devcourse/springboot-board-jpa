@@ -1,0 +1,55 @@
+package com.prgrms.boardjpa.post.service;
+
+import com.prgrms.boardjpa.domain.Post;
+import com.prgrms.boardjpa.domain.User;
+import com.prgrms.boardjpa.exception.NotFoundException;
+import com.prgrms.boardjpa.post.dao.PostRepository;
+import com.prgrms.boardjpa.post.dto.PostReqDto;
+import com.prgrms.boardjpa.post.dto.PostResDto;
+import com.prgrms.boardjpa.user.dao.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class PostService {
+
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
+
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+    }
+
+    public PostResDto findOne(Long id) {
+        return postRepository.findById(id)
+                .map(Post::toDto)
+                .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
+    }
+
+    public Page<PostResDto> findPosts(Pageable pageable) {
+        return postRepository.findAll(pageable)
+                .map(Post::toDto);
+    }
+
+    public Long save(PostReqDto postReqDto) {
+        Post post = postReqDto.toEntity();
+        User author = userRepository.findById(postReqDto.getUserId()).orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
+        post.setAuthor(author);
+        postRepository.save(post);
+        return post.getId();
+    }
+
+    public Long update(Long postId, PostReqDto postReqDto) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
+        User newAuthor = userRepository.findById(postReqDto.getUserId()).orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
+        post.setContent(postReqDto.getContent());
+        post.setTitle(postReqDto.getTitle());
+        post.setAuthor(newAuthor);
+        return post.getId();
+    }
+}

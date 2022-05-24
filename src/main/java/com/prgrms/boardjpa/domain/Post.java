@@ -1,5 +1,6 @@
 package com.prgrms.boardjpa.domain;
 
+import com.prgrms.boardjpa.post.dto.PostResDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +33,19 @@ public class Post extends BaseEntity{
             this.author.getPosts().remove(this);
         }
         this.author = user;
+        this.setCreatedBy(user.getId().toString());
         user.getPosts().add(this);
+    }
+
+    public PostResDto toDto(){
+        return PostResDto.builder()
+                .id(this.id)
+                .title(this.title)
+                .content(this.content)
+                .author(this.author)
+                .createdAt(super.getCreatedAt())
+                .createdBy(super.getCreatedBy())
+                .build();
     }
 
 }
