@@ -8,16 +8,6 @@ import javax.persistence.MappedSuperclass;
 public class BaseEntity {
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime createdAt;
-
-    @Column(name = "created_by")
-    private String createdBy;
-
-    protected BaseEntity() {
-    }
+    private LocalDateTime createdAt = LocalDateTime.now();
     
-    public BaseEntity(String createdBy) {
-        this.createdBy = createdBy;
-        this.createdAt = LocalDateTime.now();
-    }
 }

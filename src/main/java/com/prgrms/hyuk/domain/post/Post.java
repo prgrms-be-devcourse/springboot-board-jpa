@@ -36,7 +36,6 @@ public class Post extends BaseEntity {
     }
 
     public Post(Title title, Content content) {
-        super("");
         this.title = title;
         this.content = content;
     }
