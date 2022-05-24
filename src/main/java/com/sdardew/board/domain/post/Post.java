@@ -2,6 +2,7 @@ package com.sdardew.board.domain.post;
 
 import com.sdardew.board.domain.post.converter.UserIdConverter;
 import com.sdardew.board.domain.user.User;
+import com.sdardew.board.dto.post.PostDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

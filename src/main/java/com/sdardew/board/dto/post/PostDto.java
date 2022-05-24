@@ -1,4 +1,4 @@
-package com.sdardew.board.domain.post;
+package com.sdardew.board.dto.post;
 
 import java.time.LocalDateTime;
 

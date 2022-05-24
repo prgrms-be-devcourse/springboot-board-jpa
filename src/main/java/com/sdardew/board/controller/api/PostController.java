@@ -1,8 +1,8 @@
 package com.sdardew.board.controller.api;
 
-import com.sdardew.board.domain.post.CreatePostDto;
-import com.sdardew.board.domain.post.PostDto;
-import com.sdardew.board.domain.post.UpdatePostDto;
+import com.sdardew.board.dto.post.CreatePostDto;
+import com.sdardew.board.dto.post.PostDto;
+import com.sdardew.board.dto.post.UpdatePostDto;
 import com.sdardew.board.service.PostService;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.sdardew.board.domain.post;
+package com.sdardew.board.dto.post;
 
 public class UpdatePostDto {
   private String title;

@@ -1,7 +1,7 @@
 package com.sdardew.board.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sdardew.board.domain.post.CreatePostDto;
+import com.sdardew.board.dto.post.CreatePostDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

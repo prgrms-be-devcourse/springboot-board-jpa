@@ -1,9 +1,8 @@
 package com.sdardew.board.service;
 
-import com.sdardew.board.domain.post.CreatePostDto;
-import com.sdardew.board.domain.post.Post;
-import com.sdardew.board.domain.post.PostDto;
-import com.sdardew.board.domain.post.UpdatePostDto;
+import com.sdardew.board.dto.post.CreatePostDto;
+import com.sdardew.board.dto.post.PostDto;
+import com.sdardew.board.dto.post.UpdatePostDto;
 import com.sdardew.board.domain.user.User;
 import com.sdardew.board.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
