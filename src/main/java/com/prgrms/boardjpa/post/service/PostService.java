@@ -6,6 +6,7 @@ import com.prgrms.boardjpa.exception.NotFoundException;
 import com.prgrms.boardjpa.post.dao.PostRepository;
 import com.prgrms.boardjpa.post.dto.PostReqDto;
 import com.prgrms.boardjpa.post.dto.PostResDto;
+import com.prgrms.boardjpa.post.dto.PostUpdateDto;
 import com.prgrms.boardjpa.user.dao.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,13 +44,11 @@ public class PostService {
         return post.getId();
     }
 
-    public Long update(Long postId, PostReqDto postReqDto) {
-        Post post = postRepository.findById(postId)
+    public Long update(PostUpdateDto postUpdateDto) {
+        Post post = postRepository.findById(postUpdateDto.getId())
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
-        User newAuthor = userRepository.findById(postReqDto.getUserId()).orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
-        post.setContent(postReqDto.getContent());
-        post.setTitle(postReqDto.getTitle());
-        post.setAuthor(newAuthor);
+        post.setContent(postUpdateDto.getContent());
+        post.setTitle(postUpdateDto.getTitle());
         return post.getId();
     }
 }
