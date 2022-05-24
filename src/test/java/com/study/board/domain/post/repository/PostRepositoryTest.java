@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 
-import static com.study.board.domain.post.AssertPost.assertPostWithWriter;
 import static com.study.board.fixture.Fixture.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,16 +28,16 @@ class PostRepositoryTest {
     EntityManager em;
 
     User writer;
-    Long writtenPostId1;
-    Long writtenPostId2;
+    Post post1;
+    Post post2;
 
     @BeforeEach
     void setUp() {
         writer = createUser();
         userRepository.save(writer);
 
-        writtenPostId1 = postRepository.save(new Post("제목1", "내용1", writer)).getId();
-        writtenPostId2 = postRepository.save(new Post("제목2", "내용2", writer)).getId();
+        post1 = postRepository.save(new Post("제목1", "내용1", writer));
+        post2 = postRepository.save(new Post("제목2", "내용2", writer));
 
         em.flush();
         em.clear();
@@ -48,16 +47,16 @@ class PostRepositoryTest {
     void 전체_조회_성공() {
         Page<Post> posts = postRepository.findAll(Pageable.ofSize(2));
 
-        assertThat(posts.getTotalElements()).isEqualTo(2);
-        assertPostWithWriter(posts.getContent().get(0), "제목1", "내용1", writer.getId());
-        assertPostWithWriter(posts.getContent().get(1), "제목2", "내용2", writer.getId());
+        assertThat(posts.getContent()).containsExactly(post1, post2);
+        assertThat(posts.getContent().stream().map(Post::getWriter)).containsExactly(writer, writer);
     }
 
     @Test
     void 아이디로_조회_성공() {
-        Post post = postRepository.findById(writtenPostId2).get();
+        Post post = postRepository.findById(post1.getId()).get();
 
-        assertPostWithWriter(post, "제목2", "내용2", writer.getId());
+        assertThat(post).isEqualTo(post1);
+        assertThat(post.getWriter()).isEqualTo(writer);
     }
 
     @Test

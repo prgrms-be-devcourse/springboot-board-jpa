@@ -1,6 +1,5 @@
 package com.study.board.domain.post.domain;
 
-import com.study.board.exception.BoardNotFoundException;
 import com.study.board.domain.base.BaseIdEntity;
 import com.study.board.domain.user.domain.User;
 import lombok.Getter;
@@ -34,26 +33,27 @@ public class Post extends BaseIdEntity {
     private LocalDateTime writtenDateTime;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User writer;
 
     public Post(String title, String content, User writer) {
         checkTitle(title);
         checkContent(content);
-        checkNotNull(writer, "writer - null 이 될 수 없음");
+        checkWriter(writer);
 
         this.title = title;
         this.content = content;
-        this.writer = writer;
         this.writtenDateTime = now();
+        this.writer = writer;
     }
 
-    public Post update(String title, String content) {
+    public Post edit(String title, String content) {
         checkTitle(title);
         checkContent(content);
 
         this.title = title;
         this.content = content;
+
         return this;
     }
 
@@ -66,13 +66,11 @@ public class Post extends BaseIdEntity {
         checkArgument(hasText(content), "content - 글자를 가져야함");
     }
 
-    public void checkUpdatable(User editor) {
-        if (!isWrittenBy(editor)) {
-            throw new BoardNotFoundException(User.class, editor.getId());
-        }
+    private void checkWriter(User writer) {
+        checkNotNull(writer, "writer - null 이 될 수 없음");
     }
 
-    private boolean isWrittenBy(User writer) {
-        return writer.getId().equals(this.writer.getId());
+    public boolean isWrittenBy(User user) {
+        return writer.getId().equals(user.getId());
     }
 }

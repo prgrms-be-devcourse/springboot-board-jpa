@@ -1,6 +1,5 @@
 package com.study.board.domain.post.service;
 
-import com.study.board.exception.BoardNotFoundException;
 import com.study.board.domain.post.domain.Post;
 import com.study.board.domain.post.repository.PostRepository;
 import com.study.board.domain.user.domain.User;
@@ -13,12 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-
-import static com.study.board.domain.post.AssertPost.assertPostWithWriter;
 import static com.study.board.fixture.Fixture.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
 @Transactional
@@ -34,23 +30,17 @@ class PostServiceImplTest {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    EntityManager em;
-
     User writer;
-    Long writtenPostId1;
-    Long writtenPostId2;
+    Post writtenPost1;
+    Post writtenPost2;
 
     @BeforeEach
     void setUp() {
         writer = createUser();
         userRepository.save(writer);
 
-        writtenPostId1 = postRepository.save(new Post("제목1", "내용1", writer)).getId();
-        writtenPostId2 = postRepository.save(new Post("제목2", "내용2", writer)).getId();
-
-        em.flush();
-        em.clear();
+        writtenPost1 = postRepository.save(new Post("제목1", "내용1", writer));
+        writtenPost2 = postRepository.save(new Post("제목2", "내용2", writer));
     }
 
     @Test
@@ -62,15 +52,15 @@ class PostServiceImplTest {
 
         assertThat(posts.getTotalElements()).isEqualTo(2);
 
-        assertPostWithWriter(post1, "제목1", "내용1", writer.getId());
-        assertPostWithWriter(post2, "제목2", "내용2", writer.getId());
+        assertThat(post1).isEqualTo(writtenPost1);
+        assertThat(post2).isEqualTo(writtenPost2);
     }
 
     @Test
     void 아이디로_게시글_조회_성공() {
-        Post post = postService.findById(writtenPostId2);
+        Post post = postService.findById(writtenPost1.getId());
 
-        assertPostWithWriter(post, "제목2", "내용2", writer.getId());
+        assertThat(post).isEqualTo(writtenPost1);
     }
 
 
@@ -78,72 +68,45 @@ class PostServiceImplTest {
     void 없는_아이디의_게시글_조회하면_실패() {
         Long illegalId = -1L;
 
-        assertThatThrownBy(() -> postService.findById(illegalId))
-                .isInstanceOf(BoardNotFoundException.class);
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> postService.findById(illegalId));
     }
 
     @Test
     void 게시글_작성_성공() {
-        //write 의 리턴 값 검증
-        Post writtenPost = postService.write("제목", "내용", writer.getId());
+        Post writtenPost = postService.write("제목", "내용", writer);
 
-        assertPostWithWriter(writtenPost, "제목", "내용", writer.getId());
-
-        em.flush();
-        em.clear();
-
-        //write 후 정상적으로 삽입 되었는지 검증
         Post foundPost = postRepository.findById(writtenPost.getId()).get();
 
-        assertPostWithWriter(foundPost, "제목", "내용", writer.getId());
-    }
-
-    @Test
-    void 없는_사용자_아이디로_게시글_작성하면_실패() {
-        Long illegalUserId = -1L;
-
-        assertThatThrownBy(() -> postService.write("제목", "내용", illegalUserId))
-                .isInstanceOf(BoardNotFoundException.class);
+        assertThat(foundPost).isEqualTo(writtenPost);
+        assertThat(foundPost.getTitle()).isEqualTo("제목");
+        assertThat(foundPost.getContent()).isEqualTo("내용");
     }
 
     @Test
     void 게시글_수정_성공() {
-        //edit 의 리턴 값 검증
-        Post editedPost = postService.edit(writtenPostId1, "수정제목", "수정내용", writer.getId());
+        Long editPostId = writtenPost1.getId();
 
-        assertThat(editedPost.getId()).isEqualTo(writtenPostId1);
-        assertPostWithWriter(editedPost, "수정제목", "수정내용", writer.getId());
+        Post editedPost = postService.edit(editPostId, "수정제목", "수정내용", writer);
 
-        em.flush();
-        em.clear();
-
-        //edit 후 정상적으로 업데이트 되었는지 검증
-        Post foundPostAfterEdit = postRepository.findById(writtenPostId1).get();
-
-        assertPostWithWriter(foundPostAfterEdit, "수정제목", "수정내용", writer.getId());
+        assertThat(editedPost).isEqualTo(writtenPost1);
+        assertThat(editedPost.getTitle()).isEqualTo("수정제목");
+        assertThat(editedPost.getContent()).isEqualTo("수정내용");
     }
 
     @Test
-    void 없는_게시글_수정_하면_실패() {
+    void 없는_게시글_수정_실패() {
         Long illegalPostId = -1L;
 
-        assertThatThrownBy(() -> postService.edit(illegalPostId, "수정제목", "수정내용", writer.getId()))
-                .isInstanceOf(BoardNotFoundException.class);
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> postService.edit(illegalPostId, "수정제목", "수정내용", writer));
     }
 
     @Test
-    void 없는_사용자_아이디로_게시글_수정하면_실패() {
-        Long illegalUserId = -1L;
+    void 남의_게시글_수정_실패() {
+        User anotherUser = userRepository.save(new User("다른 사용자", null));
 
-        assertThatThrownBy(() -> postService.edit(writtenPostId1, "수정제목", "수정내용", illegalUserId))
-                .isInstanceOf(BoardNotFoundException.class);
-    }
-
-    @Test
-    void 남의_게시글_수정하려하면_실패() {
-        Long anotherUserId = userRepository.save(new User("다른 사용자", null)).getId();
-
-        assertThatThrownBy(() -> postService.edit(writtenPostId1, "수정제목", "수정내용", anotherUserId))
-                .isInstanceOf(BoardNotFoundException.class);
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> postService.edit(writtenPost1.getId(), "수정제목", "수정내용", anotherUser));
     }
 }
