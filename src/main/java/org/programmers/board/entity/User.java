@@ -31,7 +31,7 @@ public class User extends BaseEntity {
     }
 
     public User(Name name, int age, String hobby) {
-        super(LocalDateTime.now());
+        super(LocalDateTime.now(), null);
         this.name = name;
         this.age = age;
         this.hobby = hobby;

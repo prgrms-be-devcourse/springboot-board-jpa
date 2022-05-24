@@ -16,7 +16,6 @@ public class Name {
     }
 
     public Name(String name) {
-        System.out.println(name);
         validateUserName(name);
         this.name = name;
     }

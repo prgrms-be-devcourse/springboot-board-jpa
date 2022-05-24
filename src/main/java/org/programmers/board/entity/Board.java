@@ -30,7 +30,7 @@ public class Board extends BaseEntity {
     }
 
     public Board(Title title, Content content, User user) {
-        super(LocalDateTime.now());
+        super(LocalDateTime.now(), null);
         this.title = title;
         this.content = content;
         setUser(user);
