@@ -18,6 +18,7 @@ import com.prgrms.hyuk.dto.PostUpdateRequest;
 import com.prgrms.hyuk.dto.UserDto;
 import com.prgrms.hyuk.exception.InvalidPostIdException;
 import com.prgrms.hyuk.service.PostService;
+import com.prgrms.hyuk.web.controller.PostController;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = PostController.class)
+@WebMvcTest(controllers = {PostController.class})
 class PostControllerTest {
 
     @MockBean

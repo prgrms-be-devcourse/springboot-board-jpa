@@ -1,6 +1,6 @@
 package com.prgrms.hyuk.exception;
 
-public class InvalidContentFormatException extends RuntimeException {
+public class InvalidContentFormatException extends ClientException {
 
     private final ExceptionMessage exceptionMessage;
 

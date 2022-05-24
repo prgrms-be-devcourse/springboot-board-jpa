@@ -1,6 +1,6 @@
 package com.prgrms.hyuk.exception;
 
-public class InvalidPostIdException extends RuntimeException {
+public class InvalidPostIdException extends ClientException {
 
     private final ExceptionMessage exceptionMessage;
 

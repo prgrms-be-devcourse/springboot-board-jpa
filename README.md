@@ -46,3 +46,4 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 ## 피드백
 
 - [X] 사용하지 않는 필드는 제거 고민하기 (BaseEntity의 createdBy)
+- [X] ExceptionHandler는 Controller와 분리해 관리하자.

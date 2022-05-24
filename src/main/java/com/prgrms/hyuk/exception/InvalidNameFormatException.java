@@ -1,6 +1,6 @@
 package com.prgrms.hyuk.exception;
 
-public class InvalidNameFormatException extends RuntimeException {
+public class InvalidNameFormatException extends ClientException {
 
     private final ExceptionMessage exceptionMessage;
 

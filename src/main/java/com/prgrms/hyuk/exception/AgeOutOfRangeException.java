@@ -1,6 +1,6 @@
 package com.prgrms.hyuk.exception;
 
-public class AgeOutOfRangeException extends RuntimeException {
+public class AgeOutOfRangeException extends ClientException {
 
     private final ExceptionMessage exceptionMessage;
 

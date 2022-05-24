@@ -1,14 +1,11 @@
-package com.prgrms.hyuk.controller;
+package com.prgrms.hyuk.web.controller;
 
 import com.prgrms.hyuk.dto.ApiResponse;
 import com.prgrms.hyuk.dto.PostCreateRequest;
 import com.prgrms.hyuk.dto.PostDto;
 import com.prgrms.hyuk.dto.PostUpdateRequest;
-import com.prgrms.hyuk.exception.InvalidPostIdException;
 import com.prgrms.hyuk.service.PostService;
 import java.util.List;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,11 +21,6 @@ public class PostController {
 
     public PostController(PostService postService) {
         this.postService = postService;
-    }
-
-    @ExceptionHandler(InvalidPostIdException.class)
-    private ApiResponse<String> invalidPostIdHandle(InvalidPostIdException exception) {
-        return ApiResponse.fail(HttpStatus.NOT_FOUND.value(), exception.getMessage());
     }
 
     @PostMapping("/posts")
