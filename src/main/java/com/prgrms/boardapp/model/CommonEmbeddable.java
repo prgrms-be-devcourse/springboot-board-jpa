@@ -20,7 +20,7 @@ public class CommonEmbeddable {
     protected CommonEmbeddable() {
     }
 
-    public CommonEmbeddable(String createdBy, LocalDateTime createdAt) {
+    private CommonEmbeddable(String createdBy, LocalDateTime createdAt) {
         this.validateCreatedBy(createdBy);
         this.createdBy = createdBy;
         this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;

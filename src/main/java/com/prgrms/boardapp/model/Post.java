@@ -29,7 +29,7 @@ public class Post {
     protected Post() {
     }
 
-    public Post(Long id, String title, String content, CommonEmbeddable commonEmbeddable, User user) {
+    private Post(Long id, String title, String content, CommonEmbeddable commonEmbeddable, User user) {
         this.validateTitle(title);
         CommonValidate.validateNotNullString(content);
         this.id = id;

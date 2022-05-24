@@ -11,7 +11,7 @@ public class UserDto {
     private String hobby;
     private List<PostDto> postDtoList;
 
-    public UserDto(Long id, String name, Integer age, String hobby, List<PostDto> postDtoList) {
+    private UserDto(Long id, String name, Integer age, String hobby, List<PostDto> postDtoList) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -23,40 +23,20 @@ public class UserDto {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Integer getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     public String getHobby() {
         return hobby;
     }
 
-    public void setHobby(String hobby) {
-        this.hobby = hobby;
-    }
-
     public List<PostDto> getPostDtoList() {
         return postDtoList;
-    }
-
-    public void setPostDtoList(List<PostDto> postDtoList) {
-        this.postDtoList = postDtoList;
     }
 
     @Override

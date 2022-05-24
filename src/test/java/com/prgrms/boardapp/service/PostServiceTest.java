@@ -1,6 +1,5 @@
 package com.prgrms.boardapp.service;
 
-import com.prgrms.boardapp.converter.Converter;
 import com.prgrms.boardapp.dto.PostDto;
 import com.prgrms.boardapp.dto.UserDto;
 import com.prgrms.boardapp.model.Post;

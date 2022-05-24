@@ -29,7 +29,7 @@ public class User {
     protected User() {
     }
 
-    public User(Long id, String name, Integer age, String hobby, CommonEmbeddable commonEmbeddable, Posts posts) {
+    private User(Long id, String name, Integer age, String hobby, CommonEmbeddable commonEmbeddable, Posts posts) {
         this.validateName(name);
         this.validateAge(age);
         this.id = id;
