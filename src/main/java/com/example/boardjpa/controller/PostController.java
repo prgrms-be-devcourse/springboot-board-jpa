@@ -17,7 +17,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<PostsResponseDto> showPosts(
             @RequestParam(required = false) Integer page
             , @RequestParam(required = false) Integer size) {
@@ -31,7 +31,7 @@ public class PostController {
         return ResponseEntity.ok(postService.getPosts(pageRequest));
     }
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<CreatePostResponseDto> createPost(@RequestBody CreatePostRequestDto createPostRequestDto) {
         return ResponseEntity.ok(postService.createPost(createPostRequestDto));
     }
