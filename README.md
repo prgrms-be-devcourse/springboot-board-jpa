@@ -19,7 +19,7 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 
 
 ## To do 
-- [ ] 엔티티 설계
+- [X] 엔티티 설계
   - [X] 엔티티 설계 & 테이블과 매핑
   - [X] 연관관계 매핑
     - [X] 연관관계 편의 메서드 작성
@@ -41,3 +41,8 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
     - [X] Service, Persistence Layer 개발
     - [X] Controller 개발
   - [X] REST - DOCS 이용 문서화
+
+
+## 피드백
+
+- [X] 사용하지 않는 필드는 제거 고민하기 (BaseEntity의 createdBy)
