@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
 
+@Transactional
 @SpringBootTest
 class PostServiceTest {
 
@@ -45,7 +46,6 @@ class PostServiceTest {
   }
 
   @Test
-  @Transactional
   @DisplayName("CreatePostDto를 통해서 새로운 Post를 생성할 수 있다")
   void testCreatePost() {
     userRepository.save(user);
@@ -55,8 +55,7 @@ class PostServiceTest {
   }
 
   @Test
-  @Transactional
-  @DisplayName("Post를 updaste할 수 있다")
+  @DisplayName("Post를 update할 수 있다")
   void testUpdatePost() {
     userRepository.save(user);
     PostDto created = postService.createPost(newPost);
