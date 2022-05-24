@@ -24,7 +24,7 @@ public class Post extends BaseEntity{
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "author", referencedColumnName = "user_id")
     private User author;
 
     public void setAuthor(User user){

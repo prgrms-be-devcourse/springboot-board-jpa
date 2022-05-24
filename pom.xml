@@ -15,6 +15,7 @@
     <description>springboot-board-jpa</description>
     <properties>
         <java.version>17</java.version>
+        <log4jdbc.version>0.2.7</log4jdbc.version>
     </properties>
     <dependencies>
         <dependency>
@@ -49,6 +50,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.lazyluke</groupId>
+            <artifactId>log4jdbc-remix</artifactId>
+            <version>${log4jdbc.version}</version>
         </dependency>
     </dependencies>
 
