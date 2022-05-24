@@ -23,7 +23,9 @@ public class UserIdConverter implements AttributeConverter<User, Long> {
 
   @Override
   public User convertToEntityAttribute(Long userId) {
-    if(userRepository.existsById(userId)) return userRepository.findById(userId).get();
+    if(userRepository.existsById(userId)) {
+      return userRepository.findById(userId).get();
+    }
     throw new NoSuchElementException("존재하지 않는 User입니다");
   }
 }
