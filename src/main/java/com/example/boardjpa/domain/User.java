@@ -27,17 +27,13 @@ public class User extends BaseEntity {
     }
 
     public User(String name, Integer age, String hobby) {
-        if (Objects.isNull(name) || Objects.isNull(age)) {
-            throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
-        }
-        if (age <= 0 || age > 150) {
-            throw new ValueOutOfRangeException("나이 값이 지정 범위를 넘었습니다.", ErrorCode.AGE_OUT_OF_RANGE);
-        }
+        checkNull(name, age);
+        checkAgeRange(age);
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        this.setCreatedAt(LocalDateTime.now());
-        this.setCreatedBy(name);
+        this.createdAt = LocalDateTime.now();
+        this.createdBy = name;
     }
 
     public void addPost(Post post) {
@@ -66,5 +62,17 @@ public class User extends BaseEntity {
 
     public List<Post> getPosts() {
         return posts;
+    }
+
+    private void checkNull(String name, Integer age) {
+        if (Objects.isNull(name) || Objects.isNull(age)) {
+            throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
+        }
+    }
+
+    private void checkAgeRange(Integer age) {
+        if (age <= 0 || age > 150) {
+            throw new ValueOutOfRangeException("나이 값이 지정 범위를 넘었습니다.", ErrorCode.AGE_OUT_OF_RANGE);
+        }
     }
 }

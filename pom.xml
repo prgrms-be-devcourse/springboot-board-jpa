@@ -58,7 +58,6 @@
                         </goals>
                         <configuration>
                             <backend>html5</backend>
-                            <sourceHighlighter>coderay</sourceHighlighter>
                         </configuration>
                     </execution>
                 </executions>

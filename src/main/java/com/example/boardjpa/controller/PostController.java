@@ -25,7 +25,7 @@ public class PostController {
             page = 0;
         }
         if (Objects.isNull(size)) {
-            size = 0;
+            size = 10;
         }
         PageRequest pageRequest = PageRequest.of(page, size);
         return ResponseEntity.ok(postService.getPosts(pageRequest));

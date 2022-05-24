@@ -36,14 +36,14 @@ public class PostService {
     }
 
     public PostResponseDto getPostById(Long postId) {
-        return new PostResponseDto(
-                postRepository
+        return postRepository
                         .findById(postId)
+                        .map(PostResponseDto::new)
                         .orElseThrow(
                                 () -> new RecordNotFoundException(
-                                        "해당 id의 post가 존재하지 않습니다."
-                                        , ErrorCode.POST_NOT_FOUND)
-                        )
+                                        "해당 id의 post가 존재하지 않습니다.",
+                                        ErrorCode.POST_NOT_FOUND
+                                )
         );
     }
 
@@ -58,9 +58,9 @@ public class PostService {
                                 , ErrorCode.USER_NOT_FOUND)
                 );
         Long postId = postRepository.save(
-                new Post(createPostRequestDto.getTitle()
-                        , createPostRequestDto.getContent()
-                        , user)
+                new Post(createPostRequestDto.getTitle(),
+                        createPostRequestDto.getContent(),
+                        user)
         ).getId();
         return new CreatePostResponseDto(postId);
     }
@@ -69,8 +69,8 @@ public class PostService {
         Post post = postRepository
                 .findById(postId)
                 .orElseThrow(() -> new RecordNotFoundException(
-                        "해당 id의 post가 존재하지 않습니다."
-                        , ErrorCode.POST_NOT_FOUND)
+                        "해당 id의 post가 존재하지 않습니다.",
+                        ErrorCode.POST_NOT_FOUND)
                 );
         post.setContent(updatePostRequestDto.getContent());
     }

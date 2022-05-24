@@ -9,9 +9,7 @@ public class UpdatePostRequestDto {
     private String content;
 
     public UpdatePostRequestDto(String content) {
-        if (Objects.isNull(content)) {
-            throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
-        }
+        checkNull(content);
         this.content = content;
     }
 
@@ -20,5 +18,11 @@ public class UpdatePostRequestDto {
 
     public String getContent() {
         return content;
+    }
+
+    private void checkNull(String content) {
+        if (Objects.isNull(content)) {
+            throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
+        }
     }
 }
