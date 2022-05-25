@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
@@ -24,12 +26,12 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping("/posts")
+    @PostMapping
     public ApiResponse<URI> save(@RequestBody PostCreateRequest postCreateRequest) {
         return ApiResponse.created(URI.create("/posts/" + postService.create(postCreateRequest)));
     }
 
-    @GetMapping("/posts")
+    @GetMapping
     public ApiResponse<List<PostDto>> getAll(
         @RequestParam(defaultValue = "0") int offset,
         @RequestParam(defaultValue = "10") int limit
@@ -37,12 +39,12 @@ public class PostController {
         return ApiResponse.ok(postService.findPosts(offset, limit));
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public ApiResponse<PostDto> getOne(@PathVariable Long id) {
         return ApiResponse.ok(postService.findPost(id));
     }
 
-    @PatchMapping("/posts/{id}")
+    @PatchMapping("/{id}")
     public ApiResponse<Long> updatePost(
         @PathVariable Long id,
         @RequestBody PostUpdateRequest postUpdateRequest
