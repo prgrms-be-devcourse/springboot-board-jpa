@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponseDto update(Long id, UserRequestDto userRequestDto) {
         User user = userRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+            .orElseThrow(() -> new EntityNotFoundException("업데이트 대상 사용자를 찾을 수 없습니다."));
 
         user.setAge(userRequestDto.getAge());
         user.setHobby(userRequestDto.getHobby());
