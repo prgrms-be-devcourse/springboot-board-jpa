@@ -11,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "users")
 @NoArgsConstructor
 public class User extends CreatedInfo{
