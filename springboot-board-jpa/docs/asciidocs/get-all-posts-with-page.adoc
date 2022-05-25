@@ -1,0 +1,10 @@
+=== Post Paging 조회
+
+==== /posts?page={page}&size={size}
+
+.Request
+include::{snippets}/post-getAllWithPage/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getAllWithPage/http-response.adoc[]
+include::{snippets}/post-getAllWithPage/response-fields.adoc[]
