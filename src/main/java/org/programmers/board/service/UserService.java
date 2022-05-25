@@ -5,7 +5,7 @@ import org.programmers.board.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -16,8 +16,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> getUser(Long userId) {
-        return userRepository.findById(userId);
+    public User getUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
     }
 
     public List<User> getAllUser() {

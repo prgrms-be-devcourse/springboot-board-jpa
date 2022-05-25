@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -50,13 +49,13 @@ class UserServiceTest {
     void getUserTest() {
         User savedUser = userRepository.save(user);
 
-        Optional<User> findUser = userService.getUser(savedUser.getId());
+        User findUser = userService.getUser(savedUser.getId());
 
         assertAll(
-                () -> assertThat(savedUser.getId()).isEqualTo(findUser.get().getId()),
-                () -> assertThat(savedUser.getName().getName()).isEqualTo(findUser.get().getName().getName()),
-                () -> assertThat(savedUser.getAge()).isEqualTo(findUser.get().getAge()),
-                () -> assertThat(savedUser.getHobby()).isEqualTo(findUser.get().getHobby())
+                () -> assertThat(savedUser.getId()).isEqualTo(findUser.getId()),
+                () -> assertThat(savedUser.getName().getName()).isEqualTo(findUser.getName().getName()),
+                () -> assertThat(savedUser.getAge()).isEqualTo(findUser.getAge()),
+                () -> assertThat(savedUser.getHobby()).isEqualTo(findUser.getHobby())
         );
     }
 
