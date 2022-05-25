@@ -2,7 +2,6 @@ package com.study.board.controller.post;
 
 import com.study.board.domain.post.domain.Post;
 import com.study.board.domain.post.repository.PostRepository;
-import com.study.board.domain.post.service.PostService;
 import com.study.board.domain.user.domain.User;
 import com.study.board.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,16 +11,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.study.board.fixture.Fixture.createUser;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = NONE)
+@SpringBootTest
 class PostRestControllerTest {
 
     @Autowired
