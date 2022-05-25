@@ -51,11 +51,8 @@ public class Post extends BaseEntity {
     }
 
     /* 비지니스 로직 */
-    public void editTitle(Title title) {
+    public void editTitleAndContent(Title title, Content content) {
         this.title = title;
-    }
-
-    public void editContent(Content content) {
         this.content = content;
     }
 

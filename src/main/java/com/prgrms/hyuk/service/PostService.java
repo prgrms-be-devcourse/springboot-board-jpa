@@ -51,8 +51,10 @@ public class PostService {
         var post = postRepository.findById(id)
             .orElseThrow(() -> new InvalidPostIdException(INVALID_POST_ID_EXP_MSG));
 
-        post.editTitle(new Title(postUpdateRequest.getTitle()));
-        post.editContent(new Content(postUpdateRequest.getContent()));
+        post.editTitleAndContent(
+            new Title(postUpdateRequest.getTitle()),
+            new Content(postUpdateRequest.getContent())
+        );
 
         return post.getId();
     }
