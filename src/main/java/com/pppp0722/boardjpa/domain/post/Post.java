@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import lombok.Setter;
 @Table(name = "post")
 @Getter
 @Setter
+@SequenceGenerator(name = "POST_SEQ_GENERATOR", sequenceName = "POST_SEQ", initialValue = 1, allocationSize = 1)
 public class Post extends BaseEntity {
 
     @Id
