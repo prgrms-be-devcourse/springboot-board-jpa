@@ -1,17 +1,14 @@
 package com.programmers.board.dto;
 
 import com.programmers.board.entity.Post;
+import lombok.RequiredArgsConstructor;
 
-public class PostDto {
+@RequiredArgsConstructor
+public class PostRequestDto {
     private final String title;
     private final String content;
 
-    public PostDto(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
-
-    public Post postConvertor() {
+    public Post postRequestConvertor() {
         if (this.title == null) {
             throw new IllegalArgumentException("제목이 없습니다.");
         }
