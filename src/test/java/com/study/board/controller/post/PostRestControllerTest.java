@@ -10,11 +10,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 
 import static com.study.board.fixture.Fixture.createUser;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.http.MediaType.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -64,11 +63,19 @@ class PostRestControllerTest extends RestDocsTestSupport {
                 );
     }
 
-//    @Test
-//    void 게시글_단건_조회() throws Exception {
-//        Long targetPostId = post1.getId();
-//
-//        mockMvc.perform(get("/posts/" + targetPostId))
-//                .
-//    }
+    @Test
+    void 게시글_단건_조회() throws Exception {
+        Long targetPostId = post1.getId();
+
+        mockMvc.perform(get("/posts/" + targetPostId)
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpectAll(
+                        jsonPath("$.id", targetPostId).exists(),
+                        jsonPath("$.title", "제목1").exists(),
+                        jsonPath("$.content", "내용1").exists(),
+                        jsonPath("$.writer", "득윤").exists(),
+                        jsonPath("$.writtenDateTime").exists()
+                );
+    }
 }
