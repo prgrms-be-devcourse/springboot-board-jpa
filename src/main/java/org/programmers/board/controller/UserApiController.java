@@ -20,7 +20,7 @@ public class UserApiController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createNewMember(@RequestBody MemberCreateRequest memberCreateRequest) {
+    public ResponseEntity<MemberCreateResponse> createMember(@RequestBody MemberCreateRequest memberCreateRequest) {
         User user = new User(
                 new Name(memberCreateRequest.getName()),
                 memberCreateRequest.getAge(),
