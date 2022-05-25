@@ -19,8 +19,6 @@ public class Post extends CreatedInfo{
     private String title;
     @Column(nullable = false, columnDefinition = "text")
     private String content;
-    @Column(insertable = false, updatable = false)
-    private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
