@@ -8,11 +8,10 @@ import org.programmers.board.entity.Board;
 import org.programmers.board.entity.vo.Content;
 import org.programmers.board.entity.vo.Title;
 import org.programmers.board.service.BoardService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,14 +52,21 @@ public class BoardApiController {
 
     // POST : 게시글 작성
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody BoardCreateRequest boardCreateRequest) throws URISyntaxException {
+    public ResponseEntity<BoardResponse> create(@RequestBody BoardCreateRequest boardCreateRequest) {
         Board newBoard = new Board(
                 new Title(boardCreateRequest.getTitle()),
                 new Content(boardCreateRequest.getContent()),
                 UserDTO.toEntity(boardCreateRequest.getUserDTO()));
 
         Long createdBoardId = boardService.createBoard(newBoard);
-        return ResponseEntity.created(new URI("/posts/" + createdBoardId)).build();
+        Board board = boardService.getBoard(createdBoardId);
+
+        BoardResponse boardResponse = new BoardResponse(board.getId(),
+                board.getTitle().getTitle(),
+                board.getContent().getContent(),
+                board.getUser().getName().getName());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(boardResponse);
     }
 
     // POST : 게시글 수정
@@ -68,8 +74,8 @@ public class BoardApiController {
     public ResponseEntity<BoardResponse> updateBoard(
             @RequestBody BoardUpdateRequest boardUpdateRequest,
             @PathVariable Long id) {
-        Long updatedBoardId = boardService.updateBoard(id, boardUpdateRequest);
-        Board updatedBoard = boardService.getBoard(updatedBoardId);
+        Board updatedBoard = boardService.updateBoard(id, boardUpdateRequest);
+
         BoardResponse boardResponse = new BoardResponse(
                 updatedBoard.getId(),
                 updatedBoard.getTitle().getTitle(),

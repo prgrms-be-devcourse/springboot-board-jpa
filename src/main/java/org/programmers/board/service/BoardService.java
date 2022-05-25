@@ -35,11 +35,12 @@ public class BoardService {
     }
 
     @Transactional
-    public Long updateBoard(Long boardId, BoardUpdateRequest boardUpdateRequest) {
+    public Board updateBoard(Long boardId, BoardUpdateRequest boardUpdateRequest) {
         Board board = boardRepository.findById(boardId).orElseThrow(() ->
                 new NoSuchElementException("조회할 수 없는 글입니다."));
 
         board.editBoard(boardUpdateRequest.getTitle(), boardUpdateRequest.getContent());
-        return board.getId();
+
+        return board;
     }
 }

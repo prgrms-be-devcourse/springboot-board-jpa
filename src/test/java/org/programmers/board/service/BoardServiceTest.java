@@ -83,9 +83,8 @@ class BoardServiceTest {
         Board saveBoard = boardRepository.save(board);
         BoardUpdateRequest boardUpdateRequest = new BoardUpdateRequest("새로운 제목", board.getContent().getContent());
 
-        Long updateBoardId = boardService.updateBoard(saveBoard.getId(), boardUpdateRequest);
+        Board updatedBoard = boardService.updateBoard(saveBoard.getId(), boardUpdateRequest);
 
-        Board updatedBoard = boardRepository.findById(updateBoardId).get();
         assertAll(
                 () -> assertThat(saveBoard.getContent().getContent()).isEqualTo(updatedBoard.getContent().getContent()),
                 () -> assertThat(updatedBoard.getTitle().getTitle()).isNotEqualTo(saveBoard.getTitle().getTitle())
@@ -98,9 +97,8 @@ class BoardServiceTest {
         Board saveBoard = boardRepository.save(board);
         BoardUpdateRequest boardUpdateRequest = new BoardUpdateRequest(board.getTitle().getTitle(), "새로운 내용");
 
-        Long updateBoardId = boardService.updateBoard(saveBoard.getId(), boardUpdateRequest);
+        Board updatedBoard = boardService.updateBoard(saveBoard.getId(), boardUpdateRequest);
 
-        Board updatedBoard = boardRepository.findById(updateBoardId).get();
         assertAll(
                 () -> assertThat(saveBoard.getContent().getContent()).isNotEqualTo(updatedBoard.getContent().getContent()),
                 () -> assertThat(updatedBoard.getTitle().getTitle()).isEqualTo(saveBoard.getTitle().getTitle())
