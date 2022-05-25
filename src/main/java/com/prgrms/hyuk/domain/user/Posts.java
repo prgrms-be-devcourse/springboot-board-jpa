@@ -1,9 +1,8 @@
 package com.prgrms.hyuk.domain.user;
 
-import static java.util.stream.Collectors.toList;
-
 import com.prgrms.hyuk.domain.post.Post;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
@@ -23,7 +22,6 @@ public class Posts {
     }
 
     public List<Post> getAllPost() {
-        return posts.stream()
-            .collect(toList());
+        return Collections.unmodifiableList(posts);
     }
 }
