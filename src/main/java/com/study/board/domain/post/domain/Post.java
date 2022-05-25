@@ -1,6 +1,6 @@
 package com.study.board.domain.post.domain;
 
-import com.study.board.domain.support.auditing.BaseEntity;
+import com.study.board.domain.base.BaseIdEntity;
 import com.study.board.domain.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ import static org.springframework.util.StringUtils.hasText;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Post extends BaseEntity {
+public class Post extends BaseIdEntity {
 
     public static final int POST_TITLE_MAX_LENGTH = 255;
 
@@ -33,23 +33,44 @@ public class Post extends BaseEntity {
     private LocalDateTime writtenDateTime;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User writer;
 
-    private Post(String title, String content, User writer) {
-        checkArgument(hasText(title), "title - 글자를 가져야함");
-        checkArgument(title.length() <= POST_TITLE_MAX_LENGTH, "title 길이 - " + POST_TITLE_MAX_LENGTH + " 이하 여야함");
-        checkArgument(hasText(content), "content - 글자를 가져야함");
-        checkNotNull(writer, "writer - null 이 될 수 없음");
+    public Post(String title, String content, User writer) {
+        checkTitle(title);
+        checkContent(content);
+        checkWriter(writer);
 
         this.title = title;
         this.content = content;
-        this.writer = writer;
         this.writtenDateTime = now();
+        this.writer = writer;
     }
 
-    public static Post create(String title, String content, User writer) {
-        return new Post(title, content, writer);
+    public Post edit(String title, String content) {
+        checkTitle(title);
+        checkContent(content);
+
+        this.title = title;
+        this.content = content;
+
+        return this;
     }
 
+    private void checkTitle(String title) {
+        checkArgument(hasText(title), "title - 글자를 가져야함");
+        checkArgument(title.length() <= POST_TITLE_MAX_LENGTH, "title 길이 - " + POST_TITLE_MAX_LENGTH + " 이하 여야함");
+    }
+
+    private void checkContent(String content) {
+        checkArgument(hasText(content), "content - 글자를 가져야함");
+    }
+
+    private void checkWriter(User writer) {
+        checkNotNull(writer, "writer - null 이 될 수 없음");
+    }
+
+    public boolean isWrittenBy(User user) {
+        return writer.getId().equals(user.getId());
+    }
 }

@@ -1,6 +1,6 @@
 package com.study.board.domain.user.domain;
 
-import com.study.board.domain.support.auditing.BaseEntity;
+import com.study.board.domain.base.BaseIdEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +14,7 @@ import static org.springframework.util.StringUtils.hasText;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class User extends BaseEntity {
+public class User extends BaseIdEntity {
 
     public static final int USER_NAME_MAX_LENGTH = 50;
     public static final int USER_HOBBY_MAX_LENGTH = 50;
@@ -25,19 +25,12 @@ public class User extends BaseEntity {
     @Column(name = "hobby", length = 50)
     private String hobby;
 
-    private User(String name, String hobby) {
+    public User(String name, String hobby) {
         checkArgument(hasText(name), "name - 글자를 가져야함");
         checkArgument(name.length() <= USER_NAME_MAX_LENGTH, "name 길이 - " + USER_NAME_MAX_LENGTH + " 이하 여야함");
-        if (hobby != null) {
-            checkArgument(hobby.length() <= USER_HOBBY_MAX_LENGTH, "hobby 길이 - " + USER_HOBBY_MAX_LENGTH + " 이하 여야함");
-        }
+        checkArgument(hobby == null || hobby.length() <= USER_HOBBY_MAX_LENGTH, "hobby 길이 - " + USER_HOBBY_MAX_LENGTH + " 이하 여야함");
 
         this.name = name;
         this.hobby = hobby;
     }
-
-    public static User create(String name, String hobby) {
-        return new User(name, hobby);
-    }
-
 }
