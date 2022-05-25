@@ -1,8 +1,6 @@
 package com.prgrms.springbootboardjpa.user.repository;
 
-import com.prgrms.springbootboardjpa.user.entity.Email;
 import com.prgrms.springbootboardjpa.user.entity.Name;
-import com.prgrms.springbootboardjpa.user.entity.Password;
 import com.prgrms.springbootboardjpa.user.entity.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -22,18 +19,26 @@ class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    User user = new User();
+    User user;
 
     @BeforeEach
     void setUp(){
-        user.setNickName("Nickname");
-        user.setAge(20);
-        user.setHobby("Sleep");
-        user.setName(new Name("Ella","Ma"));
-        user.setPassword(new Password("Password123"));
-        user.setEmail(new Email("test@gmail.com"));
-        user.setCreatedBy(user.getName().toString());
-        user.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS));
+        user = new User.UserBuilder()
+                .nickName("Nickname")
+                .age(20)
+                .hobby("Sleep")
+                .name(Name.builder()
+                        .firstName("Ella")
+                        .lastName("Ma")
+                        .build())
+                .password("Password123")
+                .email("test@gmail.com")
+                .createdAt(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS))
+                .createdBy(Name.builder()
+                        .firstName("Ella")
+                        .lastName("Ma")
+                        .build().toString())
+                .build();
 
         userRepository.save(user);
     }
@@ -52,7 +57,7 @@ class UserRepositoryTest {
 
     @Test
     void findByEmailNotExist(){
-        User foundUser = userRepository.findByEmail(new Email("notExist@gmail.com"));
+        User foundUser = userRepository.findByEmail("notExist@gmail.com");
 
         assertThat(foundUser).isNull();
     }

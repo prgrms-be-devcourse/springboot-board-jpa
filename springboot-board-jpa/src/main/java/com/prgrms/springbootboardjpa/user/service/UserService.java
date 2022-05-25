@@ -5,7 +5,6 @@ import com.prgrms.springbootboardjpa.exception.exceptions.NoSuchResourceExceptio
 import com.prgrms.springbootboardjpa.exception.exceptions.WrongPasswordException;
 import com.prgrms.springbootboardjpa.user.dto.UserDto;
 import com.prgrms.springbootboardjpa.user.dto.UserResponse;
-import com.prgrms.springbootboardjpa.user.entity.Password;
 import com.prgrms.springbootboardjpa.user.entity.User;
 import com.prgrms.springbootboardjpa.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class UserService {
     public UserResponse save(UserDto userDto){
         User user = UserDto.convertToUser(userDto);
         checkUserDuplicate(user);
-        user.setPassword(new Password(encodePassword(user.getPassword().toString())));
+        user.setPassword(encodePassword(user.getPassword().toString()));
         User savedUser = userRepository.save(user);
         return UserResponse.convertToUserResponse(savedUser);
     }
@@ -46,23 +45,22 @@ public class UserService {
         return passwordEncoder.encode(password);
     }
 
-    public boolean login(UserDto userDto){
-        User user = UserDto.convertToUser(userDto);
-        User foundUser = userRepository.findByNickName(user.getNickName());
+    public User login(String email, String password){
+        User foundUser = userRepository.findByEmail(email);
 
         if (foundUser == null){
             throw new NoSuchResourceException("해당하는 User 정보가 없습니다.");
         }
 
-        if (!checkPassword(foundUser, user.getPassword().getPassword()))
+        if (!checkPassword(foundUser, password))
             throw new WrongPasswordException("Password가 일치하지 않습니다.");
 
-        return true;
+        return foundUser;
     }
 
     public boolean checkPassword(User findUser, String password){
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        if (!passwordEncoder.matches(password,findUser.getPassword().getPassword())){
+        if (!passwordEncoder.matches(password,findUser.getPassword())){
             return false;
         }
         return true;

@@ -1,26 +1,27 @@
 package com.prgrms.springbootboardjpa.user.service;
 
+import com.prgrms.springbootboardjpa.exception.exceptions.DuplicateException;
+import com.prgrms.springbootboardjpa.exception.exceptions.NoSuchResourceException;
+import com.prgrms.springbootboardjpa.exception.exceptions.WrongPasswordException;
 import com.prgrms.springbootboardjpa.user.dto.UserDto;
 import com.prgrms.springbootboardjpa.user.dto.UserResponse;
-import com.prgrms.springbootboardjpa.user.entity.Email;
 import com.prgrms.springbootboardjpa.user.entity.Name;
-import com.prgrms.springbootboardjpa.user.entity.Password;
 import com.prgrms.springbootboardjpa.user.entity.User;
 import com.prgrms.springbootboardjpa.user.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 class UserServiceTest {
@@ -31,6 +32,7 @@ class UserServiceTest {
     @Autowired
     private UserService userService;
 
+    User user;
     UserDto userDto;
     UserResponse userResponse;
 
@@ -46,29 +48,27 @@ class UserServiceTest {
                 .email("test@gmail.com")
                 .build();
 
-        userResponse = UserResponse.builder()
-                .nickName(userDto.getNickName())
-                .age(userDto.getAge())
-                .hobby(userDto.getHobby())
-                .firstName(userDto.getFirstName())
-                .lastname(userDto.getLastName())
-                .email(userDto.getEmail())
-                .build();
+        userResponse = userService.save(userDto);
 
-        userRepository.save(UserDto.convertToUser(userDto));
+        user = userRepository.findById(userResponse.getId()).get();
+    }
+
+    @AfterEach
+    void clearUp(){
+        userRepository.deleteAll();
     }
 
     @Test
     void save() {
         //Given
         UserDto newUserDto = UserDto.builder()
-                .nickName("Nickname2")
+                .nickName("Nickname1")
                 .age(20)
                 .hobby("Sleep")
                 .firstName("Ella")
                 .lastName("Ma")
                 .password("Password123")
-                .email("test2@gmail.com")
+                .email("test1@gmail.com")
                 .build();
 
         UserResponse newUserResponse = UserResponse.builder()
@@ -76,7 +76,7 @@ class UserServiceTest {
                 .age(newUserDto.getAge())
                 .hobby(newUserDto.getHobby())
                 .firstName(newUserDto.getFirstName())
-                .lastname(newUserDto.getLastName())
+                .lastName(newUserDto.getLastName())
                 .email(newUserDto.getEmail())
                 .build();
 
@@ -89,23 +89,137 @@ class UserServiceTest {
     }
 
     @Test
-    void checkUserDuplicate() {
+    void checkUserDuplicateExist() {
+        //When, Then
+        assertThatThrownBy(() -> {
+            userService.checkUserDuplicate(user);
+        }).isInstanceOf(DuplicateException.class);
 
     }
 
     @Test
-    void encodePassword() {
+    void checkUserDuplicationNotExist(){
+        //Given
+        User givenUser = new User.UserBuilder()
+                    .nickName("Nickname2")
+                    .age(20)
+                    .hobby("Sleep")
+                    .name(Name.builder()
+                            .firstName("Ella")
+                            .lastName("Ma")
+                            .build())
+                    .password("Password123")
+                    .email("test2@gmail.com")
+                    .createdBy(Name.builder()
+                            .firstName("Ella")
+                            .lastName("Ma")
+                            .build().toString())
+                    .createdAt(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS))
+                    .build();
+
+        //When, Then
+        assertThatNoException().isThrownBy(() -> {
+                    userService.checkUserDuplicate(givenUser);
+                }
+        );
+
     }
+
 
     @Test
     void login() {
+        //When
+        User loginResult = userService.login(userDto.getEmail(), userDto.getPassword());
+
+        //Then
+        assertThat(loginResult).usingRecursiveComparison().ignoringFields("posts").isEqualTo(user);
     }
 
     @Test
-    void checkPassword() {
+    void loginFailWithNotExistUser(){
+        //Given
+        UserDto givenUserDto = UserDto.builder()
+                .nickName("Nickname2")
+                .age(20)
+                .hobby("Sleep")
+                .firstName("Ella")
+                .lastName("Ma")
+                .password("Password123")
+                .email("test2@gmail.com")
+                .build();
+
+        //When,Then
+        assertThatThrownBy(() -> {
+                    userService.login(givenUserDto.getEmail(), givenUserDto.getPassword());
+                }
+        ).isInstanceOf(NoSuchResourceException.class);
     }
 
     @Test
-    void findAll() {
+    void loginFailWithWrongPassword(){
+        //Given
+        UserDto givenUserDto = UserDto.builder()
+                .nickName(userDto.getNickName())
+                .age(userDto.getAge())
+                .hobby(userDto.getHobby())
+                .firstName(userDto.getFirstName())
+                .lastName(userDto.getLastName())
+                .password("WrongPassword123")
+                .email(userDto.getEmail())
+                .build();
+
+        //When,Then
+        assertThatThrownBy(() -> {
+                    userService.login(givenUserDto.getEmail(), givenUserDto.getPassword());
+                }
+        ).isInstanceOf(WrongPasswordException.class);
+    }
+
+
+    @Test
+    void findAllWithoutPage() {
+        //Given
+        UserDto givenUserDto = UserDto.builder()
+                .nickName("Nickname2")
+                .age(20)
+                .hobby("Sleep")
+                .firstName("Ella")
+                .lastName("Ma")
+                .password("Password123")
+                .email("test2@gmail.com")
+                .build();
+        UserResponse givenUserResponse = userService.save(givenUserDto);
+        List<UserResponse> userResponseList = new ArrayList<>();
+        userResponseList.add(userResponse);
+        userResponseList.add(givenUserResponse);
+
+        //When
+        Page<UserResponse> userResponsePage = userService.findAll(Pageable.unpaged());
+
+        //Then
+        assertThat(userResponsePage.stream().toList()).usingRecursiveFieldByFieldElementComparator().isEqualTo(userResponseList);
+    }
+
+    @Test
+    void findAllWithPage() {
+        //Given
+        UserDto givenUserDto = UserDto.builder()
+                .nickName("Nickname2")
+                .age(20)
+                .hobby("Sleep")
+                .firstName("Ella")
+                .lastName("Ma")
+                .password("Password123")
+                .email("test2@gmail.com")
+                .build();
+        UserResponse givenUserResponse = userService.save(givenUserDto);
+        List<UserResponse> userResponseList = new ArrayList<>();
+        userResponseList.add(givenUserResponse);
+
+        //When
+        Page<UserResponse> userResponsePage = userService.findAll(Pageable.ofSize(1).withPage(1));
+
+        //Then
+        assertThat(userResponsePage.stream().toList()).usingRecursiveFieldByFieldElementComparator().isEqualTo(userResponseList);
     }
 }
