@@ -7,6 +7,7 @@ import com.sdardew.board.dto.post.PostDto;
 import com.sdardew.board.dto.post.UpdatePostDto;
 import com.sdardew.board.repository.PostRepository;
 import com.sdardew.board.repository.UserRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,11 +34,11 @@ public class PostService {
     return postRepository.findAll().stream().map(Post::toPostDto).collect(Collectors.toList());
   }
 
+
   public DetailedPostDto getPost(Long id) {
     Optional<Post> found = postRepository.findById(id);
     if(found.isPresent()) {
       return dtoConverter.toDetailedPostDto(found.get());
-//      return found.get().toPostDto();
     }
     throw new NoSuchElementException("존재하지 않는 PostID입니다");
   }
@@ -71,5 +72,9 @@ public class PostService {
     oldPost.setContent(updatePostDto.getContent());
     Post save = postRepository.save(oldPost);
     return save.toPostDto();
+  }
+
+  public List<PostDto> getPosts(Pageable pageable) {
+    return postRepository.findAll(pageable).stream().map(Post::toPostDto).collect(Collectors.toList());
   }
 }

@@ -5,6 +5,8 @@ import com.sdardew.board.dto.post.DetailedPostDto;
 import com.sdardew.board.dto.post.PostDto;
 import com.sdardew.board.dto.post.UpdatePostDto;
 import com.sdardew.board.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +22,8 @@ public class PostController {
   }
 
   @GetMapping
-  public List<PostDto> getPosts() {
-    return postService.getPosts();
+  public List<PostDto> getPosts(Pageable pageable) {
+    return postService.getPosts(pageable);
   }
 
   @GetMapping("/{id}")
