@@ -1,5 +1,6 @@
 package com.prgrms.boardjpa.domain;
 
+import com.prgrms.boardjpa.user.dto.AuthorDto;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -39,5 +40,12 @@ public class User extends BaseEntity{
 
     public void addPost(Post post){
         post.setAuthor(this);
+    }
+
+    public AuthorDto toAuthorDto(){
+        return AuthorDto.builder()
+                .id(this.id)
+                .name(this.name)
+                .build();
     }
 }

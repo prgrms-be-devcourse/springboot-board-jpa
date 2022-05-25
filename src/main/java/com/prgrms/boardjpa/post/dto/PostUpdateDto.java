@@ -11,7 +11,6 @@ import static com.prgrms.boardjpa.Utils.now;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostUpdateDto {
-    private Long id;
     private String title;
     private String content;
 }

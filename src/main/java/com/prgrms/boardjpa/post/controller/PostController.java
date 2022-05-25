@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor // 생성자 주입
+@RequestMapping("/api/v1")
 public class PostController {
 
     private final PostService postService;
@@ -37,8 +38,8 @@ public class PostController {
         return Response.ok(postService.save(postReqDto));
     }
 
-    @PutMapping("/posts")
-    public Response<Long> update(@RequestBody PostUpdateDto postUpdateDto){
-        return Response.ok(postService.update(postUpdateDto));
+    @PutMapping("/posts/{postId}")
+    public Response<Long> update(@PathVariable Long postId, @RequestBody PostUpdateDto postUpdateDto){
+        return Response.ok(postService.update(postId, postUpdateDto));
     }
 }

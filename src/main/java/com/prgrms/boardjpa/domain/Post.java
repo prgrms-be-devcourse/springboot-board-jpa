@@ -37,12 +37,12 @@ public class Post extends BaseEntity{
         user.getPosts().add(this);
     }
 
-    public PostResDto toDto(){
+    public PostResDto toResDto(){
         return PostResDto.builder()
                 .id(this.id)
                 .title(this.title)
                 .content(this.content)
-                .author(this.author)
+                .author(this.author.toAuthorDto())
                 .createdAt(super.getCreatedAt())
                 .createdBy(super.getCreatedBy())
                 .build();

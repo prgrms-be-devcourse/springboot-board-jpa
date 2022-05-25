@@ -27,13 +27,13 @@ public class PostService {
 
     public PostResDto findOne(Long id) {
         return postRepository.findById(id)
-                .map(Post::toDto)
+                .map(Post::toResDto)
                 .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
     }
 
     public Page<PostResDto> findPosts(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(Post::toDto);
+                .map(Post::toResDto);
     }
 
     public Long save(PostReqDto postReqDto) {
@@ -44,8 +44,8 @@ public class PostService {
         return post.getId();
     }
 
-    public Long update(PostUpdateDto postUpdateDto) {
-        Post post = postRepository.findById(postUpdateDto.getId())
+    public Long update(Long postId, PostUpdateDto postUpdateDto) {
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
         post.setContent(postUpdateDto.getContent());
         post.setTitle(postUpdateDto.getTitle());

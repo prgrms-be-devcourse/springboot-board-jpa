@@ -30,9 +30,9 @@ class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
-    Long postId;
+    private Long postId;
 
-    User testUser;
+    private User testUser;
 
     @BeforeEach
     void setUp (){
@@ -54,7 +54,10 @@ class PostServiceTest {
     }
 
     @AfterEach
-    void tearDown() { postRepository.deleteAll(); }
+    void tearDown() {
+        userRepository.deleteAll();
+        postRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("페이지로 게시글 조회")
@@ -109,10 +112,9 @@ class PostServiceTest {
         PostUpdateDto postDto = PostUpdateDto.builder()
                 .title("게시글 제목 수정")
                 .content("게시글 본문 수정")
-                .id(postId)
                 .build();
 
-        Long updatePostId = postService.update(postDto);
+        Long updatePostId = postService.update(postId, postDto);
         PostResDto post = postService.findOne(updatePostId);
 
         assertThat(post.getId()).isEqualTo(updatePostId);
