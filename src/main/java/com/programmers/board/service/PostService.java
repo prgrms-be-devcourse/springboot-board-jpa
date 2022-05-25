@@ -37,10 +37,20 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDto find(Long id) throws NotFoundException{
+    public PostResponseDto find(Long id) throws NotFoundException {
         Post post = postRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("데이터가 존재하지 않습니다"));
         return Convertor.postResponseConvertor(post);
+    }
+
+    @Transactional
+    public Long update(Long id, PostRequestDto postRequestDto) throws NotFoundException {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("데이터가 존재하지 않습니다"));
+        post.setTitle(postRequestDto.getTitle());
+        post.setContent(postRequestDto.getContent());
+        Post entity = postRepository.save(post);
+        return entity.getId();
     }
 
 }
