@@ -41,6 +41,7 @@ class PostServiceTest {
 
         UserResponseDto userResponseDto = userService.save(userRequestDto);
 
+
         PostRequestDto postRequestDto = PostRequestDto.builder()
             .title("Hi")
             .content("Nice to meet you.")
