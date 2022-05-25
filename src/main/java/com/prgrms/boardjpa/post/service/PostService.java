@@ -36,19 +36,19 @@ public class PostService {
                 .map(Post::toResDto);
     }
 
-    public Long save(PostReqDto postReqDto) {
+    public PostResDto save(PostReqDto postReqDto) {
         Post post = postReqDto.toEntity();
         User author = userRepository.findById(postReqDto.getUserId()).orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
         post.setAuthor(author);
         postRepository.save(post);
-        return post.getId();
+        return post.toResDto();
     }
 
-    public Long update(Long postId, PostUpdateDto postUpdateDto) {
+    public PostResDto update(Long postId, PostUpdateDto postUpdateDto) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
         post.setContent(postUpdateDto.getContent());
         post.setTitle(postUpdateDto.getTitle());
-        return post.getId();
+        return post.toResDto();
     }
 }

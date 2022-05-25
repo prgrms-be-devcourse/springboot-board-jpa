@@ -15,18 +15,26 @@ public class Response<T> {
     private T data;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime serverDatetime;
+    private String message;
 
-    public Response(int statusCode, T data) {
+    public Response(int statusCode, T data, String message) {
         this.statusCode = statusCode;
         this.data = data;
         this.serverDatetime = LocalDateTime.now();
+        this.message = message;
     }
 
-    public static <T> Response<T> ok(T data) {
-        return new Response<>(200, data);
+    public Response(int statusCode, String message) {
+        this.statusCode = statusCode;
+        this.serverDatetime = LocalDateTime.now();
+        this.message = message;
     }
 
-    public static <T> Response<T> fail(int statusCode, T errData) {
-        return new Response<>(statusCode, errData);
+    public static <T> Response<T> ok(T data, String message) {
+        return new Response<>(200, data, message);
+    }
+
+    public static <T> Response<T> fail(int statusCode, String errMessage) {
+        return new Response<>(statusCode, errMessage);
     }
 }

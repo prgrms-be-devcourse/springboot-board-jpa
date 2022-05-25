@@ -25,21 +25,21 @@ public class PostController {
 
     @GetMapping("/posts/{postId}")
     public Response<PostResDto> getOne(@PathVariable Long postId){
-        return Response.ok(postService.findOne(postId));
+        return Response.ok(postService.findOne(postId), "게시글 단건 조회 성공");
     }
 
     @GetMapping("/posts")
     public Response<Page<PostResDto>> getAll (Pageable pageable){
-        return Response.ok(postService.findPosts(pageable));
+        return Response.ok(postService.findPosts(pageable), "게시글 다건 조회 성공");
     }
 
     @PostMapping("/posts")
-    public Response<Long> save (@RequestBody PostReqDto postReqDto){
-        return Response.ok(postService.save(postReqDto));
+    public Response<PostResDto> save (@RequestBody PostReqDto postReqDto){
+        return Response.ok(postService.save(postReqDto), "게시글 생성 성공");
     }
 
     @PutMapping("/posts/{postId}")
-    public Response<Long> update(@PathVariable Long postId, @RequestBody PostUpdateDto postUpdateDto){
-        return Response.ok(postService.update(postId, postUpdateDto));
+    public Response<PostResDto> update(@PathVariable Long postId, @RequestBody PostUpdateDto postUpdateDto){
+        return Response.ok(postService.update(postId, postUpdateDto), "게시글 수정 성공");
     }
 }

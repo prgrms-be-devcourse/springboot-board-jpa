@@ -50,7 +50,7 @@ class PostServiceTest {
                 .userId(testUser.getId())
                 .build();
 
-        postId = postService.save(postDto);
+        postId = postService.save(postDto).getId();
     }
 
     @AfterEach
@@ -97,13 +97,11 @@ class PostServiceTest {
                 .userId(testUser.getId())
                 .build();
 
-        Long savePostId = postService.save(postDto);
-        PostResDto post = postService.findOne(savePostId);
+        PostResDto saveResult = postService.save(postDto);
 
-        assertThat(post.getId()).isEqualTo(savePostId);
-        assertThat(post.getTitle()).isEqualTo(postDto.getTitle());
-        assertThat(post.getContent()).isEqualTo(postDto.getContent());
-        assertThat(post.getAuthor().getId()).isEqualTo(postDto.getUserId());
+        assertThat(saveResult.getTitle()).isEqualTo(postDto.getTitle());
+        assertThat(saveResult.getContent()).isEqualTo(postDto.getContent());
+        assertThat(saveResult.getAuthor().getId()).isEqualTo(postDto.getUserId());
     }
 
     @Test
@@ -114,11 +112,10 @@ class PostServiceTest {
                 .content("게시글 본문 수정")
                 .build();
 
-        Long updatePostId = postService.update(postId, postDto);
-        PostResDto post = postService.findOne(updatePostId);
+        PostResDto updateResult = postService.update(postId, postDto);
 
-        assertThat(post.getId()).isEqualTo(updatePostId);
-        assertThat(post.getTitle()).isEqualTo(postDto.getTitle());
-        assertThat(post.getContent()).isEqualTo(postDto.getContent());
+        assertThat(updateResult.getId()).isEqualTo(postId);
+        assertThat(updateResult.getTitle()).isEqualTo(postDto.getTitle());
+        assertThat(updateResult.getContent()).isEqualTo(postDto.getContent());
     }
 }

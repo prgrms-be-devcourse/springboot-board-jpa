@@ -1,0 +1,64 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시글
+
+=== 게시글 생성
+
+==== POST /api/v1/posts
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+=== 게시글 수정
+
+==== PUT /api/v1/posts/{postId}
+
+.Request Path Variable
+postId: 수정할 게시글 id
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+=== 게시글 단건 조회
+
+==== GET /api/v1/posts/{postId}
+
+.Request Path Variable
+postId: 조회할 게시글 id
+
+.Request
+include::{snippets}/post-single-lookup/http-request.adoc[]
+
+.Response
+include::{snippets}/post-single-lookup/http-response.adoc[]
+include::{snippets}/post-single-lookup/response-fields.adoc[]
+
+=== 게시글 다건 조회
+
+==== GET /api/v1/posts/
+
+.RequestParam
+page: 페이지 index
+size: 페이지 내 게시글 개수
+sort: 정렬 column, (내림차순/오름차순)
+ex. id, DESC
+
+.Request
+include::{snippets}/post-multi-lookup/http-request.adoc[]
+
+.Response
+include::{snippets}/post-multi-lookup/http-response.adoc[]
+include::{snippets}/post-multi-lookup/response-fields.adoc[]

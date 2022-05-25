@@ -44,7 +44,6 @@ public class Post extends BaseEntity{
                 .content(this.content)
                 .author(this.author.toAuthorDto())
                 .createdAt(super.getCreatedAt())
-                .createdBy(super.getCreatedBy())
                 .build();
     }
 

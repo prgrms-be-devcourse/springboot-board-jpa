@@ -17,5 +17,4 @@ public class PostResDto {
     private String content;
     private AuthorDto author;
     private LocalDateTime createdAt;
-    private String createdBy;
 }
