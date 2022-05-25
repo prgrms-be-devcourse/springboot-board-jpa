@@ -3,6 +3,7 @@ package com.pppp0722.boardjpa.web.api;
 import com.pppp0722.boardjpa.service.user.UserService;
 import com.pppp0722.boardjpa.web.dto.UserRequestDto;
 import com.pppp0722.boardjpa.web.dto.UserResponseDto;
+import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class UserApiController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<UserResponseDto> create(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserRequestDto userRequestDto) {
         UserResponseDto receivedUserDto = userService.save(userRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(receivedUserDto);
     }

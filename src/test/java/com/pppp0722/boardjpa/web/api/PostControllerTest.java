@@ -12,15 +12,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pppp0722.boardjpa.domain.post.PostRepository;
-import com.pppp0722.boardjpa.domain.user.UserRepository;
 import com.pppp0722.boardjpa.service.post.PostService;
 import com.pppp0722.boardjpa.service.user.UserService;
 import com.pppp0722.boardjpa.web.dto.PostRequestDto;
 import com.pppp0722.boardjpa.web.dto.PostResponseDto;
 import com.pppp0722.boardjpa.web.dto.UserRequestDto;
 import com.pppp0722.boardjpa.web.dto.UserResponseDto;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -29,9 +26,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
+@Transactional
 @SpringBootTest
 class PostControllerTest {
 
@@ -39,25 +38,13 @@ class PostControllerTest {
     private PostService postService;
 
     @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     ObjectMapper objectMapper;
-
-    @AfterEach
-    public void tearDown() {
-        postRepository.deleteAll();
-        userRepository.deleteAll();
-    }
 
     @Test
     public void 게시글을_저장하면_객체를_반환한다() throws Exception {

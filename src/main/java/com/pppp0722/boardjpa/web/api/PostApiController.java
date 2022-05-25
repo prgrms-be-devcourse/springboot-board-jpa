@@ -3,6 +3,7 @@ package com.pppp0722.boardjpa.web.api;
 import com.pppp0722.boardjpa.service.post.PostService;
 import com.pppp0722.boardjpa.web.dto.PostRequestDto;
 import com.pppp0722.boardjpa.web.dto.PostResponseDto;
+import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,8 @@ public class PostApiController {
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<PostResponseDto> create(@RequestBody PostRequestDto postRequestDto) {
+    public ResponseEntity<PostResponseDto> create(
+        @RequestBody @Valid PostRequestDto postRequestDto) {
         PostResponseDto postResponseDto = postService.save(postRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(postResponseDto);
     }

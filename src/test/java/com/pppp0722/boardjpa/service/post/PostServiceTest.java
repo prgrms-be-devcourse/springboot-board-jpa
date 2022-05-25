@@ -5,8 +5,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.pppp0722.boardjpa.domain.post.PostRepository;
-import com.pppp0722.boardjpa.domain.user.UserRepository;
 import com.pppp0722.boardjpa.service.user.UserService;
 import com.pppp0722.boardjpa.web.dto.PostRequestDto;
 import com.pppp0722.boardjpa.web.dto.PostResponseDto;
@@ -14,7 +12,6 @@ import com.pppp0722.boardjpa.web.dto.UserRequestDto;
 import com.pppp0722.boardjpa.web.dto.UserResponseDto;
 import javax.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,19 +29,7 @@ class PostServiceTest {
     UserService userService;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
     PostService postService;
-
-    @Autowired
-    PostRepository postRepository;
-
-    @AfterEach
-    void tearDown() {
-        postRepository.deleteAll();
-        userRepository.deleteAll();
-    }
 
     @Test
     void 게시글_save_테스트() {

@@ -5,12 +5,10 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.pppp0722.boardjpa.domain.user.UserRepository;
 import com.pppp0722.boardjpa.web.dto.UserRequestDto;
 import com.pppp0722.boardjpa.web.dto.UserResponseDto;
 import javax.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,14 +24,6 @@ class UserServiceTest {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
-    }
 
     @Test
     void 사용자_save_테스트() {
