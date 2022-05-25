@@ -3,7 +3,6 @@ package com.prgrms.springbootboardjpa.user.entity;
 import com.prgrms.springbootboardjpa.DatetimeEntity;
 import com.prgrms.springbootboardjpa.post.entity.Post;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

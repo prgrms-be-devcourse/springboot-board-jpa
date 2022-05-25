@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.lang.reflect.Proxy;
-import java.util.Objects;
 
 @SuperBuilder
 @NoArgsConstructor
