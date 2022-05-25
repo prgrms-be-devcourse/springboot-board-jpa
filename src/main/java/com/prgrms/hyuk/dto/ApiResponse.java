@@ -20,7 +20,7 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> ok(T data) {
-        return new ApiResponse<>(200, data);
+        return new ApiResponse<>(HttpStatus.OK.value(), data);
     }
 
     public static ApiResponse<URI> created(URI location) {

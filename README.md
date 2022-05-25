@@ -49,3 +49,4 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 - [X] ExceptionHandler는 Controller와 분리해 관리하자.
 - [X] Post Request에는 HttpStatus Created(201)와 생성된 리소스 조회 URL을 응답에 담기!
 - [X] 일급 컬렉션에서 전체 원소들을 반환해 줄때 불변 컬렉션으로 반환하자. (은닉화)
+- [X] Http 응답코드 리터럴대신 HttpStatus 이용하자.
