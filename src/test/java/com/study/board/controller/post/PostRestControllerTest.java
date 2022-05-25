@@ -78,4 +78,13 @@ class PostRestControllerTest extends RestDocsTestSupport {
                         jsonPath("$.writtenDateTime").exists()
                 );
     }
+
+    @Test
+    void 없는_게시글을_단건_조회_할_수_없음() throws Exception {
+        long illegalPostId = 100;
+
+        mockMvc.perform(get("/posts/" + illegalPostId)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }
