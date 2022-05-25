@@ -2,6 +2,7 @@ package com.programmers.board.service;
 
 import com.programmers.board.dto.PostDto;
 import com.programmers.board.entity.Post;
+import com.programmers.board.exception.NotFoundException;
 import com.programmers.board.repository.PostRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +25,9 @@ public class PostService {
     }
 
     @Transactional
-    public Post find(Long id) throws RuntimeException{
+    public Post find(Long id) throws NotFoundException{
         return postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("데이터가 존재하지 않습니다"));
+                .orElseThrow(() -> new NotFoundException("데이터가 존재하지 않습니다"));
     }
 
 }
