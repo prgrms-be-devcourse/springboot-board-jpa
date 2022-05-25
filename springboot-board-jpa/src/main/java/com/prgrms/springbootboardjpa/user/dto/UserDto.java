@@ -1,5 +1,6 @@
 package com.prgrms.springbootboardjpa.user.dto;
 
+import com.prgrms.springbootboardjpa.Patterns;
 import com.prgrms.springbootboardjpa.user.entity.Name;
 import com.prgrms.springbootboardjpa.user.entity.User;
 import com.sun.istack.NotNull;
@@ -18,10 +19,6 @@ import java.time.temporal.ChronoUnit;
 @AllArgsConstructor
 public class UserDto{
 
-    private final String NAME_PATTERN = "[^0-9\\.\\,\\\"\\?\\!\\;\\:\\#\\$\\%\\&\\(\\)\\*\\+\\-\\/\\<\\>\\=\\@\\[\\]\\\\\\^\\_\\{\\}\\|\\~]+";
-    private final String PASSWD_PATTERN = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$";
-    private final String EMAIL_PATTERN = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b";
-
     private Long id;
 
     @NotNull
@@ -35,23 +32,23 @@ public class UserDto{
     private String hobby;
 
     @NotNull
-    @Pattern(regexp = NAME_PATTERN)
+    @Pattern(regexp = Patterns.NAME_PATTERN)
     @Size(min = 1, max = 30)
     private String firstName;
 
     @NotNull
-    @Pattern(regexp = NAME_PATTERN)
+    @Pattern(regexp = Patterns.NAME_PATTERN)
     @Size(min = 1, max = 30)
     private String lastName;
 
     @NotNull
-    @Pattern(regexp = PASSWD_PATTERN)
+    @Pattern(regexp = Patterns.PASSWD_PATTERN)
     @Size(min = 8, max = 100)
     private String password;
 
 
     @NotNull
-    @Pattern(regexp = EMAIL_PATTERN)
+    @Pattern(regexp = Patterns.EMAIL_PATTERN)
     @Size(min = 5, max = 50)
     private String email;
 

@@ -142,9 +142,7 @@ class PostRestControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                                 fieldWithPath("password").type(JsonFieldType.STRING).description("password"),
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("email"),
-                                fieldWithPath("id").ignored(),
-                                fieldWithPath("passwd_PATTERN").ignored(),
-                                fieldWithPath("email_PATTERN").ignored()
+                                fieldWithPath("id").ignored()
                                 ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("id"),
@@ -243,9 +241,7 @@ class PostRestControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                                 fieldWithPath("password").type(JsonFieldType.STRING).description("password"),
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("email"),
-                                fieldWithPath("id").ignored(),
-                                fieldWithPath("passwd_PATTERN").ignored(),
-                                fieldWithPath("email_PATTERN").ignored()
+                                fieldWithPath("id").ignored()
                         ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("id"),

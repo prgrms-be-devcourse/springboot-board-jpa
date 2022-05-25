@@ -123,10 +123,7 @@ class UserRestControllerTest {
                                 fieldWithPath("firstName").type(JsonFieldType.STRING).description("firstName"),
                                 fieldWithPath("lastName").type(JsonFieldType.STRING).description("lastName"),
                                 fieldWithPath("password").type(JsonFieldType.STRING).description("password"),
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("email"),
-                                fieldWithPath("email_PATTERN").ignored(),
-                                fieldWithPath("passwd_PATTERN").ignored(),
-                                fieldWithPath("name_PATTERN").ignored()
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("email")
                         ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("id"),

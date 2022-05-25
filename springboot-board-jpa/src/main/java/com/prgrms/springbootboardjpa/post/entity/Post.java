@@ -1,6 +1,6 @@
 package com.prgrms.springbootboardjpa.post.entity;
 
-import com.prgrms.springbootboardjpa.DatetimeEntity;
+import com.prgrms.springbootboardjpa.BaseEntity;
 import com.prgrms.springbootboardjpa.post.dto.PostDto;
 import com.prgrms.springbootboardjpa.user.entity.User;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Post extends DatetimeEntity {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

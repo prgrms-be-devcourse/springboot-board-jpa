@@ -1,6 +1,6 @@
 package com.prgrms.springbootboardjpa.user.entity;
 
-import com.prgrms.springbootboardjpa.DatetimeEntity;
+import com.prgrms.springbootboardjpa.BaseEntity;
 import com.prgrms.springbootboardjpa.post.entity.Post;
 import lombok.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class User extends DatetimeEntity {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
