@@ -3,6 +3,7 @@ package com.sdardew.board.domain.user;
 import com.sdardew.board.domain.post.Post;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,20 @@ public class User {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Id
   private Long id;
+
+  @Size(min = 3, max = 20)
   private String name;
+
+  @Max(value = 120)
+  @Min(12)
   private Integer age;
+
+  @NotBlank
   private String hobby;
+
+  @NotNull
   private LocalDateTime createdAt;
+
   @OneToMany(mappedBy = "user")
   private List<Post> posts = new ArrayList<>();
 
