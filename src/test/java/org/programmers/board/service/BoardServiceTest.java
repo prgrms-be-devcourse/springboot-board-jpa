@@ -1,6 +1,5 @@
 package org.programmers.board.service;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,15 +12,19 @@ import org.programmers.board.entity.vo.Title;
 import org.programmers.board.repository.BoardRepository;
 import org.programmers.board.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@SpringBootTest
+@DataJpaTest
+@Import({BoardService.class})
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BoardServiceTest {
 
     @Autowired
@@ -40,11 +43,6 @@ class BoardServiceTest {
     void setup() {
         user = new User(new Name("김지웅"), 27, "독서");
         board = new Board(new Title("this is title"), new Content("this is content"), user);
-    }
-
-    @AfterEach
-    void clean() {
-        userRepository.deleteAll();
     }
 
     @Test
@@ -83,12 +81,10 @@ class BoardServiceTest {
         Board saveBoard = boardRepository.save(board);
         BoardUpdateRequest boardUpdateRequest = new BoardUpdateRequest("새로운 제목", board.getContent().getContent());
 
-        Board updatedBoard = boardService.updateBoard(saveBoard.getId(), boardUpdateRequest);
+        Long updatedBoardId = boardService.updateBoard(saveBoard.getId(), boardUpdateRequest);
+        Board updatedBoard = boardRepository.findById(updatedBoardId).get();
 
-        assertAll(
-                () -> assertThat(saveBoard.getContent().getContent()).isEqualTo(updatedBoard.getContent().getContent()),
-                () -> assertThat(updatedBoard.getTitle().getTitle()).isNotEqualTo(saveBoard.getTitle().getTitle())
-        );
+        assertThat(updatedBoard.getTitle().getTitle()).isEqualTo("새로운 제목");
     }
 
     @Test
@@ -97,21 +93,30 @@ class BoardServiceTest {
         Board saveBoard = boardRepository.save(board);
         BoardUpdateRequest boardUpdateRequest = new BoardUpdateRequest(board.getTitle().getTitle(), "새로운 내용");
 
-        Board updatedBoard = boardService.updateBoard(saveBoard.getId(), boardUpdateRequest);
+        Long updatedBoardId = boardService.updateBoard(saveBoard.getId(), boardUpdateRequest);
+        Board updatedBoard = boardRepository.findById(updatedBoardId).get();
 
-        assertAll(
-                () -> assertThat(saveBoard.getContent().getContent()).isNotEqualTo(updatedBoard.getContent().getContent()),
-                () -> assertThat(updatedBoard.getTitle().getTitle()).isEqualTo(saveBoard.getTitle().getTitle())
-        );
+        assertThat(updatedBoard.getContent().getContent()).isEqualTo("새로운 내용");
     }
 
     @Test
     @DisplayName("게시글 전체 조회")
     void getBoardsTest() {
-        boardRepository.save(board);
+        boardRepository.save(new Board(new Title("test1"), new Content("test1"), user));
+        boardRepository.save(new Board(new Title("test2"), new Content("test2"), user));
+        boardRepository.save(new Board(new Title("test3"), new Content("test3"), user));
+        boardRepository.save(new Board(new Title("test4"), new Content("test4"), user));
+        boardRepository.save(new Board(new Title("test5"), new Content("test5"), user));
 
-        List<Board> boards = boardService.getBoards();
+        PageRequest pageRequest = PageRequest.of(0, 3);
 
-        assertThat(boards.size()).isEqualTo(1);
+        Page<Board> boardPage = boardService.getBoards(pageRequest);
+
+        assertAll(
+                () -> assertThat(boardPage.getTotalElements()).isEqualTo(6),
+                () -> assertThat(boardPage.getSize()).isEqualTo(3),
+                () -> assertThat(boardPage.getNumber()).isEqualTo(0),
+                () -> assertThat(boardPage.getTotalPages()).isEqualTo(2)
+        );
     }
 }

@@ -8,12 +8,11 @@ import org.programmers.board.entity.Board;
 import org.programmers.board.entity.vo.Content;
 import org.programmers.board.entity.vo.Title;
 import org.programmers.board.service.BoardService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/posts")
@@ -27,14 +26,16 @@ public class BoardApiController {
 
     // 페이징 조회
     @GetMapping
-    public ResponseEntity<List<BoardResponse>> getPages() {
-        List<BoardResponse> collect = boardService.getBoards().stream()
-                .map((board -> new BoardResponse(board.getId(),
+    public ResponseEntity<Page<BoardResponse>> getPages(Pageable pageable) {
+        Page<BoardResponse> boards = boardService.getBoards(pageable)
+                .map(board -> new BoardResponse(
+                        board.getId(),
                         board.getTitle().getTitle(),
                         board.getContent().getContent(),
-                        board.getUser().getName().getName()))).collect(Collectors.toList());
+                        board.getUser().getName().getName()
+                ));
 
-        return ResponseEntity.ok(collect);
+        return ResponseEntity.ok(boards);
     }
 
     // 단건 조회
@@ -74,7 +75,9 @@ public class BoardApiController {
     public ResponseEntity<BoardResponse> updateBoard(
             @RequestBody BoardUpdateRequest boardUpdateRequest,
             @PathVariable Long id) {
-        Board updatedBoard = boardService.updateBoard(id, boardUpdateRequest);
+
+        Long updatedBoardId = boardService.updateBoard(id, boardUpdateRequest);
+        Board updatedBoard = boardService.getBoard(updatedBoardId);
 
         BoardResponse boardResponse = new BoardResponse(
                 updatedBoard.getId(),
