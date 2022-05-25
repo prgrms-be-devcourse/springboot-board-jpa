@@ -1,6 +1,5 @@
 package com.study.board.controller.post;
 
-import com.study.board.controller.support.ControllerTest;
 import com.study.board.controller.PostRestController;
 import com.study.board.controller.support.RestDocsTestSupport;
 import com.study.board.domain.post.domain.Post;
@@ -15,6 +14,7 @@ import org.springframework.http.MediaType;
 
 import static com.study.board.fixture.Fixture.createUser;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,31 +31,44 @@ class PostRestControllerTest extends RestDocsTestSupport {
     @Autowired
     UserRepository userRepository;
 
+    Post post1;
+    Post post2;
+
     @BeforeEach
     void setUp() {
         User writer = createUser();
         userRepository.save(writer);
 
-        postRepository.save(new Post("제목1", "내용1", writer));
-        postRepository.save(new Post("제목2", "내용2", writer));
+        post1 = postRepository.save(new Post("제목1", "내용1", writer));
+        post2 = postRepository.save(new Post("제목2", "내용2", writer));
     }
 
     @Test
     void 게시글_페이징_조회() throws Exception {
         mockMvc.perform(get("/posts")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpectAll(
+                        jsonPath("$[0].id").exists(),
                         jsonPath("$[0].title", "제목1").exists(),
                         jsonPath("$[0].content", "내용1").exists(),
                         jsonPath("$[0].writer", "득윤").exists(),
                         jsonPath("$[0].writtenDateTime").exists()
                 ).andExpectAll(
+                        jsonPath("$[1].id").exists(),
                         jsonPath("$[1].title", "제목2").exists(),
                         jsonPath("$[1].content", "내용2").exists(),
                         jsonPath("$[1].writer", "득윤").exists(),
                         jsonPath("$[1].writtenDateTime").exists()
                 );
     }
+
+//    @Test
+//    void 게시글_단건_조회() throws Exception {
+//        Long targetPostId = post1.getId();
+//
+//        mockMvc.perform(get("/posts/" + targetPostId))
+//                .
+//    }
 }

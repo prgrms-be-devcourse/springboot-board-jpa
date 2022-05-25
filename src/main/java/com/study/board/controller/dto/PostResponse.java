@@ -12,6 +12,7 @@ import static lombok.AccessLevel.PRIVATE;
 @RequiredArgsConstructor(access = PRIVATE)
 public class PostResponse {
 
+    private final long id;
     private final String title;
     private final String content;
     private final String writer;
@@ -19,6 +20,7 @@ public class PostResponse {
 
     public static PostResponse convert(Post post) {
         return new PostResponse(
+                post.getId(),
                 post.getTitle(),
                 post.getContent(),
                 post.getWriter().getName(),
