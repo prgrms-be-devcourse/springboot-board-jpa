@@ -21,7 +21,7 @@ import lombok.Setter;
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GENERATOR")
     private Long id;
 
     @Column(name = "title", length = 50, nullable = false)

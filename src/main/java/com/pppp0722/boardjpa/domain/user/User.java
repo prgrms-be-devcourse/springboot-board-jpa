@@ -17,7 +17,7 @@ import lombok.Setter;
 public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GENERATOR")
     private Long id;
 
     @Column(name = "name", length = 50, nullable = false)
