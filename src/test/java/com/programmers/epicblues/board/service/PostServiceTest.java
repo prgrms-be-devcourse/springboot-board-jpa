@@ -75,7 +75,7 @@ class PostServiceTest {
     var postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
     // when
-    when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+    when(userRepository.getById(user.getId())).thenReturn(user);
     when(postRepository.save(any())).thenReturn(createdPost);
     postService.createPost(user.getId(), createdPost.getTitle(), createdPost.getContent());
 
@@ -103,7 +103,7 @@ class PostServiceTest {
     FieldSetter.assignId(postToSave, postId);
 
     // when
-    when(userRepository.findById(validUserId)).thenReturn(Optional.of(user));
+    when(userRepository.getById(validUserId)).thenReturn(user);
     when(postRepository.save(any())).thenReturn(postToSave);
 
     // then

@@ -29,7 +29,7 @@ public class PostService {
   }
 
   public PostResponse createPost(Long userId, String title, String content) {
-    User user = userRepository.findById(userId).orElseThrow();
+    User user = userRepository.getById(userId);
     Post post = Post.builder().content(content).title(title).build();
     post.assignUser(user);
 
