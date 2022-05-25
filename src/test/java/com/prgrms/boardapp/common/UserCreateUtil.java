@@ -1,9 +1,7 @@
 package com.prgrms.boardapp.common;
 
-import com.prgrms.boardapp.dto.UserDto;
+import com.prgrms.boardapp.dto.UserResponse;
 import com.prgrms.boardapp.model.User;
-
-import java.util.ArrayList;
 
 public class UserCreateUtil {
 
@@ -41,12 +39,11 @@ public class UserCreateUtil {
                 .build();
     }
 
-    public static UserDto createUserDto() {
-        return UserDto.builder()
+    public static UserResponse createUserResponse() {
+        return UserResponse.builder()
                 .id(userId++)
                 .name("user-name")
                 .hobby("hobby")
-                .postDtoList(new ArrayList<>())
                 .age(10)
                 .build();
     }

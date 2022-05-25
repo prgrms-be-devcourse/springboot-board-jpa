@@ -14,13 +14,12 @@ public enum DocumentInfo {
     TITLE("title", "제목"),
     CONTENT("content", "내용"),
     CREATED_AT("createdAt", "생성 일자"),
-    USER_DTO("userDto", "유저 정보"),
-    USER_DTO_ID("userDto.id", "유저 ID"),
-    USER_DTO_NAME("userDto.name", "이름"),
-    USER_DTO_AGE("userDto.age", "나이"),
-    USER_DTO_HOBBY("userDto.hobby", "취미"),
-    USER_DTO_POST_DTO_LIST("userDto.postDtoList", "게시글 리스트"),
-    POST_DTO_ARRAY("postDtoList[]", "게시글 리스트"),
+    USER_RESPONSE("user", "유저 정보"),
+    USER_RESPONSE_ID("user.id", "유저 ID"),
+    USER_RESPONSE_NAME("user.name", "이름"),
+    USER_RESPONSE_AGE("user.age", "나이"),
+    USER_RESPONSE_HOBBY("user.hobby", "취미"),
+    POST_RESPONSE_ARRAY("postDtoList[]", "게시글 리스트"),
     CONTENT_ARRAY("content[]", "조회 결과 리스트");
 
     private final String field;
@@ -39,33 +38,23 @@ public enum DocumentInfo {
         return description;
     }
 
-    public static List<FieldDescriptor> getPostDtoFieldDescriptors() {
+    public static List<FieldDescriptor> getPostRequestFieldDescriptors() {
         return List.of(
-                fieldWithPath(ID.getField()).type(JsonFieldType.NUMBER).description(ID.getDescription()),
                 fieldWithPath(TITLE.getField()).type(JsonFieldType.STRING).description(TITLE.getDescription()),
-                fieldWithPath(CONTENT.getField()).type(JsonFieldType.STRING).description(CONTENT.getDescription()),
-                fieldWithPath(CREATED_AT.getField()).type(JsonFieldType.STRING).description(CREATED_AT.getDescription()),
-                fieldWithPath(USER_DTO.getField()).type(JsonFieldType.OBJECT).description(USER_DTO.getDescription()),
-                fieldWithPath(USER_DTO_ID.getField()).type(JsonFieldType.NUMBER).description(USER_DTO_ID.getDescription()),
-                fieldWithPath(USER_DTO_NAME.getField()).type(JsonFieldType.STRING).description(USER_DTO_NAME.getDescription()),
-                fieldWithPath(USER_DTO_AGE.getField()).type(JsonFieldType.NUMBER).description(USER_DTO_AGE.getDescription()),
-                fieldWithPath(USER_DTO_HOBBY.getField()).type(JsonFieldType.STRING).description(USER_DTO_HOBBY.getDescription()),
-                fieldWithPath(USER_DTO_POST_DTO_LIST.getField()).type(JsonFieldType.ARRAY).description(USER_DTO_POST_DTO_LIST.getDescription())
+                fieldWithPath(CONTENT.getField()).type(JsonFieldType.STRING).description(CONTENT.getDescription())
         );
     }
 
-    public static List<FieldDescriptor> getUserDtoFieldDescriptors() {
+    public static List<FieldDescriptor> getPostResponseFieldDescriptors() {
         return List.of(
                 fieldWithPath(ID.getField()).type(JsonFieldType.NUMBER).description(ID.getDescription()),
                 fieldWithPath(TITLE.getField()).type(JsonFieldType.STRING).description(TITLE.getDescription()),
                 fieldWithPath(CONTENT.getField()).type(JsonFieldType.STRING).description(CONTENT.getDescription()),
-                fieldWithPath(CREATED_AT.getField()).type(JsonFieldType.STRING).description(CREATED_AT.getDescription()),
-                fieldWithPath(USER_DTO.getField()).type(JsonFieldType.OBJECT).description(USER_DTO.getDescription()),
-                fieldWithPath(USER_DTO_ID.getField()).type(JsonFieldType.NUMBER).description(USER_DTO_ID.getDescription()),
-                fieldWithPath(USER_DTO_NAME.getField()).type(JsonFieldType.STRING).description(USER_DTO_NAME.getDescription()),
-                fieldWithPath(USER_DTO_AGE.getField()).type(JsonFieldType.NUMBER).description(USER_DTO_AGE.getDescription()),
-                fieldWithPath(USER_DTO_HOBBY.getField()).type(JsonFieldType.STRING).description(USER_DTO_HOBBY.getDescription()),
-                fieldWithPath(USER_DTO_POST_DTO_LIST.getField()).type(JsonFieldType.ARRAY).description(USER_DTO_POST_DTO_LIST.getDescription())
+                fieldWithPath(USER_RESPONSE.getField()).type(JsonFieldType.OBJECT).description(USER_RESPONSE.getDescription()),
+                fieldWithPath(USER_RESPONSE_ID.getField()).type(JsonFieldType.NUMBER).description(USER_RESPONSE_ID.getDescription()),
+                fieldWithPath(USER_RESPONSE_NAME.getField()).type(JsonFieldType.STRING).description(USER_RESPONSE_NAME.getDescription()),
+                fieldWithPath(USER_RESPONSE_AGE.getField()).type(JsonFieldType.NUMBER).description(USER_RESPONSE_AGE.getDescription()),
+                fieldWithPath(USER_RESPONSE_HOBBY.getField()).type(JsonFieldType.STRING).description(USER_RESPONSE_HOBBY.getDescription())
         );
     }
 

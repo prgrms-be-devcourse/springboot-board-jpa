@@ -1,6 +1,7 @@
 package com.prgrms.boardapp.service;
 
-import com.prgrms.boardapp.dto.PostDto;
+import com.prgrms.boardapp.dto.PostRequest;
+import com.prgrms.boardapp.dto.PostResponse;
 import com.prgrms.boardapp.model.Post;
 import com.prgrms.boardapp.repository.PostRepository;
 import org.springframework.data.domain.Page;
@@ -23,32 +24,30 @@ public class PostService {
         this.converter = converter;
     }
 
+    @Transactional(readOnly = true)
+    public PostResponse findById(Long postId) {
+        return postRepository.findById(postId)
+                .map(converter::convertPostResponse)
+                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_POST_ERR_MSG.getMessage()));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostResponse> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable)
+                .map(converter::convertPostResponse);
+    }
+
     @Transactional
-    public Long save(PostDto postDto) {
+    public Long save(PostRequest postDto) {
         Post post = converter.convertPost(postDto);
         Post savedPost = postRepository.save(post);
         return savedPost.getId();
     }
 
-    @Transactional(readOnly = true)
-    public Page<PostDto> findAll(Pageable pageable) {
-        return postRepository.findAll(pageable)
-                .map(converter::convertPostDto);
-    }
-
-    @Transactional(readOnly = true)
-    public PostDto findById(Long postId) {
-        return postRepository.findById(postId)
-                .map(converter::convertPostDto)
-                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_POST_ERR_MSG.getMessage()));
-    }
-
     @Transactional
-    public PostDto update(PostDto postDto) {
-        Post savedPost = postRepository.findById(postDto.getId())
+    public void update(Long postId, PostRequest postRequest) {
+        Post savedPost = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_POST_ERR_MSG.getMessage()));
-        savedPost.changeTitle(postDto.getTitle());
-        savedPost.changeContent(postDto.getContent());
-        return postDto;
+        savedPost.update(postRequest.getTitle(), postRequest.getContent());
     }
 }

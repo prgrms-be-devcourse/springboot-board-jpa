@@ -30,7 +30,7 @@ public class Post {
     }
 
     private Post(Long id, String title, String content, CommonEmbeddable commonEmbeddable, User user) {
-        this.validateTitle(title);
+        validateTitle(title);
         CommonValidate.validateNotNullString(content);
         this.id = id;
         this.title = title;
@@ -64,20 +64,17 @@ public class Post {
         return user;
     }
 
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     public void changeUser(User user) {
         if (Objects.nonNull(this.user)) {
             this.user.getPosts().remove(this);
         }
         this.user = user;
         user.getPosts().add(this);
-    }
-
-    public void changeTitle(String title) {
-        this.title = title;
-    }
-
-    public void changeContent(String content) {
-        this.content = content;
     }
 
     public static PostBuilder builder() {

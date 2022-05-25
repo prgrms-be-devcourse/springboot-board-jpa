@@ -1,7 +1,6 @@
 package com.prgrms.boardapp.service;
 
-import com.prgrms.boardapp.dto.PostDto;
-import com.prgrms.boardapp.dto.UserDto;
+import com.prgrms.boardapp.dto.PostRequest;
 import com.prgrms.boardapp.model.Post;
 import com.prgrms.boardapp.model.User;
 import com.prgrms.boardapp.repository.PostRepository;
@@ -58,19 +57,14 @@ class PostServiceTest {
     @Test
     @Description("Post 정보를 변경한다.")
     void testUpdate() {
-        UserDto userDto = converter.convertUserDto(user);
-
         String updateTitle = "update title";
         String updateContent = "update content";
 
-        PostDto postDto = PostDto.builder()
-                .id(post.getId())
-                .userDto(userDto)
+        PostRequest postDto = PostRequest.builder()
                 .title(updateTitle)
                 .content(updateContent)
                 .build();
-
-        postService.update(postDto);
+        postService.update(post.getId(), postDto);
         Post findPost = postRepository.findById(post.getId()).get();
         assertAll(
                 () -> assertThat(findPost.getTitle()).isEqualTo(updateTitle),

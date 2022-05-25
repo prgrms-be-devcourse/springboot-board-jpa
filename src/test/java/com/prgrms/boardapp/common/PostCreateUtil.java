@@ -1,11 +1,11 @@
 package com.prgrms.boardapp.common;
 
-import com.prgrms.boardapp.dto.PostDto;
+import com.prgrms.boardapp.dto.PostRequest;
+import com.prgrms.boardapp.dto.PostResponse;
+import com.prgrms.boardapp.dto.UserResponse;
 import com.prgrms.boardapp.model.Post;
 
-import java.time.LocalDateTime;
-
-import static com.prgrms.boardapp.common.UserCreateUtil.createUserDto;
+import static com.prgrms.boardapp.common.UserCreateUtil.createUserResponse;
 
 public class PostCreateUtil {
 
@@ -35,13 +35,20 @@ public class PostCreateUtil {
                 .build();
     }
 
-    public static PostDto createPostDto() {
-        return PostDto.builder()
-                .id(postId++)
-                .createdAt(LocalDateTime.now())
+    public static PostRequest createPostRequest() {
+        return PostRequest.builder()
                 .title("title")
                 .content("content")
-                .userDto(createUserDto())
+                .build();
+    }
+
+    public static PostResponse createPostResponseWithId(Long id) {
+        UserResponse userResponse = createUserResponse();
+        return PostResponse.builder()
+                .id(postId++)
+                .user(userResponse)
+                .content("post response content")
+                .title("post response title")
                 .build();
     }
 }

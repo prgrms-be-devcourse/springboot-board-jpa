@@ -1,7 +1,8 @@
 package com.prgrms.boardapp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prgrms.boardapp.dto.PostDto;
+import com.prgrms.boardapp.dto.PostRequest;
+import com.prgrms.boardapp.dto.PostResponse;
 import com.prgrms.boardapp.service.PostService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-import static com.prgrms.boardapp.common.PostCreateUtil.createPostDto;
+import static com.prgrms.boardapp.common.PostCreateUtil.createPostRequest;
+import static com.prgrms.boardapp.common.PostCreateUtil.createPostResponseWithId;
 import static com.prgrms.boardapp.controller.DocumentInfo.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -43,24 +45,26 @@ class PostControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    PostDto postDto = createPostDto();
+    PostRequest postRequest = createPostRequest();
+    Long savedPostId = 1L;
+    PostResponse postResponse = createPostResponseWithId(savedPostId);
 
     @Test
     @DisplayName("새로운 Post를 생성하는 API 호출")
     void testSave() throws Exception {
-        given(postService.save(postDto)).willReturn(postDto.getId());
+        given(postService.save(postRequest)).willReturn(savedPostId);
 
         mockMvc.perform(post("/posts")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(postDto))
+                .content(objectMapper.writeValueAsString(postRequest))
         )
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.postId").value(postDto.getId()))
-                .andExpect(redirectedUrl("/posts/" + postDto.getId()))
+                .andExpect(jsonPath("$.postId").value(savedPostId))
+                .andExpect(redirectedUrl("/posts/" + savedPostId))
                 .andDo(print())
                 .andDo(document("post-save",
                         requestFields(
-                                getPostDtoFieldDescriptors()
+                                getPostRequestFieldDescriptors()
                         ),
                         responseFields(
                                 fieldWithPath(POST_ID.getField()).type(JsonFieldType.NUMBER).description(POST_ID.getDescription())
@@ -71,16 +75,16 @@ class PostControllerTest {
     @Test
     @DisplayName("postId를 pathVariable로 API 조회할 수 있다.")
     void testFindById() throws Exception {
-        given(postService.findById(postDto.getId())).willReturn(postDto);
+        given(postService.findById(savedPostId)).willReturn(postResponse);
 
-        mockMvc.perform(get("/posts/{postId}", postDto.getId())
+        mockMvc.perform(get("/posts/{postId}", savedPostId)
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-findById",
                         responseFields(
-                                getUserDtoFieldDescriptors()
+                                getPostResponseFieldDescriptors()
                         )
                 ));
     }
@@ -89,12 +93,12 @@ class PostControllerTest {
     @DisplayName("페이징 처리하여 모든 데이터를 조회할 수 있다.")
     void testFindAllWithPaging() throws Exception {
         PageRequest pageRequest = PageRequest.of(0, 2);
-        List<PostDto> posts = List.of(
-                createPostDto(),
-                createPostDto()
+        List<PostResponse> posts = List.of(
+                createPostResponseWithId(1L),
+                createPostResponseWithId(2L)
         );
 
-        Page<PostDto> pageResponse = new PageImpl<>(posts);
+        Page<PostResponse> pageResponse = new PageImpl<>(posts);
         given(postService.findAll(pageRequest)).willReturn(pageResponse);
 
         mockMvc.perform(get("/posts")
@@ -106,7 +110,7 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(document("post-findAll",
                         responseFields()
-                                .andWithPrefix(CONTENT_ARRAY.getField(), getUserDtoFieldDescriptors())
+                                .andWithPrefix(CONTENT_ARRAY.getField(), getPostResponseFieldDescriptors())
                                 .and(getPageableDescriptors())
                 ));
     }
@@ -114,9 +118,9 @@ class PostControllerTest {
     @Test
     @DisplayName("존재하지 않는 아이디는 404를 반환")
     void testFindById404() throws Exception {
-        given(postService.findById(postDto.getId())).willThrow(new EntityNotFoundException("Throws EntityNotFoundException Message"));
+        given(postService.findById(savedPostId)).willThrow(new EntityNotFoundException("Throws EntityNotFoundException Message"));
 
-        mockMvc.perform(get("/posts/{postId}", postDto.getId())
+        mockMvc.perform(get("/posts/{postId}", savedPostId)
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isNotFound())
@@ -126,9 +130,9 @@ class PostControllerTest {
     @Test
     @DisplayName("서버 장애의 경우 500을 반환")
     void testFindById500() throws Exception {
-        given(postService.findById(postDto.getId())).willThrow(new RuntimeException("Throws RuntimeException Message"));
+        given(postService.findById(savedPostId)).willThrow(new RuntimeException("Throws RuntimeException Message"));
 
-        mockMvc.perform(get("/posts/{postId}", postDto.getId())
+        mockMvc.perform(get("/posts/{postId}", savedPostId)
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isInternalServerError())
@@ -138,29 +142,20 @@ class PostControllerTest {
     @Test
     @DisplayName("정상적으로 update 할 수 있다.")
     void testUpdate() throws Exception {
-
-        PostDto updatePostDto = PostDto.builder()
-                .id(postDto.getId())
-                .userDto(postDto.getUserDto())
-                .createdAt(postDto.getCreatedAt())
+        PostRequest updatePostRequest = PostRequest.builder()
                 .content("update-content")
                 .title("update-title")
                 .build();
 
-        given(postService.update(updatePostDto)).willReturn(updatePostDto);
-
-        mockMvc.perform(patch("/posts")
+        mockMvc.perform(patch("/posts/{postId}", savedPostId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updatePostDto))
+                .content(objectMapper.writeValueAsString(updatePostRequest))
         )
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andDo(print())
                 .andDo(document("post-update",
                         requestFields(
-                                getPostDtoFieldDescriptors()
-                        ),
-                        responseFields(
-                                getPostDtoFieldDescriptors()
+                                getPostRequestFieldDescriptors()
                         )
                 ));
     }
