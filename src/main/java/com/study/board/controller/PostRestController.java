@@ -1,4 +1,4 @@
-package com.study.board.controller.post;
+package com.study.board.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
