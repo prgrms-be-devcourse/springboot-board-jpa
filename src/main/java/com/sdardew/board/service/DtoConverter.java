@@ -1,28 +1,20 @@
 package com.sdardew.board.service;
 
-import com.sdardew.board.dto.post.CreatePostDto;
 import com.sdardew.board.domain.post.Post;
-import com.sdardew.board.repository.UserRepository;
+import com.sdardew.board.domain.user.User;
+import com.sdardew.board.dto.post.DetailedPostDto;
+import com.sdardew.board.dto.user.UserDto;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 public class DtoConverter {
 
-  private final UserRepository userRepository;
-
-  public DtoConverter(UserRepository userRepository) {
-    this.userRepository = userRepository;
+  public UserDto toUserDto(User user) {
+    return new UserDto(user.getId(), user.getName(), user.getAge(), user.getHobby());
   }
 
-  private Post toPost(CreatePostDto createPostDto) {
-    Post newPost = new Post();
-    newPost.setTitle(createPostDto.getTitle());
-    newPost.setContent(createPostDto.getContent());
-    newPost.setCreateAt(LocalDateTime.now());
-    newPost.setUser(userRepository.getById(createPostDto.getUserId()));
-    return newPost;
+  public DetailedPostDto toDetailedPostDto(Post post) {
+    return new DetailedPostDto(post.getId(), post.getTitle(), post.getContent(), post.getCreateAt(), toUserDto(post.getUser()));
   }
 
 }

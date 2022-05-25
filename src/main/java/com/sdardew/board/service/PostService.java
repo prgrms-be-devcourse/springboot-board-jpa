@@ -2,6 +2,7 @@ package com.sdardew.board.service;
 
 import com.sdardew.board.dto.post.CreatePostDto;
 import com.sdardew.board.domain.post.Post;
+import com.sdardew.board.dto.post.DetailedPostDto;
 import com.sdardew.board.dto.post.PostDto;
 import com.sdardew.board.dto.post.UpdatePostDto;
 import com.sdardew.board.repository.PostRepository;
@@ -20,20 +21,23 @@ public class PostService {
 
   private final PostRepository postRepository;
   private final UserRepository userRepository;
+  private final DtoConverter dtoConverter;
 
-  public PostService(PostRepository postRepository, UserRepository userRepository) {
+  public PostService(PostRepository postRepository, UserRepository userRepository, DtoConverter dtoConverter) {
     this.postRepository = postRepository;
     this.userRepository = userRepository;
+    this.dtoConverter = dtoConverter;
   }
 
   public List<PostDto> getPosts() {
     return postRepository.findAll().stream().map(Post::toPostDto).collect(Collectors.toList());
   }
 
-  public PostDto getPost(Long id) {
+  public DetailedPostDto getPost(Long id) {
     Optional<Post> found = postRepository.findById(id);
     if(found.isPresent()) {
-      return found.get().toPostDto();
+      return dtoConverter.toDetailedPostDto(found.get());
+//      return found.get().toPostDto();
     }
     throw new NoSuchElementException("존재하지 않는 PostID입니다");
   }

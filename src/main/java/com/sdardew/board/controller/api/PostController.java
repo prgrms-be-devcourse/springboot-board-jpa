@@ -1,6 +1,7 @@
 package com.sdardew.board.controller.api;
 
 import com.sdardew.board.dto.post.CreatePostDto;
+import com.sdardew.board.dto.post.DetailedPostDto;
 import com.sdardew.board.dto.post.PostDto;
 import com.sdardew.board.dto.post.UpdatePostDto;
 import com.sdardew.board.service.PostService;
@@ -24,7 +25,7 @@ public class PostController {
   }
 
   @GetMapping("/{id}")
-  public PostDto getPost(@PathVariable("id") Long id) {
+  public DetailedPostDto getPost(@PathVariable("id") Long id) {
     return postService.getPost(id);
   }
 

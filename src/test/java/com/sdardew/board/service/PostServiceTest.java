@@ -1,6 +1,7 @@
 package com.sdardew.board.service;
 
 import com.sdardew.board.dto.post.CreatePostDto;
+import com.sdardew.board.dto.post.DetailedPostDto;
 import com.sdardew.board.dto.post.PostDto;
 import com.sdardew.board.dto.post.UpdatePostDto;
 import com.sdardew.board.domain.user.User;
@@ -59,12 +60,12 @@ class PostServiceTest {
   void testUpdatePost() {
     userRepository.save(user);
     PostDto created = postService.createPost(newPost);
-    PostDto oldPost = postService.getPost(created.getId());
+    DetailedPostDto oldPost = postService.getPost(created.getId());
 
     UpdatePostDto updatePost = new UpdatePostDto("new-title", "new=content");
     postService.updatePost(oldPost.getId(), updatePost);
 
-    PostDto post = postService.getPost(oldPost.getId());
+    DetailedPostDto post = postService.getPost(oldPost.getId());
     assertThat(post.getTitle()).isEqualTo(updatePost.getTitle());
   }
 }

@@ -29,6 +29,18 @@ public class Post {
   @Convert(converter = UserIdConverter.class)
   private User user; // user 테이블과 연관
 
+  public Long getId() {
+    return id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public LocalDateTime getCreateAt() {
+    return createAt;
+  }
+
   public String getContent() {
     return content;
   }
