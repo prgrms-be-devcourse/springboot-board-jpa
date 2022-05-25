@@ -85,6 +85,6 @@ class PostRestControllerTest extends RestDocsTestSupport {
 
         mockMvc.perform(get("/posts/" + illegalPostId)
                         .contentType(APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 }
