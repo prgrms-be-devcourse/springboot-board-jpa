@@ -9,19 +9,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.prgrms.boardjpa.post.dto.PostDto;
 import com.prgrms.boardjpa.user.User;
-import com.prgrms.boardjpa.user.UserRepository;
-import com.prgrms.boardjpa.user.exception.AuthenticationFailException;
+import com.prgrms.boardjpa.user.UserService;
+import com.prgrms.boardjpa.user.exception.AuthorizationFailException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class PostService {
 
 	private final PostRepository postRepository;
-	private final UserRepository userRepository; // TODO: Repository 을 주입받아야 할 지, Service 주입을 받아야 할 지?
+	private final UserService userService;
 
-	public PostService(PostRepository postRepository, UserRepository userRepository) {
+	public PostService(PostRepository postRepository, UserService userService) {
 		this.postRepository = postRepository;
-		this.userRepository = userRepository;
+		this.userService = userService;
 	}
 
 	@Transactional
@@ -35,10 +38,15 @@ public class PostService {
 
 	@Transactional
 	public PostDto.Info create(String title, Long writerId, String content) {
-		User writer = userRepository.findById(writerId)
-			.orElseThrow(AuthenticationFailException::new);
+		try {
+			User writer = userService.getById(writerId);
 
-		return this.create(title, writer, content);
+			return this.create(title, writer, content);
+		} catch (NotExistException e) {
+			log.info("존재하지 않는 사용자는 게시글 작성이 불가능합니다 {}", writerId);
+
+			throw new AuthorizationFailException();
+		}
 	}
 
 	@Transactional
