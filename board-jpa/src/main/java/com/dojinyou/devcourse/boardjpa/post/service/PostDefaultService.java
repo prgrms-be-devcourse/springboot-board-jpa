@@ -1,8 +1,10 @@
 package com.dojinyou.devcourse.boardjpa.post.service;
 
+import com.dojinyou.devcourse.boardjpa.common.exception.NotFoundException;
 import com.dojinyou.devcourse.boardjpa.post.entity.Post;
 import com.dojinyou.devcourse.boardjpa.post.respository.PostRepository;
 import com.dojinyou.devcourse.boardjpa.post.service.dto.PostCreateDto;
+import com.dojinyou.devcourse.boardjpa.post.service.dto.PostResponseDto;
 import com.dojinyou.devcourse.boardjpa.user.entity.User;
 import com.dojinyou.devcourse.boardjpa.user.service.UserService;
 import org.springframework.stereotype.Service;
@@ -38,5 +40,27 @@ public class PostDefaultService implements PostService {
                            .build();
 
         postRepository.save(newPost);
+    }
+
+    @Override
+    public PostResponseDto findById(long id) {
+        validId(id);
+        Post foundPost = postRepository.findById(id).orElseThrow(NotFoundException::new);
+
+        return PostResponseDto.from(foundPost);
+    }
+
+    private void validId(long id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException();
+        }
+        Post foundPost = postRepository.findById(id).orElseThrow(NotFoundException::new);
+
+        return new PostResponseDto.Builder().id(foundPost.getId())
+                                            .title(foundPost.getTitle())
+                                            .content(foundPost.getContent())
+                                            .createdAt(foundPost.getCreatedAt())
+                                            .updatedAt(foundPost.getUpdatedAt())
+                                            .build();
     }
 }
