@@ -16,7 +16,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDto.Info create(UserDto.CreateRequest request) {
+	public UserDto.Info store(UserDto.CreateRequest request) {
 		User newUser = userRepository.save(
 			request.createUser()
 		);
