@@ -5,9 +5,6 @@ public class CreatePostDto {
   private String content;
   private Long userId;
 
-  public CreatePostDto() {
-  }
-
   public CreatePostDto(String title, String content, Long userId) {
     this.title = title;
     this.content = content;
