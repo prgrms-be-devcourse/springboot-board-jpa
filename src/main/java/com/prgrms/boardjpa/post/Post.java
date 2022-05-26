@@ -39,11 +39,12 @@ public class Post extends BaseEntity {
 	protected Post() {
 	}
 
-	private Post(String title, User writer, String content) {
+	private Post(Long id, String title, User writer, String content) {
 		validateTitle(title);
 		validateContent(content);
 		validateWriter(writer);
 
+		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.writer = writer;
@@ -55,6 +56,7 @@ public class Post extends BaseEntity {
 	}
 
 	public static class PostBuilder {
+		private Long id;
 		private String title;
 		private String content;
 		private User writer;
@@ -80,9 +82,15 @@ public class Post extends BaseEntity {
 			return this;
 		}
 
+		public PostBuilder id(Long id) {
+			this.id = id;
+
+			return this;
+		}
+
 		public Post build() {
 			try {
-				return new Post(this.title, this.writer, this.content);
+				return new Post(this.id, this.title, this.writer, this.content);
 			} catch (IllegalArgumentException e) {
 				throw new CreationFailException(Post.class);
 			}
