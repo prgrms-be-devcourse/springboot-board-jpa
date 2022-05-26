@@ -29,11 +29,11 @@ public class Post extends BaseEntity {
 	@Column(name = "content", columnDefinition = "TEXT", nullable = false)
 	private String content;
 
-	@Column(name = "writer", nullable = false)
+	@Column(name = "writer", nullable = false, updatable = false)
 	private String createdBy;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name = "user_id", nullable = false, updatable = false)
 	private User writer;
 
 	protected Post() {
@@ -95,13 +95,6 @@ public class Post extends BaseEntity {
 				throw new CreationFailException(Post.class);
 			}
 		}
-	}
-
-	public void setWriter(User writer) {
-		validateWriter(writer);
-
-		this.writer = writer;
-		this.createdBy = writer.getName();
 	}
 
 	public void edit(String title, String content) {
