@@ -41,7 +41,7 @@ public class PostRestController {
 		@RequestBody @Valid PostDto.CreateRequest createRequest) {
 
 		return createSuccessResponse(
-			postService.create(
+			postService.store(
 				createRequest.title(),
 				createRequest.writerId(),
 				createRequest.content()),

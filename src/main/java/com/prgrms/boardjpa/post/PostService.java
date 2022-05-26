@@ -28,7 +28,7 @@ public class PostService {
 	}
 
 	@Transactional
-	public PostDto.Info create(String title, User writer, String content) {
+	public PostDto.Info store(String title, User writer, String content) {
 		Post post = createPost(title, writer, content);
 
 		return PostDto.Info.from(
@@ -37,11 +37,11 @@ public class PostService {
 	}
 
 	@Transactional
-	public PostDto.Info create(String title, Long writerId, String content) {
+	public PostDto.Info store(String title, Long writerId, String content) {
 		try {
 			User writer = userService.getById(writerId);
 
-			return this.create(title, writer, content);
+			return this.store(title, writer, content);
 		} catch (NotExistException e) {
 			log.info("존재하지 않는 사용자는 게시글 작성이 불가능합니다 {}", writerId);
 
