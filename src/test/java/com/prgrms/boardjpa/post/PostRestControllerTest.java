@@ -1,10 +1,15 @@
 package com.prgrms.boardjpa.post;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.assertj.core.api.Assertions;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +21,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.prgrms.boardjpa.post.dto.PostDto;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(PostRestController.class)
@@ -26,11 +35,17 @@ public class PostRestControllerTest {
 	@MockBean
 	private PostService postService;
 
+	@Autowired
+	private ObjectMapper objectMapper;
+
+	@Autowired
+	private Validator validator;
+
 	@Test
 	@DisplayName("페이징 관련 요청 파라미터가 없는 경우 디폴트 페이지를 적용한다")
 	void withNullPageableRequestParam() throws Exception {
 		mockMvc.perform(
-			get("/posts")
+			get("/api/posts")
 		).andExpect(status().isOk());
 
 		ArgumentCaptor<Pageable> pageableCaptor =
@@ -41,7 +56,7 @@ public class PostRestControllerTest {
 		Pageable pageRequest = pageableCaptor.getValue();
 		PageRequest defaultPage = PageRequest.of(0, 20);
 
-		Assertions.assertThat(pageRequest)
+		assertThat(pageRequest)
 			.usingRecursiveComparison()
 			.isEqualTo(defaultPage);
 	}
@@ -50,7 +65,7 @@ public class PostRestControllerTest {
 	@DisplayName("페이징 관련 요청 파라미터가 있는 경우 전달된 파라미터로 역직렬화된 페이지를 리졸빙한다")
 	void withNonNullPageableRequestParam() throws Exception {
 		mockMvc.perform(
-			get("/posts")
+			get("/api/posts")
 				.param("page", "0")
 				.param("size", "2")
 		).andExpect(status().isOk());
@@ -62,10 +77,36 @@ public class PostRestControllerTest {
 
 		Pageable pageRequest = pageableCaptor.getValue();
 
-		Assertions.assertThat(pageRequest)
+		assertThat(pageRequest)
 			.usingRecursiveComparison()
 			.isEqualTo(
 				PageRequest.of(0, 2)
 			);
+	}
+
+	@Test
+	@DisplayName("제목이 비어있는 게시글 생성가 요청 DTO 에 대한 빈 검증결과, 1개의 제약조건 위반이 발생한다")
+	public void test_Dto() throws Exception {
+		PostDto.CreateRequest postCreateRequest =
+			new PostDto.CreateRequest("  ", 1L, "    content");
+
+		Set<ConstraintViolation<PostDto.CreateRequest>> constraintViolations = validator.validate(postCreateRequest);
+
+		assertThat(constraintViolations.size())
+			.isEqualTo(1);
+	}
+
+	@Test
+	@DisplayName("컨텐츠가 비어있는 게시글 생성 요청 DTO 를 포함한 요청이 올 경우, BAD_REQUEST 로 응답한다")
+	public void with_violatedDto() throws Exception {
+		PostDto.CreateRequest postCreateRequest =
+			new PostDto.CreateRequest("title01", 1L, "    ");
+
+		MvcResult mvcResult = mockMvc.perform(
+				post("/api/posts/")
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(postCreateRequest)))
+			.andExpect(status().isBadRequest())
+			.andReturn();
 	}
 }
