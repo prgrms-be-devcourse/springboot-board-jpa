@@ -10,8 +10,8 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.prgrms.boardjpa.commons.exception.CreationFailException;
-import com.prgrms.boardjpa.user.Hobby;
-import com.prgrms.boardjpa.user.User;
+import com.prgrms.boardjpa.user.domain.Hobby;
+import com.prgrms.boardjpa.user.domain.User;
 
 public class PostTest {
 	private User writer;

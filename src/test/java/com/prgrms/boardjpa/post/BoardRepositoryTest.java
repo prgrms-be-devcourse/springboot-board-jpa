@@ -16,8 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import com.prgrms.boardjpa.user.Hobby;
-import com.prgrms.boardjpa.user.User;
+import com.prgrms.boardjpa.user.domain.Hobby;
+import com.prgrms.boardjpa.user.domain.User;
 import com.prgrms.boardjpa.user.UserRepository;
 
 @DataJpaTest

@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
 
 import com.prgrms.boardjpa.commons.domain.BaseEntity;
 import com.prgrms.boardjpa.commons.exception.CreationFailException;
-import com.prgrms.boardjpa.user.User;
+import com.prgrms.boardjpa.user.domain.User;
 
 import lombok.Getter;
 

@@ -3,7 +3,7 @@ package com.prgrms.boardjpa.post.dto;
 import javax.validation.constraints.NotBlank;
 
 import com.prgrms.boardjpa.post.Post;
-import com.prgrms.boardjpa.user.User;
+import com.prgrms.boardjpa.user.domain.User;
 
 public class PostDto {
 	public record CreateRequest(@NotBlank String title,

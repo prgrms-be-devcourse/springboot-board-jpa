@@ -7,8 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.prgrms.boardjpa.commons.exception.NotExistException;
 import com.prgrms.boardjpa.post.dto.PostDto;
-import com.prgrms.boardjpa.user.User;
+import com.prgrms.boardjpa.user.domain.User;
 import com.prgrms.boardjpa.user.UserService;
 import com.prgrms.boardjpa.user.exception.AuthorizationFailException;
 

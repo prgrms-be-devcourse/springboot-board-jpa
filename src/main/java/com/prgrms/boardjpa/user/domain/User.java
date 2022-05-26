@@ -1,4 +1,4 @@
-package com.prgrms.boardjpa.user;
+package com.prgrms.boardjpa.user.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -27,8 +27,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.boardjpa.commons.SuccessResponse;
 import com.prgrms.boardjpa.post.dto.PostDto;
-import com.prgrms.boardjpa.user.Hobby;
-import com.prgrms.boardjpa.user.User;
+import com.prgrms.boardjpa.user.domain.Hobby;
+import com.prgrms.boardjpa.user.domain.User;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(PostRestController.class)
@@ -90,7 +90,7 @@ public class PostRestControllerTest {
 
 	@Test
 	@DisplayName("제목이 비어있는 게시글 생성 요청 DTO 에 대한 빈 검증결과, 1개의 제약조건 위반이 발생한다")
-	public void test_Dto() throws Exception {
+	public void test_Dto() {
 		PostDto.CreateRequest postCreateRequest =
 			new PostDto.CreateRequest("  ", 1L, "    content");
 

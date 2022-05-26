@@ -6,8 +6,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.lang.Nullable;
 
-import com.prgrms.boardjpa.user.Hobby;
-import com.prgrms.boardjpa.user.User;
+import com.prgrms.boardjpa.user.domain.Hobby;
+import com.prgrms.boardjpa.user.domain.User;
 
 public class UserDto {
 	public record CreateRequest(@Email String email, @Nullable Hobby hobby,

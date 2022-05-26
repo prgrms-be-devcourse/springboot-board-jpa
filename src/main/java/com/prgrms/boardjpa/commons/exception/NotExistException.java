@@ -1,4 +1,4 @@
-package com.prgrms.boardjpa.post;
+package com.prgrms.boardjpa.commons.exception;
 
 public class NotExistException extends RuntimeException {
 	public NotExistException() {
