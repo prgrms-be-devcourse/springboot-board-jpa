@@ -18,6 +18,9 @@ import java.util.List;
 @Table(name = "user")
 public class User extends BaseEntity {
 
+    private static final String CREATE_BY = User.class.toString();
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,7 +40,7 @@ public class User extends BaseEntity {
     public User() {}
 
     public User(String name, int age, String hobby) {
-        super("createdBy-yanju", LocalDateTime.now());
+        super(CREATE_BY, LocalDateTime.now());
         this.name = name;
         this.age = age;
         this.hobby = hobby;

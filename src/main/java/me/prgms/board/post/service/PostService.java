@@ -43,9 +43,7 @@ public class PostService {
         userRepository.findById(post.getUser().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Id로 조회되는 유저가 없음"));
 
-        post.changeTitle(postDto.getTitle());
-        post.changeContent(postDto.getContent());
-
+        post.changePost(postDto.getTitle(), postDto.getContent());
         return postId;
     }
 
