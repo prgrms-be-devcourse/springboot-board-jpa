@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prgrms.boardjpa.commons.SuccessResponse;
 import com.prgrms.boardjpa.post.dto.PostDto;
 
-@RequestMapping("/posts")
+@RequestMapping("/api/posts")
 @RestController
 public class PostRestController {
 	private final PostService postService;
@@ -45,8 +44,8 @@ public class PostRestController {
 			postService.create(
 				createRequest.title(),
 				createRequest.writerId(),
-				createRequest.content()
-			), HttpStatus.CREATED
+				createRequest.content()),
+			HttpStatus.CREATED
 		);
 	}
 
@@ -58,8 +57,8 @@ public class PostRestController {
 			postService.edit(
 				updateRequest.title(),
 				postId,
-				updateRequest.content()
-			), HttpStatus.OK
+				updateRequest.content()),
+			HttpStatus.OK
 		);
 	}
 
