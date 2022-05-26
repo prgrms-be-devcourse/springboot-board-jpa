@@ -1,7 +1,10 @@
 package com.dojinyou.devcourse.boardjpa.post.service;
 
+import com.dojinyou.devcourse.boardjpa.common.exception.NotFoundException;
+import com.dojinyou.devcourse.boardjpa.post.entity.Post;
 import com.dojinyou.devcourse.boardjpa.post.respository.PostRepository;
 import com.dojinyou.devcourse.boardjpa.post.service.dto.PostCreateDto;
+import com.dojinyou.devcourse.boardjpa.post.service.dto.PostResponseDto;
 import com.dojinyou.devcourse.boardjpa.user.entity.User;
 import com.dojinyou.devcourse.boardjpa.user.service.UserService;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -17,10 +20,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -41,8 +49,8 @@ class PostDefaultServiceTest {
                                                      .hobby("sdoku")
                                                      .build();
 
-    private final String title = "test title";
-    private final String content = "test content";
+    private final String testTitle = "test title";
+    private final String testContent = "test content";
 
     @Nested
     class 게시물_생성_메소드는 {
@@ -65,9 +73,9 @@ class PostDefaultServiceTest {
         @Nested
         class Null_필드를_포함한_게시물생성객체가_들어온다면 {
             PostCreateDto nullTitlePostCreateDto = new PostCreateDto.Builder().title(null)
-                                                                              .content(content)
+                                                                              .content(testContent)
                                                                               .build();
-            PostCreateDto nullContentPostCreateDto = new PostCreateDto.Builder().title(title)
+            PostCreateDto nullContentPostCreateDto = new PostCreateDto.Builder().title(testTitle)
                                                                                 .content(null)
                                                                                 .build();
 
@@ -103,7 +111,7 @@ class PostDefaultServiceTest {
                     "50글자를 넘어가는 엄청나게 길게 작성된 title 012345678901234567890123456789"})
             void 예외를_발생시킨다_Title(String title) {
                 PostCreateDto invalidTitlePostCreateDto = new PostCreateDto.Builder().title(title)
-                                                                                     .content(content)
+                                                                                     .content(testContent)
                                                                                      .build();
                 when(userService.findById(savedUser.getId())).thenReturn(savedUser);
 
@@ -119,7 +127,7 @@ class PostDefaultServiceTest {
             @EmptySource
             @ValueSource(strings = {" ", "\t", "\n", "         "})
             void 예외를_발생시킨다_Content(String content) {
-                PostCreateDto invalidContentPostCreateDto = new PostCreateDto.Builder().title(title)
+                PostCreateDto invalidContentPostCreateDto = new PostCreateDto.Builder().title(testTitle)
                                                                                        .content(content)
                                                                                        .build();
 
@@ -134,8 +142,8 @@ class PostDefaultServiceTest {
             @ParameterizedTest(name = "{displayName} userId:{0}")
             @ValueSource(longs = {Long.MIN_VALUE, -1L, 0L})
             void 예외를_발생시킨다_user_id(long invalidId) {
-                PostCreateDto validPostCreateDto = new PostCreateDto.Builder().title(title)
-                                                                              .content(content)
+                PostCreateDto validPostCreateDto = new PostCreateDto.Builder().title(testTitle)
+                                                                              .content(testContent)
                                                                               .build();
 
                 Throwable throwable = catchThrowable(
@@ -148,8 +156,8 @@ class PostDefaultServiceTest {
 
         @Nested
         class 정상적인_게시물생성객체가_들어온다면 {
-            PostCreateDto postCreateDto = new PostCreateDto.Builder().title(title)
-                                                                     .content(content)
+            PostCreateDto postCreateDto = new PostCreateDto.Builder().title(testTitle)
+                                                                     .content(testContent)
                                                                      .build();
 
             @Test
@@ -162,4 +170,60 @@ class PostDefaultServiceTest {
             }
         }
     }
+    @Nested
+    class 아이디를_이용한_게시물_조회시 {
+
+        @Nested
+        class 아이디_값이_비정상적일_경우 {
+
+            @ParameterizedTest(name = "{displayName} inputId:{0}")
+            @ValueSource(longs = {-1, 0})
+            void 아이디값_범위_밖일_때_IllegalArgumentException을_발생시킨다(long inputId) {
+
+                Throwable throwable = catchThrowable(() -> postDefaultService.findById(inputId));
+
+                verify(postRepository, never()).findById(anyLong());
+                assertThat(throwable).isNotNull()
+                                     .isInstanceOf(IllegalArgumentException.class);
+            }
+        }
+
+        @Nested
+        class 입력된_아이디_값을_가진_자원이_존재하지_않을_경우 {
+            @ParameterizedTest(name = "{displayName} inputId:{0}")
+            @ValueSource(longs = {1, 10})
+            void NotFoundException을_발생시킨다(long inputId) {
+                when(postRepository.findById(inputId)).thenThrow(NotFoundException.class);
+
+                Throwable throwable = catchThrowable(() -> postDefaultService.findById(inputId));
+
+                assertThat(throwable).isNotNull()
+                                     .isInstanceOf(NotFoundException.class);
+            }
+        }
+
+        @Nested
+        class 입력된_아이디_값을_가진_자원이_존재하는_경우 {
+
+            @Test
+            void 해당_자원을_ResponseDto로_변환하여_반환한다() {
+                long inputId = 1L;
+                LocalDateTime localDateTime = LocalDateTime.of(2022, 5, 24,
+                                                               10, 38, 0
+                                                              );
+                Post foundPost = new Post.Builder().id(inputId)
+                                                   .title(testTitle)
+                                                   .content(testContent)
+                                                   .user(savedUser)
+                                                   .build();
+                when(postRepository.findById(inputId)).thenReturn(Optional.of(foundPost));
+
+                PostResponseDto postResponseDto = postDefaultService.findById(inputId);
+
+                assertThat(postResponseDto).isNotNull();
+                assertThat(postResponseDto.getId()).isEqualTo(inputId);
+            }
+        }
+    }
+
 }

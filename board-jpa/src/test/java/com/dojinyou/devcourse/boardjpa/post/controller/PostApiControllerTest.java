@@ -26,8 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PostApiController.class)
 @MockBean(JpaMetamodelMappingContext.class)
@@ -121,7 +120,7 @@ class PostApiControllerTest {
         @Nested
         class 아이디_값이_비정상적일_경우 {
             
-            @ParameterizedTest
+            @ParameterizedTest(name = "{displayName} inputId:{0}")
             @ValueSource(strings = {"-1", "0"})
             void Bad_Request로_응답한다_아이디값_범위_밖(String inputId) throws Exception {
                 when(postService.findById(Long.parseLong(inputId))).thenThrow(new IllegalArgumentException());
@@ -130,6 +129,16 @@ class PostApiControllerTest {
 
                 response.andExpect(status().isBadRequest());
                 verify(postService, atMostOnce()).findById(anyLong());
+            }
+
+            @ParameterizedTest(name = "{displayName} inputId:{0}")
+            @ValueSource(strings = {"test", "invalid123"})
+            void Bad_Request로_응답한다_변환불가능(String inputId) throws Exception {
+
+                final var response = mockMvc.perform(get(BASE_URL_PATH + "/" + inputId));
+
+                response.andExpect(status().isBadRequest());
+                verify(postService, never()).findById(anyLong());
             }
         }
 
@@ -151,7 +160,7 @@ class PostApiControllerTest {
         class 입력된_아이디_값을_가진_자원이_존재하는_경우 {
 
             @Test
-            void Created로_응답한다() throws Exception {
+            void OK로_응답한다() throws Exception {
                 long inputId = 1L;
                 LocalDateTime localDateTime = LocalDateTime.of(2022, 5, 24,
                                                                10, 38, 0
@@ -166,7 +175,9 @@ class PostApiControllerTest {
                 final var response = mockMvc.perform(
                         get(BASE_URL_PATH + "/" + inputId));
 
-                response.andExpect(status().isOk());
+                response.andExpect(status().isOk())
+                        .andExpect(jsonPath("$.id").value(inputId));
+
 
                 verify(postService, atLeastOnce()).findById(inputId);
             }
