@@ -75,14 +75,4 @@ public class UserDto{
         return user;
     }
 
-    public static UserDto convertToUserDto(User user){
-        return new UserDto(user.getId(),
-                user.getNickName(),
-                user.getAge(),
-                user.getHobby(),
-                user.getName().getFirstName(),
-                user.getName().getLastName(),
-                user.getPassword(),
-                user.getEmail());
-    }
 }

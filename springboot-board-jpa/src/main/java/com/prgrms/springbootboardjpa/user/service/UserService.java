@@ -27,7 +27,7 @@ public class UserService {
     public UserResponse save(UserDto userDto){
         User user = UserDto.convertToUser(userDto);
         checkUserDuplicate(user);
-        user.setPassword(encodePassword(user.getPassword().toString()));
+        user.setPassword(encodePassword(user.getPassword()));
         User savedUser = userRepository.save(user);
         return UserResponse.convertToUserResponse(savedUser);
     }

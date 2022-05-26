@@ -40,10 +40,10 @@ public class PostService {
 
     @Transactional
     public PostResponse update(PostDto postDto){
-        userService.login(postDto.getEmail(), postDto.getPassword());
         if (postDto.getId() == null){
             throw new IllegalStateException("id를 입력해주세요");
         }
+        userService.login(postDto.getEmail(), postDto.getPassword());
 
         Post post = postRepository.findById(postDto.getId()).get();
         post.updatePost(postDto);
