@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -95,31 +94,6 @@ class PostControllerTest {
                         )));
     }
 
-    @Test
-    @DisplayName("게시글 저장 실패 - 제목이 없는 경우")
-    void createTestFailByNoTitle() throws Exception {
-        CreatePostDto postDto = new CreatePostDto("", "test-content", userDto);
-
-        mockMvc.perform(post("/posts")
-                        .content(objectMapper.writeValueAsString(postDto))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("제목을 비울 수 없습니다."))
-                .andDo(print());
-    }
-
-    @Test
-    @DisplayName("게시글 저장 실패 - 내용이 없는 경우")
-    void createTestFailByNoContent() throws Exception {
-        CreatePostDto postDto = new CreatePostDto("test-title", "", userDto);
-
-        mockMvc.perform(post("/posts")
-                        .content(objectMapper.writeValueAsString(postDto))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("내용을 비울 수 없습니다."))
-                .andDo(print());
-    }
 
     @Test
     @DisplayName("게시글 저장 실패 - 유저가 없는 경우")
