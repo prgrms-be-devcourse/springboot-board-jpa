@@ -150,7 +150,7 @@ public class User {
 			try {
 				return new User(name, age, email, hobby, password);
 			} catch (IllegalArgumentException e) {
-				throw new CreationFailException();
+				throw new CreationFailException(User.class);
 			}
 		}
 	}

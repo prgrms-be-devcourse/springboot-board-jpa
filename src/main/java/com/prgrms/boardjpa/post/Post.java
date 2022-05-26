@@ -84,7 +84,7 @@ public class Post extends BaseEntity {
 			try {
 				return new Post(this.title, this.writer, this.content);
 			} catch (IllegalArgumentException e) {
-				throw new CreationFailException();
+				throw new CreationFailException(Post.class);
 			}
 		}
 	}

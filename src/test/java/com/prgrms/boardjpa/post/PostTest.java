@@ -32,7 +32,8 @@ public class PostTest {
 		public void withEmptyTitle(String title) {
 			Assertions.assertThatThrownBy(() ->
 					createPost(title, writer, "content"))
-				.isInstanceOf(CreationFailException.class);
+				.isInstanceOf(CreationFailException.class)
+				.hasMessage("Post생성에 실패하였습니다");
 		}
 
 		@ParameterizedTest
@@ -42,7 +43,8 @@ public class PostTest {
 		public void withEmptyContents(String contents) {
 			Assertions.assertThatThrownBy(() ->
 					createPost("title", writer, contents))
-				.isInstanceOf(CreationFailException.class);
+				.isInstanceOf(CreationFailException.class)
+				.hasMessage("Post생성에 실패하였습니다");
 		}
 
 		@Test
@@ -50,7 +52,8 @@ public class PostTest {
 		public void withNullWriter() {
 			Assertions.assertThatThrownBy(() ->
 					createPost("title", null, "contents"))
-				.isInstanceOf(CreationFailException.class);
+				.isInstanceOf(CreationFailException.class)
+				.hasMessage("Post생성에 실패하였습니다");
 		}
 	}
 
