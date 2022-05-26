@@ -14,27 +14,11 @@ public class UserService {
 	}
 
 	public UserDto.Info create(UserDto.CreateRequest request) {
-		User user = createUser(request);
-
-		userRepository.save(user);
-
-		return new UserDto.Info(
-			user.getId(),
-			user.getEmail(),
-			user.getHobby(),
-			user.getName(),
-			user.getAge()
+		User newUser = userRepository.save(
+			request.createUser()
 		);
-	}
 
-	private User createUser(UserDto.CreateRequest createRequest) {
-		return User.builder()
-			.email(createRequest.email())
-			.hobby(createRequest.hobby())
-			.age(createRequest.age())
-			.name(createRequest.name())
-			.password(createRequest.password())
-			.build();
+		return UserDto.Info.from(newUser);
 	}
 
 	public User getById(Long writerId) {
