@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,7 +25,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.prgrms.boardjpa.commons.SuccessResponse;
 import com.prgrms.boardjpa.post.dto.PostDto;
+import com.prgrms.boardjpa.user.Hobby;
+import com.prgrms.boardjpa.user.User;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(PostRestController.class)
@@ -85,7 +89,7 @@ public class PostRestControllerTest {
 	}
 
 	@Test
-	@DisplayName("제목이 비어있는 게시글 생성가 요청 DTO 에 대한 빈 검증결과, 1개의 제약조건 위반이 발생한다")
+	@DisplayName("제목이 비어있는 게시글 생성 요청 DTO 에 대한 빈 검증결과, 1개의 제약조건 위반이 발생한다")
 	public void test_Dto() throws Exception {
 		PostDto.CreateRequest postCreateRequest =
 			new PostDto.CreateRequest("  ", 1L, "    content");
@@ -108,5 +112,44 @@ public class PostRestControllerTest {
 					.content(objectMapper.writeValueAsString(postCreateRequest)))
 			.andExpect(status().isBadRequest())
 			.andReturn();
+	}
+
+	@Test
+	@DisplayName("성공적인 응답 객체 직렬화에 성공한다")
+	public void with_SuccessResponse() throws Exception {
+		PostDto.Info postInfo = PostDto.Info.from(Post.builder()
+			.id(1L)
+			.content("content")
+			.title("title")
+			.writer(createUser())
+			.build());
+
+		Mockito.when(postService.getById(1L))
+			.thenReturn(postInfo);
+
+		MvcResult mvcResult = mockMvc.perform(
+				get("/api/posts/{postId}", 1L))
+			.andExpect(status().isOk())
+			.andReturn();
+
+		SuccessResponse<PostDto.Info> expectedResponse = SuccessResponse.of(postInfo);
+
+		String actualResponseBody = mvcResult.getResponse()
+			.getContentAsString();
+
+		assertThat(actualResponseBody)
+			.isEqualToIgnoringWhitespace(
+				objectMapper.writeValueAsString(expectedResponse)
+			);
+	}
+
+	private User createUser() {
+		return User.builder()
+			.email("abc@naver.com")
+			.hobby(Hobby.MOVIE)
+			.name("writer")
+			.password("abc")
+			.age(27)
+			.build();
 	}
 }
