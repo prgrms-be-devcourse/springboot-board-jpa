@@ -27,8 +27,7 @@ public class PostService {
 
     @Transactional
     public Long create(CreatePostDto postDto) {
-        userRepository.findById(postDto.getUserDto().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Id로 조회되는 유저가 없음"));
+        findUser(postDto.getUserDto().getId());
 
         Post post = postConverter.postDtoToPost(postDto);
         Post save = postRepository.save(post);
@@ -40,8 +39,7 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Id로 조회되는 게시글이 없음"));
 
-        userRepository.findById(post.getUser().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Id로 조회되는 유저가 없음"));
+        findUser(post.getUser().getId());
 
         post.changePost(postDto.getTitle(), postDto.getContent());
         return postId;
@@ -56,6 +54,11 @@ public class PostService {
     public Page<ResponsePostDto> findPosts(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(postConverter::postToPostDto);
+    }
+
+    private void findUser(Long userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Id로 조회되는 유저가 없음"));
     }
 
 }
