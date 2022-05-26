@@ -11,8 +11,9 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 public class User {
-  @GeneratedValue(strategy = GenerationType.AUTO)
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @NotBlank
   private Long id;
 
   @Size(min = 3, max = 20)

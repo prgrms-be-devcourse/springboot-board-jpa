@@ -1,7 +1,7 @@
 CREATE TABLE post (
     id BIGINT,
     title VARCHAR(255),
-    content VARCHAR(1023),
+    content VARCHAR(1024),
     created_at TIMESTAMP,
     user BIGINT
 );

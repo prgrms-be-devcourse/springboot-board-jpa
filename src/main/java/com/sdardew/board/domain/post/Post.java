@@ -5,6 +5,9 @@ import com.sdardew.board.domain.user.User;
 import com.sdardew.board.dto.post.PostDto;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -13,15 +16,21 @@ import java.util.Objects;
 public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @NotBlank
   private Long id;
 
   @Column(name="title")
+  @NotBlank
+  @Size(min = 3, max = 255)
   private String title;
 
   @Column(name="content")
+  @NotBlank
+  @Size(min = 10, max = 1024)
   private String content;
 
   @Column(name="create_at")
+  @NotNull
   private LocalDateTime createAt;
 
   @ManyToOne
