@@ -24,17 +24,11 @@ public class Response<T> {
         this.message = message;
     }
 
-    public Response(int statusCode, String message) {
-        this.statusCode = statusCode;
-        this.serverDatetime = LocalDateTime.now();
-        this.message = message;
-    }
-
     public static <T> Response<T> ok(T data, String message) {
         return new Response<>(200, data, message);
     }
 
-    public static <T> Response<T> fail(int statusCode, String errMessage) {
-        return new Response<>(statusCode, errMessage);
+    public static <T> Response<T> fail(int statusCode, T errorData, String message) {
+        return new Response<>(statusCode, errorData, message);
     }
 }

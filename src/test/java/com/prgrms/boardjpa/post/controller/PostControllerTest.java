@@ -7,7 +7,6 @@ import com.prgrms.boardjpa.post.dto.PostReqDto;
 import com.prgrms.boardjpa.post.dto.PostUpdateDto;
 import com.prgrms.boardjpa.post.service.PostService;
 import com.prgrms.boardjpa.user.dao.UserRepository;
-import com.prgrms.boardjpa.user.dto.AuthorDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,8 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.LocalDateTime;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -84,9 +81,9 @@ class PostControllerTest {
     @DisplayName("게시글 다건 조회 api")
     void getAll() throws Exception {
         mockMvc.perform(get("/api/v1/posts")
-                .param("page", String.valueOf(0))
-                .param("size", String.valueOf(10))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .param("page", String.valueOf(0))
+                        .param("size", String.valueOf(10))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-multi-lookup",
@@ -134,8 +131,8 @@ class PostControllerTest {
     @Test
     @DisplayName("게시글 단건 조회 api")
     void getOne() throws Exception {
-        mockMvc.perform(get("/api/v1/posts/{postId}",postId)
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v1/posts/{postId}", postId)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-single-lookup",
@@ -167,8 +164,8 @@ class PostControllerTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/posts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(postDto)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-save",
@@ -197,6 +194,23 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("게시글 작성 실패 api")
+    void saveFail() throws Exception {
+        PostReqDto postDto = PostReqDto.builder()
+                .title("")
+                .content("")
+                .userId(testUser.getId())
+                .build();
+
+        mockMvc.perform(post("/api/v1/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postDto)))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+
+    }
+
+    @Test
     @DisplayName("게시글 수정 api")
     void update() throws Exception {
         PostUpdateDto postDto = PostUpdateDto.builder()
@@ -205,8 +219,8 @@ class PostControllerTest {
                 .build();
 
         mockMvc.perform(put("/api/v1/posts/{postId}", postId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(postDto)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-update",

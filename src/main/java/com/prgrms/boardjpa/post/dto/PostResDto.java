@@ -1,6 +1,5 @@
 package com.prgrms.boardjpa.post.dto;
 
-import com.prgrms.boardjpa.domain.User;
 import com.prgrms.boardjpa.user.dto.AuthorDto;
 import lombok.*;
 

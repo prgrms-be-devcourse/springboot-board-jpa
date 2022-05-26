@@ -1,5 +1,6 @@
 package com.prgrms.boardjpa.domain;
 
+import com.prgrms.boardjpa.exception.LengthErrorException;
 import com.prgrms.boardjpa.exception.WrongFormatException;
 import com.prgrms.boardjpa.post.dto.PostResDto;
 import lombok.Getter;
@@ -12,18 +13,25 @@ import java.util.regex.Pattern;
 @Entity
 @Getter
 @Table(name = "post")
-public class Post extends BaseEntity{
+public class Post extends BaseEntity {
 
-    private static final String TITLE_REGEX = "([\\w가-힣\\.\\(\\)\\[\\]\\-\"'?/*&^%$#@!~=+])+(( )*([\\w가-힣\\.\\(\\)\\[\\]\\-\"'?/*&^%$#@!~=+,])*)*";
-    private static final String CONTENT_REGEX = "([\\w가-힣\\.\\(\\)\\[\\]\\-\"'?/*&^%$#@!~=+])+(( )*([\\w가-힣\\.\\(\\)\\[\\]\\-\"'?/*&^%$#@!~=+,])*)*";
+    public static final int MAX_TITLE_LENGTH = 50;
+    public static final String TITLE_REGEX = "(( )*([\\w가-힣\\.\\(\\)\\[\\]\\-\"'?/*&^%$#@!~=+,])*)*";
+    public static final String CONTENT_REGEX = "(( )*([\\w가-힣\\.\\(\\)\\[\\]\\-\"'?/*&^%$#@!~=+,])*)*";
 
-    private static boolean validateTitle(String title){
-        if(title.length() > 50) return false;
-        return Pattern.matches(TITLE_REGEX, title);
+    private static void validateTitle(String title) {
+        if (title.length() > MAX_TITLE_LENGTH) {
+            throw new LengthErrorException("게시글 제목은 %d자를 넘을 수 없습니다.".formatted(MAX_TITLE_LENGTH));
+        }
+        if (!Pattern.matches(TITLE_REGEX, title)) {
+            throw new WrongFormatException("올바르지 않은 게시글 제목입니다.");
+        }
     }
 
-    private static boolean validateContent(String content){
-        return Pattern.matches(CONTENT_REGEX, content);
+    private static void validateContent(String content) {
+        if (!Pattern.matches(CONTENT_REGEX, content)) {
+            throw new WrongFormatException("올바르지 않은 게시글 본문입니다.");
+        }
     }
 
     @Id
@@ -42,8 +50,22 @@ public class Post extends BaseEntity{
     @JoinColumn(name = "author", referencedColumnName = "user_id")
     private User author;
 
-    public void setAuthor(User user){
-        if(Objects.nonNull(this.author)){
+    public Post() {
+    }
+
+    ;
+
+    public Post(String title, String content, User author) {
+        validateTitle(title);
+        validateContent(content);
+
+        this.title = title;
+        this.content = content;
+        this.author = author;
+    }
+
+    public void setAuthor(User user) {
+        if (Objects.nonNull(this.author)) {
             this.author.getPosts().remove(this);
         }
         this.author = user;
@@ -52,16 +74,16 @@ public class Post extends BaseEntity{
     }
 
     public void setTitle(String title) {
-        if(!validateTitle(title)) throw new WrongFormatException("올바르지 않은 제목입니다.");
+        validateTitle(title);
         this.title = title;
     }
 
     public void setContent(String content) {
-        if(!validateContent(content)) throw new WrongFormatException("올바르지 않은 본문입니다.");
+        validateContent(content);
         this.content = content;
     }
 
-    public PostResDto toResDto(){
+    public PostResDto toResDto() {
         return PostResDto.builder()
                 .id(this.id)
                 .title(this.title)

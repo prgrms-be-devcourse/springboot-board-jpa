@@ -1,6 +1,5 @@
 package com.prgrms.boardjpa.user.dao;
 
-import com.prgrms.boardjpa.domain.Post;
 import com.prgrms.boardjpa.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

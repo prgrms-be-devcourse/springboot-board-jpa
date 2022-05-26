@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
 import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
@@ -35,12 +36,11 @@ class PostServiceTest {
     private User testUser;
 
     @BeforeEach
-    void setUp (){
+    void setUp() {
         User insertUser = new User();
         insertUser.setAge(24);
         insertUser.setHobby("soccer");
         insertUser.setName("test user");
-        // Augo Generate Identity로 걸어두면 id set해도 그 값으로 들어가지 않음. identity 방식 다시 공부하기
 
         testUser = userRepository.save(insertUser);
 
@@ -61,8 +61,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("페이지로 게시글 조회")
-    void findPosts(){
-        // map으로 순회하면서 비교까지 해야 더 신뢰도 높을 듯.
+    void findPosts() {
         Long testId = testUser.getId();
         postService.save(new PostReqDto("제목1", "본문1", testId));
         postService.save(new PostReqDto("제목2", "본문2", testId));
@@ -83,14 +82,14 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시글 단건 조회")
-    void findOne(){
+    void findOne() {
         PostResDto post = postService.findOne(postId);
         assertThat(post.getId()).isEqualTo(postId);
     }
 
     @Test
     @DisplayName("게시글 작성")
-    void savePost(){
+    void savePost() {
         PostReqDto postDto = PostReqDto.builder()
                 .title("게시글 작성 테스트 제목")
                 .content("게시글 작성 테스트 내용")
@@ -106,7 +105,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시글 수정")
-    void updatePost(){
+    void updatePost() {
         PostUpdateDto postDto = PostUpdateDto.builder()
                 .title("게시글 제목 수정")
                 .content("게시글 본문 수정")
