@@ -55,7 +55,6 @@ public class Post {
     return content;
   }
 
-  @Convert(converter = UserIdConverter.class)
   public User getUser() {
     return user;
   }
