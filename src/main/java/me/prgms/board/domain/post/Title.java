@@ -6,6 +6,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Title {
 
+    private static final int TITLE_MAX_LENGTH = 50;
+
     @Column(name = "title", nullable = false, length = 50)
     private String title;
 
@@ -21,7 +23,7 @@ public class Title {
             throw new IllegalArgumentException("제목을 비울 수 없습니다.");
         }
 
-        if (title.length() > 50) {
+        if (title.length() > TITLE_MAX_LENGTH) {
             throw new IllegalArgumentException("제목은 50글자를 넘길 수 없습니다.");
         }
     }
