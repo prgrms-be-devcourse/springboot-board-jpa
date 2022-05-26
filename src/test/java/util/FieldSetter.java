@@ -2,7 +2,6 @@ package util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.programmers.epicblues.board.entity.LongIdHolder;
 import com.programmers.epicblues.board.entity.User;
 import java.lang.reflect.Field;
 import org.junit.jupiter.api.DisplayName;
@@ -16,8 +15,7 @@ public class FieldSetter {
   private FieldSetter() {
   }
 
-  public static void assignId(LongIdHolder idHolder, Long newId)
-      throws NoSuchFieldException, IllegalAccessException {
+  public static void assignId(Object idHolder, Long newId) throws NoSuchFieldException, IllegalAccessException {
     Field idField = idHolder.getClass().getDeclaredField("id");
     idField.setAccessible(true);
     idField.set(idHolder, newId);

@@ -11,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @Service
 public class PostService {
 
@@ -23,11 +22,13 @@ public class PostService {
     this.userRepository = userRepository;
   }
 
+  @Transactional(readOnly = true)
   public List<PostResponse> getPosts(PageRequest pageRequest) {
 
     return PostResponse.from(postRepository.findAll(pageRequest).getContent());
   }
 
+  @Transactional
   public PostResponse createPost(Long userId, String title, String content) {
     User user = userRepository.getById(userId);
     Post post = Post.builder().content(content).title(title).build();
@@ -37,6 +38,7 @@ public class PostService {
 
   }
 
+  @Transactional
   public PostResponse updatePost(Long postId, PostRequest postRequest) {
     var targetPost = postRepository.findById(postId).orElseThrow();
     targetPost.updateTitle(postRequest.getTitle());
@@ -45,7 +47,8 @@ public class PostService {
     return PostResponse.from(savedPost);
   }
 
-  public PostResponse getPostById(long postId) {
+  @Transactional(readOnly = true)
+  public PostResponse getPostById(Long postId) {
     var queriedPost = postRepository.findById(postId).orElseThrow();
     return PostResponse.from(queriedPost);
   }

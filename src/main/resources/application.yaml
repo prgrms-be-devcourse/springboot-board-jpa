@@ -9,7 +9,8 @@ spring:
       hibernate:
         query.in_clause_parameter_padding: true
   datasource:
-    url: jdbc:h2:~/test
+    url:
+      jdbc:h2:mem:board
     username: "sa"
     password: ""
     driver-class-name: org.h2.Driver

@@ -1,6 +1,7 @@
 package com.programmers.epicblues.board.entity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,15 +10,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity implements LongIdHolder {
+public class User extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,13 +38,19 @@ public class User extends BaseEntity implements LongIdHolder {
     this.createdBy = createdBy;
   }
 
+  public List<Post> getPosts() {
+    return Collections.unmodifiableList(posts);
+  }
+
   public void addPost(Post post) {
     posts.add(post);
     post.assignUser(this);
   }
 
   public void removePostById(Long id) {
-    Post post = posts.stream().filter(candidatePost -> candidatePost.getId().equals(id)).findFirst()
+    Post post = posts.stream()
+        .filter(candidatePost -> candidatePost.getId().equals(id))
+        .findFirst()
         .orElseThrow();
     post.removeUser();
     this.posts.remove(post);

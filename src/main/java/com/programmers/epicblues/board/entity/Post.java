@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "post")
 @Getter
-@NoArgsConstructor
-public class Post extends BaseEntity implements LongIdHolder {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Post extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,13 +43,12 @@ public class Post extends BaseEntity implements LongIdHolder {
       return false;
     }
     Post post = (Post) o;
-    return Objects.equals(id, post.id) && title.equals(post.title) && content.equals(
-        post.content);
+    return Objects.equals(getId(), post.getId()) && getTitle().equals(post.getTitle()) && getContent().equals(post.getContent());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, content);
+    return Objects.hash(getId(), getTitle(), getContent());
   }
 
   public void removeUser() {

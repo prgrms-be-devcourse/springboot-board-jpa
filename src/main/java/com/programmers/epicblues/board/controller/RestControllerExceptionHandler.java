@@ -17,22 +17,25 @@ public class RestControllerExceptionHandler {
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(InvalidRequestArgumentException.class)
-  public Map<String, String> handleValidationException(
-      InvalidRequestArgumentException exception) {
+  public Map<String, String> handleValidationException(InvalidRequestArgumentException exception) {
     log.error("InvalidRequestArgumentException", exception);
     return exception.getBindingResult().getAllErrors().stream().collect(
         Collectors.toMap(
-            error -> (error instanceof FieldError)
-                ? ((FieldError) error).getField()
-                : error.getObjectName(),
+            error -> (error instanceof FieldError) ? ((FieldError) error).getField() : error.getObjectName(),
             error -> error.getDefaultMessage() == null ? "No Message" : error.getDefaultMessage()));
   }
 
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ExceptionHandler(ResourceNotFoundException.class)
-  public Map<String, String> handleResultNotFoundException(
-      ResourceNotFoundException exception) {
+  public Map<String, String> handleResultNotFoundException(ResourceNotFoundException exception) {
     log.error(exception.getMessage(), exception);
     return Map.of("message", exception.getMessage());
+  }
+
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(Exception.class)
+  public Map<String, String> handleException(Exception exception) {
+    log.error(exception.getMessage(), exception);
+    return Map.of("message", "Internal Server Error");
   }
 }
