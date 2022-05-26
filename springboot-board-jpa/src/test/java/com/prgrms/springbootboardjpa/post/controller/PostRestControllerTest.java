@@ -65,8 +65,6 @@ class PostRestControllerTest {
     @Autowired
     private PostService postService;
 
-    @Autowired
-    private PostConverter postConverter;
 
     User user;
     UserDto userDto;
@@ -201,8 +199,8 @@ class PostRestControllerTest {
 
         //When
         MvcResult result = mockMvc.perform(get(PATH)
-                .param("page", String.valueOf(1))
-                .param("size", String.valueOf(1))
+                .param("page", "1")
+                .param("size", "1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("post-getAllWithPage",preprocessRequest(prettyPrint()),preprocessResponse(prettyPrint()),

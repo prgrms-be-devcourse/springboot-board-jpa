@@ -11,18 +11,21 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/api/v1/users")
 public class UserRestController {
-    private final String PATH = "/api/v1/users";
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
-    @PostMapping(path = PATH)
+    public UserRestController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping
     public UserResponse save(@RequestBody @Valid UserDto userDto){
         return userService.save(userDto);
     }
 
-    @GetMapping(path = PATH)
+    @GetMapping
     public List<UserResponse> allUsers(Pageable pageable){
         return userService.findAll(pageable).stream().toList();
     }

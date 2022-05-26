@@ -17,14 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class PostService {
 
-    @Autowired
-    PostRepository postRepository;
+    private final PostRepository postRepository;
+    private final UserService userService;
+    private final PostConverter postConverter;
 
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    PostConverter postConverter;
+    public PostService(PostRepository postRepository, UserService userService, PostConverter postConverter) {
+        this.postRepository = postRepository;
+        this.userService = userService;
+        this.postConverter = postConverter;
+    }
 
     @Transactional
     public PostResponse save(PostDto postDto){

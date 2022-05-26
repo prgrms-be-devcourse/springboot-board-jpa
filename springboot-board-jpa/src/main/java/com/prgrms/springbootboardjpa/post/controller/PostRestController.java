@@ -11,23 +11,27 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/api/v1/posts")
 public class PostRestController {
-    private final String PATH = "/api/v1/posts";
 
-    @Autowired
-    PostService postService;
+    private final PostService postService;
 
-    @PostMapping(path = PATH)
+
+    public PostRestController(PostService postService) {
+        this.postService = postService;
+    }
+
+    @PostMapping
     public PostResponse save(@RequestBody @Valid PostDto postDto){
         return postService.save(postDto);
     }
 
-    @GetMapping(path = PATH)
+    @GetMapping
     public List<PostResponse> allPosts(Pageable pageable){
         return postService.findAll(pageable).stream().toList();
     }
 
-    @PutMapping(path = PATH + "/{postId}")
+    @PutMapping( "/{postId}")
     public PostResponse update(@PathVariable("postId") Long id, @RequestBody @Valid PostDto postDto){
         postDto.setId(id);
         return postService.update(postDto);

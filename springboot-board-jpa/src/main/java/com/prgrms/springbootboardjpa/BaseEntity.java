@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @MappedSuperclass
 @NoArgsConstructor
+@AllArgsConstructor
 public class BaseEntity {
     @Column
     private String createdBy;
@@ -19,8 +20,4 @@ public class BaseEntity {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
-    public BaseEntity(String createdBy, LocalDateTime createdAt) {
-        this.createdBy = createdBy;
-        this.createdAt = createdAt;
-    }
 }

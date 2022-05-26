@@ -199,8 +199,8 @@ class UserRestControllerTest {
 
         //when
         MvcResult result = mockMvc.perform(get(PATH)
-                .param("page", String.valueOf(1))
-                .param("size", String.valueOf(1))
+                .param("page", "1")
+                .param("size", "1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("user-getAllWithPage",preprocessRequest(prettyPrint()),preprocessResponse(prettyPrint()),
