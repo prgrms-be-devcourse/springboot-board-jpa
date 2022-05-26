@@ -18,8 +18,6 @@ import java.util.List;
 @Table(name = "user")
 public class User extends BaseEntity {
 
-    private static final String CREATE_BY = User.class.toString();
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,10 +34,10 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
-    protected User() {}
+    public User() {}
 
     public User(String name, int age, String hobby) {
-        super(CREATE_BY, LocalDateTime.now());
+        super("createdBy-yanju", LocalDateTime.now());
         this.name = name;
         this.age = age;
         this.hobby = hobby;
