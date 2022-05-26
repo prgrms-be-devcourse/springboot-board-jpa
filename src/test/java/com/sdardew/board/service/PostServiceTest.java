@@ -6,10 +6,7 @@ import com.sdardew.board.dto.post.PostDto;
 import com.sdardew.board.dto.post.UpdatePostDto;
 import com.sdardew.board.domain.user.User;
 import com.sdardew.board.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
@@ -62,10 +60,14 @@ class PostServiceTest {
     PostDto created = postService.createPost(newPost);
     DetailedPostDto oldPost = postService.getPost(created.getId());
 
-    UpdatePostDto updatePost = new UpdatePostDto("new-title", "new=content");
+    UpdatePostDto updatePost = new UpdatePostDto("new-title", "new-content");
     postService.updatePost(oldPost.getId(), updatePost);
 
     DetailedPostDto post = postService.getPost(oldPost.getId());
-    assertThat(post.getTitle()).isEqualTo(updatePost.getTitle());
+
+    assertAll(
+      () -> assertThat(post.getTitle()).isEqualTo(updatePost.getTitle()),
+      () -> assertThat(post.getContent()).isEqualTo(updatePost.getContent())
+    );
   }
 }
