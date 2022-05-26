@@ -21,6 +21,16 @@ public class UserDto {
 				.email(this.email)
 				.build();
 		}
+
+		public static UserDto.CreateRequest from(User user) {
+			return new CreateRequest(
+				user.getEmail(),
+				user.getHobby(),
+				user.getName(),
+				user.getAge(),
+				user.getPassword()
+			);
+		}
 	}
 
 	public record Info(Long id, String email, Hobby hobby,
