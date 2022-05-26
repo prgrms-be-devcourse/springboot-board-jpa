@@ -1,4 +1,4 @@
-package com.prgrms.boardjpa.commons;
+package com.prgrms.boardjpa.commons.api;
 
 public class ErrorResponse {
 	private final String errorMessage;

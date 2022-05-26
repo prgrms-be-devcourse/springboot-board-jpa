@@ -1,4 +1,4 @@
-package com.prgrms.boardjpa.commons;
+package com.prgrms.boardjpa.commons.api;
 
 import java.util.List;
 import java.util.Locale;

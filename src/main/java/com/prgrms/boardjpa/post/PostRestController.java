@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.prgrms.boardjpa.commons.SuccessResponse;
+import com.prgrms.boardjpa.commons.api.SuccessResponse;
 import com.prgrms.boardjpa.post.dto.PostDto;
 
 @RequestMapping("/api/posts")
