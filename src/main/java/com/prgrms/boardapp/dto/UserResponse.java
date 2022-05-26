@@ -1,5 +1,7 @@
 package com.prgrms.boardapp.dto;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.util.Objects;
 
 public class UserResponse {
@@ -29,6 +31,16 @@ public class UserResponse {
 
     public String getHobby() {
         return hobby;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("name", name)
+                .append("age", age)
+                .append("hobby", hobby)
+                .toString();
     }
 
     public static UserResponseBuilder builder() {

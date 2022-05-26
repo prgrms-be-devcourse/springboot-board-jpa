@@ -45,7 +45,7 @@ public class PostCreateUtil {
     public static PostResponse createPostResponseWithId(Long id) {
         UserResponse userResponse = createUserResponse();
         return PostResponse.builder()
-                .id(postId++)
+                .id(id)
                 .user(userResponse)
                 .content("post response content")
                 .title("post response title")
