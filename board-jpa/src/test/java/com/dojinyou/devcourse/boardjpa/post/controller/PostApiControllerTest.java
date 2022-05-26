@@ -1,6 +1,7 @@
 package com.dojinyou.devcourse.boardjpa.post.controller;
 
 import com.dojinyou.devcourse.boardjpa.common.exception.NotFoundException;
+import com.dojinyou.devcourse.boardjpa.post.entity.Post;
 import com.dojinyou.devcourse.boardjpa.post.service.PostService;
 import com.dojinyou.devcourse.boardjpa.post.service.dto.PostResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -26,7 +28,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PostApiController.class)
 @MockBean(JpaMetamodelMappingContext.class)
@@ -119,7 +122,7 @@ class PostApiControllerTest {
 
         @Nested
         class 아이디_값이_비정상적일_경우 {
-            
+
             @ParameterizedTest(name = "{displayName} inputId:{0}")
             @ValueSource(strings = {"-1", "0"})
             void Bad_Request로_응답한다_아이디값_범위_밖(String inputId) throws Exception {
@@ -165,20 +168,17 @@ class PostApiControllerTest {
                 LocalDateTime localDateTime = LocalDateTime.of(2022, 5, 24,
                                                                10, 38, 0
                                                               );
-                PostResponseDto postResponseDto = new PostResponseDto.Builder().id(inputId)
-                                                                               .title(testTitle)
-                                                                               .content(testContent)
-                                                                               .createdAt(localDateTime)
-                                                                               .build();
-                when(postService.findById(inputId)).thenReturn(postResponseDto);
+                Post savedPost = Post.builder().build();
+                ReflectionTestUtils.setField(savedPost, "id", inputId);
+                ReflectionTestUtils.setField(savedPost, "createdAt", localDateTime);
+                when(postService.findById(inputId)).thenReturn(PostResponseDto.from(savedPost));
 
                 final var response = mockMvc.perform(
                         get(BASE_URL_PATH + "/" + inputId));
 
+
                 response.andExpect(status().isOk())
                         .andExpect(jsonPath("$.id").value(inputId));
-
-
                 verify(postService, atLeastOnce()).findById(inputId);
             }
         }

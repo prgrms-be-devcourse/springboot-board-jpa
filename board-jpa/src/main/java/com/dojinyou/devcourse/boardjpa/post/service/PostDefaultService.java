@@ -44,6 +44,13 @@ public class PostDefaultService implements PostService {
 
     @Override
     public PostResponseDto findById(long id) {
+        validId(id);
+        Post foundPost = postRepository.findById(id).orElseThrow(NotFoundException::new);
+
+        return PostResponseDto.from(foundPost);
+    }
+
+    private void validId(long id) {
         if (id <= 0) {
             throw new IllegalArgumentException();
         }

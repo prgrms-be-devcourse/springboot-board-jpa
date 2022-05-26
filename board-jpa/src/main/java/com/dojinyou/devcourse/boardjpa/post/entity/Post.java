@@ -50,17 +50,12 @@ public class Post extends BaseEntity {
 
     private Post(Builder builder) {
         valid(builder);
-        this.id = builder.id;
         this.title = builder.title;
         this.content = builder.content;
         this.user = builder.user;
     }
 
     private void valid(Builder builder) {
-        if (builder.id != null && builder.id <= 0) {
-            throw new IllegalArgumentException();
-        }
-
         if (builder.title == null || builder.title.length() > 50 || builder.title.isBlank()) {
             throw new IllegalArgumentException();
         }
@@ -79,15 +74,9 @@ public class Post extends BaseEntity {
     }
 
     public static class Builder {
-        private Long id;
         private String title;
         private String content;
         private User user;
-
-        public Builder id(Long id) {
-            this.id = id;
-            return this;
-        }
 
         public Builder title(String title) {
             this.title = title;
