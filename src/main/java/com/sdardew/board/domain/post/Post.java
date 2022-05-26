@@ -26,7 +26,7 @@ public class Post {
 
   @Column(name="content")
   @NotBlank
-  @Size(min = 10, max = 1024)
+  @Size(min = 3, max = 1024)
   private String content;
 
   @Column(name="create_at")
