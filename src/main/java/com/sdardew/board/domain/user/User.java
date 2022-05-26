@@ -31,6 +31,16 @@ public class User {
   @OneToMany(mappedBy = "user")
   private List<Post> posts = new ArrayList<>();
 
+  public User() {
+  }
+
+  public User(String name, Integer age, String hobby, LocalDateTime createdAt) {
+    this.name = name;
+    this.age = age;
+    this.hobby = hobby;
+    this.createdAt = createdAt;
+  }
+
   public Long getId() {
     return id;
   }
@@ -47,28 +57,8 @@ public class User {
     return hobby;
   }
 
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
   public List<Post> getPosts() {
     return posts;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public void setAge(Integer age) {
-    this.age = age;
-  }
-
-  public void setHobby(String hobby) {
-    this.hobby = hobby;
-  }
-
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
   }
 
   public void addPost(Post post) {

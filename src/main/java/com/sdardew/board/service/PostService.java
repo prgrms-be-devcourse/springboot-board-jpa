@@ -34,7 +34,6 @@ public class PostService {
     return postRepository.findAll().stream().map(Post::toPostDto).collect(Collectors.toList());
   }
 
-
   public DetailedPostDto getPost(Long id) {
     Optional<Post> found = postRepository.findById(id);
     if(found.isPresent()) {
@@ -55,11 +54,7 @@ public class PostService {
   }
 
   private Post convertToPost(CreatePostDto createPostDto) {
-    Post newPost = new Post();
-    newPost.setTitle(createPostDto.getTitle());
-    newPost.setContent(createPostDto.getContent());
-    newPost.setCreateAt(LocalDateTime.now());
-    newPost.setUser(userRepository.getById(createPostDto.getUserId()));
+    Post newPost = new Post(createPostDto.getTitle(), createPostDto.getContent(), LocalDateTime.now(), userRepository.getById(createPostDto.getUserId()));
     return newPost;
   }
 
@@ -68,8 +63,7 @@ public class PostService {
     Optional<Post> found = postRepository.findById(id);
     if(found.isEmpty()) throw new NoSuchElementException("존재하지 않는 post 입니다");
     Post oldPost = found.get();
-    oldPost.setTitle(updatePostDto.getTitle());
-    oldPost.setContent(updatePostDto.getContent());
+    oldPost.updatePost(updatePostDto.getTitle(), updatePostDto.getContent());
     Post save = postRepository.save(oldPost);
     return save.toPostDto();
   }

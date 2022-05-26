@@ -32,11 +32,7 @@ class PostServiceTest {
 
   @BeforeAll
   static void beforeAll() {
-    user = new User();
-    user.setName("name");
-    user.setAge(20);
-    user.setHobby("movie");
-    user.setCreatedAt(LocalDateTime.now());
+    user = new User("name", 20, "movie", LocalDateTime.now());
   }
 
   @AfterEach

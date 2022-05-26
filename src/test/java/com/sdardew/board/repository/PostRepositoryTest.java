@@ -2,6 +2,7 @@ package com.sdardew.board.repository;
 
 import com.sdardew.board.domain.post.Post;
 import com.sdardew.board.domain.user.User;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,8 +12,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -30,31 +33,21 @@ class PostRepositoryTest {
 
   @BeforeAll
   static void beforeAll() {
-    user1 = new User();
-    user1.setName("user");
-    user1.setHobby("movie");
-    user1.setAge(20);
-    user1.setCreatedAt(LocalDateTime.now());
-
-
-    user2 = new User();
-    user2.setName("user2");
-    user2.setHobby("cooking");
-    user2.setAge(22);
-    user2.setCreatedAt(LocalDateTime.now());
-
-    post1 = new Post();
-    post1.setUser(user1);
-    post1.setTitle("title");
-    post1.setContent("content");
-    post1.setCreateAt(LocalDateTime.now());
+    user1 = new User("user", 20, "movie", LocalDateTime.now());
+    user2 = new User("user2", 22, "cook", LocalDateTime.now());
+    post1 = new Post("title", "content", LocalDateTime.now(), user1);
   }
 
   @Test
   void testInsert() {
     userRepository.save(user1);
     postRepository.save(post1);
-    List<Post> all = postRepository.findAll();
-    assertThat(all.size()).isEqualTo(1);
+    Optional<Post> found = postRepository.findById(post1.getId());
+    assertAll(
+      () -> assertThat(found.isPresent()).isTrue(),
+      () -> assertThat(found.get().getTitle()).isEqualTo("title"),
+      () -> assertThat(found.get().getContent()).isEqualTo("content"),
+      () -> assertThat(found.get().getUser()).isEqualTo(user1)
+    );
   }
 }

@@ -39,6 +39,16 @@ public class Post {
   @Convert(converter = UserIdConverter.class)
   private User user; // user 테이블과 연관
 
+  public Post() {
+  }
+
+  public Post(String title, String content, LocalDateTime createAt, User user) {
+    this.title = title;
+    this.content = content;
+    this.createAt = createAt;
+    this.user = user;
+  }
+
   public Long getId() {
     return id;
   }
@@ -59,24 +69,9 @@ public class Post {
     return user;
   }
 
-  public void setTitle(String title) {
+  public void updatePost(String title, String content) {
     this.title = title;
-  }
-
-  public void setContent(String content) {
     this.content = content;
-  }
-
-  public void setCreateAt(LocalDateTime createAt) {
-    this.createAt = createAt;
-  }
-
-  public void setUser(User user) {
-    if(Objects.nonNull(this.user)) {
-      this.user.getPosts().remove(this);
-    }
-    this.user = user;
-    user.addPost(this);
   }
 
   public PostDto toPostDto() {

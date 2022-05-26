@@ -24,17 +24,8 @@ class UserRepositoryTest {
 
   @BeforeAll
   static void beforeAll() {
-    user = new User();
-    user.setName("user");
-    user.setHobby("movie");
-    user.setAge(20);
-    user.setCreatedAt(LocalDateTime.now());
-
-    user2 = new User();
-    user2.setName("user2");
-    user2.setHobby("cooking");
-    user2.setAge(22);
-    user2.setCreatedAt(LocalDateTime.now());
+    user = new User("user", 20, "movie", LocalDateTime.now());
+    user2 = new User("user2", 22, "cook", LocalDateTime.now());
   }
 
   @AfterEach
