@@ -1,4 +1,4 @@
-package com.prgrms.boardjpa.post.dto;
+package com.prgrms.boardjpa.post;
 
 import javax.validation.constraints.NotBlank;
 

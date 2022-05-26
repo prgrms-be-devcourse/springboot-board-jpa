@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.prgrms.boardjpa.commons.exception.NotExistException;
 import com.prgrms.boardjpa.user.domain.User;
-import com.prgrms.boardjpa.user.dto.UserDto;
 
 @Service
 @Transactional(readOnly = true)

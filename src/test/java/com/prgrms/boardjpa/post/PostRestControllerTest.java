@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.boardjpa.commons.api.SuccessResponse;
-import com.prgrms.boardjpa.post.dto.PostDto;
 import com.prgrms.boardjpa.user.domain.Hobby;
 import com.prgrms.boardjpa.user.domain.User;
 

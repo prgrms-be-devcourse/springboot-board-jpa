@@ -1,4 +1,4 @@
-package com.prgrms.boardjpa.user.dto;
+package com.prgrms.boardjpa.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
