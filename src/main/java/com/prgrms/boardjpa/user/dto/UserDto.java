@@ -18,6 +18,7 @@ public class UserDto {
 				.age(this.age)
 				.password(this.password)
 				.hobby(this.hobby)
+				.email(this.email)
 				.build();
 		}
 	}
