@@ -31,7 +31,7 @@ public class PostService {
 	public PostDto.Info create(String title, User writer, String content) {
 		Post post = createPost(title, writer, content);
 
-		return new PostDto.Info(
+		return PostDto.Info.from(
 			postRepository.save(post)
 		);
 	}
@@ -56,7 +56,7 @@ public class PostService {
 
 		foundPost.edit(title, content);
 
-		return new PostDto.Info(
+		return PostDto.Info.from(
 			postRepository.save(foundPost)
 		);
 	}
@@ -65,7 +65,7 @@ public class PostService {
 		Post post = postRepository.findById(postId)
 			.orElseThrow(NotExistException::new);
 
-		return new PostDto.Info(post);
+		return PostDto.Info.from(post);
 	}
 
 	public List<PostDto.Info> getAllByWriterName(String writerName, Pageable pageable) {
