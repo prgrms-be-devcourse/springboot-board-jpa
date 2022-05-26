@@ -16,7 +16,6 @@ import java.util.Objects;
 public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @NotBlank
   private Long id;
 
   @Column(name="title")

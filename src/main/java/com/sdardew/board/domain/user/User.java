@@ -13,7 +13,6 @@ import java.util.List;
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @NotBlank
   private Long id;
 
   @Size(min = 3, max = 20)
