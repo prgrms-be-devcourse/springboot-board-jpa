@@ -19,7 +19,7 @@ public class Hobby {
     @Column(name = "hobby_id", unique = true, nullable = false, updatable = false)
     private Long id;
 
-    @Column(nullable = false, length = 30)
+    @Column(name = "hobby", nullable = false, length = 30)
     private String hobby;
 
     @ManyToOne(fetch = LAZY)

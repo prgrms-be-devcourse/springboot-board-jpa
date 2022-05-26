@@ -22,11 +22,11 @@ public class Post extends BaseEntity {
     @Column(name = "post_id", unique = true, nullable = false, updatable = false)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "title", nullable = false, length = 100)
     private String title;
 
     @Lob
-    @Column(nullable = false)
+    @Column(name = "content", nullable = false)
     private String content;
 
     @ManyToOne(fetch = LAZY)
