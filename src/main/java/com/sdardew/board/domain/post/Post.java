@@ -3,6 +3,8 @@ package com.sdardew.board.domain.post;
 import com.sdardew.board.domain.post.converter.UserIdConverter;
 import com.sdardew.board.domain.user.User;
 import com.sdardew.board.dto.post.PostDto;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -84,12 +86,6 @@ public class Post {
 
   @Override
   public String toString() {
-    return "Post{" +
-      "id=" + id +
-      ", title='" + title + '\'' +
-      ", content='" + content + '\'' +
-      ", createAt=" + createAt +
-      ", user=" + user.getId() +
-      '}';
+    return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
   }
 }
