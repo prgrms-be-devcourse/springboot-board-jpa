@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import static com.study.board.controller.GeneralExceptionHandler.ApiError.newResponse;
+
+
 @Slf4j
 @RestControllerAdvice
 public class GeneralExceptionHandler {
@@ -37,18 +40,18 @@ public class GeneralExceptionHandler {
         return newResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private ResponseEntity<ApiError> newResponse(Throwable throwable, HttpStatus status) {
-        return new ResponseEntity<>(new ApiError(throwable, status), status);
-    }
-
     @Getter
-    private static class ApiError {
+    static class ApiError {
         private final String message;
         private final HttpStatus status;
 
-        public ApiError(Throwable throwable, HttpStatus status) {
+        private ApiError(Throwable throwable, HttpStatus status) {
             this.message = throwable.getMessage();
             this.status = status;
+        }
+
+        static ResponseEntity<ApiError> newResponse(Throwable throwable, HttpStatus status) {
+            return new ResponseEntity<>(new ApiError(throwable, status), status);
         }
     }
 }
