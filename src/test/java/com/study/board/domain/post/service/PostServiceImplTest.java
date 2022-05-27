@@ -43,7 +43,7 @@ class PostServiceImplTest {
     }
 
     @Test
-    void 전체_게시글_전체_조회_성공() {
+    void 전체_게시글_페이징_조회_성공() {
         Page<Post> posts = postService.findAll(Pageable.ofSize(2));
 
         Post post1 = posts.getContent().get(0);
