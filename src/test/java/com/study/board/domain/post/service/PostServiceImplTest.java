@@ -30,13 +30,12 @@ class PostServiceImplTest {
     @Autowired
     UserRepository userRepository;
 
-    User writer;
     Post writtenPost1;
     Post writtenPost2;
 
     @BeforeEach
     void setUp() {
-        writer = createUser();
+        User writer = createUser();
         userRepository.save(writer);
 
         writtenPost1 = postRepository.save(new Post("제목1", "내용1", writer));
@@ -74,7 +73,7 @@ class PostServiceImplTest {
 
     @Test
     void 게시글_작성_성공() {
-        Post writtenPost = postService.write("제목", "내용", writer);
+        Post writtenPost = postService.write("제목", "내용", "득윤");
 
         Post foundPost = postRepository.findById(writtenPost.getId()).get();
 
@@ -87,7 +86,7 @@ class PostServiceImplTest {
     void 게시글_수정_성공() {
         Long editPostId = writtenPost1.getId();
 
-        Post editedPost = postService.edit(editPostId, "수정제목", "수정내용", writer);
+        Post editedPost = postService.edit(editPostId, "수정제목", "수정내용", "득윤");
 
         assertThat(editedPost).isEqualTo(writtenPost1);
         assertThat(editedPost.getTitle()).isEqualTo("수정제목");
@@ -99,7 +98,7 @@ class PostServiceImplTest {
         Long illegalPostId = -1L;
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> postService.edit(illegalPostId, "수정제목", "수정내용", writer));
+                .isThrownBy(() -> postService.edit(illegalPostId, "수정제목", "수정내용", "득윤"));
     }
 
     @Test
@@ -107,6 +106,6 @@ class PostServiceImplTest {
         User anotherUser = userRepository.save(new User("다른 사용자", null));
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> postService.edit(writtenPost1.getId(), "수정제목", "수정내용", anotherUser));
+                .isThrownBy(() -> postService.edit(writtenPost1.getId(), "수정제목", "수정내용", "다른 사용자"));
     }
 }
