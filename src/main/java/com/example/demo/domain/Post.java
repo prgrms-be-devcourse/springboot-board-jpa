@@ -10,13 +10,16 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BasedTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "post_id")
     private Long id;
 
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Lob
+    @Column(name = "content", nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -14,17 +14,19 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BasedTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false, length = 30)
     @Size(min = 1, max = 30)
+    @Column(name = "name", nullable = false, length = 30)
     private String name;
 
     @PositiveOrZero
+    @Column(name = "age")
     private int age;
 
+    @Column(name = "hobby")
     private String hobby;
 
     @OneToMany(mappedBy = "user")

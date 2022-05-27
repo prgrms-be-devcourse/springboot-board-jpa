@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class BasedTimeEntity {
 
-    @Column(name = "created_by")
+    @Column(name = "created_by", nullable = false)
     private String createdBy;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP", updatable = false)
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
