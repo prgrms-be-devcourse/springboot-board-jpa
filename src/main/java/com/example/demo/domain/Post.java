@@ -36,6 +36,5 @@ public class Post extends BasedTimeEntity {
     public void changeTitleAndContent(String title, String content) {
         this.title = title;
         this.content = content;
-        changeUpdatedTime();
     }
 }
