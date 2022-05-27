@@ -5,3 +5,33 @@
 [[overview-host]]
 
 깃헙 : https://github.com/ndy2/springboot-board-jpa
+
+사용자 API 및 인증 서비스는 미구현 상태입니다. +
+게시글 API 의 요청,응답시에 아래의 초기 데이터를 세팅한 예시입니다.
+
+[source,json]
+----
+User : {
+    "id": n,
+    "loginId" : "ndy",
+    "name" : "득윤",
+    "hobby" : "체스"
+}
+
+User "ndy" 의 Posts : [
+    {
+      "postId" : n,
+      "title" : "제목1",
+      "content" : "내용1",
+      "writer" : "득윤",
+      "writtenDateTime" : "yyyy-MM-dd-HH-mm-ss.zzz"
+    },
+    {
+      "postId" : n,
+      "title" : "제목2",
+      "content" : "내용2",
+      "writer" : "득윤",
+      "writtenDateTime" : "yyyy-MM-dd-HH-mm-ss.zzz"
+    }
+]
+----
