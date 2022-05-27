@@ -43,7 +43,13 @@ public class Post extends BaseEntity {
         super(CREATE_BY, LocalDateTime.now());
         this.title = new Title(title);
         this.content = new Content(content);
+        validate(user);
         this.user = user;
+    }
+
+    private void validate(User user) {
+        if (user == null)
+            throw new IllegalArgumentException("User는 null일 수 없습니다!");
     }
 
     public Long getId() {
