@@ -3,10 +3,12 @@ package com.programmers.epicblues.board.dto;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
-public class PostRequest {
+@RequiredArgsConstructor
+public class CreatePostRequest {
 
   @NotNull(message = "title을 반드시 입력하셔야 합니다.")
   @Length(min = 3, max = 200, message = "길이가 3 이상 200 이하여야 합니다.")
@@ -16,11 +18,6 @@ public class PostRequest {
   private final String content;
 
   @Positive
-  private Long userId;
-
-  public PostRequest(String title, String content) {
-    this.title = title;
-    this.content = content;
-  }
+  private final Long userId;
 
 }

@@ -18,8 +18,7 @@ public class PostResponse {
   private final Long authorId;
 
   @Builder
-  public PostResponse(Long id, String title, String content, LocalDateTime createdAt,
-      String createdBy, Long authorId) {
+  public PostResponse(Long id, String title, String content, LocalDateTime createdAt, String createdBy, Long authorId) {
     this.title = title;
     this.content = content;
     this.id = id;

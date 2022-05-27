@@ -12,8 +12,9 @@ import static util.EntityFixture.getFirstPost;
 import static util.EntityFixture.getPostList;
 import static util.EntityFixture.getUser;
 
-import com.programmers.epicblues.board.dto.PostRequest;
+import com.programmers.epicblues.board.dto.CreatePostRequest;
 import com.programmers.epicblues.board.dto.PostResponse;
+import com.programmers.epicblues.board.dto.UpdatePostRequest;
 import com.programmers.epicblues.board.entity.Post;
 import com.programmers.epicblues.board.entity.User;
 import com.programmers.epicblues.board.repository.JpaPostRepository;
@@ -75,9 +76,9 @@ class PostServiceTest {
     var postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
     // when
-    when(userRepository.getById(user.getId())).thenReturn(user);
+    when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
     when(postRepository.save(any())).thenReturn(createdPost);
-    postService.createPost(user.getId(), createdPost.getTitle(), createdPost.getContent());
+    postService.createPost(new CreatePostRequest(createdPost.getTitle(), createdPost.getContent(), user.getId()));
 
     // then
     verify(postRepository, times(1)).save(postArgumentCaptor.capture());
@@ -103,13 +104,13 @@ class PostServiceTest {
     FieldSetter.assignId(postToSave, postId);
 
     // when
-    when(userRepository.getById(validUserId)).thenReturn(user);
+    when(userRepository.findById(validUserId)).thenReturn(Optional.of(user));
     when(postRepository.save(any())).thenReturn(postToSave);
 
     // then
-    assertThatCode(() -> postService.createPost(invalidUserId, "무효", "무효"))
+    assertThatCode(() -> postService.createPost(new CreatePostRequest("무효", "무효", invalidUserId)))
         .isInstanceOf(RuntimeException.class);
-    assertThatNoException().isThrownBy(() -> postService.createPost(validUserId, "유효", "유효"));
+    assertThatNoException().isThrownBy(() -> postService.createPost((new CreatePostRequest("유효", "유효", validUserId))));
   }
 
   @Test
@@ -132,8 +133,7 @@ class PostServiceTest {
     // When
     when(postRepository.findById(postId)).thenReturn(Optional.of(targetPost));
     when(postRepository.save(targetPost)).thenReturn(targetPost);
-    PostResponse upsertResult = postService.updatePost(postId,
-        new PostRequest(updatedTitle, updatedContent));
+    PostResponse upsertResult = postService.updatePost(new UpdatePostRequest(updatedTitle, updatedContent, postId, user.getId()));
 
     // Then
     verify(postRepository, times(1)).findById(postId);

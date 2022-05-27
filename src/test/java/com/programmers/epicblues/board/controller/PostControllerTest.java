@@ -6,6 +6,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -18,7 +19,6 @@ import com.programmers.epicblues.board.entity.User;
 import com.programmers.epicblues.board.repository.JpaUserRepository;
 import java.util.List;
 import java.util.Map;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -99,27 +99,32 @@ class PostControllerTest {
 
   @ParameterizedTest
   @CsvSource({",-4", "-1,-1", "-4,0"})
-  @DisplayName("page나 size가 조건에 맞지 않으면 400 Bad Request 상태코드가 담기고, 어떤 필드가 잘못되었는지 알려주는 응답을 해야 한다.")
-  void test_get_method_send_bad_request_when_request_payload_invalidate(String page, String size)
-      throws Exception {
+  @DisplayName("page나 size가 조건에 맞지 않으면 page가 0이고 size가 20인 기본 pageable 요청을 서비스에 위임해야 한다.")
+  void test_get_method_send_bad_request_when_request_payload_invalidate(String page, String size) throws Exception {
+
+    // given
+    var savedPosts = EntityFixture.getPostList(100);
+    var savedUser = EntityFixture.getUser();
+    savedUser.addPosts(savedPosts);
+    userRepository.saveAndFlush(savedUser);
 
     // When
     ResultActions resultActions = mockMvc.perform(
         get(BASE_URL).param("page", page).param("size", size)).andDo(print());
 
-    // Then
+    List<PostResponse> expectedResponse = PostResponse.from(savedPosts.subList(0, 20));
     resultActions.andExpectAll(
-        status().is(400),
+        status().isOk(),
         content().contentType(MediaType.APPLICATION_JSON),
-        content().string(
-            Matchers.allOf(
-                Matchers.containsString("\"size\""),
-                Matchers.containsString("\"page\""))
-        )
-    ).andDo(document("post-get-page-failure",
+        content().json(json.writeValueAsString(expectedResponse))
+    ).andDo(document("post-get-page",
         responseFields(
-            fieldWithPath("size").type(JsonFieldType.STRING).description("잘못된 size 입력값 설명"),
-            fieldWithPath("page").type(JsonFieldType.STRING).description("잘못된 page 입력값 설명")
+            fieldWithPath("[].title").type(JsonFieldType.STRING).description("제목"),
+            fieldWithPath("[].content").type(JsonFieldType.STRING).description("내용"),
+            fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("게시글 ID"),
+            fieldWithPath("[].authorId").type(JsonFieldType.NUMBER).description("작성자 ID"),
+            fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+            fieldWithPath("[].createdBy").type(JsonFieldType.STRING).description("작성자")
         )
     ));
 
@@ -187,11 +192,11 @@ class PostControllerTest {
     var updatedTitle = "updated!";
     var updatedContent = "updatedContent!";
     var requestPayload = json.writeValueAsString(
-        Map.of("title", updatedTitle, "content", updatedContent));
+        Map.of("userId", savedUser.getId(), "postId", targetPostId, "title", updatedTitle, "content", updatedContent));
 
     // When
     ResultActions resultActions = mockMvc.perform(
-        post(BASE_URL + "/" + targetPostId)
+        put(BASE_URL)
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestPayload)
     );
@@ -206,7 +211,9 @@ class PostControllerTest {
     ).andDo(document("post-update",
         requestFields(
             fieldWithPath("title").type(JsonFieldType.STRING).description("수정 제목"),
-            fieldWithPath("content").type(JsonFieldType.STRING).description("수정 내용")
+            fieldWithPath("content").type(JsonFieldType.STRING).description("수정 내용"),
+            fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 ID"),
+            fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 ID")
         ),
         POST_RESPONSE_FIELDS_SNIPPET));
     ;
@@ -217,15 +224,14 @@ class PostControllerTest {
   void test_update_post_with_wrong_payload() throws Exception {
 
     // Given
-    String id = "0";
     String wrongContent = "d";
     String wrongTitle = "t";
     String wrongPayload = json.writeValueAsString(
-        Map.of("title", wrongTitle, "content", wrongContent));
+        Map.of("userId", 2, "postId", -3, "title", wrongTitle, "content", wrongContent));
 
     // When
     ResultActions resultActions = mockMvc.perform(
-        post(BASE_URL + "/" + id)
+        put(BASE_URL)
             .contentType(MediaType.APPLICATION_JSON)
             .content(wrongPayload));
 
@@ -239,8 +245,10 @@ class PostControllerTest {
     ).andDo(document("post-update-failure",
         requestFields(
             fieldWithPath("title").type(JsonFieldType.STRING).description("수정 제목"),
-            fieldWithPath("content").type(JsonFieldType.STRING).description("수정 내용")
-        ),
+            fieldWithPath("content").type(JsonFieldType.STRING).description("수정 내용"),
+            fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 ID"),
+            fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 ID"))
+        ,
         responseFields(
             fieldWithPath("content").type(JsonFieldType.STRING).description("잘못된 content 입력값 설명"),
             fieldWithPath("title").type(JsonFieldType.STRING).description("잘못된 title 입력값 설명"),
@@ -260,7 +268,7 @@ class PostControllerTest {
     var title = "newTitle";
     var content = "newContent";
     var requestPayload = json.writeValueAsString(
-        Map.of("userId", savedUserId, "title", title, "content", content));
+        Map.of("title", title, "content", content, "userId", savedUserId));
 
     // When
     ResultActions resultActions = mockMvc.perform(

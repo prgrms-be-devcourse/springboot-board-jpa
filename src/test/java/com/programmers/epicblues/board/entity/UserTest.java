@@ -2,6 +2,7 @@ package com.programmers.epicblues.board.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import util.EntityFixture;
@@ -35,8 +36,8 @@ class UserTest {
   void test() {
 
     // Given
-    var user = EntityFixture.getUser();
-    var post = EntityFixture.getFirstPost();
+    User user = EntityFixture.getUser();
+    Post post = EntityFixture.getFirstPost();
 
     // When
     user.addPost(post);
@@ -50,8 +51,8 @@ class UserTest {
   void add_posts_test() {
 
     // Given
-    var user = EntityFixture.getUser();
-    var posts = EntityFixture.getPostList();
+    User user = EntityFixture.getUser();
+    List<Post> posts = EntityFixture.getPostList();
     // When
     user.addPosts(posts);
 

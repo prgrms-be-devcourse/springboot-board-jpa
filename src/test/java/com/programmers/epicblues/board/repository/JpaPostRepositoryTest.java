@@ -4,7 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.programmers.epicblues.board.entity.BaseEntity;
 import com.programmers.epicblues.board.entity.Post;
+import com.programmers.epicblues.board.entity.User;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,13 +36,13 @@ class JpaPostRepositoryTest {
   @DisplayName("@Transactional이 없을 때 save된 post는 영속 컨텍스트에 계속 유지되지 않는다.")
   void saved_post_detach_from_context_when_transaction_is_not_annotated() {
     // Given
-    var post = Post.builder().content("hello").title("world").build();
+    Post post = Post.builder().content("hello").title("world").build();
 
     // When
-    var maybePersistedPost = jpaPostRepository.save(post);
+    Post maybePersistedPost = jpaPostRepository.save(post);
 
     // Then
-    var queriedPost = jpaPostRepository.findById(maybePersistedPost.getId()).orElseThrow();
+    Post queriedPost = jpaPostRepository.findById(maybePersistedPost.getId()).orElseThrow();
     assertThat(queriedPost).isNotSameAs(maybePersistedPost);
     assertThat(maybePersistedPost).isEqualTo(post);
 
@@ -51,14 +54,14 @@ class JpaPostRepositoryTest {
   @DisplayName("@Transactional이 없을 때 save 메서드로 반환된 post를 수정해도 영속성 컨텍스트에 반영되지 않는다.")
   void change_test() {
     // Given
-    var post = Post.builder().content("hello").title("world").build();
-    var maybePersistedPost = jpaPostRepository.save(post);
+    Post post = Post.builder().content("hello").title("world").build();
+    Post maybePersistedPost = jpaPostRepository.save(post);
 
     // When
     maybePersistedPost.updateContent("babo");
 
     //Then
-    var queriedPost = jpaPostRepository.findById(maybePersistedPost.getId()).orElseThrow();
+    Post queriedPost = jpaPostRepository.findById(maybePersistedPost.getId()).orElseThrow();
     assertThat(queriedPost).isNotSameAs(maybePersistedPost);
     assertThat(queriedPost.getContent()).isNotEqualTo(maybePersistedPost.getContent());
 
@@ -69,14 +72,14 @@ class JpaPostRepositoryTest {
   @DisplayName("@Transactional이 있을 때 save 메서드로 반환된 post를 수정할 경우 영속성 컨텍스트에도 이 내용이 반영된다.")
   void change_test_with_transactional_annotation() {
     // Given
-    var post = Post.builder().content("hello").title("world").build();
-    var persistedPost = jpaPostRepository.save(post);
+    Post post = Post.builder().content("hello").title("world").build();
+    Post persistedPost = jpaPostRepository.save(post);
 
     // When
     persistedPost.updateContent("babo");
 
     //Then
-    var queriedPost = jpaPostRepository.findById(persistedPost.getId()).orElseThrow();
+    Post queriedPost = jpaPostRepository.findById(persistedPost.getId()).orElseThrow();
     assertThat(queriedPost).isSameAs(persistedPost);
   }
 
@@ -86,14 +89,14 @@ class JpaPostRepositoryTest {
   void find_all_with_pageable_test() {
 
     // Given
-    var user = EntityFixture.getUser();
-    var posts = EntityFixture.getPostList();
+    User user = EntityFixture.getUser();
+    List<Post> posts = EntityFixture.getPostList();
     user.addPosts(posts);
     entityManager.persist(user);
     entityManager.flush();
 
     // When
-    var queriedPosts = jpaPostRepository.findAll(PageRequest.of(1, 2)).getContent();
+    List<Post> queriedPosts = jpaPostRepository.findAll(PageRequest.of(1, 2)).getContent();
 
     // Then
     assertThat(queriedPosts).containsAnyElementsOf(posts).hasSize(2);
@@ -105,15 +108,15 @@ class JpaPostRepositoryTest {
   void find_all_with_pageable_test_with_created_at_sorted() {
 
     // Given
-    var user = EntityFixture.getUser();
+    User user = EntityFixture.getUser();
     // post는 정렬되어 있다.
-    var posts = EntityFixture.getPostList();
+    List<Post> posts = EntityFixture.getPostList();
     user.addPosts(posts);
     entityManager.persist(user);
     entityManager.flush();
 
     // When
-    var queriedPosts = jpaPostRepository.findAll(
+    List<Post> queriedPosts = jpaPostRepository.findAll(
             PageRequest.of(0, 4, Sort.by("createdAt").descending()))
         .getContent();
 
@@ -131,12 +134,12 @@ class JpaPostRepositoryTest {
   void findById() {
 
     // Given
-    var posts = EntityFixture.getPostList();
-    var targetPost = posts.get(1);
+    List<Post> posts = EntityFixture.getPostList();
+    Post targetPost = posts.get(1);
     jpaPostRepository.saveAll(posts);
 
     // When
-    var persistedPost = jpaPostRepository.findById(targetPost.getId());
+    Optional<Post> persistedPost = jpaPostRepository.findById(targetPost.getId());
 
     // Then
     assertThat(persistedPost).isNotEmpty().contains(targetPost);
@@ -147,8 +150,8 @@ class JpaPostRepositoryTest {
   @DisplayName("Post가 save되면 Post의 createdAt 필드가 할당된다.")
   void test_save_assign_required_data_from_database() {
     //given
-    var user = EntityFixture.getUser();
-    var post = EntityFixture.getFirstPost();
+    User user = EntityFixture.getUser();
+    Post post = EntityFixture.getFirstPost();
     entityManager.persist(user);
     entityManager.flush();
 

@@ -2,13 +2,15 @@ package com.programmers.epicblues.board.dto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Set;
+import java.util.stream.Stream;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class PostRequestTest {
+class UpdatePostRequestTest {
 
   static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -17,14 +19,14 @@ class PostRequestTest {
   void validationTest() {
 
     // Given
-    PostRequest postRequest = new PostRequest("y", null);
+    UpdatePostRequest updatePostRequest = new UpdatePostRequest("y", null, 1L, 4L);
 
     // When
-    var violationResults = validator.validate(postRequest);
+    Set<ConstraintViolation<UpdatePostRequest>> violationResults = validator.validate(updatePostRequest);
 
     // Then
     assertThat(violationResults).isNotEmpty();
-    var messages = violationResults.stream().map(ConstraintViolation::getMessage);
+    Stream<String> messages = violationResults.stream().map(ConstraintViolation::getMessage);
     assertThat(messages).containsExactlyInAnyOrder("길이가 3 이상 200 이하여야 합니다.",
         "content를 반드시 입력하셔야 합니다.");
 

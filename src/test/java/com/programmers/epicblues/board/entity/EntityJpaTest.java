@@ -117,7 +117,7 @@ class EntityJpaTest {
     entityManager.detach(USER_FIXTURE);
 
     // Then
-    var queriedUser = entityManager.find(User.class, USER_FIXTURE.getId());
+    User queriedUser = entityManager.find(User.class, USER_FIXTURE.getId());
     assertThat(queriedUser).isNotEqualTo(USER_FIXTURE);
     assertThat(queriedUser.getPosts()).hasSize(2);
 

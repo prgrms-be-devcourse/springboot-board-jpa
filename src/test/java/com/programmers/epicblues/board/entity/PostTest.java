@@ -35,8 +35,8 @@ class PostTest {
   void assign_user_test() {
 
     // Given
-    var post = EntityFixture.getFirstPost();
-    var user = EntityFixture.getUser();
+    Post post = EntityFixture.getFirstPost();
+    User user = EntityFixture.getUser();
 
     // When
     post.assignUser(user);

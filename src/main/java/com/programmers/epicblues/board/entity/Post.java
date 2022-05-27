@@ -53,7 +53,7 @@ public class Post extends BaseEntity {
 
   public void removeUser() {
     if (this.user != null) {
-      var removeTarget = this.user;
+      User removeTarget = this.user;
       this.user = null;
       removeTarget.removePostById(id);
     }
