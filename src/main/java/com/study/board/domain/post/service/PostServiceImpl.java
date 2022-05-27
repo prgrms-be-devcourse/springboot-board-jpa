@@ -44,9 +44,7 @@ public class PostServiceImpl implements PostService {
         User editor = findUserByLoginId(editorLoginId);
         Post post = findPostById(postId);
 
-        checkEditable(post, editor);
-
-        return post.edit(title, content);
+        return post.edit(title, content, editor.getId());
     }
 
     private User findUserByLoginId(String name) {
@@ -57,9 +55,5 @@ public class PostServiceImpl implements PostService {
         return postRepository.findById(postId).orElseThrow(IllegalArgumentException::new);
     }
 
-    private void checkEditable(Post post, User editor) {
-        if (!post.isWrittenBy(editor)) {
-            throw new IllegalArgumentException();
-        }
-    }
+
 }

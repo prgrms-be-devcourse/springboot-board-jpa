@@ -47,9 +47,10 @@ public class Post extends BaseIdEntity {
         this.writer = writer;
     }
 
-    public Post edit(String title, String content) {
+    public Post edit(String title, String content, Long editorId) {
         checkTitle(title);
         checkContent(content);
+        checkEditable(editorId);
 
         this.title = title;
         this.content = content;
@@ -70,7 +71,9 @@ public class Post extends BaseIdEntity {
         checkNotNull(writer, "writer - null 이 될 수 없음");
     }
 
-    public boolean isWrittenBy(User user) {
-        return writer.getId().equals(user.getId());
+    private void checkEditable(Long editorId) {
+        if (!writer.getId().equals(editorId)) {
+            throw new IllegalArgumentException();
+        }
     }
 }
