@@ -12,6 +12,7 @@ import prgrms.project.post.util.mapper.UserMapper;
 
 import java.util.NoSuchElementException;
 
+import static java.text.MessageFormat.format;
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
@@ -31,8 +32,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserDto searchById(Long id) {
-        var retrievedUser = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Can't find any userDto"));
+    public UserDto searchById(Long userId) {
+        var retrievedUser = userRepository.findById(userId).orElseThrow(
+            () -> new NoSuchElementException(
+                format("id{0} 의 회원을 찾을 수 없습니다.", userId)
+            )
+        );
 
         return userMapper.toDto(retrievedUser);
     }
@@ -44,14 +49,18 @@ public class UserService {
 
     @Transactional
     public Long updateUser(Long userId, UserDto userDto) {
-        var retrievedUser = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("Can't find any userDto"));
+        var retrievedUser = userRepository.findById(userId).orElseThrow(
+            () -> new NoSuchElementException(
+                format("id{0} 의 회원을 찾을 수 없습니다.", userId)
+            )
+        );
         var updatedUser = retrievedUser.updateUserInfo(userDto.name(), userDto.age(), userDto.hobbies().stream().map(hobbyMapper::toEntity).collect(toSet()));
 
         return updatedUser.getId();
     }
 
     @Transactional
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
+    public void deleteById(Long userId) {
+        userRepository.deleteById(userId);
     }
 }

@@ -11,6 +11,8 @@ import prgrms.project.post.util.mapper.PostMapper;
 
 import java.util.NoSuchElementException;
 
+import static java.text.MessageFormat.format;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -27,8 +29,12 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostDto searchById(Long id) {
-        var retrievedPost = postRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Can't find post"));
+    public PostDto searchById(Long postId) {
+        var retrievedPost = postRepository.findById(postId).orElseThrow(
+            () -> new NoSuchElementException(
+                format("id{0} 의 게시글을 찾을 수 없습니다.", postId)
+            )
+        );
 
         return postMapper.toDto(retrievedPost);
     }
@@ -40,14 +46,18 @@ public class PostService {
     }
 
     @Transactional
-    public Long updatePost(Long id, PostDto postDto) {
-        var retrievedPost = postRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Can't find post"));
+    public Long updatePost(Long postId, PostDto postDto) {
+        var retrievedPost = postRepository.findById(postId).orElseThrow(
+            () -> new NoSuchElementException(
+                format("id{0} 의 게시글을 찾을 수 없습니다.", postId)
+            )
+        );
 
         return retrievedPost.updateTitleAndContent(postDto.title(), postDto.content()).getId();
     }
 
     @Transactional
-    public void deleteById(Long id) {
-        postRepository.deleteById(id);
+    public void deleteById(Long postId) {
+        postRepository.deleteById(postId);
     }
 }
