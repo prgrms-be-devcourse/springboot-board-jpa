@@ -18,18 +18,34 @@ public class PostRestController {
     private final PostService postService;
 
     @GetMapping
-    public List<PostResponse> findAll(Pageable pageable){
+    public List<PostResponse> findAll(Pageable pageable) {
         return postService.findAll(pageable).stream().map(PostResponse::convert).collect(Collectors.toList());
     }
 
     @GetMapping("/{postId}")
-    public PostResponse findById(@PathVariable Long postId){
+    public PostResponse findById(@PathVariable Long postId) {
         return PostResponse.convert(postService.findById(postId));
     }
-    
+
+    /**
+     * 인증 필요 - http 인가 헤더에 사용자 이름을 포함하는 것으로 대체
+     */
     @PostMapping
-    public PostResponse upload(@RequestHeader("Authorization") String username, @RequestBody PostRequest postRequest){
+    public PostResponse upload(@RequestHeader("Authorization") String username, @RequestBody PostRequest postRequest) {
         return PostResponse.convert(postService.write(
+                postRequest.getTitle(),
+                postRequest.getContent(),
+                username
+        ));
+    }
+
+    /**
+     * 인증 필요 - http 인가 헤더에 사용자 이름을 포함하는 것으로 대체
+     */
+    @PutMapping("/{postId}")
+    public PostResponse edit(@RequestHeader("Authorization") String username, @RequestBody PostRequest postRequest, @PathVariable Long postId) {
+        return PostResponse.convert(postService.edit(
+                postId,
                 postRequest.getTitle(),
                 postRequest.getContent(),
                 username
