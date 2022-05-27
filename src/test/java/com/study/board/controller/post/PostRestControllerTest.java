@@ -1,5 +1,7 @@
 package com.study.board.controller.post;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.study.board.controller.PostRestController;
 import com.study.board.controller.support.RestDocsTestSupport;
 import com.study.board.domain.post.domain.Post;
@@ -15,6 +17,7 @@ import static com.study.board.fixture.Fixture.createUser;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -68,7 +71,7 @@ class PostRestControllerTest extends RestDocsTestSupport {
         Long targetPostId = post1.getId();
 
         mockMvc.perform(get("/posts/" + targetPostId)
-                .contentType(APPLICATION_JSON))
+                        .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpectAll(
                         jsonPath("$.id", targetPostId).exists(),
@@ -79,12 +82,27 @@ class PostRestControllerTest extends RestDocsTestSupport {
                 );
     }
 
+    /**
+     * 인증 필요 - http 헤더에 사용자 이름을 포함하는 것으로 대체
+     */
     @Test
-    void 없는_게시글을_단건_조회_할_수_없음() throws Exception {
-        long illegalPostId = 100;
+    void 게시글_등록() throws Exception {
+        ObjectNode postRequest = new ObjectMapper().createObjectNode()
+                .put("title", "제목")
+                .put("content", "내용");
 
-        mockMvc.perform(get("/posts/" + illegalPostId)
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(post("/posts")
+                        .header("Authorization", "득윤")
+                        .contentType(APPLICATION_JSON)
+                        .content(createJson(postRequest)))
+                .andExpect(status().isOk())
+                .andExpectAll(
+                        jsonPath("$.id").exists(),
+                        jsonPath("$.title", "제목").exists(),
+                        jsonPath("$.content", "제목").exists(),
+                        jsonPath("$.writer", "득윤").exists(),
+                        jsonPath("$.writtenDateTime").exists()
+                );
     }
+
 }
