@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class PostService {
 
     private final PostRepository postRepository;
@@ -25,7 +26,6 @@ public class PostService {
         this.userRepository = userRepository;
     }
 
-    @Transactional
     public Long create(CreatePostDto postDto) {
         findUser(postDto.getUserDto().getId());
 
@@ -34,7 +34,6 @@ public class PostService {
         return save.getId();
     }
 
-    @Transactional
     public Long update(Long postId, UpdatePostDto postDto) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Id로 조회되는 게시글이 없음"));
