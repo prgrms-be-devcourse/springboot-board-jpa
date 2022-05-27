@@ -17,8 +17,13 @@ import static com.study.board.fixture.Fixture.createUser;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
+//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,52 +53,61 @@ class PostRestControllerTest extends RestDocsTestSupport {
 
     @Test
     void 게시글_페이징_조회() throws Exception {
-        mockMvc.perform(get("/posts")
+        mockMvc.perform(get("/posts?page=0&size=20&sort=writtenDateTime,DESC")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpectAll(
-                        jsonPath("$[0].id").exists(),
+                        jsonPath("$[0].postId").exists(),
                         jsonPath("$[0].title", "제목1").exists(),
                         jsonPath("$[0].content", "내용1").exists(),
                         jsonPath("$[0].writer", "득윤").exists(),
                         jsonPath("$[0].writtenDateTime").exists()
                 ).andExpectAll(
-                        jsonPath("$[1].id").exists(),
+                        jsonPath("$[1].postId").exists(),
                         jsonPath("$[1].title", "제목2").exists(),
                         jsonPath("$[1].content", "내용2").exists(),
                         jsonPath("$[1].writer", "득윤").exists(),
                         jsonPath("$[1].writtenDateTime").exists()
                 ).andDo(
                         restDocs.document(
+                                requestParameters(
+                                        parameterWithName("page").description("조회할 페이지 번호 (0부터), default : 0"),
+                                        parameterWithName("size").description("한 페이지 당 조회 게시글 수, default : 20"),
+                                        parameterWithName("sort").description("정렬 기준 (fieldName),(ASC|DESC), default : writtenDateTime,DESC")
+                                ),
                                 responseFields(
-                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
-                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
-                                        fieldWithPath("writer").type(JsonFieldType.STRING).description("작성자 이름"),
-                                        fieldWithPath("writtenDateTime").type(JsonFieldType.STRING).description("작성 일시")
+                                        fieldWithPath("[].postId").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                                        fieldWithPath("[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("[].content").type(JsonFieldType.STRING).description("게시글 내용"),
+                                        fieldWithPath("[].writer").type(JsonFieldType.STRING).description("작성자 이름"),
+                                        fieldWithPath("[].writtenDateTime").type(JsonFieldType.STRING).description("작성 일시")
                                 )
                         )
-                );;
+                );
+        ;
     }
 
     @Test
     void 게시글_단건_조회() throws Exception {
         Long targetPostId = post1.getId();
 
-        mockMvc.perform(get("/posts/" + targetPostId)
+        mockMvc.perform(get("/posts/{postId}", targetPostId )
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpectAll(
-                        jsonPath("$.id", targetPostId).exists(),
+                        jsonPath("$.postId", targetPostId).exists(),
                         jsonPath("$.title", "제목1").exists(),
                         jsonPath("$.content", "내용1").exists(),
                         jsonPath("$.writer", "득윤").exists(),
                         jsonPath("$.writtenDateTime").exists()
                 ).andDo(
                         restDocs.document(
+                                pathParameters( // path 파라미터 정보 입력
+                                        parameterWithName("postId").description("게시글 아이디")
+                                ),
                                 responseFields(
-                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                                        fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 아이디"),
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
                                         fieldWithPath("writer").type(JsonFieldType.STRING).description("작성자 이름"),
@@ -104,7 +118,7 @@ class PostRestControllerTest extends RestDocsTestSupport {
     }
 
     @Test
-    void 게시글_등록() throws Exception {
+    void 게시글_업로드() throws Exception {
         ObjectNode postRequest = objectMapper.createObjectNode()
                 .put("title", "제목")
                 .put("content", "내용");
@@ -115,18 +129,22 @@ class PostRestControllerTest extends RestDocsTestSupport {
                         .content(createJson(postRequest)))
                 .andExpect(status().isOk())
                 .andExpectAll(
-                        jsonPath("$.id").exists(),
+                        jsonPath("$.postId").exists(),
                         jsonPath("$.title", "제목").exists(),
                         jsonPath("$.content", "제목").exists(),
                         jsonPath("$.writer", "득윤").exists(),
                         jsonPath("$.writtenDateTime").exists()
                 ).andDo(
                         restDocs.document(
+                                requestHeaders(
+                                        headerWithName(AUTHORIZATION).description("인증 대체 - 사용자 이름을 포함해주세요")
+                                ),
                                 requestFields(
-                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목")
+                                                .attributes(key("길이 제한").value("255 이하")),
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용")
                                 ), responseFields(
-                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                                        fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 아이디"),
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
                                         fieldWithPath("writer").type(JsonFieldType.STRING).description("작성자 이름"),
@@ -149,18 +167,21 @@ class PostRestControllerTest extends RestDocsTestSupport {
                         .content(createJson(postRequest)))
                 .andExpect(status().isOk())
                 .andExpectAll(
-                        jsonPath("$.id").exists(),
+                        jsonPath("$.postId").exists(),
                         jsonPath("$.title", "수정 제목").exists(),
                         jsonPath("$.content", "수정 제목").exists(),
                         jsonPath("$.writer", "득윤").exists(),
                         jsonPath("$.writtenDateTime").exists()
                 ).andDo(
                         restDocs.document(
+                                requestHeaders(
+                                        headerWithName(AUTHORIZATION).description("인증 대체 - 사용자 이름을 포함해주세요")
+                                ),
                                 requestFields(
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 수정 제목"),
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 수정 내용")
                                 ), responseFields(
-                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                                        fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 아이디"),
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 수정 제목"),
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 수정 내용"),
                                         fieldWithPath("writer").type(JsonFieldType.STRING).description("작성자 이름"),

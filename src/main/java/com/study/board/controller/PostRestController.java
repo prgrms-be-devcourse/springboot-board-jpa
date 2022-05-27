@@ -5,10 +5,13 @@ import com.study.board.controller.dto.PostResponse;
 import com.study.board.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RestController
 @RequestMapping("/posts")
@@ -18,7 +21,7 @@ public class PostRestController {
     private final PostService postService;
 
     @GetMapping
-    public List<PostResponse> findAll(Pageable pageable) {
+    public List<PostResponse> findAll(@PageableDefault(size = 20, sort = "writtenDateTime",  direction = DESC) Pageable pageable) {
         return postService.findAll(pageable).stream().map(PostResponse::convert).collect(Collectors.toList());
     }
 

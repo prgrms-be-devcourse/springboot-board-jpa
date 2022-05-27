@@ -12,7 +12,7 @@ import static lombok.AccessLevel.PRIVATE;
 @RequiredArgsConstructor(access = PRIVATE)
 public class PostResponse {
 
-    private final long id;
+    private final long postId;
     private final String title;
     private final String content;
     private final String writer;

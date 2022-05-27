@@ -1,0 +1,25 @@
+
+[[POST-API]]
+== Post API
+'''
+
+[[Post-페이징-조회]]
+=== Post 페이징 조회
+operation::/post-rest-controller-test/게시글_페이징_조회/[snippets='request-parameters,http-request,http-response,response-fields']
+'''
+
+[[Post-단건-조회]]
+=== Post 단건 조회
+operation::/post-rest-controller-test/게시글_단건_조회/[snippets='path-parameters,http-request,http-response,response-fields']
+'''
+
+[[Post-업로드]]
+=== Post 업로드
+operation::/post-rest-controller-test/게시글_업로드/[snippets='request-headers,http-request,request-fields,http-response,response-fields']
+'''
+
+[[Post-수정]]
+=== Post 수정
+operation::/post-rest-controller-test/게시글_수정/[snippets='request-headers,http-request,request-fields,http-response,response-fields']
+'''
+
