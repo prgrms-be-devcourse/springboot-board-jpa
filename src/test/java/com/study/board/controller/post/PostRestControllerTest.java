@@ -84,7 +84,7 @@ class PostRestControllerTest extends RestDocsTestSupport {
 
     @Test
     void 게시글_등록() throws Exception {
-        ObjectNode postRequest = new ObjectMapper().createObjectNode()
+        ObjectNode postRequest = objectMapper.createObjectNode()
                 .put("title", "제목")
                 .put("content", "내용");
 
@@ -105,7 +105,7 @@ class PostRestControllerTest extends RestDocsTestSupport {
     @Test
     void 게시글_수정() throws Exception {
         Long postId = post1.getId();
-        ObjectNode postRequest = new ObjectMapper().createObjectNode()
+        ObjectNode postRequest = objectMapper.createObjectNode()
                 .put("title", "수정 제목")
                 .put("content", "수정 내용");
 
@@ -121,7 +121,5 @@ class PostRestControllerTest extends RestDocsTestSupport {
                         jsonPath("$.writer", "득윤").exists(),
                         jsonPath("$.writtenDateTime").exists()
                 );
-
-
     }
 }

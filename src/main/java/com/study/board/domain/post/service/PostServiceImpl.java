@@ -49,7 +49,7 @@ public class PostServiceImpl implements PostService {
         return post.edit(title, content);
     }
 
-    private User findUserByName(String name){
+    private User findUserByName(String name) {
         return userRepository.findByName(name).orElseThrow(IllegalArgumentException::new);
     }
 
