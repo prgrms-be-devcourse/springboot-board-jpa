@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static com.study.board.fixture.Fixture.createUser;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -92,7 +93,7 @@ class PostRestControllerTest extends RestDocsTestSupport {
                 .put("content", "내용");
 
         mockMvc.perform(post("/posts")
-                        .header("Authorization", "득윤")
+                        .header(AUTHORIZATION, "득윤")
                         .contentType(APPLICATION_JSON)
                         .content(createJson(postRequest)))
                 .andExpect(status().isOk())

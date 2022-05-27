@@ -11,7 +11,7 @@ public interface PostService {
 
     Post findById(Long postId);
 
-    Post write(String title, String content, User writer);
+    Post write(String title, String content, String writerName);
 
-    Post edit(Long postId, String title, String content, User editor);
+    Post edit(Long postId, String title, String content, String editorName);
 }
