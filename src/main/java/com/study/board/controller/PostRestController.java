@@ -21,7 +21,7 @@ public class PostRestController {
     private final PostService postService;
 
     @GetMapping
-    public List<PostResponse> findAll(@PageableDefault(size = 20, sort = "writtenDateTime",  direction = DESC) Pageable pageable) {
+    public List<PostResponse> findAll(@PageableDefault(size = 20, sort = "writtenDateTime", direction = DESC) Pageable pageable) {
         return postService.findAll(pageable).stream().map(PostResponse::convert).collect(Collectors.toList());
     }
 

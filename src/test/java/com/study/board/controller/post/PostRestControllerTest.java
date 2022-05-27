@@ -90,7 +90,7 @@ class PostRestControllerTest extends RestDocsTestSupport {
     void 게시글_단건_조회() throws Exception {
         Long targetPostId = post1.getId();
 
-        mockMvc.perform(get("/posts/{postId}", targetPostId )
+        mockMvc.perform(get("/posts/{postId}", targetPostId)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpectAll(
