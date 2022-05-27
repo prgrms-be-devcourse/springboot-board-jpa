@@ -17,8 +17,7 @@ import static com.study.board.fixture.Fixture.createUser;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -83,9 +82,6 @@ class PostRestControllerTest extends RestDocsTestSupport {
                 );
     }
 
-    /**
-     * 인증 필요 - http 헤더에 사용자 이름을 포함하는 것으로 대체
-     */
     @Test
     void 게시글_등록() throws Exception {
         ObjectNode postRequest = new ObjectMapper().createObjectNode()
@@ -106,4 +102,26 @@ class PostRestControllerTest extends RestDocsTestSupport {
                 );
     }
 
+    @Test
+    void 게시글_수정() throws Exception {
+        Long postId = post1.getId();
+        ObjectNode postRequest = new ObjectMapper().createObjectNode()
+                .put("title", "수정 제목")
+                .put("content", "수정 내용");
+
+        mockMvc.perform(put("/posts/" + postId)
+                        .header(AUTHORIZATION, "득윤")
+                        .contentType(APPLICATION_JSON)
+                        .content(createJson(postRequest)))
+                .andExpect(status().isOk())
+                .andExpectAll(
+                        jsonPath("$.id").exists(),
+                        jsonPath("$.title", "수정 제목").exists(),
+                        jsonPath("$.content", "수정 제목").exists(),
+                        jsonPath("$.writer", "득윤").exists(),
+                        jsonPath("$.writtenDateTime").exists()
+                );
+
+
+    }
 }
