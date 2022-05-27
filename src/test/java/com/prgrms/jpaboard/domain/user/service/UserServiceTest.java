@@ -26,7 +26,6 @@ class UserServiceTest {
             new UserRequestDto("jerry", 25, "누워있기");
 
     private User user = User.builder()
-            .id(1L)
             .age(25)
             .hobby("누워있기")
             .build();

@@ -28,12 +28,11 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public Post() {
+    protected Post() {
     }
 
-    public Post(String createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String title, String content) {
+    public Post(String createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, String title, String content) {
         super(createdBy, createdAt, updatedAt);
-        this.id = id;
         this.title = title;
         this.content = content;
     }
@@ -43,17 +42,11 @@ public class Post extends BaseEntity {
     }
 
     public static class PostBuilder {
-        private Long id;
         private String title;
         private String content;
         private String createdBy;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-
-        public PostBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }
 
         public PostBuilder title(String title) {
             this.title = title;
@@ -81,7 +74,7 @@ public class Post extends BaseEntity {
         }
 
         public Post build() {
-            return new Post(createdBy, createdAt, updatedAt, id, title, content);
+            return new Post(createdBy, createdAt, updatedAt, title, content);
         }
     }
 

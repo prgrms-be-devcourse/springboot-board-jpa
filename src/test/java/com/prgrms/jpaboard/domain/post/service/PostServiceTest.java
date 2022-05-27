@@ -33,15 +33,9 @@ class PostServiceTest {
     private PostCreateDto postCreateDto = new PostCreateDto(1L, "제목", "내용");
 
     private User user = User.builder()
-            .id(1L)
             .build();
 
     private Post post = Post.builder()
-            .id(1L)
-            .build();
-
-    private Post post2 = Post.builder()
-            .id(1L)
             .build();
 
     private PostUpdateDto postUpdateDto = new PostUpdateDto("수정된 제목", "수정된 내용");

@@ -26,12 +26,11 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private List<Post> posts = new ArrayList<>();
 
-    public User() {
+    protected User() {
     }
 
-    public User(String createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String name, int age, String hobby) {
+    public User(String createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, String name, int age, String hobby) {
         super(createdBy, createdAt, updatedAt);
-        this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;
@@ -42,18 +41,12 @@ public class User extends BaseEntity {
     }
 
     public static class UserBuilder {
-        private Long id;
         private String name;
         private int age;
         private String hobby;
         private String createdBy;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-
-        public UserBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }
 
         public UserBuilder name(String name) {
             this.name = name;
@@ -86,7 +79,7 @@ public class User extends BaseEntity {
         }
 
         public User build() {
-            return new User(createdBy, createdAt, updatedAt, id, name, age, hobby);
+            return new User(createdBy, createdAt, updatedAt,  name, age, hobby);
         }
     }
 
