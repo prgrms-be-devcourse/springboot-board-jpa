@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends CreatedEntity{
+public class User extends BasedTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -24,6 +24,7 @@ public class User extends CreatedEntity{
 
     @PositiveOrZero
     private int age;
+
     private String hobby;
 
     @OneToMany(mappedBy = "user")

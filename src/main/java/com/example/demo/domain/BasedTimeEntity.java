@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @MappedSuperclass
-public class CreatedEntity {
+public class BasedTimeEntity {
 
     @Column(name = "created_by")
     private String createdBy;
@@ -16,8 +16,15 @@ public class CreatedEntity {
     @Column(name = "created_at", columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime updatedAt;
+
     protected void addCreator(String createdBy) {
         this.createdBy = createdBy;
         createdAt = LocalDateTime.now();
+    }
+
+    protected void changeUpdatedTime() {
+        this.updatedAt = LocalDateTime.now();
     }
 }

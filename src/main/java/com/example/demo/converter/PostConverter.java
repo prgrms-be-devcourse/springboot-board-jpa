@@ -23,6 +23,7 @@ public class PostConverter {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .userDto(this.convertUserDto(post.getUser()))
+                .updatedAt(post.getUpdatedAt())
                 .build();
     }
 

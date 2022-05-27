@@ -90,5 +90,6 @@ class PostServiceTest {
         PostDto updatedPost = postService.updateTitleAndContent(postDto, postId);
 
         assertThat(updatedPost.getTitle()).isEqualTo("this is changed title");
+        assertThat(updatedPost.getUpdatedAt()).isNotNull();
     }
 }

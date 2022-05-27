@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post extends CreatedEntity{
+public class Post extends BasedTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -33,5 +33,6 @@ public class Post extends CreatedEntity{
     public void changeTitleAndContent(String title, String content) {
         this.title = title;
         this.content = content;
+        changeUpdatedTime();
     }
 }
