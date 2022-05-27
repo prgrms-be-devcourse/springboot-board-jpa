@@ -4,8 +4,6 @@ import org.programmers.board.entity.vo.Name;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -23,8 +21,8 @@ public class User extends BaseEntity {
 
     private String hobby;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Board> boards = new ArrayList<>();
+    @Embedded
+    private Boards boards = new Boards();
 
     protected User() {
 
@@ -57,7 +55,7 @@ public class User extends BaseEntity {
         return hobby;
     }
 
-    public List<Board> getBoards() {
+    public Boards getBoards() {
         return boards;
     }
 }
