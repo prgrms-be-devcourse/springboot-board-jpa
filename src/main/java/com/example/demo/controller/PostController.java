@@ -17,11 +17,6 @@ public class PostController {
         this.postService = postService;
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ApiResponse<String> notFoundHandler(NotFoundException e) {
-        return ApiResponse.fail(404, e.getMessage());
-    }
-
     @GetMapping("/posts/{id}")
     public ApiResponse<PostDto> getOne(@PathVariable Long id) throws NotFoundException {
         PostDto returnPost = postService.findOne(id);
