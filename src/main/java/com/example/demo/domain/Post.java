@@ -20,7 +20,7 @@ public class Post extends BasedTimeEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Post(String title, String content, User user) {
