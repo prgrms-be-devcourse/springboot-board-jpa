@@ -10,7 +10,7 @@ public interface PostService {
 
     Post findById(Long postId);
 
-    Post write(String title, String content, String writerName);
+    Post write(String title, String content, String writerLoginId);
 
-    Post edit(Long postId, String title, String content, String editorName);
+    Post edit(Long postId, String title, String content, String editorLoginId);
 }

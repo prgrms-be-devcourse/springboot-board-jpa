@@ -6,7 +6,7 @@ import com.study.board.domain.user.domain.User;
 public class Fixture {
 
     public static User createUser() {
-        return new User("득윤", "체스");
+        return new User("ndy", "득윤", "체스");
     }
 
     public static Post createPost() {

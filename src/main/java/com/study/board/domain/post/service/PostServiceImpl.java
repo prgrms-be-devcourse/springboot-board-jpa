@@ -32,16 +32,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post write(String title, String content, String writerName) {
-        User writer = findUserByName(writerName);
+    public Post write(String title, String content, String writerLoginId) {
+        User writer = findUserByLoginId(writerLoginId);
         Post post = new Post(title, content, writer);
 
         return postRepository.save(post);
     }
 
     @Override
-    public Post edit(Long postId, String title, String content, String editorName) {
-        User editor = findUserByName(editorName);
+    public Post edit(Long postId, String title, String content, String editorLoginId) {
+        User editor = findUserByLoginId(editorLoginId);
         Post post = findPostById(postId);
 
         checkEditable(post, editor);
@@ -49,8 +49,8 @@ public class PostServiceImpl implements PostService {
         return post.edit(title, content);
     }
 
-    private User findUserByName(String name) {
-        return userRepository.findByName(name).orElseThrow(IllegalArgumentException::new);
+    private User findUserByLoginId(String name) {
+        return userRepository.findByLoginId(name).orElseThrow(IllegalArgumentException::new);
     }
 
     private Post findPostById(Long postId) {
