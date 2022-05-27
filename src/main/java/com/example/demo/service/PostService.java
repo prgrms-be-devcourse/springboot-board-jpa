@@ -24,7 +24,7 @@ public class PostService {
         this.postConverter = postConverter;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PostDto findOne(Long postId) throws NotFoundException {
         return postRepository.findById(postId)
                 .map(postConverter::convertPostDto)
@@ -38,7 +38,7 @@ public class PostService {
         return savedPost.getId();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PostDto> findAllByPage(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(postConverter::convertPostDto);
