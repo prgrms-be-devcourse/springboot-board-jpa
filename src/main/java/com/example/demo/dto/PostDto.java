@@ -1,18 +1,15 @@
 package com.example.demo.dto;
 
 import lombok.Builder;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Builder
-public class PostDto {
-    private Long id;
-    private String title;
-    private String content;
 
-    private LocalDateTime updatedAt;
+public record PostDto(Long id, String title, String content, LocalDateTime updatedAt, UserDto userDto) {
 
-    private UserDto userDto;
+    @Builder
+    public PostDto{
+
+    }
+
 }

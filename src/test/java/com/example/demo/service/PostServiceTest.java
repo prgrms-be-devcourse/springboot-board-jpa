@@ -57,7 +57,7 @@ class PostServiceTest {
     void findOneTest() throws NotFoundException {
         Long findPostId = postId;
         PostDto returnPostDto = postService.findOne(findPostId);
-        assertThat(returnPostDto.getId()).isEqualTo(findPostId);
+        assertThat(returnPostDto.id()).isEqualTo(findPostId);
     }
 
     @Test
@@ -82,14 +82,15 @@ class PostServiceTest {
                 .age(100)
                 .hobby("hair change")
                 .build();
-        PostDto postDto = PostDto.builder()
+        PostDto postDto = PostDto
+                .builder()
                 .title("this is changed title")
                 .content("this is changed contents")
                 .userDto(userDto)
                 .build();
         PostDto updatedPost = postService.updateTitleAndContent(postDto, postId);
 
-        assertThat(updatedPost.getTitle()).isEqualTo("this is changed title");
-        assertThat(updatedPost.getUpdatedAt()).isNotNull();
+        assertThat(updatedPost.title()).isEqualTo("this is changed title");
+        assertThat(updatedPost.updatedAt()).isNotNull();
     }
 }

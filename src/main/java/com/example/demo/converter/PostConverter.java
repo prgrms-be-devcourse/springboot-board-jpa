@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 public class PostConverter {
 
     public Post convertPost(PostDto postDto) {
-        return new Post(postDto.getTitle(), postDto.getContent(), convertUser(postDto.getUserDto()));
+        return new Post(postDto.title(), postDto.content(), convertUser(postDto.userDto()));
     }
 
     private User convertUser(UserDto userDto) {
-        return new User(userDto.getName(), userDto.getAge(), userDto.getHobby());
+        return new User(userDto.name(), userDto.age(), userDto.hobby());
     }
 
     public PostDto convertPostDto(Post post) {

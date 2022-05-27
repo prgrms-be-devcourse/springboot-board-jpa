@@ -49,7 +49,7 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("없는 데이터는 수정 할 수 없습니다."));
 
-        post.changeTitleAndContent(postDto.getTitle(), postDto.getContent());
+        post.changeTitleAndContent(postDto.title(), postDto.content());
         return postConverter.convertPostDto(post);
     }
 }
