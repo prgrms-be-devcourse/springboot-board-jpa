@@ -1,0 +1,29 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시글
+
+=== 게시글 조회
+
+=== /post
+
+.Request
+include::{snippets}/post-rest-controller-test/게시글_등록/http-request.adoc[]
+include::{snippets}/post-rest-controller-test/게시글_등록/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-rest-controller-test/게시글_등록/http-response.adoc[]
+include::{snippets}/post-rest-controller-test/게시글_등록/response-fields.adoc[]
+
+=== 게시글 단건 조회
+
+=== /post/{postId}
+
+.Request
+include::{snippets}/post-rest-controller-test/게시글_단건_조회/http-request.adoc[]
+
+.Response
+include::{snippets}/post-rest-controller-test/게시글_단건_조회/http-request.adoc[]
+include::{snippets}/post-rest-controller-test/게시글_단건_조회/response-fields.adoc[]

@@ -1,6 +1,5 @@
 package com.study.board.controller.post;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.study.board.controller.PostRestController;
 import com.study.board.controller.support.RestDocsTestSupport;
@@ -12,11 +11,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.restdocs.payload.JsonFieldType;
 
 import static com.study.board.fixture.Fixture.createUser;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -63,7 +64,17 @@ class PostRestControllerTest extends RestDocsTestSupport {
                         jsonPath("$[1].content", "내용2").exists(),
                         jsonPath("$[1].writer", "득윤").exists(),
                         jsonPath("$[1].writtenDateTime").exists()
-                );
+                ).andDo(
+                        restDocs.document(
+                                responseFields(
+                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
+                                        fieldWithPath("writer").type(JsonFieldType.STRING).description("작성자 이름"),
+                                        fieldWithPath("writtenDateTime").type(JsonFieldType.STRING).description("작성 일시")
+                                )
+                        )
+                );;
     }
 
     @Test
@@ -79,6 +90,16 @@ class PostRestControllerTest extends RestDocsTestSupport {
                         jsonPath("$.content", "내용1").exists(),
                         jsonPath("$.writer", "득윤").exists(),
                         jsonPath("$.writtenDateTime").exists()
+                ).andDo(
+                        restDocs.document(
+                                responseFields(
+                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
+                                        fieldWithPath("writer").type(JsonFieldType.STRING).description("작성자 이름"),
+                                        fieldWithPath("writtenDateTime").type(JsonFieldType.STRING).description("작성 일시")
+                                )
+                        )
                 );
     }
 
@@ -99,6 +120,19 @@ class PostRestControllerTest extends RestDocsTestSupport {
                         jsonPath("$.content", "제목").exists(),
                         jsonPath("$.writer", "득윤").exists(),
                         jsonPath("$.writtenDateTime").exists()
+                ).andDo(
+                        restDocs.document(
+                                requestFields(
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용")
+                                ), responseFields(
+                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
+                                        fieldWithPath("writer").type(JsonFieldType.STRING).description("작성자 이름"),
+                                        fieldWithPath("writtenDateTime").type(JsonFieldType.STRING).description("작성 일시")
+                                )
+                        )
                 );
     }
 
@@ -120,6 +154,19 @@ class PostRestControllerTest extends RestDocsTestSupport {
                         jsonPath("$.content", "수정 제목").exists(),
                         jsonPath("$.writer", "득윤").exists(),
                         jsonPath("$.writtenDateTime").exists()
+                ).andDo(
+                        restDocs.document(
+                                requestFields(
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 수정 제목"),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 수정 내용")
+                                ), responseFields(
+                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 수정 제목"),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 수정 내용"),
+                                        fieldWithPath("writer").type(JsonFieldType.STRING).description("작성자 이름"),
+                                        fieldWithPath("writtenDateTime").type(JsonFieldType.STRING).description("작성 일시")
+                                )
+                        )
                 );
     }
 }
