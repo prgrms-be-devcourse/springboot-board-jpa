@@ -5,7 +5,7 @@
 
 [[Post-페이징-조회]]
 === Post 페이징 조회
-operation::/post-rest-controller-test/게시글_페이징_조회/[snippets='request-parameters,http-request,http-response,response-fields']
+operation::/post-rest-controller-test/게시글_페이징_조회/[snippets='http-request,request-parameters,http-response,response-fields']
 '''
 
 [[Post-단건-조회]]

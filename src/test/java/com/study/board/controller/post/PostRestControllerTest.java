@@ -19,11 +19,9 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -140,8 +138,7 @@ class PostRestControllerTest extends RestDocsTestSupport {
                                         headerWithName(AUTHORIZATION).description("인증 대체 - 사용자 이름을 포함해주세요")
                                 ),
                                 requestFields(
-                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목")
-                                                .attributes(key("길이 제한").value("255 이하")),
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용")
                                 ), responseFields(
                                         fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 아이디"),
