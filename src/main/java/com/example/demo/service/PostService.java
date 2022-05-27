@@ -47,8 +47,9 @@ public class PostService {
     @Transactional
     public PostDto updateTitleAndContent(PostDto postDto, Long postId) throws NotFoundException {
         Optional<Post> findPost = postRepository.findById(postId);
-        Post post = findPost.orElseThrow(() -> new NotFoundException("없는 데이터는 수정 할 수 없습니다."));
+        findPost.orElseThrow(() -> new NotFoundException("없는 데이터는 수정 할 수 없습니다."));
 
+        Post post = findPost.get();
         post.changeTitleAndContent(postDto.getTitle(), postDto.getContent());
         return postConverter.convertPostDto(post);
     }
