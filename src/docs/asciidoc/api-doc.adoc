@@ -1,0 +1,53 @@
+= REST API
+:toc: left
+:toclevels: 2
+:source-highlighter: highlightjs
+
+== 1. 게시글
+=== 1-1. 게시글 조회
+===== Request
+include::{snippets}/post-showOne/request-body.adoc[]
+===== Request Example
+include::{snippets}/post-showOne/http-request.adoc[]
+
+===== Response
+include::{snippets}/post-showOne/response-fields.adoc[]
+
+===== Response Example
+include::{snippets}/post-showOne/response-body.adoc[]
+
+=== 1-2. 게시글 생성
+===== Request
+include::{snippets}/post-create/request-body.adoc[]
+===== Request Example
+include::{snippets}/post-create/http-request.adoc[]
+
+===== Response
+include::{snippets}/post-create/response-fields.adoc[]
+
+===== Response Example
+include::{snippets}/post-create/response-body.adoc[]
+
+=== 1-3. 게시글 편집
+===== Request
+include::{snippets}/post-update/request-body.adoc[]
+===== Request Example
+include::{snippets}/post-update/http-request.adoc[]
+
+===== Response
+include::{snippets}/post-update/response-fields.adoc[]
+
+===== Response Example
+include::{snippets}/post-update/response-body.adoc[]
+
+=== 1-4. 게시글 페이징 조회
+===== Request
+include::{snippets}/post-posts/request-body.adoc[]
+===== Request Example
+include::{snippets}/post-posts/http-request.adoc[]
+
+===== Response
+include::{snippets}/post-posts/response-fields.adoc[]
+
+===== Response Example
+include::{snippets}/post-posts/response-body.adoc[]

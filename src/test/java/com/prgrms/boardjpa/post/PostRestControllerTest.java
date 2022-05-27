@@ -2,25 +2,34 @@ package com.prgrms.boardjpa.post;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -29,7 +38,9 @@ import com.prgrms.boardjpa.commons.api.SuccessResponse;
 import com.prgrms.boardjpa.user.domain.Hobby;
 import com.prgrms.boardjpa.user.domain.User;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(RestDocumentationExtension.class)
+@AutoConfigureMockMvc
+@AutoConfigureRestDocs(uriScheme = "https", uriHost = "docs.api.com")
 @WebMvcTest(PostRestController.class)
 public class PostRestControllerTest {
 	@Autowired
@@ -47,14 +58,14 @@ public class PostRestControllerTest {
 	@Test
 	@DisplayName("페이징 관련 요청 파라미터가 없는 경우 디폴트 페이지를 적용한다")
 	void withNullPageableRequestParam() throws Exception {
-		mockMvc.perform(
+		this.mockMvc.perform(
 			get("/api/posts")
 		).andExpect(status().isOk());
 
 		ArgumentCaptor<Pageable> pageableCaptor =
 			ArgumentCaptor.forClass(Pageable.class);
 
-		verify(postService).getAllByPaging(pageableCaptor.capture());
+		verify(this.postService).getAllByPaging(pageableCaptor.capture());
 
 		Pageable pageRequest = pageableCaptor.getValue();
 		PageRequest defaultPage = PageRequest.of(0, 20);
@@ -67,7 +78,7 @@ public class PostRestControllerTest {
 	@Test
 	@DisplayName("페이징 관련 요청 파라미터가 있는 경우 전달된 파라미터로 역직렬화된 페이지를 리졸빙한다")
 	void withNonNullPageableRequestParam() throws Exception {
-		mockMvc.perform(
+		this.mockMvc.perform(
 			get("/api/posts")
 				.param("page", "0")
 				.param("size", "2")
@@ -76,7 +87,7 @@ public class PostRestControllerTest {
 		ArgumentCaptor<Pageable> pageableCaptor =
 			ArgumentCaptor.forClass(Pageable.class);
 
-		verify(postService).getAllByPaging(pageableCaptor.capture());
+		verify(this.postService).getAllByPaging(pageableCaptor.capture());
 
 		Pageable pageRequest = pageableCaptor.getValue();
 
@@ -105,10 +116,10 @@ public class PostRestControllerTest {
 		PostDto.CreateRequest postCreateRequest =
 			new PostDto.CreateRequest("title01", 1L, "    ");
 
-		MvcResult mvcResult = mockMvc.perform(
+		MvcResult mvcResult = this.mockMvc.perform(
 				post("/api/posts/")
-					.contentType("application/json")
-					.content(objectMapper.writeValueAsString(postCreateRequest)))
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(this.objectMapper.writeValueAsString(postCreateRequest)))
 			.andExpect(status().isBadRequest())
 			.andReturn();
 	}
@@ -123,10 +134,10 @@ public class PostRestControllerTest {
 			.writer(createUser())
 			.build());
 
-		Mockito.when(postService.getById(1L))
+		Mockito.when(this.postService.getById(1L))
 			.thenReturn(postInfo);
 
-		MvcResult mvcResult = mockMvc.perform(
+		MvcResult mvcResult = this.mockMvc.perform(
 				get("/api/posts/{postId}", 1L))
 			.andExpect(status().isOk())
 			.andReturn();
@@ -138,8 +149,165 @@ public class PostRestControllerTest {
 
 		assertThat(actualResponseBody)
 			.isEqualToIgnoringWhitespace(
-				objectMapper.writeValueAsString(expectedResponse)
+				this.objectMapper.writeValueAsString(expectedResponse)
 			);
+	}
+
+	@Nested
+	@DisplayName("RestDocs 문서화 테스트")
+	public class Restdocs {
+		@Test
+		@DisplayName("게시글 생성 테스트")
+		void test_creatingPost() throws Exception {
+			User writer = createUser();
+			PostDto.CreateRequest createPostRequest =
+				new PostDto.CreateRequest("title01", writer.getId(), "content");
+			Post createdPost = createPostRequest.createPost(writer);
+
+			Mockito.when(
+					postService.store(createPostRequest.title(), createPostRequest.writerId(), createPostRequest.content()))
+				.thenReturn(PostDto.Info.from(createdPost));
+
+			mockMvc.perform(post("/api/posts")
+					.content(objectMapper.writeValueAsString(createPostRequest))
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(
+					document(
+						"post-create",
+						requestFields(
+							fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+							fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("작성자 ID"),
+							fieldWithPath("content").type(JsonFieldType.STRING).description("본문")
+						),
+						responseFields(
+							fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+							fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
+							fieldWithPath("data.content").type(JsonFieldType.STRING).description("본문"),
+							fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("작성자 이름")
+						)
+					));
+		}
+
+		@Test
+		@DisplayName("게시글 편집 테스트")
+		void test_updatePost() throws Exception {
+			User writer = createUser();
+			Post post = Post.builder()
+				.id(1L)
+				.content("content01")
+				.title("title01")
+				.writer(writer)
+				.build();
+			PostDto.UpdateRequest updateRequest = new PostDto.UpdateRequest(post.getId(), "updatedTitle01",
+				"Updated content");
+
+			post.edit(updateRequest.title(), updateRequest.content());
+
+			given(postService.edit(updateRequest.title(), updateRequest.id(), updateRequest.content()))
+				.willReturn(PostDto.Info.from(post));
+
+			mockMvc.perform(
+					put("/api/posts/{postId}", 1L)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(updateRequest))
+				).andExpect(status().is2xxSuccessful())
+				.andDo(
+					document(
+						"post-update",
+						// pathParameters(
+						// 	parameterWithName("postId").description("게시글 아이디")
+						// ),
+						requestFields(
+							fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 ID"),
+							fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+							fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문")
+						),
+						responseFields(
+							fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+							fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
+							fieldWithPath("data.content").type(JsonFieldType.STRING).description("본문"),
+							fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("작성자 이름")
+						)
+					));
+		}
+
+		@Test
+		@DisplayName("게시글 페이징 테스트")
+		void test_pagingPosts() throws Exception {
+			Pageable pageRequest = PageRequest.of(0, 10);
+			User writer = createUser();
+			Post post1 = Post.builder().
+				writer(writer)
+				.content("content01")
+				.title("title01")
+				.id(1L)
+				.build();
+			Post post2 = Post.builder().
+				writer(writer)
+				.content("content02")
+				.title("title02")
+				.id(2L)
+				.build();
+
+			List<PostDto.Info> posts
+				= List.of(PostDto.Info.from(post1), PostDto.Info.from(post2));
+
+			when(postService.getAllByPaging(pageRequest))
+				.thenReturn(posts);
+
+			mockMvc.perform(
+					get("/api/posts")
+						.param("size", Integer.toString(pageRequest.getPageSize()))
+						.param("page", Integer.toString(pageRequest.getPageNumber()))
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(pageRequest))
+				).andExpect(status().is2xxSuccessful())
+				.andDo(
+					document(
+						"post-posts",
+						requestParameters(
+							parameterWithName("page").description("요청 페이지"),
+							parameterWithName("size").description("페이지의 사이즈")
+						),
+						responseFields(
+							fieldWithPath("data").type(JsonFieldType.ARRAY).description("데이터"),
+							fieldWithPath("data[].title").type(JsonFieldType.STRING).description("제목"),
+							fieldWithPath("data[].content").type(JsonFieldType.STRING).description("본문"),
+							fieldWithPath("data[].writerName").type(JsonFieldType.STRING).description("작성자 이름")
+						)
+					));
+		}
+
+		@Test
+		@DisplayName("하나의 게시글 조회 테스트")
+		void test_getOnePost() throws Exception {
+			User writer = createUser();
+			Post post = Post.builder()
+				.id(1L)
+				.content("content01")
+				.title("title01")
+				.writer(writer)
+				.build();
+
+			given(postService.getById(post.getId()))
+				.willReturn(PostDto.Info.from(post));
+
+			mockMvc.perform(
+					get("/api/posts/{postId}", 1L)
+						.contentType(MediaType.APPLICATION_JSON)
+				).andExpect(status().is2xxSuccessful())
+				.andDo(
+					document(
+						"post-showOne",
+						responseFields(
+							fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+							fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
+							fieldWithPath("data.content").type(JsonFieldType.STRING).description("본문"),
+							fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("작성자 이름")
+						)
+					));
+		}
 	}
 
 	private User createUser() {
@@ -149,6 +317,7 @@ public class PostRestControllerTest {
 			.name("writer")
 			.password("abc")
 			.age(27)
+			.id(1L)
 			.build();
 	}
 }

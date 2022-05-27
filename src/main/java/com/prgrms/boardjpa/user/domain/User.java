@@ -46,12 +46,13 @@ public class User {
 	protected User() {
 	}
 
-	private User(String name, int age, String email, Hobby hobby, String password) {
+	private User(Long id, String name, int age, String email, Hobby hobby, String password) {
 		validateName(name);
 		validateAge(age);
 		validateEmail(email);
 		validatePassword(password);
 
+		this.id = id;
 		this.name = name;
 		this.age = age;
 		this.email = email;
@@ -117,10 +118,15 @@ public class User {
 		private String email;
 		private Hobby hobby;
 		private String password;
+		private Long id;
 
 		private UserBuilder() {
 		}
 
+		public UserBuilder id(Long id) {
+			this.id = id;
+			return this;
+		}
 		public UserBuilder name(String name) {
 			this.name = name;
 			return this;
@@ -148,7 +154,7 @@ public class User {
 
 		public User build() {
 			try {
-				return new User(name, age, email, hobby, password);
+				return new User(id, name, age, email, hobby, password);
 			} catch (IllegalArgumentException e) {
 				throw new CreationFailException(User.class);
 			}
