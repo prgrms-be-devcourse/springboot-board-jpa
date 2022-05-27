@@ -22,6 +22,3 @@ create table post
     constraint FK_user_id
     foreign key (user_id) references user (id)
 );
-
-
-insert into user(id, username, age) values(1, 'guest', 7);
