@@ -113,7 +113,7 @@ class BoardServiceTest {
         Page<Board> boardPage = boardService.getBoards(pageRequest);
 
         assertAll(
-                () -> assertThat(boardPage.getTotalElements()).isEqualTo(6),
+                () -> assertThat(boardPage.getTotalElements()).isEqualTo(5),
                 () -> assertThat(boardPage.getSize()).isEqualTo(3),
                 () -> assertThat(boardPage.getNumber()).isEqualTo(0),
                 () -> assertThat(boardPage.getTotalPages()).isEqualTo(2)

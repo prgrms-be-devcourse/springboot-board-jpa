@@ -8,9 +8,12 @@ import org.programmers.board.entity.Board;
 import org.programmers.board.entity.vo.Content;
 import org.programmers.board.entity.vo.Title;
 import org.programmers.board.service.BoardService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 public class BoardApiController {
 
     private final BoardService boardService;
+
+    private final Logger log = LoggerFactory.getLogger(BoardApiController.class);
 
     public BoardApiController(BoardService boardService) {
         this.boardService = boardService;
@@ -39,11 +44,12 @@ public class BoardApiController {
     }
 
     // 단건 조회
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BoardResponse> getBoard(@PathVariable Long id) {
         Board board = boardService.getBoard(id);
 
-        BoardResponse boardResponse = new BoardResponse(board.getId(),
+        BoardResponse boardResponse = new BoardResponse(
+                board.getId(),
                 board.getTitle().getTitle(),
                 board.getContent().getContent(),
                 board.getUser().getName().getName());
@@ -62,7 +68,11 @@ public class BoardApiController {
         Long createdBoardId = boardService.createBoard(newBoard);
         Board board = boardService.getBoard(createdBoardId);
 
-        BoardResponse boardResponse = new BoardResponse(board.getId(),
+        log.info("{}", board.getId());
+
+
+        BoardResponse boardResponse = new BoardResponse(
+                board.getId(),
                 board.getTitle().getTitle(),
                 board.getContent().getContent(),
                 board.getUser().getName().getName());

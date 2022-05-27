@@ -27,8 +27,7 @@ public class BoardService {
     }
 
     public Board getBoard(Long boardId) {
-        return boardRepository.findById(boardId)
-                .orElseThrow(NoSuchElementException::new);
+        return boardRepository.findById(boardId).orElseThrow(() -> new NoSuchElementException("조회할 수 없는 글입니다."));
     }
 
     public Page<Board> getBoards(Pageable pageable) {
@@ -37,8 +36,7 @@ public class BoardService {
 
     @Transactional
     public Long updateBoard(Long boardId, BoardUpdateRequest boardUpdateRequest) {
-        Board board = boardRepository.findById(boardId).orElseThrow(() ->
-                new NoSuchElementException("조회할 수 없는 글입니다."));
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new NoSuchElementException("조회할 수 없는 글입니다."));
 
         board.editBoard(boardUpdateRequest.getTitle(), boardUpdateRequest.getContent());
 
