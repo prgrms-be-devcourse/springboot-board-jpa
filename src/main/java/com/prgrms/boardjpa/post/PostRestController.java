@@ -1,5 +1,7 @@
 package com.prgrms.boardjpa.post;
 
+import static com.prgrms.boardjpa.post.PostDto.*;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -28,7 +30,7 @@ public class PostRestController {
 	}
 
 	@GetMapping
-	public ResponseEntity<SuccessResponse<List<PostDto.Info>>> getPostsByPaging(Pageable pageable) {
+	public ResponseEntity<SuccessResponse<List<PostInfo>>> getPostsByPaging(Pageable pageable) {
 		return createSuccessResponse(
 			postService.getAllByPaging(pageable),
 			HttpStatus.OK);
@@ -36,8 +38,8 @@ public class PostRestController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<SuccessResponse<PostDto.Info>> store(
-		@RequestBody @Valid PostDto.CreateRequest createRequest) {
+	public ResponseEntity<SuccessResponse<PostInfo>> store(
+		@RequestBody @Valid CreatePostRequest createRequest) {
 
 		return createSuccessResponse(
 			postService.store(
@@ -49,8 +51,8 @@ public class PostRestController {
 	}
 
 	@PutMapping("/{postId}")
-	public ResponseEntity<SuccessResponse<PostDto.Info>> edit(@PathVariable Long postId,
-		@RequestBody @Valid PostDto.UpdateRequest updateRequest) {
+	public ResponseEntity<SuccessResponse<PostInfo>> edit(@PathVariable Long postId,
+		@RequestBody @Valid PostDto.UpdatePostRequest updateRequest) {
 
 		return createSuccessResponse(
 			postService.edit(
@@ -62,7 +64,7 @@ public class PostRestController {
 	}
 
 	@GetMapping("/{postId}")
-	public ResponseEntity<SuccessResponse<PostDto.Info>> showOne(@PathVariable Long postId) {
+	public ResponseEntity<SuccessResponse<PostInfo>> showOne(@PathVariable Long postId) {
 		return createSuccessResponse(
 			postService.getById(postId),
 			HttpStatus.OK

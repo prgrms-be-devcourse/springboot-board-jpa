@@ -2,13 +2,12 @@ package com.prgrms.boardjpa.post;
 
 import javax.validation.constraints.NotBlank;
 
-import com.prgrms.boardjpa.post.Post;
 import com.prgrms.boardjpa.user.domain.User;
 
 public class PostDto {
-	public record CreateRequest(@NotBlank String title,
-								Long writerId,
-								@NotBlank String content) {
+	public record CreatePostRequest(@NotBlank String title,
+									Long writerId,
+									@NotBlank String content) {
 
 		public Post createPost(User writer) {
 			return Post.builder()
@@ -19,12 +18,12 @@ public class PostDto {
 		}
 	}
 
-	public record UpdateRequest(Long id, @NotBlank String title, @NotBlank String content) {
+	public record UpdatePostRequest(Long id, @NotBlank String title, @NotBlank String content) {
 	}
 
-	public record Info(String title, String content, String writerName) {
-		public static Info from(Post post) {
-			return new Info(post.getTitle(),
+	public record PostInfo(String title, String content, String writerName) {
+		public static PostInfo from(Post post) {
+			return new PostInfo(post.getTitle(),
 				post.getContent(),
 				post.getCreatedBy());
 		}

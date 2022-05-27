@@ -101,10 +101,10 @@ public class PostRestControllerTest {
 	@Test
 	@DisplayName("제목이 비어있는 게시글 생성 요청 DTO 에 대한 빈 검증결과, 1개의 제약조건 위반이 발생한다")
 	public void test_Dto() {
-		PostDto.CreateRequest postCreateRequest =
-			new PostDto.CreateRequest("  ", 1L, "    content");
+		PostDto.CreatePostRequest postCreateRequest =
+			new PostDto.CreatePostRequest("  ", 1L, "    content");
 
-		Set<ConstraintViolation<PostDto.CreateRequest>> constraintViolations = validator.validate(postCreateRequest);
+		Set<ConstraintViolation<PostDto.CreatePostRequest>> constraintViolations = validator.validate(postCreateRequest);
 
 		assertThat(constraintViolations.size())
 			.isEqualTo(1);
@@ -113,8 +113,8 @@ public class PostRestControllerTest {
 	@Test
 	@DisplayName("컨텐츠가 비어있는 게시글 생성 요청 DTO 를 포함한 요청이 올 경우, BAD_REQUEST 로 응답한다")
 	public void with_violatedDto() throws Exception {
-		PostDto.CreateRequest postCreateRequest =
-			new PostDto.CreateRequest("title01", 1L, "    ");
+		PostDto.CreatePostRequest postCreateRequest =
+			new PostDto.CreatePostRequest("title01", 1L, "    ");
 
 		MvcResult mvcResult = this.mockMvc.perform(
 				post("/api/posts/")
@@ -127,7 +127,7 @@ public class PostRestControllerTest {
 	@Test
 	@DisplayName("성공적인 응답 객체 직렬화에 성공한다")
 	public void with_SuccessResponse() throws Exception {
-		PostDto.Info postInfo = PostDto.Info.from(Post.builder()
+		PostDto.PostInfo postInfo = PostDto.PostInfo.from(Post.builder()
 			.id(1L)
 			.content("content")
 			.title("title")
@@ -142,7 +142,7 @@ public class PostRestControllerTest {
 			.andExpect(status().isOk())
 			.andReturn();
 
-		SuccessResponse<PostDto.Info> expectedResponse = SuccessResponse.of(postInfo);
+		SuccessResponse<PostDto.PostInfo> expectedResponse = SuccessResponse.of(postInfo);
 
 		String actualResponseBody = mvcResult.getResponse()
 			.getContentAsString();
@@ -160,13 +160,13 @@ public class PostRestControllerTest {
 		@DisplayName("게시글 생성 테스트")
 		void test_creatingPost() throws Exception {
 			User writer = createUser();
-			PostDto.CreateRequest createPostRequest =
-				new PostDto.CreateRequest("title01", writer.getId(), "content");
+			PostDto.CreatePostRequest createPostRequest =
+				new PostDto.CreatePostRequest("title01", writer.getId(), "content");
 			Post createdPost = createPostRequest.createPost(writer);
 
 			Mockito.when(
 					postService.store(createPostRequest.title(), createPostRequest.writerId(), createPostRequest.content()))
-				.thenReturn(PostDto.Info.from(createdPost));
+				.thenReturn(PostDto.PostInfo.from(createdPost));
 
 			mockMvc.perform(post("/api/posts")
 					.content(objectMapper.writeValueAsString(createPostRequest))
@@ -199,13 +199,13 @@ public class PostRestControllerTest {
 				.title("title01")
 				.writer(writer)
 				.build();
-			PostDto.UpdateRequest updateRequest = new PostDto.UpdateRequest(post.getId(), "updatedTitle01",
+			PostDto.UpdatePostRequest updateRequest = new PostDto.UpdatePostRequest(post.getId(), "updatedTitle01",
 				"Updated content");
 
 			post.edit(updateRequest.title(), updateRequest.content());
 
 			given(postService.edit(updateRequest.title(), updateRequest.id(), updateRequest.content()))
-				.willReturn(PostDto.Info.from(post));
+				.willReturn(PostDto.PostInfo.from(post));
 
 			mockMvc.perform(
 					put("/api/posts/{postId}", 1L)
@@ -250,8 +250,8 @@ public class PostRestControllerTest {
 				.id(2L)
 				.build();
 
-			List<PostDto.Info> posts
-				= List.of(PostDto.Info.from(post1), PostDto.Info.from(post2));
+			List<PostDto.PostInfo> posts
+				= List.of(PostDto.PostInfo.from(post1), PostDto.PostInfo.from(post2));
 
 			when(postService.getAllByPaging(pageRequest))
 				.thenReturn(posts);
@@ -291,7 +291,7 @@ public class PostRestControllerTest {
 				.build();
 
 			given(postService.getById(post.getId()))
-				.willReturn(PostDto.Info.from(post));
+				.willReturn(PostDto.PostInfo.from(post));
 
 			mockMvc.perform(
 					get("/api/posts/{postId}", 1L)

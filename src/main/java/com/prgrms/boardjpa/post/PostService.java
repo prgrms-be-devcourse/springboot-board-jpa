@@ -1,5 +1,7 @@
 package com.prgrms.boardjpa.post;
 
+import static com.prgrms.boardjpa.post.PostDto.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,16 +30,16 @@ public class PostService {
 	}
 
 	@Transactional
-	public PostDto.Info store(String title, User writer, String content) {
+	public PostInfo store(String title, User writer, String content) {
 		Post post = createPost(title, writer, content);
 
-		return PostDto.Info.from(
+		return PostInfo.from(
 			postRepository.save(post)
 		);
 	}
 
 	@Transactional
-	public PostDto.Info store(String title, Long writerId, String content) {
+	public PostInfo store(String title, Long writerId, String content) {
 		try {
 			User writer = userService.getById(writerId);
 
@@ -50,48 +52,48 @@ public class PostService {
 	}
 
 	@Transactional
-	public PostDto.Info edit(String title, Long postId, String content) {
+	public PostInfo edit(String title, Long postId, String content) {
 		Post foundPost = postRepository.findById(postId)
 			.orElseThrow(NotExistException::new);
 
 		foundPost.edit(title, content);
 
-		return PostDto.Info.from(
+		return PostInfo.from(
 			postRepository.save(foundPost)
 		);
 	}
 
-	public PostDto.Info getById(Long postId) {
+	public PostInfo getById(Long postId) {
 		Post post = postRepository.findById(postId)
 			.orElseThrow(NotExistException::new);
 
-		return PostDto.Info.from(post);
+		return PostInfo.from(post);
 	}
 
-	public List<PostDto.Info> getAllByWriterName(String writerName, Pageable pageable) {
+	public List<PostInfo> getAllByWriterName(String writerName, Pageable pageable) {
 		return postRepository.findAllByCreatedBy(writerName, pageable)
 			.stream()
-			.map(p -> new PostDto.Info(
+			.map(p -> new PostInfo(
 				p.getTitle(),
 				p.getContent(),
 				p.getCreatedBy()))
 			.collect(Collectors.toList());
 	}
 
-	public List<PostDto.Info> getAllByPaging(Pageable pageable) {
+	public List<PostInfo> getAllByPaging(Pageable pageable) {
 		return postRepository.findAllBy(pageable)
 			.stream()
-			.map(p -> new PostDto.Info(
+			.map(p -> new PostInfo(
 				p.getTitle(),
 				p.getContent(),
 				p.getCreatedBy()))
 			.collect(Collectors.toList());
 	}
 
-	public List<PostDto.Info> getAll() {
+	public List<PostInfo> getAll() {
 		return postRepository.findAll()
 			.stream()
-			.map(p -> new PostDto.Info(
+			.map(p -> new PostInfo(
 				p.getTitle(),
 				p.getContent(),
 				p.getCreatedBy()))
