@@ -35,8 +35,6 @@ public class UserRequestDto {
                 .age(age)
                 .hobby(hobby)
                 .createdBy(name)
-                .createdAt(now)
-                .updatedAt(now)
                 .build();
     }
 

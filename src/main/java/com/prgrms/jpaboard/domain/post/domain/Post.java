@@ -32,7 +32,7 @@ public class Post extends BaseEntity {
     }
 
     public Post(String createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, String title, String content) {
-        super(createdBy, createdAt, updatedAt);
+        super(createdBy);
         this.title = title;
         this.content = content;
     }

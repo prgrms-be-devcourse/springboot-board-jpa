@@ -8,8 +8,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,6 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 @WebMvcTest(UserController.class)
 class UserControllerTest {
@@ -54,8 +58,7 @@ class UserControllerTest {
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("응답 상태 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
                                 fieldWithPath("result").type(JsonFieldType.OBJECT).description("응답 결과"),
-                                fieldWithPath("result.id").type(JsonFieldType.NUMBER).description("생성된 회원의 ID"),
-                                fieldWithPath("result.createdAt").type(JsonFieldType.STRING).description("회원의 생성 시간")
+                                fieldWithPath("result.id").type(JsonFieldType.NUMBER).description("생성된 회원의 ID")
                         )
                 ));
 

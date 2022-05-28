@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,6 +37,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 @WebMvcTest(PostController.class)
 class PostControllerTest {
@@ -71,8 +73,7 @@ class PostControllerTest {
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("응답 상태 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
                                 fieldWithPath("result").type(JsonFieldType.OBJECT).description("응답 결과"),
-                                fieldWithPath("result.id").type(JsonFieldType.NUMBER).description("생성된 게시글의 ID"),
-                                fieldWithPath("result.createdAt").type(JsonFieldType.STRING).description("게시글의 생성시간")
+                                fieldWithPath("result.id").type(JsonFieldType.NUMBER).description("생성된 게시글의 ID")
                         )
 
                 ));
@@ -180,8 +181,7 @@ class PostControllerTest {
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("응답 상태 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
                                 fieldWithPath("result").type(JsonFieldType.OBJECT).description("응답 결과"),
-                                fieldWithPath("result.id").type(JsonFieldType.NUMBER).description("수정된 게시글의 ID"),
-                                fieldWithPath("result.updatedAt").type(JsonFieldType.STRING).description("게시글의 수정시간")
+                                fieldWithPath("result.id").type(JsonFieldType.NUMBER).description("수정된 게시글의 ID")
                         )
 
                 ));

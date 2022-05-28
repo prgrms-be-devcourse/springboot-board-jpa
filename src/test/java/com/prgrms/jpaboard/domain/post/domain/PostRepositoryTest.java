@@ -31,8 +31,6 @@ class PostRepositoryTest {
                 .age(25)
                 .hobby("누워 있기")
                 .createdBy("jerry")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
 
         userRepository.save(user);
