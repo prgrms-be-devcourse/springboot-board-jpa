@@ -5,12 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import prgrms.project.post.controller.response.PageResponse;
+import prgrms.project.post.domain.user.User;
 import prgrms.project.post.repository.UserRepository;
-import prgrms.project.post.service.DefaultPage;
+import prgrms.project.post.util.exception.EntityNotFoundException;
 import prgrms.project.post.util.mapper.HobbyMapper;
 import prgrms.project.post.util.mapper.UserMapper;
-
-import java.util.NoSuchElementException;
 
 import static java.text.MessageFormat.format;
 import static java.util.stream.Collectors.toSet;
@@ -33,27 +33,19 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserDto searchById(Long userId) {
-        var retrievedUser = userRepository.findById(userId).orElseThrow(
-            () -> new NoSuchElementException(
-                format("id{0} 의 회원을 찾을 수 없습니다.", userId)
-            )
-        );
+        var retrievedUser = findUser(userId);
 
         return userMapper.toDto(retrievedUser);
     }
 
     @Transactional(readOnly = true)
-    public DefaultPage<UserDto> searchAll(Pageable pageable) {
-        return DefaultPage.of(userRepository.findUsersAll(pageable).map(userMapper::toDto));
+    public PageResponse<UserDto> searchAll(Pageable pageable) {
+        return PageResponse.of(userRepository.findUsersAll(pageable).map(userMapper::toDto));
     }
 
     @Transactional
     public Long updateUser(Long userId, UserDto userDto) {
-        var retrievedUser = userRepository.findById(userId).orElseThrow(
-            () -> new NoSuchElementException(
-                format("id{0} 의 회원을 찾을 수 없습니다.", userId)
-            )
-        );
+        var retrievedUser = findUser(userId);
         var updatedUser = retrievedUser.updateUserInfo(userDto.name(), userDto.age(), userDto.hobbies().stream().map(hobbyMapper::toEntity).collect(toSet()));
 
         return updatedUser.getId();
@@ -61,6 +53,16 @@ public class UserService {
 
     @Transactional
     public void deleteById(Long userId) {
-        userRepository.deleteById(userId);
+        var retrievedUser = findUser(userId);
+
+        userRepository.delete(retrievedUser);
+    }
+
+    private User findUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+            () -> new EntityNotFoundException(
+                format("회원을 찾을 수 없습니다. (id: {0})", userId)
+            )
+        );
     }
 }

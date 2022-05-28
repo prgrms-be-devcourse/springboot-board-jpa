@@ -5,7 +5,7 @@ public record ErrorResponse(
         String errorMessage
 ) {
 
-    public static ErrorResponse of(ErrorType errorType) {
-        return new ErrorResponse(errorType.getError(), errorType.getErrorMessage());
+    public static ErrorResponse of(ErrorCode errorCode) {
+        return new ErrorResponse(errorCode.name(), errorCode.getErrorMessage());
     }
 }

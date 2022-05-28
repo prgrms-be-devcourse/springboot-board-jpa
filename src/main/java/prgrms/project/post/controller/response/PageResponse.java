@@ -1,11 +1,11 @@
-package prgrms.project.post.service;
+package prgrms.project.post.controller.response;
 
 import lombok.Builder;
 import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
-public record DefaultPage<T>(
+public record PageResponse<T>(
         List<T> content,
         int pageNumber,
         int pageSize,
@@ -14,11 +14,11 @@ public record DefaultPage<T>(
 ) {
 
     @Builder
-    public DefaultPage {
+    public PageResponse {
     }
 
-    public static <T> DefaultPage<T> of(Slice<T> page) {
-        return DefaultPage.<T>builder()
+    public static <T> PageResponse<T> of(Slice<T> page) {
+        return PageResponse.<T>builder()
                 .content(page.getContent())
                 .pageNumber(page.getPageable().getPageNumber())
                 .pageSize(page.getSize())

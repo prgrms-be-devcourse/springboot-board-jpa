@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import prgrms.project.post.controller.response.IdResponse;
-import prgrms.project.post.service.DefaultPage;
+import prgrms.project.post.controller.response.PageResponse;
 import prgrms.project.post.service.user.UserDto;
 import prgrms.project.post.service.user.UserService;
 
@@ -31,7 +31,7 @@ public class UserRestController {
     }
 
     @GetMapping
-    public ResponseEntity<DefaultPage<UserDto>> searchAllUser(Pageable pageable) {
+    public ResponseEntity<PageResponse<UserDto>> searchAllUser(Pageable pageable) {
         return ResponseEntity.ok(userService.searchAll(pageable));
     }
 
