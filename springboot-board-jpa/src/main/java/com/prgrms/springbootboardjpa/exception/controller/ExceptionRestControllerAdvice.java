@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ExceptionRestController {
+public class ExceptionRestControllerAdvice {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResponse illegalArgumentHandler(IllegalArgumentException e){
@@ -15,6 +15,6 @@ public class ExceptionRestController {
 
     @ExceptionHandler(CustomRuntimeException.class)
     public ErrorResponse customRuntimeHandler(CustomRuntimeException e){
-        return ErrorResponse.customRuntimeException(e.getStatusCode(),e.getErrorDetails());
+        return ErrorResponse.customRuntimeException(e.getExceptionCode().getStatus(), e.getExceptionCode().getErrorMessage());
     }
 }

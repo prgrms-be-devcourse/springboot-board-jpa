@@ -1,8 +1,6 @@
 package com.prgrms.springbootboardjpa.user.service;
 
-import com.prgrms.springbootboardjpa.exception.exceptions.DuplicateException;
-import com.prgrms.springbootboardjpa.exception.exceptions.NoSuchResourceException;
-import com.prgrms.springbootboardjpa.exception.exceptions.WrongPasswordException;
+import com.prgrms.springbootboardjpa.exception.exceptions.*;
 import com.prgrms.springbootboardjpa.user.dto.UserDto;
 import com.prgrms.springbootboardjpa.user.dto.UserResponse;
 import com.prgrms.springbootboardjpa.user.entity.User;
@@ -36,10 +34,10 @@ public class UserService {
 
     public void checkUserDuplicate(User user){
         if (userRepository.findByEmail(user.getEmail()) != null)
-            throw new DuplicateException("Email이 중복됩니다.");
+            throw new CustomRuntimeException(CustomExceptionCode.DUPLICATE_EXCEPTION,"Email이 중복됩니다.");
 
         if (userRepository.findByNickName(user.getNickName()) != null)
-            throw new DuplicateException("Nickname이 중복됩니다.");
+            throw new CustomRuntimeException(CustomExceptionCode.DUPLICATE_EXCEPTION,"Nickname이 중복됩니다.");
     }
 
     public String encodePassword(String password){
@@ -51,11 +49,11 @@ public class UserService {
         User foundUser = userRepository.findByEmail(email);
 
         if (foundUser == null){
-            throw new NoSuchResourceException("해당하는 User 정보가 없습니다.");
+            throw new CustomRuntimeException(CustomExceptionCode.NO_SUCH_RESOURCE_EXCEPTION, "해당하는 User 정보가 없습니다.");
         }
 
         if (!checkPassword(foundUser, password))
-            throw new WrongPasswordException("Password가 일치하지 않습니다.");
+            throw new CustomRuntimeException(CustomExceptionCode.WRONG_PASSWORD_EXCEPTION);
 
         return foundUser;
     }

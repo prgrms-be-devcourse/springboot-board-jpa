@@ -1,8 +1,6 @@
 package com.prgrms.springbootboardjpa.user.service;
 
-import com.prgrms.springbootboardjpa.exception.exceptions.DuplicateException;
-import com.prgrms.springbootboardjpa.exception.exceptions.NoSuchResourceException;
-import com.prgrms.springbootboardjpa.exception.exceptions.WrongPasswordException;
+import com.prgrms.springbootboardjpa.exception.exceptions.*;
 import com.prgrms.springbootboardjpa.user.dto.UserDto;
 import com.prgrms.springbootboardjpa.user.dto.UserResponse;
 import com.prgrms.springbootboardjpa.user.entity.Name;
@@ -93,7 +91,7 @@ class UserServiceTest {
         //When, Then
         assertThatThrownBy(() -> {
             userService.checkUserDuplicate(user);
-        }).isInstanceOf(DuplicateException.class);
+        }).usingRecursiveComparison().isEqualTo(new CustomRuntimeException(CustomExceptionCode.DUPLICATE_EXCEPTION, "Email이 중복됩니다."));
 
     }
 
@@ -152,7 +150,7 @@ class UserServiceTest {
         assertThatThrownBy(() -> {
                     userService.login(givenUserDto.getEmail(), givenUserDto.getPassword());
                 }
-        ).isInstanceOf(NoSuchResourceException.class);
+        ).usingRecursiveComparison().isEqualTo(new CustomRuntimeException(CustomExceptionCode.NO_SUCH_RESOURCE_EXCEPTION, "해당하는 User 정보가 없습니다."));
     }
 
     @Test
@@ -172,7 +170,7 @@ class UserServiceTest {
         assertThatThrownBy(() -> {
                     userService.login(givenUserDto.getEmail(), givenUserDto.getPassword());
                 }
-        ).isInstanceOf(WrongPasswordException.class);
+        ).usingRecursiveComparison().isEqualTo(new CustomRuntimeException(CustomExceptionCode.WRONG_PASSWORD_EXCEPTION));
     }
 
 
