@@ -4,3 +4,19 @@ INSERT INTO user(name, age, hobby, created_at, created_by) VALUES('test03', 14, 
 INSERT INTO user(name, age, hobby, created_at, created_by) VALUES('test04', 22, '잠', now(), 'test');
 INSERT INTO user(name, age, hobby, created_at, created_by) VALUES('test05', 32, '그림', now(), 'test');
 INSERT INTO user(name, age, hobby, created_at, created_by) VALUES('test06', 42, '노래', now(), 'test');
+
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test00-title', 'test00-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test01-title', 'test01-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test02-title', 'test02-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test03-title', 'test03-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test04-title', 'test04-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test05-title', 'test05-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test06-title', 'test06-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test07-title', 'test07-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test08-title', 'test08-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test09-title', 'test09-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test10-title', 'test10-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test11-title', 'test11-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test12-title', 'test12-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test13-title', 'test13-content', 1, now(), 'test');
+INSERT INTO post(title, content, writer_id, created_at, created_by) VALUES ('test14-title', 'test14-content', 1, now(), 'test');
