@@ -1,10 +1,15 @@
 package org.prgrms.board.service.post;
 
+import static com.google.common.base.Preconditions.*;
+import static org.apache.commons.lang3.StringUtils.*;
+
 import java.util.List;
 
 import org.prgrms.board.domain.post.Post;
 import org.prgrms.board.domain.post.PostQueryRepository;
 import org.prgrms.board.domain.post.PostRepository;
+import org.prgrms.board.domain.user.User;
+import org.prgrms.board.service.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +19,12 @@ public class PostService {
 
 	private final PostRepository postRepository;
 	private final PostQueryRepository postQueryRepository;
+	private final UserService userService;
 
-	public PostService(PostRepository postRepository, PostQueryRepository postQueryRepository) {
+	public PostService(PostRepository postRepository, PostQueryRepository postQueryRepository, UserService userService) {
 		this.postRepository = postRepository;
 		this.postQueryRepository = postQueryRepository;
+		this.userService = userService;
 	}
 
 	public List<Post> findAll(long offset, int limit) {
@@ -26,5 +33,38 @@ public class PostService {
 
 	public long count() {
 		return postRepository.count();
+	}
+
+	public Post findById(Long id) {
+		checkArgument(id != null, "postId must be provided.");
+
+		return postRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("Could not found post with postId=" + id));
+	}
+
+	@Transactional
+	public Post write(String title, String content, Long writerId) {
+		checkArgument(isNotEmpty(title), "title must be provided.");
+		checkArgument(isNotEmpty(content), "content must be provided.");
+		checkArgument(writerId != null, "writerId must be provided.");
+
+		User writer = userService.findById(writerId);
+		Post post = new Post(title, content, writer);
+
+		return postRepository.save(post);
+	}
+
+	@Transactional
+	public Post modify(Long id, String title, String content) {
+		checkArgument(id != null, "postId must be provided.");
+		checkArgument(isNotEmpty(title), "title must be provided.");
+		checkArgument(isNotEmpty(content), "content must be provided.");
+
+		Post post = postRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("Could not found post with postId=" + id));
+
+		post.modifyTitleAndContent(title, content);
+
+		return postRepository.save(post);
 	}
 }

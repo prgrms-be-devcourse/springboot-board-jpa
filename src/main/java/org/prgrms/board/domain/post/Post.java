@@ -47,6 +47,15 @@ public class Post extends BaseEntity {
 		this.writer = writer;
 	}
 
+	//== 비지니스 로직 ==//
+	public void modifyTitleAndContent(String title, String content) {
+		checkArgument(isNotEmpty(title), "title must be provided.");
+		checkArgument(isNotEmpty(content), "content must be provided.");
+
+		this.title = title;
+		this.content = content;
+	}
+
 	public Long getId() {
 		return id;
 	}
