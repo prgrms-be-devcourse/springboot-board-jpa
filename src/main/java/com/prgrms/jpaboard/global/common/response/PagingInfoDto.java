@@ -1,17 +1,15 @@
 package com.prgrms.jpaboard.global.common.response;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-public class MetaDataDto {
+public class PagingInfoDto {
     private int page;
     private int totalPage;
     private int perPage;
     private long total;
 
-    public MetaDataDto(int page, int totalPage, int perPage, long total) {
+    public PagingInfoDto(int page, int totalPage, int perPage, long total) {
         this.page = page;
         this.totalPage = totalPage;
         this.perPage = perPage;
@@ -48,8 +46,8 @@ public class MetaDataDto {
             return this;
         }
 
-        public MetaDataDto build() {
-            return new MetaDataDto(page, totalPage, perPage, total);
+        public PagingInfoDto build() {
+            return new PagingInfoDto(page, totalPage, perPage, total);
         }
     }
 }

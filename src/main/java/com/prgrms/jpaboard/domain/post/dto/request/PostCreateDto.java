@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 public class PostCreateDto {
@@ -36,5 +37,18 @@ public class PostCreateDto {
                 .createdAt(now)
                 .updatedAt(now)
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PostCreateDto that = (PostCreateDto) o;
+        return Objects.equals(getUserId(), that.getUserId()) && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getContent(), that.getContent());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserId(), getTitle(), getContent());
     }
 }

@@ -12,7 +12,7 @@ import com.prgrms.jpaboard.domain.post.exception.PostNotFoundException;
 import com.prgrms.jpaboard.domain.user.domain.User;
 import com.prgrms.jpaboard.domain.user.domain.UserRepository;
 import com.prgrms.jpaboard.domain.user.exception.UserNotFoundException;
-import com.prgrms.jpaboard.global.common.response.MetaDataDto;
+import com.prgrms.jpaboard.global.common.response.PagingInfoDto;
 import com.prgrms.jpaboard.global.common.response.ResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -47,7 +47,7 @@ public class PostService {
     public PostListDto getPosts(int page, int perPage) {
         Page<Post> postPagingResult = postRepository.findAllWithUser(PageRequest.of(page, perPage, Sort.by(Sort.Direction.DESC, "createdAt")));
 
-        MetaDataDto metadata = MetaDataDto.builder()
+        PagingInfoDto pagingInfo = PagingInfoDto.builder()
                 .page(page)
                 .totalPage(postPagingResult.getTotalPages())
                 .perPage(perPage)
@@ -63,7 +63,7 @@ public class PostService {
                             .build())
                 .collect(Collectors.toList());
 
-        return new PostListDto(metadata, posts);
+        return new PostListDto(pagingInfo, posts);
     }
 
     @Transactional(readOnly = true)
