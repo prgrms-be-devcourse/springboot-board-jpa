@@ -35,7 +35,7 @@ public class Post extends BaseEntity {
 	@JoinColumn(name = "writer_id")
 	private User writer;
 
-	 protected Post() {/*no-op*/}
+	protected Post() {/*no-op*/}
 
 	public Post(String title, String content, User writer) {
 		checkArgument(isNotEmpty(title), "title must be provided.");
