@@ -1,6 +1,7 @@
 package com.prgrms.jpaboard.domain.user.domain;
 
 import com.prgrms.jpaboard.domain.post.domain.Post;
+import com.prgrms.jpaboard.domain.post.dto.response.UserInfoDto;
 import com.prgrms.jpaboard.global.common.domain.BaseEntity;
 import lombok.Getter;
 
@@ -9,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @Entity
 public class User extends BaseEntity {
     @Id
@@ -69,6 +69,22 @@ public class User extends BaseEntity {
         public User build() {
             return new User(createdBy, name, age, hobby);
         }
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public int getAge() {
+        return this.age;
+    }
+
+    public List<Post> getPosts() {
+        return this.posts;
+    }
+
+    public UserInfoDto getUserInfoDto() {
+        return new UserInfoDto(this.id, this.name);
     }
 
     public void updateName(String name) {

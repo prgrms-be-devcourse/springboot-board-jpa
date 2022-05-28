@@ -7,7 +7,6 @@ import com.prgrms.jpaboard.domain.post.dto.request.PostUpdateDto;
 import com.prgrms.jpaboard.domain.post.dto.response.PostDetailDto;
 import com.prgrms.jpaboard.domain.post.dto.response.PostDto;
 import com.prgrms.jpaboard.domain.post.dto.response.PostListDto;
-import com.prgrms.jpaboard.domain.post.dto.response.UserInfoDto;
 import com.prgrms.jpaboard.domain.post.exception.PostNotFoundException;
 import com.prgrms.jpaboard.domain.user.domain.User;
 import com.prgrms.jpaboard.domain.user.domain.UserRepository;
@@ -55,12 +54,7 @@ public class PostService {
                 .build();
 
         List<PostDto> posts = postPagingResult.getContent()
-                .stream().map(post -> PostDto.builder()
-                            .id(post.getId())
-                            .title(post.getTitle())
-                            .user(new UserInfoDto(post.getUser().getId(), post.getUser().getName()))
-                            .createdAt(post.getCreatedAt())
-                            .build())
+                .stream().map(post -> post.getPostDto())
                 .collect(Collectors.toList());
 
         return new PostListDto(pagingInfo, posts);
@@ -70,13 +64,7 @@ public class PostService {
     public PostDetailDto getPost(Long id) {
         Post post = postRepository.findByIdWithUser(id).orElseThrow(() -> new PostNotFoundException());
 
-        return PostDetailDto.postDetailDtoBuilder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .createdAt(post.getCreatedAt())
-                .user(new UserInfoDto(post.getUser().getId(), post.getUser().getName()))
-                .build();
+        return post.getPostDetailDto();
     }
 
     @Transactional

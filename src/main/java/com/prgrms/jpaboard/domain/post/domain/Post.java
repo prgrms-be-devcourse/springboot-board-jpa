@@ -1,5 +1,7 @@
 package com.prgrms.jpaboard.domain.post.domain;
 
+import com.prgrms.jpaboard.domain.post.dto.response.PostDetailDto;
+import com.prgrms.jpaboard.domain.post.dto.response.PostDto;
 import com.prgrms.jpaboard.domain.user.domain.User;
 import com.prgrms.jpaboard.global.common.domain.BaseEntity;
 import lombok.Getter;
@@ -10,7 +12,6 @@ import java.util.Objects;
 
 import static javax.persistence.FetchType.LAZY;
 
-@Getter
 @Entity
 public class Post extends BaseEntity {
     @Id
@@ -76,6 +77,37 @@ public class Post extends BaseEntity {
         public Post build() {
             return new Post(createdBy, createdAt, updatedAt, title, content);
         }
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public String getContent() {
+        return this.content;
+    }
+
+    public PostDto getPostDto() {
+        return PostDto.builder()
+                .id(this.id)
+                .title(this.title)
+                .user(this.user.getUserInfoDto())
+                .createdAt(this.createdAt)
+                .build();
+    }
+
+    public PostDetailDto getPostDetailDto() {
+        return PostDetailDto.postDetailDtoBuilder()
+                .id(this.id)
+                .title(this.title)
+                .content(this.content)
+                .createdAt(this.createdAt)
+                .user(this.user.getUserInfoDto())
+                .build();
     }
 
     public void updateTitle(String title) {
