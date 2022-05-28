@@ -1,5 +1,8 @@
 package org.prgrms.board.domain.post;
 
+import static com.google.common.base.Preconditions.*;
+import static org.apache.commons.lang3.StringUtils.*;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,6 +38,10 @@ public class Post extends BaseEntity {
 	 protected Post() {/*no-op*/}
 
 	public Post(String title, String content, User writer) {
+		checkArgument(isNotEmpty(title), "title must be provided.");
+		checkArgument(isNotEmpty(content), "content must be provided.");
+		checkArgument(writer != null, "writer must be provided.");
+
 		this.title = title;
 		this.content = content;
 		this.writer = writer;
