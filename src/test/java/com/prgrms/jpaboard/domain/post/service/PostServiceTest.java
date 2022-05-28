@@ -33,11 +33,16 @@ class PostServiceTest {
     private PostCreateDto postCreateDto = new PostCreateDto(1L, "제목", "내용");
 
     private User user = User.builder()
+            .name("jerry")
+            .age(25)
+            .hobby("누워있기")
+            .createdBy("jerry")
             .build();
 
     private Post post = Post.builder()
             .title("test title")
             .content("this is content of test")
+            .createdBy("1")
             .build();
 
     private PostUpdateDto postUpdateDto = new PostUpdateDto("수정된 제목", "수정된 내용");

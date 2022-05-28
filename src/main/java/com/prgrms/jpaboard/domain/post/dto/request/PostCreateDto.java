@@ -6,7 +6,6 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -28,14 +27,10 @@ public class PostCreateDto {
     }
 
     public Post toEntity() {
-        LocalDateTime now = LocalDateTime.now();
-
         return Post.builder()
                 .title(title)
                 .content(content)
                 .createdBy(userId.toString())
-                .createdAt(now)
-                .updatedAt(now)
                 .build();
     }
 

@@ -1,12 +1,11 @@
 package com.prgrms.jpaboard.global.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.prgrms.jpaboard.global.exception.ErrorCode;
+import com.prgrms.jpaboard.global.error.ErrorCode;
+import com.prgrms.jpaboard.global.error.exception.WrongFieldException;
 import lombok.Getter;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,16 +14,28 @@ import java.util.stream.Collectors;
 public class ErrorResponseDto {
     private int status;
     private String message;
+    private FieldError error;
     private List errors;
 
-    public ErrorResponseDto(int status, String message, List errors) {
+    public ErrorResponseDto(int status, String message, FieldError error, List errors) {
         this.status = status;
         this.message = message;
+        this.error = error;
         this.errors = errors;
     }
 
     public static ErrorResponseDto singleError(ErrorCode errorCode) {
-        return new ErrorResponseDto(errorCode.getStatus(), errorCode.getMessage(), null);
+        return new ErrorResponseDto(errorCode.getStatus(), errorCode.getMessage(), null, null);
+    }
+
+    public static ErrorResponseDto singleError(ErrorCode errorCode, WrongFieldException wrongFieldException) {
+        FieldError fieldError = new FieldError(wrongFieldException.getFieldName(), wrongFieldException.getValue(), wrongFieldException.getReason());
+
+        return new ErrorResponseDto(errorCode.getStatus(), errorCode.getMessage(), fieldError, null);
+    }
+
+    public static ErrorResponseDto singleError(ErrorCode errorCode, String errorMessage) {
+        return new ErrorResponseDto(errorCode.getStatus(), errorMessage, null, null);
     }
 
     public static ErrorResponseDto multipleError(ErrorCode errorCode, BindingResult bindingResult) {
@@ -36,7 +47,7 @@ public class ErrorResponseDto {
                 ))
                 .collect(Collectors.toList());
 
-        return new ErrorResponseDto(errorCode.getStatus(), errorCode.getMessage(), errors);
+        return new ErrorResponseDto(errorCode.getStatus(), errorCode.getMessage(), null, errors);
     }
 
     @Getter

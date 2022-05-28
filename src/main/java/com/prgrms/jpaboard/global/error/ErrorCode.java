@@ -1,4 +1,4 @@
-package com.prgrms.jpaboard.global.exception;
+package com.prgrms.jpaboard.global.error;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

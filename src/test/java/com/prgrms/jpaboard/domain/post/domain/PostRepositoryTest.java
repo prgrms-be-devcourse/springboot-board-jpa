@@ -45,8 +45,6 @@ class PostRepositoryTest {
                 .title("제목")
                 .content("주요 컨텐츠...")
                 .createdBy(user.getId().toString())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
         post.setUser(user);
 
@@ -65,8 +63,6 @@ class PostRepositoryTest {
                 .title("제목")
                 .content("주요 컨텐츠...")
                 .createdBy(savedUser.getId().toString())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
         post.setUser(savedUser);
         savedUser.addPost(post);
@@ -86,8 +82,6 @@ class PostRepositoryTest {
                 .title("제목")
                 .content("주요 컨텐츠...")
                 .createdBy(user.getId().toString())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
         post.setUser(user);
 
@@ -108,8 +102,6 @@ class PostRepositoryTest {
                 .title("제목")
                 .content("주요 컨텐츠...")
                 .createdBy(user.getId().toString())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
         post.setUser(user);
 
@@ -129,8 +121,6 @@ class PostRepositoryTest {
                 .title("제목")
                 .content("주요 컨텐츠...")
                 .createdBy(user.getId().toString())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
         post.setUser(user);
 
@@ -148,8 +138,6 @@ class PostRepositoryTest {
                 .title("제목")
                 .content("주요 컨텐츠...")
                 .createdBy(user.getId().toString())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
         post.setUser(user);
 

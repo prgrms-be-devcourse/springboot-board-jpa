@@ -6,7 +6,6 @@ import lombok.Getter;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -28,8 +27,6 @@ public class UserRequestDto {
     }
 
     public User toEntity() {
-        LocalDateTime now = LocalDateTime.now();
-
         return User.builder()
                 .name(name)
                 .age(age)

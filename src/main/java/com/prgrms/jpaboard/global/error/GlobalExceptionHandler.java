@@ -1,11 +1,12 @@
-package com.prgrms.jpaboard.global.exception;
+package com.prgrms.jpaboard.global.error;
 
 import com.prgrms.jpaboard.domain.post.exception.PostNotFoundException;
 import com.prgrms.jpaboard.domain.user.exception.UserNotFoundException;
 import com.prgrms.jpaboard.global.common.response.ErrorResponseDto;
-import lombok.extern.slf4j.Slf4j;
+import com.prgrms.jpaboard.global.error.exception.WrongFieldException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,21 +17,39 @@ public class GlobalExceptionHandler {
     // RequestBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        final ErrorResponseDto errorResponse = ErrorResponseDto.multipleError(ErrorCode.BAD_REQUEST, e.getBindingResult());
+        final ErrorResponseDto errorResponseDto = ErrorResponseDto.multipleError(ErrorCode.BAD_REQUEST, e.getBindingResult());
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(errorResponse);
+                .body(errorResponseDto);
     }
 
     // ModelAttribute
     @ExceptionHandler(org.springframework.validation.BindException.class)
     public ResponseEntity<ErrorResponseDto> handleBindException(BindException e) {
-        final ErrorResponseDto errorResponse = ErrorResponseDto.multipleError(ErrorCode.BAD_REQUEST, e.getBindingResult());
+        final ErrorResponseDto errorResponseDto = ErrorResponseDto.multipleError(ErrorCode.BAD_REQUEST, e.getBindingResult());
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(errorResponse);
+                .body(errorResponseDto);
+    }
+
+    @ExceptionHandler(WrongFieldException.class)
+    public ResponseEntity<ErrorResponseDto> handleWrongFieldException(WrongFieldException e) {
+        final ErrorResponseDto errorResponseDto = ErrorResponseDto.singleError(ErrorCode.BAD_REQUEST, e);
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponseDto);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponseDto> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        final ErrorResponseDto errorResponseDto = ErrorResponseDto.singleError(ErrorCode.BAD_REQUEST, e.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponseDto);
     }
 
     @ExceptionHandler(UserNotFoundException.class)

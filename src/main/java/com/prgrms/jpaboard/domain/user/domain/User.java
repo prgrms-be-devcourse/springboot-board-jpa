@@ -3,12 +3,13 @@ package com.prgrms.jpaboard.domain.user.domain;
 import com.prgrms.jpaboard.domain.post.domain.Post;
 import com.prgrms.jpaboard.domain.post.dto.response.UserInfoDto;
 import com.prgrms.jpaboard.global.common.domain.BaseEntity;
-import lombok.Getter;
+import com.prgrms.jpaboard.global.util.Validator;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.prgrms.jpaboard.domain.user.util.UserValidator.*;
 
 @Entity
 public class User extends BaseEntity {
@@ -21,6 +22,7 @@ public class User extends BaseEntity {
 
     private Integer age;
 
+    @Column(length = 255)
     private String hobby;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
@@ -30,7 +32,12 @@ public class User extends BaseEntity {
     }
 
     public User(String createdBy, String name, Integer age, String hobby) {
-        super(createdBy);
+        super("User", createdBy);
+
+        validateName("User", name);
+        validateAge("User", age);
+        validateHobby("User", hobby);
+
         this.name = name;
         this.age = age;
         this.hobby = hobby;

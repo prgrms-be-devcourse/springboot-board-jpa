@@ -2,14 +2,16 @@ package com.prgrms.jpaboard.domain.post.domain;
 
 import com.prgrms.jpaboard.domain.post.dto.response.PostDetailDto;
 import com.prgrms.jpaboard.domain.post.dto.response.PostDto;
+import com.prgrms.jpaboard.domain.post.util.PostValidator;
 import com.prgrms.jpaboard.domain.user.domain.User;
 import com.prgrms.jpaboard.global.common.domain.BaseEntity;
-import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static com.prgrms.jpaboard.domain.post.util.PostValidator.validateContent;
+import static com.prgrms.jpaboard.domain.post.util.PostValidator.validateTitle;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -32,8 +34,11 @@ public class Post extends BaseEntity {
     protected Post() {
     }
 
-    public Post(String createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, String title, String content) {
-        super(createdBy);
+    public Post(String createdBy, String title, String content) {
+        super("Post", createdBy);
+        validateTitle("Post", title);
+        validateContent("Post", content);
+
         this.title = title;
         this.content = content;
     }
@@ -46,8 +51,6 @@ public class Post extends BaseEntity {
         private String title;
         private String content;
         private String createdBy;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
 
         public PostBuilder title(String title) {
             this.title = title;
@@ -64,18 +67,8 @@ public class Post extends BaseEntity {
             return this;
         }
 
-        public PostBuilder createdAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public PostBuilder updatedAt(LocalDateTime updatedAt) {
-            this.updatedAt = updatedAt;
-            return this;
-        }
-
         public Post build() {
-            return new Post(createdBy, createdAt, updatedAt, title, content);
+            return new Post(createdBy, title, content);
         }
     }
 
