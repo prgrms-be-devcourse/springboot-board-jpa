@@ -20,7 +20,7 @@ public class CreateRequestPost {
     public Post toEntity() {
         Post post = Post.builder()
                 .title(this.title)
-                .content(this.title)
+                .content(this.content)
                 .build();
         post.setUser(userDto.toEntity());
         return post;
