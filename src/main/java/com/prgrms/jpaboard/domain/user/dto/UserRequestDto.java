@@ -15,12 +15,12 @@ public class UserRequestDto {
     private String name;
 
     @Min(1)
-    private int age;
+    private Integer age;
 
     @Size(max = 255)
     private String hobby;
 
-    public UserRequestDto(String name, int age, String hobby) {
+    public UserRequestDto(String name, Integer age, String hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;

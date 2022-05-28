@@ -36,6 +36,8 @@ class PostServiceTest {
             .build();
 
     private Post post = Post.builder()
+            .title("test title")
+            .content("this is content of test")
             .build();
 
     private PostUpdateDto postUpdateDto = new PostUpdateDto("수정된 제목", "수정된 내용");

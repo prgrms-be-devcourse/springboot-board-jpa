@@ -19,7 +19,7 @@ public class User extends BaseEntity {
     @Column(length = 50, nullable = false)
     private String name;
 
-    private int age;
+    private Integer age;
 
     private String hobby;
 
@@ -29,7 +29,7 @@ public class User extends BaseEntity {
     protected User() {
     }
 
-    public User(String createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, String name, int age, String hobby) {
+    public User(String createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, String name, Integer age, String hobby) {
         super(createdBy, createdAt, updatedAt);
         this.name = name;
         this.age = age;
@@ -42,7 +42,7 @@ public class User extends BaseEntity {
 
     public static class UserBuilder {
         private String name;
-        private int age;
+        private Integer age;
         private String hobby;
         private String createdBy;
         private LocalDateTime createdAt;
@@ -53,7 +53,7 @@ public class User extends BaseEntity {
             return this;
         }
 
-        public UserBuilder age(int age) {
+        public UserBuilder age(Integer age) {
             this.age = age;
             return this;
         }
@@ -88,7 +88,7 @@ public class User extends BaseEntity {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void updateAge(int age) {
+    public void updateAge(Integer age) {
         this.age = age;
         this.updatedAt = LocalDateTime.now();
     }

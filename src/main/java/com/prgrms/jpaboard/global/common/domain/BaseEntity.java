@@ -18,7 +18,7 @@ public class BaseEntity {
     @Column(name="updated_at", columnDefinition = "TIMESTAMP", nullable = false)
     protected LocalDateTime updatedAt;
 
-    public BaseEntity() {
+    protected BaseEntity() {
     }
 
     public BaseEntity(String createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {

@@ -1,7 +1,6 @@
 package com.prgrms.jpaboard.global.exception;
 
 import com.prgrms.jpaboard.domain.post.exception.PostNotFoundException;
-import com.prgrms.jpaboard.domain.user.domain.User;
 import com.prgrms.jpaboard.domain.user.exception.UserNotFoundException;
 import com.prgrms.jpaboard.global.common.response.ErrorResponseDto;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     // RequestBody
