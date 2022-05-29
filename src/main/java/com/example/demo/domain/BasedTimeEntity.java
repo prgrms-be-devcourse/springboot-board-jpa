@@ -22,7 +22,7 @@ public class BasedTimeEntity {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP", nullable = false)
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
