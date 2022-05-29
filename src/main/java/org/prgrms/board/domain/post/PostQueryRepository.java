@@ -1,31 +1,39 @@
 package org.prgrms.board.domain.post;
 
-import static org.prgrms.board.domain.post.QPost.*;
-import static org.prgrms.board.domain.user.QUser.*;
-
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Root;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class PostQueryRepository {
 
-	private final JPAQueryFactory queryFactory;
+	private final EntityManager em;
 
-	public PostQueryRepository(JPAQueryFactory queryFactory) {
-		this.queryFactory = queryFactory;
+	public PostQueryRepository(EntityManager em) {
+		this.em = em;
 	}
 
 	public List<Post> findAll(long offset, int limit) {
-		return queryFactory.select(post)
-			.from(post)
-			.innerJoin(post.writer, user)
-			.fetchJoin()
-			.orderBy(post.createdAt.desc())
-			.offset(offset)
-			.limit(limit)
-			.fetch();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Post> cq = cb.createQuery(Post.class);
+
+		Root<Post> post = cq.from(Post.class);
+		post.fetch("writer", JoinType.INNER);
+
+		Order idDesc = cb.desc(post.get("id"));
+
+		cq.orderBy(idDesc);
+
+		return em.createQuery(cq)
+			.setFirstResult((int)offset)
+			.setMaxResults(limit)
+			.getResultList();
 	}
 }
