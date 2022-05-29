@@ -19,6 +19,7 @@ import static java.text.MessageFormat.format;
 public class PostService {
 
     private final PostRepository postRepository;
+
     private final PostMapper postMapper;
 
     @Transactional

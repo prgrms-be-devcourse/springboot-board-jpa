@@ -21,7 +21,9 @@ import static java.util.stream.Collectors.toSet;
 public class UserService {
 
     private final UserRepository userRepository;
+
     private final UserMapper userMapper;
+
     private final HobbyMapper hobbyMapper;
 
     @Transactional
