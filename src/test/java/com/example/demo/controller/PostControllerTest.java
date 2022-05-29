@@ -80,6 +80,7 @@ class PostControllerTest {
 
 
     @Test
+    @DisplayName("포스트를 저장한다")
     void save_test() throws Exception {
         UserDto userDto = UserDto.builder()
                 .name("jamie")
@@ -117,6 +118,7 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("postId로 하나의 포스트를 가져온다")
     void getOne_test() throws Exception {
         mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/{id}", savedPostId)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -149,6 +151,7 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("페이지별로 Post를 가져온다")
     void getAllByPageTest() throws Exception {
         mockMvc.perform(RestDocumentationRequestBuilders.get("/posts")
                         .param("page", String.valueOf(0))
@@ -201,6 +204,7 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("포스트의 제목과 내용을 변경한다.")
     void updateTitleAndContent() throws Exception {
         UserDto userDto = UserDto.builder()
                 .name("jamie")

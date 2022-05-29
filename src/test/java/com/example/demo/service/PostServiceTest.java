@@ -30,7 +30,7 @@ class PostServiceTest {
     private Long postId;
 
     @BeforeEach
-    void save_test() {
+    void setUp() {
         //Given
         UserDto userDto = UserDto.builder()
                 .name("jamie")
@@ -54,6 +54,7 @@ class PostServiceTest {
     }
 
     @Test
+    @DisplayName("유효한 postId로 Post를 조회한다")
     void findOneTest() throws PostNotFoundException {
         Long findPostId = postId;
         PostDto returnPostDto = postService.findOne(findPostId);
@@ -68,6 +69,7 @@ class PostServiceTest {
     }
 
     @Test
+    @DisplayName("Post를 페이지별로 가져온다. - 첫번째 page, 사이즈 10개")
     void getAllByPageTest() {
         PageRequest pageRequest = PageRequest.of(0, 10);
         Page<PostDto> allByPage = postService.findAllByPage(pageRequest);
