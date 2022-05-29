@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.test.web.servlet.MockMvc;
 import prgrms.project.post.controller.response.IdResponse;
 import prgrms.project.post.service.post.PostDto;
@@ -75,10 +76,7 @@ class GlobalExceptionHandlerTest {
         mockMvc.perform(post("/api/v1/posts").content(requestString).contentType(APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andDo(document("post-invalid-input",
-                responseFields(
-                    fieldWithPath("error").type(STRING).description("에러"),
-                    fieldWithPath("errorMessage").type(STRING).description("에러메시지")
-                )
+                responseFieldsSnippet()
             )
         );
     }
@@ -97,10 +95,7 @@ class GlobalExceptionHandlerTest {
         mockMvc.perform(post("/api/v1/posts").content(requestString).contentType(APPLICATION_PDF))
             .andExpect(status().isUnsupportedMediaType())
             .andDo(document("post-unsupported-media-type",
-                responseFields(
-                    fieldWithPath("error").type(STRING).description("에러"),
-                    fieldWithPath("errorMessage").type(STRING).description("에러메시지")
-                )
+                responseFieldsSnippet()
             )
         );
     }
@@ -111,10 +106,7 @@ class GlobalExceptionHandlerTest {
         mockMvc.perform(get("/api/v1/posts/{postId}", "mismatch").contentType(APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andDo(document("post-mismatch-type",
-                responseFields(
-                    fieldWithPath("error").type(STRING).description("에러"),
-                    fieldWithPath("errorMessage").type(STRING).description("에러메시지")
-                )
+                responseFieldsSnippet()
             )
         );
     }
@@ -125,11 +117,15 @@ class GlobalExceptionHandlerTest {
         mockMvc.perform(get("/api/v1/posts/{postId}", 999999).contentType(APPLICATION_JSON))
             .andExpect(status().isNotFound())
             .andDo(document("post-not-found",
-                responseFields(
-                    fieldWithPath("error").type(STRING).description("에러"),
-                    fieldWithPath("errorMessage").type(STRING).description("에러메시지")
-                )
+                responseFieldsSnippet()
             )
+        );
+    }
+
+    private ResponseFieldsSnippet responseFieldsSnippet() {
+        return responseFields(
+            fieldWithPath("error").type(STRING).description("에러"),
+            fieldWithPath("errorMessage").type(STRING).description("에러메시지")
         );
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.restdocs.payload.RequestFieldsSnippet;
+import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import prgrms.project.post.controller.response.IdResponse;
@@ -73,27 +75,16 @@ class PostRestControllerTest {
 
         var requestString = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(post("/api/v1/posts")
+        mockMvc.perform(
+            post("/api/v1/posts")
                 .content(requestString)
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("post-save",
-                        requestFields(
-                                fieldWithPath("id").type(NULL).description("아이디"),
-                                fieldWithPath("title").type(STRING).description("게시판제목"),
-                                fieldWithPath("content").type(STRING).description("게시판내용"),
-                                fieldWithPath("user").type(OBJECT).description("회원"),
-                                fieldWithPath("user.id").type(NUMBER).description("회원아이디"),
-                                fieldWithPath("user.name").type(STRING).description("회원이름"),
-                                fieldWithPath("user.age").type(NUMBER).description("회원나이"),
-                                fieldWithPath("user.hobbies").type(ARRAY).description("회원취미목록"),
-                                fieldWithPath("user.hobbies[0].hobby").type(STRING).description("회원취미")
-                                ),
-                        responseFields(
-                                fieldWithPath("id").type(NUMBER).description("게시판아이디")
-                        )
-                    )
-                );
+                    requestSnippetForSave(),
+                    responseSnippetForSaveAndUpdate()
+                )
+            );
     }
 
     @Test
@@ -102,18 +93,9 @@ class PostRestControllerTest {
         mockMvc.perform(get("/api/v1/posts/{postId}", postId)
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("post-find",
-                        responseFields(
-                                fieldWithPath("id").type(NUMBER).description("게시판아이디"),
-                                fieldWithPath("title").type(STRING).description("게시판제목"),
-                                fieldWithPath("content").type(STRING).description("게시판내용"),
-                                fieldWithPath("user").type(OBJECT).description("회원"),
-                                fieldWithPath("user.id").type(NUMBER).description("회원아이디"),
-                                fieldWithPath("user.name").type(STRING).description("회원이름"),
-                                fieldWithPath("user.age").type(NUMBER).description("회원나이"),
-                                fieldWithPath("user.hobbies").type(ARRAY).description("회원취미목록"),
-                                fieldWithPath("user.hobbies[0].hobby").type(STRING).description("회원취미")
-                        )
+                .andDo(
+                    document("post-find",
+                        responseSnippetForFindById()
                     )
                 );
     }
@@ -123,29 +105,16 @@ class PostRestControllerTest {
     void testFindAll() throws Exception {
 
         mockMvc.perform(get("/api/v1/posts")
-                .param("page", "0")
-                .param("size", "1")
-                .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(document("post-find-all",
-                        responseFields(
-                                fieldWithPath("content").type(ARRAY).description("컨텐츠"),
-                                fieldWithPath("content[0].id").type(NUMBER).description("게시판아이디"),
-                                fieldWithPath("content[0].title").type(STRING).description("게시판제목"),
-                                fieldWithPath("content[0].content").type(STRING).description("게시판내용"),
-                                fieldWithPath("content[0].user").type(OBJECT).description("회원"),
-                                fieldWithPath("content[0].user.id").type(NUMBER).description("회원아이디"),
-                                fieldWithPath("content[0].user.name").type(STRING).description("회원이름"),
-                                fieldWithPath("content[0].user.age").type(NUMBER).description("회원나이"),
-                                fieldWithPath("content[0].user.hobbies").type(ARRAY).description("회원취미목록"),
-                                fieldWithPath("content[0].user.hobbies[0].hobby").type(STRING).description("회원취미"),
-                                fieldWithPath("pageNumber").type(NUMBER).description("페이지넘버"),
-                                fieldWithPath("pageSize").type(NUMBER).description("페이지사이즈"),
-                                fieldWithPath("first").type(BOOLEAN).description("처음"),
-                                fieldWithPath("last").type(BOOLEAN).description("끝")
-                        )
-                    )
-                );
+            .param("page", "0")
+            .param("size", "1")
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(
+                document("post-find-all",
+                    responseSnippetForFindAll()
+                )
+            );
+
     }
 
     @Test
@@ -165,21 +134,76 @@ class PostRestControllerTest {
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("post-update",
-                        requestFields(
-                                fieldWithPath("id").type(NUMBER).description("게시판아이디"),
-                                fieldWithPath("title").type(STRING).description("게시판제목"),
-                                fieldWithPath("content").type(STRING).description("게시판내용"),
-                                fieldWithPath("user").type(OBJECT).description("회원"),
-                                fieldWithPath("user.id").type(NUMBER).description("회원아이디"),
-                                fieldWithPath("user.name").type(STRING).description("회원이름"),
-                                fieldWithPath("user.age").type(NUMBER).description("회원나이"),
-                                fieldWithPath("user.hobbies").type(ARRAY).description("회원취미목록"),
-                                fieldWithPath("user.hobbies[0].hobby").type(STRING).description("회원취미")
-                        ),
-                        responseFields(
-                                fieldWithPath("id").type(NUMBER).description("게시판아이디")
-                        )
-                    )
-                );
+                    requestSnippetForUpdate(),
+                    responseSnippetForSaveAndUpdate()
+                )
+            );
+    }
+
+    private RequestFieldsSnippet requestSnippetForSave() {
+        return requestFields(
+            fieldWithPath("id").type(NULL).description("게시판아이디"),
+            fieldWithPath("title").type(STRING).description("게시판제목"),
+            fieldWithPath("content").type(STRING).description("게시판내용"),
+            fieldWithPath("user").type(OBJECT).description("회원"),
+            fieldWithPath("user.id").type(NUMBER).description("회원아이디"),
+            fieldWithPath("user.name").type(STRING).description("회원이름"),
+            fieldWithPath("user.age").type(NUMBER).description("회원나이"),
+            fieldWithPath("user.hobbies").type(ARRAY).description("회원취미목록"),
+            fieldWithPath("user.hobbies[0].hobby").type(STRING).description("회원취미")
+        );
+    }
+
+    private RequestFieldsSnippet requestSnippetForUpdate() {
+        return requestFields(
+            fieldWithPath("id").type(NUMBER).description("게시판아이디"),
+            fieldWithPath("title").type(STRING).description("게시판제목"),
+            fieldWithPath("content").type(STRING).description("게시판내용"),
+            fieldWithPath("user").type(OBJECT).description("회원"),
+            fieldWithPath("user.id").type(NUMBER).description("회원아이디"),
+            fieldWithPath("user.name").type(STRING).description("회원이름"),
+            fieldWithPath("user.age").type(NUMBER).description("회원나이"),
+            fieldWithPath("user.hobbies").type(ARRAY).description("회원취미목록"),
+            fieldWithPath("user.hobbies[0].hobby").type(STRING).description("회원취미")
+        );
+    }
+
+    private ResponseFieldsSnippet responseSnippetForFindById() {
+        return responseFields(
+            fieldWithPath("id").type(NUMBER).description("게시판아이디"),
+            fieldWithPath("title").type(STRING).description("게시판제목"),
+            fieldWithPath("content").type(STRING).description("게시판내용"),
+            fieldWithPath("user").type(OBJECT).description("회원"),
+            fieldWithPath("user.id").type(NUMBER).description("회원아이디"),
+            fieldWithPath("user.name").type(STRING).description("회원이름"),
+            fieldWithPath("user.age").type(NUMBER).description("회원나이"),
+            fieldWithPath("user.hobbies").type(ARRAY).description("회원취미목록"),
+            fieldWithPath("user.hobbies[0].hobby").type(STRING).description("회원취미")
+        );
+    }
+
+    private ResponseFieldsSnippet responseSnippetForFindAll() {
+        return responseFields(
+            fieldWithPath("content").type(ARRAY).description("컨텐츠"),
+            fieldWithPath("content[0].id").type(NUMBER).description("게시판아이디"),
+            fieldWithPath("content[0].title").type(STRING).description("게시판제목"),
+            fieldWithPath("content[0].content").type(STRING).description("게시판내용"),
+            fieldWithPath("content[0].user").type(OBJECT).description("회원"),
+            fieldWithPath("content[0].user.id").type(NUMBER).description("회원아이디"),
+            fieldWithPath("content[0].user.name").type(STRING).description("회원이름"),
+            fieldWithPath("content[0].user.age").type(NUMBER).description("회원나이"),
+            fieldWithPath("content[0].user.hobbies").type(ARRAY).description("회원취미목록"),
+            fieldWithPath("content[0].user.hobbies[0].hobby").type(STRING).description("회원취미"),
+            fieldWithPath("pageNumber").type(NUMBER).description("페이지넘버"),
+            fieldWithPath("pageSize").type(NUMBER).description("페이지사이즈"),
+            fieldWithPath("first").type(BOOLEAN).description("처음"),
+            fieldWithPath("last").type(BOOLEAN).description("끝")
+        );
+    }
+
+    private ResponseFieldsSnippet responseSnippetForSaveAndUpdate() {
+        return responseFields(
+            fieldWithPath("id").type(NUMBER).description("게시판아이디")
+        );
     }
 }
