@@ -1,11 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.ApiResponse;
 import com.example.demo.dto.PostDto;
 import com.example.demo.exception.PostNotFoundException;
 import com.example.demo.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,26 +18,26 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public ApiResponse<PostDto> getOne(@PathVariable Long id) throws PostNotFoundException {
+    public ResponseEntity<PostDto> getOne(@PathVariable Long id) throws PostNotFoundException {
         PostDto returnPost = postService.findOne(id);
-        return ApiResponse.ok(returnPost);
+        return ResponseEntity.ok(returnPost);
     }
 
     @PostMapping("/posts")
-    public ApiResponse<Long> save(@RequestBody PostDto postDto) {
+    public ResponseEntity<Long> save(@RequestBody PostDto postDto) {
         Long postId = postService.save(postDto);
-        return ApiResponse.ok(postId);
+        return ResponseEntity.ok(postId);
     }
 
     @GetMapping("/posts")
-    public ApiResponse<Page<PostDto>> getAllByPage(Pageable pageable) {
+    public ResponseEntity<Page<PostDto>> getAllByPage(Pageable pageable) {
         Page<PostDto> allByPage = postService.findAllByPage(pageable);
-        return ApiResponse.ok(allByPage);
+        return ResponseEntity.ok(allByPage);
     }
 
     @PostMapping("/posts/{id}")
-    public ApiResponse<PostDto> updateTitleAndContent(@PathVariable Long id, @RequestBody PostDto postDto) throws PostNotFoundException {
+    public ResponseEntity<PostDto> updateTitleAndContent(@PathVariable Long id, @RequestBody PostDto postDto) throws PostNotFoundException {
         PostDto updatedDto = postService.updateTitleAndContent(postDto, id);
-        return ApiResponse.ok(updatedDto);
+        return ResponseEntity.ok(updatedDto);
     }
 }
