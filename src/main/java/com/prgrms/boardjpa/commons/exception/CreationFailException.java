@@ -1,7 +1,7 @@
 package com.prgrms.boardjpa.commons.exception;
 
 public class CreationFailException extends RuntimeException {
-	public <T> CreationFailException(Class<T> clazz) {
+	public CreationFailException(Class<?> clazz) {
 		super(clazz.getSimpleName() + "생성에 실패하였습니다");
 	}
 }
