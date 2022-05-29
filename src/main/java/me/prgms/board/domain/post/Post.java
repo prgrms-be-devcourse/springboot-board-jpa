@@ -36,7 +36,7 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public Post() {
+    protected Post() {
     }
 
     public Post(String title, String content, User user) {

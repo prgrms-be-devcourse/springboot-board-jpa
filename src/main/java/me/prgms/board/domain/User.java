@@ -37,7 +37,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
-    public User() {}
+    protected User() {}
 
     public User(String name, int age, String hobby) {
         super(CREATE_BY, LocalDateTime.now());
