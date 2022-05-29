@@ -20,7 +20,6 @@ public class User extends BaseEntity {
 
     private static final String CREATE_BY = User.class.toString();
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,9 +40,16 @@ public class User extends BaseEntity {
 
     public User(String name, int age, String hobby) {
         super(CREATE_BY, LocalDateTime.now());
+        validate(age);
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+    }
+
+    private void validate(int age) {
+        if (age <= 0) {
+            throw new IllegalArgumentException("나이는 1살 이상이어야 합니다.");
+        }
     }
 
     public Long getId() {
