@@ -73,7 +73,7 @@ class PostServiceImplTest {
 
     @Test
     void 게시글_작성_성공() {
-        Post writtenPost = postService.write("제목", "내용", "득윤");
+        Post writtenPost = postService.write("제목", "내용", "ndy");
 
         Post foundPost = postRepository.findById(writtenPost.getId()).get();
 
@@ -86,7 +86,7 @@ class PostServiceImplTest {
     void 게시글_수정_성공() {
         Long editPostId = writtenPost1.getId();
 
-        Post editedPost = postService.edit(editPostId, "수정제목", "수정내용", "득윤");
+        Post editedPost = postService.edit(editPostId, "수정제목", "수정내용", "ndy");
 
         assertThat(editedPost).isEqualTo(writtenPost1);
         assertThat(editedPost.getTitle()).isEqualTo("수정제목");
@@ -98,14 +98,14 @@ class PostServiceImplTest {
         Long illegalPostId = -1L;
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> postService.edit(illegalPostId, "수정제목", "수정내용", "득윤"));
+                .isThrownBy(() -> postService.edit(illegalPostId, "수정제목", "수정내용", "ndy"));
     }
 
     @Test
     void 남의_게시글_수정_실패() {
-        User anotherUser = userRepository.save(new User("다른 사용자", null));
+        userRepository.save(new User("another", "다른 사용자", null));
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> postService.edit(writtenPost1.getId(), "수정제목", "수정내용", "다른 사용자"));
+                .isThrownBy(() -> postService.edit(writtenPost1.getId(), "수정제목", "수정내용", "another"));
     }
 }

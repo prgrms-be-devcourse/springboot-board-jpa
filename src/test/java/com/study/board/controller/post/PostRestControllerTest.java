@@ -90,7 +90,7 @@ class PostRestControllerTest extends RestDocsTestSupport {
     void 게시글_단건_조회() throws Exception {
         Long targetPostId = post1.getId();
 
-        mockMvc.perform(get("/posts/{postId}", targetPostId )
+        mockMvc.perform(get("/posts/{postId}", targetPostId)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpectAll(
@@ -122,7 +122,7 @@ class PostRestControllerTest extends RestDocsTestSupport {
                 .put("content", "내용");
 
         mockMvc.perform(post("/posts")
-                        .header(AUTHORIZATION, "득윤")
+                        .header(AUTHORIZATION, "ndy")
                         .contentType(APPLICATION_JSON)
                         .content(createJson(postRequest)))
                 .andExpect(status().isOk())
@@ -135,7 +135,7 @@ class PostRestControllerTest extends RestDocsTestSupport {
                 ).andDo(
                         restDocs.document(
                                 requestHeaders(
-                                        headerWithName(AUTHORIZATION).description("인증 대체 - 사용자 이름을 포함해주세요")
+                                        headerWithName(AUTHORIZATION).description("인증 대체 - 로그인 아이디를 포함해주세요")
                                 ),
                                 requestFields(
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
@@ -159,7 +159,7 @@ class PostRestControllerTest extends RestDocsTestSupport {
                 .put("content", "수정 내용");
 
         mockMvc.perform(put("/posts/" + postId)
-                        .header(AUTHORIZATION, "득윤")
+                        .header(AUTHORIZATION, "ndy")
                         .contentType(APPLICATION_JSON)
                         .content(createJson(postRequest)))
                 .andExpect(status().isOk())
@@ -172,7 +172,7 @@ class PostRestControllerTest extends RestDocsTestSupport {
                 ).andDo(
                         restDocs.document(
                                 requestHeaders(
-                                        headerWithName(AUTHORIZATION).description("인증 대체 - 사용자 이름을 포함해주세요")
+                                        headerWithName(AUTHORIZATION).description("인증 대체 - 로그인 아이디를 포함해주세요")
                                 ),
                                 requestFields(
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 수정 제목"),
