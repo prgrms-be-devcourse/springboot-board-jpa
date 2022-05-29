@@ -2,6 +2,7 @@ package prgrms.project.post.config;
 
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.BatchSize;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import prgrms.project.post.domain.post.Post;
@@ -14,6 +15,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Set;
 
+@Profile("local")
 @Component
 @RequiredArgsConstructor
 public class SampleInitData {

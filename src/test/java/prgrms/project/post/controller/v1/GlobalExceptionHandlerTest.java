@@ -10,15 +10,10 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import prgrms.project.post.domain.post.Post;
-import prgrms.project.post.domain.user.Hobby;
-import prgrms.project.post.domain.user.User;
-import prgrms.project.post.repository.PostRepository;
-import prgrms.project.post.repository.UserRepository;
+import prgrms.project.post.controller.response.IdResponse;
 import prgrms.project.post.service.post.PostDto;
-import prgrms.project.post.service.post.PostService;
-import prgrms.project.post.util.mapper.UserMapper;
+import prgrms.project.post.service.user.HobbyDto;
+import prgrms.project.post.service.user.UserDto;
 
 import java.util.Set;
 
@@ -44,39 +39,35 @@ class GlobalExceptionHandlerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Autowired
-    PostService postService;
+    UserDto userDto;
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    PostRepository postRepository;
-
-    @Autowired
-    UserMapper userMapper;
-
-    User savedUser;
     Long postId;
 
     @BeforeEach
-    void setup() {
-        User user = User.builder().name("name").age(10).hobbies(Set.of(new Hobby("swim"))).build();
-        savedUser = userRepository.save(user);
+    void setup() throws Exception {
+        var userRequest = UserDto.builder().name("name").age(10).hobbies(Set.of(new HobbyDto("swim"))).build();
+        var userRequestString = objectMapper.writeValueAsString(userRequest);
+        var userIdResult = mockMvc.perform(post("/api/v1/users").content(userRequestString).contentType(APPLICATION_JSON)).andReturn();
+        var userIdResponse = objectMapper.readValue(userIdResult.getResponse().getContentAsString(), IdResponse.class);
+        var userDtoResult = mockMvc.perform(get("/api/v1/users/{userId}", userIdResponse.id()).contentType(APPLICATION_JSON)).andReturn();
 
-        var post = Post.builder().title("title").content("content").user(savedUser).build();
-        var savedPost = postRepository.save(post);
-        postId = savedPost.getId();
+        userDto = objectMapper.readValue(userDtoResult.getResponse().getContentAsString(), UserDto.class);
+
+        var postRequest = PostDto.builder().title("title").content("content").user(userDto).build();
+        var postRequestString = objectMapper.writeValueAsString(postRequest);
+        var postIdResult = mockMvc.perform(post("/api/v1/posts").content(postRequestString).contentType(APPLICATION_JSON)).andReturn();
+        var postIdResponse = objectMapper.readValue(postIdResult.getResponse().getContentAsString(), IdResponse.class);
+
+        postId = postIdResponse.id();
     }
 
     @Test
-    @Transactional
     @DisplayName("밸리데이션에 맞지 않는 입력값이 들어올 경우 예외를 처리한다.")
     void testHandleMethodArgumentNotValid() throws Exception {
         var postDto = PostDto.builder()
             .title("")
             .content("this post dont have title")
-            .user(userMapper.toDto(savedUser))
+            .user(userDto)
             .build();
 
         var requestString = objectMapper.writeValueAsString(postDto);
@@ -93,13 +84,12 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("지원하지 않는 미디어 타입을 요청하는 경우 예외를 처리한다.")
     void testHandleHttpMediaTypeNotSupported() throws Exception {
         var postDto = PostDto.builder()
             .title("title")
             .content("content")
-            .user(userMapper.toDto(savedUser))
+            .user(userDto)
             .build();
 
         var requestString = objectMapper.writeValueAsString(postDto);
@@ -116,7 +106,6 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("파라미터의 데이터 타입이 맞지않을 경우 예외를 처리한다.")
     void testHandleTypeMismatch() throws Exception {
         mockMvc.perform(get("/api/v1/posts/{postId}", "mismatch").contentType(APPLICATION_JSON))
@@ -131,7 +120,6 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("엔티티를 찾지 못하는 경우 예외를 처리한다.")
     void testHandleNoSuchElementException() throws Exception {
         mockMvc.perform(get("/api/v1/posts/{postId}", 999999).contentType(APPLICATION_JSON))

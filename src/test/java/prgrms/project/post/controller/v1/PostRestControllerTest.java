@@ -10,15 +10,11 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import prgrms.project.post.domain.post.Post;
-import prgrms.project.post.domain.user.Hobby;
-import prgrms.project.post.domain.user.User;
-import prgrms.project.post.repository.PostRepository;
-import prgrms.project.post.repository.UserRepository;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import prgrms.project.post.controller.response.IdResponse;
 import prgrms.project.post.service.post.PostDto;
-import prgrms.project.post.service.post.PostService;
-import prgrms.project.post.util.mapper.UserMapper;
+import prgrms.project.post.service.user.HobbyDto;
+import prgrms.project.post.service.user.UserDto;
 
 import java.util.Set;
 
@@ -36,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @SpringBootTest
-@Transactional
 class PostRestControllerTest {
 
     @Autowired
@@ -45,29 +40,26 @@ class PostRestControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Autowired
-    PostService postService;
+    UserDto userDto;
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    PostRepository postRepository;
-
-    @Autowired
-    UserMapper userMapper;
-
-    User savedUser;
     Long postId;
 
     @BeforeEach
-    void setup() {
-        User user = User.builder().name("name").age(10).hobbies(Set.of(new Hobby("swim"))).build();
-        savedUser = userRepository.save(user);
+    void setup() throws Exception {
+        var userRequest = UserDto.builder().name("name").age(10).hobbies(Set.of(new HobbyDto("swim"))).build();
+        var userRequestString = objectMapper.writeValueAsString(userRequest);
+        var userIdResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users").content(userRequestString).contentType(APPLICATION_JSON)).andReturn();
+        var userIdResponse = objectMapper.readValue(userIdResult.getResponse().getContentAsString(), IdResponse.class);
+        var userDtoResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/{userId}", userIdResponse.id()).contentType(APPLICATION_JSON)).andReturn();
 
-        var post = Post.builder().title("title").content("content").user(savedUser).build();
-        var savedPost = postRepository.save(post);
-        postId = savedPost.getId();
+        userDto = objectMapper.readValue(userDtoResult.getResponse().getContentAsString(), UserDto.class);
+
+        var postRequest = PostDto.builder().title("title").content("content").user(userDto).build();
+        var postRequestString = objectMapper.writeValueAsString(postRequest);
+        var postIdResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/posts").content(postRequestString).contentType(APPLICATION_JSON)).andReturn();
+        var postIdResponse = objectMapper.readValue(postIdResult.getResponse().getContentAsString(), IdResponse.class);
+
+        postId = postIdResponse.id();
     }
 
     @Test
@@ -76,7 +68,7 @@ class PostRestControllerTest {
         var request = PostDto.builder()
                 .title("new title")
                 .content("new content")
-                .user(userMapper.toDto(savedUser))
+                .user(userDto)
                 .build();
 
         var requestString = objectMapper.writeValueAsString(request);
@@ -98,11 +90,10 @@ class PostRestControllerTest {
                                 fieldWithPath("user.hobbies[0].hobby").type(STRING).description("회원취미")
                                 ),
                         responseFields(
-                                fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
-                                fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
-                                fieldWithPath("data").type(NUMBER).description("데이터")
+                                fieldWithPath("id").type(NUMBER).description("게시판아이디")
                         )
-                ));
+                    )
+                );
     }
 
     @Test
@@ -113,21 +104,18 @@ class PostRestControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("post-find",
                         responseFields(
-                                fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
-                                fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
-                                fieldWithPath("data").type(OBJECT).description("데이터"),
-                                fieldWithPath("data.id").type(NUMBER).description("게시판아이디"),
-                                fieldWithPath("data.title").type(STRING).description("게시판제목"),
-                                fieldWithPath("data.content").type(STRING).description("게시판내용"),
-                                fieldWithPath("data.user").type(OBJECT).description("회원"),
-                                fieldWithPath("data.user.id").type(NUMBER).description("회원아이디"),
-                                fieldWithPath("data.user.name").type(STRING).description("회원이름"),
-                                fieldWithPath("data.user.age").type(NUMBER).description("회원나이"),
-                                fieldWithPath("data.user.hobbies").type(ARRAY).description("회원취미목록"),
-                                fieldWithPath("data.user.hobbies[0].hobby").type(STRING).description("회원취미")
+                                fieldWithPath("id").type(NUMBER).description("게시판아이디"),
+                                fieldWithPath("title").type(STRING).description("게시판제목"),
+                                fieldWithPath("content").type(STRING).description("게시판내용"),
+                                fieldWithPath("user").type(OBJECT).description("회원"),
+                                fieldWithPath("user.id").type(NUMBER).description("회원아이디"),
+                                fieldWithPath("user.name").type(STRING).description("회원이름"),
+                                fieldWithPath("user.age").type(NUMBER).description("회원나이"),
+                                fieldWithPath("user.hobbies").type(ARRAY).description("회원취미목록"),
+                                fieldWithPath("user.hobbies[0].hobby").type(STRING).description("회원취미")
                         )
-                )
-            );
+                    )
+                );
     }
 
     @Test
@@ -141,23 +129,20 @@ class PostRestControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("post-find-all",
                         responseFields(
-                                fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
-                                fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
-                                fieldWithPath("data").type(OBJECT).description("데이터"),
-                                fieldWithPath("data.content").type(ARRAY).description("컨텐츠"),
-                                fieldWithPath("data.content[0].id").type(NUMBER).description("게시판아이디"),
-                                fieldWithPath("data.content[0].title").type(STRING).description("게시판제목"),
-                                fieldWithPath("data.content[0].content").type(STRING).description("게시판내용"),
-                                fieldWithPath("data.content[0].user").type(OBJECT).description("회원"),
-                                fieldWithPath("data.content[0].user.id").type(NUMBER).description("회원아이디"),
-                                fieldWithPath("data.content[0].user.name").type(STRING).description("회원이름"),
-                                fieldWithPath("data.content[0].user.age").type(NUMBER).description("회원나이"),
-                                fieldWithPath("data.content[0].user.hobbies").type(ARRAY).description("회원취미목록"),
-                                fieldWithPath("data.content[0].user.hobbies[0].hobby").type(STRING).description("회원취미"),
-                                fieldWithPath("data.pageNumber").type(NUMBER).description("페이지넘버"),
-                                fieldWithPath("data.pageSize").type(NUMBER).description("페이지사이즈"),
-                                fieldWithPath("data.first").type(BOOLEAN).description("처음"),
-                                fieldWithPath("data.last").type(BOOLEAN).description("끝")
+                                fieldWithPath("content").type(ARRAY).description("컨텐츠"),
+                                fieldWithPath("content[0].id").type(NUMBER).description("게시판아이디"),
+                                fieldWithPath("content[0].title").type(STRING).description("게시판제목"),
+                                fieldWithPath("content[0].content").type(STRING).description("게시판내용"),
+                                fieldWithPath("content[0].user").type(OBJECT).description("회원"),
+                                fieldWithPath("content[0].user.id").type(NUMBER).description("회원아이디"),
+                                fieldWithPath("content[0].user.name").type(STRING).description("회원이름"),
+                                fieldWithPath("content[0].user.age").type(NUMBER).description("회원나이"),
+                                fieldWithPath("content[0].user.hobbies").type(ARRAY).description("회원취미목록"),
+                                fieldWithPath("content[0].user.hobbies[0].hobby").type(STRING).description("회원취미"),
+                                fieldWithPath("pageNumber").type(NUMBER).description("페이지넘버"),
+                                fieldWithPath("pageSize").type(NUMBER).description("페이지사이즈"),
+                                fieldWithPath("first").type(BOOLEAN).description("처음"),
+                                fieldWithPath("last").type(BOOLEAN).description("끝")
                         )
                     )
                 );
@@ -170,7 +155,7 @@ class PostRestControllerTest {
                 .id(postId)
                 .title("updated title")
                 .content("updated content")
-                .user(userMapper.toDto(savedUser))
+                .user(userDto)
                 .build();
 
         var requestString = objectMapper.writeValueAsString(request);
@@ -192,9 +177,7 @@ class PostRestControllerTest {
                                 fieldWithPath("user.hobbies[0].hobby").type(STRING).description("회원취미")
                         ),
                         responseFields(
-                                fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
-                                fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
-                                fieldWithPath("data").type(NUMBER).description("데이터")
+                                fieldWithPath("id").type(NUMBER).description("게시판아이디")
                         )
                     )
                 );
