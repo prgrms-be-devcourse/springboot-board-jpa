@@ -2,8 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.dto.PostDto;
 import com.example.demo.dto.UserDto;
+import com.example.demo.exception.PostNotFoundException;
 import com.example.demo.repository.PostRepository;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -54,7 +54,7 @@ class PostServiceTest {
     }
 
     @Test
-    void findOneTest() throws NotFoundException {
+    void findOneTest() throws PostNotFoundException {
         Long findPostId = postId;
         PostDto returnPostDto = postService.findOne(findPostId);
         assertThat(returnPostDto.id()).isEqualTo(findPostId);
@@ -64,7 +64,7 @@ class PostServiceTest {
     @DisplayName("없는 postId로 post를 찾으면 NotFoundException이 발생한다.")
     void findOneTestException() {
         Long findPostId = new Random().nextLong();
-        assertThrows(NotFoundException.class, () -> postService.findOne(findPostId));
+        assertThrows(PostNotFoundException.class, () -> postService.findOne(findPostId));
     }
 
     @Test
@@ -76,7 +76,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("post의 제목과 내용을 수정한다")
-    void updateOne() throws NotFoundException {
+    void updateOne() throws PostNotFoundException {
         UserDto userDto = UserDto.builder()
                 .name("change_name")
                 .age(100)

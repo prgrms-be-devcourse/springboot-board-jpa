@@ -2,8 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.ApiResponse;
 import com.example.demo.dto.PostDto;
+import com.example.demo.exception.PostNotFoundException;
 import com.example.demo.service.PostService;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public ApiResponse<PostDto> getOne(@PathVariable Long id) throws NotFoundException {
+    public ApiResponse<PostDto> getOne(@PathVariable Long id) throws PostNotFoundException {
         PostDto returnPost = postService.findOne(id);
         return ApiResponse.ok(returnPost);
     }
@@ -36,7 +36,7 @@ public class PostController {
     }
 
     @PostMapping("/posts/{id}")
-    public ApiResponse<PostDto> updateTitleAndContent(@PathVariable Long id, @RequestBody PostDto postDto) throws NotFoundException {
+    public ApiResponse<PostDto> updateTitleAndContent(@PathVariable Long id, @RequestBody PostDto postDto) throws PostNotFoundException {
         PostDto updatedDto = postService.updateTitleAndContent(postDto, id);
         return ApiResponse.ok(updatedDto);
     }

@@ -3,14 +3,12 @@ package com.example.demo.service;
 import com.example.demo.converter.PostConverter;
 import com.example.demo.domain.Post;
 import com.example.demo.dto.PostDto;
+import com.example.demo.exception.PostNotFoundException;
 import com.example.demo.repository.PostRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class PostService {
@@ -25,10 +23,10 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostDto findOne(Long postId) throws NotFoundException {
+    public PostDto findOne(Long postId) throws PostNotFoundException {
         return postRepository.findById(postId)
                 .map(postConverter::convertPostDto)
-                .orElseThrow(() -> new NotFoundException("찾는 값이 없습니다."));
+                .orElseThrow(() -> new PostNotFoundException(String.valueOf(postId)));
     }
 
     @Transactional
@@ -45,9 +43,9 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto updateTitleAndContent(PostDto postDto, Long postId) throws NotFoundException {
+    public PostDto updateTitleAndContent(PostDto postDto, Long postId) throws PostNotFoundException {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundException("없는 데이터는 수정 할 수 없습니다."));
+                .orElseThrow(() -> new PostNotFoundException(String.valueOf(postId)));
 
         post.changeTitleAndContent(postDto.title(), postDto.content());
         return postConverter.convertPostDto(post);
