@@ -19,6 +19,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -208,14 +209,11 @@ class PostDefaultServiceTest {
             @Test
             void 해당_자원을_ResponseDto로_변환하여_반환한다() {
                 long inputId = 1L;
-                LocalDateTime localDateTime = LocalDateTime.of(2022, 5, 24,
-                                                               10, 38, 0
-                                                              );
-                Post foundPost = new Post.Builder().id(inputId)
-                                                   .title(testTitle)
+                Post foundPost = new Post.Builder().title(testTitle)
                                                    .content(testContent)
                                                    .user(savedUser)
                                                    .build();
+                ReflectionTestUtils.setField(foundPost, "id", inputId);
                 when(postRepository.findById(inputId)).thenReturn(Optional.of(foundPost));
 
                 PostResponseDto postResponseDto = postDefaultService.findById(inputId);
