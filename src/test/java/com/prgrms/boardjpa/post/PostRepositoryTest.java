@@ -24,13 +24,13 @@ import com.prgrms.boardjpa.user.domain.User;
 @EnableJpaAuditing
 @DisplayName("BoardRepository 테스트")
 // @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // TEST db 로 Mysql 설정을 사용 + @DataJpaTest 를 사용할 경우 활성화 필
-public class BoardRepositoryTest {
+public class PostRepositoryTest {
 
 	@Autowired
-	PostRepository postRepository;
+	private PostRepository postRepository;
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	private User writer;
 
