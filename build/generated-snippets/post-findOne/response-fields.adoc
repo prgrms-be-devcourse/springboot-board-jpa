@@ -1,0 +1,72 @@
+|===
+|Path|Type|Description
+
+|`+statusCode+`
+|`+Number+`
+|상태코드
+
+|`+serverDatetime+`
+|`+String+`
+|응답시간
+
+|`+data+`
+|`+Object+`
+|데이터
+
+|`+data.id+`
+|`+Number+`
+|데이터 아이디
+
+|`+data.title+`
+|`+String+`
+|데이터 제목
+
+|`+data.content+`
+|`+String+`
+|post 내용
+
+|`+data.createdAt+`
+|`+String+`
+|post createdAt
+
+|`+data.updatedAt+`
+|`+String+`
+|post updatedAt
+
+|`+data.createdBy+`
+|`+Null+`
+|post createdBy
+
+|`+data.user+`
+|`+Object+`
+|데이터목록
+
+|`+data.user.id+`
+|`+Number+`
+|게시판아이디
+
+|`+data.user.name+`
+|`+String+`
+|게시판아이디
+
+|`+data.user.age+`
+|`+Number+`
+|게시판아이디
+
+|`+data.user.hobby+`
+|`+String+`
+|게시판아이디
+
+|`+data.user.createdAt+`
+|`+String+`
+|게시판아이디
+
+|`+data.user.updatedAt+`
+|`+String+`
+|게시판아이디
+
+|`+data.user.createdBy+`
+|`+Null+`
+|게시판아이디
+
+|===

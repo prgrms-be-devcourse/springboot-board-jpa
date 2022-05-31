@@ -1,0 +1,22 @@
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/test2;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+  jpa:
+    open-in-view: false
+    hibernate:
+      dialect: org.hibernate.dialect.H2Dialect
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
