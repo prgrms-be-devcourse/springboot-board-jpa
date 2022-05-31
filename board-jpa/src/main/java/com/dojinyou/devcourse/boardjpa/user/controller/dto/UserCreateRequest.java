@@ -1,5 +1,7 @@
 package com.dojinyou.devcourse.boardjpa.user.controller.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -10,20 +12,21 @@ public class UserCreateRequest {
 
     @NotBlank
     @Length(max = 50)
-    private String name;
+    private final String name;
 
     @NotNull
     @Positive
-    private int age;
+    private final int age;
 
     @NotBlank
     @Length(max = 50)
-    private String hobby;
+    private final String hobby;
 
-    protected UserCreateRequest() {
-    }
-
-    public UserCreateRequest(String name, int age, String hobby) {
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public UserCreateRequest(
+            @JsonProperty(value = "name") String name,
+            @JsonProperty(value = "age") int age,
+            @JsonProperty(value = "hobby") String hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;

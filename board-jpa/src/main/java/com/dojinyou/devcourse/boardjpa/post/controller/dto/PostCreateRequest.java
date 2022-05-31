@@ -1,5 +1,7 @@
 package com.dojinyou.devcourse.boardjpa.post.controller.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -9,19 +11,20 @@ import javax.validation.constraints.Positive;
 public class PostCreateRequest {
     @NotNull
     @Positive
-    private long userId;
+    private final long userId;
 
     @NotBlank
     @Length(max = 50)
-    private String title;
+    private final String title;
 
     @NotBlank
-    private String content;
+    private final String content;
 
-    protected PostCreateRequest() {
-    }
-
-    public PostCreateRequest(long userId, String title, String content) {
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public PostCreateRequest(
+            @JsonProperty(value = "userId") long userId,
+            @JsonProperty(value = "title") String title,
+            @JsonProperty(value = "content") String content) {
         this.userId = userId;
         this.title = title;
         this.content = content;
