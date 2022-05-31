@@ -16,13 +16,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import com.prgrms.boardjpa.user.UserRepository;
 import com.prgrms.boardjpa.user.domain.Hobby;
 import com.prgrms.boardjpa.user.domain.User;
-import com.prgrms.boardjpa.user.UserRepository;
 
 @DataJpaTest
 @EnableJpaAuditing
 @DisplayName("BoardRepository 테스트")
+// @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // TEST db 로 Mysql 설정을 사용 + @DataJpaTest 를 사용할 경우 활성화 필
 public class BoardRepositoryTest {
 
 	@Autowired
