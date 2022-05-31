@@ -1,0 +1,49 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시글
+=== 게시글 생성 (POST)
+=== /posts
+
+.Request
+include::{snippets}/writePost/http-request.adoc[]
+include::{snippets}/writePost/request-fields.adoc[]
+
+.Response
+include::{snippets}/writePost/http-response.adoc[]
+include::{snippets}/writePost/response-fields.adoc[]
+
+=== 단건 게시글 조회 (GET)
+=== /posts/{id}
+
+.Request
+include::{snippets}/get-one-post/http-request.adoc[]
+include::{snippets}/get-one-post/curl-request.adoc[]
+
+.Response
+include::{snippets}/get-one-post/http-response.adoc[]
+include::{snippets}/get-one-post/response-fields.adoc[]
+
+=== 페이지 단위 게시글 조회 (GET)
+=== /posts
+
+.Request
+include::{snippets}/getAllPostByPage/http-request.adoc[]
+include::{snippets}/getAllPostByPage/curl-request.adoc[]
+
+.Response
+include::{snippets}/getAllPostByPage/http-response.adoc[]
+include::{snippets}/getAllPostByPage/response-fields.adoc[]
+
+=== 게시글 수정 (POST)
+=== /posts/{id}
+
+.Request
+include::{snippets}/updatePost/http-request.adoc[]
+include::{snippets}/updatePost/request-fields.adoc[]
+
+.Response
+include::{snippets}/updatePost/http-response.adoc[]
+include::{snippets}/updatePost/response-fields.adoc[]
