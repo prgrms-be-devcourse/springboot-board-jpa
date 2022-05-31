@@ -41,8 +41,8 @@ include::{snippets}/post-update/response-fields.adoc[]
 include::{snippets}/post-update/response-body.adoc[]
 
 === 1-4. 게시글 페이징 조회
-===== Request
-include::{snippets}/post-posts/request-body.adoc[]
+===== Request Parameters
+include::{snippets}/post-posts/request-parameters.adoc[]
 ===== Request Example
 include::{snippets}/post-posts/http-request.adoc[]
 

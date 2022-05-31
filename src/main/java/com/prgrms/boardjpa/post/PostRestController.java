@@ -6,10 +6,12 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prgrms.boardjpa.commons.api.SuccessResponse;
+import com.prgrms.boardjpa.commons.page.SimplePage;
 
 @RequestMapping("/api/posts")
 @RestController
@@ -30,9 +33,18 @@ public class PostRestController {
 	}
 
 	@GetMapping
-	public ResponseEntity<SuccessResponse<List<PostInfo>>> getPostsByPaging(Pageable pageable) {
+	public ResponseEntity<SuccessResponse<List<PostInfo>>> getPostsByPaging(
+		@ModelAttribute SimplePage pageable,
+		BindingResult bindingResult
+	) {
+		PageRequest pageRequest = SimplePage.defaultPageRequest();
+
+		if (bindingResult.hasErrors() == false) {
+			pageRequest = PageRequest.of(pageable.getPage(), pageable.getSize());
+		}
+
 		return createSuccessResponse(
-			postService.getAllByPaging(pageable),
+			postService.getAllByPaging(pageRequest),
 			HttpStatus.OK);
 	}
 

@@ -35,6 +35,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.boardjpa.commons.api.SuccessResponse;
+import com.prgrms.boardjpa.commons.page.SimplePage;
 import com.prgrms.boardjpa.user.domain.Hobby;
 import com.prgrms.boardjpa.user.domain.User;
 
@@ -68,7 +69,7 @@ public class PostRestControllerTest {
 		verify(this.postService).getAllByPaging(pageableCaptor.capture());
 
 		Pageable pageRequest = pageableCaptor.getValue();
-		PageRequest defaultPage = PageRequest.of(0, 20);
+		PageRequest defaultPage = SimplePage.defaultPageRequest();
 
 		assertThat(pageRequest)
 			.usingRecursiveComparison()
@@ -104,7 +105,8 @@ public class PostRestControllerTest {
 		PostDto.CreatePostRequest postCreateRequest =
 			new PostDto.CreatePostRequest("  ", 1L, "    content");
 
-		Set<ConstraintViolation<PostDto.CreatePostRequest>> constraintViolations = validator.validate(postCreateRequest);
+		Set<ConstraintViolation<PostDto.CreatePostRequest>> constraintViolations = validator.validate(
+			postCreateRequest);
 
 		assertThat(constraintViolations.size())
 			.isEqualTo(1);
@@ -235,7 +237,7 @@ public class PostRestControllerTest {
 		@Test
 		@DisplayName("게시글 페이징 테스트")
 		void test_pagingPosts() throws Exception {
-			Pageable pageRequest = PageRequest.of(0, 10);
+			PageRequest pageRequest = PageRequest.of(0, 10);
 			User writer = createUser();
 			Post post1 = Post.builder().
 				writer(writer)
@@ -261,7 +263,6 @@ public class PostRestControllerTest {
 						.param("size", Integer.toString(pageRequest.getPageSize()))
 						.param("page", Integer.toString(pageRequest.getPageNumber()))
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(pageRequest))
 				).andExpect(status().is2xxSuccessful())
 				.andDo(
 					document(

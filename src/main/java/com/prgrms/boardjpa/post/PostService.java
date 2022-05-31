@@ -45,7 +45,7 @@ public class PostService {
 
 			return this.store(title, writer, content);
 		} catch (NotExistException e) {
-			log.info("존재하지 않는 사용자는 게시글 작성이 불가능합니다 {}", writerId);
+			log.info("존재하지 않는 사용자의 게시글 작성 요청 {}", writerId);
 
 			throw new AuthorizationFailException();
 		}
