@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.springframework.util.Assert;
 
@@ -17,12 +18,13 @@ import lombok.Getter;
 
 @Getter
 @Entity
+@Table(name = "users")
 public class User {
 	private static final int MIN_NAME_LENGTH = 2;
 	private static final int MIN_AGE = 15;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
 

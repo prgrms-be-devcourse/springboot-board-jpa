@@ -20,7 +20,7 @@ import lombok.Getter;
 @Entity
 public class Post extends BaseEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Column(name = "title", nullable = false)
