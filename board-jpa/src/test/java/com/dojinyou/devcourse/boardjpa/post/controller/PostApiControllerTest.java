@@ -277,6 +277,23 @@ class PostApiControllerTest {
         }
     }
 
+    @Nested
+    class 게시물_전체_조회시 {
+
+        @Nested
+        class 기본_요청의_경우 {
+
+            @Test
+            void OK로_응답한다(long inputId) throws Exception {
+
+                final var response = mockMvc.perform(get(BASE_URL_PATH));
+
+                response.andExpect(status().isOk());
+                verify(postService, atMostOnce()).findAll(any());
+            }
+        }
+    }
+
     private String toJson(Map<String, Object> object) throws JsonProcessingException {
         return objectMapper.writeValueAsString(object);
     }

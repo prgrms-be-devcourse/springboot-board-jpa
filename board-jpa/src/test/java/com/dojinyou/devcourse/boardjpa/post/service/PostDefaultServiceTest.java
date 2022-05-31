@@ -19,9 +19,16 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -171,6 +178,51 @@ class PostDefaultServiceTest {
             }
         }
     }
+    @Nested
+    class 게시물_전체_조회시 {
+
+        @Nested
+        class 기본_요청의_경우 {
+
+            @Test
+            void 게시물_중_최근_10개를_반환한다() {
+                User user = new User.Builder().name("test")
+                                              .age(20)
+                                              .hobby("test")
+                                              .build();
+
+                ReflectionTestUtils.setField(user, "id", 1L);
+                List<Post> savedPosts = new ArrayList<>();
+                for (int i = 0; i < 10; i++) {
+                    String testText = "test" + i;
+                    Post testPost = new Post.Builder().title(testText).content(testText).user(user).build();
+                    ReflectionTestUtils.setField(testPost, "id", Long.valueOf(i));
+                    savedPosts.add(testPost);
+                }
+                when(postRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(savedPosts));
+
+                List<PostResponseDto> responseDtos = postDefaultService.findAll(PageRequest.of(0,10));
+
+                assertThat(responseDtos).isNotNull();
+                assertThat(responseDtos.size()).isEqualTo(10);
+            }
+        }
+
+        @Nested
+        class 조회_요청_결과_데이터가_없는_경우 {
+
+            @Test
+            void 게시물_중_최근_10개를_반환한다() {
+                when(postRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(List.of()));
+
+                Throwable throwable = catchThrowable(() -> postDefaultService.findAll(PageRequest.of(0,10)));
+
+                assertThat(throwable).isNotNull()
+                                     .isInstanceOf(NotFoundException.class);
+            }
+        }
+    }
+
     @Nested
     class 아이디를_이용한_게시물_조회시 {
 
