@@ -26,23 +26,23 @@
 
 ### 엔티티 설계도
 
-![entity-model](/Users/hyuk/Documents/프로그래머스데브코스/데브코스 관련 문서/과제관련문서/spring-jpa/board/entity-model.png)
+![entity-model](https://user-images.githubusercontent.com/29492667/171131348-2c89f162-713d-49d2-b755-1933c021c7c8.png)
 
 <br/>
 
 ### 테이블 설계도
 
-![table](/Users/hyuk/Documents/프로그래머스데브코스/데브코스 관련 문서/과제관련문서/spring-jpa/board/table.png)
+![table](https://user-images.githubusercontent.com/29492667/171131414-d9049422-365c-4ac0-a83f-22bbd182a597.png)
 
 <br/>
 
 ### 클래스 설계도
 
-![class](/Users/hyuk/Documents/프로그래머스데브코스/데브코스 관련 문서/과제관련문서/spring-jpa/board/class.png)
+![class](https://user-images.githubusercontent.com/29492667/171131484-19bd8360-b73b-4ba1-ba8d-9a25760be6d4.png)
 
 <br/>
 
 ### API 문서화
-
-![api문서화](/Users/hyuk/Documents/프로그래머스데브코스/데브코스 관련 문서/과제관련문서/spring-jpa/board/api문서화.png)                                                                                                                      
+ 
+<img width="427" alt="api문서화" src="https://user-images.githubusercontent.com/29492667/171131560-490b4dba-3407-449a-859e-0f02f84cc019.png">
 
