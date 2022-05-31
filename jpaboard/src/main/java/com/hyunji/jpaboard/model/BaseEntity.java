@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Getter
 @MappedSuperclass
@@ -18,4 +19,9 @@ public abstract class BaseEntity {
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+    }
 }
