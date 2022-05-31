@@ -1,4 +1,4 @@
-package com.kdt.jpa.domain.post;
+package com.kdt.jpa.domain.post.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
