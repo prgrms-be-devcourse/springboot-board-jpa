@@ -36,9 +36,8 @@ public class User {
 	private Integer age;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "hobby")
+	@Column(name = "hobby", nullable = false)
 	private Hobby hobby;
-	// TODO : nullable = true 라면 getter 에서는 Optional 을 반환해줘야 할까? getter 가 Optional 을 반환하는 것은 바람직한가?
 
 	@Column(name = "password", nullable = false)
 	private String password;
@@ -51,6 +50,7 @@ public class User {
 		validateAge(age);
 		validateEmail(email);
 		validatePassword(password);
+		validateHobby(hobby);
 
 		this.id = id;
 		this.name = name;
@@ -108,6 +108,10 @@ public class User {
 		Assert.hasText(email, "이메일은 비어있을 수 없습니다");
 	}
 
+	private void validateHobby(Hobby hobby) {
+		Assert.notNull(hobby, "취미는 비어있을 수 없습니다");
+	}
+
 	public static UserBuilder builder() {
 		return new UserBuilder();
 	}
@@ -116,7 +120,7 @@ public class User {
 		private String name;
 		private Integer age;
 		private String email;
-		private Hobby hobby;
+		private Hobby hobby = Hobby.NONE;
 		private String password;
 		private Long id;
 
@@ -127,6 +131,7 @@ public class User {
 			this.id = id;
 			return this;
 		}
+
 		public UserBuilder name(String name) {
 			this.name = name;
 			return this;
