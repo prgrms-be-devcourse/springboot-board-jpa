@@ -1,9 +1,9 @@
 package com.dojinyou.devcourse.boardjpa.user.service.dto;
 
 public class UserCreateDto {
-    private String name;
-    private int age;
-    private String hobby;
+    private final String name;
+    private final int age;
+    private final String hobby;
 
     public String getName() {
         return name;

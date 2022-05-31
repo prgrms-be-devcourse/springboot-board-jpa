@@ -4,24 +4,22 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-public class PostCreateRequest {
+public class PostUpdateRequest {
+
     @NotNull
     @Positive
     private final long userId;
 
-    @NotBlank
     @Length(max = 50)
     private final String title;
 
-    @NotBlank
     private final String content;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public PostCreateRequest(
+    public PostUpdateRequest(
             @JsonProperty(value = "userId") long userId,
             @JsonProperty(value = "title") String title,
             @JsonProperty(value = "content") String content) {

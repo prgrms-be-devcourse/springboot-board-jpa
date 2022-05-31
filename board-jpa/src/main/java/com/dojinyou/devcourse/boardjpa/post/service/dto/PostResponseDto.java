@@ -5,13 +5,11 @@ import com.dojinyou.devcourse.boardjpa.post.entity.Post;
 import java.time.LocalDateTime;
 
 public class PostResponseDto {
-    long id;
-    String title;
-    String content;
-
-    LocalDateTime createdAt;
-
-    LocalDateTime updatedAt;
+    private final long id;
+    private final String title;
+    private final String content;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     public long getId() {
         return id;

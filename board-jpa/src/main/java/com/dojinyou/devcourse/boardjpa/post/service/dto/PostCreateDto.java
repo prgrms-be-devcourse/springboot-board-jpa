@@ -1,8 +1,8 @@
 package com.dojinyou.devcourse.boardjpa.post.service.dto;
 
 public class PostCreateDto {
-    String title;
-    String content;
+    private final String title;
+    private final String content;
 
     public String getTitle() {
         return title;

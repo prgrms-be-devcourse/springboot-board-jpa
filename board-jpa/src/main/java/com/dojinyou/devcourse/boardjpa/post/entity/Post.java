@@ -69,8 +69,24 @@ public class Post extends BaseEntity {
         }
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public boolean isNotCreateUserId(long id) {
+        return this.user.getId() != id;
+    }
+
+//    public static Builder builder() {
+//        return new Builder();
+//    }
+
+    public void update(String title, String content) {
+        if (title == null && content == null) {
+            throw new IllegalArgumentException();
+        }
+        if (title != null) {
+            this.title = title;
+        }
+        if (content != null) {
+            this.content = content;
+        }
     }
 
     public static class Builder {
@@ -78,7 +94,7 @@ public class Post extends BaseEntity {
         private String content;
         private User user;
 
-        public Builder title(String title) {
+       public Builder title(String title) {
             this.title = title;
             return this;
         }
