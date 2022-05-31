@@ -4,9 +4,9 @@ import com.dojinyou.devcourse.boardjpa.post.controller.dto.PostUpdateRequest;
 
 public class PostUpdateDto {
 
-    long userId;
-    String title;
-    String content;
+    private final long userId;
+    private final String title;
+    private final String content;
 
     public long getUserId() {
         return userId;
