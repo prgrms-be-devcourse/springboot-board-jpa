@@ -1,0 +1,134 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+:title: 게시글 API 문서
+:toc-title: 게시글 프로젝트 목차
+:toc: left
+:toclevels: 2
+:doctype: book
+:author: 이인후
+:sectlinks:
+:source-highlighter: highlight.js
+
+[#overview]
+== 소개
+
+게시글 프로젝트의 API 문서입니다.
+
+== HTTP 요청 메소드
+
+|===
+| 요청 메소드 | 설명
+
+| `GET`
+| 리소스를 요청합니다.
+
+| `POST`
+| 새로운 리소스를 생성합니다.
+
+| `PATCH`
+| 리소스를 부분적으로 수정합니다.
+|===
+
+== HTTP 응답 상태 코드
+
+|===
+| 상태 코드 | 설명
+
+| `200 OK`
+| 요청을 성공했습니다.
+
+| `201 Created`
+| 새 리소스를 성공적으로 생성했습니다.
+
+| `400 Bad Request`
+| 잘못된 요청입니다.
+
+| `404 Not Found`
+| 요청한 리소스를 찾을 수 없습니다
+
+| `500 Interal Server Error`
+| 서버에서 에러가 발생했습니다.
+|===
+
+== 게시글 API
+
+=== 게시글 생성
+
+.Curl Request
+include::{snippets}/create-post/curl-request.adoc[]
+
+.Http Request
+include::{snippets}/create-post/http-request.adoc[]
+
+.Request Fields
+include::{snippets}/create-post/request-fields.adoc[]
+
+.Request Body
+include::{snippets}/create-post/request-body.adoc[]
+
+.Response Fields
+include::{snippets}/create-post/response-fields.adoc[]
+
+.Response Body
+include::{snippets}/create-post/response-body.adoc[]
+
+=== 게시글 생성 실패
+
+.Http Request
+include::{snippets}/invalid-create-post/request-body.adoc[]
+
+.Http Response
+include::{snippets}/invalid-create-post/response-body.adoc[]
+
+=== 게시글 수정
+
+.Curl Request
+include::{snippets}/update-post/curl-request.adoc[]
+
+.Http Request
+include::{snippets}/update-post/http-request.adoc[]
+
+.Request Field
+include::{snippets}/update-post/request-fields.adoc[]
+
+.Request Body
+include::{snippets}/update-post/request-body.adoc[]
+
+.Response Field
+include::{snippets}/update-post/response-fields.adoc[]
+
+.Response Body
+include::{snippets}/update-post/response-body.adoc[]
+
+=== 게시글 단건 조회
+
+.Curl Request
+include::{snippets}/find-post/curl-request.adoc[]
+
+.Http Request
+include::{snippets}/find-post/http-request.adoc[]
+
+.Response Fields
+include::{snippets}/find-post/response-fields.adoc[]
+
+.Response Body
+include::{snippets}/find-post/response-body.adoc[]
+
+=== 게시글 페이징 조회
+
+.Curl Request
+include::{snippets}/find-posts/curl-request.adoc[]
+
+.Http Request
+include::{snippets}/find-posts/http-request.adoc[]
+
+.Request Parameters
+include::{snippets}/find-posts/request-parameters.adoc[]
+
+.Response Fields
+include::{snippets}/find-posts/response-fields.adoc[]
+
+.Response Body
+include::{snippets}/find-posts/response-body.adoc[]
