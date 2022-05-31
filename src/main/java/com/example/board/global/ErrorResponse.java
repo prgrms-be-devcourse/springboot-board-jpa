@@ -6,19 +6,19 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class ErrorResponse {
-    private ErrorCode status;
+    private String uniqueMessage;
     private String message;
 
-    public static ErrorResponse of(ErrorCode status, String message) {
+    public static ErrorResponse of(String uniqueMessage, String message) {
         return ErrorResponse.builder()
-                .status(status)
+                .uniqueMessage(uniqueMessage)
                 .message(message)
                 .build();
     }
 
-    public static ErrorResponse of(ErrorCode status) {
+    public static ErrorResponse of(String uniqueMessage) {
         return ErrorResponse.builder()
-                .status(status)
+                .uniqueMessage(uniqueMessage)
                 .build();
     }
 }

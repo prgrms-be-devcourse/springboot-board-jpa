@@ -19,5 +19,7 @@ public enum ErrorCode {
         this.errorMessage = errorMessage;
     }
 
-
+    public String getUniqueMessage() {
+        return uniqueMessage;
+    }
 }
