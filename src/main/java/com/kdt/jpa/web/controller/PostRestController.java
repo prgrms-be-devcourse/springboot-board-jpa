@@ -24,9 +24,9 @@ public class PostRestController {
 		return ResponseEntity.ok(postService.findAll(pageable));
 	}
 
-	@GetMapping("/{postId}")
-	public ResponseEntity<PostResponse> getById(@PathVariable("postId") Long postId) {
-		return ResponseEntity.ok(postService.findById(postId));
+	@GetMapping("/{id}")
+	public ResponseEntity<PostResponse> getById(@PathVariable Long id) {
+		return ResponseEntity.ok(postService.findById(id));
 	}
 
 	@PostMapping
@@ -34,8 +34,8 @@ public class PostRestController {
 		return ResponseEntity.ok(postService.write(request));
 	}
 
-	@PatchMapping("/{postId}")
-	public ResponseEntity<PostResponse.UpdatePostResponse> update(@PathVariable Long postId, @RequestBody PostRequest.UpdatePostRequest request) {
-		return ResponseEntity.ok(postService.update(postId, request));
+	@PatchMapping("/{id}")
+	public ResponseEntity<PostResponse.UpdatePostResponse> update(@PathVariable Long id, @RequestBody PostRequest.UpdatePostRequest request) {
+		return ResponseEntity.ok(postService.update(id, request));
 	}
 }
