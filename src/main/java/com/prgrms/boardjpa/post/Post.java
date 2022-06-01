@@ -29,11 +29,11 @@ public class Post extends BaseEntity {
 	@Column(name = "content", columnDefinition = "TEXT", nullable = false)
 	private String content;
 
-	@Column(name = "writer", nullable = false, updatable = false)
+	@Column(name = "writerName", nullable = false, updatable = false)
 	private String createdBy;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false, updatable = false)
+	@JoinColumn(name = "writer_id", nullable = false, updatable = false)
 	private User writer;
 
 	protected Post() {
