@@ -44,5 +44,7 @@
 
 ### API 문서화
  
-<img width="427" alt="api문서화" src="https://user-images.githubusercontent.com/29492667/171131560-490b4dba-3407-449a-859e-0f02f84cc019.png">
+<img width="395" alt="api(1)" src="https://user-images.githubusercontent.com/29492667/171347515-3b408c38-ea2f-4145-a8db-6b3cde502435.png">
+<img width="354" alt="api(2)" src="https://user-images.githubusercontent.com/29492667/171347550-499f77d6-8f1a-42c6-9eb9-c7f33282c931.png">
+
 
