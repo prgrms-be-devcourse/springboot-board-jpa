@@ -71,7 +71,7 @@ class PostRepositoryTest {
 
     @Test
     void 페이징_조회() {
-        IntStream.range(1, 100).forEach(i ->
+        IntStream.range(1, 101).forEach(i ->
                 {
                     User user = new User("user" + i, i, "hobby");
                     userRepository.save(user);
@@ -83,7 +83,7 @@ class PostRepositoryTest {
         Page<Post> postPage = postRepository.findPageWithUser(pageRequest);
 
         assertThat(postPage).hasSize(10);
-        assertThat(postPage.getTotalElements()).isEqualTo(99);
+        assertThat(postPage.getTotalElements()).isEqualTo(100);
         assertThat(postPage.getTotalPages()).isEqualTo(10);
         assertThat(postPage.getNumber()).isEqualTo(0);
     }
