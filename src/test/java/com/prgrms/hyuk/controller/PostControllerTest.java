@@ -20,6 +20,7 @@ import com.prgrms.hyuk.exception.InvalidPostIdException;
 import com.prgrms.hyuk.service.PostService;
 import com.prgrms.hyuk.web.controller.PostController;
 import java.util.List;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,13 @@ class PostControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    private static UserDto userDto;
+
+    @BeforeAll
+    static void setUp() {
+        userDto = new UserDto("pang", 26, "soccer");
+    }
+
     @Test
     @DisplayName("게시글 생성")
     void testSave() throws Exception {
@@ -51,11 +59,7 @@ class PostControllerTest {
         var postCreateRequest = new PostCreateRequest(
             "this is title ...",
             "content",
-            new UserDto(
-                "pang",
-                26,
-                "soccer"
-            )
+            userDto
         );
 
         //when
@@ -76,14 +80,14 @@ class PostControllerTest {
             1,
             "this is title...",
             "this is content",
-            "pang"
+            userDto
         );
 
         var postDto2 = new PostDto(
             2,
             "this is title...",
             "this is content",
-            "pang"
+            userDto
         );
 
         given(postService.findPosts(anyInt(), anyInt())).willReturn(List.of(postDto1, postDto2));
@@ -107,7 +111,7 @@ class PostControllerTest {
             1,
             "this is title...",
             "this is content...",
-            "pang"
+            userDto
         );
         given(postService.findPost(1L)).willReturn(postDto);
 
@@ -119,7 +123,7 @@ class PostControllerTest {
             .andExpect(jsonPath("$.data.id").value(String.valueOf(postDto.getId())))
             .andExpect(jsonPath("$.data.title").value(postDto.getTitle()))
             .andExpect(jsonPath("$.data.content").value(postDto.getContent()))
-            .andExpect(jsonPath("$.data.userName").value(postDto.getUserName()))
+            .andExpect(jsonPath("$.data.user").exists())
             .andExpect(jsonPath("$.serverDatetime").exists());
     }
 

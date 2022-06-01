@@ -86,13 +86,13 @@ class IntegrationTest {
                 requestFields(
                     fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
                     fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
-                    fieldWithPath("userDto").type(JsonFieldType.OBJECT).description("userDto"),
-                    fieldWithPath("userDto.name").type(JsonFieldType.STRING)
-                        .description("userDto.name"),
-                    fieldWithPath("userDto.age").type(JsonFieldType.NUMBER)
-                        .description("userDto.age"),
-                    fieldWithPath("userDto.hobby").type(JsonFieldType.STRING)
-                        .description("userDto.hobby")
+                    fieldWithPath("user").type(JsonFieldType.OBJECT).description("user"),
+                    fieldWithPath("user.name").type(JsonFieldType.STRING)
+                        .description("user.name"),
+                    fieldWithPath("user.age").type(JsonFieldType.NUMBER)
+                        .description("user.age"),
+                    fieldWithPath("user.hobby").type(JsonFieldType.STRING)
+                        .description("user.hobby")
                 ),
                 responseFields(
                     fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
@@ -120,8 +120,14 @@ class IntegrationTest {
                         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
                         fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
                         fieldWithPath("data.content").type(JsonFieldType.STRING).description("게시글 내용"),
-                        fieldWithPath("data.userName").type(JsonFieldType.STRING)
+                        fieldWithPath("data.user").type(JsonFieldType.OBJECT)
                             .description("게시글 작성자"),
+                        fieldWithPath("data.user.name").type(JsonFieldType.STRING)
+                            .description("작성자 이름"),
+                        fieldWithPath("data.user.age").type(JsonFieldType.NUMBER)
+                            .description("작성자 나이"),
+                        fieldWithPath("data.user.hobby").type(JsonFieldType.STRING)
+                            .description("작성자 취미"),
                         fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("서버시간")
                     )
                 )
@@ -149,8 +155,14 @@ class IntegrationTest {
                     fieldWithPath("data[].title").type(JsonFieldType.STRING).description("게시글 제목"),
                     fieldWithPath("data[].content").type(JsonFieldType.STRING)
                         .description("게시글 내용"),
-                    fieldWithPath("data[].userName").type(JsonFieldType.STRING)
+                    fieldWithPath("data[].user").type(JsonFieldType.OBJECT)
                         .description("게시글 작성자"),
+                    fieldWithPath("data[].user.name").type(JsonFieldType.STRING)
+                        .description("작성자 이름"),
+                    fieldWithPath("data[].user.age").type(JsonFieldType.NUMBER)
+                        .description("작성자 나이"),
+                    fieldWithPath("data[].user.hobby").type(JsonFieldType.STRING)
+                        .description("작성자 취미"),
                     fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("서버시간")
                 )
             ));

@@ -5,12 +5,12 @@ public class PostCreateRequest {
     private String title;
     private String content;
 
-    private UserDto userDto;
+    private UserDto user;
 
-    public PostCreateRequest(String title, String content, UserDto userDto) {
+    public PostCreateRequest(String title, String content, UserDto user) {
         this.title = title;
         this.content = content;
-        this.userDto = userDto;
+        this.user = user;
     }
 
     public String getTitle() {
@@ -21,7 +21,7 @@ public class PostCreateRequest {
         return content;
     }
 
-    public UserDto getUserDto() {
-        return userDto;
+    public UserDto getUser() {
+        return user;
     }
 }

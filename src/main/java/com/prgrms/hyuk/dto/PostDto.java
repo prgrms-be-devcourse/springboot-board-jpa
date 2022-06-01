@@ -6,13 +6,13 @@ public class PostDto {
     private String title;
     private String content;
 
-    private String userName;
+    private UserDto user;
 
-    public PostDto(long id, String title, String content, String userName) {
+    public PostDto(long id, String title, String content, UserDto user) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.userName = userName;
+        this.user = user;
     }
 
     public long getId() {
@@ -27,7 +27,7 @@ public class PostDto {
         return content;
     }
 
-    public String getUserName() {
-        return userName;
+    public UserDto getUser() {
+        return user;
     }
 }

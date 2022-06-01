@@ -28,18 +28,28 @@ public class Converter {
             new Title(postCreateRequest.getTitle()),
             new Content(postCreateRequest.getContent()));
 
-        var user = toUser(postCreateRequest.getUserDto());
+        var user = toUser(postCreateRequest.getUser());
         post.assignUser(user);
 
         return post;
     }
 
     public PostDto toPostDto(Post post) {
+        UserDto userDto = toUserDto(post.getUser());
+
         return new PostDto(
             post.getId(),
             post.getTitle().getTitle(),
             post.getContent().getContent(),
-            post.getUser().getName().getName()
+            userDto
+        );
+    }
+
+    private UserDto toUserDto(User user) {
+        return new UserDto(
+            user.getName().getName(),
+            user.getAge().getAge(),
+            user.getHobby().name()
         );
     }
 }

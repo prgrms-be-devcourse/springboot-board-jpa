@@ -454,10 +454,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="http">POST /posts HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 111
+Content-Length: 108
 Host: localhost:8080
 
-{&quot;title&quot;:&quot;this is title...&quot;,&quot;content&quot;:&quot;this is content...&quot;,&quot;userDto&quot;:{&quot;name&quot;:&quot;pang&quot;,&quot;age&quot;:26,&quot;hobby&quot;:&quot;soccer&quot;}}</code></pre>
+{&quot;title&quot;:&quot;this is title...&quot;,&quot;content&quot;:&quot;this is content...&quot;,&quot;user&quot;:{&quot;name&quot;:&quot;pang&quot;,&quot;age&quot;:26,&quot;hobby&quot;:&quot;soccer&quot;}}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -485,24 +485,24 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock">content</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userDto</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">userDto</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userDto.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user.name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">userDto.name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user.name</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userDto.age</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user.age</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">userDto.age</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user.age</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userDto.hobby</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user.hobby</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">userDto.hobby</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user.hobby</p></td>
 </tr>
 </tbody>
 </table>
@@ -513,7 +513,7 @@ Host: localhost:8080
 Content-Type: application/json
 Content-Length: 75
 
-{&quot;statusCode&quot;:201,&quot;data&quot;:&quot;/posts/9&quot;,&quot;serverDatetime&quot;:&quot;2022-05-31 17:29:23&quot;}</code></pre>
+{&quot;statusCode&quot;:201,&quot;data&quot;:&quot;/posts/9&quot;,&quot;serverDatetime&quot;:&quot;2022-06-01 15:46:51&quot;}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -567,9 +567,9 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 149
+Content-Length: 180
 
-{&quot;statusCode&quot;:200,&quot;data&quot;:{&quot;id&quot;:3,&quot;title&quot;:&quot;this is title...&quot;,&quot;content&quot;:&quot;this is content...&quot;,&quot;userName&quot;:&quot;pang&quot;},&quot;serverDatetime&quot;:&quot;2022-05-31 17:29:23&quot;}</code></pre>
+{&quot;statusCode&quot;:200,&quot;data&quot;:{&quot;id&quot;:3,&quot;title&quot;:&quot;this is title...&quot;,&quot;content&quot;:&quot;this is content...&quot;,&quot;user&quot;:{&quot;name&quot;:&quot;pang&quot;,&quot;age&quot;:26,&quot;hobby&quot;:&quot;SOCCER&quot;}},&quot;serverDatetime&quot;:&quot;2022-06-01 15:46:51&quot;}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -612,9 +612,24 @@ Content-Length: 149
 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 내용</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.userName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.user</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 작성자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.user.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.user.age</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 나이</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.user.hobby</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 취미</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>serverDatetime</code></p></td>
@@ -643,9 +658,9 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 151
+Content-Length: 182
 
-{&quot;statusCode&quot;:200,&quot;data&quot;:[{&quot;id&quot;:1,&quot;title&quot;:&quot;this is title...&quot;,&quot;content&quot;:&quot;this is content...&quot;,&quot;userName&quot;:&quot;pang&quot;}],&quot;serverDatetime&quot;:&quot;2022-05-31 17:29:22&quot;}</code></pre>
+{&quot;statusCode&quot;:200,&quot;data&quot;:[{&quot;id&quot;:1,&quot;title&quot;:&quot;this is title...&quot;,&quot;content&quot;:&quot;this is content...&quot;,&quot;user&quot;:{&quot;name&quot;:&quot;pang&quot;,&quot;age&quot;:26,&quot;hobby&quot;:&quot;SOCCER&quot;}}],&quot;serverDatetime&quot;:&quot;2022-06-01 15:46:51&quot;}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -688,9 +703,24 @@ Content-Length: 151
 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 내용</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].userName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].user</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 작성자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].user.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].user.age</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 나이</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].user.hobby</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 취미</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>serverDatetime</code></p></td>
@@ -750,7 +780,7 @@ Host: localhost:8080
 Content-Type: application/json
 Content-Length: 66
 
-{&quot;statusCode&quot;:200,&quot;data&quot;:5,&quot;serverDatetime&quot;:&quot;2022-05-31 17:29:23&quot;}</code></pre>
+{&quot;statusCode&quot;:200,&quot;data&quot;:5,&quot;serverDatetime&quot;:&quot;2022-06-01 15:46:51&quot;}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">

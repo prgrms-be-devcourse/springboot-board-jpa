@@ -74,7 +74,7 @@ class PostServiceIntegrationTest {
 
             () -> assertThat(post.getUser()).isNotNull(),
             () -> assertThat(post.getUser().getName().getName())
-                .isEqualTo(postCreateRequest.getUserDto().getName())
+                .isEqualTo(postCreateRequest.getUser().getName())
         );
     }
 
