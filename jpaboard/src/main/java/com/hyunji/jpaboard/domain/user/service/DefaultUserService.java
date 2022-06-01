@@ -18,5 +18,6 @@ public class DefaultUserService implements UserService {
     @Transactional
     public void register(User user) {
         userRepository.save(user);
+        log.info("user saved: Id={}", user.getId());
     }
 }
