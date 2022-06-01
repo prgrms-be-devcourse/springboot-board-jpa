@@ -1,12 +1,12 @@
 package com.hyunji.jpaboard.model;
 
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Getter
 @MappedSuperclass
@@ -20,7 +20,8 @@ public abstract class BaseEntity {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @CreatedBy
-    @Column(updatable = false)
-    private String createdBy;
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+    }
 }

@@ -1,4 +1,7 @@
 spring:
+  h2:
+    console:
+      enabled: true
   datasource:
     url: jdbc:h2:tcp://localhost/~/jpaboard
     username: sa
@@ -7,10 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        format_sql: true
+      ddl-auto: validate
 
 logging.level:
   org.hibernate.SQL: debug

@@ -1,13 +1,10 @@
-package com.hyunji.jpaboard.domain.post.domain.user.domain;
+package com.hyunji.jpaboard.domain.user.domain;
 
-import com.hyunji.jpaboard.domain.user.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -21,30 +18,30 @@ class UserTest {
         int age = 100;
         String hobby = "hobby";
 
-        User user = User.create(name, age, hobby);
+        User user = new User(name, age, hobby);
 
         assertThat(user.getId()).isNull();
         assertThat(user.getCreatedAt()).isNull();
-        assertThat(user).isNotNull()
-                .extracting(User::getName, User::getAge)
-                .isEqualTo(List.of(name, age));
+        assertThat(user.getName()).isEqualTo(name);
+        assertThat(user.getAge()).isEqualTo(age);
+        assertThat(user.getHobby()).isEqualTo(hobby);
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void name이_공백_혹은_null이면_예외를_던진다(String name) {
-        assertThatIllegalArgumentException().isThrownBy(() -> User.create(name, 10, "hobby"));
+        assertThatIllegalArgumentException().isThrownBy(() -> new User(name, 10, "hobby"));
     }
 
     @ParameterizedTest
     @ValueSource(ints = {0, -1})
     void age가_0이하면_예외를_던진다(int age) {
-        assertThatIllegalArgumentException().isThrownBy(() -> User.create("user01", age, "hobby"));
+        assertThatIllegalArgumentException().isThrownBy(() -> new User("user01", age, "hobby"));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void hobby가_공백_혹은_null이면_예외를_던진다(String hobby) {
-        assertThatIllegalArgumentException().isThrownBy(() -> User.create("user01", 10, hobby));
+        assertThatIllegalArgumentException().isThrownBy(() -> new User("user01", 10, hobby));
     }
 }

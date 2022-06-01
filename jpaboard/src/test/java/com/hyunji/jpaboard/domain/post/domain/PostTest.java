@@ -14,39 +14,23 @@ class PostTest {
 
     @Test
     void post_생성_성공() {
-        Post post = Post.create("title01", "content");
+        User user = new User("user01", 20, "hobby");
+        Post post = new Post("title01", "content", user);
 
         assertThat(post)
                 .extracting(Post::getTitle, Post::getContent)
                 .isEqualTo(List.of("title01", "content"));
     }
 
-    @Test
-    void isWrittenBy_user를_매핑_할_수_있다() {
-        Post post = Post.create("title01", "content");
-        User user = User.create("user01", 10, "hobby");
-
-        post.isWrittenBy(user);
-
-        assertThat(post.getUser()).isEqualTo(user);
-    }
-
     @ParameterizedTest
     @NullAndEmptySource
     void title이_공백_혹은_null이면_예외를_던진다(String title) {
-        assertThatIllegalArgumentException().isThrownBy(() -> Post.create(title, "content"));
+        assertThatIllegalArgumentException().isThrownBy(() -> new Post(title, "content", new User("user01", 20, "hobby")));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void content가_공백_혹은_null이면_예외를_던진다(String content) {
-        assertThatIllegalArgumentException().isThrownBy(() -> Post.create("title01", content));
-    }
-
-    @Test
-    void isWrittenBy의_user가_null이면_예외를_던진다() {
-        Post post = Post.create("title01", "content");
-
-        assertThatIllegalArgumentException().isThrownBy(() -> post.isWrittenBy(null));
+        assertThatIllegalArgumentException().isThrownBy(() -> new Post("title01", content, new User("user01", 20, "hobby")));
     }
 }
