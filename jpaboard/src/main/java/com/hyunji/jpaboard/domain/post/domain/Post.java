@@ -36,4 +36,9 @@ public class Post extends BaseEntity {
         this.content = content;
         this.user = user;
     }
+
+    public void change(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
