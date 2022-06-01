@@ -7,10 +7,11 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true
 
 logging.level:
   org.hibernate.SQL: debug
+  org.hibernate.Type: trace
