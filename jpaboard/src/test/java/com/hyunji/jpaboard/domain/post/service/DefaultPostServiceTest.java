@@ -28,7 +28,7 @@ class DefaultPostServiceTest {
         User user = new User("user..", 50, "hobby~");
         userService.register(user);
         Post post = new Post("title...", "content...", user);
-        postService.register(post);
+        postService.save(post);
 
         assertThat(post.getId()).isNotNull();
     }
@@ -38,7 +38,7 @@ class DefaultPostServiceTest {
         User user = new User("user..", 50, "hobby~");
         userService.register(user);
         IntStream.range(1, 51).forEach(i ->
-                postService.register(new Post("title" + i, "contenet" + i, user))
+                postService.save(new Post("title" + i, "contenet" + i, user))
         );
 
         Page<Post> page = postService.findPage(0);
@@ -54,9 +54,9 @@ class DefaultPostServiceTest {
         User user = new User("user..", 50, "hobby~");
         userService.register(user);
         Post post = new Post("title...", "content...", user);
-        postService.register(post);
+        postService.save(post);
 
-        Post findPost = postService.findById(post.getId());
+        Post findPost = postService.findPostByIdWithUser(post.getId());
 
         assertThat(findPost.getId()).isEqualTo(post.getId());
     }

@@ -22,7 +22,7 @@ public class DefaultPostService implements PostService {
 
     @Override
     @Transactional
-    public void register(Post post) {
+    public void save(Post post) {
         postRepository.save(post);
         log.info("post saved: id={}", post.getId());
     }
@@ -34,8 +34,8 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    public Post findById(Long id) {
-        return postRepository.findById(id)
+    public Post findPostByIdWithUser(Long id) {
+        return postRepository.findPostByIdWithUser(id)
                 .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("post가 존재 하지 않습니다. id={0}", id)));
     }
 }
