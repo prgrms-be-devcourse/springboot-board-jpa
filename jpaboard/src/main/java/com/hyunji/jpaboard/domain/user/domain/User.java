@@ -16,7 +16,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 @Entity
 public class User extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
