@@ -9,6 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.prgrms.boardjpa.commons.exception.CreationFailException;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -20,6 +22,18 @@ public class GlobalExceptionHandler {
 		this.messageSource = messageSource;
 	}
 
+	@ExceptionHandler(CreationFailException.class)
+	public ResponseEntity<ErrorResponse> handleCreationException(CreationFailException e) {
+		log.error("{} - {} : {}",
+			e.getClass().getSimpleName() ,
+			e.getMessage(),
+			e.getCause().getMessage()
+		);
+
+		return ResponseEntity.badRequest().body(
+			new ErrorResponse(e)
+		);
+	}
 	@ExceptionHandler(value = {MethodArgumentNotValidException.class})
 	public ResponseEntity<BindingErrorResponse> handleBindingException(BindException bindException, Locale locale) {
 		log.info("BindException {}", bindException.getMessage());

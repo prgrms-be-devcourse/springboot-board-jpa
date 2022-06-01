@@ -163,7 +163,7 @@ public class User {
 			try {
 				return new User(id, name, age, email, hobby, password);
 			} catch (IllegalArgumentException e) {
-				throw new CreationFailException(User.class);
+				throw new CreationFailException(User.class, e);
 			}
 		}
 	}
