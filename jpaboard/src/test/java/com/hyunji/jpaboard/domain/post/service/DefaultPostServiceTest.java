@@ -38,7 +38,7 @@ class DefaultPostServiceTest {
         User user = new User("user..", 50, "hobby~");
         userService.register(user);
         IntStream.range(1, 51).forEach(i ->
-                postService.save(new Post("title" + i, "contenet" + i, user))
+                postService.save(new Post("title" + i, "content" + i, user))
         );
 
         Page<Post> page = postService.findPage(0);
