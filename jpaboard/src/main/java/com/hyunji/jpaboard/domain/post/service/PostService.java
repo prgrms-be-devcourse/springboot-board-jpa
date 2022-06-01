@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 
 public interface PostService {
 
-    void register(Post post);
+    void save(Post post);
 
     Page<Post> findPage(int pageNum);
 
-    Post findById(Long id);
+    Post findPostByIdWithUser(Long id);
 }
