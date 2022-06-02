@@ -23,8 +23,8 @@ public class Age {
     }
 
     public Age(int value) {
-        this.value = value;
         validateAge(value);
+        this.value = value;
     }
 
     private void validateAge(int age) {

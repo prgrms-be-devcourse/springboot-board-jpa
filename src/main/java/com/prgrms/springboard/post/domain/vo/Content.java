@@ -24,8 +24,8 @@ public class Content {
     }
 
     public Content(String content) {
-        this.content = content;
         validateContent(content);
+        this.content = content;
     }
 
     private void validateContent(String content) {

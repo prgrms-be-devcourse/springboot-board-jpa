@@ -24,8 +24,8 @@ public class Title {
     }
 
     public Title(String title) {
-        this.title = title;
         validateTitle(title);
+        this.title = title;
     }
 
     private void validateTitle(String title) {

@@ -24,8 +24,8 @@ public class Hobby {
     }
 
     public Hobby(String value) {
-        this.value = value;
         validateHobby(value);
+        this.value = value;
     }
 
     private void validateHobby(String hobby) {

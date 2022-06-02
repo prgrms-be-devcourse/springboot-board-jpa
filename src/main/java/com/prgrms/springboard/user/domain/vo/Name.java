@@ -24,8 +24,8 @@ public class Name {
     }
 
     public Name(String value) {
-        this.value = value;
         validateName(value);
+        this.value = value;
     }
 
     private void validateName(String name) {
