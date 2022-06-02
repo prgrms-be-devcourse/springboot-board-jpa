@@ -11,8 +11,8 @@ import com.prgrms.springboard.post.dto.CreatePostRequest;
 import com.prgrms.springboard.post.dto.ModifyPostRequest;
 import com.prgrms.springboard.post.dto.PostResponse;
 import com.prgrms.springboard.post.dto.PostsResponse;
-import com.prgrms.springboard.post.exception.PostNotFoundExcpetion;
-import com.prgrms.springboard.post.exception.UserNotHavePermission;
+import com.prgrms.springboard.post.exception.PostNotFoundException;
+import com.prgrms.springboard.post.exception.UserHaveNotPermission;
 import com.prgrms.springboard.user.domain.User;
 import com.prgrms.springboard.user.dto.UserDto;
 import com.prgrms.springboard.user.service.UserService;
@@ -41,7 +41,7 @@ public class PostService {
     public PostResponse findOne(Long id) {
         return postRepository.findById(id)
             .map(PostResponse::from)
-            .orElseThrow(() -> new PostNotFoundExcpetion(id));
+            .orElseThrow(() -> new PostNotFoundException(id));
     }
 
     @Transactional(readOnly = true)
@@ -54,7 +54,7 @@ public class PostService {
 
     public void modifyPost(Long id, ModifyPostRequest postRequest) {
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new PostNotFoundExcpetion(id));
+            .orElseThrow(() -> new PostNotFoundException(id));
 
         UserDto userDto = userService.findOne(postRequest.getUserId());
         User user = userDto.toEntity();
@@ -66,7 +66,7 @@ public class PostService {
 
     private void validateUser(Post post, User user) {
         if (post.isNotSameUser(user)) {
-            throw new UserNotHavePermission(user.getId());
+            throw new UserHaveNotPermission(user.getId());
         }
     }
 }

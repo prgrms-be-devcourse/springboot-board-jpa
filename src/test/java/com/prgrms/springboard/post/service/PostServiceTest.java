@@ -28,8 +28,8 @@ import com.prgrms.springboard.post.dto.CreatePostRequest;
 import com.prgrms.springboard.post.dto.ModifyPostRequest;
 import com.prgrms.springboard.post.dto.PostResponse;
 import com.prgrms.springboard.post.dto.PostsResponse;
-import com.prgrms.springboard.post.exception.PostNotFoundExcpetion;
-import com.prgrms.springboard.post.exception.UserNotHavePermission;
+import com.prgrms.springboard.post.exception.PostNotFoundException;
+import com.prgrms.springboard.post.exception.UserHaveNotPermission;
 import com.prgrms.springboard.user.dto.UserDto;
 import com.prgrms.springboard.user.service.UserService;
 
@@ -86,7 +86,7 @@ class PostServiceTest {
         // when
         // then
         assertThatThrownBy(() -> postService.findOne(id))
-            .isInstanceOf(PostNotFoundExcpetion.class)
+            .isInstanceOf(PostNotFoundException.class)
             .hasMessage("ID가 10인 게시글은 없습니다.");
     }
 
@@ -136,7 +136,7 @@ class PostServiceTest {
         // when
         // then
         assertThatThrownBy(() -> postService.modifyPost(postId, postRequest))
-            .isInstanceOf(UserNotHavePermission.class)
+            .isInstanceOf(UserHaveNotPermission.class)
             .hasMessage("ID가 3인 회원은 해당 글을 수정할 권한이 없습니다.");
 
     }
