@@ -17,8 +17,8 @@ import com.prgrms.springboard.user.domain.User;
 import com.prgrms.springboard.user.dto.UserDto;
 import com.prgrms.springboard.user.service.UserService;
 
-@Transactional
 @Service
+@Transactional(readOnly = true)
 public class PostService {
 
     private final PostRepository postRepository;
@@ -29,6 +29,7 @@ public class PostService {
         this.userService = userService;
     }
 
+    @Transactional
     public Long createPost(CreatePostRequest postRequest) {
         UserDto userDto = userService.findOne(postRequest.getUserId());
         User user = userDto.toEntity();
@@ -37,14 +38,12 @@ public class PostService {
         return post.getId();
     }
 
-    @Transactional(readOnly = true)
     public PostResponse findOne(Long id) {
         return postRepository.findById(id)
             .map(PostResponse::from)
             .orElseThrow(() -> new PostNotFoundException(id));
     }
 
-    @Transactional(readOnly = true)
     public PostsResponse findAll(Pageable pageable) {
         Page<PostsResponse.PagePostResponse> posts = postRepository.findAll(pageable)
             .map(PostsResponse.PagePostResponse::from);
@@ -52,6 +51,7 @@ public class PostService {
         return PostsResponse.of(posts);
     }
 
+    @Transactional
     public void modifyPost(Long id, ModifyPostRequest postRequest) {
         Post post = postRepository.findById(id)
             .orElseThrow(() -> new PostNotFoundException(id));

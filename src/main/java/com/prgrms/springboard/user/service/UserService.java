@@ -9,8 +9,8 @@ import com.prgrms.springboard.user.dto.CreateUserRequest;
 import com.prgrms.springboard.user.dto.UserDto;
 import com.prgrms.springboard.user.exception.UserNotFoundException;
 
-@Transactional
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -19,12 +19,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public Long join(CreateUserRequest userRequest) {
         User user = userRepository.save(userRequest.toEntity());
         return user.getId();
     }
-
-    @Transactional(readOnly = true)
+    
     public UserDto findOne(Long id) {
         return userRepository.findById(id)
             .map(UserDto::from)
