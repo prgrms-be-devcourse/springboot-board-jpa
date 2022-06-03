@@ -49,7 +49,7 @@ class PostServiceTest {
 
     @AfterEach
     void tearDown() {
-        postRepository.deleteAll();
+        postRepository.deleteAllInBatch();
     }
 
     @Test

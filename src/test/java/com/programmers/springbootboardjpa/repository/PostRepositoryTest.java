@@ -29,7 +29,7 @@ class PostRepositoryTest {
 
     @AfterEach
     void tearDown() {
-        postRepository.deleteAll();
+        postRepository.deleteAllInBatch();
     }
 
     @Test

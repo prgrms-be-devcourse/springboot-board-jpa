@@ -52,8 +52,8 @@ class PostControllerTest {
 
     @AfterEach
     void tearDown() {
-        userRepository.deleteAll();
-        postRepository.deleteAll();
+        postRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
     }
 
     @Test

@@ -37,8 +37,7 @@ class UserControllerTest {
 
     @AfterEach
     void tearDown() {
-        userRepository.deleteAll();
-    }
+        userRepository.deleteAllInBatch();    }
 
     @Test
     @DisplayName("회원 생성 테스트")
