@@ -8,12 +8,13 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static com.su.gesipan.common.exception.ErrorCode.ENTITY_NOT_FOUND;
 import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 public class BasicExceptionHandler {
 
     // 지원하지 않은 HTTP method 호출 할 경우

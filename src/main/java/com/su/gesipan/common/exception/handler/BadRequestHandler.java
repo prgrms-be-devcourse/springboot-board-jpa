@@ -7,13 +7,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import static com.su.gesipan.common.exception.ErrorCode.INVALID_INPUT_VALUE;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 public class BadRequestHandler {
 
     // @Valid 실패
