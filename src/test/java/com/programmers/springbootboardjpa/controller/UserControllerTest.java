@@ -47,7 +47,7 @@ class UserControllerTest {
         mockMvc.perform(post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("user-create",
                         requestFields(

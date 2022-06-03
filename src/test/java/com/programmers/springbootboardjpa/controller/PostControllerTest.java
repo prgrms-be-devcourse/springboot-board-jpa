@@ -57,8 +57,8 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 생성 테스트")
-    void createPostTest() throws Exception {
+    @DisplayName("게시글 생성 테스트 - 성공")
+    void createPostSuccessTest() throws Exception {
         Long savedUserId = userService.saveUser(new UserCreationRequest("UserName", 33L, "UserHobby"));
 
         PostCreationRequest request = new PostCreationRequest(savedUserId, "PostTitle", "This is the content of the first post.");
@@ -66,7 +66,7 @@ class PostControllerTest {
         mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("post-create",
                         requestFields(
@@ -85,8 +85,22 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 단건 조회 테스트")
-    void getPostTest() throws Exception {
+    @DisplayName("게시글 생성 테스트 - 실패")
+    void createPostFailTest() throws Exception {
+        Long savedUserId = userService.saveUser(new UserCreationRequest("UserName", 33L, "UserHobby"));
+
+        PostCreationRequest request = new PostCreationRequest(savedUserId, "", "This is the content of the first post.");
+
+        mockMvc.perform(post("/api/v1/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시글 단건 조회 테스트 - 성공")
+    void getPostSuccessTest() throws Exception {
         Long savedUserId = userService.saveUser(new UserCreationRequest("UserName", 33L, "UserHobby"));
         Long savedPostId = postService.savePost(new PostCreationRequest(savedUserId, "PostTitle1", "PostContent1"));
 
@@ -118,8 +132,20 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("게시물 다건 조회 테스트")
-    void getAllPosts() throws Exception {
+    @DisplayName("게시글 단건 조회 테스트 - 실패")
+    void getPostFailTest() throws Exception {
+        Long savedUserId = userService.saveUser(new UserCreationRequest("UserName", 33L, "UserHobby"));
+        Long savedPostId = postService.savePost(new PostCreationRequest(savedUserId, "PostTitle1", "PostContent1"));
+
+        mockMvc.perform(get("/api/v1/posts/{id}", savedPostId + 1)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시물 다건 조회 테스트 - 성공")
+    void getAllSuccessPosts() throws Exception {
         Long savedUserId = userService.saveUser(new UserCreationRequest("UserName", 33L, "UserHobby"));
         for (int i = 1; i <= 12; i++) {
             postService.savePost(new PostCreationRequest(savedUserId, MessageFormat.format("PostTitle{0}", i), MessageFormat.format("PostContent{0}", i)));
@@ -176,8 +202,23 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("게시물 수정 테스트")
-    void updatePostTest() throws Exception {
+    @DisplayName("게시물 다건 조회 테스트 - 실패")
+    void getAllFailPosts() throws Exception {
+        Long savedUserId = userService.saveUser(new UserCreationRequest("UserName", 33L, "UserHobby"));
+        for (int i = 1; i <= 12; i++) {
+            postService.savePost(new PostCreationRequest(savedUserId, MessageFormat.format("PostTitle{0}", i), MessageFormat.format("PostContent{0}", i)));
+        }
+
+        mockMvc.perform(get("/api/v1/posts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("page", "-1"))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시물 수정 테스트 - 성공")
+    void updatePostSuccessTest() throws Exception {
         Long savedUserId = userService.saveUser(new UserCreationRequest("UserName", 33L, "UserHobby"));
         Long savedPostId = postService.savePost(new PostCreationRequest(savedUserId, "PostTitle1", "PostContent1"));
 
@@ -201,6 +242,21 @@ class PostControllerTest {
                                 fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답 시간")
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("게시물 수정 테스트 - 실패")
+    void updatePostFailTest() throws Exception {
+        Long savedUserId = userService.saveUser(new UserCreationRequest("UserName", 33L, "UserHobby"));
+        Long savedPostId = postService.savePost(new PostCreationRequest(savedUserId, "PostTitle1", "PostContent1"));
+
+        PostUpdateRequest request = new PostUpdateRequest("a123456789a123456789a123456789a123456789a123456789a123456789a123456789a123456789a123456789a123456789bbb", "This is the content of the first post.");
+
+        mockMvc.perform(patch("/api/v1/posts/{id}", savedPostId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
     }
 
 }
