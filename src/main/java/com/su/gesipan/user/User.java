@@ -66,9 +66,7 @@ public class User extends BaseEntity {
             addPost(post);
         }
     }
-    public List<Post> getPosts(){
-        return new ArrayList<>(posts);
-    }
+    public List<Post> getPosts(){ return posts; }
     public void deletePost(Post target){
         posts.removeIf(post -> Objects.equals(post.getId(), target.getId()));
     }
