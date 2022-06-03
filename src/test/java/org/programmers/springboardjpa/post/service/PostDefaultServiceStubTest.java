@@ -12,7 +12,7 @@ import org.programmers.springboardjpa.domain.post.service.PostService;
 import org.programmers.springboardjpa.domain.user.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +66,7 @@ class PostDefaultServiceStubTest {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("PageRequst의 page와 size를 이용하여 해당하는 postRespone의 list를 반환할 수 있다.")
     void getAllPost() {
         //given
         var post = postService.getPost(savedPost.id());
@@ -74,8 +74,7 @@ class PostDefaultServiceStubTest {
         postResponseList.add(post);
 
         //when
-        var postList = postService.getPostList(
-                Pageable.ofSize(1).withPage(1));
+        List<PostResponse.PostResponseDto> postList = postService.getPostList(PageRequest.of(0, 1));
 
         //then
         assertThat(postList).hasSize(1)

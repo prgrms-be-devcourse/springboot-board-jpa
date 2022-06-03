@@ -7,10 +7,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.programmers.springboardjpa.domain.post.domain.Post;
 import org.programmers.springboardjpa.domain.post.dto.PostRequest;
 import org.programmers.springboardjpa.domain.post.dto.PostRequest.PostCreateRequestDto;
 import org.programmers.springboardjpa.domain.post.dto.PostResponse.PostResponseDto;
-import org.programmers.springboardjpa.domain.post.domain.Post;
 import org.programmers.springboardjpa.domain.post.repository.PostRepository;
 import org.programmers.springboardjpa.domain.post.service.PostConverter;
 import org.programmers.springboardjpa.domain.post.service.PostDefaultService;
@@ -20,7 +20,6 @@ import org.programmers.springboardjpa.domain.user.dto.UserDto.UserResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +29,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
-@Transactional(readOnly = true)
 @ExtendWith(MockitoExtension.class)
 class PostDefaultServiceTest {
 
@@ -64,7 +62,6 @@ class PostDefaultServiceTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("save 행위 검증 테스트")
     void savePost() {
         Post post = Post.builder()
