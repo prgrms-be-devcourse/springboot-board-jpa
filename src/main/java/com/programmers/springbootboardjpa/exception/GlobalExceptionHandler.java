@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Response<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(Response.fail(HttpStatus.BAD_REQUEST.value(), e.getBindingResult().toString(), e.getMessage()));
+                .body(Response.fail(HttpStatus.BAD_REQUEST, e.getBindingResult().toString(), e.getMessage()));
     }
 
     /**
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Response<String>> handleIllegalArgumentException(IllegalArgumentException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(Response.fail(HttpStatus.BAD_REQUEST.value(), e.getMessage(), e.getLocalizedMessage()));
+                .body(Response.fail(HttpStatus.BAD_REQUEST, e.getMessage(), e.getLocalizedMessage()));
     }
 
     /**
@@ -44,8 +44,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchUserIdException.class)
     public ResponseEntity<Response<String>> handleNoSuchUserIdException(NoSuchUserIdException e) {
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Response.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), e.getLocalizedMessage()));
+                .status(HttpStatus.NOT_FOUND)
+                .body(Response.fail(HttpStatus.NOT_FOUND, e.getMessage(), e.getLocalizedMessage()));
     }
 
     /**
@@ -57,8 +57,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchPostIdException.class)
     public ResponseEntity<Response<String>> handleNoSuchPostIdException(NoSuchPostIdException e) {
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Response.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), e.getLocalizedMessage()));
+                .status(HttpStatus.NOT_FOUND)
+                .body(Response.fail(HttpStatus.NOT_FOUND, e.getMessage(), e.getLocalizedMessage()));
     }
 
     /**
@@ -70,6 +70,6 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<Response<String>> handleException(Exception e) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Response.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), e.getLocalizedMessage()));
+                .body(Response.fail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getLocalizedMessage()));
     }
 }

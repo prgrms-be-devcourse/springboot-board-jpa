@@ -8,6 +8,7 @@ import com.programmers.springbootboardjpa.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,13 +28,13 @@ public class PostController {
     @PostMapping
     public Response<Map<String, Long>> createPost(@Valid @RequestBody PostCreationRequest request) {
         Long savedPostId = postService.savePost(request);
-        return Response.ok(Collections.singletonMap("id", savedPostId), "Post created successfully.");
+        return Response.ok(HttpStatus.CREATED, Collections.singletonMap("id", savedPostId), "Post created successfully.");
     }
 
     @GetMapping("/{id}")
     public Response<PostResponse> getPost(@PathVariable Long id) {
         PostResponse postById = postService.findPostById(id);
-        return Response.ok(postById, "ok");
+        return Response.ok(HttpStatus.OK, postById, "ok");
     }
 
     @GetMapping
@@ -41,14 +42,14 @@ public class PostController {
                                                     @RequestParam("size") Long size) {
         Pageable pageable = PageRequest.of(page.intValue(), size.intValue());
         Page<PostResponse> posts = postService.findAllPosts(pageable);
-        return Response.ok(posts, "ok");
+        return Response.ok(HttpStatus.OK, posts, "ok");
     }
 
     @PatchMapping("/{id}")
     public Response<Map<String, Long>> updatePost(@PathVariable Long id,
                                                   @Valid @RequestBody PostUpdateRequest request) {
         Long updatedPostId = postService.updatePost(id, request);
-        return Response.ok(Collections.singletonMap("id", updatedPostId), "Post updated successfully.");
+        return Response.ok(HttpStatus.OK, Collections.singletonMap("id", updatedPostId), "Post updated successfully.");
     }
 
 }

@@ -1,6 +1,7 @@
 package com.programmers.springbootboardjpa.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -21,12 +22,12 @@ public class Response<T> {
         this.data = data;
     }
 
-    public static <T> Response<T> ok(T data, String message) {
-        return new Response<>(200, data, message);
+    public static <T> Response<T> ok(HttpStatus statusCode, T data, String message) {
+        return new Response<>(statusCode.value(), data, message);
     }
 
-    public static <T> Response<T> fail(int statusCode, T errData, String message) {
-        return new Response<>(statusCode, errData, message);
+    public static <T> Response<T> fail(HttpStatus statusCode, T errData, String message) {
+        return new Response<>(statusCode.value(), errData, message);
     }
 
     public int getStatusCode() {

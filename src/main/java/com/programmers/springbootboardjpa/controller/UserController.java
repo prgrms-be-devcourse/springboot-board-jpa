@@ -3,6 +3,7 @@ package com.programmers.springbootboardjpa.controller;
 import com.programmers.springbootboardjpa.dto.Response;
 import com.programmers.springbootboardjpa.dto.user.request.UserCreationRequest;
 import com.programmers.springbootboardjpa.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class UserController {
     @PostMapping
     public Response<Map<String, Long>> createUser(@RequestBody UserCreationRequest request) {
         Long saveUserId = userService.saveUser(request);
-        return Response.ok(Collections.singletonMap("id", saveUserId) , "User created successfully.");
+        return Response.ok(HttpStatus.CREATED, Collections.singletonMap("id", saveUserId) , "User created successfully.");
     }
 
 }
