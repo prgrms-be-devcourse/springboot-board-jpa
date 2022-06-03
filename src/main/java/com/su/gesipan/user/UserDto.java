@@ -28,8 +28,6 @@ public interface UserDto {
         }
     }
 
-    @Data
-    @NoArgsConstructor
     @AllArgsConstructor
     class Result {
         private Long id;

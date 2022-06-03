@@ -18,8 +18,7 @@ public interface PostDto {
         @Size(max = 1500)
         private String content;
 
-        @Builder
-        public Create(Long userId, String title, String content) {
+        private Create(Long userId, String title, String content) {
             this.userId = userId;
             this.title = title;
             this.content = content;
@@ -45,7 +44,6 @@ public interface PostDto {
     }
 
     @Data
-    @NoArgsConstructor
     @AllArgsConstructor
     class Result {
         private Long id;
