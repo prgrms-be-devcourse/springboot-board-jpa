@@ -19,6 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.text.MessageFormat;
+
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -119,18 +121,9 @@ class PostControllerTest {
     @DisplayName("게시물 다건 조회 테스트")
     void getAllPosts() throws Exception {
         Long savedUserId = userService.saveUser(new UserCreationRequest("UserName", 33L, "UserHobby"));
-        postService.savePost(new PostCreationRequest(savedUserId, "PostTitle1", "PostContent1"));
-        postService.savePost(new PostCreationRequest(savedUserId, "PostTitle2", "PostContent2"));
-        postService.savePost(new PostCreationRequest(savedUserId, "PostTitle3", "PostContent3"));
-        postService.savePost(new PostCreationRequest(savedUserId, "PostTitle4", "PostContent4"));
-        postService.savePost(new PostCreationRequest(savedUserId, "PostTitle5", "PostContent5"));
-        postService.savePost(new PostCreationRequest(savedUserId, "PostTitle6", "PostContent6"));
-        postService.savePost(new PostCreationRequest(savedUserId, "PostTitle7", "PostContent7"));
-        postService.savePost(new PostCreationRequest(savedUserId, "PostTitle8", "PostContent8"));
-        postService.savePost(new PostCreationRequest(savedUserId, "PostTitle9", "PostContent9"));
-        postService.savePost(new PostCreationRequest(savedUserId, "PostTitle10", "PostContent10"));
-        postService.savePost(new PostCreationRequest(savedUserId, "PostTitle11", "PostContent11"));
-        postService.savePost(new PostCreationRequest(savedUserId, "PostTitle12", "PostContent12"));
+        for (int i = 1; i <= 12; i++) {
+            postService.savePost(new PostCreationRequest(savedUserId, MessageFormat.format("PostTitle{0}", i), MessageFormat.format("PostContent{0}", i)));
+        }
 
         mockMvc.perform(get("/api/v1/posts/")
                         .contentType(MediaType.APPLICATION_JSON)
