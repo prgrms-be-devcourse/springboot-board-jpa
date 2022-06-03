@@ -38,8 +38,8 @@ public class PostController {
     }
 
     @GetMapping
-    public Response<Page<PostResponse>> getAllPosts(@RequestParam("page") Long page,
-                                                    @RequestParam("size") Long size) {
+    public Response<Page<PostResponse>> getAllPosts(@RequestParam(value = "page", defaultValue = "0") Long page,
+                                                    @RequestParam(value = "size", defaultValue = "10") Long size) {
         Pageable pageable = PageRequest.of(page.intValue(), size.intValue());
         Page<PostResponse> posts = postService.findAllPosts(pageable);
         return Response.ok(HttpStatus.OK, posts, "ok");
