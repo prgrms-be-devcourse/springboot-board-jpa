@@ -5,13 +5,14 @@ import org.programmers.springboardjpa.domain.post.service.PostDefaultService;
 import org.programmers.springboardjpa.domain.post.dto.PostRequest;
 import org.programmers.springboardjpa.domain.post.dto.PostRequest.PostUpdateRequestDto;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-@Valid
+@Validated
 @RequestMapping("/api/v1")
 @RestController
 public class PostApi {
