@@ -9,13 +9,13 @@ public class PostUpdateRequest {
     private Optional<String> content;
 
     public PostUpdateRequest(String title, String content) {
-        if (title.isBlank()) {
+        if (title == null || title.isBlank()) {
             this.title = Optional.empty();
         } else {
             this.title = Optional.ofNullable(title);
         }
 
-        if (content.isBlank()) {
+        if (title == null || content.isBlank()) {
             this.content = Optional.empty();
         } else {
             this.content = Optional.ofNullable(content);
