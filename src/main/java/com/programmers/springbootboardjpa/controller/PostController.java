@@ -25,6 +25,7 @@ public class PostController {
         this.postService = postService;
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Response<Map<String, Long>> createPost(@Valid @RequestBody PostCreationRequest request) {
         Long savedPostId = postService.savePost(request);

@@ -4,10 +4,7 @@ import com.programmers.springbootboardjpa.dto.Response;
 import com.programmers.springbootboardjpa.dto.user.request.UserCreationRequest;
 import com.programmers.springbootboardjpa.service.UserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.Map;
@@ -22,6 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Response<Map<String, Long>> createUser(@RequestBody UserCreationRequest request) {
         Long saveUserId = userService.saveUser(request);
