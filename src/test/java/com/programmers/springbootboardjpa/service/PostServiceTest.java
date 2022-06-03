@@ -130,7 +130,7 @@ class PostServiceTest {
         postService.updatePost(1L, request);
 
         verify(postRepository).findById(anyLong());
-        assertThat(post.getTitle(), is(request.getTitle()));
-        assertThat(post.getContent(), is(request.getContent()));
+        assertThat(post.getTitle(), is(request.getTitle().get()));
+        assertThat(post.getContent(), is(request.getContent().get()));
     }
 }

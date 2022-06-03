@@ -67,6 +67,8 @@ public class PostService {
 
     /**
      * post id를 통해 게시물 업데이트
+     * title이 null이 아닌 경우에만 title 업데이트
+     * content가 null이 아닌 경우에만 content 업데이트
      * @param id
      * @param request
      * @return 업데이트된 post id
@@ -76,12 +78,13 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new NoSuchPostIdException());
 
-        if (!request.getTitle().isBlank()) {
-            post.updateTitle(request.getTitle());
-        }
-        if (!request.getContent().isBlank()) {
-            post.updateContent(request.getContent());
-        }
+        request.getTitle().ifPresent(title ->
+                post.updateTitle(title)
+        );
+
+        request.getContent().ifPresent(content ->
+                post.updateContent(content)
+        );
 
         return post.getId();
     }

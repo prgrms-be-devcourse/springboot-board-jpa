@@ -1,21 +1,32 @@
 package com.programmers.springbootboardjpa.dto.post.request;
 
+import java.util.Optional;
+
 public class PostUpdateRequest {
 
-    private String title;
+    private Optional<String> title;
 
-    private String content;
+    private Optional<String> content;
 
     public PostUpdateRequest(String title, String content) {
-        this.title = title;
-        this.content = content;
+        if (title.isBlank()) {
+            this.title = Optional.empty();
+        } else {
+            this.title = Optional.ofNullable(title);
+        }
+
+        if (content.isBlank()) {
+            this.content = Optional.empty();
+        } else {
+            this.content = Optional.ofNullable(content);
+        }
     }
 
-    public String getTitle() {
+    public Optional<String> getTitle() {
         return title;
     }
 
-    public String getContent() {
+    public Optional<String> getContent() {
         return content;
     }
 }
