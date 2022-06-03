@@ -46,8 +46,7 @@ public class PostApi {
 
 
     // 게시글 수정
-    @PostMapping("/{id}")
-    @Transactional
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     void editPost(@PathVariable Long id, @Validated @RequestBody PostDto.Update dto) {
         postService.editPost(id, dto);
