@@ -34,7 +34,6 @@ public class UserCreationRequest {
 
     public User toEntity() {
         return new User(name,
-                LocalDateTime.now(),
                 name,
                 age,
                 hobby);

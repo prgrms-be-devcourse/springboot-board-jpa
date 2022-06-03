@@ -19,7 +19,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,8 +43,8 @@ class PostServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    private User user = new User("user1", LocalDateTime.now(), "user1", 22L, "hobby1");
-    private Post post = new Post("user1", LocalDateTime.now(), "title1", "This is the content of the first post.");
+    private User user = new User("user1","user1", 22L, "hobby1");
+    private Post post = new Post("user1","title1", "This is the content of the first post.");
 
     @AfterEach
     void tearDown() {
@@ -84,26 +83,26 @@ class PostServiceTest {
     @DisplayName("게시물 다건 조회 테스트")
     void findAllPosts() {
         List<Post> postList = new ArrayList<>();
-        postList.add(new Post("name1", LocalDateTime.now(), "title1", "content1"));
-        postList.add(new Post("name2", LocalDateTime.now(), "title2", "content2"));
-        postList.add(new Post("name3", LocalDateTime.now(), "title3", "content3"));
-        postList.add(new Post("name4", LocalDateTime.now(), "title4", "content4"));
-        postList.add(new Post("name5", LocalDateTime.now(), "title5", "content5"));
-        postList.add(new Post("name6", LocalDateTime.now(), "title6", "content6"));
-        postList.add(new Post("name7", LocalDateTime.now(), "title7", "content7"));
-        postList.add(new Post("name8", LocalDateTime.now(), "title8", "content8"));
-        postList.add(new Post("name9", LocalDateTime.now(), "title9", "content9"));
-        postList.add(new Post("name10", LocalDateTime.now(), "title10", "content10"));
-        postList.add(new Post("name11", LocalDateTime.now(), "title11", "content11"));
-        postList.add(new Post("name12", LocalDateTime.now(), "title12", "content12"));
-        postList.add(new Post("name13", LocalDateTime.now(), "title13", "content13"));
-        postList.add(new Post("name14", LocalDateTime.now(), "title14", "content14"));
-        postList.add(new Post("name15", LocalDateTime.now(), "title15", "content15"));
-        postList.add(new Post("name16", LocalDateTime.now(), "title16", "content16"));
-        postList.add(new Post("name17", LocalDateTime.now(), "title17", "content17"));
-        postList.add(new Post("name18", LocalDateTime.now(), "title18", "content18"));
-        postList.add(new Post("name19", LocalDateTime.now(), "title19", "content19"));
-        postList.add(new Post("name20", LocalDateTime.now(), "title20", "content20"));
+        postList.add(new Post("name1", "title1", "content1"));
+        postList.add(new Post("name2", "title2", "content2"));
+        postList.add(new Post("name3", "title3", "content3"));
+        postList.add(new Post("name4", "title4", "content4"));
+        postList.add(new Post("name5", "title5", "content5"));
+        postList.add(new Post("name6", "title6", "content6"));
+        postList.add(new Post("name7", "title7", "content7"));
+        postList.add(new Post("name8", "title8", "content8"));
+        postList.add(new Post("name9", "title9", "content9"));
+        postList.add(new Post("name10", "title10", "content10"));
+        postList.add(new Post("name11", "title11", "content11"));
+        postList.add(new Post("name12", "title12", "content12"));
+        postList.add(new Post("name13", "title13", "content13"));
+        postList.add(new Post("name14", "title14", "content14"));
+        postList.add(new Post("name15", "title15", "content15"));
+        postList.add(new Post("name16", "title16", "content16"));
+        postList.add(new Post("name17", "title17", "content17"));
+        postList.add(new Post("name18", "title18", "content18"));
+        postList.add(new Post("name19", "title19", "content19"));
+        postList.add(new Post("name20", "title20", "content20"));
         postList.forEach(postElement -> postElement.setUser(user));
         Page<Post> responsePages = new PageImpl<>(postList);
 

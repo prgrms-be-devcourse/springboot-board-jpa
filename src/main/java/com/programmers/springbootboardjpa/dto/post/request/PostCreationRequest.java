@@ -37,7 +37,6 @@ public class PostCreationRequest {
 
     public Post toEntity() {
         return new Post(userId.toString(),
-                LocalDateTime.now(),
                 title,
                 content);
     }

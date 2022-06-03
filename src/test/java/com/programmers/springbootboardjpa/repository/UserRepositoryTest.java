@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,7 +28,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("회원 저장 테스트")
     void saveTest() {
-        User user = new User("user1", LocalDateTime.now(), "user1", 30L, "hobby1");
+        User user = new User("user1", "user1", 30L, "hobby1");
         User savedUser = userRepository.save(user);
 
         Optional<User> maybeUser = userRepository.findById(savedUser.getId());
