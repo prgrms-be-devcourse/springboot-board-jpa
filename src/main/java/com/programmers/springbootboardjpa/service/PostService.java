@@ -46,7 +46,7 @@ public class PostService {
      * @param id
      * @return PostResponse
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public PostResponse findPostById(Long id) {
         Post post = postRepository.findByIdWithUser(id)
                 .orElseThrow(() -> new NoSuchPostIdException());
@@ -59,7 +59,7 @@ public class PostService {
      * @param pageable
      * @return Page<PostResponse>
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PostResponse> findAllPosts(Pageable pageable) {
         Page<Post> posts = postRepository.findAllFetchJoinWithPaging(pageable);
         return posts.map(Post::toPostResponse);
