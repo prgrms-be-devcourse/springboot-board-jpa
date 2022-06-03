@@ -3,6 +3,7 @@ package com.prgrms.boardjpa.domain;
 import com.prgrms.boardjpa.exception.LengthErrorException;
 import com.prgrms.boardjpa.exception.WrongFormatException;
 import com.prgrms.boardjpa.post.dto.PostResDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -46,14 +47,11 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author", referencedColumnName = "user_id")
     private User author;
 
-    public Post() {
-    }
-
-    ;
+    protected Post() {}
 
     public Post(String title, String content, User author) {
         validateTitle(title);

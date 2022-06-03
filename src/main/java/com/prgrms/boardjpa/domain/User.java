@@ -57,7 +57,7 @@ public class User extends BaseEntity {
     @Column(length = 30)
     private String hobby;
 
-    public User() {
+    protected User() {
     }
 
     public User(String name, int age, String hobby) {

@@ -53,11 +53,7 @@ class PostControllerTest {
 
     @BeforeEach
     void setUp() {
-        User insertUser = new User();
-        insertUser.setAge(24);
-        insertUser.setHobby("soccer");
-        insertUser.setName("test user");
-        // Augo Generate Identity로 걸어두면 id set해도 그 값으로 들어가지 않음. identity 방식 다시 공부하기
+        User insertUser = new User("test user", 24, "soccer");
 
         testUser = userRepository.save(insertUser);
 

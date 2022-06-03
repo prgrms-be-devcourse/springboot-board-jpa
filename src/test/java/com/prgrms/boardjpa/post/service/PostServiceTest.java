@@ -37,10 +37,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        User insertUser = new User();
-        insertUser.setAge(24);
-        insertUser.setHobby("soccer");
-        insertUser.setName("test user");
+        User insertUser = new User("test user", 24, "soccer");
 
         testUser = userRepository.save(insertUser);
 

@@ -25,25 +25,28 @@ public class PostService {
         this.userRepository = userRepository;
     }
 
+    @Transactional(readOnly = true)
     public PostResDto findOne(Long id) {
         return postRepository.findById(id)
                 .map(Post::toResDto)
                 .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
     }
 
+    @Transactional(readOnly = true)
     public Page<PostResDto> findPosts(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(Post::toResDto);
     }
 
+    @Transactional
     public PostResDto save(PostReqDto postReqDto) {
-        Post post = postReqDto.toEntity();
         User author = userRepository.findById(postReqDto.getUserId()).orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
-        post.setAuthor(author);
+        Post post = new Post(postReqDto.getTitle(), postReqDto.getContent(), author);
         postRepository.save(post);
         return post.toResDto();
     }
 
+    @Transactional
     public PostResDto update(Long postId, PostUpdateDto postUpdateDto) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
