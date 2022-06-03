@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,6 +20,7 @@ import com.programmers.epicblues.board.entity.User;
 import com.programmers.epicblues.board.repository.JpaUserRepository;
 import java.util.List;
 import java.util.Map;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
@@ -278,19 +281,17 @@ class PostControllerTest {
 
     // Then
     resultActions.andDo(print()).andExpectAll(
-        status().isOk(),
-        content().contentType(MediaType.APPLICATION_JSON),
-        jsonPath("$.content").value(content),
-        jsonPath("$.title").value(title),
-        jsonPath("$.createdAt").exists(),
-        jsonPath("$.createdBy").value(persistedUser.getName())
+        status().isCreated(),
+        header().exists(HttpHeaders.LOCATION),
+        header().string(HttpHeaders.LOCATION, Matchers.containsString("/posts"))
+
     ).andDo(document("post-create",
         requestFields(
             fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 ID"),
             fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
             fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
-        ),
-        POST_RESPONSE_FIELDS_SNIPPET));
+        )
+    ));
 
   }
 

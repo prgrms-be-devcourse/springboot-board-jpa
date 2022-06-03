@@ -6,8 +6,10 @@ import com.programmers.epicblues.board.dto.UpdatePostRequest;
 import com.programmers.epicblues.board.exception.InvalidRequestArgumentException;
 import com.programmers.epicblues.board.exception.ResourceNotFoundException;
 import com.programmers.epicblues.board.service.PostService;
+import java.net.URI;
 import java.util.List;
 import java.util.NoSuchElementException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,14 +54,14 @@ public class PostController {
 
   @PostMapping("/posts")
   public ResponseEntity<PostResponse> createPost(
-      @RequestBody @Valid CreatePostRequest postRequest, BindingResult bindingResult) {
+      @RequestBody @Valid CreatePostRequest postRequest, BindingResult bindingResult, HttpServletRequest request) {
     if (bindingResult.hasErrors()) {
       throw new InvalidRequestArgumentException(bindingResult);
     }
 
     PostResponse createdResult = postService.createPost(postRequest);
-
-    return ResponseEntity.ok(createdResult);
+    URI createdLocation = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdResult.getId()).toUri();
+    return ResponseEntity.created(createdLocation).build();
   }
 
   @PutMapping("/posts")
