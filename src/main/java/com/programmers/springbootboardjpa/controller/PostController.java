@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/posts")
 public class PostController {
 
     private final PostService postService;
@@ -24,19 +24,19 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping("/posts")
+    @PostMapping
     public Response<Map<String, Long>> createPost(@Valid @RequestBody PostCreationRequest request) {
         Long savedPostId = postService.savePost(request);
         return Response.ok(Collections.singletonMap("id", savedPostId), "Post created successfully.");
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public Response<PostResponse> getPost(@PathVariable Long id) {
         PostResponse postById = postService.findPostById(id);
         return Response.ok(postById, "ok");
     }
 
-    @GetMapping("/posts")
+    @GetMapping
     public Response<Page<PostResponse>> getAllPosts(@RequestParam("page") Long page,
                                                     @RequestParam("size") Long size) {
         Pageable pageable = PageRequest.of(page.intValue(), size.intValue());
@@ -44,7 +44,7 @@ public class PostController {
         return Response.ok(posts, "ok");
     }
 
-    @PatchMapping("/posts/{id}")
+    @PatchMapping("/{id}")
     public Response<Map<String, Long>> updatePost(@PathVariable Long id,
                                                   @Valid @RequestBody PostUpdateRequest request) {
         Long updatedPostId = postService.updatePost(id, request);

@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     private final UserService userService;
@@ -21,7 +21,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public Response<Map<String, Long>> createUser(@RequestBody UserCreationRequest request) {
         Long saveUserId = userService.saveUser(request);
         return Response.ok(Collections.singletonMap("id", saveUserId) , "User created successfully.");
