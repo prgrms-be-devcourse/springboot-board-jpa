@@ -209,7 +209,7 @@ public class PostRestControllerTest {
 
 			post.edit(updateRequest.title(), updateRequest.content());
 
-			given(postService.edit(updateRequest.title(), updateRequest.writerId(), updateRequest.content()))
+			given(postService.edit(updateRequest.title(), updateRequest.id(), updateRequest.content()))
 				.willReturn(PostDto.PostInfo.from(post));
 
 			mockMvc.perform(

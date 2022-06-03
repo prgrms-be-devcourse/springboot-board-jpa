@@ -39,16 +39,24 @@ public class Post extends BaseEntity {
 	protected Post() {
 	}
 
-	private Post(PostBuilder builder) {
-		validateTitle(builder.title);
-		validateContent(builder.content);
-		validateWriter(builder.writer);
+	public Post(String title, User writer, String content){
+		this(null, title, writer, content);
+	}
 
-		this.id = builder.id;
-		this.title = builder.title;
-		this.content = builder.content;
-		this.writer = builder.writer;
-		this.createdBy = builder.writer.getName();
+	private Post(PostBuilder builder) {
+		this(builder.id, builder.title, builder.writer, builder.content);
+	}
+
+	private Post(Long id, String title, User writer, String content) {
+		validateTitle(title);
+		validateContent(content);
+		validateWriter(writer);
+
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.writer = writer;
+		this.createdBy = writer.getName();
 	}
 
 	public static PostBuilder builder() {
