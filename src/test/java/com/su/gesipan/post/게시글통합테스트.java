@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.su.gesipan.helper.Helper.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestBody;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseBody;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -110,7 +111,7 @@ class 게시글통합테스트 {
             var request = POST_DOC.update();
             var updateDto = PostDto.Update.of("수정제목", "수정본문");
 
-            mockMvc.perform(post("/api/v1/posts/{id}", post.getId())
+            mockMvc.perform(put("/api/v1/posts/{id}", post.getId())
                             .contentType(MediaType.APPLICATION_JSON).content(toJson(updateDto)))
 
                     .andExpect(handler().methodName("editPost"))
