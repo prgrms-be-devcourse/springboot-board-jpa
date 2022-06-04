@@ -2,21 +2,20 @@ package org.programmers.kdtboard.dto;
 
 import java.time.LocalDateTime;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public class UserDto {
 
-	@Valid
-	public record UserCreateDto(
+	public record CreateRequest(
 		@NotBlank @Size(max = 10)
 		String name,
 		int age,
+		@NotBlank @Size(max = 30)
 		String hobby) {
 	}
 
-	public record UserResponseDto(
+	public record Response(
 		Long id,
 		String name,
 		int age,
@@ -25,4 +24,3 @@ public class UserDto {
 		String createdBy) {
 	}
 }
-

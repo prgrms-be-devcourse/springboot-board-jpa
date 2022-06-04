@@ -1,7 +1,5 @@
 package org.programmers.kdtboard.domain.user;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,44 +8,33 @@ import javax.persistence.Id;
 
 import org.programmers.kdtboard.domain.BaseEntity;
 
+import lombok.Builder;
+
+@Builder
 @Entity
 public class User extends BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	@Column(nullable = false, length = 10)
 	private String name;
+
 	@Column(nullable = false)
 	private int age;
+
+	@Column(nullable = false, length = 30)
 	private String hobby;
 
-	private User(String name, int age, String hobby) {
-		this.name = name;
-		this.age = age;
-		this.hobby = hobby;
-	}
-
-	private User(Long id, String name, int age, String hobby, LocalDateTime createdAt, String createdBy) {
+	public User(Long id, String name, int age, String hobby) {
 		this.id = id;
 		this.name = name;
 		this.age = age;
 		this.hobby = hobby;
-		this.setCreatedAt(createdAt);
-		this.setCreatedBy(createdBy);
 	}
 
 	protected User() {
-
-	}
-
-	public static User create(String name, int age, String hobby) {
-		return new User(name, age, hobby);
-	}
-
-	public static User create(Long id, String name, int age, String hobby, LocalDateTime createdAt, String createdBy) {
-		return new User(id, name, age, hobby, createdAt, createdBy);
 	}
 
 	public Long getId() {

@@ -12,11 +12,14 @@ import javax.persistence.ManyToOne;
 import org.programmers.kdtboard.domain.BaseEntity;
 import org.programmers.kdtboard.domain.user.User;
 
+import lombok.Builder;
+
+@Builder
 @Entity
 public class Post extends BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	@Column(nullable = false, length = 30)
@@ -30,20 +33,21 @@ public class Post extends BaseEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	private Post(String title, String content) {
+	public Post(Long id, String title, String content, User user) {
+		this.id = id;
 		this.title = title;
 		this.content = content;
+		this.user = user;
 	}
 
-	protected Post() {}
-
-	public static Post create(String title, String content) {
-		return new Post(title, content);
+	protected Post() {
 	}
 
-	public void update(String title, String content) {
-		this.content = content;
+	public Post update(String title, String content) {
 		this.title = title;
+		this.content = content;
+
+		return this;
 	}
 
 	public void setUser(User user) {

@@ -4,14 +4,13 @@ import static java.text.MessageFormat.*;
 
 import org.programmers.kdtboard.controller.response.ErrorCode;
 import org.programmers.kdtboard.converter.PostConverter;
-import org.programmers.kdtboard.converter.UserConverter;
 import org.programmers.kdtboard.domain.post.Post;
 import org.programmers.kdtboard.domain.post.PostRepository;
-import org.programmers.kdtboard.dto.PostDto.PostCreateRequestDto;
-import org.programmers.kdtboard.dto.PostDto.PostResponseDto;
-import org.programmers.kdtboard.dto.PostDto.PostUpdateRequestDto;
+import org.programmers.kdtboard.dto.PostDto.Response;
+import org.programmers.kdtboard.dto.PostDto.UpdateRequest;
 import org.programmers.kdtboard.exception.NotFoundEntityByIdException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,29 +22,26 @@ public class PostService {
 	private final PostRepository postRepository;
 	private final UserService userService;
 	private final PostConverter postConverter;
-	private final UserConverter userConverter;
 
 	public PostService(PostRepository postRepository, UserService userService,
-		PostConverter postConverter, UserConverter userConverter) {
+		PostConverter postConverter) {
 		this.postRepository = postRepository;
 		this.userService = userService;
 		this.postConverter = postConverter;
-		this.userConverter = userConverter;
 	}
 
 	@Transactional
-	public PostResponseDto create(PostCreateRequestDto postCreateRequest) {
-		var post = Post.builder().title(postCreateRequest.title())
-			.content(postCreateRequest.content())
+	public Response create(String title, String content, Long userId) {
+		var post = Post.builder().title(title)
+			.content(content)
 			.build();
-		var userResponseDto = this.userService.findById(postCreateRequest.userId());
-		post.setUser(userConverter.convertUser(userResponseDto));
+		post.setUser(this.userService.findEntityById(userId));
 		this.postRepository.save(post);
 
 		return this.postConverter.convertPostResponse(post);
 	}
 
-	public PostResponseDto findById(Long id) {
+	public Response findById(Long id) {
 		var post = this.postRepository.findById(id)
 			.orElseThrow(
 				() -> new NotFoundEntityByIdException(format("post id : {0}, 없는 id 입니다.", id),
@@ -54,17 +50,22 @@ public class PostService {
 		return this.postConverter.convertPostResponse(post);
 	}
 
-	public Page<PostResponseDto> findAll(Pageable pageable) {
-		return this.postRepository.findAll(pageable).map(this.postConverter::convertPostResponse);
+	public Page<Response> findAll(Pageable pageable) {
+		Page<Post> postPages = this.postRepository.findAll(pageable);
+		var postResponseDto = postPages.getContent().stream()
+			.map(postConverter::convertPostResponse)
+			.toList();
+
+		return new PageImpl<>(postResponseDto, pageable, postPages.getTotalPages());
 	}
 
 	@Transactional
-	public PostResponseDto update(Long id, PostUpdateRequestDto postUpdateRequest) {
+	public Response update(Long id, UpdateRequest postUpdateRequest) {
 		var post = this.postRepository.findById(id)
 			.orElseThrow(() ->
 				new NotFoundEntityByIdException(format("post id : {0}, 없는 id 입니다.", id),
-					ErrorCode.POST_ID_NOT_FOUND));
-		post.update(postUpdateRequest.title(), postUpdateRequest.content());
+					ErrorCode.POST_ID_NOT_FOUND))
+			.update(postUpdateRequest.title(), postUpdateRequest.content());
 
 		return this.postConverter.convertPostResponse(post);
 	}

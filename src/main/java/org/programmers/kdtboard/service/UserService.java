@@ -6,7 +6,7 @@ import org.programmers.kdtboard.controller.response.ErrorCode;
 import org.programmers.kdtboard.converter.UserConverter;
 import org.programmers.kdtboard.domain.user.User;
 import org.programmers.kdtboard.domain.user.UserRepository;
-import org.programmers.kdtboard.dto.UserDto.UserResponseDto;
+import org.programmers.kdtboard.dto.UserDto.Response;
 import org.programmers.kdtboard.exception.NotFoundEntityByIdException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +26,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserResponseDto create(String name, int age, String hobby) {
+	public Response create(String name, int age, String hobby) {
 		var user = User.builder()
 			.name(name)
 			.age(age)
@@ -37,7 +37,7 @@ public class UserService {
 		return this.userConverter.convertUserResponse(save);
 	}
 
-	public UserResponseDto findById(Long id) {
+	public Response findById(Long id) {
 		var foundUser = userRepository.findById(id)
 			.orElseThrow(
 				() -> new NotFoundEntityByIdException(format("user id : {0}, 없는 ID 입니다.", id),
@@ -46,7 +46,14 @@ public class UserService {
 		return this.userConverter.convertUserResponse(foundUser);
 	}
 
-	public Page<UserResponseDto> findAll(Pageable pageable) {
+	public User findEntityById(Long id) {
+		return userRepository.findById(id)
+			.orElseThrow(
+				() -> new NotFoundEntityByIdException(format("user id : {0}, 없는 ID 입니다.", id),
+					ErrorCode.USER_ID_NOT_FOUND));
+	}
+
+	public Page<Response> findAll(Pageable pageable) {
 		return this.userRepository.findAll(pageable).map(this.userConverter::convertUserResponse);
 	}
 }
