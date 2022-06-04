@@ -28,12 +28,12 @@ public class PostApi {
     }
 
     @GetMapping("/posts")
-    public List<PostResponse.PostResponseDto> getAllPost(Pageable pageable) {
+    public List<PostResponse.PostResponseDto> getAll(Pageable pageable) {
         return postDefaultService.getPostList(pageable);
     }
 
     @GetMapping("/posts/{id}")
-    public PostResponse.PostResponseDto getPost(@PathVariable @Positive Long id) {
+    public PostResponse.PostResponseDto get(@PathVariable @Positive Long id) {
         return postDefaultService.getPost(id);
     }
 
