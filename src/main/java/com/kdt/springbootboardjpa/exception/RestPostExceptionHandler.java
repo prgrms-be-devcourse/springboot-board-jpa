@@ -18,7 +18,7 @@ public class RestPostExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UserNotFoundException.class)
     public ErrorResponse handleUnAuthorization(UserNotFoundException e) {
-        log.warn(e.getMessage(), e.getStackTrace());
+        log.warn(e.getMessage(), e);
         var errorCode = ErrorCode.NOT_AUTHORIZED;
         return ErrorResponse.builder()
                 .code(HttpStatus.BAD_REQUEST)

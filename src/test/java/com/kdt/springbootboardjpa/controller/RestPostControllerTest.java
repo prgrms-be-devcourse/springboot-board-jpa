@@ -229,5 +229,4 @@ class RestPostControllerTest {
                 .andExpect(jsonPath("status").value(400))
                 .andDo(print());
     }
-
 }
