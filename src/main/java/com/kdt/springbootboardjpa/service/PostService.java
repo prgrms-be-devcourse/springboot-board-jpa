@@ -1,4 +1,4 @@
-package com.kdt.springbootboardjpa;
+package com.kdt.springbootboardjpa.service;
 
 import com.kdt.springbootboardjpa.converter.PostConverter;
 import com.kdt.springbootboardjpa.domain.Post;

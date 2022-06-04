@@ -1,4 +1,4 @@
-package com.kdt.springbootboardjpa;
+package com.kdt.springbootboardjpa.service;
 
 import com.kdt.springbootboardjpa.converter.PostConverter;
 import com.kdt.springbootboardjpa.domain.Post;
@@ -10,6 +10,7 @@ import com.kdt.springbootboardjpa.exception.PostNotFoundException;
 import com.kdt.springbootboardjpa.exception.UserNotFoundException;
 import com.kdt.springbootboardjpa.repository.PostRepository;
 import com.kdt.springbootboardjpa.repository.UserRepository;
+import com.kdt.springbootboardjpa.service.PostService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
