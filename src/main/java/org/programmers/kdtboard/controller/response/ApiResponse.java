@@ -2,20 +2,13 @@ package org.programmers.kdtboard.controller.response;
 
 import org.springframework.http.HttpStatus;
 
-public class ApiResponse<T> {
-
-	private final T data;
-	private final HttpStatus httpStatus = HttpStatus.OK;
-
-	private ApiResponse(T data) {
-		this.data = data;
-	}
+public record ApiResponse<T>(T data, HttpStatus httpStatus) {
 
 	public static <T> ApiResponse<T> ok(T data) {
-		return new ApiResponse<>(data);
+		return new ApiResponse<>(data, HttpStatus.OK);
 	}
 
-	public T getData() {
-		return data;
+	public static <T> ApiResponse<T> create(T data) {
+		return new ApiResponse<>(data, HttpStatus.CREATED);
 	}
 }
