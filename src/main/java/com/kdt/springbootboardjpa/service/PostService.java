@@ -9,6 +9,7 @@ import com.kdt.springbootboardjpa.exception.PostNotFoundException;
 import com.kdt.springbootboardjpa.exception.UserNotFoundException;
 import com.kdt.springbootboardjpa.repository.PostRepository;
 import com.kdt.springbootboardjpa.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,18 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 
+@RequiredArgsConstructor
 @Service
 public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final PostConverter converter;
-
-    public PostService(PostRepository postRepository, UserRepository userRepository, PostConverter converter) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-        this.converter = converter;
-    }
 
     public PostDTO findPost(long id) {
         return postRepository.findById(id).map(converter::convertPostDTO).orElseThrow(

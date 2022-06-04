@@ -4,6 +4,7 @@ import com.kdt.springbootboardjpa.service.PostService;
 import com.kdt.springbootboardjpa.domain.dto.PostCreateRequest;
 import com.kdt.springbootboardjpa.domain.dto.PostDTO;
 import com.kdt.springbootboardjpa.domain.dto.PostUpdateRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,15 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@RequiredArgsConstructor
 @RequestMapping("/api/v1")
 @RestController
 public class RestPostController {
 
     private final PostService postService;
-
-    public RestPostController(PostService postService) {
-        this.postService = postService;
-    }
 
     @GetMapping("/posts/{id}")
     public PostDTO getPost(@PathVariable("id") long id) {
