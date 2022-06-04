@@ -50,7 +50,7 @@ public class PostDefaultService implements PostService {
     @Override
     @Transactional
     public PostResponseDto updatePost(Long id, PostUpdateRequestDto updateRequest) {
-        var post = postRepository.findById(id).orElseThrow(NoExistIdException::new);
+        Post post = postRepository.findById(id).orElseThrow(NoExistIdException::new);
 
         post.changeTitle(updateRequest.title());
         post.changeContent(updateRequest.content());
