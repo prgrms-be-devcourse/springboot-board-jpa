@@ -8,17 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @DataJpaTest
 class PostRepositoryTest {
 
 	@Autowired
 	PostRepository postRepository;
 
-	Post post = Post.create("테스트를 잘 하는 법", "알려드렸습니다.");
-	User user = User.create("hyebpark", 12, "잠자기");
+	Post post = Post.builder()
+		.title("테스트를 잘 하는 법")
+		.content("알려드렸습니다.")
+		.build();
+	User user = User.builder()
+		.name("hyebpark")
+		.age(12)
+		.hobby("잠자기")
+		.build();
 
 	@Test
 	void save() {
@@ -36,9 +40,9 @@ class PostRepositoryTest {
 		post.setUser(user);
 		//when
 		var savedPost = postRepository.save(post);
-		var foundPost = postRepository.findById(post.getId());
 		//then
-		assertThat(foundPost).isNotEmpty();
+		var foundPost = postRepository.findById(post.getId());
+		assertThat(foundPost).isPresent();
 		assertThat(foundPost.get()).isEqualTo(savedPost);
 
 	}
@@ -49,8 +53,8 @@ class PostRepositoryTest {
 		post.setUser(user);
 		//when
 		var savedPost = postRepository.save(post);
-		var posts = postRepository.findAll();
 		//then
+		var posts = postRepository.findAll();
 		assertThat(posts).contains(savedPost);
 	}
 
@@ -58,15 +62,15 @@ class PostRepositoryTest {
 	@Test
 	void update() {
 		//given
+		var title = "수정한 제목입니다.";
 		var content = "수정한 내용입니다.";
 		post.setUser(user);
 		var savedPost = postRepository.save(post);
 		//when
-		savedPost.changeContent(content);
-		var foundPost = postRepository.findById(post.getId());
+		savedPost.update(title, content);
 		//then
-		log.info("found Post content : {}", content);
-		assertThat(foundPost).isNotEmpty();
+		var foundPost = postRepository.findById(post.getId());
+		assertThat(foundPost).isPresent();
 		assertThat(foundPost.get().getContent()).isEqualTo(content);
 	}
 
@@ -79,7 +83,6 @@ class PostRepositoryTest {
 		postRepository.deleteById(post.getId());
 		//then
 		var foundPost = postRepository.findById(post.getId());
-
 		assertThat(foundPost).isEmpty();
 	}
 }
