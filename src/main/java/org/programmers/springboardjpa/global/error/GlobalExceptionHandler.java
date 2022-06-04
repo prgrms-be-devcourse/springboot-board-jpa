@@ -21,21 +21,21 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.warn("handleMethodArgumentNotValidException", e);
         ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT, e.getBindingResult());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
         log.warn("ConstraintViolationException", e);
         ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT);
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
         log.warn("handleMethodArgumentTypeMismatchException", e);
         ErrorResponse response = ErrorResponse.of(e);
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -57,6 +57,6 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleException(Exception e) {
         log.error("handleException", e);
         ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.internalServerError().body(response);
     }
 }
