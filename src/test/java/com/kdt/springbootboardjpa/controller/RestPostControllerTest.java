@@ -1,7 +1,7 @@
 package com.kdt.springbootboardjpa.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kdt.springbootboardjpa.PostService;
+import com.kdt.springbootboardjpa.service.PostService;
 import com.kdt.springbootboardjpa.domain.dto.PostCreateRequest;
 import com.kdt.springbootboardjpa.domain.dto.PostUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
-@TestPropertySource("classpath:application.yml")
+@TestPropertySource("classpath:application-test.yml")
 @Sql({"classpath:sql/schema.sql", "classpath:sql/data.sql"})
 class RestPostControllerTest {
 
@@ -198,6 +198,35 @@ class RestPostControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("code").value(HttpStatus.NOT_FOUND.name()))
                 .andExpect(jsonPath("status").value(404))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("유효성 검사 실패로 인한 MethodArgumentNotValid 예외 테스트")
+    void methodArgumentNotValidExceptionTest() throws Exception{
+
+        //create-validation
+        var createRequest = new PostCreateRequest("validation-exception", "--", " ");
+        var createBody = objecctMapper.writeValueAsString(createRequest);
+
+        mockMvc.perform(post("/api/v1/posts")
+                        .content(createBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("code").value(HttpStatus.BAD_REQUEST.name()))
+                .andExpect(jsonPath("status").value(400))
+                .andDo(print());
+
+        //update-validation
+        var updateRequest = new PostUpdateRequest("", "--");
+        var updateBody = objecctMapper.writeValueAsString(updateRequest);
+
+        mockMvc.perform(post("/api/v1/posts/{id}", 1L)
+                        .content(updateBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("code").value(HttpStatus.BAD_REQUEST.name()))
+                .andExpect(jsonPath("status").value(400))
                 .andDo(print());
     }
 

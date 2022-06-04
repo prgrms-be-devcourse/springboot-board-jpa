@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS user CASCADE;
 create table user
 (
     id  bigint auto_increment   primary key,
-    created_at timestamp    null,
+    created_at timestamp    default CURRENT_TIMESTAMP,
     created_by varchar(255) null,
     age        int          null,
     hobby      varchar(35)  null,
@@ -14,7 +14,7 @@ create table user
 create table post
 (
     id  bigint auto_increment   primary key,
-    created_at timestamp    null,
+    created_at timestamp    default CURRENT_TIMESTAMP,
     created_by varchar(255) null,
     content    longtext     null,
     title      varchar(255) null,
