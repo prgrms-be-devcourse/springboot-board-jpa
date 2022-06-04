@@ -27,7 +27,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureRestDocs
@@ -80,7 +79,6 @@ class PostApiTest {
 
         //then
         result.andExpect(status().isOk())
-                .andDo(print())
                 .andDo(document("posts-save",
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
@@ -134,7 +132,6 @@ class PostApiTest {
 
         //then
         result.andExpect(status().isOk())
-                .andDo(print())
                 .andDo(document("posts-getAll",
                         requestParameters(
                                 parameterWithName("page").description("페이지"),
@@ -180,7 +177,6 @@ class PostApiTest {
 
         //then
         result.andExpect(status().isOk())
-                .andDo(print())
                 .andDo(document("posts-get",
                         pathParameters(
                                 parameterWithName("id").description("게시글 아이디")
@@ -230,7 +226,6 @@ class PostApiTest {
 
         //then
         result.andExpect(status().isOk())
-                .andDo(print())
                 .andDo(document("posts-update",
                         pathParameters(
                                 parameterWithName("id").description("아이디")
