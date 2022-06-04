@@ -6,7 +6,9 @@ import lombok.Getter;
 public enum ErrorCode {
 
     NOT_AUTHORIZED(401, "Operation Not Authorized"),
-    ENTITY_NOT_FOUND(404, "ENTITY Not Found");
+    ENTITY_NOT_FOUND(404, "ENTITY Not Found"),
+    NOT_VALID(400, "Method Argument Not Valid");
+
 
     private final int status;
     private final String message;

@@ -1,6 +1,6 @@
 package com.kdt.springbootboardjpa.controller;
 
-import com.kdt.springbootboardjpa.PostService;
+import com.kdt.springbootboardjpa.service.PostService;
 import com.kdt.springbootboardjpa.domain.dto.PostCreateRequest;
 import com.kdt.springbootboardjpa.domain.dto.PostDTO;
 import com.kdt.springbootboardjpa.domain.dto.PostUpdateRequest;
@@ -11,6 +11,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RequestMapping("/api/v1")
 @RestController
@@ -34,13 +36,13 @@ public class RestPostController {
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<String> createPost(@RequestBody PostCreateRequest request) {
+    public ResponseEntity<String> createPost(@RequestBody @Valid PostCreateRequest request) {
         postService.makePost(request);
         return new ResponseEntity<>("생성 성공", HttpStatus.OK);
     }
 
     @PostMapping("/posts/{id}")
-    public ResponseEntity<String> editPost(@PathVariable("id") long id, @RequestBody PostUpdateRequest request) {
+    public ResponseEntity<String> editPost(@PathVariable("id") long id, @RequestBody @Valid PostUpdateRequest request) {
         postService.editPost(id, request);
         return new ResponseEntity<>("수정 성공", HttpStatus.OK);
     }
