@@ -30,7 +30,7 @@ public class RestPostExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(PostNotFoundException.class)
-    public ErrorResponse handleEntityNotFound(PostNotFoundException e){
+    public ErrorResponse handleEntityNotFound(PostNotFoundException e) {
         log.warn(e.getMessage(), e);
         var errorCode = ErrorCode.ENTITY_NOT_FOUND;
         return ErrorResponse.builder()
@@ -48,6 +48,19 @@ public class RestPostExceptionHandler {
         var errorCode = ErrorCode.NOT_VALID;
         return ErrorResponse.builder()
                 .code(HttpStatus.BAD_REQUEST)
+                .message(errorCode.getMessage())
+                .status(errorCode.getStatus())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(RuntimeException.class)
+    public ErrorResponse handleDefaultException(RuntimeException e) {
+        log.warn("Default Exception.", e);
+        var errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+        return ErrorResponse.builder()
+                .code(HttpStatus.INTERNAL_SERVER_ERROR)
                 .message(errorCode.getMessage())
                 .status(errorCode.getStatus())
                 .timestamp(LocalDateTime.now())
