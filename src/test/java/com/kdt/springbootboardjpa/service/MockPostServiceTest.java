@@ -29,7 +29,7 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 @ExtendWith(MockitoExtension.class)
-class PostServiceTest {
+class MockPostServiceTest {
 
     @Mock
     PostRepository postRepository;
@@ -103,7 +103,7 @@ class PostServiceTest {
         Page<Post> posts = new PageImpl<>(List.of(p1, p2, p3));
 
         var pageble = PageRequest.of(1, 10);
-        when(postRepository.findAll(pageble)).thenReturn(posts);
+        when(postRepository.findAllWithFetch(pageble)).thenReturn(posts);
 
         //when
         var found = postService.findAllPosts(pageble);

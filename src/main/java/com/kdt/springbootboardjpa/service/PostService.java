@@ -32,7 +32,7 @@ public class PostService {
     }
 
     public Page<PostDTO> findAllPosts(Pageable pageable) {
-        return postRepository.findAll(pageable).map(converter::convertPostDTO);
+        return postRepository.findAllWithFetch(pageable).map(converter::convertPostDTO);
     }
 
     @Transactional
