@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostUpdateRequest {
-    @NotBlank
+    @NotBlank(message = "제목은 비워둘 수 없습니다.")
     private String title;
     private String content;
 }

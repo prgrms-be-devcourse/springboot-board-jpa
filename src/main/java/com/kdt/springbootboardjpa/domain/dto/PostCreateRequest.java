@@ -11,12 +11,12 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class PostCreateRequest {
 
-    @NotBlank
+    @NotBlank(message = "제목은 비워둘 수 없습니다.")
     private String title;
 
     private String content;
 
-    @NotBlank
+    @NotBlank(message = "작성자명은 비워둘 수 없습니다.")
     private String username;
 
 }
