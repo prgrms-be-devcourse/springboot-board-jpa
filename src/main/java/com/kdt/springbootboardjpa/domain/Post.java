@@ -29,11 +29,8 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public void changeTitle(String title) {
+    public void update(String title, String content) {
         this.title = title;
-    }
-
-    public void changeContent(String content) {
         this.content = content;
     }
 

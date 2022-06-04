@@ -55,7 +55,6 @@ public class PostService {
             throw new PostNotFoundException(MessageFormat.format("ID {0}에 대한 검색 결과가 없습니다. ", id));
         }
         Post post = found.get();
-        post.changeTitle(request.getTitle());
-        post.changeContent(request.getContent());
+        post.update(request.getTitle(), request.getContent());
     }
 }
