@@ -18,6 +18,6 @@ public abstract class BaseEntity {
     private String createdBy;
 
     @CreatedDate
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 }

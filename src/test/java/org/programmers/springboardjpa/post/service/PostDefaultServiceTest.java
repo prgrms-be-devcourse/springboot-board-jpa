@@ -75,25 +75,25 @@ class PostDefaultServiceTest {
                 .build();
         PostCreateRequest createRequest = new PostCreateRequest("안녕하세요", "반가워요",
                 new UserDto.UserRequest("익명", 14, "LOL"));
-        given(postConverter.convertPost(createRequest)).willReturn(post);
+        given(postConverter.toPost(createRequest)).willReturn(post);
         given(postRepository.save(post)).willReturn(entity);
 
         postDefaultService.savePost(createRequest);
 
         then(postRepository).should(times(1)).save(post);
-        then(postConverter).should(times(1)).convertPost(createRequest);
+        then(postConverter).should(times(1)).toPost(createRequest);
     }
 
     @Test
     @DisplayName("findById 행위 검증 테스트")
     void findById() {
         given(postRepository.findById(1L)).willReturn(Optional.ofNullable(entity));
-        given(postConverter.convertPostDto(entity)).willReturn(response);
+        given(postConverter.toPostDto(entity)).willReturn(response);
 
         postDefaultService.getPost(1L);
 
         then(postRepository).should(times(1)).findById(1L);
-        then(postConverter).should(times(1)).convertPostDto(entity);
+        then(postConverter).should(times(1)).toPostDto(entity);
     }
 
     @Test
@@ -114,11 +114,11 @@ class PostDefaultServiceTest {
     void update() {
         var updateRequest = new PostRequest.PostUpdateRequest("안녕하세요", "반가워요");
         given(postRepository.findById(1L)).willReturn(Optional.ofNullable(entity));
-        given(postConverter.convertPostDto(any(Post.class))).willReturn(response);
+        given(postConverter.toPostDto(any(Post.class))).willReturn(response);
 
         postDefaultService.updatePost(1L, updateRequest);
 
         then(postRepository).should(times(1)).findById(1L);
-        then(postConverter).should(times(1)).convertPostDto(entity);
+        then(postConverter).should(times(1)).toPostDto(entity);
     }
 }
