@@ -17,7 +17,6 @@ public class UserDto {
             String name,
 
             @Positive(message = "나이는 0보다 많아야 합니다.")
-            @NotBlank(message = "나이는 Blank 일 수 없습니다.")
             int age,
 
             @NotNull

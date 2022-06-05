@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.programmers.springboardjpa.domain.post.domain.Post;
 import org.programmers.springboardjpa.domain.post.dto.PostRequest;
-import org.programmers.springboardjpa.domain.post.dto.PostRequest.PostCreateRequestDto;
+import org.programmers.springboardjpa.domain.post.dto.PostRequest.PostCreateRequest;
 import org.programmers.springboardjpa.domain.post.dto.PostResponse.PostResponseDto;
 import org.programmers.springboardjpa.domain.post.repository.PostRepository;
 import org.programmers.springboardjpa.domain.post.service.PostConverter;
@@ -73,7 +73,7 @@ class PostDefaultServiceTest {
                         .hobby("LOL")
                         .build())
                 .build();
-        PostCreateRequestDto createRequest = new PostCreateRequestDto("안녕하세요", "반가워요",
+        PostCreateRequest createRequest = new PostCreateRequest("안녕하세요", "반가워요",
                 new UserDto.UserRequest("익명", 14, "LOL"));
         given(postConverter.convertPost(createRequest)).willReturn(post);
         given(postRepository.save(post)).willReturn(entity);
@@ -112,7 +112,7 @@ class PostDefaultServiceTest {
     @Test
     @DisplayName("update 행위 검증 테스트")
     void update() {
-        var updateRequest = new PostRequest.PostUpdateRequestDto("안녕하세요", "반가워요");
+        var updateRequest = new PostRequest.PostUpdateRequest("안녕하세요", "반가워요");
         given(postRepository.findById(1L)).willReturn(Optional.ofNullable(entity));
         given(postConverter.convertPostDto(any(Post.class))).willReturn(response);
 

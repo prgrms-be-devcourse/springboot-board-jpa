@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.programmers.springboardjpa.domain.post.api.PostApi;
 import org.programmers.springboardjpa.domain.post.dto.PostRequest;
-import org.programmers.springboardjpa.domain.post.dto.PostResponse;
+import org.programmers.springboardjpa.domain.post.dto.PostResponse.PostResponseDto;
 import org.programmers.springboardjpa.domain.post.service.PostDefaultService;
 import org.programmers.springboardjpa.domain.user.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ class PostApiTest {
 
     @Test
     void save() throws Exception {
-        PostResponse.PostResponseDto postResponseDto = new PostResponse.PostResponseDto(
+        PostResponseDto postResponseDto = new PostResponseDto(
                 1L,
                 "(속보)",
                 "빠르게 걷는다는 뜻",
@@ -57,11 +57,11 @@ class PostApiTest {
         );
 
         //given
-        given(this.postService.savePost(any(PostRequest.PostCreateRequestDto.class)))
+        given(this.postService.savePost(any(PostRequest.PostCreateRequest.class)))
                 .willReturn(postResponseDto);
 
         //when
-        PostRequest.PostCreateRequestDto postCreateRequestDto = new PostRequest.PostCreateRequestDto(
+        PostRequest.PostCreateRequest postCreateRequestDto = new PostRequest.PostCreateRequest(
                 "(속보)",
                 "빠르게 걷는다는 뜻",
                 new UserDto.UserRequest(
@@ -105,7 +105,7 @@ class PostApiTest {
     @Test
     void getAllPost() throws Exception {
         //given
-        PostResponse.PostResponseDto postResponseDto = new PostResponse.PostResponseDto(
+        PostResponseDto postResponseDto = new PostResponseDto(
                 3L,
                 "여기 왔으면 이 글부터 봐라",
                 "(독수리)",
@@ -116,7 +116,7 @@ class PostApiTest {
                         "인터넷 서핑"
                 )
         );
-        List<PostResponse.PostResponseDto> postResponseList = new ArrayList<>();
+        List<PostResponseDto> postResponseList = new ArrayList<>();
         postResponseList.add(postResponseDto);
 
         given(this.postService.getPostList(any(Pageable.class)))
@@ -153,7 +153,7 @@ class PostApiTest {
     @Test
     void getPost() throws Exception {
         //given
-        PostResponse.PostResponseDto postResponseDto = new PostResponse.PostResponseDto(
+        PostResponseDto postResponseDto = new PostResponseDto(
                 1L,
                 "(속보)",
                 "빠르게 걷는다는 뜻",
@@ -197,7 +197,7 @@ class PostApiTest {
     @Test
     void update() throws Exception {
         //given
-        PostResponse.PostResponseDto postResponseDto = new PostResponse.PostResponseDto(
+        PostResponseDto postResponseDto = new PostResponseDto(
                 3L,
                 "안녕하세요",
                 "안녕히 계세요",
@@ -209,11 +209,11 @@ class PostApiTest {
                 )
         );
 
-        given(postService.updatePost(eq(3L), any(PostRequest.PostUpdateRequestDto.class)))
+        given(postService.updatePost(eq(3L), any(PostRequest.PostUpdateRequest.class)))
                 .willReturn(postResponseDto);
 
         //when
-        PostRequest.PostUpdateRequestDto updateRequestDto = new PostRequest.PostUpdateRequestDto(
+        PostRequest.PostUpdateRequest updateRequestDto = new PostRequest.PostUpdateRequest(
                 "안녕하세요",
                 "안녕히 계세요"
         );
