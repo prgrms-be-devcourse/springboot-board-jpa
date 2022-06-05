@@ -1,10 +1,10 @@
 package org.programmers.springboardjpa.domain.post.service;
 
-import org.programmers.springboardjpa.domain.post.dto.PostRequest.PostCreateRequestDto;
-import org.programmers.springboardjpa.domain.post.dto.PostRequest.PostUpdateRequestDto;
-import org.programmers.springboardjpa.domain.post.dto.PostResponse.PostResponseDto;
-import org.programmers.springboardjpa.domain.post.exception.NoExistIdException;
 import org.programmers.springboardjpa.domain.post.domain.Post;
+import org.programmers.springboardjpa.domain.post.dto.PostRequest.PostCreateRequest;
+import org.programmers.springboardjpa.domain.post.dto.PostRequest.PostUpdateRequest;
+import org.programmers.springboardjpa.domain.post.dto.PostResponse.PostResponseDto;
+import org.programmers.springboardjpa.domain.post.exception.NotExistPostException;
 import org.programmers.springboardjpa.domain.post.repository.PostRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,34 +27,35 @@ public class PostDefaultService implements PostService {
 
     @Override
     @Transactional
-    public PostResponseDto savePost(PostCreateRequestDto createRequest) {
-        Post post = postConverter.convertPost(createRequest);
-        Post entity = postRepository.save(post);
-        return postConverter.convertPostDto(entity);
+    public PostResponseDto savePost(PostCreateRequest createRequest) {
+        Post post = postRepository.save(postConverter.toPost(createRequest));
+        return postConverter.toPostDto(post);
     }
 
     @Override
     public PostResponseDto getPost(Long id) {
         return postRepository.findById(id)
-                .map(postConverter::convertPostDto)
-                .orElseThrow(NoExistIdException::new);
+                .map(postConverter::toPostDto)
+                .orElseThrow(NotExistPostException::new);
     }
 
     @Override
     public List<PostResponseDto> getPostList(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(postConverter::convertPostDto)
+                .map(postConverter::toPostDto)
                 .toList();
     }
 
     @Override
     @Transactional
-    public PostResponseDto updatePost(Long id, PostUpdateRequestDto updateRequest) {
-        Post post = postRepository.findById(id).orElseThrow(NoExistIdException::new);
-
-        post.changeTitle(updateRequest.title());
-        post.changeContent(updateRequest.content());
-
-        return postConverter.convertPostDto(post);
+    public PostResponseDto updatePost(Long id, PostUpdateRequest updateRequest) {
+        return postRepository.findById(id)
+                .map(findPost -> {
+                    findPost.changeTitle(updateRequest.title());
+                    findPost.changeContent(updateRequest.content());
+                    return findPost;
+                })
+                .map(postConverter::toPostDto)
+                .orElseThrow(NotExistPostException::new);
     }
 }
