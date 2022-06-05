@@ -26,7 +26,8 @@ public class MemberConverter {
 	}
 
 	public MemberResponse toMemberResponse(Member member) {
-		return MemberResponse.builder().id(member.getId())
+		return MemberResponse.builder()
+			.id(member.getId())
 			.name(member.getName())
 			.age(member.getAge())
 			.hobby(member.getHobby())
