@@ -1,6 +1,6 @@
 package com.kdt.jpa.domain.member.dto;
 
-public class MemberRequest {
+public record MemberRequest() {
 
 	public record JoinMemberRequest(String name, int age, String hobby){
 	}

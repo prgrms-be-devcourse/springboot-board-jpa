@@ -1,6 +1,6 @@
 package com.kdt.jpa.domain.post.dto;
 
-public class PostRequest {
+public record PostRequest() {
 	public record WritePostRequest(String title, String content, Long authorId) {
 
 	}
