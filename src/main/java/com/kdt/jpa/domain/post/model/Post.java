@@ -25,27 +25,20 @@ public class Post extends BaseEntity {
 	@JoinColumn(name = "post_id", referencedColumnName = "id")
 	private Member author;
 
-	public Post(String title, String content) {
-		this.title = title;
-		this.content = content;
-	}
-
-	public Post(Long id, String title, String content,Member member) {
-		this.id = id;
-		this.title = title;
-		this.content = content;
-		setAuthor(member);
-	}
-
-	public Post(Long id, String title, String content, Member member, LocalDateTime createdAt, String createdBy) {
-		super(createdAt, createdBy);
-		this.id = id;
-		this.title = title;
-		this.content = content;
-		setAuthor(member);
-	}
-
 	protected Post() {
+	}
+
+	private Post(String title, String content, Member author) {
+		super(LocalDateTime.now(), author.getName());
+		this.title = title;
+		this.content = content;
+		this.setAuthor(author);
+	}
+
+	public Post(Long id, String title, String content, Member author) {
+		this(title, content, author);
+		this.id = id;
+		this.setAuthor(author);
 	}
 
 	private void setAuthor(Member author) {
@@ -86,5 +79,9 @@ public class Post extends BaseEntity {
 		}
 
 		return this.content;
+	}
+
+	public static Post createNew(String title, String content, Member author) {
+		return new Post(title, content, author);
 	}
 }

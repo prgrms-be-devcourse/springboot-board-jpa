@@ -18,17 +18,10 @@ public class PostConverter {
 		this.memberConverter = memberConverter;
 	}
 
-	public Post toEntity(PostRequest.UpdatePostRequest updatePostRequest) {
-		return new Post(updatePostRequest.title(), updatePostRequest.content());
-	}
-
 	public Post toEntity(PostRequest.WritePostRequest writePostRequest, MemberResponse memberResponse) {
 		Member member = this.memberConverter.toEntity(memberResponse);
-		return Post.builder()
-			.title(writePostRequest.title())
-			.content(writePostRequest.content())
-			.author(member)
-			.build();
+
+		return Post.createNew(writePostRequest.title(), writePostRequest.content(), member);
 	}
 
 	public PostResponse toPostResponse(Post post) {
