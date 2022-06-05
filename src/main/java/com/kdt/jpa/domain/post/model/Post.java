@@ -72,10 +72,19 @@ public class Post extends BaseEntity {
 		return author;
 	}
 
-	public Post update(Post post) {
-		this.title = post.title;
-		this.content = post.content;
+	public String updateTitle(String title) {
+		if (title != null) {
+			this.title = title;
+		}
 
-		return this;
+		return this.title;
+	}
+
+	public String updateContent(String content) {
+		if (content != null) {
+			this.content = content;
+		}
+
+		return this.content;
 	}
 }

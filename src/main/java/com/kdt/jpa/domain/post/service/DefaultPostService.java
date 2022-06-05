@@ -61,10 +61,10 @@ public class DefaultPostService implements PostService {
 				MessageFormat.format("{0} - error target : {1}", ErrorCode.POST_NOT_FOUND.getMessage(), id),
 				ErrorCode.POST_NOT_FOUND)
 			);
+		foundPost.updateTitle(request.title());
+		foundPost.updateContent(request.content());
 
-		return this.postConverter.toUpdatePostResponse(
-			foundPost.update(this.postConverter.toEntity(request))
-		);
+		return this.postConverter.toUpdatePostResponse(foundPost);
 	}
 
 	@Override
