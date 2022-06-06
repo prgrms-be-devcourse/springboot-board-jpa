@@ -42,24 +42,25 @@ public class DefaultPostService implements PostService {
 	@Override
 	@Transactional(readOnly = true)
 	public PostResponse findById(Long id) {
-		return this.postConverter.toPostResponse(
-			this.postRepository.findById(id)
-				.orElseThrow(
-					() -> new ServiceException
-						(
-							MessageFormat.format("{0} - error target : {1}", ErrorCode.POST_NOT_FOUND.getMessage(), id),
-							ErrorCode.POST_NOT_FOUND
-						)
+		Post foundPost = this.postRepository.findById(id)
+			.orElseThrow(() -> new ServiceException
+				(
+					MessageFormat.format("{0} - error target : {1}", ErrorCode.POST_NOT_FOUND.getMessage(), id),
+					ErrorCode.POST_NOT_FOUND
 				)
-		);
+			);
+
+		return this.postConverter.toPostResponse(foundPost);
 	}
 
 	@Override
 	public PostResponse.UpdatePostResponse update(Long id, PostRequest.UpdatePostRequest request) {
 		Post foundPost = this.postRepository.findById(id)
-			.orElseThrow(() -> new ServiceException(
-				MessageFormat.format("{0} - error target : {1}", ErrorCode.POST_NOT_FOUND.getMessage(), id),
-				ErrorCode.POST_NOT_FOUND)
+			.orElseThrow(() -> new ServiceException
+				(
+					MessageFormat.format("{0} - error target : {1}", ErrorCode.POST_NOT_FOUND.getMessage(), id),
+					ErrorCode.POST_NOT_FOUND
+				)
 			);
 		foundPost.updateTitle(request.title());
 		foundPost.updateContent(request.content());
