@@ -12,15 +12,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.devcourse.springjpaboard.exception.ExceptionMessage.NOT_FOUND_USER;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @Disabled
-class UserServiceImplTest {
+class UserServiceTest {
 
     @InjectMocks
-    UserServiceImpl userService;
+    UserService userService;
 
     @Mock
     UserRepository userRepository;

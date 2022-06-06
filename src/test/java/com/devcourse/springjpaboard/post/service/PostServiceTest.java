@@ -27,7 +27,7 @@ import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 @Disabled
-class PostServiceImplTest {
+class PostServiceTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
 

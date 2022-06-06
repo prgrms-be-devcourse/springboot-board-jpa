@@ -23,8 +23,6 @@ public class UserStubs {
         user.setId(1L);
         user.setName("yongcheol");
         user.setAge(22);
-        user.setCreatedAt(LocalDateTime.now());
-        user.setCreatedBy("ADMIN");
         return user;
     }
 }

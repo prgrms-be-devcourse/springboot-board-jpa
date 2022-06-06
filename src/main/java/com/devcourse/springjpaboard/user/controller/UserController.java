@@ -3,19 +3,44 @@ package com.devcourse.springjpaboard.user.controller;
 import com.devcourse.springjpaboard.exception.NotFoundException;
 import com.devcourse.springjpaboard.user.controller.dto.CreateUserRequest;
 import com.devcourse.springjpaboard.user.controller.dto.UserResponse;
+import com.devcourse.springjpaboard.user.service.UserService;
 import com.devcourse.springjpaboard.util.ApiResponse;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-public interface UserController {
+import static org.springframework.http.HttpStatus.*;
 
-    ApiResponse<String> internalServerError(Exception e);
+@RestController
+@RequestMapping("/users")
+public class UserController {
 
-    ApiResponse<String> notFoundHandler(NotFoundException e);
+    private final UserService userService;
 
-    ApiResponse<UserResponse> createUser(CreateUserRequest createUserRequest);
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
-    ApiResponse<UserResponse> getUserById(Long id);
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
+    public ApiResponse<String> internalServerError(Exception e) {
+        return ApiResponse.fail(INTERNAL_SERVER_ERROR, e.getMessage());
+    }
 
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(NOT_FOUND)
+    public ApiResponse<String> notFoundHandler(NotFoundException e) {
+        return ApiResponse.fail(NOT_FOUND, e.getMessage());
+    }
+
+    @PostMapping("")
+    public ApiResponse<UserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) {
+        UserResponse user = userService.save(createUserRequest);
+        return ApiResponse.ok(OK, user);
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<UserResponse> getUserById(@PathVariable Long id) {
+        UserResponse user = userService.findById(id);
+        return ApiResponse.ok(OK, user);
+    }
 
 }

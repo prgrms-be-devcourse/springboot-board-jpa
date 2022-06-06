@@ -5,8 +5,6 @@ import com.devcourse.springjpaboard.user.controller.dto.CreateUserRequest;
 import com.devcourse.springjpaboard.user.controller.dto.UserResponse;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 @Component
 public class UserConverter {
 
@@ -15,8 +13,6 @@ public class UserConverter {
         user.setName(createUserRequest.name());
         user.setAge(createUserRequest.age());
         user.setHobby(createUserRequest.hobby());
-        user.setCreatedBy("ADMIN");
-        user.setCreatedAt(LocalDateTime.now());
         return user;
     }
 

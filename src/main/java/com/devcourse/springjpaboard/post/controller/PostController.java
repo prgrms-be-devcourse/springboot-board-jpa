@@ -3,24 +3,59 @@ package com.devcourse.springjpaboard.post.controller;
 import com.devcourse.springjpaboard.exception.NotFoundException;
 import com.devcourse.springjpaboard.post.controller.dto.CreatePostRequest;
 import com.devcourse.springjpaboard.post.controller.dto.UpdatePostRequest;
+import com.devcourse.springjpaboard.post.service.PostService;
 import com.devcourse.springjpaboard.post.service.dto.PostResponse;
 import com.devcourse.springjpaboard.util.ApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-public interface PostController {
+import static org.springframework.http.HttpStatus.*;
 
-    ApiResponse<PostResponse> updatePost(@PathVariable Long id, @RequestBody UpdatePostRequest updatePostRequest);
+@RestController
+@RequestMapping("/posts")
+public class PostController {
 
-    ApiResponse<PostResponse> writePost(@RequestBody CreatePostRequest createPostRequest);
+    private final PostService postService;
 
-    ApiResponse<PostResponse> getPostById(@PathVariable Long id) throws NotFoundException;
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
-    ApiResponse<Page<PostResponse>> getAllPosts(Pageable pageable);
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(NOT_FOUND)
+    public ApiResponse<String> notFoundHandler(NotFoundException e) {
+        return ApiResponse.fail(NOT_FOUND, e.getMessage());
+    }
 
-    ApiResponse<String> internalServerError(Exception e);
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
+    public ApiResponse<String> internalServerError(Exception e) {
+        return ApiResponse.fail(INTERNAL_SERVER_ERROR, e.getMessage());
+    }
 
-    ApiResponse<String> notFoundHandler(NotFoundException e);
+    @GetMapping("")
+    public ApiResponse<Page<PostResponse>> getAllPosts(Pageable pageable) {
+        Page<PostResponse> posts = postService.findAll(pageable);
+        return ApiResponse.ok(OK, posts);
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<PostResponse> getPostById(@PathVariable Long id) throws NotFoundException {
+        PostResponse post = postService.findOne(id);
+        return ApiResponse.ok(OK, post);
+    }
+
+    @PostMapping("")
+    public ApiResponse<PostResponse> writePost(@RequestBody CreatePostRequest createPostRequest) {
+        PostResponse post = postService.save(createPostRequest);
+        return ApiResponse.ok(OK, post);
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<PostResponse> updatePost(@PathVariable Long id, @RequestBody UpdatePostRequest updatePostRequest)
+            throws NotFoundException {
+        PostResponse updatePost = postService.update(id, updatePostRequest);
+        return ApiResponse.ok(OK, updatePost);
+    }
 }

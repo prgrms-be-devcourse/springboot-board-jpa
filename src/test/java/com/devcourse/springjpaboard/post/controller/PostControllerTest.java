@@ -1,11 +1,10 @@
 package com.devcourse.springjpaboard.post.controller;
 
 import com.devcourse.springjpaboard.exception.NotFoundException;
-import com.devcourse.springjpaboard.model.post.Post;
 import com.devcourse.springjpaboard.post.controller.dto.CreatePostRequest;
 import com.devcourse.springjpaboard.post.controller.dto.UpdatePostRequest;
 import com.devcourse.springjpaboard.post.controller.stub.PostStubs;
-import com.devcourse.springjpaboard.post.service.PostServiceImpl;
+import com.devcourse.springjpaboard.post.service.PostService;
 import com.devcourse.springjpaboard.post.service.dto.PostResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
@@ -43,13 +40,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith({MockitoExtension.class, RestDocumentationExtension.class})
-class PostControllerImplTest {
+class PostControllerTest {
 
     @InjectMocks
-    private PostControllerImpl postController;
+    private PostController postController;
 
     @Mock
-    private PostServiceImpl postService;
+    private PostService postService;
 
     private MockMvc mockMvc;
 

@@ -4,7 +4,7 @@ import com.devcourse.springjpaboard.exception.NotFoundException;
 import com.devcourse.springjpaboard.user.controller.dto.CreateUserRequest;
 import com.devcourse.springjpaboard.user.controller.dto.UserResponse;
 import com.devcourse.springjpaboard.user.controller.stub.UserStubs;
-import com.devcourse.springjpaboard.user.service.UserServiceImpl;
+import com.devcourse.springjpaboard.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,13 +33,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith({MockitoExtension.class, RestDocumentationExtension.class})
-class UserControllerImplTest {
+class UserControllerTest {
 
     @InjectMocks
-    private UserControllerImpl userController;
+    private UserController userController;
 
     @Mock
-    private UserServiceImpl userService;
+    private UserService userService;
 
     private MockMvc mockMvc;
 
