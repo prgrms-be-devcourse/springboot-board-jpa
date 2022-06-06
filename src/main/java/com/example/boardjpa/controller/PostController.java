@@ -19,14 +19,8 @@ public class PostController {
 
     @GetMapping()
     public ResponseEntity<PostsResponseDto> showPosts(
-            @RequestParam(required = false) Integer page
-            , @RequestParam(required = false) Integer size) {
-        if (Objects.isNull(page)) {
-            page = 0;
-        }
-        if (Objects.isNull(size)) {
-            size = 10;
-        }
+            @RequestParam(required = false, defaultValue = "0") Integer page
+            , @RequestParam(required = false, defaultValue = "10") Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return ResponseEntity.ok(postService.getPosts(pageRequest));
     }
