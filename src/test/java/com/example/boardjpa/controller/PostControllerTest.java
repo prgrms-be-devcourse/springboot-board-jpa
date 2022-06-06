@@ -7,6 +7,7 @@ import com.example.boardjpa.exception.custom.FieldBlankException;
 import com.example.boardjpa.repository.UserRepository;
 import com.example.boardjpa.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -44,6 +45,7 @@ class PostControllerTest {
     ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("잘못된 url 테스트")
     void testInvalidApi() throws Exception {
         mockMvc.perform(get("/api/v1")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -52,6 +54,7 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("Post 생성 테스트")
     void testCreatePost() throws Exception {
         //Given
         User user = userRepository
@@ -86,6 +89,7 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("제목 없이 Post 생성 테스트")
     void testCreateWithNoTitle() {
         //Given
         User user = userRepository
@@ -96,6 +100,7 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("User 없이 Post 생성 테스트")
     void testCreateWithNoUser() {
         assertThatThrownBy(() -> new CreatePostRequestDto(
                 "제목", "내용", null))
@@ -103,6 +108,7 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("Post 단건 조회 테스트")
     void testFindPost() throws Exception {
         //Given
         User user = userRepository
@@ -159,6 +165,7 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("잘못된 ID로 Post 단건 조회 테스트")
     void testFindInvalidPost() throws Exception {
         mockMvc.perform(get("/api/v1/posts/{postId}", 11)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -167,6 +174,7 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("Pagination을 이용한 Post 다건 조회 테스트")
     void testFindPosts() throws Exception {
         //Given
         User user = userRepository
@@ -235,6 +243,7 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("Post 갱신 테스트")
     void testUpdatePost() throws Exception {
         //Given
         User user = userRepository
@@ -261,6 +270,7 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("내용 없이 Post 갱신 테스트")
     void testUpdateWithNoContent() {
         //Given
         User user = userRepository
