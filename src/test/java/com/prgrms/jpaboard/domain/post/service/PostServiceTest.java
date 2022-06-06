@@ -45,8 +45,6 @@ class PostServiceTest {
             .createdBy("1")
             .build();
 
-    private PostUpdateDto postUpdateDto = new PostUpdateDto("수정된 제목", "수정된 내용");
-
     @Test
     @DisplayName("게시글 작성 예외 테스트")
     void testCreatePostException() {

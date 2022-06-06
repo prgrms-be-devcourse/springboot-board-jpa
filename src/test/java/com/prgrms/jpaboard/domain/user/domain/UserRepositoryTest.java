@@ -34,22 +34,21 @@ class UserRepositoryTest {
     @Test
     @DisplayName("user 생성 테스트")
     void testCreate() {
-        Optional<User> retUser = userRepository.findById(user.getId());
+        Optional<User> returnedUser = userRepository.findById(user.getId());
 
-        assertThat(retUser).isNotEmpty();
-        assertThat(retUser.get().getCreatedBy()).isEqualTo(user.getCreatedBy());
-        assertThat(retUser.get().getCreatedAt()).isNotNull();
-        assertThat(retUser.get().getUpdatedAt()).isNotNull();
+        assertThat(returnedUser).isNotEmpty();
+        assertThat(returnedUser.get().getCreatedBy()).isEqualTo(user.getCreatedBy());
+        assertThat(returnedUser.get().getCreatedAt()).isNotNull();
+        assertThat(returnedUser.get().getUpdatedAt()).isNotNull();
     }
 
     @Test
     @DisplayName("수정 테스트")
     void testUpdate() {
-        User retUser = userRepository.findById(user.getId()).get();
-        retUser.updateAge(26);
+        user.updateAge(26);
 
-        User retUser2 = userRepository.findById(user.getId()).get();
-        assertThat(retUser2.getAge()).isEqualTo(26);
+        User updatedUser = userRepository.findById(user.getId()).get();
+        assertThat(updatedUser.getAge()).isEqualTo(26);
     }
 
     @Test
@@ -57,7 +56,7 @@ class UserRepositoryTest {
     void testDelete() {
         userRepository.delete(user);
 
-        Optional<User> retUser = userRepository.findById(user.getId());
-        assertThat(retUser).isEmpty();
+        Optional<User> deletedUser = userRepository.findById(user.getId());
+        assertThat(deletedUser).isEmpty();
     }
 }

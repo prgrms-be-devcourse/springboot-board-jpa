@@ -49,9 +49,9 @@ class PostRepositoryTest {
         post.setUser(user);
 
         Post savedPost = postRepository.save(post);
-        Optional<Post> retPost = postRepository.findById(savedPost.getId());
+        Optional<Post> returnedPost = postRepository.findById(savedPost.getId());
 
-        assertThat(retPost).isNotEmpty();
+        assertThat(returnedPost).isNotEmpty();
     }
 
     @Test
@@ -142,9 +142,9 @@ class PostRepositoryTest {
         post.setUser(user);
 
         Post savedPost = postRepository.save(post);
-        Optional<Post> retPost = postRepository.findByIdWithUser(savedPost.getId());
+        Optional<Post> returnedPost = postRepository.findByIdWithUser(savedPost.getId());
 
-        assertThat(retPost).isNotEmpty();
+        assertThat(returnedPost).isNotEmpty();
     }
 
 }
