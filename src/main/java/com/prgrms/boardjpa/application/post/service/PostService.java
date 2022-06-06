@@ -46,7 +46,7 @@ public class PostService {
 	public PostDto.PostInfo store(String title, Long writerId, String content) {
 		try {
 			User writer = userService.getById(writerId);
-			// TODO : same class 내에서 @Transactional method 호출시 , 트랜잭션이 적용되지 않는 문제 -> 어떻게 해결? 클래스 분리 하는 방법...
+			// FIXME : same class 내에서 @Transactional method 호출시 , this.store()로 호출되는 메소드에 설정한 @Transactional 설정은 적용되지 않는다 (현재는 동일한 설정을 사용하고 있기에 별다른 이상은 없을 것이다 )
 			return this.store(title, writer, content);
 		} catch (NotExistException e) {
 			log.info("존재하지 않는 사용자의 게시글 작성 요청 : writerId {}", writerId);
