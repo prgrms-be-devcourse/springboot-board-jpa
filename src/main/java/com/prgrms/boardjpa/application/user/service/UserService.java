@@ -26,8 +26,9 @@ public class UserService {
 		return UserDto.Info.from(newUser);
 	}
 
-	public User getById(Long writerId) {
+	public UserDto.Info getById(Long writerId) {
 		return userRepository.findById(writerId)
+			.map(UserDto.Info::from)
 			.orElseThrow(NotExistException::new);
 	}
 }

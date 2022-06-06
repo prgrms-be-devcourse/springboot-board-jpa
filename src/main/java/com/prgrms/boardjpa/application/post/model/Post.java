@@ -10,9 +10,9 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.util.Assert;
 
+import com.prgrms.boardjpa.application.user.model.User;
 import com.prgrms.boardjpa.core.commons.domain.BaseEntity;
 import com.prgrms.boardjpa.core.commons.exception.CreationFailException;
-import com.prgrms.boardjpa.application.user.model.User;
 
 import lombok.Getter;
 
@@ -39,7 +39,7 @@ public class Post extends BaseEntity {
 	protected Post() {
 	}
 
-	public Post(String title, User writer, String content){
+	public Post(String title, User writer, String content) {
 		this(null, title, writer, content);
 	}
 
@@ -106,12 +106,14 @@ public class Post extends BaseEntity {
 		}
 	}
 
-	public void edit(String title, String content) {
+	public Post edit(String title, String content) {
 		validateTitle(title);
 		validateContent(content);
 
 		this.title = title;
 		this.content = content;
+
+		return this;
 	}
 
 	private void validateTitle(String title) {
