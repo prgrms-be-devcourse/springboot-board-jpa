@@ -1,14 +1,14 @@
 package com.example.boardjpa.domain;
 
 import com.example.boardjpa.exception.ErrorCode;
-import com.example.boardjpa.exception.custom.FieldBlankException;
 import com.example.boardjpa.exception.custom.ValueOutOfRangeException;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import static com.example.boardjpa.util.Validation.checkNull;
 
 @Entity
 public class User extends BaseEntity {
@@ -27,10 +27,8 @@ public class User extends BaseEntity {
     }
 
     public User(String name, Integer age, String hobby) {
-        checkNull(name, age);
-        checkAgeRange(age);
-        this.name = name;
-        this.age = age;
+        setName(name);
+        setAge(age);
         this.hobby = hobby;
         this.createdAt = LocalDateTime.now();
         this.createdBy = name;
@@ -64,10 +62,15 @@ public class User extends BaseEntity {
         return posts;
     }
 
-    private void checkNull(String name, Integer age) {
-        if (Objects.isNull(name) || Objects.isNull(age)) {
-            throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
-        }
+    private void setName(String name) {
+        checkNull(name);
+        this.name = name;
+    }
+
+    private void setAge(Integer age) {
+        checkNull(age);
+        checkAgeRange(age);
+        this.age = age;
     }
 
     private void checkAgeRange(Integer age) {

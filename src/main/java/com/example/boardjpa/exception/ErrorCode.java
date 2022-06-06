@@ -3,6 +3,7 @@ package com.example.boardjpa.exception;
 public enum ErrorCode {
     USER_NOT_FOUND(400, "USER IS NOT FOUND")
     , POST_NOT_FOUND(400, "POST IS NOT FOUND")
+    , FIELD_NULL(400, "FIELD CANT BE NULL")
     , FIELD_BLANK(400, "FIELD CANT BE BLANK")
     , AGE_OUT_OF_RANGE(400, "AGE VALUE IS OUT OF RANGE")
     , API_NOT_FOUND(404, "API IS NOT FOUND")

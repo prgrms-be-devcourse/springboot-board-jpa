@@ -1,11 +1,11 @@
 package com.example.boardjpa.domain;
 
-import com.example.boardjpa.exception.ErrorCode;
-import com.example.boardjpa.exception.custom.FieldBlankException;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import static com.example.boardjpa.util.Validation.checkBlank;
+import static com.example.boardjpa.util.Validation.checkNull;
 
 @Entity
 public class Post extends BaseEntity{
@@ -24,8 +24,7 @@ public class Post extends BaseEntity{
     }
 
     public Post(String title, String content, User user) {
-        checkNullOrValid(title, user);
-        this.title = title;
+        setTitle(title);
         setContent(content);
         setUser(user);
         this.createdAt = LocalDateTime.now();
@@ -33,6 +32,7 @@ public class Post extends BaseEntity{
     }
 
     public void setUser(User user) {
+        checkNull(user);
         if (Objects.nonNull(this.user)) {
             this.user.getPosts().remove(this);
         }
@@ -41,9 +41,8 @@ public class Post extends BaseEntity{
     }
 
     public void setContent(String content) {
-        if (Objects.isNull(content) || content.isBlank()) {
-            throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
-        }
+        checkNull(content);
+        checkBlank(content);
         this.content = content;
     }
 
@@ -63,9 +62,9 @@ public class Post extends BaseEntity{
         return user;
     }
 
-    private void checkNullOrValid(String title, User user) {
-        if (Objects.isNull(title) || title.isBlank() || Objects.isNull(user)) {
-            throw new FieldBlankException("필수 필드가 비어있습니다.", ErrorCode.FIELD_BLANK);
-        }
+    private void setTitle (String title) {
+        checkNull(title);
+        checkBlank(title);
+        this.title = title;
     }
 }
