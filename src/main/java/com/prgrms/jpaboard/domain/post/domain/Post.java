@@ -105,12 +105,10 @@ public class Post extends BaseEntity {
 
     public void updateTitle(String title) {
         this.title = title;
-        this.updatedAt = LocalDateTime.now();
     }
 
     public void updateContent(String content) {
         this.content = content;
-        this.updatedAt = LocalDateTime.now();
     }
 
     public void setUser(User user) {

@@ -16,6 +16,7 @@ class PostTest {
         post = Post.builder()
                 .title("test title")
                 .content("this is content of test")
+                .createdBy("1")
                 .build();
 
         postUpdateDto =

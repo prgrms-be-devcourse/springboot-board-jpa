@@ -87,10 +87,10 @@ class PostRepositoryTest {
 
         Post savedPost = postRepository.save(post);
         savedPost.updateContent("컨텐츠가 업데이트 되었습니다...");
+        Optional<Post> updatedPost = postRepository.findById(savedPost.getId());
 
-        Optional<Post> retPost = postRepository.findById(savedPost.getId());
-        assertThat(retPost).isNotEmpty();
-        assertThat(retPost.get().getContent()).isEqualTo("컨텐츠가 업데이트 되었습니다...");
+        assertThat(updatedPost).isNotEmpty();
+        assertThat(updatedPost.get().getContent()).isEqualTo("컨텐츠가 업데이트 되었습니다...");
     }
 
     @Test
@@ -108,8 +108,8 @@ class PostRepositoryTest {
         Post savedPost = postRepository.save(post);
         postRepository.delete(savedPost);
 
-        Optional<Post> retPost = postRepository.findById(savedPost.getId());
-        assertThat(retPost).isEmpty();
+        Optional<Post> deletedPost = postRepository.findById(savedPost.getId());
+        assertThat(deletedPost).isEmpty();
     }
 
     @Test
