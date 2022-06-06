@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.kdt.jpa.domain.BaseEntity;
 import com.kdt.jpa.domain.member.model.Member;
@@ -18,8 +21,14 @@ public class Post extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column(name = "title")
+	@NotBlank
+	@NotNull
+	@Size(min = 1, max = 50)
 	private String title;
 	@Column(name = "content")
+	@NotBlank
+	@NotNull
+	@Size(min = 1, max = 500)
 	private String content;
 	@ManyToOne
 	@JoinColumn(name = "post_id", referencedColumnName = "id")
