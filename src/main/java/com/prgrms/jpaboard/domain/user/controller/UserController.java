@@ -7,11 +7,12 @@ import com.prgrms.jpaboard.global.common.response.ResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<ResponseDto> createUser(@Validated @RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<ResponseDto> createUser(@Valid @RequestBody UserRequestDto userRequestDto) {
         ResultDto result = userService.createUser(userRequestDto);
 
         ResponseDto responseDto = new ResponseDto(HttpStatus.CREATED.value(), "user created successfully", result);

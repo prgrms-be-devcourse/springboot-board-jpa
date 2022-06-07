@@ -1,9 +1,9 @@
 package com.prgrms.jpaboard.domain.post.controller;
 
+import com.prgrms.jpaboard.domain.post.dto.request.PostCreateDto;
 import com.prgrms.jpaboard.domain.post.dto.request.PostUpdateDto;
 import com.prgrms.jpaboard.domain.post.dto.response.PostDetailDto;
 import com.prgrms.jpaboard.domain.post.dto.response.PostListDto;
-import com.prgrms.jpaboard.domain.post.dto.request.PostCreateDto;
 import com.prgrms.jpaboard.domain.post.service.PostService;
 import com.prgrms.jpaboard.global.common.response.ResponseDto;
 import com.prgrms.jpaboard.global.common.response.ResultDto;
@@ -11,8 +11,9 @@ import com.prgrms.jpaboard.global.common.resquest.PageParamDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts")
@@ -21,7 +22,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<ResponseDto> createPost(@Validated @RequestBody PostCreateDto postCreateDto){
+    public ResponseEntity<ResponseDto> createPost(@Valid @RequestBody PostCreateDto postCreateDto){
         ResultDto result = postService.createPost(postCreateDto);
 
         ResponseDto responseDto = new ResponseDto(HttpStatus.CREATED.value(), "post created successfully", result);
@@ -32,7 +33,7 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseDto> getPosts(@Validated @ModelAttribute PageParamDto pageParamDto) {
+    public ResponseEntity<ResponseDto> getPosts(@Valid @ModelAttribute PageParamDto pageParamDto) {
         PostListDto postListDto = postService.getPosts(pageParamDto.getPage(), pageParamDto.getPerPage());
 
         ResponseDto responseDto = new ResponseDto(HttpStatus.OK.value(), "get posts successfully", postListDto);
@@ -54,7 +55,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDto> updatePost(@PathVariable Long id, @Validated @RequestBody PostUpdateDto postUpdateDto) {
+    public ResponseEntity<ResponseDto> updatePost(@PathVariable Long id, @Valid @RequestBody PostUpdateDto postUpdateDto) {
         ResultDto result = postService.updatePost(id, postUpdateDto);
 
         ResponseDto responseDto = new ResponseDto(HttpStatus.OK.value(), "post updated successfully", result);
