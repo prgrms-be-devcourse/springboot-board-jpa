@@ -1,5 +1,7 @@
 package com.kdt.jpa.web.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -30,12 +32,12 @@ public class PostRestController {
 	}
 
 	@PostMapping
-	public ResponseEntity<PostResponse.WritePostResponse> write(@RequestBody PostRequest.WritePostRequest request) {
+	public ResponseEntity<PostResponse.WritePostResponse> write(@RequestBody @Valid PostRequest.WritePostRequest request) {
 		return ResponseEntity.ok(postService.write(request));
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity<PostResponse.UpdatePostResponse> update(@PathVariable Long id, @RequestBody PostRequest.UpdatePostRequest request) {
+	public ResponseEntity<PostResponse.UpdatePostResponse> update(@PathVariable Long id, @RequestBody @Valid PostRequest.UpdatePostRequest request) {
 		return ResponseEntity.ok(postService.update(id, request));
 	}
 }
