@@ -25,7 +25,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final PostConverter converter;
 
-    public PostDTO findPost(long id) {
+    public PostDTO findPost(Long id) {
         return postRepository.findById(id).map(converter::convertPostDTO).orElseThrow(
                 () -> new PostNotFoundException(MessageFormat.format("ID {0}에 대한 검색 결과가 없습니다.", id))
         );
@@ -45,7 +45,7 @@ public class PostService {
     }
 
     @Transactional
-    public void editPost(long id, PostUpdateRequest request) {
+    public void editPost(Long id, PostUpdateRequest request) {
         var found = postRepository.findById(id);
         if (found.isEmpty()) {
             throw new PostNotFoundException(MessageFormat.format("ID {0}에 대한 검색 결과가 없습니다. ", id));
