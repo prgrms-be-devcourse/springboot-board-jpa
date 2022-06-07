@@ -22,6 +22,7 @@ public class User extends BaseEntity {
 	@Column(nullable = false, length = 10)
 	private String name;
 
+	@Column(nullable = false)
 	private int age;
 
 	@Column(length = 30)
@@ -33,12 +34,19 @@ public class User extends BaseEntity {
 	@Builder
 	public User(Long id, String name, int age, String hobby) {
 		verifyName(name);
+		verifyAge(age);
 		verifyHobby(hobby);
 
 		this.id = id;
 		this.name = name;
 		this.age = age;
 		this.hobby = hobby;
+	}
+
+	private void verifyAge(int age) {
+		if (age < 0) {
+			throw new NotValidException(ErrorCode.INVALID_REQUEST_VALUE, "나이는 음수일 수 없습니다.");
+		}
 	}
 
 	private void verifyName(String name) {

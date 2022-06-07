@@ -6,8 +6,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PostConverter {
-	public Response convertPostResponse(Post post) {
-		return new Response(post.getId(), post.getTitle(), post.getContent(),
-			post.getCreatedAt(), post.getCreatedBy(), post.getUser().getId());
-	}
+    public Response convertPostResponse(Post post) {
+        return Response.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .createdAt(post.getCreatedAt())
+                .createdBy(post.getCreatedBy())
+                .userId(post.getUser().getId())
+                .build();
+    }
 }

@@ -14,26 +14,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Valid
 @RequestMapping(value = "/api/v1/users")
 @RestController
 public class UserController {
 
-	private final UserService userService;
+    private final UserService userService;
 
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
-	@PostMapping
-	public ApiResponse<Response> create(@RequestBody @Valid UserDto.CreateRequest userCreateDto) {
-		var userResponseDto = this.userService.create(userCreateDto.name(), userCreateDto.age(), userCreateDto.hobby());
+    @PostMapping
+    public ApiResponse<Response> create(@RequestBody @Valid UserDto.CreateRequest userCreateDto) {
+        var userResponseDto = this.userService.create(userCreateDto.name(), userCreateDto.age(), userCreateDto.hobby());
 
-		return ApiResponse.create(userResponseDto);
-	}
+        return ApiResponse.create(userResponseDto);
+    }
 
-	@GetMapping
-	public ApiResponse<Page<Response>> findAll(Pageable pageable) {
-		return ApiResponse.ok(this.userService.findAll(pageable));
-	}
+    @GetMapping
+    public ApiResponse<Page<Response>> findAll(Pageable pageable) {
+        return ApiResponse.ok(this.userService.findAll(pageable));
+    }
 }

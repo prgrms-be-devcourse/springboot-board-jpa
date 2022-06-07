@@ -7,8 +7,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import lombok.Builder;
+
 public class PostDto {
 
+	@Builder
 	public record Response(
 		Long id,
 		String title,
