@@ -6,6 +6,7 @@ import com.devcourse.springjpaboard.application.post.controller.dto.UpdatePostRe
 import com.devcourse.springjpaboard.application.post.service.PostService;
 import com.devcourse.springjpaboard.application.post.service.dto.PostResponse;
 import com.devcourse.springjpaboard.core.util.ApiResponse;
+import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -35,13 +36,13 @@ public class PostController {
     }
 
     @PostMapping("")
-    public ApiResponse<PostResponse> writePost(@RequestBody CreatePostRequest createPostRequest) {
+    public ApiResponse<PostResponse> writePost(@Valid @RequestBody CreatePostRequest createPostRequest) {
         PostResponse post = postService.save(createPostRequest);
         return ApiResponse.ok(OK, post);
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<PostResponse> updatePost(@PathVariable Long id, @RequestBody UpdatePostRequest updatePostRequest)
+    public ApiResponse<PostResponse> updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequest updatePostRequest)
             throws NotFoundException {
         PostResponse updatePost = postService.update(id, updatePostRequest);
         return ApiResponse.ok(OK, updatePost);
