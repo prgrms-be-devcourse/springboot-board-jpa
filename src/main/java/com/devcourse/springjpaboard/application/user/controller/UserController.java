@@ -19,18 +19,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(INTERNAL_SERVER_ERROR)
-    public ApiResponse<String> internalServerError(Exception e) {
-        return ApiResponse.fail(INTERNAL_SERVER_ERROR, e.getMessage());
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(NOT_FOUND)
-    public ApiResponse<String> notFoundHandler(NotFoundException e) {
-        return ApiResponse.fail(NOT_FOUND, e.getMessage());
-    }
-
     @PostMapping("")
     public ApiResponse<UserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) {
         UserResponse user = userService.save(createUserRequest);

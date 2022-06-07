@@ -22,18 +22,6 @@ public class PostController {
         this.postService = postService;
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(NOT_FOUND)
-    public ApiResponse<String> notFoundHandler(NotFoundException e) {
-        return ApiResponse.fail(NOT_FOUND, e.getMessage());
-    }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(INTERNAL_SERVER_ERROR)
-    public ApiResponse<String> internalServerError(Exception e) {
-        return ApiResponse.fail(INTERNAL_SERVER_ERROR, e.getMessage());
-    }
-
     @GetMapping("")
     public ApiResponse<Page<PostResponse>> getAllPosts(Pageable pageable) {
         Page<PostResponse> posts = postService.findAll(pageable);
