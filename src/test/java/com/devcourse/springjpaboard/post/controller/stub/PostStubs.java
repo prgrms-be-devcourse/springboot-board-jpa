@@ -5,6 +5,9 @@ import com.devcourse.springjpaboard.application.user.model.User;
 import com.devcourse.springjpaboard.application.post.controller.dto.CreatePostRequest;
 import com.devcourse.springjpaboard.application.post.controller.dto.UpdatePostRequest;
 import com.devcourse.springjpaboard.application.post.service.dto.PostResponse;
+import java.util.stream.Stream;
+import net.bytebuddy.asm.Advice.Argument;
+import org.junit.jupiter.params.provider.Arguments;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -53,5 +56,29 @@ public class PostStubs {
         post.setCreatedAt(LocalDateTime.now());
         post.setCreatedBy(user.getName());
         return post;
+    }
+
+    public static Stream<Arguments> blankTitlePostRequest() {
+        return Stream.of(
+            Arguments.of("", "test-content", 1L),
+            Arguments.of(" ", "test-content", 1L),
+            Arguments.of(null, "test-content", 1L)
+        );
+    }
+
+    public static Stream<Arguments> blankContentPostRequest() {
+        return Stream.of(
+            Arguments.of("test-title", "", 1L),
+            Arguments.of("test-title", " ", 1L),
+            Arguments.of("test-title", null, 1L)
+        );
+    }
+
+    public static Stream<Arguments> notValidUserIdPostRequest() {
+        return Stream.of(
+            Arguments.of("test-title", "test-content", 0L),
+            Arguments.of("test-title", "test-content", -1L),
+            Arguments.of("test-title", "test-content", null)
+        );
     }
 }

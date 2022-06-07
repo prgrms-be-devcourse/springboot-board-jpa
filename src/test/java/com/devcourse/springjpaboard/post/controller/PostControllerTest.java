@@ -27,6 +27,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -117,10 +119,80 @@ class PostControllerTest {
     );
 
     // then
-    MvcResult mvcResult = resultActions
+    resultActions
         .andExpect(status().is4xxClientError())
-        .andExpect(jsonPath("data").exists())
-        .andReturn();
+        .andExpect(jsonPath("data").exists());
+  }
+
+
+  // TODO : MethodSource의 메서드를 외부 클래스로 따로 관리할 경우 해당 경로를 적어주어야 하는데 이를 좀더 편리하게 관리할 수 없을까?
+  // TODO : validation check 예외 추가
+  @ParameterizedTest
+  @MethodSource("com.devcourse.springjpaboard.post.controller.stub.PostStubs#blankTitlePostRequest")
+  @DisplayName("게시글 제목이 입력되지 않았을 경우 예외 발생")
+  void writePostBlankTitleTest(String title, String content, Long id) throws Exception {
+    // given
+    CreatePostRequest blankTitleRequest = new CreatePostRequest(
+        title,
+        content,
+        id
+    );
+
+    // when
+    ResultActions resultActions = mockMvc.perform(
+        MockMvcRequestBuilders.post("/posts")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsString(blankTitleRequest))
+    );
+
+    // then
+    resultActions.andExpect(status().isBadRequest());
+  }
+
+  // TODO : MethodSource의 메서드를 외부 클래스로 따로 관리할 경우 해당 경로를 적어주어야 하는데 이를 좀더 편리하게 관리할 수 없을까?
+  // TODO : validation 예외 메시지 추가
+  @ParameterizedTest
+  @MethodSource("com.devcourse.springjpaboard.post.controller.stub.PostStubs#blankContentPostRequest")
+  @DisplayName("게시글 본문이 입력되지 않았을 경우 예외 발생")
+  void writePostBlankContentTest(String title, String content, Long id) throws Exception {
+    // given
+    CreatePostRequest blankContentRequest = new CreatePostRequest(
+        title,
+        content,
+        id
+    );
+    // when
+    ResultActions resultActions = mockMvc.perform(
+        MockMvcRequestBuilders.post("/posts")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsString(blankContentRequest))
+    );
+
+    // then
+    resultActions.andExpect(status().isBadRequest());
+  }
+
+  // TODO : MethodSource의 메서드를 외부 클래스로 따로 관리할 경우 해당 경로를 적어주어야 하는데 이를 좀더 편리하게 관리할 수 없을까?
+  // TODO : validation 예외 메시지 추가
+  @ParameterizedTest
+  @MethodSource("com.devcourse.springjpaboard.post.controller.stub.PostStubs#notValidUserIdPostRequest")
+  @DisplayName("게시글을 작성한 유저의 아이디가 정상적으로 입력되지 않았을 경우 예외 발생")
+  void writePostNotValidUserIdTest(String title, String content, Long id) throws Exception {
+    // given
+    CreatePostRequest notValidUserIdRequest = new CreatePostRequest(
+        title,
+        content,
+        id
+    );
+    // when
+    ResultActions resultActions = mockMvc.perform(
+        MockMvcRequestBuilders.post("/posts")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsString(notValidUserIdRequest))
+    );
+
+    // then
+    resultActions.andExpect(status().isBadRequest());
   }
 
   @Test
