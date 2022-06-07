@@ -1,7 +1,8 @@
 package com.devcourse.springjpaboard.user.service;
 
-import com.devcourse.springjpaboard.exception.NotFoundException;
-import com.devcourse.springjpaboard.user.repository.UserRepository;
+import com.devcourse.springjpaboard.application.user.service.UserService;
+import com.devcourse.springjpaboard.core.exception.NotFoundException;
+import com.devcourse.springjpaboard.application.user.repository.UserRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.devcourse.springjpaboard.exception.ExceptionMessage.NOT_FOUND_USER;
+import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.NOT_FOUND_USER;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 

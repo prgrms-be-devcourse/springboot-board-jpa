@@ -1,10 +1,8 @@
 package com.devcourse.springjpaboard.user.controller.stub;
 
-import com.devcourse.springjpaboard.model.user.User;
-import com.devcourse.springjpaboard.user.controller.dto.CreateUserRequest;
-import com.devcourse.springjpaboard.user.controller.dto.UserResponse;
-
-import java.time.LocalDateTime;
+import com.devcourse.springjpaboard.application.user.model.User;
+import com.devcourse.springjpaboard.application.user.controller.dto.CreateUserRequest;
+import com.devcourse.springjpaboard.application.user.controller.dto.UserResponse;
 
 public class UserStubs {
 

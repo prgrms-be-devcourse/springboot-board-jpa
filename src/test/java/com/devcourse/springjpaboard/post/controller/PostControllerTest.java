@@ -1,11 +1,12 @@
 package com.devcourse.springjpaboard.post.controller;
 
-import com.devcourse.springjpaboard.exception.NotFoundException;
-import com.devcourse.springjpaboard.post.controller.dto.CreatePostRequest;
-import com.devcourse.springjpaboard.post.controller.dto.UpdatePostRequest;
+import com.devcourse.springjpaboard.application.post.controller.PostController;
+import com.devcourse.springjpaboard.core.exception.NotFoundException;
+import com.devcourse.springjpaboard.application.post.controller.dto.CreatePostRequest;
+import com.devcourse.springjpaboard.application.post.controller.dto.UpdatePostRequest;
 import com.devcourse.springjpaboard.post.controller.stub.PostStubs;
-import com.devcourse.springjpaboard.post.service.PostService;
-import com.devcourse.springjpaboard.post.service.dto.PostResponse;
+import com.devcourse.springjpaboard.application.post.service.PostService;
+import com.devcourse.springjpaboard.application.post.service.dto.PostResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,8 +28,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static com.devcourse.springjpaboard.exception.ExceptionMessage.NOT_FOUND_POST;
-import static com.devcourse.springjpaboard.exception.ExceptionMessage.NOT_FOUND_USER;
+import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.NOT_FOUND_POST;
+import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.NOT_FOUND_USER;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;

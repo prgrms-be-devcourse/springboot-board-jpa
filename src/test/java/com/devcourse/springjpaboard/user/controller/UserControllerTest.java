@@ -1,10 +1,11 @@
 package com.devcourse.springjpaboard.user.controller;
 
-import com.devcourse.springjpaboard.exception.NotFoundException;
-import com.devcourse.springjpaboard.user.controller.dto.CreateUserRequest;
-import com.devcourse.springjpaboard.user.controller.dto.UserResponse;
+import com.devcourse.springjpaboard.application.user.controller.UserController;
+import com.devcourse.springjpaboard.core.exception.NotFoundException;
+import com.devcourse.springjpaboard.application.user.controller.dto.CreateUserRequest;
+import com.devcourse.springjpaboard.application.user.controller.dto.UserResponse;
 import com.devcourse.springjpaboard.user.controller.stub.UserStubs;
-import com.devcourse.springjpaboard.user.service.UserService;
+import com.devcourse.springjpaboard.application.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +24,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static com.devcourse.springjpaboard.exception.ExceptionMessage.NOT_FOUND_USER;
+import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.NOT_FOUND_USER;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
