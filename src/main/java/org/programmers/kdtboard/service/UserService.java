@@ -9,6 +9,7 @@ import org.programmers.kdtboard.domain.user.UserRepository;
 import org.programmers.kdtboard.dto.UserDto.Response;
 import org.programmers.kdtboard.exception.NotFoundEntityByIdException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +55,11 @@ public class UserService {
 	}
 
 	public Page<Response> findAll(Pageable pageable) {
-		return this.userRepository.findAll(pageable).map(this.userConverter::convertUserResponse);
+		Page<User> userPages = this.userRepository.findAll(pageable);
+		var userResponseDto = userPages.getContent().stream()
+			.map(userConverter::convertUserResponse)
+			.toList();
+
+		return new PageImpl<>(userResponseDto, pageable, userPages.getTotalPages());
 	}
 }
