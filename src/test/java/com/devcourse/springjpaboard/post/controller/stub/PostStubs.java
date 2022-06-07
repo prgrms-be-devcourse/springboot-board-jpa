@@ -1,13 +1,12 @@
 package com.devcourse.springjpaboard.post.controller.stub;
 
-import com.devcourse.springjpaboard.model.post.Post;
-import com.devcourse.springjpaboard.model.user.User;
-import com.devcourse.springjpaboard.post.controller.dto.CreatePostRequest;
-import com.devcourse.springjpaboard.post.controller.dto.UpdatePostRequest;
-import com.devcourse.springjpaboard.post.service.dto.PostResponse;
+import com.devcourse.springjpaboard.application.post.model.Post;
+import com.devcourse.springjpaboard.application.user.model.User;
+import com.devcourse.springjpaboard.application.post.controller.dto.CreatePostRequest;
+import com.devcourse.springjpaboard.application.post.controller.dto.UpdatePostRequest;
+import com.devcourse.springjpaboard.application.post.service.dto.PostResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
