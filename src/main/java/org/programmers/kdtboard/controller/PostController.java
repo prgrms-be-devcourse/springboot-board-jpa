@@ -52,7 +52,7 @@ public class PostController {
 	@PutMapping("/{id}")
 	public ApiResponse<Response> update(@PathVariable Long id,
 		@RequestBody UpdateRequest postUpdateRequest) {
-		var updatePost = this.postService.update(id, postUpdateRequest);
+		var updatePost = this.postService.update(id, postUpdateRequest.title(), postUpdateRequest.content());
 
 		return ApiResponse.ok(updatePost);
 	}

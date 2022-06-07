@@ -7,7 +7,6 @@ import org.programmers.kdtboard.converter.PostConverter;
 import org.programmers.kdtboard.domain.post.Post;
 import org.programmers.kdtboard.domain.post.PostRepository;
 import org.programmers.kdtboard.dto.PostDto.Response;
-import org.programmers.kdtboard.dto.PostDto.UpdateRequest;
 import org.programmers.kdtboard.exception.NotFoundEntityByIdException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -60,12 +59,12 @@ public class PostService {
 	}
 
 	@Transactional
-	public Response update(Long id, UpdateRequest postUpdateRequest) {
+	public Response update(Long id, String title, String content) {
 		var post = this.postRepository.findById(id)
 			.orElseThrow(() ->
 				new NotFoundEntityByIdException(format("post id : {0}, 없는 id 입니다.", id),
 					ErrorCode.POST_ID_NOT_FOUND))
-			.update(postUpdateRequest.title(), postUpdateRequest.content());
+			.update(title, content);
 
 		return this.postConverter.convertPostResponse(post);
 	}

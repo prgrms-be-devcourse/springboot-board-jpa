@@ -26,6 +26,13 @@ public class GlobalExceptionHandler {
 		return new ErrorResponse(ErrorCode.UNEXPECTED_ERROR, e.getMessage());
 	}
 
+	@ExceptionHandler(NotValidException.class)
+	public ErrorResponse handleNotValidException(NotValidException e) {
+		log.error("handleNotValidException: {}", e.getMessage(), e);
+
+		return new ErrorResponse(e.getErrorCode(), e.getMessage());
+	}
+
 	@ExceptionHandler(NotFoundEntityByIdException.class)
 	public ErrorResponse handleNotFoundEntityByIdException(NotFoundEntityByIdException e) {
 		log.warn("handleNotFoundEntityByIdException : {}", e.getMessage(), e);
