@@ -3,6 +3,8 @@ package org.prgrms.board.web;
 import static java.time.LocalDateTime.*;
 import static org.prgrms.board.web.ApiResponse.*;
 
+import org.prgrms.board.error.NotFoundException;
+import org.prgrms.board.error.ServiceRuntimeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,10 +21,20 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler({IllegalStateException.class, IllegalArgumentException.class})
-	public ResponseEntity<ApiResponse<?>> handlerBadRequestException(Exception e) {
+	public ResponseEntity<ApiResponse<?>> handleBadRequestException(Exception e) {
 		log.debug("Bad request exception occurred: {}", e.getMessage(), e);
 
 		return newResponse(e, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler({ServiceRuntimeException.class})
+	public ResponseEntity<ApiResponse<?>> handleServiceRuntimeException(ServiceRuntimeException e) {
+		if (e instanceof NotFoundException) {
+			return newResponse(e, HttpStatus.NOT_FOUND);
+		}
+
+		log.warn("Unexpected Service exception occurred: {}", e.getMessage(), e);
+		return newResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler({Exception.class, RuntimeException.class})

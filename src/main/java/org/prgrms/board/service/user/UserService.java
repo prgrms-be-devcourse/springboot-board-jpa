@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.prgrms.board.domain.user.User;
 import org.prgrms.board.domain.user.UserRepository;
+import org.prgrms.board.error.NotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,6 +26,6 @@ public class UserService {
 		checkArgument(id != null, "userId must be provided.");
 
 		return userRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("Could not found user with userId=" + id));
+			.orElseThrow(() -> new NotFoundException(User.class, id));
 	}
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import org.prgrms.board.domain.post.Post;
 import org.prgrms.board.domain.post.PostRepository;
 import org.prgrms.board.domain.user.User;
+import org.prgrms.board.error.NotFoundException;
 import org.prgrms.board.service.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class PostService {
 		checkArgument(id != null, "postId must be provided.");
 
 		return postRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("Could not found post with postId=" + id));
+			.orElseThrow(() -> new NotFoundException(Post.class, id));
 	}
 
 	@Transactional
@@ -62,6 +63,6 @@ public class PostService {
 				post.modifyTitleAndContent(title, content);
 				return postRepository.save(post);
 			})
-			.orElseThrow(() -> new IllegalArgumentException("Could not found post with postId=" + id));
+			.orElseThrow(() -> new NotFoundException(Post.class, id));
 	}
 }
