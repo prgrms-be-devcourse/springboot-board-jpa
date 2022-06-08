@@ -27,6 +27,7 @@ public class User extends BaseEntity {
   @Column(nullable = false)
   private String name;
 
+  // TODO 나이는 TINYINT로 충분한데(최대 256) 이에 맞춰 age도 작은 자료형으로 하는 것이 좋을까?
   @Column(nullable = false)
   private int age;
 

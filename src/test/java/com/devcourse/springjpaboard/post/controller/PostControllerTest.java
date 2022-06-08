@@ -1,7 +1,11 @@
 package com.devcourse.springjpaboard.post.controller;
 
+import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.BLANK_CONTENT;
+import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.BLANK_TITLE;
+import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.INVALID_RANGE_AGE;
 import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.NOT_FOUND_POST;
 import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.NOT_FOUND_USER;
+import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.NOT_VALID_USER_ID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -126,7 +130,6 @@ class PostControllerTest {
 
 
   // TODO : MethodSource의 메서드를 외부 클래스로 따로 관리할 경우 해당 경로를 적어주어야 하는데 이를 좀더 편리하게 관리할 수 없을까?
-  // TODO : validation check 예외 추가
   @ParameterizedTest
   @MethodSource("com.devcourse.springjpaboard.post.controller.stub.PostStubs#blankTitlePostRequest")
   @DisplayName("게시글 제목이 입력되지 않았을 경우 예외 발생")
@@ -146,11 +149,11 @@ class PostControllerTest {
     );
 
     // then
-    resultActions.andExpect(status().isBadRequest());
+    resultActions.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.data.message").value(BLANK_TITLE))
+        .andExpect(jsonPath("$.data.input").value(title));
   }
 
-  // TODO : MethodSource의 메서드를 외부 클래스로 따로 관리할 경우 해당 경로를 적어주어야 하는데 이를 좀더 편리하게 관리할 수 없을까?
-  // TODO : validation 예외 메시지 추가
   @ParameterizedTest
   @MethodSource("com.devcourse.springjpaboard.post.controller.stub.PostStubs#blankContentPostRequest")
   @DisplayName("게시글 본문이 입력되지 않았을 경우 예외 발생")
@@ -169,11 +172,11 @@ class PostControllerTest {
     );
 
     // then
-    resultActions.andExpect(status().isBadRequest());
+    resultActions.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.data.message").value(BLANK_CONTENT))
+        .andExpect(jsonPath("$.data.input").value(content));
   }
 
-  // TODO : MethodSource의 메서드를 외부 클래스로 따로 관리할 경우 해당 경로를 적어주어야 하는데 이를 좀더 편리하게 관리할 수 없을까?
-  // TODO : validation 예외 메시지 추가
   @ParameterizedTest
   @MethodSource("com.devcourse.springjpaboard.post.controller.stub.PostStubs#notValidUserIdPostRequest")
   @DisplayName("게시글을 작성한 유저의 아이디가 정상적으로 입력되지 않았을 경우 예외 발생")
@@ -192,7 +195,9 @@ class PostControllerTest {
     );
 
     // then
-    resultActions.andExpect(status().isBadRequest());
+    resultActions.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.data.message").value(NOT_VALID_USER_ID))
+        .andExpect(jsonPath("$.data.input").value(id));
   }
 
   @Test
@@ -208,7 +213,7 @@ class PostControllerTest {
         .update(any(Long.class), any(UpdatePostRequest.class));
     // when
     ResultActions resultActions = mockMvc.perform(
-        MockMvcRequestBuilders.put("/posts/" + requestUser)
+        MockMvcRequestBuilders.patch("/posts/" + requestUser)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(request))
     );
@@ -242,7 +247,7 @@ class PostControllerTest {
 
     // when
     ResultActions resultActions = mockMvc.perform(
-        MockMvcRequestBuilders.put("/posts/" + requestPost)
+        MockMvcRequestBuilders.patch("/posts/" + requestPost)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(request))
     );
@@ -252,6 +257,52 @@ class PostControllerTest {
         .andExpect(status().is4xxClientError())
         .andExpect(jsonPath("data").exists())
         .andReturn();
+  }
+
+  @ParameterizedTest
+  @MethodSource("com.devcourse.springjpaboard.post.controller.stub.PostStubs#blankTitlePostRequest")
+  @DisplayName("업데이트하는 게시글 제목이 입력되지 않았을 경우 예외 발생")
+  void updatePostBlankTitleTest(String title, String content, Long id) throws Exception {
+    // given
+    UpdatePostRequest blankTitleRequest = new UpdatePostRequest(
+        title,
+        content
+    );
+
+    // when
+    ResultActions resultActions = mockMvc.perform(
+        MockMvcRequestBuilders.patch("/posts/" + id)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsString(blankTitleRequest))
+    );
+
+    // then
+    resultActions.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.data.message").value(BLANK_TITLE))
+        .andExpect(jsonPath("$.data.input").value(title));
+  }
+
+  @ParameterizedTest
+  @MethodSource("com.devcourse.springjpaboard.post.controller.stub.PostStubs#blankContentPostRequest")
+  @DisplayName("업데이트하는 게시글 본문이 입력되지 않았을 경우 예외 발생")
+  void updatePostBlankContentTest(String title, String content, Long id) throws Exception {
+    // given
+    UpdatePostRequest blankTitleRequest = new UpdatePostRequest(
+        title,
+        content
+    );
+
+    // when
+    ResultActions resultActions = mockMvc.perform(
+        MockMvcRequestBuilders.patch("/posts/" + id)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsString(blankTitleRequest))
+    );
+
+    // then
+    resultActions.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.data.message").value(BLANK_CONTENT))
+        .andExpect(jsonPath("$.data.input").value(content));
   }
 
   @Test

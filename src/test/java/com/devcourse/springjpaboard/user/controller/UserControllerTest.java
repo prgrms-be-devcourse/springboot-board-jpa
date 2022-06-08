@@ -1,5 +1,8 @@
 package com.devcourse.springjpaboard.user.controller;
 
+import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.BLANK_HOBBY;
+import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.BLANK_NAME;
+import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.INVALID_RANGE_AGE;
 import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.NOT_FOUND_USER;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -9,6 +12,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,6 +28,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -95,7 +101,78 @@ class UserControllerTest {
         ));
   }
 
-  @Test
+  @ParameterizedTest
+  @MethodSource("com.devcourse.springjpaboard.user.controller.stub.UserStubs#blankNameUserRequest")
+  @DisplayName("유저 이름이 입력되지 않은 상태로 생성 요청시 예외 발생")
+  void createUserBlankNameTest(String name, int age, String hobby) throws Exception {
+    // given
+    CreateUserRequest blankNameRequest = new CreateUserRequest(
+        name,
+        age,
+        hobby
+    );
+
+    // when
+    ResultActions resultActions = mockMvc.perform(
+        MockMvcRequestBuilders.post("/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsString(blankNameRequest))
+    );
+
+    // then
+    resultActions.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.data.message").value(BLANK_NAME))
+        .andExpect(jsonPath("$.data.input").value(name));
+  }
+
+  @ParameterizedTest
+  @MethodSource("com.devcourse.springjpaboard.user.controller.stub.UserStubs#notValidAgeUserRequest")
+  @DisplayName("잘못된 나이로 생성 요청시 예외 발생")
+  void createUserNotValidAgeTest(String name, int age, String hobby) throws Exception {
+    // given
+    CreateUserRequest notValidAgeRequest = new CreateUserRequest(
+        name,
+        age,
+        hobby
+    );
+
+    // when
+    ResultActions resultActions = mockMvc.perform(
+        MockMvcRequestBuilders.post("/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsString(notValidAgeRequest))
+    );
+
+    // then
+    resultActions.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.data.message").value(INVALID_RANGE_AGE))
+        .andExpect(jsonPath("$.data.input").value(age));
+  }
+
+  @ParameterizedTest
+  @MethodSource("com.devcourse.springjpaboard.user.controller.stub.UserStubs#blankHobbyUserRequest")
+  @DisplayName("취미를 입력하지 않았을 경우 예외 발생")
+  void createUserBlankHobbyTest(String name, int age, String hobby) throws Exception {
+    // given
+    CreateUserRequest blankHobbyRequest = new CreateUserRequest(
+        name,
+        age,
+        hobby
+    );
+
+    // when
+    ResultActions resultActions = mockMvc.perform(
+        MockMvcRequestBuilders.post("/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsString(blankHobbyRequest))
+    );
+
+    // then
+    resultActions.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.data.message").value(BLANK_HOBBY))
+        .andExpect(jsonPath("$.data.input").value(hobby));
+  }
+
   @DisplayName("존재하는 회원 ID로 조회 테스트")
   void getUserByIdTest() throws Exception {
     // given
