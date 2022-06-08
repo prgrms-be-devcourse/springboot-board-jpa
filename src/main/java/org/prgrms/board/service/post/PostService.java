@@ -6,7 +6,6 @@ import static org.apache.commons.lang3.StringUtils.*;
 import java.util.List;
 
 import org.prgrms.board.domain.post.Post;
-import org.prgrms.board.domain.post.PostQueryRepository;
 import org.prgrms.board.domain.post.PostRepository;
 import org.prgrms.board.domain.user.User;
 import org.prgrms.board.service.user.UserService;
@@ -18,17 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
 	private final PostRepository postRepository;
-	private final PostQueryRepository postQueryRepository;
 	private final UserService userService;
 
-	public PostService(PostRepository postRepository, PostQueryRepository postQueryRepository, UserService userService) {
+	public PostService(PostRepository postRepository, UserService userService) {
 		this.postRepository = postRepository;
-		this.postQueryRepository = postQueryRepository;
 		this.userService = userService;
 	}
 
 	public List<Post> findAll(long offset, int limit) {
-		return postQueryRepository.findAll(offset, limit);
+		return postRepository.findAll(offset, limit);
 	}
 
 	public long count() {
@@ -60,11 +57,11 @@ public class PostService {
 		checkArgument(isNotEmpty(title), "title must be provided.");
 		checkArgument(isNotEmpty(content), "content must be provided.");
 
-		Post post = postRepository.findById(id)
+		return postRepository.findById(id)
+			.map(post -> {
+				post.modifyTitleAndContent(title, content);
+				return postRepository.save(post);
+			})
 			.orElseThrow(() -> new IllegalArgumentException("Could not found post with postId=" + id));
-
-		post.modifyTitleAndContent(title, content);
-
-		return postRepository.save(post);
 	}
 }
