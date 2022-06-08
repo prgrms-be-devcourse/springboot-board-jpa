@@ -12,7 +12,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PostRepositoryCustomImpl {
+public class PostRepositoryCustomImpl implements PostRepositoryCustom {
 
 	private final EntityManager em;
 
