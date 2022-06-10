@@ -1,4 +1,7 @@
 spring:
+  config:
+    activate:
+      on-profile: test_db
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:test
@@ -15,8 +18,3 @@ spring:
     console:
       enabled: true
       path: /h2-console
-server:
-  servlet:
-    encoding:
-      charset: UTF-8
-      force-response: true

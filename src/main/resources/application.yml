@@ -1,4 +1,33 @@
 spring:
+  profiles:
+    group:
+      local:
+        - common
+        - local_db
+      test:
+        - common
+        - test_db
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: common
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force-response: true
+
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local_db
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/jpa_project?serverTimezone=Asia/Seoul
@@ -13,8 +42,3 @@ spring:
         dialect:
         hbm2ddl:
           auto: none
-server:
-  servlet:
-    encoding:
-      charset: UTF-8
-      force-response: true
