@@ -1,10 +1,13 @@
 package com.prgrms.work.common;
 
 import java.time.LocalDateTime;
+import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 public class BaseEntity {
 
@@ -13,7 +16,8 @@ public class BaseEntity {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    protected BaseEntity() {}
+    protected BaseEntity() {
+    }
 
     public BaseEntity(String createdBy, LocalDateTime createdAt) {
         this.createdBy = createdBy;
