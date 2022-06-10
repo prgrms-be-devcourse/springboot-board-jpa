@@ -1,15 +1,18 @@
 package com.kdt.board.domain.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class PostDto {
     public record SaveRequest(
-            @NotNull
+            @NotEmpty @Size(max = 100)
             String title,
-            @NotNull
+            @NotEmpty
             String content,
+            @NotNull
             Long userId
     ) {
     }
@@ -17,18 +20,19 @@ public class PostDto {
     public record UpdateRequest(
             @NotNull
             Long id,
-            @NotNull
+            @NotEmpty @Size(max = 100)
             String title,
-            @NotNull
+            @NotEmpty
             String content,
+            @NotNull
             Long userId
     ) {
     }
 
     public record CheckingIdResponse(
+            @NotNull
             Long id
     ) {
-
     }
 
     public record Response(
@@ -37,8 +41,7 @@ public class PostDto {
             String content,
             UserDto.Response user,
             LocalDateTime createdAt,
-            LocalDateTime updatedAt,
-            String createdBy
+            LocalDateTime updatedAt
     ) {
     }
 }
