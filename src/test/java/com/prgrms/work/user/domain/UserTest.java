@@ -21,4 +21,9 @@ class UserTest {
         assertThat(user.getHobby()).isEqualTo(HOBBY);
     }
 
+    @Test
+    void 객체_생성_실패() {
+
+    }
+
 }
