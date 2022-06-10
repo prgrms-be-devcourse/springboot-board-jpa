@@ -37,6 +37,8 @@ public class PostService {
 	public PostDto.PostInfo store(String title, User writer, String content) {
 		Post post = new Post(title, writer, content);
 
+		log.info("게시글 생성 성공 - postId : " + post.getId());
+
 		return postConverter.entity2CreateResponse(
 			postRepository.save(post)
 		);
@@ -45,7 +47,7 @@ public class PostService {
 	@Transactional
 	public PostDto.PostInfo store(String title, Long writerId, String content) {
 		return userRepository.findById(writerId)
-			.map(writer -> this.store(title, writer, content))            // FIXME : same class 내에서 @Transactional method 호출시 , this.store()로 호출되는 메소드에 설정한 @Transactional 설정은 적용되지 않는다 (현재는 동일한 설정을 사용하고 있기에 별다른 이상은 없을 것이다 )
+			.map(writer -> this.store(title, writer, content))// FIXME : same class 내에서 @Transactional method 호출시 , this.store()로 호출되는 메소드에 설정한 @Transactional 설정은 적용되지 않는다 (현재는 동일한 설정을 사용하고 있기에 별다른 이상은 없을 것이다 )
 			.orElseThrow(() -> {
 				log.info("존재하지 않는 사용자의 게시글 작성 요청 : writerId {}", writerId);
 				return new AuthorizationFailException();
@@ -56,6 +58,10 @@ public class PostService {
 	public PostDto.PostInfo edit(String title, Long postId, String content) {
 		return postRepository.findById(postId)
 			.map(post -> post.edit(title, content))
+			.map(post -> {
+				log.info("게시글 변경 성공 - pstId :  " + post.getId());
+				return post;
+			})
 			.map(postRepository::save)
 			.map(postConverter::entity2CreateResponse)
 			.orElseThrow(NotExistException::new);
@@ -93,6 +99,7 @@ public class PostService {
 			.orElseThrow(NotExistException::new);
 
 		post.like(user);
+		log.info("게시글 " + postId + " 에 대하여 사용자 " + user.getId() + "의 좋아요 상태를 변경한다");
 
 		return postConverter.entity2Info(post, user);
 	}
