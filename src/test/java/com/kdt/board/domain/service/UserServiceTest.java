@@ -18,13 +18,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class UserServiceTest {
     @Autowired
-    private PostService postService;
+    PostService postService;
     @Autowired
-    private UserService userService;
+    UserService userService;
     @Autowired
-    private PostRepository postRepository;
+    PostRepository postRepository;
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     Long savedUserId;
     Long savedPostId;

@@ -12,20 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class PostServiceTest {
     @Autowired
-    private PostService postService;
+    PostService postService;
     @Autowired
-    private UserService userService;
+    UserService userService;
     @Autowired
-    private PostRepository postRepository;
+    PostRepository postRepository;
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     Long savedUserId;
     Long savedPostId;
