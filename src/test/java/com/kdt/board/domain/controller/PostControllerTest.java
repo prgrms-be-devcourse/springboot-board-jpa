@@ -77,60 +77,7 @@ class PostControllerTest {
         PostDto.Response byId = postService.findById(savedPostId);
 
         // when // then
-        mockMvc.perform(get("/posts")
-                        .param("page", String.valueOf(0))
-                        .param("size", String.valueOf(10))
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andDo(document("post-findAll",
-                                requestParameters(
-                                        parameterWithName("page").description("page"),
-                                        parameterWithName("size").description("size")
-                                ),
-                                responseFields(
-                                        fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
-                                        fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
-                                        fieldWithPath("data").type(OBJECT).description("데이터"),
-                                        fieldWithPath("data.content").type(ARRAY).description("데이터목록"),
-                                        fieldWithPath("data.content[].id").type(NUMBER).description("게시판아이디"),
-                                        fieldWithPath("data.content[].title").type(STRING).description("게시판제목"),
-                                        fieldWithPath("data.content[].content").type(STRING).description("게시판내용"),
-                                        fieldWithPath("data.content[].createdAt").type(STRING).description("content createdAt"),
-                                        fieldWithPath("data.content[].updatedAt").type(STRING).description("content updatedAt"),
-                                        fieldWithPath("data.content[].user").type(OBJECT).description("회원"),
-                                        fieldWithPath("data.content[].user.id").type(NUMBER).description("회원아이디"),
-                                        fieldWithPath("data.content[].user.name").type(STRING).description("회원이름"),
-                                        fieldWithPath("data.content[].user.age").type(NUMBER).description("회원나이"),
-                                        fieldWithPath("data.content[].user.hobby").type(STRING).description("회원취미"),
-                                        fieldWithPath("data.content[].user.createdAt").type(STRING).description("유저 createdAt"),
-                                        fieldWithPath("data.content[].user.updatedAt").type(STRING).description("유저 updatedAt"),
-                                        fieldWithPath("data.pageable").type(OBJECT).description("데이터 페이지"),
-                                        fieldWithPath("data.pageable.sort").type(OBJECT).description("sort"),
-                                        fieldWithPath("data.pageable.sort.empty").type(BOOLEAN).description("empty 유무"),
-                                        fieldWithPath("data.pageable.sort.sorted").type(BOOLEAN).description("sorted"),
-                                        fieldWithPath("data.pageable.sort.unsorted").type(BOOLEAN).description("unsorted"),
-                                        fieldWithPath("data.pageable.offset").type(NUMBER).description("offset"),
-                                        fieldWithPath("data.pageable.pageNumber").type(NUMBER).description("pageNumber"),
-                                        fieldWithPath("data.pageable.pageSize").type(NUMBER).description("pageSize"),
-                                        fieldWithPath("data.pageable.paged").type(BOOLEAN).description("paged"),
-                                        fieldWithPath("data.pageable.unpaged").type(BOOLEAN).description("unpaged"),
-                                        fieldWithPath("data.last").type(BOOLEAN).description("last"),
-                                        fieldWithPath("data.totalPages").type(NUMBER).description("totalPages"),
-                                        fieldWithPath("data.totalElements").type(NUMBER).description("totalElements"),
-                                        fieldWithPath("data.size").type(NUMBER).description("size"),
-                                        fieldWithPath("data.number").type(NUMBER).description("number"),
-                                        fieldWithPath("data.sort").type(OBJECT).description("sort"),
-                                        fieldWithPath("data.sort.empty").type(BOOLEAN).description("empty"),
-                                        fieldWithPath("data.sort.sorted").type(BOOLEAN).description("sorted"),
-                                        fieldWithPath("data.sort.unsorted").type(BOOLEAN).description("unsorted"),
-                                        fieldWithPath("data.first").type(BOOLEAN).description("first"),
-                                        fieldWithPath("data.numberOfElements").type(NUMBER).description("numberOfElements"),
-                                        fieldWithPath("data.empty").type(BOOLEAN).description("empty")
-                                )
-                        )
-                );
+        getAllPostMockMvcCheck();
     }
 
     @Test
@@ -250,5 +197,62 @@ class PostControllerTest {
                                 fieldWithPath("data").type(OBJECT).description("데이터"),
                                 fieldWithPath("data.id").type(NUMBER).description("데이터 아이디")
                         )));
+    }
+
+    private void getAllPostMockMvcCheck() throws Exception {
+        mockMvc.perform(get("/posts")
+                        .param("page", String.valueOf(0))
+                        .param("size", String.valueOf(10))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("post-findAll",
+                                requestParameters(
+                                        parameterWithName("page").description("page"),
+                                        parameterWithName("size").description("size")
+                                ),
+                                responseFields(
+                                        fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
+                                        fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
+                                        fieldWithPath("data").type(OBJECT).description("데이터"),
+                                        fieldWithPath("data.content").type(ARRAY).description("데이터목록"),
+                                        fieldWithPath("data.content[].id").type(NUMBER).description("게시판아이디"),
+                                        fieldWithPath("data.content[].title").type(STRING).description("게시판제목"),
+                                        fieldWithPath("data.content[].content").type(STRING).description("게시판내용"),
+                                        fieldWithPath("data.content[].createdAt").type(STRING).description("content createdAt"),
+                                        fieldWithPath("data.content[].updatedAt").type(STRING).description("content updatedAt"),
+                                        fieldWithPath("data.content[].user").type(OBJECT).description("회원"),
+                                        fieldWithPath("data.content[].user.id").type(NUMBER).description("회원아이디"),
+                                        fieldWithPath("data.content[].user.name").type(STRING).description("회원이름"),
+                                        fieldWithPath("data.content[].user.age").type(NUMBER).description("회원나이"),
+                                        fieldWithPath("data.content[].user.hobby").type(STRING).description("회원취미"),
+                                        fieldWithPath("data.content[].user.createdAt").type(STRING).description("유저 createdAt"),
+                                        fieldWithPath("data.content[].user.updatedAt").type(STRING).description("유저 updatedAt"),
+                                        fieldWithPath("data.pageable").type(OBJECT).description("데이터 페이지"),
+                                        fieldWithPath("data.pageable.sort").type(OBJECT).description("sort"),
+                                        fieldWithPath("data.pageable.sort.empty").type(BOOLEAN).description("empty 유무"),
+                                        fieldWithPath("data.pageable.sort.sorted").type(BOOLEAN).description("sorted"),
+                                        fieldWithPath("data.pageable.sort.unsorted").type(BOOLEAN).description("unsorted"),
+                                        fieldWithPath("data.pageable.offset").type(NUMBER).description("offset"),
+                                        fieldWithPath("data.pageable.pageNumber").type(NUMBER).description("pageNumber"),
+                                        fieldWithPath("data.pageable.pageSize").type(NUMBER).description("pageSize"),
+                                        fieldWithPath("data.pageable.paged").type(BOOLEAN).description("paged"),
+                                        fieldWithPath("data.pageable.unpaged").type(BOOLEAN).description("unpaged"),
+                                        fieldWithPath("data.last").type(BOOLEAN).description("last"),
+                                        fieldWithPath("data.totalPages").type(NUMBER).description("totalPages"),
+                                        fieldWithPath("data.totalElements").type(NUMBER).description("totalElements"),
+                                        fieldWithPath("data.size").type(NUMBER).description("size"),
+                                        fieldWithPath("data.number").type(NUMBER).description("number"),
+                                        fieldWithPath("data.sort").type(OBJECT).description("sort"),
+                                        fieldWithPath("data.sort.empty").type(BOOLEAN).description("empty"),
+                                        fieldWithPath("data.sort.sorted").type(BOOLEAN).description("sorted"),
+                                        fieldWithPath("data.sort.unsorted").type(BOOLEAN).description("unsorted"),
+                                        fieldWithPath("data.first").type(BOOLEAN).description("first"),
+                                        fieldWithPath("data.numberOfElements").type(NUMBER).description("numberOfElements"),
+                                        fieldWithPath("data.empty").type(BOOLEAN).description("empty")
+                                )
+                        )
+                );
     }
 }
