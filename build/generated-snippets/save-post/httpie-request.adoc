@@ -1,5 +1,0 @@
-[source,bash]
-----
-$ echo '{"title":"새로운제목","content":"새로운내용","userId":1}' | http POST 'http://localhost:8080/posts' \
-    'Content-Type:application/json;charset=UTF-8'
-----

@@ -1,4 +1,0 @@
-[source,options="nowrap"]
-----
-{"statusCode":200,"data":{"id":3},"serverDatetime":"2022-06-10 18:53:26"}
-----

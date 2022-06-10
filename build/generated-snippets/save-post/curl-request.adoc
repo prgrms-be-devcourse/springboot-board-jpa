@@ -1,6 +1,0 @@
-[source,bash]
-----
-$ curl 'http://localhost:8080/posts' -i -X POST \
-    -H 'Content-Type: application/json;charset=UTF-8' \
-    -d '{"title":"새로운제목","content":"새로운내용","userId":1}'
-----

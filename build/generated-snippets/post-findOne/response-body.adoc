@@ -1,4 +1,0 @@
-[source,options="nowrap"]
-----
-{"statusCode":200,"data":{"id":9,"title":"제목테스트","content":"내용내용내용내용","user":{"id":8,"name":"YongHoon","age":26,"hobby":"tennis","createdAt":"2022-06-10T18:53:26.503336","updatedAt":"2022-06-10T18:53:26.503336"},"createdAt":"2022-06-10T18:53:26.510591","updatedAt":"2022-06-10T18:53:26.510591"},"serverDatetime":"2022-06-10 18:53:26"}
-----

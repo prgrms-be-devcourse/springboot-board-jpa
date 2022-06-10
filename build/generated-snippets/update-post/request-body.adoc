@@ -1,4 +1,0 @@
-[source,options="nowrap"]
-----
-{"id":7,"title":"새로운 제목","content":"새로운 내용","userId":6}
-----
