@@ -136,7 +136,7 @@ public class PostRestControllerTest {
 	@Test
 	@DisplayName("성공적인 응답 객체 직렬화에 성공한다")
 	public void with_SuccessResponse() throws Exception {
-		PostInfo postInfo = postConverter.entity2Info((Post.builder()
+		PostInfo postInfo = postConverter.entity2CreateResponse((Post.builder()
 			.id(1L)
 			.content("content")
 			.title("title")
@@ -175,7 +175,7 @@ public class PostRestControllerTest {
 
 			Mockito.when(
 					postService.store(createPostRequest.title(), createPostRequest.writerId(), createPostRequest.content()))
-				.thenReturn(postConverter.entity2Info(createdPost));
+				.thenReturn(postConverter.entity2CreateResponse(createdPost));
 
 			mockMvc.perform(post("/api/posts")
 					.content(objectMapper.writeValueAsString(createPostRequest))
@@ -193,7 +193,8 @@ public class PostRestControllerTest {
 							fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
 							fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
 							fieldWithPath("data.content").type(JsonFieldType.STRING).description("본문"),
-							fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("작성자 이름")
+							fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("작성자 이름"),
+							fieldWithPath("data.likeCount").type(JsonFieldType.NUMBER).description("좋아요 개수")
 						)
 					));
 		}
@@ -214,7 +215,7 @@ public class PostRestControllerTest {
 			post.edit(updateRequest.title(), updateRequest.content());
 
 			given(postService.edit(updateRequest.title(), updateRequest.id(), updateRequest.content()))
-				.willReturn(postConverter.entity2Info(post));
+				.willReturn(postConverter.entity2CreateResponse(post));
 
 			mockMvc.perform(
 					put("/api/posts/{postId}", 1L)
@@ -236,7 +237,8 @@ public class PostRestControllerTest {
 							fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
 							fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
 							fieldWithPath("data.content").type(JsonFieldType.STRING).description("본문"),
-							fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("작성자 이름")
+							fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("작성자 이름"),
+							fieldWithPath("data.likeCount").type(JsonFieldType.NUMBER).description("좋아요 개수")
 						)
 					));
 		}
@@ -260,7 +262,7 @@ public class PostRestControllerTest {
 				.build();
 
 			List<PostInfo> posts
-				= List.of(postConverter.entity2Info(post1), postConverter.entity2Info(post2));
+				= List.of(postConverter.entity2CreateResponse(post1), postConverter.entity2CreateResponse(post2));
 
 			when(postService.getAllByPaging(pageRequest))
 				.thenReturn(posts);
@@ -282,7 +284,8 @@ public class PostRestControllerTest {
 							fieldWithPath("data").type(JsonFieldType.ARRAY).description("데이터"),
 							fieldWithPath("data[].title").type(JsonFieldType.STRING).description("제목"),
 							fieldWithPath("data[].content").type(JsonFieldType.STRING).description("본문"),
-							fieldWithPath("data[].writerName").type(JsonFieldType.STRING).description("작성자 이름")
+							fieldWithPath("data[].writerName").type(JsonFieldType.STRING).description("작성자 이름"),
+							fieldWithPath("data[].likeCount").type(JsonFieldType.NUMBER).description("좋아요 개수")
 						)
 					));
 		}
@@ -299,7 +302,7 @@ public class PostRestControllerTest {
 				.build();
 
 			given(postService.getById(post.getId()))
-				.willReturn(postConverter.entity2Info(post));
+				.willReturn(postConverter.entity2CreateResponse(post));
 
 			mockMvc.perform(
 					get("/api/posts/{postId}", 1L)
@@ -312,7 +315,8 @@ public class PostRestControllerTest {
 							fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
 							fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
 							fieldWithPath("data.content").type(JsonFieldType.STRING).description("본문"),
-							fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("작성자 이름")
+							fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("작성자 이름"),
+							fieldWithPath("data.likeCount").type(JsonFieldType.NUMBER).description("좋아요 개수")
 						)
 					));
 		}

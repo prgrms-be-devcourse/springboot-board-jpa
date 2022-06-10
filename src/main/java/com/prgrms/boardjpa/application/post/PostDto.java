@@ -11,6 +11,6 @@ public class PostDto {
 	public record UpdatePostRequest(Long id, @NotBlank String title, @NotBlank String content) {
 	}
 
-	public record PostInfo(String title, String content, String writerName) {
+	public record PostInfo(String title, String content, String writerName, int likeCount) {
 	}
 }

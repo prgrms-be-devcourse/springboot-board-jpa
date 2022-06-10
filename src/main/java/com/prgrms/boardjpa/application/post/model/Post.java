@@ -1,22 +1,28 @@
 package com.prgrms.boardjpa.application.post.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Formula;
 import org.springframework.util.Assert;
 
+import com.prgrms.boardjpa.application.post.exception.LikeOwnPostException;
 import com.prgrms.boardjpa.application.user.model.User;
 import com.prgrms.boardjpa.core.commons.domain.BaseEntity;
 import com.prgrms.boardjpa.core.commons.exception.CreationFailException;
 
-import lombok.Getter;
-
-@Getter
 @Entity
 public class Post extends BaseEntity {
 	@Id
@@ -32,9 +38,15 @@ public class Post extends BaseEntity {
 	@Column(name = "writerName", nullable = false, updatable = false)
 	private String createdBy;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "writer_id", nullable = false, updatable = false)
 	private User writer;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "post", orphanRemoval = true)
+	private List<PostLike> likes = new ArrayList<>();
+
+	@Formula("(select count(*) from post_like pl where pl.post_id = id)")
+	private int likeCount;
 
 	protected Post() {
 	}
@@ -61,6 +73,68 @@ public class Post extends BaseEntity {
 
 	public static PostBuilder builder() {
 		return new PostBuilder();
+	}
+
+	public Post edit(String title, String content) {
+		validateTitle(title);
+		validateContent(content);
+
+		this.title = title;
+		this.content = content;
+
+		return this;
+	}
+
+	public void pushLike(User user) {
+		if (user.isSameUser(writer)) {
+			throw new LikeOwnPostException(
+				"자신이 작성한 게시글에는 좋아요 할 수 없습니다 : writer +" + user.getId() + " post: " + this.getId());
+		}
+		this.likedBy(user)
+			.ifPresentOrElse(
+				this::deleteLike,
+				() -> this.addLike(new PostLike(this, user))
+			);
+	}
+
+	private void deleteLike(PostLike like) {
+		likes.remove(like);
+		likeCount = likeCount > 0 ? likeCount - 1 : 0;
+	}
+
+	private void addLike(PostLike like) {
+		likes.add(like);
+		likeCount += 1;
+	}
+
+	private Optional<PostLike> likedBy(User user) {
+		return this.likes.stream()
+			.filter(like -> like.getUser().isSameUser(user))
+			.findAny();
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public String getContent() {
+		return this.content;
+	}
+
+	public String getCreatedBy() {
+		return this.createdBy;
+	}
+
+	public String getTitle() {
+		return this.title;
+	}
+
+	public int getLikeCount() {
+		return this.likeCount;
+	}
+
+	public List<PostLike> getLikes() {
+		return this.likes;
 	}
 
 	public static class PostBuilder {
@@ -104,16 +178,6 @@ public class Post extends BaseEntity {
 				throw new CreationFailException(Post.class, e);
 			}
 		}
-	}
-
-	public Post edit(String title, String content) {
-		validateTitle(title);
-		validateContent(content);
-
-		this.title = title;
-		this.content = content;
-
-		return this;
 	}
 
 	private void validateTitle(String title) {

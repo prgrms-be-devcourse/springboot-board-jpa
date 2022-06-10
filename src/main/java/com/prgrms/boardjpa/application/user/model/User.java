@@ -88,6 +88,10 @@ public class User {
 		this.hobby = hobby;
 	}
 
+	public boolean isSameUser(User user) {
+		return this.id.equals(user.getId());
+	}
+
 	private void validateName(String name) {
 		Assert.hasText(name, "닉네임은 2글자 이상이어야 합니다");
 

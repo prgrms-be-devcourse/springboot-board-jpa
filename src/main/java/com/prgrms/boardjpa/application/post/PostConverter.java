@@ -16,9 +16,24 @@ public class PostConverter {
 			.build();
 	}
 
-	public PostDto.PostInfo entity2Info(Post post) {
+	public PostDto.PostInfo entity2CreateResponse(Post post) {
 		return new PostDto.PostInfo(post.getTitle(),
 			post.getContent(),
-			post.getCreatedBy());
+			post.getCreatedBy(),
+			0);
 	}
+
+	public PostDto.PostInfo entity2Info(Post post, User user) { // 현재 사용자
+		return new PostDto.PostInfo(post.getTitle(),
+			post.getContent(),
+			post.getCreatedBy(),
+			post.getLikeCount());
+	}
+
+	// 현재 사용자가 "좋아요" 했던 게시글인지 entity 에는 두지 않고, DTO 에만 두려고 했었는데 -> 이렇게 되면 JPA 트랜잭션 영역이 Converter 까지 가게 된다.. 이렇게 되어도 괜찮을까?
+	// private boolean isLikedBy(Post post, User user) {
+	// 	return post.getLikes().stream()
+	// 		.anyMatch(like ->
+	// 			like.getUser().isSameUser(user));
+	// }
 }
