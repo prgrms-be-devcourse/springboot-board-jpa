@@ -3,9 +3,11 @@ package com.prgrms.work.post.service;
 import com.prgrms.work.error.PostNotFoundException;
 import com.prgrms.work.post.domain.Post;
 import com.prgrms.work.post.repository.PostRepository;
-import java.util.List;
+import java.text.MessageFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,14 +32,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPosts() {
-        return postRepository.findAll();
+    public Page<Post> getPosts(Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 
     @Override
     public Post getPost(Long id) {
         return postRepository.findById(id)
-            .orElseThrow(PostNotFoundException::new);
+            .orElseThrow(() -> new PostNotFoundException(
+                    MessageFormat.format("게시글을 찾을 수 없습니다. [요청한 아이디 : {0}]", id)
+                )
+            );
     }
 
     @Override

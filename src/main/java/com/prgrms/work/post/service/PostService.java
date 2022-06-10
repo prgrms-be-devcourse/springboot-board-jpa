@@ -1,13 +1,14 @@
 package com.prgrms.work.post.service;
 
 import com.prgrms.work.post.domain.Post;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface PostService {
 
     Post create(Post post);
 
-    List<Post> getPosts();
+    Page<Post> getPosts(Pageable pageable);
 
     Post getPost(Long id);
 
