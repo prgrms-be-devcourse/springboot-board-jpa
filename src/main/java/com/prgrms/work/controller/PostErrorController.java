@@ -1,6 +1,7 @@
 package com.prgrms.work.controller;
 
 import com.prgrms.work.controller.dto.ApiResponse;
+import com.prgrms.work.error.EntityInvalidException;
 import com.prgrms.work.error.PostNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,19 +14,19 @@ public class PostErrorController {
 
     @ExceptionHandler(PostNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiResponse<String> postNotFoundException(Exception e) {
-        return ApiResponse.fail("해당 게시글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+    public ApiResponse<String> postNotFoundException(PostNotFoundException e) {
+        return ApiResponse.fail(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiResponse<String> dtoValidException(Exception e) {
-        return ApiResponse.fail(e.getMessage(), HttpStatus.BAD_REQUEST);
+    public ApiResponse<String> dtoValidException(MethodArgumentNotValidException e) {
+        return ApiResponse.fail(e.getFieldError().getDefaultMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler(EntityInvalidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiResponse<String> domainValidException(Exception e) {
+    public ApiResponse<String> domainValidException(EntityInvalidException e) {
         return ApiResponse.fail(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
