@@ -85,7 +85,7 @@ public class Post extends BaseEntity {
 		return this;
 	}
 
-	public void pushLike(User user) {
+	public void like(User user) {
 		if (user.isSameUser(writer)) {
 			throw new LikeOwnPostException(
 				"자신이 작성한 게시글에는 좋아요 할 수 없습니다 : writer +" + user.getId() + " post: " + this.getId());

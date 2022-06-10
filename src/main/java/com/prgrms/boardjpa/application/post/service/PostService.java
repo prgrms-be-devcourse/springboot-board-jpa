@@ -92,7 +92,7 @@ public class PostService {
 		Post post = postRepository.findById(postId)
 			.orElseThrow(NotExistException::new);
 
-		post.pushLike(user);
+		post.like(user);
 
 		return postConverter.entity2Info(post, user);
 	}

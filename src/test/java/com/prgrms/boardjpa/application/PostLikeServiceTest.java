@@ -86,8 +86,8 @@ public class PostLikeServiceTest {
 		postRepository.save(likedPost2);
 		postRepository.save(notYetLikedPost);
 
-		likedPost1.pushLike(notWriter);
-		likedPost2.pushLike(notWriter);
+		likedPost1.like(notWriter);
+		likedPost2.like(notWriter);
 
 		postLikeRepository.flush();
 		postRepository.flush();
