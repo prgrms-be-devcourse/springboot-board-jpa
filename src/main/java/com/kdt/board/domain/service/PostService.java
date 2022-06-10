@@ -4,7 +4,7 @@ import com.kdt.board.domain.converter.Converter;
 import com.kdt.board.domain.dto.PostDto;
 import com.kdt.board.domain.model.Post;
 import com.kdt.board.domain.repository.PostRepository;
-import com.kdt.board.global.exception.NotFoundException;
+import com.kdt.board.global.exception.NotFoundEntityByIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
     private final Converter converter;
@@ -24,14 +25,12 @@ public class PostService {
         return entity.getId();
     }
 
-    @Transactional
     public PostDto.Response findById(Long id) {
         return postRepository.findById(id)
                 .map(converter::convertPostDto)
-                .orElseThrow(() -> new NotFoundException("Entity 를 불러오는 중 예외 발생"));
+                .orElseThrow(() -> new NotFoundEntityByIdException("Entity 를 찾을 수 없습니다."));
     }
 
-    @Transactional
     public Page<PostDto.Response> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(converter::convertPostDto);
@@ -40,7 +39,7 @@ public class PostService {
     @Transactional
     public PostDto.Response update(PostDto.UpdateRequest dto) {
         Post post = postRepository.findById(dto.id())
-                .orElseThrow(() -> new NotFoundException("Entity 를 불러오는 중 예외 발생"));
+                .orElseThrow(() -> new NotFoundEntityByIdException("Entity 를 찾을 수 없습니다."));
         post.update(dto.title(), dto.content());
         return converter.convertPostDto(post);
     }

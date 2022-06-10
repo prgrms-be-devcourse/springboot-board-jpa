@@ -23,9 +23,5 @@ public abstract class BaseEntity {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
 
-    @CreatedBy
-    @Column(name = "created_by")
-    private String createdBy;
-
 }
 

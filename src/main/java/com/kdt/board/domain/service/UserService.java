@@ -4,7 +4,7 @@ import com.kdt.board.domain.converter.Converter;
 import com.kdt.board.domain.dto.UserDto;
 import com.kdt.board.domain.model.User;
 import com.kdt.board.domain.repository.UserRepository;
-import com.kdt.board.global.exception.NotFoundException;
+import com.kdt.board.global.exception.NotFoundEntityByIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
     private final Converter converter;
@@ -24,14 +25,12 @@ public class UserService {
         return entity.getId();
     }
 
-    @Transactional
     public UserDto.Response findById(Long id) {
         return userRepository.findById(id)
                 .map(converter::convertUserDto)
-                .orElseThrow(() -> new NotFoundException("Entity 를 불러오는 중 예외 발생"));
+                .orElseThrow(() -> new NotFoundEntityByIdException("Entity 를 찾을 수 없습니다."));
     }
 
-    @Transactional
     public Page<UserDto.Response> findAll(Pageable pageable) {
         return userRepository.findAll(pageable)
                 .map(converter::convertUserDto);
@@ -40,7 +39,7 @@ public class UserService {
     @Transactional
     public UserDto.Response update(UserDto.UpdateRequest dto) {
         User user = userRepository.findById(dto.id())
-                .orElseThrow(() -> new NotFoundException("Entity 를 불러오는 중 예외 발생"));
+                .orElseThrow(() -> new NotFoundEntityByIdException("Entity 를 찾을 수 없습니다."));
         user.updateUser(dto.name(), dto.age(), dto.hobby());
         return converter.convertUserDto(user);
     }

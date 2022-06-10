@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-public class ApiResponse<T>{
+public class ApiResponse<T> {
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private int statusCode;
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
@@ -19,11 +19,11 @@ public class ApiResponse<T>{
         this.serverDatetime = LocalDateTime.now();
     }
 
-    public static <T> ApiResponse<T> ok(T data){
+    public static <T> ApiResponse<T> ok(T data) {
         return new ApiResponse<>(200, data);
     }
 
-    public static <T> ApiResponse<T> fail(int statusCode, T data){
+    public static <T> ApiResponse<T> fail(int statusCode, T data) {
         return new ApiResponse<>(statusCode, data);
     }
 }
