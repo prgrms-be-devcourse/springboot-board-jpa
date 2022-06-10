@@ -1,0 +1,5 @@
+[source,bash]
+----
+$ echo '{"id":7,"title":"새로운 제목","content":"새로운 내용","userId":6}' | http PUT 'http://localhost:8080/posts' \
+    'Content-Type:application/json;charset=UTF-8'
+----

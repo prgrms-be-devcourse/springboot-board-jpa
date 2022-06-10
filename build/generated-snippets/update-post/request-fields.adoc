@@ -1,0 +1,20 @@
+|===
+|Path|Type|Description
+
+|`+id+`
+|`+Number+`
+|Post 아이디
+
+|`+title+`
+|`+String+`
+|제목
+
+|`+content+`
+|`+String+`
+|내용
+
+|`+userId+`
+|`+Number+`
+|사용자 id
+
+|===

@@ -15,50 +15,50 @@
 
 |`+data.id+`
 |`+Number+`
-|데이터 아이디
+|데이터 id
+
+|`+data.content+`
+|`+String+`
+|데이터 내용
+
+|`+data.createdAt+`
+|`+String+`
+|데이터 만들어진 시간
+
+|`+data.updatedAt+`
+|`+String+`
+|데이터 update 된 시간
 
 |`+data.title+`
 |`+String+`
 |데이터 제목
 
-|`+data.content+`
-|`+String+`
-|post 내용
-
-|`+data.createdAt+`
-|`+String+`
-|post createdAt
-
-|`+data.updatedAt+`
-|`+String+`
-|post updatedAt
-
 |`+data.user+`
 |`+Object+`
-|데이터목록
+|데이터 사용자
 
 |`+data.user.id+`
 |`+Number+`
-|게시판아이디
+|데이터 사용자 id
 
 |`+data.user.name+`
 |`+String+`
-|게시판아이디
+|데이터 사용자 이름
 
 |`+data.user.age+`
 |`+Number+`
-|게시판아이디
+|데이터 사용자 나이
 
 |`+data.user.hobby+`
 |`+String+`
-|게시판아이디
+|데이터 사용자 hobby
 
 |`+data.user.createdAt+`
 |`+String+`
-|게시판아이디
+|데이터 사용자 만들어진 시간
 
 |`+data.user.updatedAt+`
 |`+String+`
-|게시판아이디
+|데이터 사용자 업데이트된 시간
 
 |===

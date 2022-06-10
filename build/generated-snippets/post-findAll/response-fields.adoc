@@ -37,10 +37,6 @@
 |`+String+`
 |content updatedAt
 
-|`+data.content[].createdBy+`
-|`+Null+`
-|content createdBy
-
 |`+data.content[].user+`
 |`+Object+`
 |회원
@@ -68,10 +64,6 @@
 |`+data.content[].user.updatedAt+`
 |`+String+`
 |유저 updatedAt
-
-|`+data.content[].user.createdBy+`
-|`+Null+`
-|유저 createdBy
 
 |`+data.pageable+`
 |`+Object+`
