@@ -1,11 +1,13 @@
 package com.kdt.board.domain.model;
 
+import com.kdt.board.global.exception.NotValidException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -14,15 +16,18 @@ import java.util.Objects;
 @Getter
 public class Post extends BaseEntity {
     @Id
-    @Column(name = "post_id", nullable = false, updatable = false)
+    @Column(name = "post_id", updatable = false)
+    @NotNull
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", length = 100)
+    @NotNull
     private String title;
 
     @Lob
-    @Column(name = "content", nullable = false)
+    @Column(name = "content")
+    @NotNull
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,10 +35,30 @@ public class Post extends BaseEntity {
     private User user;
 
     @Builder
-    public Post(String title, String content, User user) {
+    public Post(Long id, String title, String content, User user) {
+        validateTitleAndContent(title, content);
+        validateUser(user);
+
+        this.id = id;
         this.title = title;
         this.content = content;
         this.user = user;
+    }
+
+    private void validateTitleAndContent(String title, String content) {
+        if (title.isEmpty() | content.isEmpty()) {
+            throw new NotValidException("title 나 content 가 비어있습니다.");
+        }
+        if (title.length() > 100) {
+            throw new NotValidException("title 의 길이가 제한길이 100을 넘겼습니다.");
+        }
+    }
+
+    private void validateUser(User user) {
+        if (user == null) {
+            throw new NotValidException("user 을 찾을 수가 없습니다.");
+        }
+
     }
 
     public void update(String title, String content) {
@@ -42,7 +67,7 @@ public class Post extends BaseEntity {
     }
 
     public void changeUser(User user) {
-        if (Objects.nonNull(this.user)) {
+        if (this.user != null) {
             this.user.getPosts().remove(this);
         }
         this.user = user;
