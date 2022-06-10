@@ -35,8 +35,7 @@ public class Converter {
                 post.getContent(),
                 convertUserDto(post.getUser()),
                 post.getCreatedAt(),
-                post.getUpdatedAt(),
-                post.getCreatedBy());
+                post.getUpdatedAt());
     }
 
     public UserDto.Response convertUserDto(User user) {
@@ -46,7 +45,6 @@ public class Converter {
                 user.getAge(),
                 user.getHobby(),
                 user.getCreatedAt(),
-                user.getUpdatedAt(),
-                user.getCreatedBy());
+                user.getUpdatedAt());
     }
 }
