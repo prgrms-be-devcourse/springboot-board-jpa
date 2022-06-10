@@ -2,15 +2,16 @@ package com.prgrms.work.controller.dto;
 
 import com.prgrms.work.post.domain.Post;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class PostRequest {
 
     public static class PostCreateDto {
 
-        @NotNull
+        @NotEmpty(message = "제목은 필수로 입력하셔야 합니다.")
         private String title;
-        @NotNull
+        @NotEmpty(message = "내용은 필수로 입력하셔야 합니다.")
         private String content;
 
         @Valid
@@ -47,7 +48,10 @@ public class PostRequest {
     }
 
     public static class UpdateDto{
+
+        @NotEmpty(message = "제목은 필수로 입력하셔야 합니다.")
         private String title;
+        @NotEmpty(message = "내용은 필수로 입력하셔야 합니다.")
         private String content;
 
         public UpdateDto(String title, String content) {
@@ -62,6 +66,7 @@ public class PostRequest {
         public String getContent() {
             return content;
         }
+
     }
 
 }
