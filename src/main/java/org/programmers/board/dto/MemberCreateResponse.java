@@ -12,5 +12,15 @@ public class MemberCreateResponse {
         this.hobby = hobby;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public int getAge() {
+        return age;
+    }
+
+    public String getHobby() {
+        return hobby;
+    }
 }

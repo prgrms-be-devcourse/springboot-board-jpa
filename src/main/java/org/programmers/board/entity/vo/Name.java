@@ -9,6 +9,8 @@ import java.util.Objects;
 @Embeddable
 public class Name {
 
+    private static final int MAX_NAME_LENGTH = 15;
+
     @Column(nullable = false, length = 15)
     private String name;
 
@@ -21,7 +23,7 @@ public class Name {
     }
 
     private void validateUserName(String name) {
-        if (name.length() > 15) {
+        if (name.length() > MAX_NAME_LENGTH) {
             throw new TooLongNameException("이름이 너무 깁니다. 15자 이하로 해주세요.");
         }
 

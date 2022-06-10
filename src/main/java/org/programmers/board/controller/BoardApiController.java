@@ -21,9 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/posts")
 public class BoardApiController {
 
+    private static final Logger log = LoggerFactory.getLogger(BoardApiController.class);
     private final BoardService boardService;
-
-    private final Logger log = LoggerFactory.getLogger(BoardApiController.class);
 
     public BoardApiController(BoardService boardService) {
         this.boardService = boardService;
@@ -32,13 +31,7 @@ public class BoardApiController {
     // 페이징 조회
     @GetMapping
     public ResponseEntity<Page<BoardResponse>> getPages(Pageable pageable) {
-        Page<BoardResponse> boards = boardService.getBoards(pageable)
-                .map(board -> new BoardResponse(
-                        board.getId(),
-                        board.getTitle().getTitle(),
-                        board.getContent().getContent(),
-                        board.getUser().getName().getName()
-                ));
+        Page<BoardResponse> boards = boardService.getBoards(pageable).map(this::getBoardResponse);
 
         return ResponseEntity.ok(boards);
     }
@@ -48,53 +41,36 @@ public class BoardApiController {
     public ResponseEntity<BoardResponse> getBoard(@PathVariable Long id) {
         Board board = boardService.getBoard(id);
 
-        BoardResponse boardResponse = new BoardResponse(
-                board.getId(),
-                board.getTitle().getTitle(),
-                board.getContent().getContent(),
-                board.getUser().getName().getName());
+        BoardResponse boardResponse = getBoardResponse(board);
 
         return ResponseEntity.ok(boardResponse);
+    }
+
+    private BoardResponse getBoardResponse(Board board) {
+        return new BoardResponse(board.getId(), board.getTitle().getTitle(), board.getContent().getContent(), board.getUser().getName().getName());
     }
 
     // POST : 게시글 작성
     @PostMapping
     public ResponseEntity<BoardResponse> create(@RequestBody BoardCreateRequest boardCreateRequest) {
-        Board newBoard = new Board(
-                new Title(boardCreateRequest.getTitle()),
-                new Content(boardCreateRequest.getContent()),
-                UserDTO.toEntity(boardCreateRequest.getUserDTO()));
+        Board newBoard = new Board(new Title(boardCreateRequest.getTitle()), new Content(boardCreateRequest.getContent()), UserDTO.toEntity(boardCreateRequest.getUserDTO()));
 
         Long createdBoardId = boardService.createBoard(newBoard);
         Board board = boardService.getBoard(createdBoardId);
 
-        log.info("{}", board.getId());
-
-
-        BoardResponse boardResponse = new BoardResponse(
-                board.getId(),
-                board.getTitle().getTitle(),
-                board.getContent().getContent(),
-                board.getUser().getName().getName());
+        BoardResponse boardResponse = getBoardResponse(board);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(boardResponse);
     }
 
     // POST : 게시글 수정
     @PatchMapping("/{id}")
-    public ResponseEntity<BoardResponse> updateBoard(
-            @RequestBody BoardUpdateRequest boardUpdateRequest,
-            @PathVariable Long id) {
+    public ResponseEntity<BoardResponse> updateBoard(@RequestBody BoardUpdateRequest boardUpdateRequest, @PathVariable Long id) {
 
         Long updatedBoardId = boardService.updateBoard(id, boardUpdateRequest);
         Board updatedBoard = boardService.getBoard(updatedBoardId);
 
-        BoardResponse boardResponse = new BoardResponse(
-                updatedBoard.getId(),
-                updatedBoard.getTitle().getTitle(),
-                updatedBoard.getContent().getContent(),
-                updatedBoard.getUser().getName().getName()
-        );
+        BoardResponse boardResponse = getBoardResponse(updatedBoard);
 
         return ResponseEntity.ok(boardResponse);
     }

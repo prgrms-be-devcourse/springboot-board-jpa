@@ -36,7 +36,7 @@ public class UserApiController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> removeUser(Long userId) {
+    public ResponseEntity<Void> removeUser(Long userId) {
         userService.deleteUser(userId);
 
         return ResponseEntity.noContent().build();

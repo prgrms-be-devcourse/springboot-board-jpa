@@ -2,8 +2,10 @@ package org.programmers.board.entity;
 
 import org.programmers.board.entity.vo.Content;
 import org.programmers.board.entity.vo.Title;
+import org.springframework.http.HttpEntity;
 
 import javax.persistence.*;
+import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -56,7 +58,7 @@ public class Board extends BaseEntity {
     public User getUser() {
         return user;
     }
-
+     %
     public void setUser(User user) {
         if (Objects.nonNull(this.user)) {
             this.user.getBoards().remove(this);
