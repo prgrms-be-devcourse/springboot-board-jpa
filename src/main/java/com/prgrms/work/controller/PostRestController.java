@@ -6,7 +6,8 @@ import com.prgrms.work.controller.dto.PostResponse;
 import com.prgrms.work.controller.dto.PostResponse.Posts;
 import com.prgrms.work.post.domain.Post;
 import com.prgrms.work.post.service.PostService;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/post")
+@RequestMapping("/api/v1/posts")
 public class PostRestController {
 
     private final PostService postService;
@@ -30,10 +31,9 @@ public class PostRestController {
     }
 
     @GetMapping
-    public ApiResponse<List<Posts>> getPosts() {
-        List<Posts> posts = this.postService.getPosts()
-            .stream()
-            .map(Posts::of).toList();
+    public ApiResponse<Page<Posts>> getPosts(Pageable pageable) {
+        Page<Posts> posts = this.postService.getPosts(pageable)
+            .map(Posts::of);
 
         return ApiResponse.ok(posts);
     }
