@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.prgrms.boardjpa.application.post.PostConverter;
 import com.prgrms.boardjpa.application.post.PostDto;
 import com.prgrms.boardjpa.application.post.model.Post;
-import com.prgrms.boardjpa.application.post.repository.PostLikeRepository;
 import com.prgrms.boardjpa.application.post.repository.PostRepository;
 import com.prgrms.boardjpa.application.user.exception.AuthorizationFailException;
 import com.prgrms.boardjpa.application.user.model.User;
@@ -46,8 +45,7 @@ public class PostService {
 	@Transactional
 	public PostDto.PostInfo store(String title, Long writerId, String content) {
 		return userRepository.findById(writerId)
-			.map(writer -> this.store(title, writer,
-				content))            // FIXME : same class 내에서 @Transactional method 호출시 , this.store()로 호출되는 메소드에 설정한 @Transactional 설정은 적용되지 않는다 (현재는 동일한 설정을 사용하고 있기에 별다른 이상은 없을 것이다 )
+			.map(writer -> this.store(title, writer, content))            // FIXME : same class 내에서 @Transactional method 호출시 , this.store()로 호출되는 메소드에 설정한 @Transactional 설정은 적용되지 않는다 (현재는 동일한 설정을 사용하고 있기에 별다른 이상은 없을 것이다 )
 			.orElseThrow(() -> {
 				log.info("존재하지 않는 사용자의 게시글 작성 요청 : writerId {}", writerId);
 				return new AuthorizationFailException();

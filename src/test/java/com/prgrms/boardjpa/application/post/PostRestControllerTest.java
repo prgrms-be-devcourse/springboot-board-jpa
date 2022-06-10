@@ -3,6 +3,7 @@ package com.prgrms.boardjpa.application.post;
 import static com.prgrms.boardjpa.application.post.PostDto.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -28,6 +29,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -171,7 +173,12 @@ public class PostRestControllerTest {
 			User writer = createUser();
 			CreatePostRequest createPostRequest =
 				new CreatePostRequest("title01", writer.getId(), "content");
-			Post createdPost = postConverter.createRequest2Entity(writer, createPostRequest);
+			Post createdPost = Post.builder()
+				.id(1L)
+				.title(createPostRequest.title())
+				.content(createPostRequest.content())
+				.writer(writer)
+				.build();
 
 			Mockito.when(
 					postService.store(createPostRequest.title(), createPostRequest.writerId(), createPostRequest.content()))
@@ -189,8 +196,12 @@ public class PostRestControllerTest {
 							fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("작성자 ID"),
 							fieldWithPath("content").type(JsonFieldType.STRING).description("본문")
 						),
+						responseHeaders(
+							headerWithName(HttpHeaders.LOCATION).description("Location header")
+						),
 						responseFields(
 							fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+							fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("데이터 식별자"),
 							fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
 							fieldWithPath("data.content").type(JsonFieldType.STRING).description("본문"),
 							fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("작성자 이름"),
@@ -235,6 +246,7 @@ public class PostRestControllerTest {
 						),
 						responseFields(
 							fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+							fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("데이터 식별자"),
 							fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
 							fieldWithPath("data.content").type(JsonFieldType.STRING).description("본문"),
 							fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("작성자 이름"),
@@ -282,6 +294,7 @@ public class PostRestControllerTest {
 						),
 						responseFields(
 							fieldWithPath("data").type(JsonFieldType.ARRAY).description("데이터"),
+							fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("데이터 식별자"),
 							fieldWithPath("data[].title").type(JsonFieldType.STRING).description("제목"),
 							fieldWithPath("data[].content").type(JsonFieldType.STRING).description("본문"),
 							fieldWithPath("data[].writerName").type(JsonFieldType.STRING).description("작성자 이름"),
@@ -313,6 +326,7 @@ public class PostRestControllerTest {
 						"post-showOne",
 						responseFields(
 							fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+							fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("데이터 식별자"),
 							fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
 							fieldWithPath("data.content").type(JsonFieldType.STRING).description("본문"),
 							fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("작성자 이름"),

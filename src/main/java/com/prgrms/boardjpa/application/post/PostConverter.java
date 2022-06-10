@@ -8,23 +8,19 @@ import com.prgrms.boardjpa.application.user.model.User;
 @Component
 public class PostConverter {
 
-	public Post createRequest2Entity(User writer, PostDto.CreatePostRequest request) {
-		return Post.builder()
-			.writer(writer)
-			.content(request.content())
-			.title(request.title())
-			.build();
-	}
-
 	public PostDto.PostInfo entity2CreateResponse(Post post) {
-		return new PostDto.PostInfo(post.getTitle(),
+		return new PostDto.PostInfo(
+			post.getId(),
+			post.getTitle(),
 			post.getContent(),
 			post.getCreatedBy(),
 			0);
 	}
 
 	public PostDto.PostInfo entity2Info(Post post, User user) { // 현재 사용자
-		return new PostDto.PostInfo(post.getTitle(),
+		return new PostDto.PostInfo(
+			post.getId(),
+			post.getTitle(),
 			post.getContent(),
 			post.getCreatedBy(),
 			post.getLikeCount());

@@ -1,5 +1,7 @@
 package com.prgrms.boardjpa.application.post.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -51,15 +53,16 @@ public class PostRestController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<SuccessResponse<PostDto.PostInfo>> store(
-		@RequestBody @Valid PostDto.CreatePostRequest createRequest) {
+		@RequestBody @Valid PostDto.CreatePostRequest createRequest) throws URISyntaxException {
 
-		return createSuccessResponse(
-			postService.store(
-				createRequest.title(),
-				createRequest.writerId(),
-				createRequest.content()),
-			HttpStatus.CREATED
-		);
+		PostDto.PostInfo createdPostInfo = postService.store(
+			createRequest.title(),
+			createRequest.writerId(),
+			createRequest.content());
+
+		return ResponseEntity
+			.created(new URI("/posts/" + createdPostInfo.id()))
+			.body(SuccessResponse.of(createdPostInfo));
 	}
 
 	@PutMapping("/{postId}")
