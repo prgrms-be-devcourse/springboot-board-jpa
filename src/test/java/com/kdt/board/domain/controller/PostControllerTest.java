@@ -11,31 +11,32 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest
 class PostControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+
     @Autowired
     private PostService postService;
 
@@ -47,9 +48,6 @@ class PostControllerTest {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -69,7 +67,6 @@ class PostControllerTest {
         savedUserId = userService.save(userDto);
 
         PostDto.SaveRequest postDto = new PostDto.SaveRequest("제목테스트", "내용내용내용내용", savedUserId);
-
         savedPostId = postService.save(postDto);
     }
 
@@ -88,6 +85,10 @@ class PostControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-findAll",
+                                requestParameters(
+                                        parameterWithName("page").description("page"),
+                                        parameterWithName("size").description("size")
+                                ),
                                 responseFields(
                                         fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
                                         fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
@@ -98,7 +99,6 @@ class PostControllerTest {
                                         fieldWithPath("data.content[].content").type(STRING).description("게시판내용"),
                                         fieldWithPath("data.content[].createdAt").type(STRING).description("content createdAt"),
                                         fieldWithPath("data.content[].updatedAt").type(STRING).description("content updatedAt"),
-                                        fieldWithPath("data.content[].createdBy").type(NULL).description("content createdBy"),
                                         fieldWithPath("data.content[].user").type(OBJECT).description("회원"),
                                         fieldWithPath("data.content[].user.id").type(NUMBER).description("회원아이디"),
                                         fieldWithPath("data.content[].user.name").type(STRING).description("회원이름"),
@@ -106,7 +106,6 @@ class PostControllerTest {
                                         fieldWithPath("data.content[].user.hobby").type(STRING).description("회원취미"),
                                         fieldWithPath("data.content[].user.createdAt").type(STRING).description("유저 createdAt"),
                                         fieldWithPath("data.content[].user.updatedAt").type(STRING).description("유저 updatedAt"),
-                                        fieldWithPath("data.content[].user.createdBy").type(NULL).description("유저 createdBy"),
                                         fieldWithPath("data.pageable").type(OBJECT).description("데이터 페이지"),
                                         fieldWithPath("data.pageable.sort").type(OBJECT).description("sort"),
                                         fieldWithPath("data.pageable.sort.empty").type(BOOLEAN).description("empty 유무"),
@@ -147,26 +146,23 @@ class PostControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-findOne",
-                                responseFields(
-                                        fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
-                                        fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
-                                        fieldWithPath("data").type(OBJECT).description("데이터"),
-                                        fieldWithPath("data.id").type(NUMBER).description("데이터 아이디"),
-                                        fieldWithPath("data.title").type(STRING).description("데이터 제목"),
-                                        fieldWithPath("data.content").type(STRING).description("post 내용"),
-                                        fieldWithPath("data.createdAt").type(STRING).description("post createdAt"),
-                                        fieldWithPath("data.updatedAt").type(STRING).description("post updatedAt"),
-                                        fieldWithPath("data.createdBy").type(NULL).description("post createdBy"),
-                                        fieldWithPath("data.user").type(OBJECT).description("데이터목록"),
-                                        fieldWithPath("data.user.id").type(NUMBER).description("게시판아이디"),
-                                        fieldWithPath("data.user.name").type(STRING).description("게시판아이디"),
-                                        fieldWithPath("data.user.age").type(NUMBER).description("게시판아이디"),
-                                        fieldWithPath("data.user.hobby").type(STRING).description("게시판아이디"),
-                                        fieldWithPath("data.user.createdAt").type(STRING).description("게시판아이디"),
-                                        fieldWithPath("data.user.updatedAt").type(STRING).description("게시판아이디"),
-                                        fieldWithPath("data.user.createdBy").type(NULL).description("게시판아이디"))
-                        )
-                );
+                        responseFields(
+                                fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
+                                fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
+                                fieldWithPath("data").type(OBJECT).description("데이터"),
+                                fieldWithPath("data.id").type(NUMBER).description("데이터 아이디"),
+                                fieldWithPath("data.title").type(STRING).description("데이터 제목"),
+                                fieldWithPath("data.content").type(STRING).description("post 내용"),
+                                fieldWithPath("data.createdAt").type(STRING).description("post createdAt"),
+                                fieldWithPath("data.updatedAt").type(STRING).description("post updatedAt"),
+                                fieldWithPath("data.user").type(OBJECT).description("데이터목록"),
+                                fieldWithPath("data.user.id").type(NUMBER).description("게시판아이디"),
+                                fieldWithPath("data.user.name").type(STRING).description("게시판아이디"),
+                                fieldWithPath("data.user.age").type(NUMBER).description("게시판아이디"),
+                                fieldWithPath("data.user.hobby").type(STRING).description("게시판아이디"),
+                                fieldWithPath("data.user.createdAt").type(STRING).description("게시판아이디"),
+                                fieldWithPath("data.user.updatedAt").type(STRING).description("게시판아이디")
+                        )));
     }
 
     @Test
@@ -181,7 +177,19 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(saveRequestDto))
                 )
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("save-post",
+                        requestFields(
+                                fieldWithPath("title").type(STRING).description("새로운 제목"),
+                                fieldWithPath("content").type(STRING).description("새로운 내용"),
+                                fieldWithPath("userId").type(NUMBER).description("사용자 id")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
+                                fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
+                                fieldWithPath("data").type(OBJECT).description("데이터"),
+                                fieldWithPath("data.id").type(NUMBER).description("데이터 아이디")
+                        )));
     }
 
     @Test
@@ -196,7 +204,31 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(updateRequestDto))
                 )
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("update-post",
+                        requestFields(
+                                fieldWithPath("id").type(NUMBER).description("Post 아이디"),
+                                fieldWithPath("title").type(STRING).description("제목"),
+                                fieldWithPath("content").type(STRING).description("내용"),
+                                fieldWithPath("userId").type(NUMBER).description("사용자 id")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
+                                fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
+                                fieldWithPath("data").type(OBJECT).description("데이터"),
+                                fieldWithPath("data.id").type(NUMBER).description("데이터 id"),
+                                fieldWithPath("data.content").type(STRING).description("데이터 내용"),
+                                fieldWithPath("data.createdAt").type(STRING).description("데이터 만들어진 시간"),
+                                fieldWithPath("data.updatedAt").type(STRING).description("데이터 update 된 시간"),
+                                fieldWithPath("data.title").type(STRING).description("데이터 제목"),
+                                fieldWithPath("data.user").type(OBJECT).description("데이터 사용자"),
+                                fieldWithPath("data.user.id").type(NUMBER).description("데이터 사용자 id"),
+                                fieldWithPath("data.user.name").type(STRING).description("데이터 사용자 이름"),
+                                fieldWithPath("data.user.age").type(NUMBER).description("데이터 사용자 나이"),
+                                fieldWithPath("data.user.hobby").type(STRING).description("데이터 사용자 hobby"),
+                                fieldWithPath("data.user.createdAt").type(STRING).description("데이터 사용자 만들어진 시간"),
+                                fieldWithPath("data.user.updatedAt").type(STRING).description("데이터 사용자 업데이트된 시간")
+                        )));
     }
 
     @Test
@@ -210,6 +242,13 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("delete-byId",
+                        responseFields(
+                                fieldWithPath("statusCode").type(NUMBER).description("상태코드"),
+                                fieldWithPath("serverDatetime").type(STRING).description("응답시간"),
+                                fieldWithPath("data").type(OBJECT).description("데이터"),
+                                fieldWithPath("data.id").type(NUMBER).description("데이터 아이디")
+                        )));
     }
 }
