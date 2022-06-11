@@ -39,12 +39,12 @@ public class PostServiceMockTest {
     User user;
     Post post;
 
-    Long testId = 1L;
-    String testTitle = "제목";
-    String testContent = "내용";
-
     @BeforeEach
     void setUp() {
+        Long testId = 1L;
+        String testTitle = "제목";
+        String testContent = "내용";
+
         user = User.builder()
                 .id(1L)
                 .age(26)
@@ -64,6 +64,10 @@ public class PostServiceMockTest {
     @DisplayName("포스트 등록 확인")
     void savePostTest() {
         // given
+        Long testId = 1L;
+        String testTitle = "제목";
+        String testContent = "내용";
+
         PostDto.SaveRequest postRequest = new PostDto.SaveRequest(testTitle, testContent, 1L);
         doReturn(post).when(converter).convertPost(postRequest);
         doReturn(post).when(postRepository).save(any(Post.class));
@@ -79,8 +83,12 @@ public class PostServiceMockTest {
 
     @Test
     @DisplayName("포스트 수정 확인")
-    void updatePostTest () throws Exception{
+    void updatePostTest() {
         // given
+        Long testId = 1L;
+        String testTitle = "제목";
+        String testContent = "내용";
+
         PostDto.UpdateRequest postUpdate = new PostDto.UpdateRequest(testId, testTitle, testContent, 1L);
         doReturn(Optional.of(post)).when(postRepository).findById(postUpdate.id());
         UserDto.Response userResponse = new UserDto.Response(1L, "이용훈", 26, "Tennis", LocalDateTime.now(), LocalDateTime.now());

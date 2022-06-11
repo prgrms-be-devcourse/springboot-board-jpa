@@ -36,7 +36,7 @@ class UserServiceTest {
     }
 
     @BeforeEach
-    public void saveTest() throws Exception {
+    void saveTest() {
         // given
         UserDto.SaveRequest userDto = new UserDto.SaveRequest("YongHoon", 26, "tennis");
         savedUserId = userService.save(userDto);
@@ -52,7 +52,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("Id 값으로 User Entity 를 찾아온다.")
-    public void findByIdTest() throws Exception {
+    void findByIdTest() {
         // given
 
         // when
@@ -66,7 +66,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("모든(All) User Entity 를 찾아온다.")
-    public void findAllTest() throws Exception {
+    void findAllTest() {
         // given
         PageRequest page = PageRequest.of(0, 10);
 
@@ -79,7 +79,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("Id 값으로 User Entity 를 삭제한다.")
-    public void deleteByIdTest() throws Exception {
+    void deleteByIdTest() {
         // given
 
         // when
@@ -92,7 +92,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("User Entity 를 update 한다.")
-    public void updateTest() throws Exception {
+    void updateTest() {
         // given
         UserDto.UpdateRequest changedDto = new UserDto.UpdateRequest(savedUserId, "바뀐 이름", 100, "바뀐 운동");
 

@@ -36,7 +36,7 @@ class PostServiceTest {
     }
 
     @BeforeEach
-    public void saveTest() throws Exception {
+    void saveTest() {
         // given
         UserDto.SaveRequest userDto = new UserDto.SaveRequest("YongHoon", 26, "tennis");
         savedUserId = userService.save(userDto);
@@ -45,14 +45,11 @@ class PostServiceTest {
 
         // when
         savedPostId = postService.save(postDto);
-
-        // then
-        assertThat(postRepository.count()).isEqualTo(1L);
     }
 
     @Test
     @DisplayName("Id 값으로 Post Entity 를 찾아온다.")
-    public void findByIdTest() throws Exception {
+    void findByIdTest() {
         // given
 
         // when
@@ -66,7 +63,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("모든(All) Post Entity 를 찾아온다.")
-    public void findAllTest() throws Exception {
+    void findAllTest() {
         // given
         PageRequest page = PageRequest.of(0, 10);
 
@@ -79,7 +76,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("Id 값으로 Post Entity 를 삭제한다.")
-    public void deleteByIdTest() throws Exception {
+    void deleteByIdTest() {
         // given
 
         // when
@@ -92,9 +89,9 @@ class PostServiceTest {
 
     @Test
     @DisplayName("Post Entity 를 update 한다.")
-    public void updateTest() throws Exception {
+    void updateTest() {
         // given
-        PostDto.UpdateRequest changedDto = new PostDto.UpdateRequest(savedPostId,"수정된 타이틀", "수정된 내용내용", savedUserId);
+        PostDto.UpdateRequest changedDto = new PostDto.UpdateRequest(savedPostId, "수정된 타이틀", "수정된 내용내용", savedUserId);
 
         // when
         postService.update(changedDto);

@@ -33,12 +33,12 @@ public class UserServiceMockTest {
 
     User user;
 
-    String testName = "이용훈";
-    String testHobby = "Tennis";
-    int testAge = 26;
-
     @BeforeEach
     void setUp() {
+        String testName = "이용훈";
+        String testHobby = "Tennis";
+        int testAge = 26;
+
         user = User.builder()
                 .id(1L)
                 .age(testAge)
@@ -51,6 +51,10 @@ public class UserServiceMockTest {
     @DisplayName("유저 등록 확인")
     void saveUserTest() {
         // given
+        String testName = "이용훈";
+        String testHobby = "Tennis";
+        int testAge = 26;
+
         UserDto.SaveRequest userRequest = new UserDto.SaveRequest(testName, testAge, testHobby);
         doReturn(user).when(converter).convertUser(userRequest);
         doReturn(user).when(userRepository).save(any(User.class));
@@ -66,8 +70,12 @@ public class UserServiceMockTest {
 
     @Test
     @DisplayName("유저 수정 확인")
-    void updateUserTest () throws Exception{
+    void updateUserTest() {
         // given
+        String testName = "이용훈";
+        String testHobby = "Tennis";
+        int testAge = 26;
+
         UserDto.UpdateRequest userUpdate = new UserDto.UpdateRequest(1L, testName, testAge, testHobby);
         doReturn(Optional.of(user)).when(userRepository).findById(userUpdate.id());
 
