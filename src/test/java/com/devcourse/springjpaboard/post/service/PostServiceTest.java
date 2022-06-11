@@ -7,7 +7,7 @@ import com.devcourse.springjpaboard.application.post.controller.dto.CreatePostRe
 import com.devcourse.springjpaboard.application.post.converter.PostConverter;
 import com.devcourse.springjpaboard.application.post.model.Post;
 import com.devcourse.springjpaboard.application.post.repository.PostRepository;
-import com.devcourse.springjpaboard.application.post.service.PostService;
+import com.devcourse.springjpaboard.application.post.service.PostServiceImpl;
 import com.devcourse.springjpaboard.application.post.service.dto.PostResponse;
 import com.devcourse.springjpaboard.application.user.model.User;
 import com.devcourse.springjpaboard.application.user.repository.UserRepository;
@@ -44,7 +44,7 @@ class PostServiceTest {
   private PostConverter postConverter;
 
   @InjectMocks
-  private PostService postService;
+  private PostServiceImpl postService;
 
   @BeforeEach
   void init() {
