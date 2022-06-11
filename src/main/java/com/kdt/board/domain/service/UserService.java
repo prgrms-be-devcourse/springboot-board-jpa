@@ -28,7 +28,7 @@ public class UserService {
     public UserDto.Response findById(Long id) {
         return userRepository.findById(id)
                 .map(converter::convertUserDto)
-                .orElseThrow(() -> new NotFoundEntityByIdException("Entity 를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundEntityByIdException("User Entity 를 찾을 수 없습니다. userID : " + id));
     }
 
     public Page<UserDto.Response> findAll(Pageable pageable) {
@@ -39,7 +39,7 @@ public class UserService {
     @Transactional
     public UserDto.Response update(UserDto.UpdateRequest dto) {
         User user = userRepository.findById(dto.id())
-                .orElseThrow(() -> new NotFoundEntityByIdException("Entity 를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundEntityByIdException("User Entity 를 찾을 수 없습니다. userID : " + dto.id()));
         user.updateUser(dto.name(), dto.age(), dto.hobby());
         return converter.convertUserDto(user);
     }

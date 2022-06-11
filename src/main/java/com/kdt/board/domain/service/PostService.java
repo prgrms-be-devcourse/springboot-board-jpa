@@ -28,7 +28,7 @@ public class PostService {
     public PostDto.Response findById(Long id) {
         return postRepository.findById(id)
                 .map(converter::convertPostDto)
-                .orElseThrow(() -> new NotFoundEntityByIdException("Entity 를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundEntityByIdException("Post Entity 를 찾을 수 없습니다. postID : " + id));
     }
 
     public Page<PostDto.Response> findAll(Pageable pageable) {
@@ -39,7 +39,7 @@ public class PostService {
     @Transactional
     public PostDto.Response update(PostDto.UpdateRequest dto) {
         Post post = postRepository.findById(dto.id())
-                .orElseThrow(() -> new NotFoundEntityByIdException("Entity 를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundEntityByIdException("Post Entity 를 찾을 수 없습니다. postID : " + dto.id()));
         post.update(dto.title(), dto.content());
         return converter.convertPostDto(post);
     }
