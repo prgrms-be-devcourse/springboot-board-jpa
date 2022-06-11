@@ -10,8 +10,10 @@ public class PostDto {
     public record SaveRequest(
             @NotEmpty @Size(max = 100)
             String title,
+
             @NotEmpty
             String content,
+
             @NotNull
             Long userId
     ) {
@@ -20,10 +22,14 @@ public class PostDto {
     public record UpdateRequest(
             @NotNull
             Long id,
-            @NotEmpty @Size(max = 100)
+
+            @NotEmpty
+            @Size(max = 100)
             String title,
+
             @NotEmpty
             String content,
+
             @NotNull
             Long userId
     ) {

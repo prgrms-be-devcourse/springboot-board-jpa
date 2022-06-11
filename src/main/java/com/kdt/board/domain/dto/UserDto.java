@@ -9,9 +9,12 @@ public class UserDto {
     public record SaveRequest(
             @NotEmpty @Size(max = 20)
             String name,
+
             @NotEmpty
             int age,
-            @NotEmpty @Size(max = 100)
+
+            @NotEmpty
+            @Size(max = 100)
             String hobby
     ) {
     }
@@ -19,11 +22,16 @@ public class UserDto {
     public record UpdateRequest(
             @NotNull
             Long id,
-            @NotEmpty @Size(max = 20)
+
+            @NotEmpty
+            @Size(max = 20)
             String name,
+
             @NotEmpty
             int age,
-            @NotEmpty @Size(max = 100)
+
+            @NotEmpty
+            @Size(max = 100)
             String hobby
     ) {
     }

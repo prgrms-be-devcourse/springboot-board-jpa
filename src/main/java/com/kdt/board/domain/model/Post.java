@@ -8,13 +8,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
 @Entity
 @Table(name = "post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Post extends BaseEntity {
+public class Post extends BaseTimeEntity {
     @Id
     @Column(name = "post_id", updatable = false)
     @NotNull
