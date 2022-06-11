@@ -45,12 +45,11 @@ public class PostStubs {
   }
 
   public static Post post(User user) {
-    Post post = new Post();
-    post.setId(1L);
-    post.setUser(user);
-    post.setTitle("test-title");
-    post.setContent("test-content");
-    return post;
+     return new Post(
+        "test-title",
+        "test-content",
+        user
+    );
   }
 
   public static Stream<Arguments> blankTitlePostRequest() {
