@@ -17,7 +17,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "user")
 @Getter
-@Setter
 public class User extends BaseEntity {
 
   @Id
@@ -33,6 +32,15 @@ public class User extends BaseEntity {
 
   @Column(nullable = false)
   private String hobby;
+
+  protected User() {
+
+  }
+  public User(String name, int age, String hobby) {
+    this.name = name;
+    this.age = age;
+    this.hobby = hobby;
+  }
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   List<Post> posts = new ArrayList<>();

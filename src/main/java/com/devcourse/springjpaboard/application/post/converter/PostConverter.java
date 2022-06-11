@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 public class PostConverter {
 
   public Post convertPostRequest(CreatePostRequest createPostRequest, User user) {
-    Post post = new Post();
-    post.setTitle(createPostRequest.title());
-    post.setContent(createPostRequest.content());
-    post.setUser(user);
-    return post;
+    return new Post(
+        createPostRequest.title(),
+        createPostRequest.content(),
+        user
+    );
   }
 
   public PostResponse convertPostResponse(Post post) {
