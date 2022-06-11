@@ -2,7 +2,6 @@ package com.devcourse.springjpaboard.post.controller;
 
 import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.BLANK_CONTENT;
 import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.BLANK_TITLE;
-import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.INVALID_RANGE_AGE;
 import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.NOT_FOUND_POST;
 import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.NOT_FOUND_USER;
 import static com.devcourse.springjpaboard.core.exception.ExceptionMessage.NOT_VALID_USER_ID;
@@ -21,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.devcourse.springjpaboard.application.post.controller.PostController;
 import com.devcourse.springjpaboard.application.post.controller.dto.CreatePostRequest;
 import com.devcourse.springjpaboard.application.post.controller.dto.UpdatePostRequest;
-import com.devcourse.springjpaboard.application.post.service.PostService;
+import com.devcourse.springjpaboard.application.post.service.PostServiceImpl;
 import com.devcourse.springjpaboard.application.post.service.dto.PostResponse;
 import com.devcourse.springjpaboard.core.exception.GlobalExceptionHandler;
 import com.devcourse.springjpaboard.core.exception.NotFoundException;
@@ -56,7 +55,7 @@ class PostControllerTest {
   private PostController postController;
 
   @Mock
-  private PostService postService;
+  private PostServiceImpl postService;
 
   private MockMvc mockMvc;
 

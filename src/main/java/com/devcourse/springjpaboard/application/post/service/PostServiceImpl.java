@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class PostService {
+public class PostServiceImpl implements PostSerivce {
 
   private final PostRepository postRepository;
 
@@ -27,7 +27,7 @@ public class PostService {
 
   private final PostConverter postConverter;
 
-  public PostService(PostRepository postRepository, UserRepository userRepository,
+  public PostServiceImpl(PostRepository postRepository, UserRepository userRepository,
       PostConverter postConverter) {
     this.postRepository = postRepository;
     this.userRepository = userRepository;

@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
 import com.devcourse.springjpaboard.application.user.repository.UserRepository;
-import com.devcourse.springjpaboard.application.user.service.UserService;
+import com.devcourse.springjpaboard.application.user.service.UserServiceImpl;
 import com.devcourse.springjpaboard.core.exception.NotFoundException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class UserServiceTest {
 
   @InjectMocks
-  UserService userService;
+  UserServiceImpl userService;
 
   @Mock
   UserRepository userRepository;

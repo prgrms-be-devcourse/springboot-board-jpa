@@ -4,7 +4,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 import com.devcourse.springjpaboard.application.user.controller.dto.CreateUserRequest;
 import com.devcourse.springjpaboard.application.user.controller.dto.UserResponse;
-import com.devcourse.springjpaboard.application.user.service.UserService;
+import com.devcourse.springjpaboard.application.user.service.UserServiceImpl;
 import com.devcourse.springjpaboard.core.util.ApiResponse;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
 
-  private final UserService userService;
+  private final UserServiceImpl userService;
 
-  public UserController(UserService userService) {
+  public UserController(UserServiceImpl userService) {
     this.userService = userService;
   }
 

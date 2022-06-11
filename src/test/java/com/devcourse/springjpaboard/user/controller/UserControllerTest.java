@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.devcourse.springjpaboard.application.user.controller.UserController;
 import com.devcourse.springjpaboard.application.user.controller.dto.CreateUserRequest;
 import com.devcourse.springjpaboard.application.user.controller.dto.UserResponse;
-import com.devcourse.springjpaboard.application.user.service.UserService;
+import com.devcourse.springjpaboard.application.user.service.UserServiceImpl;
 import com.devcourse.springjpaboard.core.exception.GlobalExceptionHandler;
 import com.devcourse.springjpaboard.core.exception.NotFoundException;
 import com.devcourse.springjpaboard.user.controller.stub.UserStubs;
@@ -50,7 +50,7 @@ class UserControllerTest {
   private UserController userController;
 
   @Mock
-  private UserService userService;
+  private UserServiceImpl userService;
 
   private MockMvc mockMvc;
 

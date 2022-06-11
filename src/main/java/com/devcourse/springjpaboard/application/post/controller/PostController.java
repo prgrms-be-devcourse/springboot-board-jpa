@@ -4,7 +4,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 import com.devcourse.springjpaboard.application.post.controller.dto.CreatePostRequest;
 import com.devcourse.springjpaboard.application.post.controller.dto.UpdatePostRequest;
-import com.devcourse.springjpaboard.application.post.service.PostService;
+import com.devcourse.springjpaboard.application.post.service.PostServiceImpl;
 import com.devcourse.springjpaboard.application.post.service.dto.PostResponse;
 import com.devcourse.springjpaboard.core.exception.NotFoundException;
 import com.devcourse.springjpaboard.core.util.ApiResponse;
@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/posts")
 public class PostController {
 
-  private final PostService postService;
+  private final PostServiceImpl postService;
 
-  public PostController(PostService postService) {
+  public PostController(PostServiceImpl postService) {
     this.postService = postService;
   }
 
