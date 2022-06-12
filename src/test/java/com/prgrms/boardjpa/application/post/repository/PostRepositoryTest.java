@@ -115,4 +115,6 @@ class PostRepositoryTest {
 		Assertions.assertThat(likedPostsCount)
 			.isEqualTo(2);
 	}
+
+
 }
