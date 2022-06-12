@@ -6,7 +6,7 @@ public class SimplePage {
 	private static final int MIN_PAGE = 0;
 	private static final int MIN_SIZE = 1;
 	private final int size;
-	private final int page;
+	private final int page; // offset -> size * page
 
 	private SimplePage(int size, int page) {
 		this.size = Math.max(size, MIN_SIZE);

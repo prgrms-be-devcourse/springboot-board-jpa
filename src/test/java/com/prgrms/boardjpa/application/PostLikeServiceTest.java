@@ -2,6 +2,8 @@ package com.prgrms.boardjpa.application;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +44,9 @@ public class PostLikeServiceTest {
 
 	private Post likedPost2;
 
-	private Post notYetLikedPost;
+	private Post notYetLikedPost1;
+
+	private Post notYetLikedPost2;
 
 	@BeforeEach
 	void setUp() {
@@ -74,9 +78,15 @@ public class PostLikeServiceTest {
 			.writer(writer)
 			.build();
 
-		notYetLikedPost = Post.builder()
+		notYetLikedPost1 = Post.builder()
 			.title("title222")
 			.content("content222")
+			.writer(writer)
+			.build();
+
+		notYetLikedPost2 = Post.builder()
+			.title("title333")
+			.content("content333")
 			.writer(writer)
 			.build();
 
@@ -84,7 +94,8 @@ public class PostLikeServiceTest {
 		userRepository.save(notWriter);
 		postRepository.save(likedPost1);
 		postRepository.save(likedPost2);
-		postRepository.save(notYetLikedPost);
+		postRepository.save(notYetLikedPost1);
+		postRepository.save(notYetLikedPost2);
 
 		likedPost1.like(notWriter);
 		likedPost2.like(notWriter);
@@ -105,12 +116,12 @@ public class PostLikeServiceTest {
 	@DisplayName("현재 사용자가 좋아요 하지 않았던 게시글에 대해 좋아요 요청을 하면 , 전체 좋아요 수가 1 증가한다")
 	public void increaseTotalLikesByOne() {
 		// given
-		int beforeLikedCount = notYetLikedPost.getLikeCount();
+		int beforeLikedCount = notYetLikedPost1.getLikeCount();
 
 		// when
-		postService.toggleLike(notWriter, notYetLikedPost.getId());
+		postService.toggleLike(notWriter, notYetLikedPost1.getId());
 
-		int afterLikedCount = notYetLikedPost.getLikeCount();
+		int afterLikedCount = notYetLikedPost1.getLikeCount();
 
 		// then
 		assertThat(afterLikedCount)
@@ -128,16 +139,18 @@ public class PostLikeServiceTest {
 			.isEqualTo(expectedCount);
 	}
 
-	// @Test
-	// @DisplayName("자신이 좋아요 누른 게시글을 불러올 수 있다")
-	// public void getAllLikedPosts() {
-	// 	postService.toggleLike(notWriter, likedPost1.getId());
-	// 	postService.toggleLike(notWriter, likedPost2.getId());
-	//
-	// 	List<Post> likedPosts = postRepository.findAllLikedByUser(user);
-	// 	Assertions.assertThat(likedPosts.size()).isEqualTo(2);
-	//
-	// }
+	@Test
+	@DisplayName("자신이 좋아요 누른 게시글을 불러올 수 있다") // TODO : 페이징을 사용하여 최신순 조회
+	public void getAllLikedPosts() {
+		postService.toggleLike(notWriter, notYetLikedPost1.getId());
+		postService.toggleLike(notWriter, notYetLikedPost2.getId());
+
+		List<Post> likedPosts = postService.getAllLiked(notWriter);
+		Assertions.assertThat(likedPosts.size()).isEqualTo(2);
+
+	}
+
+
 
 	@Test
 	@DisplayName("자신이 작성한 게시글에 대해 좋아요를 누르면 예외가 발생한다")
