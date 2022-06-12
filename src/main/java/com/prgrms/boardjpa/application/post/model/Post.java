@@ -23,6 +23,10 @@ import com.prgrms.boardjpa.application.user.model.User;
 import com.prgrms.boardjpa.core.commons.domain.BaseEntity;
 import com.prgrms.boardjpa.core.commons.exception.CreationFailException;
 
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
 @Entity
 public class Post extends BaseEntity {
 	@Id
@@ -59,11 +63,17 @@ public class Post extends BaseEntity {
 		this(builder.id, builder.title, builder.writer, builder.content);
 	}
 
+	@Builder
 	private Post(Long id, String title, User writer, String content) {
-		validateTitle(title);
-		validateContent(content);
-		validateWriter(writer);
+		try {
+			validateTitle(title);
 
+			validateContent(content);
+			validateWriter(writer);
+		} catch (IllegalArgumentException e) {
+
+			throw new CreationFailException(Post.class, e);
+		}
 		this.id = id;
 		this.title = title;
 		this.content = content;
@@ -111,73 +121,6 @@ public class Post extends BaseEntity {
 		return this.likes.stream()
 			.filter(like -> like.getUser().isSameUser(user))
 			.findAny();
-	}
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public String getContent() {
-		return this.content;
-	}
-
-	public String getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public String getTitle() {
-		return this.title;
-	}
-
-	public int getLikeCount() {
-		return this.likeCount;
-	}
-
-	public List<PostLike> getLikes() {
-		return this.likes;
-	}
-
-	public static class PostBuilder {
-		private Long id;
-		private String title;
-		private String content;
-		private User writer;
-
-		private PostBuilder() {
-		}
-
-		public PostBuilder title(String title) {
-			this.title = title;
-
-			return this;
-		}
-
-		public PostBuilder content(String content) {
-			this.content = content;
-
-			return this;
-		}
-
-		public PostBuilder writer(User user) {
-			this.writer = user;
-
-			return this;
-		}
-
-		public PostBuilder id(Long id) {
-			this.id = id;
-
-			return this;
-		}
-
-		public Post build() {
-			try {
-				return new Post(this);
-			} catch (IllegalArgumentException e) {
-
-				throw new CreationFailException(Post.class, e);
-			}
-		}
 	}
 
 	private void validateTitle(String title) {
