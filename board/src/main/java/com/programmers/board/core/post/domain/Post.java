@@ -3,19 +3,16 @@ package com.programmers.board.core.post.domain;
 
 import com.programmers.board.core.common.entity.BaseEntity;
 import com.programmers.board.core.user.domain.User;
-import lombok.Builder;
-import lombok.Getter;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "posts")
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "title", nullable = false, length = 50)
@@ -26,20 +23,22 @@ public class Post extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     protected Post(){}
 
     public Post(String title, String content, User user) {
-        Assert.notNull(title, "제목을 입력하지 않았습니다.");
-        Assert.isNull(content, "내용이 없습니다.");
-        Assert.isNull(user, "사용자를 확인 할 수 없습니다.");
+        validateTitle(title);
+        validateContent(content);
+        validateUser(user);
 
         this.title = title;
         this.content = content;
         this.user = user;
     }
+
+
 
     //Getter
     public Long getId(){
@@ -52,10 +51,6 @@ public class Post extends BaseEntity {
 
     public String getContent() {
         return content;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     //Update
@@ -101,4 +96,16 @@ public class Post extends BaseEntity {
 
     }
 
+    // Validate Logic
+    private void validateTitle(String title){
+        Assert.isTrue(title.length() > 0 && title.length() <= 50, "제목의 길이는 50자 이하(필수)입니다.");
+    }
+
+    private void validateContent(String content) {
+        Assert.notNull(content, "내용이 없습니다.");
+    }
+
+    private void validateUser(User user) {
+        Assert.notNull(user, "사용자를 확인 할 수 없습니다.");
+    }
 }
