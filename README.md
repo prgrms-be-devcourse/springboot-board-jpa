@@ -1,15 +1,20 @@
-# [미션] Spring Boot JPA로 게시판 구현
+# Spring Boot JPA로 게시판 구현
 
-## 미션 소개 😎
-Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수행해봅시다.
+- 진행 기간 : 2022.05.22 ~ (진행중)
+- 주요내용
+- JPA 학습한 것을 이해하고 적용하여 블로그 시스템을 이해하고자 한다.
+- 계층마다 독립적으로 Test Code 작성
+  - Appliation Layer에서는 행위 테스트 : 필요에 따라 상태테스트 진행
+  - 가능한 많은 엣지 케이스 작성 노력
+- RestDocs를 통해 API 명세화
+- 객체 매핑 전략
+  - 성능에 필요한 상황에 따라 조인 연산 개선
+- Lombok과 유효성 검사 빈 사용 X
+- AOP를 사용하여 HTTP Request와 ip 등 필요 정보 logging
 
-## 이곳은 공개 Repo입니다.
-1. 여러분의 포트폴리오로 사용하셔도 됩니다.
-2. 때문에 이 repo를 fork한 뒤
-3. 여러분의 개인 Repo에 작업하며 
-4. 이 Repo에 PR을 보내어 멘토의 코드 리뷰와 피드백을 받으세요.
+- 스스로 연관관계를 고민하며, 주어진 미션보다 확장하여 배운 기술을 활용하고자함
 
-## Branch 명명 규칙
-1.  여러분 repo는 알아서 해주시고 😀(본인 레포니 main으로 하셔두 되져)
-2.  prgrms-be-devcourse/spring-board 레포로 PR시 branch는 본인 username을 적어주세요 :)  
-base repo : `여기repo` base : `username` ← head repo : `여러분repo` compare : `main`
+  - (AOP, 테스트 코드, 매핑 전략, 라이브러리 의존도 낮춰서 진행)
+
+- 기술 스택
+  - Springboot, JPA, OOP, RESTDOCS, Mockito
