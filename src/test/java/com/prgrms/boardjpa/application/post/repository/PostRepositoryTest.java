@@ -1,9 +1,5 @@
 package com.prgrms.boardjpa.application.post.repository;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.List;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prgrms.boardjpa.application.post.model.Post;
-import com.prgrms.boardjpa.application.post.service.PostService;
 import com.prgrms.boardjpa.application.user.model.Hobby;
 import com.prgrms.boardjpa.application.user.model.User;
 import com.prgrms.boardjpa.application.user.repository.UserRepository;
@@ -92,8 +87,8 @@ class PostRepositoryTest {
 		postRepository.save(notYetLikedPost1);
 		postRepository.save(notYetLikedPost2);
 
-		likedPost1.like(notWriter);
-		likedPost2.like(notWriter);
+		likedPost1.likeBy(notWriter);
+		likedPost2.likeBy(notWriter);
 
 		postRepository.flush();
 		userRepository.flush();

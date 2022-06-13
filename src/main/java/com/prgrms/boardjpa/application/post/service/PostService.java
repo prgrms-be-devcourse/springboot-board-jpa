@@ -100,7 +100,7 @@ public class PostService {
 		Post post = postRepository.findById(postId)
 			.orElseThrow(NotExistException::new);
 
-		post.like(user);
+		post.likeBy(user);
 		log.info("게시글 " + postId + " 에 대하여 사용자 " + user.getId() + "의 좋아요 상태를 변경한다");
 
 		return postConverter.entity2Info(post, user);

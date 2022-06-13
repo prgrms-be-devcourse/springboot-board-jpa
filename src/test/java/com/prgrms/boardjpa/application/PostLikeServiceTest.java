@@ -2,8 +2,6 @@ package com.prgrms.boardjpa.application;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.List;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -97,8 +95,8 @@ public class PostLikeServiceTest {
 		postRepository.save(notYetLikedPost1);
 		postRepository.save(notYetLikedPost2);
 
-		likedPost1.like(notWriter);
-		likedPost2.like(notWriter);
+		likedPost1.likeBy(notWriter);
+		likedPost2.likeBy(notWriter);
 
 		postRepository.flush();
 		userRepository.flush();

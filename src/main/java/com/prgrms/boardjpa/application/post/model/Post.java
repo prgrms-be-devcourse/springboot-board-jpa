@@ -95,12 +95,12 @@ public class Post extends BaseEntity {
 		return this;
 	}
 
-	public void like(User user) {
+	public void likeBy(User user) {
 		if (user.isSameUser(writer)) {
 			throw new LikeOwnPostException(
 				"자신이 작성한 게시글에는 좋아요 할 수 없습니다 : writer +" + user.getId() + " post: " + this.getId());
 		}
-		this.likedBy(user)
+		this.likeOf(user)
 			.ifPresentOrElse(
 				this::deleteLike,
 				() -> this.addLike(new PostLike(this, user))
@@ -117,7 +117,7 @@ public class Post extends BaseEntity {
 		likeCount += 1;
 	}
 
-	private Optional<PostLike> likedBy(User user) {
+	private Optional<PostLike> likeOf(User user) {
 		return this.likes.stream()
 			.filter(like -> like.getUser().isSameUser(user))
 			.findAny();
