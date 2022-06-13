@@ -12,37 +12,31 @@ import lombok.Getter;
 @Getter
 public class ErrorResponse {
 
-	private final LocalDateTime timestamp = LocalDateTime.now();
-	private final int status;
-	private final String error;
-	private final String code;
-	private final String message;
-	private final List<BindErrorField> errorFields;
+    private final LocalDateTime timestamp = LocalDateTime.now();
+    private final String code;
+    private final String message;
+    private final List<BindErrorField> errorFields;
 
-	public ErrorResponse(ErrorCode errorCodeMessage, String message) {
-		this.status = errorCodeMessage.getStatusCode().value();
-		this.error = errorCodeMessage.getStatusCode().name();
-		this.code = errorCodeMessage.name();
-		this.message = message;
-		this.errorFields = new ArrayList<>();
-	}
+    public ErrorResponse(ErrorCode errorCodeMessage, String message) {
+        this.code = errorCodeMessage.name();
+        this.message = message;
+        this.errorFields = new ArrayList<>();
+    }
 
-	public ErrorResponse(ErrorCode errorCodeMessage, String message, List<BindErrorField> errorFields) {
-		this.status = errorCodeMessage.getStatusCode().value();
-		this.error = errorCodeMessage.getStatusCode().name();
-		this.code = errorCodeMessage.name();
-		this.message = message;
-		this.errorFields = errorFields;
-	}
+    public ErrorResponse(ErrorCode errorCodeMessage, String message, List<BindErrorField> errorFields) {
+        this.code = errorCodeMessage.name();
+        this.message = message;
+        this.errorFields = errorFields;
+    }
 
-	public record BindErrorField(String field, String value, String message) {
-	}
+    public record BindErrorField(String field, String value, String message) {
+    }
 
-	public static List<BindErrorField> bindErrorFields(BindingResult bindingResult) {
-		return bindingResult.getFieldErrors().stream()
-			.map(error -> new BindErrorField(error.getField(),
-				Objects.requireNonNull(error.getRejectedValue()).toString(),
-				error.getDefaultMessage()))
-			.toList();
-	}
+    public static List<BindErrorField> bindErrorFields(BindingResult bindingResult) {
+        return bindingResult.getFieldErrors().stream()
+                .map(error -> new BindErrorField(error.getField(),
+                        Objects.requireNonNull(error.getRejectedValue()).toString(),
+                        error.getDefaultMessage()))
+                .toList();
+    }
 }

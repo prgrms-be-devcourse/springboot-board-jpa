@@ -48,13 +48,11 @@ public class Post extends BaseEntity {
 		this.user = user;
 	}
 
-	public Post update(String title, String content) {
+	public void update(String title, String content) {
 		verifyTitleContent(title, content);
 
 		this.title = title;
 		this.content = content;
-
-		return this;
 	}
 
 	private void verifyTitleContent(String title, String content) {
@@ -71,10 +69,6 @@ public class Post extends BaseEntity {
 		if (user == null) {
 			throw new NotValidException(ErrorCode.INVALID_REQUEST_VALUE, "user는 null일 수 없습니다.");
 		}
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public Long getId() {

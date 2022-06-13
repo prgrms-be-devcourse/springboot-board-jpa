@@ -8,11 +8,8 @@ import org.programmers.kdtboard.dto.UserDto.Response;
 import org.programmers.kdtboard.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(value = "/api/v1/users")
 @RestController
@@ -24,6 +21,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ApiResponse<Response> create(@RequestBody @Valid UserDto.CreateRequest userCreateDto) {
         var userResponseDto = this.userService.create(userCreateDto.name(), userCreateDto.age(), userCreateDto.hobby());

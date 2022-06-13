@@ -22,7 +22,8 @@ public class PostDto {
 	}
 
 	public record CreateRequest(
-		@NotBlank @Size(max = 30)
+		@NotBlank
+		@Size(max = 30)
 		String title,
 		@NotEmpty
 		String content,
@@ -31,7 +32,8 @@ public class PostDto {
 	}
 
 	public record UpdateRequest(
-		@NotBlank @Size(max = 30)
+		@NotBlank
+		@Size(max = 30)
 		String title,
 		@NotEmpty
 		String content) {
