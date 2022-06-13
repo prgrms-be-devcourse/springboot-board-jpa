@@ -1,20 +1,51 @@
 package com.programmers.board.core.post.application.dto;
 
-import com.programmers.board.core.post.domain.Post;
-import lombok.Builder;
-import lombok.Getter;
+public class PostUpdateRequest {
 
-@Getter
-public class UpdateRequestPost {
+    private final String title;
 
-    private String title;
+    private final String content;
 
-    private String content;
-
-    @Builder
-    public UpdateRequestPost(String title, String content) {
+    public PostUpdateRequest(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    //Getter
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    //Builder
+    public static PostUpdateRequestBuilder builder() {
+        return new PostUpdateRequestBuilder();
+    }
+
+    public static class PostUpdateRequestBuilder {
+
+        private String title;
+
+        private String content;
+
+        public PostUpdateRequestBuilder() {}
+
+        public PostUpdateRequestBuilder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public PostUpdateRequestBuilder content(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public PostUpdateRequest build() {
+            return new PostUpdateRequest(this.title, this.content);
+        }
     }
 
 }
