@@ -2,10 +2,11 @@ package com.programmers.board.api.post;
 
 import com.programmers.board.api.common.ApiResponse;
 import com.programmers.board.core.post.application.PostService;
-import com.programmers.board.core.post.application.dto.CreateRequestPost;
+import com.programmers.board.core.post.application.dto.PostCreateRequest;
 import com.programmers.board.core.post.application.dto.ResponsePost;
-import com.programmers.board.core.post.application.dto.UpdateRequestPost;
-import lombok.RequiredArgsConstructor;
+import com.programmers.board.core.post.application.dto.PostUpdateRequest;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,8 @@ public class PostController {
     }
 
     @PostMapping
-    public ApiResponse<ResponsePost> save(@RequestBody CreateRequestPost createRequestPost){
-        return ApiResponse.ok(postService.save(createRequestPost));
+    public ApiResponse<ResponsePost> save(@RequestBody PostCreateRequest postCreateRequest){
+        return ApiResponse.ok(postService.save(postCreateRequest));
     }
 
     @GetMapping("/{id}")
@@ -39,9 +40,9 @@ public class PostController {
     @PutMapping("/{id}")
     public ApiResponse<ResponsePost> update(
             @PathVariable Long id,
-            @RequestBody UpdateRequestPost postDto
+            @RequestBody PostUpdateRequest postUpdateRequest
     ){
-        return ApiResponse.ok(postService.update(id, postDto));
+        return ApiResponse.ok(postService.update(id, postUpdateRequest));
     }
 
 }
