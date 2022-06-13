@@ -18,54 +18,59 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PostService {
 
-	private final PostRepository postRepository;
-	private final UserService userService;
-	private final PostConverter postConverter;
+    private final PostRepository postRepository;
+    private final UserService userService;
+    private final PostConverter postConverter;
 
-	public PostService(PostRepository postRepository, UserService userService,
-		PostConverter postConverter) {
-		this.postRepository = postRepository;
-		this.userService = userService;
-		this.postConverter = postConverter;
-	}
+    public PostService(PostRepository postRepository, UserService userService,
+                       PostConverter postConverter) {
+        this.postRepository = postRepository;
+        this.userService = userService;
+        this.postConverter = postConverter;
+    }
 
-	@Transactional
-	public Response create(String title, String content, Long userId) {
-		var post = Post.builder().title(title)
-			.content(content)
-			.build();
-		post.setUser(this.userService.findEntityById(userId));
-		this.postRepository.save(post);
+    @Transactional
+    public Response create(String title, String content, Long userId) {
+        var user = this.userService.findEntityById(userId);
+        var post = Post.builder()
+                .title(title)
+                .content(content)
+                .user(user)
+                .build();
+        this.postRepository.save(post);
 
-		return this.postConverter.convertPostResponse(post);
-	}
+        return this.postConverter.convertPostResponse(post);
+    }
 
-	public Response findById(Long id) {
-		var post = this.postRepository.findById(id)
-			.orElseThrow(
-				() -> new NotFoundEntityByIdException(format("post id : {0}, 없는 id 입니다.", id),
-					ErrorCode.POST_ID_NOT_FOUND));
+    public Response findById(Long id) {
+        var post = this.postRepository.findById(id)
+                .orElseThrow(
+                        () -> new NotFoundEntityByIdException(format("post id : {0}, 없는 id 입니다.", id),
+                                ErrorCode.POST_ID_NOT_FOUND));
 
-		return this.postConverter.convertPostResponse(post);
-	}
+        return this.postConverter.convertPostResponse(post);
+    }
 
-	public Page<Response> findAll(Pageable pageable) {
-		Page<Post> postPages = this.postRepository.findAll(pageable);
-		var postResponseDto = postPages.getContent().stream()
-			.map(postConverter::convertPostResponse)
-			.toList();
+    public Page<Response> findAll(Pageable pageable) {
+        Page<Post> postPages = this.postRepository.findAll(pageable);
+        var postResponseDto = postPages.getContent().stream()
+                .map(postConverter::convertPostResponse)
+                .toList();
 
-		return new PageImpl<>(postResponseDto, pageable, postPages.getTotalPages());
-	}
+        return new PageImpl<>(postResponseDto, pageable, postPages.getTotalPages());
+    }
 
-	@Transactional
-	public Response update(Long id, String title, String content) {
-		var post = this.postRepository.findById(id)
-			.orElseThrow(() ->
-				new NotFoundEntityByIdException(format("post id : {0}, 없는 id 입니다.", id),
-					ErrorCode.POST_ID_NOT_FOUND))
-			.update(title, content);
+    @Transactional
+    public Response update(Long id, String title, String content) {
+        var updatedPost = this.postRepository.findById(id)
+                .map(post -> {
+                    post.update(title, content);
+                    return post;
+                })
+                .orElseThrow(() ->
+                        new NotFoundEntityByIdException(format("post id : {0}, 없는 id 입니다.", id),
+                                ErrorCode.POST_ID_NOT_FOUND));
 
-		return this.postConverter.convertPostResponse(post);
-	}
+        return this.postConverter.convertPostResponse(updatedPost);
+    }
 }
