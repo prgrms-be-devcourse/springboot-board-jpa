@@ -1,29 +1,16 @@
 package com.programmers.board.core.user.domain;
 
 import com.programmers.board.core.common.entity.BaseEntity;
-import com.programmers.board.core.post.domain.Post;
-import lombok.AccessLevel;
-import lombok.UserBuilder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.UserBuilder.EqualsUserBuilder;
-import org.apache.commons.lang3.UserBuilder.HashCodeUserBuilder;
-import org.apache.commons.lang3.UserBuilder.ToStringUserBuilder;
-import org.apache.commons.lang3.UserBuilder.ToStringStyle;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "name", nullable = false, length = 20)
@@ -38,6 +25,7 @@ public class User extends BaseEntity {
     protected User(){}
 
     public User(String name, int age, Hobby hobby) {
+        validateName(name);
         this.name = name;
         this.age = age;
         this.hobby = hobby;
@@ -103,6 +91,12 @@ public class User extends BaseEntity {
             return new User(this.name, this.age, this.hobby);
         }
 
+    }
+
+    // Valdiate logic
+    private void validateName(String name){
+        Assert.notNull(name, "이름을 등록해주세요.");
+        Assert.isTrue(name.length() <= 20 && name.length() > 0, "이름의 길이는 20자 이하(필수)입니다.");
     }
 
 }
