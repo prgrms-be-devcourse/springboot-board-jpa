@@ -1,14 +1,9 @@
 package com.programmers.board.api.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApiResponse<T> {
 
     private int statusCode;
@@ -17,6 +12,8 @@ public class ApiResponse<T> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime serverDateTime;
+
+    private ApiResponse(){}
 
     private ApiResponse(int statusCode, T body) {
         this.statusCode = statusCode;
@@ -28,7 +25,18 @@ public class ApiResponse<T> {
         return new ApiResponse<>(200, body);
     }
 
-    public static <T> ApiResponse<T> fail(int statusCode, T body){
-        return new ApiResponse<>(statusCode, body);
+    public static <T> ApiResponse<T> created(T body){return new ApiResponse<>(201, body);}
+
+    //Getter
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public T getBody() {
+        return body;
+    }
+
+    public LocalDateTime getServerDateTime() {
+        return serverDateTime;
     }
 }

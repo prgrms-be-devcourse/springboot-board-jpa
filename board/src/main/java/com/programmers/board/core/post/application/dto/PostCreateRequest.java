@@ -6,23 +6,24 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
-@AllArgsConstructor
-@Builder
 public class CreateRequestPost {
+
+    private Long userId;
 
     private String title;
 
     private String content;
-
-    private UserDto userDto;
 
     public Post toEntity() {
         Post post = Post.builder()
                 .title(this.title)
                 .content(this.content)
                 .build();
-        post.setUser(userDto.toEntity());
         return post;
     }
+
+    //Getter
+
+
+    //Builder
 }
