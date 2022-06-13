@@ -95,6 +95,10 @@ public class Post extends BaseEntity {
 		return this;
 	}
 
+	public boolean isLikedBy(User user) {
+		return likeOf(user).isPresent();
+	}
+
 	public void likeBy(User user) {
 		if (user.isSameUser(writer)) {
 			throw new LikeOwnPostException(
@@ -122,6 +126,7 @@ public class Post extends BaseEntity {
 			.filter(like -> like.getUser().isSameUser(user))
 			.findAny();
 	}
+
 
 	private void validateTitle(String title) {
 		Assert.hasText(title, "제목은 비어있을 수 없습니다");
