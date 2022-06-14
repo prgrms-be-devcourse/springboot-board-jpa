@@ -1,4 +1,4 @@
-package com.prgrms.boardjpa.application.post;
+package com.prgrms.boardjpa.application.post.controller;
 
 import static com.prgrms.boardjpa.application.post.PostDto.*;
 import static org.assertj.core.api.Assertions.*;
@@ -37,6 +37,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.prgrms.boardjpa.application.post.PostConverter;
 import com.prgrms.boardjpa.application.post.controller.PostRestController;
 import com.prgrms.boardjpa.application.post.model.Post;
 import com.prgrms.boardjpa.application.post.service.PostService;
