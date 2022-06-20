@@ -11,24 +11,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  public UserService(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    @Transactional
-    public UserResponse join(UserCreateRequest userCreateRequest){
-        User user = userCreateRequest.toEntity();
-        User savedUser = userRepository.save(user);
-        return UserResponse.of(savedUser);
-    }
+  @Transactional
+  public UserResponse join(UserCreateRequest userCreateRequest) {
+    User user = userCreateRequest.toEntity();
+    User savedUser = userRepository.save(user);
+    return UserResponse.of(savedUser);
+  }
 
-    @Transactional(readOnly = true)
-    public UserResponse getUser(Long id){
-        return userRepository.findById(id)
-                .map(UserResponse::of)
-                .orElseThrow(NotFoundException::new);
-    }
+  @Transactional(readOnly = true)
+  public UserResponse getUser(Long id) {
+    return userRepository.findById(id)
+        .map(UserResponse::of)
+        .orElseThrow(NotFoundException::new);
+  }
 
 }
