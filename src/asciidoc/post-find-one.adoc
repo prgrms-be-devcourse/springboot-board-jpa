@@ -1,0 +1,18 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 게시글
+
+=== 게시글 단건 조회
+
+=== GET /posts/{id}
+
+.Request
+include::{snippets}/post-find-one/http-request.adoc[]
+//include::{snippets}/post-find-one/request-fields.adoc[]
+
+.Response
+//include::{snippets}/ppost-find-one/http-response.adoc[]
+include::{snippets}/post-find-one/response-fields.adoc[]

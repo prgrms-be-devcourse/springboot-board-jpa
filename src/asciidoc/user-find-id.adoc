@@ -1,0 +1,18 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 고객
+
+=== 고객 id로 단일 조회
+
+=== GET /user/{userId}
+
+.Request
+include::{snippets}/user-find-userId/http-request.adoc[]
+//include::{snippets}/user-find-userId/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-find-userId/http-response.adoc[]
+include::{snippets}/user-find-userId/response-fields.adoc[]

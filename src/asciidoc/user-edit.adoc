@@ -1,0 +1,18 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 고객
+
+=== 고객 수정
+
+=== PUT /user/edit
+
+.Request
+include::{snippets}/user-edit/http-request.adoc[]
+include::{snippets}/user-edit/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-edit/http-response.adoc[]
+include::{snippets}/user-edit/response-fields.adoc[]

@@ -1,0 +1,18 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 고객
+
+=== 고객 검색 (이름)
+
+=== GET /user?name={name}
+
+.Request
+include::{snippets}/user-find-name/http-request.adoc[]
+include::{snippets}/user-find-name/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-find-name/http-response.adoc[]
+include::{snippets}/user-find-name/response-fields.adoc[]

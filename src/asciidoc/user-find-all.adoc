@@ -1,0 +1,18 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 고객
+
+=== 고객 전체 조회
+
+=== GET /user
+
+.Request
+include::{snippets}/user-find-all/http-request.adoc[]
+include::{snippets}/user-find-all/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-find-all/http-response.adoc[]
+include::{snippets}/user-find-all/response-fields.adoc[]
