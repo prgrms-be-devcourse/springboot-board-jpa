@@ -1,0 +1,30 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+
+== 사용자 관리
+
+=== 사용자 생성
+
+=== /user
+
+.Request
+include::{snippets}/user-save/http-request.adoc[]
+include::{snippets}/user-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-save/http-response.adoc[]
+include::{snippets}/user-save/response-fields.adoc[]
+
+=== 아이디로 사용자 조회
+
+=== /user/{id}
+
+.Request
+include::{snippets}/user-find-by-id/http-request.adoc[]
+
+.Response
+include::{snippets}/user-find-by-id/http-response.adoc[]
+include::{snippets}/user-find-by-id/response-fields.adoc[]
