@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/spring-board;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    generate-ddl: true
+    database: H2
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        query.in_clause_parameter_padding: true
+        hdm2ddl:
+          auto: create-drop
+        format_sql: true
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
