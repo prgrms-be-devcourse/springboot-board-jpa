@@ -1,0 +1,10 @@
+=== Get All Users With Page
+
+==== /users?page={page}&size={size}
+
+.Request
+include::{snippets}/user-getAllWithPage/http-request.adoc[]
+
+.Response
+include::{snippets}/user-getAllWithPage/http-response.adoc[]
+include::{snippets}/user-getAllWithPage/response-fields.adoc[]

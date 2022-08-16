@@ -1,0 +1,10 @@
+=== Post 조회
+
+==== /posts
+
+.Request
+include::{snippets}/post-getAll/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getAll/http-response.adoc[]
+include::{snippets}/post-getAll/response-fields.adoc[]

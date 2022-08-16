@@ -1,0 +1,10 @@
+=== Get All Users
+
+==== /users
+
+.Request
+include::{snippets}/user-getAll/http-request.adoc[]
+
+.Response
+include::{snippets}/user-getAll/http-response.adoc[]
+include::{snippets}/user-getAll/response-fields.adoc[]

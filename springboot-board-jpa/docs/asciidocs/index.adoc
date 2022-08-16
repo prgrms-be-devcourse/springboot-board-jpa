@@ -1,0 +1,19 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets:../../../target/generated-snippets
+endif::[]
+
+== User
+
+include::user-save.adoc[]
+
+include::get-all-users.adoc[]
+
+include::get-all-users-with-page.adoc[]
+
+== Post
+
+include::post-save.adoc[]
+include::get-all-posts.adoc[]
+include::get-all-posts-with-page.adoc[]
+include::post-update.adoc[]
