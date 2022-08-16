@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/jpa_board
+    username: yeon
+    password: root1234
+  jpa:
+    generate-ddl: true
+    database: mysql
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        query.in_clause_parameter_padding: true
+        hbm2ddl:
+          auto: create
