@@ -1,0 +1,16 @@
+spring:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    generate-ddl: true
+    properties:
+      hibernate:
+        format_sql: true
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
