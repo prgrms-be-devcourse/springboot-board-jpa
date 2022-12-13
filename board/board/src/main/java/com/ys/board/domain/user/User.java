@@ -1,6 +1,7 @@
 package com.ys.board.domain.user;
 
 import com.ys.board.domain.base.AbstractCreatedColumn;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,4 +42,23 @@ public class User extends AbstractCreatedColumn {
     public static User create(String name, Integer age, String hobby) {
         return new User(name, age, hobby);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return age == user.age && Objects.equals(id, user.id) && Objects.equals(
+            name, user.name) && Objects.equals(hobby, user.hobby);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, hobby);
+    }
+
 }

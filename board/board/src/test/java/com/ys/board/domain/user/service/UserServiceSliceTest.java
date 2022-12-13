@@ -5,11 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import com.ys.board.common.exception.EntityNotFoundException;
 import com.ys.board.domain.user.DuplicateNameException;
 import com.ys.board.domain.user.User;
 import com.ys.board.domain.user.api.UserCreateRequest;
 import com.ys.board.domain.user.api.UserCreateResponse;
 import com.ys.board.domain.user.repository.UserRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -72,5 +74,37 @@ class UserServiceSliceTest {
         assertThrows(DuplicateNameException.class, () -> userService.createUser(userCreateRequest));
     }
 
+    @DisplayName("findById 성공 테스트 - 아이디값으로 유저를 조회한다.")
+    @Test
+    void findByIdSuccess() {
+        //given
+        User user = User.create("username", 28,
+            "");
 
+        Long userId = 1L;
+
+        given(userRepository.findById(userId))
+            .willReturn(Optional.of(user));
+        //when
+        User findUser = userService.findById(userId);
+
+        //then
+        assertEquals(user, findUser);
+        verify(userRepository).findById(userId);
+    }
+
+    @DisplayName("findById 실패 테스트 - 아이디값으로 조회한 유저가 없으므로 예외를 던진다.")
+    @Test
+    void findByIdFailNotFound() {
+        //given
+        Long userId = 1L;
+
+        given(userRepository.findById(userId))
+            .willReturn(Optional.empty());
+        //when
+        assertThrows(EntityNotFoundException.class, () -> userService.findById(userId));
+
+        //then
+        verify(userRepository).findById(userId);
+    }
 }
