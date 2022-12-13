@@ -22,7 +22,7 @@ public class User extends AbstractCreatedColumn {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotBlank
     @Size(min = 1)
     private String name;
@@ -38,4 +38,7 @@ public class User extends AbstractCreatedColumn {
         this.hobby = hobby;
     }
 
+    public static User create(String name, Integer age, String hobby) {
+        return new User(name, age, hobby);
+    }
 }
