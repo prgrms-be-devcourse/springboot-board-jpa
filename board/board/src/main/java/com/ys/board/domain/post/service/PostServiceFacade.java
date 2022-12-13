@@ -28,4 +28,9 @@ public class PostServiceFacade {
         return new PostCreateResponse(post.getId());
     }
 
+    @Transactional(readOnly = true)
+    public PostResponse findPostById(Long postId) {
+        Post post = postService.findById(postId);
+        return new PostResponse(post);
+    }
 }

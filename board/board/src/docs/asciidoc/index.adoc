@@ -37,3 +37,26 @@ include::{snippets}/posts-create/http-response.adoc[]
 ==== request-fail - 존재하지 않는 유저
 
 include::{snippets}/posts-create-user-notfound/http-response.adoc[]
+
+=== Get One
+
+==== HTTP request
+
+include::{snippets}/posts-findById/http-request.adoc[]
+
+
+===== PathParameters
+
+include::{snippets}/posts-findById/path-parameters.adoc[]
+
+==== HTTP response
+
+include::{snippets}/posts-findById/http-response.adoc[]
+
+==== request-fail - 존재하지 않는 게시글
+
+include::{snippets}/posts-findById-post-notfound/http-response.adoc[]
+
+
+
+
