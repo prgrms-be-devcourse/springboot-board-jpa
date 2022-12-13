@@ -450,6 +450,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#resources-post-create">create</a></li>
 </ul>
 </li>
+<li><a href="#_post">Post</a>
+<ul class="sectlevel2">
+<li><a href="#_create">Create</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -485,7 +490,78 @@ Content-Type: application/json
 Content-Length: 18
 
 {
+  "userId" : 3
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_request_fail_유저_이름_중복"><a class="link" href="#_request_fail_유저_이름_중복">request fail - 유저 이름 중복</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 409 Conflict
+Content-Type: application/json
+Content-Length: 142
+
+{
+  "timeStamp" : "2022-12-13T20:46:51.995488",
+  "message" : "이미 존재하는 이름입니다. by ys",
+  "requestUrl" : "/api/v1/users"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_post"><a class="link" href="#_post">Post</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_create"><a class="link" href="#_create">Create</a></h3>
+<div class="sect3">
+<h4 id="_http_request_2"><a class="link" href="#_http_request_2">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/posts HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 64
+Host: localhost:8080
+
+{
+  "title" : "title",
+  "content" : "content",
   "userId" : 1
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_http_response_2"><a class="link" href="#_http_response_2">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
+Content-Type: application/json
+Content-Length: 18
+
+{
+  "postId" : 1
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_request_fail_존재하지_않는_유저"><a class="link" href="#_request_fail_존재하지_않는_유저">request-fail - 존재하지 않는 유저</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
+Content-Type: application/json
+Content-Length: 151
+
+{
+  "timeStamp" : "2022-12-13T20:46:49.72649",
+  "message" : "com.ys.board.domain.user.User Entity not found. by 0",
+  "requestUrl" : "/api/v1/posts"
 }</code></pre>
 </div>
 </div>
@@ -497,7 +573,7 @@ Content-Length: 18
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-12-13 19:02:31 +0900
+Last updated 2022-12-13 20:46:28 +0900
 </div>
 </div>
 </body>

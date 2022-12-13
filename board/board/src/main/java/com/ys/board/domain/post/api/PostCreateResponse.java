@@ -1,4 +1,4 @@
-package com.ys.board.domain.post;
+package com.ys.board.domain.post.api;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -18,3 +18,22 @@ include::{snippets}/users-create/http-request.adoc[]
 
 include::{snippets}/users-create/http-response.adoc[]
 
+==== request fail - 유저 이름 중복
+
+include::{snippets}/users-create-fail/http-response.adoc[]
+
+== Post
+=== Create
+
+==== HTTP request
+
+include::{snippets}/posts-create/http-request.adoc[]
+
+
+==== HTTP response
+
+include::{snippets}/posts-create/http-response.adoc[]
+
+==== request-fail - 존재하지 않는 유저
+
+include::{snippets}/posts-create-user-notfound/http-response.adoc[]
