@@ -1,0 +1,20 @@
+= REST Docs 게시판 API
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[resources-post]]
+== User
+
+[[resources-post-create]]
+=== create
+
+==== HTTP request
+
+include::{snippets}/users-create/http-request.adoc[]
+
+
+==== HTTP response
+
+include::{snippets}/users-create/http-response.adoc[]
+
