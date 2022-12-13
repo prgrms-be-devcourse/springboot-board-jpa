@@ -1,5 +1,6 @@
 package com.ys.board.common;
 
+import com.ys.board.common.exception.EntityNotFoundException;
 import com.ys.board.common.response.ErrorResponse;
 import com.ys.board.domain.user.DuplicateNameException;
 import java.time.LocalDateTime;
@@ -30,6 +31,20 @@ public class RestGlobalExceptionHandler {
             .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponse> entityNotFoundHandle(EntityNotFoundException e,
+        HttpServletRequest request) {
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+            .timeStamp(LocalDateTime.now())
+            .message(e.getMessage())
+            .requestUrl(request.getRequestURI())
+            .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
