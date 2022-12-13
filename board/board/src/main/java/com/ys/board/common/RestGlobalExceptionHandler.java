@@ -33,6 +33,20 @@ public class RestGlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> illegalArgumentHandle(IllegalArgumentException e,
+        HttpServletRequest request) {
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+            .timeStamp(LocalDateTime.now())
+            .message(e.getMessage())
+            .requestUrl(request.getRequestURI())
+            .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> entityNotFoundHandle(EntityNotFoundException e,

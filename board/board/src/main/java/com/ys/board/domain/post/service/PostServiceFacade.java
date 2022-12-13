@@ -1,6 +1,7 @@
 package com.ys.board.domain.post.service;
 
 import com.ys.board.domain.post.Post;
+import com.ys.board.domain.post.PostUpdateRequest;
 import com.ys.board.domain.post.api.PostCreateRequest;
 import com.ys.board.domain.post.api.PostCreateResponse;
 import com.ys.board.domain.user.User;
@@ -32,5 +33,10 @@ public class PostServiceFacade {
     public PostResponse findPostById(Long postId) {
         Post post = postService.findById(postId);
         return new PostResponse(post);
+    }
+
+    @Transactional
+    public void updatePost(Long postId, PostUpdateRequest request) {
+        postService.updatePost(postId, request);
     }
 }

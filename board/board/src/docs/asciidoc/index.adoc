@@ -57,6 +57,19 @@ include::{snippets}/posts-findById/http-response.adoc[]
 
 include::{snippets}/posts-findById-post-notfound/http-response.adoc[]
 
+=== Update All
 
+==== HTTP request
+include::{snippets}/posts-update-all/http-request.adoc[]
 
+===== PathParameters
+
+include::{snippets}/posts-update-all/path-parameters.adoc[]
+
+==== HTTP response
+include::{snippets}/posts-update-all/http-response.adoc[]
+
+==== request-fail - 잘못된 입력 값
+
+include::{snippets}/posts-update-all-FailEmptyValue/http-response.adoc[]
 

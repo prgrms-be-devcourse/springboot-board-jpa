@@ -453,7 +453,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_post">Post</a>
 <ul class="sectlevel2">
 <li><a href="#_create">Create</a></li>
-<li><a href="#_get">Get</a></li>
+<li><a href="#_get_one">Get One</a></li>
+<li><a href="#_update_all">Update All</a></li>
 </ul>
 </li>
 </ul>
@@ -491,7 +492,7 @@ Content-Type: application/json
 Content-Length: 18
 
 {
-  "userId" : 4
+  "userId" : 8
 }</code></pre>
 </div>
 </div>
@@ -505,7 +506,7 @@ Content-Type: application/json
 Content-Length: 135
 
 {
-  "timeStamp" : "2022-12-13 21-10-53",
+  "timeStamp" : "2022-12-13 21-55-00",
   "message" : "이미 존재하는 이름입니다. by ys",
   "requestUrl" : "/api/v1/users"
 }</code></pre>
@@ -532,7 +533,7 @@ Host: localhost:8080
 {
   "title" : "title",
   "content" : "content",
-  "userId" : 2
+  "userId" : 3
 }</code></pre>
 </div>
 </div>
@@ -546,7 +547,7 @@ Content-Type: application/json
 Content-Length: 18
 
 {
-  "postId" : 2
+  "postId" : 3
 }</code></pre>
 </div>
 </div>
@@ -560,7 +561,7 @@ Content-Type: application/json
 Content-Length: 120
 
 {
-  "timeStamp" : "2022-12-13 21-10-51",
+  "timeStamp" : "2022-12-13 21-54-58",
   "message" : "User Entity not found. by 0",
   "requestUrl" : "/api/v1/posts"
 }</code></pre>
@@ -569,15 +570,37 @@ Content-Length: 120
 </div>
 </div>
 <div class="sect2">
-<h3 id="_get"><a class="link" href="#_get">Get</a></h3>
+<h3 id="_get_one"><a class="link" href="#_get_one">Get One</a></h3>
 <div class="sect3">
 <h4 id="_http_request_3"><a class="link" href="#_http_request_3">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/posts/1 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/posts/2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_pathparameters"><a class="link" href="#_pathparameters">PathParameters</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/v1/posts/{postId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>postId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Post Id</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect3">
@@ -589,13 +612,72 @@ Content-Type: application/json
 Content-Length: 141
 
 {
-  "postId" : 1,
+  "postId" : 2,
   "title" : "title",
   "content" : "content",
-  "userId" : 1,
-  "createdAt" : "2022-12-13 21-10-51",
+  "userId" : 2,
+  "createdAt" : "2022-12-13 21-54-58",
   "createdBy" : null
 }</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_request_fail_존재하지_않는_게시글"><a class="link" href="#_request_fail_존재하지_않는_게시글">request-fail - 존재하지 않는 게시글</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
+Content-Type: application/json
+Content-Length: 122
+
+{
+  "timeStamp" : "2022-12-13 21-54-58",
+  "message" : "Post Entity not found. by 1",
+  "requestUrl" : "/api/v1/posts/1"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_update_all"><a class="link" href="#_update_all">Update All</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /api/v1/posts/1 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 60
+Host: localhost:8080
+
+{
+  "title" : "updateTitle",
+  "content" : "updateContent"
+}</code></pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_pathparameters_2"><a class="link" href="#_pathparameters_2">PathParameters</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. /api/v1/posts/{postId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>postId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Post Id</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK</code></pre>
 </div>
 </div>
 </div>
@@ -606,7 +688,7 @@ Content-Length: 141
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-12-13 21:10:34 +0900
+Last updated 2022-12-13 21:54:36 +0900
 </div>
 </div>
 </body>

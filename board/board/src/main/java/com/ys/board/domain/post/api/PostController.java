@@ -1,5 +1,6 @@
 package com.ys.board.domain.post.api;
 
+import com.ys.board.domain.post.PostUpdateRequest;
 import com.ys.board.domain.post.service.PostResponse;
 import com.ys.board.domain.post.service.PostServiceFacade;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,4 +34,13 @@ public class PostController {
         return ResponseEntity.ok(postResponse);
     }
 
+    @PutMapping("/{postId}")
+    public ResponseEntity<Void> updateAllPost(
+        @PathVariable Long postId,
+        @RequestBody PostUpdateRequest request) {
+
+        postServiceFacade.updatePost(postId, request);
+
+        return ResponseEntity.ok().build();
+    }
 }

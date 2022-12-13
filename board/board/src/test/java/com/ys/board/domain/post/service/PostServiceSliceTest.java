@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 
 import com.ys.board.common.exception.EntityNotFoundException;
 import com.ys.board.domain.post.Post;
+import com.ys.board.domain.post.PostUpdateRequest;
 import com.ys.board.domain.post.api.PostCreateRequest;
 import com.ys.board.domain.post.repository.PostRepository;
 import java.util.Optional;
@@ -88,6 +89,74 @@ class PostServiceSliceTest {
         //when & then
         assertThrows(EntityNotFoundException.class, () -> postService.findById(postId));
 
+        verify(postRepository).findById(postId);
+    }
+
+    @DisplayName("updateAll 수정 테스트 - Post의 title과 content를 수정한다.")
+    @Test
+    void updateAllPostSuccess() {
+        //given
+        String title = "title";
+        String content = "content";
+        long postId = 1L;
+        Post post = Post.create(title, content);
+
+        given(postRepository.findById(postId))
+            .willReturn(Optional.of(post));
+
+        String updateTitle = "updateTitle";
+        String updateContent = "updateContent";
+        PostUpdateRequest postUpdateRequest = new PostUpdateRequest(updateTitle, updateContent);
+
+        //when
+        postService.updatePost(postId, postUpdateRequest);
+        //then
+        assertEquals(updateTitle, post.getTitle());
+        assertEquals(updateContent, post.getContent());
+        verify(postRepository).findById(postId);
+    }
+
+    @DisplayName("updateAll 실패 테스트 - Post의 title이나 content가 빈 값이면 수정하지 않고 예외를 던진다")
+    @Test
+    void updateAllPostFailTestTitleAndContentEmpty() {
+        //given
+        String title = "title";
+        String content = "content";
+        long postId = 1L;
+        Post post = Post.create(title, content);
+
+        given(postRepository.findById(postId))
+            .willReturn(Optional.of(post));
+
+        String updateTitle = "";
+        String updateContent = "";
+        PostUpdateRequest postUpdateRequest = new PostUpdateRequest(updateTitle, updateContent);
+
+        //when
+        assertThrows(IllegalArgumentException.class, () -> postService.updatePost(postId, postUpdateRequest));
+
+        //then
+        assertEquals(title, post.getTitle());
+        assertEquals(content, post.getContent());
+        verify(postRepository).findById(postId);
+    }
+
+    @DisplayName("updateAll 실패 테스트 - Post 가 없으면 수정하지 않고 예외를 던진다")
+    @Test
+    void updateAllPostFailTestNotFoundPost() {
+        //given
+        long postId = 1L;
+        given(postRepository.findById(postId))
+            .willReturn(Optional.empty());
+
+        String updateTitle = "";
+        String updateContent = "";
+        PostUpdateRequest postUpdateRequest = new PostUpdateRequest(updateTitle, updateContent);
+
+        //when
+        assertThrows(EntityNotFoundException.class, () -> postService.updatePost(postId, postUpdateRequest));
+
+        //then
         verify(postRepository).findById(postId);
     }
 

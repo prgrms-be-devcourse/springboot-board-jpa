@@ -2,8 +2,8 @@ package com.ys.board.domain.post.service;
 
 import com.ys.board.common.exception.EntityNotFoundException;
 import com.ys.board.domain.post.Post;
+import com.ys.board.domain.post.PostUpdateRequest;
 import com.ys.board.domain.post.api.PostCreateRequest;
-import com.ys.board.domain.post.api.PostCreateResponse;
 import com.ys.board.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +26,13 @@ public class PostService {
     public Post findById(Long postId) {
         return postRepository.findById(postId)
             .orElseThrow(() -> new EntityNotFoundException(Post.class, postId));
+    }
+
+    @Transactional
+    public void updatePost(Long postId, PostUpdateRequest request) {
+        Post post = findById(postId);
+
+        post.updateAll(request);
     }
 
 }

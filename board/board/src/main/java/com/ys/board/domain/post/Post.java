@@ -43,10 +43,18 @@ public class Post extends AbstractCreatedColumn {
     private User user;
 
     public Post(String title, String content) {
-        Assert.hasText(title, "title 은 빈 값이면 안됩니다.");
-        Assert.hasText(title, "content 은 빈 값이면 안됩니다.");
+        validateTitle(title);
+        validateContent(title);
         this.title = title;
         this.content = content;
+    }
+
+    private void validateContent(String title) {
+        Assert.hasText(title, "content 은 빈 값이면 안됩니다.");
+    }
+
+    private void validateTitle(String title) {
+        Assert.hasText(title, "title 은 빈 값이면 안됩니다.");
     }
 
     public static Post create(String title, String content) {
@@ -74,6 +82,13 @@ public class Post extends AbstractCreatedColumn {
     @Override
     public int hashCode() {
         return Objects.hash(id, title, content);
+    }
+
+    public void updateAll(PostUpdateRequest updateRequest) {
+        validateTitle(updateRequest.getTitle());
+        validateContent(updateRequest.getContent());
+        this.title = updateRequest.getTitle();
+        this.content = updateRequest.getContent();
     }
 
 }
