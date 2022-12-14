@@ -17,16 +17,22 @@ public class ErrorResponse {
 
     private String requestUrl;
 
+    private String method;
+
     @Builder
     public ErrorResponse(LocalDateTime timeStamp, String message,
-        String requestUrl) {
+        String requestUrl, String method) {
         this.timeStamp = timeStamp;
         this.message = message;
         this.requestUrl = requestUrl;
+        this.method = method;
     }
 
     public void setRequestUrl(String requestUrl) {
         this.requestUrl = requestUrl;
     }
 
+    public void setMethod(String method) {
+        this.method = method;
+    }
 }

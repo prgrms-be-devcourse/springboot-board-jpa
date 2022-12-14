@@ -4,6 +4,8 @@ import com.ys.board.domain.post.Post;
 import com.ys.board.domain.post.PostUpdateRequest;
 import com.ys.board.domain.post.api.PostCreateRequest;
 import com.ys.board.domain.post.api.PostCreateResponse;
+import com.ys.board.domain.post.api.PostResponse;
+import com.ys.board.domain.post.api.PostResponses;
 import com.ys.board.domain.user.User;
 import com.ys.board.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -39,4 +41,10 @@ public class PostServiceFacade {
     public void updatePost(Long postId, PostUpdateRequest request) {
         postService.updatePost(postId, request);
     }
+
+    @Transactional(readOnly = true)
+    public PostResponses findAllPostsByIdCursorBased(Long cursorId, int pageSize) {
+        return postService.findAllByIdCursorBased(cursorId, pageSize);
+    }
+
 }

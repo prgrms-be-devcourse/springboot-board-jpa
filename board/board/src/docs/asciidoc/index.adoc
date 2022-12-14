@@ -18,6 +18,9 @@ include::{snippets}/users-create/http-request.adoc[]
 
 include::{snippets}/users-create/http-response.adoc[]
 
+include::{snippets}/users-create/response-fields.adoc[]
+
+
 ==== request fail - 유저 이름 중복
 
 include::{snippets}/users-create-fail/http-response.adoc[]
@@ -34,16 +37,21 @@ include::{snippets}/posts-create/http-request.adoc[]
 
 include::{snippets}/posts-create/http-response.adoc[]
 
+include::{snippets}/posts-create/response-fields.adoc[]
+
+
 ==== request-fail - 존재하지 않는 유저
 
 include::{snippets}/posts-create-user-notfound/http-response.adoc[]
+
+include::{snippets}/posts-create-user-notfound/response-fields.adoc[]
+
 
 === Get One
 
 ==== HTTP request
 
 include::{snippets}/posts-findById/http-request.adoc[]
-
 
 ===== PathParameters
 
@@ -53,9 +61,14 @@ include::{snippets}/posts-findById/path-parameters.adoc[]
 
 include::{snippets}/posts-findById/http-response.adoc[]
 
+include::{snippets}/posts-findById/response-fields.adoc[]
+
+
 ==== request-fail - 존재하지 않는 게시글
 
 include::{snippets}/posts-findById-post-notfound/http-response.adoc[]
+
+include::{snippets}/posts-findById-post-notfound/response-fields.adoc[]
 
 === Update All
 
@@ -72,4 +85,38 @@ include::{snippets}/posts-update-all/http-response.adoc[]
 ==== request-fail - 잘못된 입력 값
 
 include::{snippets}/posts-update-all-FailEmptyValue/http-response.adoc[]
+
+include::{snippets}/posts-update-all-FailEmptyValue/response-fields.adoc[]
+
+
+=== Get All
+
+==== HTTP request
+
+include::{snippets}/posts-findAll-HasNext/http-request.adoc[]
+
+===== RequestParameters
+
+include::{snippets}/posts-findAll-HasNext/request-parameters.adoc[]
+
+==== HTTP response
+
+include::{snippets}/posts-findAll-HasNext/http-response.adoc[]
+
+include::{snippets}/posts-findAll-HasNext/response-fields.adoc[]
+
+==== request-fail - 존재하지 않는 게시글
+
+include::{snippets}/posts-findAll-NotFound/http-response.adoc[]
+
+include::{snippets}/posts-findAll-NotFound/response-fields.adoc[]
+
+
+
+== Common
+=== ErrorResponseFormat
+
+include::{snippets}/posts-update-all-FailEmptyValue/http-response.adoc[]
+
+include::{snippets}/posts-update-all-FailEmptyValue/response-fields.adoc[]
 

@@ -1,12 +1,12 @@
 package com.ys.board.domain.post.api;
 
 import com.ys.board.domain.post.PostUpdateRequest;
-import com.ys.board.domain.post.service.PostResponse;
 import com.ys.board.domain.post.service.PostServiceFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,4 +43,13 @@ public class PostController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping
+    public ResponseEntity<PostResponses> findAll(@ModelAttribute PostsRequest request) {
+        PostResponses postResponses = postServiceFacade.findAllPostsByIdCursorBased(
+            request.getCursorId(), request.getPageSize());
+
+        return ResponseEntity.ok(postResponses);
+    }
+
 }

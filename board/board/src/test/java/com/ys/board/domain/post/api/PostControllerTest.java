@@ -1,5 +1,7 @@
 package com.ys.board.domain.post.api;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.lessThan;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -12,8 +14,10 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +28,11 @@ import com.ys.board.domain.user.User;
 import com.ys.board.domain.user.api.UserCreateRequest;
 import com.ys.board.domain.user.repository.UserRepository;
 import com.ys.board.domain.user.service.UserService;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +45,8 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 
 @AutoConfigureMockMvc
@@ -74,6 +85,7 @@ class PostControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(postCreateRequest)))
             .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.postId").exists())
             .andDo(document("posts-create",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
@@ -102,6 +114,10 @@ class PostControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(postCreateRequest)))
             .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.timeStamp").exists())
+            .andExpect(jsonPath("$.message").exists())
+            .andExpect(jsonPath("$.requestUrl").exists())
+            .andExpect(jsonPath("$.method").exists())
             .andDo(document("posts-create-user-notfound",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
@@ -113,7 +129,8 @@ class PostControllerTest {
                 responseFields(
                     fieldWithPath("timeStamp").description("서버 응답 시간"),
                     fieldWithPath("message").description("예외 메시지"),
-                    fieldWithPath("requestUrl").description("요청한 url")
+                    fieldWithPath("requestUrl").description("요청한 url"),
+                    fieldWithPath("method").description("요청 method")
                 )
             ))
             .andDo(print());
@@ -138,6 +155,12 @@ class PostControllerTest {
         this.mockMvc.perform(get("/api/v1/posts/{postId}", post.getId())
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$.postId").value(post.getId()))
+            .andExpect(jsonPath("$.title").value(title))
+            .andExpect(jsonPath("$.content").value(content))
+            .andExpect(jsonPath("$.userId").value(user.getId()))
+            .andExpect(jsonPath("$.createdAt").value(post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss"))))
+            .andExpect(jsonPath("$.createdBy").value(post.getCreatedBy()))
             .andDo(document("posts-findById",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
@@ -164,6 +187,10 @@ class PostControllerTest {
         this.mockMvc.perform(get("/api/v1/posts/{postId}", postId)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.timeStamp").exists())
+            .andExpect(jsonPath("$.message").exists())
+            .andExpect(jsonPath("$.requestUrl").exists())
+            .andExpect(jsonPath("$.method").exists())
             .andDo(document("posts-findById-post-NotFound",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
@@ -173,7 +200,8 @@ class PostControllerTest {
                 responseFields(
                     fieldWithPath("timeStamp").description("서버 응답 시간"),
                     fieldWithPath("message").description("예외 메시지"),
-                    fieldWithPath("requestUrl").description("요청한 url")
+                    fieldWithPath("requestUrl").description("요청한 url"),
+                    fieldWithPath("method").description("요청 method")
                 )
             ))
             .andDo(print());
@@ -233,6 +261,10 @@ class PostControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(postUpdateRequest)))
             .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.timeStamp").exists())
+            .andExpect(jsonPath("$.message").exists())
+            .andExpect(jsonPath("$.requestUrl").exists())
+            .andExpect(jsonPath("$.method").exists())
             .andDo(document("posts-update-all-FailNotFound",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
@@ -246,7 +278,8 @@ class PostControllerTest {
                 responseFields(
                     fieldWithPath("timeStamp").description("서버 응답 시간"),
                     fieldWithPath("message").description("예외 메시지"),
-                    fieldWithPath("requestUrl").description("요청한 url")
+                    fieldWithPath("requestUrl").description("요청한 url"),
+                    fieldWithPath("method").description("요청 method")
                 )
             ))
             .andDo(print());
@@ -277,6 +310,10 @@ class PostControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(postUpdateRequest)))
             .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.timeStamp").exists())
+            .andExpect(jsonPath("$.message").exists())
+            .andExpect(jsonPath("$.requestUrl").exists())
+            .andExpect(jsonPath("$.method").exists())
             .andDo(document("posts-update-all-FailEmptyValue",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
@@ -290,11 +327,149 @@ class PostControllerTest {
                 responseFields(
                     fieldWithPath("timeStamp").description("서버 응답 시간"),
                     fieldWithPath("message").description("예외 메시지"),
-                    fieldWithPath("requestUrl").description("요청한 url")
+                    fieldWithPath("requestUrl").description("요청한 url"),
+                    fieldWithPath("method").description("요청 method")
                 )
             ))
             .andDo(print());
     }
 
+    @DisplayName("Post 조회 성공 - get /api/v1/posts - Post 조회에 성공하고 createdAt 역순으로 출력한다. hasNext = true이고 요청한 pageSize 와 size가 같다")
+    @Test
+    void findAllPostByCursorIdSuccessHasNext() throws Exception {
+        //given
+        int size = 50;
+        List<Post> posts = saveAll(size);
+        Long cursorId = posts.get(size / 2).getId();
+
+        int pageSize = 20;
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("cursorId", cursorId.toString());
+        params.add("pageSize", String.valueOf(pageSize));
+
+        this.mockMvc.perform(get("/api/v1/posts")
+                .params(params)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.postResponses.length()").value(pageSize))
+            .andExpect(jsonPath("$.hasNext").value(true))
+            .andExpect(jsonPath("$.cursorId").value(cursorId))
+            .andDo(document("posts-findAll-HasNext",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("cursorId").description("커서 기준 Id (PostId)"),
+                    parameterWithName("pageSize").description("요청할 페이지 사이즈")
+                ),
+                responseFields(
+                    fieldWithPath("cursorId").type(JsonFieldType.NUMBER).description("커서 기준 Id PostId"),
+                    fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부"),
+                    fieldWithPath("postResponses[]").type(JsonFieldType.ARRAY).description("게시글들"),
+                    fieldWithPath("postResponses[].postId").type(JsonFieldType.NUMBER).description("게시글 Id"),
+                    fieldWithPath("postResponses[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                    fieldWithPath("postResponses[].content").type(JsonFieldType.STRING).description("게시글 내용"),
+                    fieldWithPath("postResponses[].userId").type(JsonFieldType.NUMBER).description("유저 Id"),
+                    fieldWithPath("postResponses[].createdAt").type(JsonFieldType.STRING).description("게시글 생성시간"),
+                    fieldWithPath("postResponses[].createdBy").description("게시글 작성자")
+                )
+            ))
+            .andDo(print());
+    }
+
+    @DisplayName("Post 조회 성공 - get /api/v1/posts - Post 조회에 성공하고 createdAt 역순으로 출력한다. hasNext = false 이고 요청한 pageSize 보다 size가 작다")
+    @Test
+    void findAllPostByCursorIdSuccessNotHasNext() throws Exception {
+        //given
+        int size = 19;
+        List<Post> posts = saveAll(size);
+        Long cursorId = posts.get(size / 2).getId();
+
+        int pageSize = 20;
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("cursorId", cursorId.toString());
+        params.add("pageSize", String.valueOf(pageSize));
+
+        this.mockMvc.perform(get("/api/v1/posts")
+                .params(params)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.postResponses.length()", lessThan(pageSize)))
+            .andExpect(jsonPath("$.hasNext").value(false))
+            .andExpect(jsonPath("$.cursorId").value(cursorId))
+            .andDo(document("posts-findAll-NotHasNext",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("cursorId").description("커서 기준 Id (PostId)"),
+                    parameterWithName("pageSize").description("요청할 페이지 사이즈")
+                ),
+                responseFields(
+                    fieldWithPath("cursorId").type(JsonFieldType.NUMBER).description("커서 기준 Id PostId"),
+                    fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부"),
+                    fieldWithPath("postResponses[]").type(JsonFieldType.ARRAY).description("게시글들"),
+                    fieldWithPath("postResponses[].postId").type(JsonFieldType.NUMBER).description("게시글 Id"),
+                    fieldWithPath("postResponses[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                    fieldWithPath("postResponses[].content").type(JsonFieldType.STRING).description("게시글 내용"),
+                    fieldWithPath("postResponses[].userId").type(JsonFieldType.NUMBER).description("유저 Id"),
+                    fieldWithPath("postResponses[].createdAt").type(JsonFieldType.STRING).description("게시글 생성시간"),
+                    fieldWithPath("postResponses[].createdBy").description("게시글 작성자")
+                )
+            ))
+            .andDo(print());
+    }
+
+    @DisplayName("Post 조회 실패 - get /api/v1/posts - Post가 없으므로 Post 조회에 실패한다.")
+    @Test
+    void findAllPostByCursorIdFailNotFound() throws Exception {
+        //given
+        Long cursorId = 20L;
+
+        int pageSize = 20;
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("cursorId", cursorId.toString());
+        params.add("pageSize", String.valueOf(pageSize));
+
+        this.mockMvc.perform(get("/api/v1/posts")
+                .params(params)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.timeStamp").exists())
+            .andExpect(jsonPath("$.message").exists())
+            .andExpect(jsonPath("$.requestUrl").exists())
+            .andDo(document("posts-findAll-NotFound",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("cursorId").description("커서 기준 Id (PostId)"),
+                    parameterWithName("pageSize").description("요청할 페이지 사이즈")
+                ),
+                responseFields(
+                    fieldWithPath("timeStamp").description("서버 응답 시간"),
+                    fieldWithPath("message").description("예외 메시지"),
+                    fieldWithPath("requestUrl").description("요청한 url"),
+                    fieldWithPath("method").description("요청 method")
+                )
+            ))
+            .andDo(print());
+    }
+
+    private List<Post> saveAll(int size) {
+        User user = User.create("name", 28, "");
+        userRepository.save(user);
+
+        List<Post> posts = IntStream.range(0, size)
+            .mapToObj(v -> {
+                    Post post = new Post("title" + v, "content" + v);
+                    post.changeUser(user);
+                    return post;
+                }
+            )
+            .collect(Collectors.toList());
+
+        return postRepository.saveAll(posts);
+    }
 
 }

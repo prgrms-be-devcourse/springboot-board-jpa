@@ -9,6 +9,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,6 +83,10 @@ class UserControllerTest {
                 .content(objectMapper.writeValueAsString(userCreateRequest))
             )
             .andExpect(status().isConflict())
+            .andExpect(jsonPath("$.timeStamp").exists())
+            .andExpect(jsonPath("$.message").exists())
+            .andExpect(jsonPath("$.requestUrl").exists())
+            .andExpect(jsonPath("$.method").exists())
             .andDo(document("users-create-fail",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
@@ -94,7 +99,8 @@ class UserControllerTest {
                 responseFields(
                     fieldWithPath("timeStamp").description("서버 응답 시간"),
                     fieldWithPath("message").description("예외 메시지"),
-                    fieldWithPath("requestUrl").description("요청한 url")
+                    fieldWithPath("requestUrl").description("요청한 url"),
+                    fieldWithPath("method").description("요청 method")
                 ))
             )
             .andDo(print());

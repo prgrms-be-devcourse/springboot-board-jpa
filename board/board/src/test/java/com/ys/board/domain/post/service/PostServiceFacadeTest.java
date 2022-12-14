@@ -2,7 +2,6 @@ package com.ys.board.domain.post.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import com.ys.board.common.exception.EntityNotFoundException;
@@ -10,10 +9,16 @@ import com.ys.board.domain.post.Post;
 import com.ys.board.domain.post.PostUpdateRequest;
 import com.ys.board.domain.post.api.PostCreateRequest;
 import com.ys.board.domain.post.api.PostCreateResponse;
+import com.ys.board.domain.post.api.PostResponse;
+import com.ys.board.domain.post.api.PostResponses;
 import com.ys.board.domain.post.repository.PostRepository;
 import com.ys.board.domain.user.User;
 import com.ys.board.domain.user.repository.UserRepository;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,7 +155,8 @@ class PostServiceFacadeTest {
         PostUpdateRequest postUpdateRequest = new PostUpdateRequest(updateTitle, updateContent);
 
         //when & then
-        assertThrows(EntityNotFoundException.class, () -> postServiceFacade.updatePost(postId, postUpdateRequest));
+        assertThrows(EntityNotFoundException.class,
+            () -> postServiceFacade.updatePost(postId, postUpdateRequest));
     }
 
     @DisplayName("updateAll 수정 실정 테스트 - Post의 title이나 content가 빈 값이면 수정하지 않고 예외를 던진다")
@@ -173,7 +179,8 @@ class PostServiceFacadeTest {
         PostUpdateRequest postUpdateRequest = new PostUpdateRequest(updateTitle, updateContent);
 
         //when
-        assertThrows(IllegalArgumentException.class, () -> postServiceFacade.updatePost(postId, postUpdateRequest));
+        assertThrows(IllegalArgumentException.class,
+            () -> postServiceFacade.updatePost(postId, postUpdateRequest));
 
         //then
         Optional<Post> postOptional = postRepository.findById(postId);
@@ -183,5 +190,145 @@ class PostServiceFacadeTest {
         assertEquals(content, findPost.getContent());
     }
 
+    @DisplayName("findAllByCursorId 조회 테스트 - cursorId가 존재하고 조회하는 양보다 데이터의 양이 많으면 hasNext가 true, id와 createdAt의 desc로 조회된다")
+    @Test
+    void findAllByCursorIdSuccessHasNext() {
+        //given
+        int size = 30;
+        List<Post> posts = saveAll(size);
+        Long cursorId = posts.get(size / 2).getId();
+        int pageSize = 10;
+
+        //when
+        PostResponses postResponses = postServiceFacade.findAllPostsByIdCursorBased(
+            cursorId, pageSize);
+
+        //then
+        assertTrue(postResponses.hasNext());
+        assertEquals(pageSize, postResponses.getPostResponses().size());
+        assertThat(postResponses.getPostResponses())
+            .map(PostResponse::getPostId)
+            .isSortedAccordingTo(Comparator.reverseOrder());
+
+        assertThat(postResponses.getPostResponses())
+            .map(PostResponse::getCreatedAt)
+            .isSortedAccordingTo(Comparator.reverseOrder());
+    }
+
+    @DisplayName("findAllByCursorId 조회 테스트 - cursorId가 존재하고 조회하는 양보다 데이터의 양이 적으면 hasNext가 false이고 id와 createdAt의 desc로 조회된다")
+    @Test
+    void findAllByCursorIdSuccessHasFalse() {
+        //given
+        int size = 10;
+        List<Post> posts = saveAll(size);
+        Long cursorId = posts.get(size / 2).getId(); // 중간값의 Id
+        int pageSize = 10;
+
+        //when
+        PostResponses postResponses = postServiceFacade.findAllPostsByIdCursorBased(
+            cursorId, pageSize);
+
+        //then
+        assertFalse(postResponses.hasNext());
+        assertThat(postResponses.getPostResponses()).hasSizeLessThan(pageSize);
+
+        assertThat(postResponses.getPostResponses())
+            .map(PostResponse::getPostId)
+            .isSortedAccordingTo(Comparator.reverseOrder());
+
+        assertThat(postResponses.getPostResponses())
+            .map(PostResponse::getCreatedAt)
+            .isSortedAccordingTo(Comparator.reverseOrder());
+    }
+
+    @DisplayName("findAllByCursorId 조회 테스트 - cursorId가 존재하지않고 조회하는 양보다 데이터의 양이 많으면  hasNext가 true이고 id와 createdAt의 desc로 조회된다")
+    @Test
+    void findAllByCursorIdNotExistsSuccessHasTrue() {
+        //given
+        int size = 20;
+        saveAll(size);
+        int pageSize = 10;
+
+        //when
+        PostResponses postResponses = postServiceFacade.findAllPostsByIdCursorBased(
+            null, pageSize);
+
+        //then
+        assertTrue(postResponses.hasNext());
+        assertEquals(pageSize, postResponses.getPostResponses().size());
+
+        assertThat(postResponses.getPostResponses())
+            .map(PostResponse::getPostId)
+            .isSortedAccordingTo(Comparator.reverseOrder());
+
+        assertThat(postResponses.getPostResponses())
+            .map(PostResponse::getCreatedAt)
+            .isSortedAccordingTo(Comparator.reverseOrder());
+    }
+
+    @DisplayName("findAllByCursorId 조회 테스트 - cursorId가 존재하지않고 조회하는 양보다 데이터의 양이 적으면  hasNext가 false이고 id와 createdAt의 desc로 조회된다")
+    @Test
+    void findAllByCursorIdNotExistsSuccessHasFalse() {
+        //given
+        int size = 9;
+        saveAll(size);
+        int pageSize = 10;
+
+        //when
+        PostResponses postResponses = postServiceFacade.findAllPostsByIdCursorBased(
+            null, pageSize);
+
+        //then
+        assertFalse(postResponses.hasNext());
+        assertThat(postResponses.getPostResponses()).hasSizeLessThan(pageSize);
+
+        assertThat(postResponses.getPostResponses())
+            .map(PostResponse::getPostId)
+            .isSortedAccordingTo(Comparator.reverseOrder());
+
+        assertThat(postResponses.getPostResponses())
+            .map(PostResponse::getCreatedAt)
+            .isSortedAccordingTo(Comparator.reverseOrder());
+    }
+
+    @DisplayName("findAllByCursorId 조회 테스트 -  cursorId로 요청하지만, 데이터가 없다면 예외를 던진다")
+    @Test
+    void findAllByNotExistsCursorIdNotFound() {
+        //given
+        int pageSize = 10;
+
+        long cursorId = 999;
+
+        //when & then
+        assertThrows(EntityNotFoundException.class, () -> postServiceFacade.findAllPostsByIdCursorBased(
+            cursorId, pageSize));
+    }
+
+    @DisplayName("findAllByCursorId 조회 테스트 - cursorId가 존재하지않고, post가 없다면 예외를 던진다")
+    @Test
+    void findAllByCursorIdNotExistsNotFound() {
+        //given
+        int pageSize = 10;
+
+        //when & then
+        assertThrows(EntityNotFoundException.class, () -> postServiceFacade.findAllPostsByIdCursorBased(
+            null, pageSize));
+    }
+
+    private List<Post> saveAll(int size) {
+        User user = User.create("name", 28, "");
+        userRepository.save(user);
+
+        List<Post> posts = IntStream.range(0, size)
+            .mapToObj(v -> {
+                    Post post = new Post("title" + v, "content" + v);
+                    post.changeUser(user);
+                    return post;
+                }
+            )
+            .collect(Collectors.toList());
+
+        return postRepository.saveAll(posts);
+    }
 
 }

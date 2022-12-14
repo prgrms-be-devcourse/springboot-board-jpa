@@ -1,4 +1,4 @@
-package com.ys.board.domain.post.service;
+package com.ys.board.domain.post.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ys.board.domain.post.Post;

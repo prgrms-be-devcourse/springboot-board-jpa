@@ -28,6 +28,7 @@ public class RestGlobalExceptionHandler {
             .timeStamp(LocalDateTime.now())
             .message(e.getMessage())
             .requestUrl(request.getRequestURI())
+            .method(request.getMethod())
             .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
@@ -42,6 +43,7 @@ public class RestGlobalExceptionHandler {
             .timeStamp(LocalDateTime.now())
             .message(e.getMessage())
             .requestUrl(request.getRequestURI())
+            .method(request.getMethod())
             .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
@@ -56,6 +58,7 @@ public class RestGlobalExceptionHandler {
             .timeStamp(LocalDateTime.now())
             .message(e.getMessage())
             .requestUrl(request.getRequestURI())
+            .method(request.getMethod())
             .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
@@ -66,7 +69,7 @@ public class RestGlobalExceptionHandler {
 
         ErrorResponse errorResponse = makeErrorResponseWithBindingResult(e.getBindingResult());
         errorResponse.setRequestUrl(request.getRequestURI());
-
+        errorResponse.setMethod(request.getMethod());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
