@@ -26,7 +26,7 @@ public class Post {
 	private String title;
 
 	@Lob
-	@Column(name = "content",nullable = false)
+	@Column(name = "content", nullable = false)
 	private String content;
 
 	@Builder
