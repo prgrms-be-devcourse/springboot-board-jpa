@@ -1,5 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post;
 
+import java.util.Objects;
+
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 
 import jakarta.persistence.Column;
@@ -38,10 +40,26 @@ public class Post {
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 
-
 	@Builder
 	public Post(String title, String content) {
 		this.title = title;
 		this.content = content;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Post post = (Post)o;
+		return Objects.equals(getId(), post.getId()) && Objects.equals(getTitle(), post.getTitle())
+			&& Objects.equals(getContent(), post.getContent()) && Objects.equals(getUser(),
+			post.getUser());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getId(), getTitle(), getContent(), getUser());
 	}
 }

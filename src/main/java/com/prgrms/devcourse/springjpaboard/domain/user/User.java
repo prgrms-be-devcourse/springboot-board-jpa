@@ -1,5 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.user;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,5 +37,21 @@ public class User {
 		this.name = name;
 		this.age = age;
 		this.hobby = hobby;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		User user = (User)o;
+		return getId().equals(user.getId()) && getName().equals(user.getName()) && getAge().equals(user.getAge())
+			&& getHobby().equals(user.getHobby());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getId(), getName(), getAge(), getHobby());
 	}
 }
