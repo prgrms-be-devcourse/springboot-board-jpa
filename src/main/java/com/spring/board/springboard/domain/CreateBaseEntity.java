@@ -11,8 +11,8 @@ public class CreateBaseEntity {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-//    @Column(name = "created_by")
-//    private User createdBy;
+    @Column(name = "created_by")
+    private String createdBy;
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -22,11 +22,11 @@ public class CreateBaseEntity {
         this.createdAt = createdAt;
     }
 
-//    public User getCreatedBy() {
-//        return createdBy;
-//    }
-//
-//    public void setCreatedBy(User createdBy) {
-//        this.createdBy = createdBy;
-//    }
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 }
