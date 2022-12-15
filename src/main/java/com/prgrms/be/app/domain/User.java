@@ -5,9 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,4 +28,11 @@ public class User extends BaseEntity{
 
     @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
+
+    public User(Long id, String name, int age, String hobby) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+    }
 }
