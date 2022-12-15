@@ -35,10 +35,4 @@ public class PostConverter {
 			.build();
 	}
 
-	public static PostResponseDtos toPostResponseDtos(List<Post> postList) {
-		return new PostResponseDtos(
-			postList.stream().map(PostConverter::toPostResponseDto).collect(Collectors.toList()));
-	}
-
-
 }

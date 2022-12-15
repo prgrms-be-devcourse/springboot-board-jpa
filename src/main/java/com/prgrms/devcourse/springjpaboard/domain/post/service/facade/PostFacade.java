@@ -1,9 +1,14 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.service.facade;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
+import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.PostService;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.converter.PostConverter;
+import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostResponseDtos;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostSaveDto;
@@ -35,9 +40,19 @@ public class PostFacade {
 
 	}
 
-	public PostResponseDtos findAll() {
+	public PostResponseDtos findAll(PostRequestDto postRequestDto) {
 
-		return PostConverter.toPostResponseDtos(postService.findAll());
+		List<Post> postList = postService.findAll(postRequestDto.getCursorId(), postRequestDto.getSize());
+
+		Long lastIdOfList = postService.getLastIdOfList(postList);
+
+		boolean hasNext = postService.hasNext(lastIdOfList);
+
+		return PostResponseDtos.builder()
+			.postResponseDtoList(postList.stream().map(PostConverter::toPostResponseDto).collect(Collectors.toList()))
+			.cursorId(lastIdOfList)
+			.hasNext(hasNext)
+			.build();
 
 	}
 

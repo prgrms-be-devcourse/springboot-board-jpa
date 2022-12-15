@@ -2,12 +2,14 @@ package com.prgrms.devcourse.springjpaboard.domain.post.api;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostResponseDtos;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostSaveDto;
@@ -25,9 +27,9 @@ public class PostController {
 	private final PostFacade postFacade;
 
 	@GetMapping
-	public ResponseEntity<PostResponseDtos> findAll() {
+	public ResponseEntity<PostResponseDtos> findAll(@RequestBody PostRequestDto postRequestDto) {
 
-		PostResponseDtos postResponseDtos = postFacade.findAll();
+		PostResponseDtos postResponseDtos = postFacade.findAll(postRequestDto);
 
 		return ResponseEntity.ok(postResponseDtos);
 	}

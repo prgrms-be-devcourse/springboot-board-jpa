@@ -13,9 +13,15 @@ public class PostResponseDtos {
 
 	private List<PostResponseDto> postResponseDtoList;
 
+	private Long cursorId;
+
+	private boolean hasNext;
+
 	@Builder
 	public PostResponseDtos(
-		List<PostResponseDto> postResponseDtoList) {
+		List<PostResponseDto> postResponseDtoList, Long cursorId, boolean hasNext) {
 		this.postResponseDtoList = postResponseDtoList;
+		this.cursorId = cursorId;
+		this.hasNext = hasNext;
 	}
 }
