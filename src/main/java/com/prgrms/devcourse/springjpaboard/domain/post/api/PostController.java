@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDtos;
 import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostUpdateDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.PostService;
 
@@ -24,11 +25,11 @@ public class PostController {
 	private final PostService postService;
 
 	@GetMapping("/api/v1/posts")
-	public ResponseEntity<List<PostResponseDto>> findAll() {
+	public ResponseEntity<PostResponseDtos> findAll() {
 
-		List<PostResponseDto> postList = postService.findAll();
+		PostResponseDtos postResponseDtos = postService.findAll();
 
-		return ResponseEntity.ok(postList);
+		return ResponseEntity.ok(postResponseDtos);
 	}
 
 	@GetMapping("/api/v1/posts/{id}")

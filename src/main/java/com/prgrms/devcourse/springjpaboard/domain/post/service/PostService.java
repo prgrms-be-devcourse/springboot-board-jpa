@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDtos;
 import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostUpdateDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.repository.PostRepository;
 
@@ -19,8 +20,8 @@ public class PostService {
 
 	private final PostRepository postRepository;
 
-	public List<PostResponseDto> findAll() {
-		return postRepository.findAll().stream().map(Post::toPostResponseDto).collect(Collectors.toList());
+	public PostResponseDtos findAll() {
+		return new PostResponseDtos(postRepository.findAll().stream().map(Post::toPostResponseDto).collect(Collectors.toList()));
 	}
 
 	public PostResponseDto findById(Long id) {
