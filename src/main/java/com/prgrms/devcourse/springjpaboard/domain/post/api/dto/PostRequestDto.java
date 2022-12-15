@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 public class PostRequestDto {
 
 	@NotBlank
+	private Long userId;
+
+	@NotBlank
 	private String title;
 
 	@NotBlank
