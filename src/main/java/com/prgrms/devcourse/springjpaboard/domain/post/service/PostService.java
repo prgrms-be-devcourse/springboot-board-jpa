@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.repository.PostRepository;
 
 import lombok.AllArgsConstructor;
@@ -20,8 +21,8 @@ public class PostService {
 		return postRepository.findAll();
 	}
 
-	public Post findById(Long id) {
-		return postRepository.findById(id).orElseThrow();
+	public PostResponseDto findById(Long id) {
+		return postRepository.findById(id).orElseThrow().toPostResponseDto();
 	}
 
 	public void create(PostRequestDto postRequestDto) {

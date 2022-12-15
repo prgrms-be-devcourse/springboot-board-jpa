@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,11 +31,11 @@ public class PostController {
 	}
 
 	@GetMapping("/api/v1/posts/{id}")
-	public ResponseEntity<Post> findById(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<PostResponseDto> findById(@PathVariable(name = "id") Long id) {
 
-		Post post = postService.findById(id);
+		PostResponseDto postResponseDto = postService.findById(id);
 
-		return ResponseEntity.ok(post);
+		return ResponseEntity.ok(postResponseDto);
 	}
 
 	@PostMapping("/api/v1/posts")

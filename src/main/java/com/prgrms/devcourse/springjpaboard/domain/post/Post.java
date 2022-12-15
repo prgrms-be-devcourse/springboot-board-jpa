@@ -2,6 +2,7 @@ package com.prgrms.devcourse.springjpaboard.domain.post;
 
 import java.util.Objects;
 
+import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 
 import jakarta.persistence.Column;
@@ -44,6 +45,14 @@ public class Post {
 	public Post(String title, String content) {
 		this.title = title;
 		this.content = content;
+	}
+
+	public PostResponseDto toPostResponseDto() {
+		return PostResponseDto.builder()
+			.id(this.id)
+			.title(this.title)
+			.content(this.content)
+			.build();
 	}
 
 	public void updatePost(Post post) {
