@@ -46,6 +46,11 @@ public class Post {
 		this.content = content;
 	}
 
+	public void updatePost(Post post) {
+		this.title = post.getTitle();
+		this.content = post.getContent();
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
