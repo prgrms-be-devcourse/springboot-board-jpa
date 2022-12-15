@@ -1,6 +1,6 @@
 HELP.md
 mvnw*
-.mvn
+.mvn/
 target/
 !**/src/main/**/target/
 !**/src/test/**/target/
