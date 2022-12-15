@@ -1,8 +1,8 @@
 package com.ys.board.domain.post.service;
 
 import com.ys.board.common.exception.EntityNotFoundException;
-import com.ys.board.domain.post.Post;
-import com.ys.board.domain.post.PostUpdateRequest;
+import com.ys.board.domain.post.model.Post;
+import com.ys.board.domain.post.api.PostUpdateRequest;
 import com.ys.board.domain.post.api.PostCreateRequest;
 import com.ys.board.domain.post.api.PostResponse;
 import com.ys.board.domain.post.api.PostResponses;

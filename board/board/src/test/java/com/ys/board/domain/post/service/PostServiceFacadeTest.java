@@ -1,18 +1,20 @@
 package com.ys.board.domain.post.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ys.board.common.exception.EntityNotFoundException;
-import com.ys.board.domain.post.Post;
-import com.ys.board.domain.post.PostUpdateRequest;
+import com.ys.board.domain.post.model.Post;
 import com.ys.board.domain.post.api.PostCreateRequest;
 import com.ys.board.domain.post.api.PostCreateResponse;
 import com.ys.board.domain.post.api.PostResponse;
 import com.ys.board.domain.post.api.PostResponses;
+import com.ys.board.domain.post.api.PostUpdateRequest;
 import com.ys.board.domain.post.repository.PostRepository;
-import com.ys.board.domain.user.User;
+import com.ys.board.domain.user.model.User;
 import com.ys.board.domain.user.repository.UserRepository;
 import java.util.Comparator;
 import java.util.List;

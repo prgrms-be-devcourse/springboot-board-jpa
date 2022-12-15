@@ -1,6 +1,6 @@
 package com.ys.board.domain.user.repository;
 
-import com.ys.board.domain.user.User;
+import com.ys.board.domain.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

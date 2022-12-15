@@ -1,7 +1,7 @@
 package com.ys.board.domain.post.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ys.board.domain.post.Post;
+import com.ys.board.domain.post.model.Post;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

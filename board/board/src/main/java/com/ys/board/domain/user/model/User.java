@@ -1,4 +1,4 @@
-package com.ys.board.domain.user;
+package com.ys.board.domain.user.model;
 
 import com.ys.board.domain.base.AbstractCreatedColumn;
 import java.util.Objects;

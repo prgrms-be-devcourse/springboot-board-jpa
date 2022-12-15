@@ -1,4 +1,4 @@
-package com.ys.board.domain.post;
+package com.ys.board.domain.post.api;
 
 import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;

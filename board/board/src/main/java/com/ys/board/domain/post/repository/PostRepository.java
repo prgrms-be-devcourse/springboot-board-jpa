@@ -1,6 +1,6 @@
 package com.ys.board.domain.post.repository;
 
-import com.ys.board.domain.post.Post;
+import com.ys.board.domain.post.model.Post;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

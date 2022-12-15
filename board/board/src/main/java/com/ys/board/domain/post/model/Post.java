@@ -1,7 +1,8 @@
-package com.ys.board.domain.post;
+package com.ys.board.domain.post.model;
 
 import com.ys.board.domain.base.AbstractCreatedColumn;
-import com.ys.board.domain.user.User;
+import com.ys.board.domain.post.api.PostUpdateRequest;
+import com.ys.board.domain.user.model.User;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;

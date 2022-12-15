@@ -1,7 +1,7 @@
 package com.ys.board.domain.post.api;
 
-import com.ys.board.domain.post.PostUpdateRequest;
 import com.ys.board.domain.post.service.PostServiceFacade;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class PostController {
     private final PostServiceFacade postServiceFacade;
 
     @PostMapping
-    public ResponseEntity<PostCreateResponse> createPost(@RequestBody PostCreateRequest request) {
+    public ResponseEntity<PostCreateResponse> createPost(@RequestBody @Valid PostCreateRequest request) {
         PostCreateResponse createResponse = postServiceFacade.createPost(request);
 
         return new ResponseEntity<>(createResponse, HttpStatus.CREATED);
@@ -37,7 +37,7 @@ public class PostController {
     @PutMapping("/{postId}")
     public ResponseEntity<Void> updateAllPost(
         @PathVariable Long postId,
-        @RequestBody PostUpdateRequest request) {
+        @RequestBody @Valid PostUpdateRequest request) {
 
         postServiceFacade.updatePost(postId, request);
 
@@ -45,7 +45,7 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<PostResponses> findAll(@ModelAttribute PostsRequest request) {
+    public ResponseEntity<PostResponses> findAll(@ModelAttribute @Valid PostsRequest request) {
         PostResponses postResponses = postServiceFacade.findAllPostsByIdCursorBased(
             request.getCursorId(), request.getPageSize());
 

@@ -2,7 +2,7 @@ package com.ys.board.domain.user.service;
 
 import com.ys.board.common.exception.EntityNotFoundException;
 import com.ys.board.domain.user.DuplicateNameException;
-import com.ys.board.domain.user.User;
+import com.ys.board.domain.user.model.User;
 import com.ys.board.domain.user.api.UserCreateRequest;
 import com.ys.board.domain.user.api.UserCreateResponse;
 import com.ys.board.domain.user.repository.UserRepository;
