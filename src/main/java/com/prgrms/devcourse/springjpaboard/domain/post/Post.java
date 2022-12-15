@@ -3,6 +3,7 @@ package com.prgrms.devcourse.springjpaboard.domain.post;
 import java.util.Objects;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostUpdateDto;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 
 import jakarta.persistence.Column;
@@ -55,9 +56,9 @@ public class Post {
 			.build();
 	}
 
-	public void updatePost(Post post) {
-		this.title = post.getTitle();
-		this.content = post.getContent();
+	public void updatePost(PostUpdateDto postUpdateDto) {
+		this.title = postUpdateDto.getTitle();
+		this.content = postUpdateDto.getContent();
 	}
 
 	@Override

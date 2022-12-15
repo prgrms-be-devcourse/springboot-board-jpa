@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostUpdateDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -47,8 +48,8 @@ public class PostController {
 	}
 
 	@PostMapping("/api/v1/posts/{id}")
-	public ResponseEntity<Void> edit(@PathVariable(name = "id") Long id,@RequestBody Post post) {
-		postService.update(id, post);
+	public ResponseEntity<Void> edit(@PathVariable(name = "id") Long id,@RequestBody PostUpdateDto postUpdateDto) {
+		postService.update(id, postUpdateDto);
 
 		return ResponseEntity.ok().build();
 	}
