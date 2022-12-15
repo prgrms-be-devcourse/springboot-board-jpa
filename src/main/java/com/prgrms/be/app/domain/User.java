@@ -1,0 +1,33 @@
+package com.prgrms.be.app.domain;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+
+@Table(name = "users")
+@Entity
+@Getter
+@NoArgsConstructor
+public class User extends BaseEntity{
+    @Id @GeneratedValue
+    private Long id;
+
+    @NotBlank
+    @Max(value = 17)
+    private String name;
+
+    @NotBlank
+    private int age;
+
+    private String hobby;
+
+    @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY)
+    private List<Post> posts = new ArrayList<>();
+}
