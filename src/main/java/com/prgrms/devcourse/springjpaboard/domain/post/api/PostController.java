@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDtos;
-import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostUpdateDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.service.PostService;
+import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostResponseDtos;
+import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostSaveDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostUpdateDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.service.facade.PostFacade;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +22,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/posts")
 public class PostController {
 
-	private final PostService postService;
+	private final PostFacade postFacade;
 
 	@GetMapping
 	public ResponseEntity<PostResponseDtos> findAll() {
 
-		PostResponseDtos postResponseDtos = postService.findAll();
+		PostResponseDtos postResponseDtos = postFacade.findAll();
 
 		return ResponseEntity.ok(postResponseDtos);
 	}
@@ -35,14 +35,15 @@ public class PostController {
 	@GetMapping("/{id}")
 	public ResponseEntity<PostResponseDto> findById(@PathVariable(name = "id") Long id) {
 
-		PostResponseDto postResponseDto = postService.findById(id);
+		PostResponseDto postResponseDto = postFacade.findById(id);
 
 		return ResponseEntity.ok(postResponseDto);
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> create(@Valid @RequestBody PostRequestDto postRequestDto) {
-		postService.create(postRequestDto);
+	public ResponseEntity<Void> create(@Valid @RequestBody PostSaveDto postRequestDto) {
+
+		postFacade.create(postRequestDto);
 
 		return ResponseEntity.ok().build();
 
@@ -50,7 +51,7 @@ public class PostController {
 
 	@PostMapping("/{id}")
 	public ResponseEntity<Void> edit(@PathVariable(name = "id") Long id,@Valid @RequestBody PostUpdateDto postUpdateDto) {
-		postService.update(id, postUpdateDto);
+		postFacade.update(id, postUpdateDto);
 
 		return ResponseEntity.ok().build();
 	}

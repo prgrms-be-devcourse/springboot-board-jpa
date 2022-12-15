@@ -1,15 +1,10 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
-import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostResponseDtos;
-import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostUpdateDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.repository.PostRepository;
 
 import lombok.AllArgsConstructor;
@@ -20,23 +15,23 @@ public class PostService {
 
 	private final PostRepository postRepository;
 
-	public PostResponseDtos findAll() {
-		return new PostResponseDtos(postRepository.findAll().stream().map(Post::toPostResponseDto).collect(Collectors.toList()));
+	public List<Post> findAll() {
+		return postRepository.findAll();
 	}
 
-	public PostResponseDto findById(Long id) {
-		return postRepository.findById(id).orElseThrow().toPostResponseDto();
+	public Post findById(Long id) {
+		return postRepository.findById(id).orElseThrow();
 	}
 
-	public void create(PostRequestDto postRequestDto) {
-		postRepository.save(postRequestDto.toPost());
+	public void create(Post post) {
+		postRepository.save(post);
 	}
 
-	public void update(Long id, PostUpdateDto postUpdateDto) {
+	public void update(Long id, Post post) {
 
 		Post savedPost = postRepository.findById(id).orElseThrow();
 
-		savedPost.updatePost(postUpdateDto);
+		savedPost.updatePost(post);
 
 	}
 }

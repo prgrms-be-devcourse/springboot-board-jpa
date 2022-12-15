@@ -17,4 +17,9 @@ public class UserService {
 	public void create(UserRequestDto userRequestDto) {
 		userRepository.save(userRequestDto.toUser());
 	}
+
+	public User findById(Long userId) {
+		return userRepository.findById(userId).orElseThrow();
+	}
+
 }

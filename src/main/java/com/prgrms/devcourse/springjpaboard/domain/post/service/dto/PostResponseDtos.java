@@ -1,4 +1,4 @@
-package com.prgrms.devcourse.springjpaboard.domain.post.api.dto;
+package com.prgrms.devcourse.springjpaboard.domain.post.service.dto;
 
 import java.util.List;
 

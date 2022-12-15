@@ -1,4 +1,4 @@
-package com.prgrms.devcourse.springjpaboard.domain.post.api.dto;
+package com.prgrms.devcourse.springjpaboard.domain.post.service.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostUpdateDto {
+public class PostSaveDto {
+
+	@NotBlank
+	private Long userId;
 
 	@NotBlank
 	private String title;
@@ -17,8 +20,10 @@ public class PostUpdateDto {
 	private String content;
 
 	@Builder
-	public PostUpdateDto(String title, String content) {
+	public PostSaveDto(Long userId, String title, String content) {
+		this.userId = userId;
 		this.title = title;
 		this.content = content;
 	}
+
 }
