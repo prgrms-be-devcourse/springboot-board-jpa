@@ -1,6 +1,9 @@
 package com.assignment.board.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,12 +23,14 @@ public class Post extends BaseEntity {
     private Long id;
 
     @Column(name = "title", nullable = false, length = 100, unique = true)
+    @NotBlank
+    @Size(max = 100)
     private String title;
 
-    @Column(name = "content")
+    @Lob
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

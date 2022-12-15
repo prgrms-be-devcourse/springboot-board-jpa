@@ -1,6 +1,8 @@
 package com.assignment.board.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +20,8 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column(name = "name", nullable = false)
+    @NotBlank
+    @Size(max = 10)
     private String name;
 
     @Column(name = "age")
