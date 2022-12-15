@@ -1,6 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ public class PostService {
 
 	private final PostRepository postRepository;
 
-	public List<Post> findAll() {
-		return postRepository.findAll();
+	public List<PostResponseDto> findAll() {
+		return postRepository.findAll().stream().map(Post::toPostResponseDto).collect(Collectors.toList());
 	}
 
 	public PostResponseDto findById(Long id) {

@@ -24,9 +24,9 @@ public class PostController {
 	private final PostService postService;
 
 	@GetMapping("/api/v1/posts")
-	public ResponseEntity<List<Post>> findAll() {
+	public ResponseEntity<List<PostResponseDto>> findAll() {
 
-		List<Post> postList = postService.findAll();
+		List<PostResponseDto> postList = postService.findAll();
 
 		return ResponseEntity.ok(postList);
 	}
