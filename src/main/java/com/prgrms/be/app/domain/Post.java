@@ -22,7 +22,6 @@ public class Post extends BaseEntity {
     private String title;
 
     @NotBlank
-    @Max(value = 400)
     @Column(columnDefinition = "TEXT")
     private String content;
 
@@ -43,4 +42,16 @@ public class Post extends BaseEntity {
         this.createdBy = createdBy;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(id, post.id) && Objects.equals(title, post.title) && Objects.equals(content, post.content) && Objects.equals(createdBy, post.createdBy);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, content, createdBy);
+    }
 }
