@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.prgrms.devcourse.springjpaboard.domain.user.api.dto.UserRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.user.service.UserService;
+import com.prgrms.devcourse.springjpaboard.domain.user.service.dto.UserSaveDto;
+import com.prgrms.devcourse.springjpaboard.domain.user.service.facade.UserFacade;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +17,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
-	private final UserService userService;
+	private final UserFacade userFacade;
 
 	@PostMapping
-	public ResponseEntity<Void> create(@Valid @RequestBody UserRequestDto userRequestDto) {
-		userService.create(userRequestDto);
+	public ResponseEntity<Void> create(@Valid @RequestBody UserSaveDto userRequestDto) {
+		userFacade.create(userRequestDto);
 
 		return ResponseEntity.ok().build();
 	}

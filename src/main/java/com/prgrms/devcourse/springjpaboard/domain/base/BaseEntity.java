@@ -2,8 +2,6 @@ package com.prgrms.devcourse.springjpaboard.domain.base;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedBy;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;

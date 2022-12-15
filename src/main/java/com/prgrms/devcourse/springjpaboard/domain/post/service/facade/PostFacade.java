@@ -2,7 +2,6 @@ package com.prgrms.devcourse.springjpaboard.domain.post.service.facade;
 
 import org.springframework.stereotype.Service;
 
-import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.PostService;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.converter.PostConverter;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostResponseDto;
