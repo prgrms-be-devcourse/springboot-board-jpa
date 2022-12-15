@@ -7,8 +7,6 @@ import com.assignment.board.entity.Post;
 import com.assignment.board.entity.User;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 @Component
 public class PostConverter {
 
@@ -16,7 +14,6 @@ public class PostConverter {
         Post post = new Post();
         post.setTitle(postRequestDto.getTitle());
         post.setContent(postRequestDto.getContent());
-        post.setCreatedAt(LocalDateTime.now());
 
         return post;
     }
