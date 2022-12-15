@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
+import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,8 +38,8 @@ public class PostController {
 	}
 
 	@PostMapping("/api/v1/posts")
-	public ResponseEntity<Void> create(@RequestBody Post post) {
-		postService.create(post);
+	public ResponseEntity<Void> create(@RequestBody PostRequestDto postRequestDto) {
+		postService.create(postRequestDto);
 
 		return ResponseEntity.ok().build();
 

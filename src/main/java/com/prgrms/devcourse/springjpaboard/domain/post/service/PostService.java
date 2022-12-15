@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
+import com.prgrms.devcourse.springjpaboard.domain.post.api.dto.PostRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.repository.PostRepository;
 
 import lombok.AllArgsConstructor;
@@ -23,8 +24,8 @@ public class PostService {
 		return postRepository.findById(id).orElseThrow();
 	}
 
-	public void create(Post post) {
-		postRepository.save(post);
+	public void create(PostRequestDto postRequestDto) {
+		postRepository.save(postRequestDto.toPost());
 	}
 
 	public void update(Long id, Post post) {
