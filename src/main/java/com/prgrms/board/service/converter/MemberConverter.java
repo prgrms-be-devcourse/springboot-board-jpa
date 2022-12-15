@@ -35,7 +35,7 @@ public class MemberConverter {
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .memberName(post.getMember().getName())
+                .writer(post.getWriter().getName())
                 .build();
     }
 

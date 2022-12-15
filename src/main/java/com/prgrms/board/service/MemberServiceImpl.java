@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -36,6 +38,15 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
 
         return converter.memberEntityToDto(findMember);
+    }
+
+
+    @Override
+    public List<MemberResponseDto> findAll() {
+        List<Member> members = memberRepository.findAll();
+        return members.stream()
+                .map(member -> converter.memberEntityToDto(member))
+                .collect(Collectors.toList());
     }
 
 
