@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/members")
@@ -15,7 +17,7 @@ public class MemberApiController {
     private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity<Long> createMember(@RequestBody MemberCreateDto createDto) {
+    public ResponseEntity<Long> createMember(@RequestBody @Valid MemberCreateDto createDto) {
         Long savedMemberId = memberService.join(createDto);
         return new ResponseEntity<>(savedMemberId, HttpStatus.OK);
     }
