@@ -36,8 +36,8 @@ out/
 ### VS Code ###
 .vscode/
 
-# Created by https://www.toptal.com/developers/gitignore/api/windows,intellij+all,macos
-# Edit at https://www.toptal.com/developers/gitignore?templates=windows,intellij+all,macos
+# Created by https://www.toptal.com/developers/gitignore/api/intellij+all,windows,macos
+# Edit at https://www.toptal.com/developers/gitignore?templates=intellij+all,windows,macos
 
 ### Intellij+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -186,3 +186,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# End of https://www.toptal.com/developers/gitignore/api/intellij+all,windows,macos
