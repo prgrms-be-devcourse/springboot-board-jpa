@@ -1,10 +1,14 @@
 package com.prgrms.board.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Builder.Default;
+import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +16,8 @@ import java.util.List;
 @Builder
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Member extends BaseEntity{
+@Table(name = "members")
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -23,13 +28,13 @@ public class Member extends BaseEntity{
     private String name;
 
     @Column(nullable = false)
-    @NotBlank
+    @NotNull
     private int age;
 
     private String hobby;
 
     @Default
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "writer")
     private List<Post> posts = new ArrayList<>();
 
     protected Member() {

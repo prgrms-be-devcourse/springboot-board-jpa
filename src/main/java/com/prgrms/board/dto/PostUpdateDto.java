@@ -8,13 +8,13 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
-public class PostCreateDto {
+public class PostUpdateDto {
+    @NotNull
+    private Long postId;
+
     @NotBlank
     private String title;
 
     @NotBlank
     private String content;
-
-    @NotNull
-    private Long writerId;
 }

@@ -1,6 +1,9 @@
 package com.prgrms.board.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +13,7 @@ import java.util.Objects;
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Table(name = "posts")
 public class Post extends BaseEntity {
 
     @Id
@@ -25,21 +29,21 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member writer;
 
     protected Post() {
     }
 
-    
+
     //연관관계 편의 메소드
     public void registerMember(Member member) {
-        if (Objects.nonNull(this.member)) {
-            this.member.getPosts().remove(this);
+        if (Objects.nonNull(this.writer)) {
+            this.writer.getPosts().remove(this);
         }
 
-        this.member = member;
+        this.writer = member;
         member.getPosts().add(this);
     }
 
