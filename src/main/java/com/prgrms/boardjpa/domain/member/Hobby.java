@@ -1,4 +1,4 @@
-package com.prgrms.boardjpa.domain.user;
+package com.prgrms.boardjpa.domain.member;
 
 public enum Hobby {
     ACTIVE, INACTIVE
