@@ -16,3 +16,28 @@ include::{snippets}/post-save/request-fields.adoc[]
 .Response
 include::{snippets}/post-save/http-response.adoc[]
 include::{snippets}/post-save/response-fields.adoc[]
+
+==== GET /api/v1/posts
+
+.Response
+include::{snippets}/post-get-all/http-response.adoc[]
+include::{snippets}/post-get-all/response-fields.adoc[]
+
+==== GET /api/v1/posts/{postId}
+.Request
+include::{snippets}/post-get-by-id/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get-by-id/http-response.adoc[]
+include::{snippets}/post-get-by-id/response-fields.adoc[]
+
+
+==== PATCH /api/v1/posts/{postId}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
