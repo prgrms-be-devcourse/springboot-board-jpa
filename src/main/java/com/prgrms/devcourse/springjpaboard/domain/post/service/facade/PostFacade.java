@@ -1,7 +1,6 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.service.facade;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -48,11 +47,7 @@ public class PostFacade {
 
 		boolean hasNext = postService.hasNext(lastIdOfList);
 
-		return PostResponseDtos.builder()
-			.postResponseDtoList(postList.stream().map(PostConverter::toPostResponseDto).collect(Collectors.toList()))
-			.cursorId(lastIdOfList)
-			.hasNext(hasNext)
-			.build();
+		return PostConverter.toPostResponseDtos(postList, lastIdOfList, hasNext);
 
 	}
 
