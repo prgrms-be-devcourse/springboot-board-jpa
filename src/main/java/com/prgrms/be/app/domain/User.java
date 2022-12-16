@@ -33,6 +33,12 @@ public class User extends BaseEntity{
         post.setCreatedBy(this);
     }
 
+    public User(String name, int age, String hobby) {
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+    }
+
     public User(Long id, String name, int age, String hobby) {
         this.id = id;
         this.name = name;
