@@ -5,8 +5,16 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
 logging:
   level:
-    org.springframework: debug
+    org.springframework: info
     org.hibernate.SQL: debug
     org.hibernate.type: trace
