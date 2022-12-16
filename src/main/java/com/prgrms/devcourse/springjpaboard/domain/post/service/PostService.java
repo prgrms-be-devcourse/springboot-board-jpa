@@ -3,12 +3,12 @@ package com.prgrms.devcourse.springjpaboard.domain.post.service;
 import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.repository.PostRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -38,11 +38,11 @@ public class PostService {
 	public boolean hasNext(Long cursorId) {
 		if (cursorId == null)
 			return false;
-		return this.postRepository.existsByIdLessThan(cursorId);
+		return postRepository.existsByIdLessThan(cursorId);
 	}
 
 	public Post findById(Long id) {
-		return postRepository.findById(id).orElseThrow();
+		return postRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 
 	public void create(Post post) {
@@ -51,7 +51,7 @@ public class PostService {
 
 	public void update(Long id, Post post) {
 
-		Post savedPost = postRepository.findById(id).orElseThrow();
+		Post savedPost = postRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
 		savedPost.updatePost(post);
 
