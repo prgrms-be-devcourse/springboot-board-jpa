@@ -9,9 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 import com.programmers.jpaboard.domain.BaseEntity;
 import com.programmers.jpaboard.domain.post.entity.Post;
@@ -22,6 +25,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "users")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
@@ -31,9 +35,11 @@ public class User extends BaseEntity {
 	private Long id;
 
 	@NotBlank
+	@Size(max = 30)
 	@Column(nullable = false)
 	private String name;
 
+	@NotEmpty
 	@Email
 	@Column(nullable = false, unique = true)
 	private String email;
@@ -42,7 +48,7 @@ public class User extends BaseEntity {
 	@Positive
 	private int age;
 
-	@Column(length = 10)
+	@Size(max = 20)
 	private String hobby;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
