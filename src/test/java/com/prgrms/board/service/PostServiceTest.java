@@ -8,6 +8,7 @@ import com.prgrms.board.dto.PostUpdateDto;
 import com.prgrms.board.repository.MemberRepository;
 import com.prgrms.board.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,6 +54,12 @@ class PostServiceTest {
                 .build();
 
         savedPost = postRepository.save(post);
+    }
+
+    @AfterEach
+    void clear() {
+        postRepository.deleteAll();
+        memberRepository.deleteAll();
     }
 
     @Test

@@ -2,6 +2,8 @@ package com.prgrms.board.service;
 
 import com.prgrms.board.dto.MemberCreateDto;
 import com.prgrms.board.dto.MemberResponseDto;
+import com.prgrms.board.repository.MemberRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class MemberServiceTest {
     @Autowired
     MemberService memberService;
+    @Autowired
+    MemberRepository memberRepository;
 
     private MemberCreateDto memberCreateDto;
 
@@ -28,6 +32,11 @@ class MemberServiceTest {
                 .age(26)
                 .hobby("농구")
                 .build();
+    }
+
+    @AfterEach
+    void clear() {
+        memberRepository.deleteAll();
     }
 
     @Test

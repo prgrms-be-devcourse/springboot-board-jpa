@@ -2,11 +2,13 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.6'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.prgrms'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+
 
 configurations {
     compileOnly {
@@ -14,8 +16,26 @@ configurations {
     }
 }
 
+configurations {
+    asciidoctorExtensions
+}
+
 repositories {
     mavenCentral()
+}
+
+
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+test {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
 }
 
 dependencies {
@@ -30,8 +50,19 @@ dependencies {
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+bootJar {
+    dependsOn asciidoctor
+    copy {
+        from file("build/docs/asciidoc")
+        into 'src/main/resources/static/docs'
+    }
 }
