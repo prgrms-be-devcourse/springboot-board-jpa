@@ -3,6 +3,7 @@ package com.devcourse.springbootboardjpa.user.domain;
 import com.devcourse.springbootboardjpa.config.BaseEntity;
 import com.devcourse.springbootboardjpa.post.domain.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
