@@ -1,5 +1,6 @@
 package com.prgrms.jpa.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -27,6 +28,7 @@ public class User extends AbstractBaseEntity {
     public User() {
     }
 
+    @Builder
     public User(String name, int age, String hobby) {
         this.name = name;
         this.age = age;
