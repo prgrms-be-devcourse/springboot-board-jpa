@@ -29,6 +29,10 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
 
+    public void addPost(Post post) {
+        post.setCreatedBy(this);
+    }
+
     public User(Long id, String name, int age, String hobby) {
         this.id = id;
         this.name = name;

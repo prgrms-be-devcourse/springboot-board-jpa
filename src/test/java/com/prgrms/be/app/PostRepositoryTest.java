@@ -3,7 +3,7 @@ package com.prgrms.be.app;
 
 import com.prgrms.be.app.config.JpaConfig;
 import com.prgrms.be.app.domain.Post;
-import com.prgrms.be.app.domain.PostRepository;
+import com.prgrms.be.app.repository.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

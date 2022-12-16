@@ -17,7 +17,7 @@ public class Post extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank // null, "", "    "
+    @NotBlank
     @Max(value = 20)
     private String title;
 
@@ -25,11 +25,10 @@ public class Post extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-//    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
 
-    public Post(Long id, String title, String content, User createdBy) {
+    public Post(Long id, String title, String content, User createdBy) { // 이걸 두는게 맞나??
         this.id = id;
         this.title = title;
         this.content = content;
@@ -40,6 +39,21 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
         this.createdBy = createdBy;
+    }
+
+    public Post changePost(String title, String content) {
+        this.title = title;
+        this.content = content;
+        return this;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        if (Objects.nonNull(this.createdBy)) {
+            this.createdBy.getPosts().remove(this);
+        }
+
+        this.createdBy = createdBy;
+        this.createdBy.getPosts().add(this);
     }
 
     @Override
