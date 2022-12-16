@@ -35,4 +35,12 @@ public class PostConverter {
 			.build();
 	}
 
+	public static PostResponseDtos toPostResponseDtos(List<Post> postList, Long lastIdOfList, boolean hasNext) {
+		return PostResponseDtos.builder()
+			.postResponseDtoList(postList.stream().map(PostConverter::toPostResponseDto).collect(Collectors.toList()))
+			.cursorId(lastIdOfList)
+			.hasNext(hasNext)
+			.build();
+	}
+
 }
