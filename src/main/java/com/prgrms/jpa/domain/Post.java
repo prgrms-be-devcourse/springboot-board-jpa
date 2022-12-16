@@ -1,5 +1,6 @@
 package com.prgrms.jpa.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.Column;
@@ -35,6 +36,7 @@ public class Post extends AbstractBaseEntity {
     public Post() {
     }
 
+    @Builder
     public Post(String title, String content) {
         this.title = title;
         this.content = content;
