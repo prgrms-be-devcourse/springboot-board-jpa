@@ -18,8 +18,11 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,7 +77,29 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postRequestDto)))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-save",
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("Post TITLE"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("Post CONTENT"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("User ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("POST ID"),
+                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("데이터"),
+                                fieldWithPath("data.content").type(JsonFieldType.STRING).description("데이터"),
+                                fieldWithPath("data.userDto").type(JsonFieldType.OBJECT).description("데이터"),
+                                fieldWithPath("data.userDto.id").type(JsonFieldType.NUMBER).description("데이터"),
+                                fieldWithPath("data.userDto.name").type(JsonFieldType.STRING).description("데이터"),
+                                fieldWithPath("data.userDto.age").type(JsonFieldType.NUMBER).description("데이터"),
+                                fieldWithPath("data.userDto.hobby").type(JsonFieldType.STRING).description("데이터"),
+                                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("데이터"),
+                                fieldWithPath("data.createdBy").type(JsonFieldType.STRING).description("데이터"),
+                                fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답시간")
+                        )));
+
     }
 
     @Test
