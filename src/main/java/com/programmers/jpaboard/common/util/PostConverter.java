@@ -21,7 +21,7 @@ public class PostConverter {
 			post.getContent(),
 			post.getUser().getId(),
 			post.getCreatedAt(),
-			post.getCreatedBy()
+			post.getLastModifiedAt()
 		);
 	}
 }

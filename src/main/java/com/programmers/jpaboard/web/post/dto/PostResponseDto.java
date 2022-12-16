@@ -7,8 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class PostResponseDto {
 
 	private Long id;
@@ -16,5 +16,5 @@ public class PostResponseDto {
 	private String content;
 	private Long userId;
 	private LocalDateTime createdAt;
-	private String createdBy;
+	private LocalDateTime lastModifiedAt;
 }
