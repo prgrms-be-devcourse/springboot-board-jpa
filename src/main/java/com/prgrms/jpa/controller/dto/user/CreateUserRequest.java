@@ -1,4 +1,4 @@
-package com.prgrms.jpa.controller.dto;
+package com.prgrms.jpa.controller.dto.user;
 
 import lombok.Getter;
 
