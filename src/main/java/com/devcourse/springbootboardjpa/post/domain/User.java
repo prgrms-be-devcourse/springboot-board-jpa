@@ -3,6 +3,7 @@ package com.devcourse.springbootboardjpa.post.domain;
 import com.devcourse.springbootboardjpa.config.BaseEntity;
 import com.devcourse.springbootboardjpa.user.domain.Post;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
