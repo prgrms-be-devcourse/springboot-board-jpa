@@ -34,6 +34,16 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
+    public PostDTO.FindResponse findPost(Long id) {
+
+        // TODO : 비즈니스 예외 만들기
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 게시글입니다."));
+
+        return postConverter.postToFindResponse(post);
+    }
+
+    @Transactional(readOnly = true)
     public Page<PostDTO.FindResponse> findAllPostsPage(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(postConverter::postToFindResponse);

@@ -14,6 +14,8 @@ public class PostDTO {
         private final Long id;
         private final String title;
         private final String content;
+        private final Long userId;
+        private final String userName;
     }
 
     @Getter

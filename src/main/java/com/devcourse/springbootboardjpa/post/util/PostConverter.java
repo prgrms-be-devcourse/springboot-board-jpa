@@ -13,6 +13,8 @@ public class PostConverter {
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
+                .userId(post.getUser().getId())
+                .userName(post.getUser().getName())
                 .build();
     }
 
