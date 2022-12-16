@@ -26,13 +26,15 @@ public class PostServiceImpl implements PostService {
     private final MemberRepository memberRepository;
     private final MemberConverter converter;
     private final HttpSession httpSession;
+    public static final String SESSION_MEMBER = "member";
+
     @Transactional
     @Override
     public Long register(PostCreateDto postCreateDto) {
         Member member = memberRepository.findById(postCreateDto.getWriterId())
                 .orElseThrow(() -> new RuntimeException("잘못된 사용자 정보입니다."));
 
-        httpSession.setAttribute("member", member);
+        httpSession.setAttribute(SESSION_MEMBER, member);
 
         Post newPost = converter.createPostFromDto(postCreateDto);
         newPost.registerMember(member);

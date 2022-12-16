@@ -16,8 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
+
+import java.util.Optional;
+
+import static com.prgrms.board.service.PostServiceImpl.SESSION_MEMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Slf4j
@@ -121,5 +127,29 @@ class PostServiceTest {
 
         assertThat(responseDto.getTitle()).isEqualTo(updatedTitle);
         assertThat(responseDto.getContent()).isEqualTo(updatedContent);
+    }
+
+    @Autowired
+    HttpSession session;
+
+    @Test
+    @DisplayName("게시글의 CreatedBy는 세션에 저장된 Member의 name으로 자동 저장된다.")
+    void 게시글_CreatedBy() {
+        PostCreateDto createDto = PostCreateDto.builder().writerId(savedMember.getId())
+                .title("title!")
+                .content("content!")
+                .build();
+
+        Long postId = postService.register(createDto);
+
+        Member sessionMember = (Member) session.getAttribute(SESSION_MEMBER);
+
+        assertThat(sessionMember.getName()).isEqualTo(savedMember.getName());
+        assertThat(sessionMember.getAge()).isEqualTo(savedMember.getAge());
+        assertThat(sessionMember.getHobby()).isEqualTo(savedMember.getHobby());
+
+        Post findPost = postRepository.findById(postId).get();
+        assertThat(findPost.getCreatedBy()).isEqualTo(sessionMember.getName());
+
     }
 }
