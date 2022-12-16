@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,12 +25,14 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final MemberConverter converter;
-
+    private final HttpSession httpSession;
     @Transactional
     @Override
     public Long register(PostCreateDto postCreateDto) {
         Member member = memberRepository.findById(postCreateDto.getWriterId())
                 .orElseThrow(() -> new RuntimeException("잘못된 사용자 정보입니다."));
+
+        httpSession.setAttribute("member", member);
 
         Post newPost = converter.createPostFromDto(postCreateDto);
         newPost.registerMember(member);
