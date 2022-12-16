@@ -2,6 +2,7 @@ package com.assignment.board.controller;
 
 import com.assignment.board.dto.post.PostRequestDto;
 import com.assignment.board.dto.post.PostResponseDto;
+import com.assignment.board.dto.post.PostUpdateDto;
 import com.assignment.board.service.PostService;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,18 @@ public class PostController {
     public ApiResponse<Page<PostResponseDto>> getAllPosts(Pageable pageable) {
         Page<PostResponseDto> allPost = postService.getAllPost(pageable);
         return ApiResponse.ok(allPost);
+    }
+
+    @GetMapping("/{postId}")
+    public ApiResponse<PostResponseDto> getPostById(@PathVariable String postId) throws NotFoundException {
+        PostResponseDto postDto = postService.getPostById(Long.parseLong(postId));
+        return ApiResponse.ok(postDto);
+    }
+
+    @PatchMapping("/{postId}")
+    public ApiResponse<PostResponseDto> updatePost(@PathVariable String postId, @RequestBody PostUpdateDto postUpdateDto) throws NotFoundException {
+        postUpdateDto.setId(Long.parseLong(postId));
+        PostResponseDto postDto = postService.updatePost(postUpdateDto);
+        return ApiResponse.ok(postDto);
     }
 }
