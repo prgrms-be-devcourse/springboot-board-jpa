@@ -1,13 +1,10 @@
 package com.programmers.jpaboard.common.util;
 
-import org.springframework.stereotype.Component;
-
 import com.programmers.jpaboard.domain.post.entity.Post;
 import com.programmers.jpaboard.domain.user.entity.User;
 import com.programmers.jpaboard.web.post.dto.PostCreateRequestDto;
 import com.programmers.jpaboard.web.post.dto.PostResponseDto;
 
-@Component
 public class PostConverter {
 
 	public static Post toPost(PostCreateRequestDto postCreateRequestDto, User user) {
