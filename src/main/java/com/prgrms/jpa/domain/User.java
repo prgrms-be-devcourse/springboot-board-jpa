@@ -19,7 +19,10 @@ public class User extends AbstractBaseEntity {
     @Column(nullable = false, length = 30)
     private String name;
 
+    @Column(nullable = false)
     private int age;
+
+    @Column(nullable = false, length = 30)
     private String hobby;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
