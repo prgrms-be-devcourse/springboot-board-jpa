@@ -1,7 +1,8 @@
 package com.prgrms.jpa.controller;
 
-import com.prgrms.jpa.controller.dto.CreatePostRequest;
-import com.prgrms.jpa.controller.dto.UpdatePostRequest;
+import com.prgrms.jpa.controller.dto.post.CreatePostRequest;
+import com.prgrms.jpa.controller.dto.post.PostResponse;
+import com.prgrms.jpa.controller.dto.post.UpdatePostRequest;
 import com.prgrms.jpa.domain.Post;
 import com.prgrms.jpa.service.PostService;
 import org.springframework.http.HttpStatus;
@@ -29,14 +30,15 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<Post>> findAll() {
+        //TODO postService.findAll() 수정후 Entity 보내주는 부분 수정하기
         List<Post> posts = postService.findAll();
         return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> findById(@PathVariable long id) {
-        Post post = postService.findById(id);
-        return ResponseEntity.ok(post);
+    public ResponseEntity<PostResponse> findById(@PathVariable long id) {
+        PostResponse postResponse = postService.findById(id);
+        return ResponseEntity.ok(postResponse);
     }
 
     @PatchMapping("/{id}")

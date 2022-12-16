@@ -1,6 +1,6 @@
 package com.prgrms.jpa.controller;
 
-import com.prgrms.jpa.controller.dto.CreateUserRequest;
+import com.prgrms.jpa.controller.dto.user.CreateUserRequest;
 import com.prgrms.jpa.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

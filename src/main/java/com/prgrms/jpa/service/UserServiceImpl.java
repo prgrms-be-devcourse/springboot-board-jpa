@@ -1,6 +1,6 @@
 package com.prgrms.jpa.service;
 
-import com.prgrms.jpa.controller.dto.CreateUserRequest;
+import com.prgrms.jpa.controller.dto.user.CreateUserRequest;
 import com.prgrms.jpa.domain.User;
 import com.prgrms.jpa.repository.UserRepository;
 import org.springframework.stereotype.Service;

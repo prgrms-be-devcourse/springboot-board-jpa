@@ -1,6 +1,6 @@
 package com.prgrms.jpa.service;
 
-import com.prgrms.jpa.controller.dto.CreateUserRequest;
+import com.prgrms.jpa.controller.dto.user.CreateUserRequest;
 
 public interface UserService {
 
