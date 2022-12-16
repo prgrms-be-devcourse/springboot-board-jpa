@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class PostService {
@@ -21,7 +22,6 @@ public class PostService {
 
     private final PostConverter postConverter;
 
-    @Transactional
     public Long savePost(PostDTO.SaveRequest saveRequest) {
 
         // TODO : 비즈니스 예외 만들기
@@ -47,6 +47,16 @@ public class PostService {
     public Page<PostDTO.FindResponse> findAllPostsPage(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(postConverter::postToFindResponse);
+    }
+
+    public Long updatePost(Long id, PostDTO.UpdateRequest postUpdateRequest) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 게시글입니다."));
+
+        post.changeTitle(postUpdateRequest.getTitle());
+        post.changeContent(postUpdateRequest.getContent());
+
+        return post.getId();
     }
 
 }

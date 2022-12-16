@@ -27,4 +27,13 @@ public class PostDTO {
         private String content;
         private Long userId;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UpdateRequest {
+        private String title;
+        private String content;
+    }
 }

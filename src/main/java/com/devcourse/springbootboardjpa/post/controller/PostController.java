@@ -52,4 +52,18 @@ public class PostController {
                         .build()
         );
     }
+
+    @PostMapping("/posts/{id}")
+    public ResponseEntity<ResponseDTO> updatePost(@PathVariable Long id,
+                                                  @RequestBody PostDTO.UpdateRequest postUpdateRequest) {
+
+        Long postId = postService.updatePost(id, postUpdateRequest);
+
+        return ResponseEntity.ok(
+                CommonResponse.builder()
+                        .message("게시물 수정 완료")
+                        .data(postId)
+                        .build()
+        );
+    }
 }
