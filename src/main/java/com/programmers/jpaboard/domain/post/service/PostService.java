@@ -8,13 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.programmers.jpaboard.common.exception.PostNotFoundException;
 import com.programmers.jpaboard.common.exception.UserNotFoundException;
 import com.programmers.jpaboard.common.util.PostConverter;
+import com.programmers.jpaboard.domain.post.dto.PostCreateRequestDto;
+import com.programmers.jpaboard.domain.post.dto.PostResponseDto;
+import com.programmers.jpaboard.domain.post.dto.PostUpdateRequestDto;
 import com.programmers.jpaboard.domain.post.entity.Post;
 import com.programmers.jpaboard.domain.post.repository.PostRepository;
 import com.programmers.jpaboard.domain.user.entity.User;
 import com.programmers.jpaboard.domain.user.repository.UserRepository;
-import com.programmers.jpaboard.web.post.dto.PostCreateRequestDto;
-import com.programmers.jpaboard.web.post.dto.PostResponseDto;
-import com.programmers.jpaboard.web.post.dto.PostUpdateRequestDto;
 
 import lombok.RequiredArgsConstructor;
 

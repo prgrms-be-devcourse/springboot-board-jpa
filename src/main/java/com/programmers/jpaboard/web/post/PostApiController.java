@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.programmers.jpaboard.domain.post.dto.PostCreateRequestDto;
+import com.programmers.jpaboard.domain.post.dto.PostResponseDto;
+import com.programmers.jpaboard.domain.post.dto.PostUpdateRequestDto;
 import com.programmers.jpaboard.domain.post.service.PostService;
-import com.programmers.jpaboard.web.post.dto.PostCreateRequestDto;
-import com.programmers.jpaboard.web.post.dto.PostResponseDto;
-import com.programmers.jpaboard.web.post.dto.PostUpdateRequestDto;
 
 import lombok.RequiredArgsConstructor;
 

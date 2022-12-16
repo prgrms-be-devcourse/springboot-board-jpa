@@ -1,9 +1,9 @@
 package com.programmers.jpaboard.common.util;
 
+import com.programmers.jpaboard.domain.post.dto.PostCreateRequestDto;
+import com.programmers.jpaboard.domain.post.dto.PostResponseDto;
 import com.programmers.jpaboard.domain.post.entity.Post;
 import com.programmers.jpaboard.domain.user.entity.User;
-import com.programmers.jpaboard.web.post.dto.PostCreateRequestDto;
-import com.programmers.jpaboard.web.post.dto.PostResponseDto;
 
 public class PostConverter {
 
