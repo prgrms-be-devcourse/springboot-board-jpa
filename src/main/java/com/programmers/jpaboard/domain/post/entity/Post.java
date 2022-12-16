@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.programmers.jpaboard.domain.BaseEntity;
 import com.programmers.jpaboard.domain.user.entity.User;
@@ -29,7 +30,8 @@ public class Post extends BaseEntity {
 	private Long id;
 
 	@NotBlank
-	@Column(nullable = false, length = 100)
+	@Size(max = 100)
+	@Column(nullable = false)
 	private String title;
 
 	@Lob
@@ -39,10 +41,15 @@ public class Post extends BaseEntity {
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 
+	public Post(String title, String content) {
+		this.title = title;
+		this.content = content;
+	}
+
 	public Post(String title, String content, User user) {
 		this.title = title;
 		this.content = content;
-		this.user = user;
+		setUser(user);
 	}
 
 	public void setUser(User user) {
