@@ -1,14 +1,11 @@
 package com.prgrms.jpa.service;
 
-import com.prgrms.jpa.controller.dto.post.CreatePostRequest;
-import com.prgrms.jpa.controller.dto.post.PostResponse;
-import com.prgrms.jpa.controller.dto.post.PostsResponse;
-import com.prgrms.jpa.controller.dto.post.UpdatePostRequest;
+import com.prgrms.jpa.controller.dto.post.*;
 import org.springframework.data.domain.Pageable;
 
 public interface PostService {
 
-    long create(CreatePostRequest createPostRequest);
+    PostIdResponse create(CreatePostRequest createPostRequest);
 
     PostsResponse findAll(Pageable pageable);
 

@@ -1,9 +1,6 @@
 package com.prgrms.jpa.controller;
 
-import com.prgrms.jpa.controller.dto.post.CreatePostRequest;
-import com.prgrms.jpa.controller.dto.post.PostResponse;
-import com.prgrms.jpa.controller.dto.post.PostsResponse;
-import com.prgrms.jpa.controller.dto.post.UpdatePostRequest;
+import com.prgrms.jpa.controller.dto.post.*;
 import com.prgrms.jpa.service.PostService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/api/v1/posts")
@@ -31,9 +27,9 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Long> > create(@RequestBody @Valid CreatePostRequest createPostRequest) {
-        long id = postService.create(createPostRequest);
-        return new ResponseEntity<>(Map.of("id", id), HttpStatus.CREATED);
+    public ResponseEntity<PostIdResponse> create(@RequestBody @Valid CreatePostRequest createPostRequest) {
+        PostIdResponse id = postService.create(createPostRequest);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @GetMapping

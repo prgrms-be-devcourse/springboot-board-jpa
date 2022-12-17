@@ -1,9 +1,6 @@
 package com.prgrms.jpa.service;
 
-import com.prgrms.jpa.controller.dto.post.CreatePostRequest;
-import com.prgrms.jpa.controller.dto.post.PostResponse;
-import com.prgrms.jpa.controller.dto.post.PostsResponse;
-import com.prgrms.jpa.controller.dto.post.UpdatePostRequest;
+import com.prgrms.jpa.controller.dto.post.*;
 import com.prgrms.jpa.domain.Post;
 import com.prgrms.jpa.domain.User;
 import com.prgrms.jpa.exception.EntityNotFoundException;
@@ -15,8 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.prgrms.jpa.utils.ToDtoMapper.toPostDto;
-import static com.prgrms.jpa.utils.ToDtoMapper.toPostsDto;
+import static com.prgrms.jpa.utils.ToDtoMapper.*;
 import static com.prgrms.jpa.utils.ToEntityMapper.toPost;
 
 @Service
@@ -35,11 +31,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public long create(CreatePostRequest createPostRequest) {
+    public PostIdResponse create(CreatePostRequest createPostRequest) {
         User user = userRepository.findById(createPostRequest.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ExceptionMessage.ENTITY_NOT_FOUND.name(), USER)));
         Post post = postRepository.save(toPost(createPostRequest, user));
-        return post.getId();
+        return toPostIdDto(post.getId());
     }
 
     @Override
