@@ -1,4 +1,4 @@
-package com.programmers.jpaboard.common.util;
+package com.programmers.jpaboard.domain.user.util;
 
 import com.programmers.jpaboard.domain.post.entity.Post;
 import com.programmers.jpaboard.domain.user.dto.UserCreateRequestDto;

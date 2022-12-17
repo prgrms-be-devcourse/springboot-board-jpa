@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import com.programmers.jpaboard.domain.post.dto.PostCreateRequestDto;
 import com.programmers.jpaboard.domain.post.dto.PostResponseDto;
 import com.programmers.jpaboard.domain.post.entity.Post;
+import com.programmers.jpaboard.domain.post.util.PostConverter;
 import com.programmers.jpaboard.domain.user.entity.User;
 
 class PostConverterTest {

@@ -2,11 +2,11 @@ package com.programmers.jpaboard.domain.user.service;
 
 import org.springframework.stereotype.Service;
 
-import com.programmers.jpaboard.common.util.UserConverter;
 import com.programmers.jpaboard.domain.user.dto.UserCreateRequestDto;
 import com.programmers.jpaboard.domain.user.dto.UserResponseDto;
 import com.programmers.jpaboard.domain.user.entity.User;
 import com.programmers.jpaboard.domain.user.repository.UserRepository;
+import com.programmers.jpaboard.domain.user.util.UserConverter;
 
 import lombok.RequiredArgsConstructor;
 
