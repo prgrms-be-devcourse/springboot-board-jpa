@@ -1,9 +1,10 @@
 package com.programmers.jpaboard.web.post;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,7 @@ public class PostApiController {
 	private final PostService postService;
 
 	@PostMapping
-	ResponseEntity<PostResponseDto> createPost(@RequestBody @Validated PostCreateRequestDto postCreateRequestDto) {
+	ResponseEntity<PostResponseDto> createPost(@RequestBody @Valid PostCreateRequestDto postCreateRequestDto) {
 		PostResponseDto createdPostDto = postService.createPost(postCreateRequestDto);
 		return ResponseEntity.ok(createdPostDto);
 	}
@@ -47,7 +48,7 @@ public class PostApiController {
 	@PatchMapping("/{postId}")
 	ResponseEntity<PostResponseDto> updatePost(
 		@PathVariable Long postId,
-		@RequestBody @Validated PostUpdateRequestDto postUpdateRequestDto
+		@RequestBody @Valid PostUpdateRequestDto postUpdateRequestDto
 	) {
 		PostResponseDto updatedPostDto = postService.updatePost(postId, postUpdateRequestDto);
 		return ResponseEntity.ok(updatedPostDto);
