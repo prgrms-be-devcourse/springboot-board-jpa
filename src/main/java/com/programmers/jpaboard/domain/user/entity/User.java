@@ -21,6 +21,7 @@ import com.programmers.jpaboard.domain.post.entity.Post;
 import com.sun.istack.NotNull;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,6 +29,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = "id")
 public class User extends BaseEntity {
 
 	@Id
@@ -51,10 +53,18 @@ public class User extends BaseEntity {
 	@Size(max = 20)
 	private String hobby;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	List<Post> posts = new ArrayList<>();
 
 	public User(String name, String email, int age, String hobby) {
+		this.name = name;
+		this.email = email;
+		this.age = age;
+		this.hobby = hobby;
+	}
+
+	public User(Long id, String name, String email, int age, String hobby) {
+		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.age = age;
