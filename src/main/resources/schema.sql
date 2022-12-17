@@ -20,3 +20,9 @@ create table posts (
    user_id bigint,
    primary key (id)
 );
+
+INSERT INTO users(crated_at, created_by, age, hobby, name)
+VALUES (CURRENT_TIMESTAMP, 1, 28, '음악듣기', '김태희');
+
+INSERT INTO posts(crated_at, created_by, content, title, user_id)
+VALUES (CURRENT_TIMESTAMP, 1, '제목1', '내용1', 1);
