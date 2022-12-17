@@ -17,12 +17,14 @@ import com.programmers.jpaboard.domain.BaseEntity;
 import com.programmers.jpaboard.domain.user.entity.User;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = "id")
 public class Post extends BaseEntity {
 
 	@Id
@@ -50,6 +52,12 @@ public class Post extends BaseEntity {
 		this.title = title;
 		this.content = content;
 		setUser(user);
+	}
+
+	public Post(Long id, String title, String content) {
+		this.id = id;
+		this.title = title;
+		this.content = content;
 	}
 
 	public void setUser(User user) {
