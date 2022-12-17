@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class PostDTO {
 
@@ -23,8 +27,14 @@ public class PostDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class SaveRequest {
+
+        @Length(min = 1, max = 100)
+        @NotBlank
         private String title;
+
         private String content;
+
+        @NotNull
         private Long userId;
     }
 
@@ -33,7 +43,11 @@ public class PostDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UpdateRequest {
+
+        @Length(min = 1, max = 100)
+        @NotBlank
         private String title;
+
         private String content;
     }
 }

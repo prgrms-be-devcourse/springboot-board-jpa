@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -18,7 +20,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/posts")
-    public ResponseEntity<ResponseDTO> savePost(@RequestBody PostDTO.SaveRequest saveRequest) {
+    public ResponseEntity<ResponseDTO> savePost(@RequestBody @Valid PostDTO.SaveRequest saveRequest) {
         Long postId = postService.savePost(saveRequest);
 
         return ResponseEntity.ok(
@@ -55,7 +57,7 @@ public class PostController {
 
     @PostMapping("/posts/{id}")
     public ResponseEntity<ResponseDTO> updatePost(@PathVariable Long id,
-                                                  @RequestBody PostDTO.UpdateRequest postUpdateRequest) {
+                                                  @RequestBody @Valid PostDTO.UpdateRequest postUpdateRequest) {
 
         Long postId = postService.updatePost(id, postUpdateRequest);
 
