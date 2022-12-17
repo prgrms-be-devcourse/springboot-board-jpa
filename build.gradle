@@ -10,10 +10,11 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-    asciidoctorExt
+    asciidoctorExtensions
+}
+
+repositories {
+    mavenCentral()
 }
 
 repositories {
@@ -22,25 +23,6 @@ repositories {
 
 ext {
     snippetsDir = file('build/generated-snippets')
-}
-
-test {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
-}
-
-configurations {
-    asciidoctorExtensions
-}
-
-asciidoctor {
-    configurations 'asciidoctorExtensions'
-    inputs.dir snippetsDir
-    dependsOn test
-}
-
-asciidoctor.doFirst {
-    delete file("src/main/resources/static/docs")
 }
 
 dependencies {
@@ -55,6 +37,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     //Rest docs
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
     //test Containers
@@ -62,25 +45,21 @@ dependencies {
     testImplementation "org.testcontainers:mysql:1.17.2"
 }
 
-tasks.named('test') {
+test {
+    outputs.dir snippetsDir
     useJUnitPlatform()
 }
 
-task copyDocument(type: Copy) {
-    dependsOn asciidoctor
-
-    from file("build/docs/asciidoc")
-    into file("src/main/resources/static/docs")
-}
-
-build {
-    dependsOn copyDocument
+asciidoctor {
+    configurations 'asciidoctorExtensions'
+    inputs.dir snippetsDir
+    dependsOn test
 }
 
 bootJar {
     dependsOn asciidoctor
     copy {
-        from file("build/docs/asciidoc")
+        from "${asciidoctor.outputDir}"
         into 'src/main/resources/static/docs'
     }
 }

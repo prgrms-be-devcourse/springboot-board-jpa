@@ -1,0 +1,65 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 사용자
+
+== 사용자 생성
+
+=== [POST] /api/v1/users
+
+.Request
+include::{snippets}/user-create/http-request.adoc[]
+include::{snippets}/user-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-create/http-response.adoc[]
+include::{snippets}/user-create/response-fields.adoc[]
+
+== 게시글
+
+== 게시글 생성
+
+=== [POST] /api/v1/posts
+
+.Request
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+== 게시글 수정
+
+=== [PATCH] /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+
+== 게시글 아이디로 찾기
+
+=== [GET] /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-findById/http-request.adoc[]
+
+.Response
+include::{snippets}/post-findById/http-response.adoc[]
+include::{snippets}/post-findById/response-fields.adoc[]
+
+== 게시글 목록
+
+=== [GET] /api/v1/posts
+
+.Request
+include::{snippets}/post-findAll/http-request.adoc[]
+
+.Response
+include::{snippets}/post-findAll/http-response.adoc[]
+include::{snippets}/post-findAll/response-fields.adoc[]

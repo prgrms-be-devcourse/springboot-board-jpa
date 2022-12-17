@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/api/v1/posts")
 public class PostController {
@@ -28,9 +31,9 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> create(@RequestBody CreatePostRequest createPostRequest) {
+    public ResponseEntity<Map<String, Long> > create(@RequestBody @Valid CreatePostRequest createPostRequest) {
         long id = postService.create(createPostRequest);
-        return new ResponseEntity<>(id, HttpStatus.CREATED);
+        return new ResponseEntity<>(Map.of("id", id), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -46,7 +49,7 @@ public class PostController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable long id, @RequestBody UpdatePostRequest updatePostRequest) {
+    public ResponseEntity<Void> update(@PathVariable long id, @RequestBody @Valid UpdatePostRequest updatePostRequest) {
         postService.update(id, updatePostRequest);
         return ResponseEntity.ok().build();
     }
