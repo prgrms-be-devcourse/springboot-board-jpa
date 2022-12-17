@@ -15,7 +15,7 @@ public class PostResponseDtos {
 
 	private Long cursorId;
 
-	private boolean hasNext;
+	private Boolean hasNext;
 
 	@Builder
 	public PostResponseDtos(
