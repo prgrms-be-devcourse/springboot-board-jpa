@@ -4,6 +4,7 @@ import com.prgrms.be.app.domain.dto.PostDTO;
 import com.prgrms.be.app.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +33,8 @@ public class PostController {
 
     //toDo : 페이징 조회하는 메서드
     @GetMapping("/posts")
-    public Page<PostDTO.PostsResponse> getAll() {
-
-        throw new UnsupportedOperationException();
+    public Page<PostDTO.PostsResponse> getAll(Pageable pageable) {
+        return postService.findAll(pageable);
     }
 
     //toDo : 단건 조회하는 메서드
