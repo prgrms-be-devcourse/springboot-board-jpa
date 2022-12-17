@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostUpdateRequestDto {
 
-	@NotBlank
-	@Size(max = 100)
+	@NotBlank(message = "게시글 제목은 작성되어야합니다.")
+	@Size(max = 100, message = "제목이 최대 길이를 초과합니다.")
 	private String title;
 
-	@NotNull
+	@NotNull(message = "게시글 내용은 작성되어야합니다.")
 	private String content;
 }

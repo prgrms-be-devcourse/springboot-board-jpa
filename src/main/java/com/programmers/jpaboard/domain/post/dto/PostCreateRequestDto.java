@@ -14,14 +14,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostCreateRequestDto {
 
-	@NotBlank
-	@Size(max = 100)
+	@NotBlank(message = "게시글 제목은 작성되어야합니다.")
+	@Size(max = 100, message = "제목이 최대 길이를 초과합니다.")
 	private String title;
 
-	@NotNull
+	@NotNull(message = "게시글 내용은 작성되어야합니다.")
 	private String content;
 
-	@NotNull
-	@Positive
+	@NotNull(message = "사용자 아이디가 없습니다.")
+	@Positive(message = "잘못된 사용자 아이디입니다.")
 	private Long userId;
 }
