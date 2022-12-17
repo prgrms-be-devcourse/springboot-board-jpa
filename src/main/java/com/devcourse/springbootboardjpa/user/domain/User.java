@@ -1,7 +1,7 @@
-package com.devcourse.springbootboardjpa.post.domain;
+package com.devcourse.springbootboardjpa.user.domain;
 
 import com.devcourse.springbootboardjpa.config.BaseEntity;
-import com.devcourse.springbootboardjpa.user.domain.Post;
+import com.devcourse.springbootboardjpa.post.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -2,10 +2,10 @@ package com.devcourse.springbootboardjpa.post.service;
 
 import com.devcourse.springbootboardjpa.common.exception.post.PostNotFoundException;
 import com.devcourse.springbootboardjpa.common.exception.user.UserNotFoundException;
-import com.devcourse.springbootboardjpa.post.domain.User;
+import com.devcourse.springbootboardjpa.user.domain.User;
 import com.devcourse.springbootboardjpa.post.domain.dto.PostDTO;
 import com.devcourse.springbootboardjpa.post.repository.UserRepository;
-import com.devcourse.springbootboardjpa.user.domain.Post;
+import com.devcourse.springbootboardjpa.post.domain.Post;
 import com.devcourse.springbootboardjpa.user.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

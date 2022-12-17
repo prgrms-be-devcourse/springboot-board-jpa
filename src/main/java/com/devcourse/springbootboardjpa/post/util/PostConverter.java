@@ -1,8 +1,8 @@
 package com.devcourse.springbootboardjpa.post.util;
 
-import com.devcourse.springbootboardjpa.post.domain.User;
+import com.devcourse.springbootboardjpa.user.domain.User;
 import com.devcourse.springbootboardjpa.post.domain.dto.PostDTO;
-import com.devcourse.springbootboardjpa.user.domain.Post;
+import com.devcourse.springbootboardjpa.post.domain.Post;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
