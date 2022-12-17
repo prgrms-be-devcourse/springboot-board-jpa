@@ -4,8 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +22,7 @@ import javax.persistence.Table;
 public class Post extends AbstractBaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 30)
@@ -30,7 +32,7 @@ public class Post extends AbstractBaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
     public Post() {
