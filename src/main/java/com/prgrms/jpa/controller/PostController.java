@@ -2,15 +2,15 @@ package com.prgrms.jpa.controller;
 
 import com.prgrms.jpa.controller.dto.post.CreatePostRequest;
 import com.prgrms.jpa.controller.dto.post.PostResponse;
+import com.prgrms.jpa.controller.dto.post.PostsResponse;
 import com.prgrms.jpa.controller.dto.post.UpdatePostRequest;
-import com.prgrms.jpa.domain.Post;
 import com.prgrms.jpa.service.PostService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1/posts")
@@ -29,10 +29,9 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Post>> findAll() {
-        //TODO postService.findAll() 수정후 Entity 보내주는 부분 수정하기
-        List<Post> posts = postService.findAll();
-        return ResponseEntity.ok(posts);
+    public ResponseEntity<PostsResponse> findAll(@PageableDefault(size = 15) Pageable pageable) {
+        PostsResponse postsResponse = postService.findAll(pageable);
+        return ResponseEntity.ok(postsResponse);
     }
 
     @GetMapping("/{id}")

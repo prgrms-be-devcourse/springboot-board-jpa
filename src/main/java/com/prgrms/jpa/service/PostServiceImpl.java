@@ -2,6 +2,7 @@ package com.prgrms.jpa.service;
 
 import com.prgrms.jpa.controller.dto.post.CreatePostRequest;
 import com.prgrms.jpa.controller.dto.post.PostResponse;
+import com.prgrms.jpa.controller.dto.post.PostsResponse;
 import com.prgrms.jpa.controller.dto.post.UpdatePostRequest;
 import com.prgrms.jpa.domain.Post;
 import com.prgrms.jpa.domain.User;
@@ -9,12 +10,13 @@ import com.prgrms.jpa.exception.EntityNotFoundException;
 import com.prgrms.jpa.exception.ExceptionMessage;
 import com.prgrms.jpa.repository.PostRepository;
 import com.prgrms.jpa.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import static com.prgrms.jpa.utils.ToDtoMapper.toPostDto;
+import static com.prgrms.jpa.utils.ToDtoMapper.toPostsDto;
 import static com.prgrms.jpa.utils.ToEntityMapper.toPost;
 
 @Service
@@ -42,9 +44,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Post> findAll() {
-        //TODO page관련 PostsResponse 만들어서 구현하기
-        return null;
+    public PostsResponse findAll(Pageable pageable) {
+        Page<Post> page = postRepository.findAll(pageable);
+        return toPostsDto(page.getContent(), page.getTotalPages(), page.getTotalElements());
     }
 
     @Override

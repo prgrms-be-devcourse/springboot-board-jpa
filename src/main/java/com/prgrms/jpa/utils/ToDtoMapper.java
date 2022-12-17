@@ -1,9 +1,13 @@
 package com.prgrms.jpa.utils;
 
 import com.prgrms.jpa.controller.dto.post.PostResponse;
+import com.prgrms.jpa.controller.dto.post.PostsResponse;
 import com.prgrms.jpa.controller.dto.user.UserResponse;
 import com.prgrms.jpa.domain.Post;
 import com.prgrms.jpa.domain.User;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ToDtoMapper {
 
@@ -25,6 +29,16 @@ public class ToDtoMapper {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .user(toUserDto(post.getUser()))
+                .build();
+    }
+
+    public static PostsResponse toPostsDto(List<Post> posts, long totalPages, long totalCount) {
+        return PostsResponse.builder()
+                .totalPages(totalPages)
+                .totalCount(totalCount)
+                .posts(posts.stream()
+                        .map(ToDtoMapper::toPostDto)
+                        .collect(Collectors.toList()))
                 .build();
     }
 }
