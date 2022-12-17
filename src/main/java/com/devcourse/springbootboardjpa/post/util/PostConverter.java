@@ -3,12 +3,13 @@ package com.devcourse.springbootboardjpa.post.util;
 import com.devcourse.springbootboardjpa.post.domain.User;
 import com.devcourse.springbootboardjpa.post.domain.dto.PostDTO;
 import com.devcourse.springbootboardjpa.user.domain.Post;
-import org.springframework.stereotype.Component;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-@Component
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PostConverter {
 
-    public PostDTO.FindResponse postToFindResponse(Post post) {
+    public static PostDTO.FindResponse postToFindResponse(Post post) {
         return PostDTO.FindResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -18,7 +19,7 @@ public class PostConverter {
                 .build();
     }
 
-    public Post saveRequestToPost(PostDTO.SaveRequest postSaveRequest, User user) {
+    public static Post saveRequestToPost(PostDTO.SaveRequest postSaveRequest, User user) {
         return Post.builder()
                 .title(postSaveRequest.getTitle())
                 .content(postSaveRequest.getContent())

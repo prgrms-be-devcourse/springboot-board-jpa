@@ -22,14 +22,12 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    private final PostConverter postConverter;
-
     public Long savePost(PostDTO.SaveRequest saveRequest) {
 
         User user = userRepository.findById(saveRequest.getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
-        Post savedPost = postRepository.save(postConverter.saveRequestToPost(saveRequest, user));
+        Post savedPost = postRepository.save(PostConverter.saveRequestToPost(saveRequest, user));
 
         return savedPost.getId();
     }
@@ -40,13 +38,13 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(PostNotFoundException::new);
 
-        return postConverter.postToFindResponse(post);
+        return PostConverter.postToFindResponse(post);
     }
 
     @Transactional(readOnly = true)
     public Page<PostDTO.FindResponse> findAllPostsPage(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(postConverter::postToFindResponse);
+                .map(PostConverter::postToFindResponse);
     }
 
     public Long updatePost(Long id, PostDTO.UpdateRequest postUpdateRequest) {
