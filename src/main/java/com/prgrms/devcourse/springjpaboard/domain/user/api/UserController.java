@@ -1,5 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.user.api;
 
+import static org.springframework.http.MediaType.*;
+
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,7 @@ public class UserController {
 
 	private final UserFacade userFacade;
 
-	@PostMapping
+	@PostMapping(consumes = APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> create(@Valid @RequestBody UserSaveDto userRequestDto) {
 		userFacade.create(userRequestDto);
 

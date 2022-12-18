@@ -1,5 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.api;
 
+import static org.springframework.http.MediaType.*;
+
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,7 @@ public class PostController {
 
 	private final PostFacade postFacade;
 
-	@GetMapping
+	@GetMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostResponseDtos> findAll(@RequestBody PostRequestDto postRequestDto) {
 
 		PostResponseDtos postResponseDtos = postFacade.findAll(postRequestDto);
@@ -34,7 +36,7 @@ public class PostController {
 		return ResponseEntity.ok(postResponseDtos);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostResponseDto> findById(@PathVariable(name = "id") Long id) {
 
 		PostResponseDto postResponseDto = postFacade.findById(id);
@@ -42,7 +44,7 @@ public class PostController {
 		return ResponseEntity.ok(postResponseDto);
 	}
 
-	@PostMapping
+	@PostMapping(consumes = APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> create(@Valid @RequestBody PostSaveDto postSaveDto) {
 
 		postFacade.create(postSaveDto);
@@ -51,7 +53,7 @@ public class PostController {
 
 	}
 
-	@PostMapping("/{id}")
+	@PostMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> update(@PathVariable(name = "id") Long id,
 		@Valid @RequestBody PostUpdateDto postUpdateDto) {
 		postFacade.update(id, postUpdateDto);
