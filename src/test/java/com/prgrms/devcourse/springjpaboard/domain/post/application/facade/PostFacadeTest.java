@@ -36,7 +36,6 @@ class PostFacadeTest {
 	@InjectMocks
 	PostFacade postFacade;
 
-
 	public User createUser() {
 		return User.builder()
 			.name("geonwoo")

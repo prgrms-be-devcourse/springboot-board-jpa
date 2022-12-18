@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDtos;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostSaveDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostUpdateDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
 
 import lombok.RequiredArgsConstructor;
 
@@ -52,7 +52,8 @@ public class PostController {
 	}
 
 	@PostMapping("/{id}")
-	public ResponseEntity<Void> update(@PathVariable(name = "id") Long id,@Valid @RequestBody PostUpdateDto postUpdateDto) {
+	public ResponseEntity<Void> update(@PathVariable(name = "id") Long id,
+		@Valid @RequestBody PostUpdateDto postUpdateDto) {
 		postFacade.update(id, postUpdateDto);
 
 		return ResponseEntity.ok().build();

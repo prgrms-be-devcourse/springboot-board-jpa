@@ -16,12 +16,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDtos;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostSaveDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostUpdateDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
 
 @WebMvcTest(PostController.class)
 class PostControllerTest {

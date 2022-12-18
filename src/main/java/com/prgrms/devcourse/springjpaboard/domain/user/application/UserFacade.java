@@ -2,7 +2,6 @@ package com.prgrms.devcourse.springjpaboard.domain.user.application;
 
 import org.springframework.stereotype.Service;
 
-import com.prgrms.devcourse.springjpaboard.domain.user.application.UserService;
 import com.prgrms.devcourse.springjpaboard.domain.user.application.converter.UserConverter;
 import com.prgrms.devcourse.springjpaboard.domain.user.application.dto.UserSaveDto;
 

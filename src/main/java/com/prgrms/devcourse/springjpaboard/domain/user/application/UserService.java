@@ -1,7 +1,5 @@
 package com.prgrms.devcourse.springjpaboard.domain.user.application;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.stereotype.Service;
 
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
