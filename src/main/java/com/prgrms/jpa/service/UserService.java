@@ -7,8 +7,8 @@ import com.prgrms.jpa.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.prgrms.jpa.utils.ToDtoMapper.toUserIdDto;
-import static com.prgrms.jpa.utils.ToEntityMapper.toUser;
+import static com.prgrms.jpa.utils.UserEntityDtoMapper.toUser;
+import static com.prgrms.jpa.utils.UserEntityDtoMapper.toUserIdDto;
 
 @Service
 public class UserService{

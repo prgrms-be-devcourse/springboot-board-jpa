@@ -1,21 +1,18 @@
 package com.prgrms.jpa.utils;
 
+import com.prgrms.jpa.controller.dto.post.CreatePostRequest;
 import com.prgrms.jpa.controller.dto.post.CreatePostResponse;
-import com.prgrms.jpa.controller.dto.post.GetByIdPostResponse;
 import com.prgrms.jpa.controller.dto.post.FindAllPostResponse;
-import com.prgrms.jpa.controller.dto.user.CreateUserResponse;
+import com.prgrms.jpa.controller.dto.post.GetByIdPostResponse;
 import com.prgrms.jpa.domain.Post;
+import com.prgrms.jpa.domain.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ToDtoMapper {
+public class PostEntityDtoMapper {
 
-    private ToDtoMapper() {
-    }
-
-    public static CreateUserResponse toUserIdDto(long id) {
-        return new CreateUserResponse(id);
+    private PostEntityDtoMapper() {
     }
 
     public static CreatePostResponse toPostIdDto(long id) {
@@ -36,8 +33,16 @@ public class ToDtoMapper {
                 .totalPages(totalPages)
                 .totalCount(totalCount)
                 .posts(posts.stream()
-                        .map(ToDtoMapper::toPostDto)
+                        .map(PostEntityDtoMapper::toPostDto)
                         .collect(Collectors.toList()))
+                .build();
+    }
+
+    public static Post toPost(CreatePostRequest createPostRequest, User user) {
+        return Post.builder()
+                .title(createPostRequest.getTitle())
+                .content(createPostRequest.getContent())
+                .user(user)
                 .build();
     }
 }

@@ -16,10 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.prgrms.jpa.utils.ToDtoMapper.toPostDto;
-import static com.prgrms.jpa.utils.ToDtoMapper.toPostIdDto;
-import static com.prgrms.jpa.utils.ToDtoMapper.toPostsDto;
-import static com.prgrms.jpa.utils.ToEntityMapper.toPost;
+import static com.prgrms.jpa.utils.PostEntityDtoMapper.toPost;
+import static com.prgrms.jpa.utils.PostEntityDtoMapper.toPostDto;
+import static com.prgrms.jpa.utils.PostEntityDtoMapper.toPostIdDto;
+import static com.prgrms.jpa.utils.PostEntityDtoMapper.toPostsDto;
 
 @Service
 public class PostService {
