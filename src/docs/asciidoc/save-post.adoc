@@ -1,0 +1,21 @@
+= API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+== 게시글 저장
+
+=== Request
+include::{snippets}/save-post/http-request.adoc[+]
+
+include::{snippets}/save-post/request-fields.adoc[]
+　
+
+=== Response
+include::{snippets}/save-post/http-response.adoc[+]
+
+
+include::{snippets}/save-post/response-fields.adoc[]
+
