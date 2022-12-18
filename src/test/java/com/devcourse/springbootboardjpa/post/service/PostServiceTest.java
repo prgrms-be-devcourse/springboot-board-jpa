@@ -1,11 +1,12 @@
 package com.devcourse.springbootboardjpa.post.service;
 
+import com.devcourse.springbootboardjpa.common.dto.page.PageDTO;
 import com.devcourse.springbootboardjpa.common.exception.post.PostNotFoundException;
 import com.devcourse.springbootboardjpa.common.exception.user.UserNotFoundException;
-import com.devcourse.springbootboardjpa.user.domain.User;
+import com.devcourse.springbootboardjpa.post.domain.Post;
 import com.devcourse.springbootboardjpa.post.domain.dto.PostDTO;
 import com.devcourse.springbootboardjpa.post.repository.UserRepository;
-import com.devcourse.springbootboardjpa.post.domain.Post;
+import com.devcourse.springbootboardjpa.user.domain.User;
 import com.devcourse.springbootboardjpa.user.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -134,29 +135,27 @@ class PostServiceTest {
     void shouldFindPosts() {
         // given
         User user = createUser(1L , "name", 10, "hobby");
-        Pageable pageable = PageRequest.of(0, 5);
+        PageDTO.Request request = new PageDTO.Request(0, 5);
         List<Post> postList = new ArrayList<>();
-        for (long i = 1; i <= 10; i++) {
+        for (long i = 1; i <= 5; i++) {
             postList.add(new Post(i, "title " + i, "content " + i, user));
         }
-        Page<Post> posts = new PageImpl<Post>(postList, pageable, postList.size());
+        Page<Post> postPage = new PageImpl<>(postList);
 
-        when(postRepository.findAll(pageable))
-                .thenReturn(posts);
+        when(postRepository.findAll(any(Pageable.class)))
+                .thenReturn(postPage);
 
         // when
-        Page<PostDTO.FindResponse> resultPosts = postService.findAllPostsPage(pageable);
+        PageDTO.Response<Post, PostDTO.FindResponse> result = postService.findAllPostsPage(request);
 
         // then
-        List<Post> postContent = posts.getContent();
-        assertThat(resultPosts.getSize()).isEqualTo(posts.getSize());
-        assertThat(resultPosts.getContent())
+        assertThat(result.getData())
                 .extracting("id", "title", "content", "userId", "userName")
-                .contains(tuple(postContent.get(0).getId(), postContent.get(0).getTitle(), postContent.get(0).getContent(), postContent.get(0).getUser().getId(), postContent.get(0).getUser().getName()))
-                .contains(tuple(postContent.get(1).getId(), postContent.get(1).getTitle(), postContent.get(1).getContent(), postContent.get(1).getUser().getId(), postContent.get(1).getUser().getName()))
-                .contains(tuple(postContent.get(2).getId(), postContent.get(2).getTitle(), postContent.get(2).getContent(), postContent.get(2).getUser().getId(), postContent.get(2).getUser().getName()))
-                .contains(tuple(postContent.get(3).getId(), postContent.get(3).getTitle(), postContent.get(3).getContent(), postContent.get(3).getUser().getId(), postContent.get(3).getUser().getName()))
-                .contains(tuple(postContent.get(4).getId(), postContent.get(4).getTitle(), postContent.get(4).getContent(), postContent.get(4).getUser().getId(), postContent.get(4).getUser().getName()));
+                .contains(tuple(postList.get(0).getId(), postList.get(0).getTitle(), postList.get(0).getContent(), postList.get(0).getUser().getId(), postList.get(0).getUser().getName()))
+                .contains(tuple(postList.get(1).getId(), postList.get(1).getTitle(), postList.get(1).getContent(), postList.get(1).getUser().getId(), postList.get(1).getUser().getName()))
+                .contains(tuple(postList.get(2).getId(), postList.get(2).getTitle(), postList.get(2).getContent(), postList.get(2).getUser().getId(), postList.get(2).getUser().getName()))
+                .contains(tuple(postList.get(3).getId(), postList.get(3).getTitle(), postList.get(3).getContent(), postList.get(3).getUser().getId(), postList.get(3).getUser().getName()))
+                .contains(tuple(postList.get(4).getId(), postList.get(4).getTitle(), postList.get(4).getContent(), postList.get(4).getUser().getId(), postList.get(4).getUser().getName()));
     }
 
     @Test

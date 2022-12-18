@@ -1,5 +1,6 @@
 package com.devcourse.springbootboardjpa.common.dto.page;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ public class PageDTO {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class Request {
         private int page;
         private int size;
