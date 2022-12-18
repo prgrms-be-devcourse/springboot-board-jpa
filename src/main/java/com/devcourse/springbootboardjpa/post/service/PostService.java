@@ -1,16 +1,16 @@
 package com.devcourse.springbootboardjpa.post.service;
 
+import com.devcourse.springbootboardjpa.common.dto.page.PageDTO;
 import com.devcourse.springbootboardjpa.common.exception.post.PostNotFoundException;
 import com.devcourse.springbootboardjpa.common.exception.user.UserNotFoundException;
-import com.devcourse.springbootboardjpa.user.domain.User;
+import com.devcourse.springbootboardjpa.post.domain.Post;
 import com.devcourse.springbootboardjpa.post.domain.dto.PostDTO;
 import com.devcourse.springbootboardjpa.post.repository.UserRepository;
 import com.devcourse.springbootboardjpa.post.util.PostConverter;
-import com.devcourse.springbootboardjpa.post.domain.Post;
+import com.devcourse.springbootboardjpa.user.domain.User;
 import com.devcourse.springbootboardjpa.user.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,9 +42,10 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostDTO.FindResponse> findAllPostsPage(Pageable pageable) {
-        return postRepository.findAll(pageable)
-                .map(PostConverter::postToFindResponse);
+    public PageDTO.Response<Post, PostDTO.FindResponse> findAllPostsPage(PageDTO.Request pageRequest) {
+        Page<Post> pages = postRepository.findAll(pageRequest.makePageable());
+
+        return new PageDTO.Response<>(pages, PostConverter::postToFindResponse);
     }
 
     public Long updatePost(Long id, PostDTO.UpdateRequest postUpdateRequest) {
@@ -56,5 +57,4 @@ public class PostService {
 
         return post.getId();
     }
-
 }

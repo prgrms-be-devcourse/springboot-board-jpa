@@ -2,11 +2,11 @@ package com.devcourse.springbootboardjpa.post.controller;
 
 import com.devcourse.springbootboardjpa.common.dto.CommonResponse;
 import com.devcourse.springbootboardjpa.common.dto.ResponseDTO;
+import com.devcourse.springbootboardjpa.common.dto.page.PageDTO;
+import com.devcourse.springbootboardjpa.post.domain.Post;
 import com.devcourse.springbootboardjpa.post.domain.dto.PostDTO;
 import com.devcourse.springbootboardjpa.post.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,8 +44,8 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<ResponseDTO> findPosts(Pageable pageable) {
-        Page<PostDTO.FindResponse> posts = postService.findAllPostsPage(pageable);
+    public ResponseEntity<ResponseDTO> findPosts(@RequestBody PageDTO.Request pageRequest) {
+        PageDTO.Response<Post, PostDTO.FindResponse> posts = postService.findAllPostsPage(pageRequest);
 
         return ResponseEntity.ok(
                 CommonResponse.builder()
