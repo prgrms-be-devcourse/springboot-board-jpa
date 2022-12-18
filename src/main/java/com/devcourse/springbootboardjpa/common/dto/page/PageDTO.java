@@ -1,6 +1,7 @@
 package com.devcourse.springbootboardjpa.common.dto.page;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ public class PageDTO {
         }
     }
 
+    @AllArgsConstructor
     @Getter
     public static class Response<E, DTO> {
         private List<DTO> data;
