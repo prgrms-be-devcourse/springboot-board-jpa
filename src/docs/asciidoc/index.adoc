@@ -11,15 +11,15 @@ endif::[]
 
 .Request
 
-include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-create/http-request.adoc[]
 
 .Request Fields
 
-include::{snippets}/post-save/request-fields.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
 
 .Response
 
-include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-create/http-response.adoc[]
 
 === 게시글 조회
 
