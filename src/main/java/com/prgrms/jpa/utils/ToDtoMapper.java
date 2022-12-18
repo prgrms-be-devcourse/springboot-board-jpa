@@ -1,9 +1,9 @@
 package com.prgrms.jpa.utils;
 
-import com.prgrms.jpa.controller.dto.post.PostIdResponse;
-import com.prgrms.jpa.controller.dto.post.PostResponse;
-import com.prgrms.jpa.controller.dto.post.PostsResponse;
-import com.prgrms.jpa.controller.dto.user.UserIdResponse;
+import com.prgrms.jpa.controller.dto.post.CreatePostResponse;
+import com.prgrms.jpa.controller.dto.post.GetByIdPostResponse;
+import com.prgrms.jpa.controller.dto.post.FindAllPostResponse;
+import com.prgrms.jpa.controller.dto.user.CreateUserResponse;
 import com.prgrms.jpa.domain.Post;
 
 import java.util.List;
@@ -14,16 +14,16 @@ public class ToDtoMapper {
     private ToDtoMapper() {
     }
 
-    public static UserIdResponse toUserIdDto(long id) {
-        return new UserIdResponse(id);
+    public static CreateUserResponse toUserIdDto(long id) {
+        return new CreateUserResponse(id);
     }
 
-    public static PostIdResponse toPostIdDto(long id) {
-        return new PostIdResponse(id);
+    public static CreatePostResponse toPostIdDto(long id) {
+        return new CreatePostResponse(id);
     }
 
-    public static PostResponse toPostDto(Post post) {
-        return PostResponse.builder()
+    public static GetByIdPostResponse toPostDto(Post post) {
+        return GetByIdPostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
@@ -31,8 +31,8 @@ public class ToDtoMapper {
                 .build();
     }
 
-    public static PostsResponse toPostsDto(List<Post> posts, long totalPages, long totalCount) {
-        return PostsResponse.builder()
+    public static FindAllPostResponse toPostsDto(List<Post> posts, long totalPages, long totalCount) {
+        return FindAllPostResponse.builder()
                 .totalPages(totalPages)
                 .totalCount(totalCount)
                 .posts(posts.stream()

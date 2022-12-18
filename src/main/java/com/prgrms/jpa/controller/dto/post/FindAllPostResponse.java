@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class PostsResponse {
+public class FindAllPostResponse {
 
     private final long totalPages;
     private final long totalCount;
-    private final List<PostResponse> posts;
+    private final List<GetByIdPostResponse> posts;
 
     @Builder
-    public PostsResponse(long totalPages, long totalCount, List<PostResponse> posts) {
+    public FindAllPostResponse(long totalPages, long totalCount, List<GetByIdPostResponse> posts) {
         this.totalPages = totalPages;
         this.totalCount = totalCount;
         this.posts = new ArrayList<>(posts);

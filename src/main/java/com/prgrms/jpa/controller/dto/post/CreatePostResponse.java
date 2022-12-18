@@ -3,10 +3,10 @@ package com.prgrms.jpa.controller.dto.post;
 import lombok.Getter;
 
 @Getter
-public class PostIdResponse {
+public class CreatePostResponse {
     private final Long id;
 
-    public PostIdResponse(Long id) {
+    public CreatePostResponse(Long id) {
         this.id = id;
     }
 }

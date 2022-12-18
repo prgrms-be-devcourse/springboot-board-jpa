@@ -1,9 +1,9 @@
 package com.prgrms.jpa.service;
 
 import com.prgrms.jpa.controller.dto.post.CreatePostRequest;
-import com.prgrms.jpa.controller.dto.post.PostIdResponse;
-import com.prgrms.jpa.controller.dto.post.PostResponse;
-import com.prgrms.jpa.controller.dto.post.PostsResponse;
+import com.prgrms.jpa.controller.dto.post.CreatePostResponse;
+import com.prgrms.jpa.controller.dto.post.GetByIdPostResponse;
+import com.prgrms.jpa.controller.dto.post.FindAllPostResponse;
 import com.prgrms.jpa.controller.dto.post.UpdatePostRequest;
 import com.prgrms.jpa.domain.Post;
 import com.prgrms.jpa.domain.User;
@@ -36,7 +36,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostIdResponse create(CreatePostRequest createPostRequest) {
+    public CreatePostResponse create(CreatePostRequest createPostRequest) {
         User user = userRepository.findById(createPostRequest.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ExceptionMessage.ENTITY_NOT_FOUND.name(), USER)));
         Post post = postRepository.save(toPost(createPostRequest, user));
@@ -44,13 +44,13 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostsResponse findAll(Pageable pageable) {
+    public FindAllPostResponse findAll(Pageable pageable) {
         Page<Post> page = postRepository.findAll(pageable);
         return toPostsDto(page.getContent(), page.getTotalPages(), page.getTotalElements());
     }
 
     @Transactional(readOnly = true)
-    public PostResponse findById(long id) {
+    public GetByIdPostResponse getById(long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ExceptionMessage.ENTITY_NOT_FOUND.name(), POST)));
         return toPostDto(post);

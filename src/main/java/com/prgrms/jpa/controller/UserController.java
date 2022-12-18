@@ -1,7 +1,7 @@
 package com.prgrms.jpa.controller;
 
 import com.prgrms.jpa.controller.dto.user.CreateUserRequest;
-import com.prgrms.jpa.controller.dto.user.UserIdResponse;
+import com.prgrms.jpa.controller.dto.user.CreateUserResponse;
 import com.prgrms.jpa.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +23,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserIdResponse> create(@RequestBody @Valid CreateUserRequest createUserRequest) {
-        UserIdResponse id = userService.create(createUserRequest);
+    public ResponseEntity<CreateUserResponse> create(@RequestBody @Valid CreateUserRequest createUserRequest) {
+        CreateUserResponse id = userService.create(createUserRequest);
         return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 }

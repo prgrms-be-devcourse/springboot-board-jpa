@@ -1,6 +1,10 @@
 package com.prgrms.jpa.controller;
 
-import com.prgrms.jpa.controller.dto.post.*;
+import com.prgrms.jpa.controller.dto.post.CreatePostRequest;
+import com.prgrms.jpa.controller.dto.post.CreatePostResponse;
+import com.prgrms.jpa.controller.dto.post.FindAllPostResponse;
+import com.prgrms.jpa.controller.dto.post.GetByIdPostResponse;
+import com.prgrms.jpa.controller.dto.post.UpdatePostRequest;
 import com.prgrms.jpa.service.PostService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,21 +31,21 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostIdResponse> create(@RequestBody @Valid CreatePostRequest createPostRequest) {
-        PostIdResponse id = postService.create(createPostRequest);
+    public ResponseEntity<CreatePostResponse> create(@RequestBody @Valid CreatePostRequest createPostRequest) {
+        CreatePostResponse id = postService.create(createPostRequest);
         return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<PostsResponse> findAll(@PageableDefault(size = 15) Pageable pageable) {
-        PostsResponse postsResponse = postService.findAll(pageable);
-        return ResponseEntity.ok(postsResponse);
+    public ResponseEntity<FindAllPostResponse> findAll(@PageableDefault(size = 15) Pageable pageable) {
+        FindAllPostResponse findAllPostResponse = postService.findAll(pageable);
+        return ResponseEntity.ok(findAllPostResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponse> findById(@PathVariable long id) {
-        PostResponse postResponse = postService.findById(id);
-        return ResponseEntity.ok(postResponse);
+    public ResponseEntity<GetByIdPostResponse> getById(@PathVariable long id) {
+        GetByIdPostResponse getByIdPostResponse = postService.getById(id);
+        return ResponseEntity.ok(getByIdPostResponse);
     }
 
     @PatchMapping("/{id}")
