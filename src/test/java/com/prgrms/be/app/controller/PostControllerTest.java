@@ -10,9 +10,11 @@ import com.prgrms.be.app.repository.UserRepository;
 import com.prgrms.be.app.service.PostService;
 import jdk.jfr.ContentType;
 import org.assertj.core.api.Assertions;
+import org.hibernate.engine.spi.QueryParameters;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -23,18 +25,24 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.headers.HeaderDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,7 +50,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-
 
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
@@ -148,7 +155,11 @@ class PostControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("page", String.valueOf(pageable.getPageNumber())).param("size",String.valueOf(pageable.getPageSize())))
                 .andDo(print()).andExpect(status().isOk()).andDo(document("posts-pagegation",
-                        responseFields(
+                        requestParameters(
+                                parameterWithName("page").description("현재 페이지"),
+                                parameterWithName("size").description("현재 페이지에 보여줄 게시글 갯 수")
+                        )
+                        ,responseFields(
                                 fieldWithPath("content[].title").type(JsonFieldType.STRING).description("포스트 제목"),
                                 fieldWithPath("content[].postId").type(JsonFieldType.NUMBER).description("포스트 아이디"),
                                 fieldWithPath("content[].createdAt").type(JsonFieldType.STRING).description("포스트가 만들어진 때"),
@@ -168,12 +179,16 @@ class PostControllerTest {
         Long postId = postService.createPost(postDto);
         PostDTO.UpdateRequest updateRequest = new PostDTO.UpdateRequest("수정된 타이틀","수정된 컨텐츠 내용");
         //when
-        mockMvc.perform(post("/posts/{id}",postId)
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/posts/{id}",postId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isNoContent())
                 .andDo(print())
-                .andDo(document("update-post",requestFields(
+                .andDo(document("update-post",
+                        pathParameters(
+                                parameterWithName("id").description("포스트 Id")
+                        )
+                        ,requestFields(
                         fieldWithPath("title").type(JsonFieldType.STRING).description("업데이트 될 타이틀"),
                         fieldWithPath("content").type(JsonFieldType.STRING).description("업데이트 될 내용")
                         ))
