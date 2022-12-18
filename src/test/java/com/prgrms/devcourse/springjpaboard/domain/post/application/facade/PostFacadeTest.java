@@ -1,5 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.application.facade;
 
+import static org.mockito.Mockito.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
@@ -96,22 +97,22 @@ class PostFacadeTest {
 	void createTest() {
 
 		Long userId = 1L;
-		MockedStatic<PostConverter> postConverterMockedStatic = Mockito.mockStatic(PostConverter.class);
+		MockedStatic<PostConverter> postConverterMockedStatic = mockStatic(PostConverter.class);
 
 		User user = createUser();
 		Post post = createPost(user);
 		PostSaveDto postSaveDto = createPostSaveDto(userId);
 
-		Mockito.when(userService.findById(userId)).thenReturn(user);
+		when(userService.findById(userId)).thenReturn(user);
 
-		Mockito.when(PostConverter.toPost(postSaveDto, user)).thenReturn(post);
-		Mockito.doNothing().when(postService).create(post);
+		when(PostConverter.toPost(postSaveDto, user)).thenReturn(post);
+		doNothing().when(postService).create(post);
 
 		postFacade.create(postSaveDto);
 
-		Mockito.verify(userService).findById(userId);
-		Mockito.verify(postService).create(post);
-		postConverterMockedStatic.verify(() -> PostConverter.toPost(postSaveDto, user), Mockito.times(1));
+		verify(userService).findById(userId);
+		verify(postService).create(post);
+		postConverterMockedStatic.verify(() -> PostConverter.toPost(postSaveDto, user), times(1));
 
 		postConverterMockedStatic.close();
 	}
@@ -124,16 +125,16 @@ class PostFacadeTest {
 		User user = createUser();
 		Post post = createPost(user);
 
-		MockedStatic<PostConverter> postConverterMockedStatic = Mockito.mockStatic(PostConverter.class);
+		MockedStatic<PostConverter> postConverterMockedStatic = mockStatic(PostConverter.class);
 		PostUpdateDto postUpdateDto = createPostUpdateDto();
 
-		Mockito.when(PostConverter.toPost(postUpdateDto)).thenReturn(post);
-		Mockito.doNothing().when(postService).update(postId, post);
+		when(PostConverter.toPost(postUpdateDto)).thenReturn(post);
+		doNothing().when(postService).update(postId, post);
 
 		postFacade.update(postId, postUpdateDto);
 
-		Mockito.verify(postService).update(postId, post);
-		postConverterMockedStatic.verify(() -> PostConverter.toPost(postUpdateDto), Mockito.times(1));
+		verify(postService).update(postId, post);
+		postConverterMockedStatic.verify(() -> PostConverter.toPost(postUpdateDto), times(1));
 
 		postConverterMockedStatic.close();
 	}
@@ -147,14 +148,14 @@ class PostFacadeTest {
 		Post post = createPost(user);
 		PostResponseDto postResponseDto = createPostResponseDto(postId);
 
-		MockedStatic<PostConverter> postConverterMockedStatic = Mockito.mockStatic(PostConverter.class);
-		Mockito.when(postService.findById(postId)).thenReturn(post);
-		Mockito.when(PostConverter.toPostResponseDto(post)).thenReturn(postResponseDto);
+		MockedStatic<PostConverter> postConverterMockedStatic = mockStatic(PostConverter.class);
+		when(postService.findById(postId)).thenReturn(post);
+		when(PostConverter.toPostResponseDto(post)).thenReturn(postResponseDto);
 
 		postFacade.findById(postId);
 
-		Mockito.verify(postService).findById(postId);
-		postConverterMockedStatic.verify(() -> PostConverter.toPostResponseDto(post), Mockito.times(1));
+		verify(postService).findById(postId);
+		postConverterMockedStatic.verify(() -> PostConverter.toPostResponseDto(post), times(1));
 
 		postConverterMockedStatic.close();
 	}
@@ -176,24 +177,24 @@ class PostFacadeTest {
 
 		PostRequestDto postRequestDto = createPostRequestDto(cursorId, size);
 		PostResponseDtos postResponseDtos = createPostResponseDtos(postList, lastIdOfList, hasNext);
-		MockedStatic<PostConverter> postConverterMockedStatic = Mockito.mockStatic(PostConverter.class);
+		MockedStatic<PostConverter> postConverterMockedStatic = mockStatic(PostConverter.class);
 
-		Mockito.when(postService.findAll(cursorId, size))
+		when(postService.findAll(cursorId, size))
 			.thenReturn(postList);
 
-		Mockito.when(postService.getLastIdOfList(postList)).thenReturn(lastIdOfList);
+		when(postService.getLastIdOfList(postList)).thenReturn(lastIdOfList);
 
-		Mockito.when(postService.hasNext(lastIdOfList)).thenReturn(hasNext);
+		when(postService.hasNext(lastIdOfList)).thenReturn(hasNext);
 
-		Mockito.when(PostConverter.toPostResponseDtos(postList, lastIdOfList, hasNext)).thenReturn(postResponseDtos);
+		when(PostConverter.toPostResponseDtos(postList, lastIdOfList, hasNext)).thenReturn(postResponseDtos);
 
 		postFacade.findAll(postRequestDto);
 
-		Mockito.verify(postService).findAll(cursorId, size);
-		Mockito.verify(postService).getLastIdOfList(postList);
-		Mockito.verify(postService).hasNext(lastIdOfList);
+		verify(postService).findAll(cursorId, size);
+		verify(postService).getLastIdOfList(postList);
+		verify(postService).hasNext(lastIdOfList);
 		postConverterMockedStatic.verify(() -> PostConverter.toPostResponseDtos(postList, lastIdOfList, hasNext),
-			Mockito.times(1));
+			times(1));
 
 		postConverterMockedStatic.close();
 

@@ -1,19 +1,20 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.api;
 
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
@@ -49,15 +50,15 @@ class PostControllerTest {
 
 		String json = objectMapper.writeValueAsString(postSaveDto);
 
-		Mockito.doNothing().when(postFacade).create(ArgumentMatchers.any());
+		doNothing().when(postFacade).create(ArgumentMatchers.any());
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/posts")
+		mockMvc.perform(post("/api/v1/posts")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andDo(MockMvcResultHandlers.print());
+			.andExpect(status().isOk())
+			.andDo(print());
 
-		Mockito.verify(postFacade).create(ArgumentMatchers.any());
+		verify(postFacade).create(ArgumentMatchers.any());
 	}
 
 	@Test
@@ -74,18 +75,18 @@ class PostControllerTest {
 
 		String json = objectMapper.writeValueAsString(postResponseDto);
 
-		Mockito.when(postFacade.findById(postId)).thenReturn(postResponseDto);
+		when(postFacade.findById(postId)).thenReturn(postResponseDto);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/posts/{id}", postId))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.content().json(json))
-			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(postId))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.title").value(postResponseDto.getTitle()))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.content").value(postResponseDto.getContent()))
-			.andDo(MockMvcResultHandlers.print());
+		mockMvc.perform(get("/api/v1/posts/{id}", postId))
+			.andExpect(status().isOk())
+			.andExpect(content().json(json))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$.id").value(postId))
+			.andExpect(jsonPath("$.title").value(postResponseDto.getTitle()))
+			.andExpect(jsonPath("$.content").value(postResponseDto.getContent()))
+			.andDo(print());
 
-		Mockito.verify(postFacade).findById(postId);
+		verify(postFacade).findById(postId);
 
 	}
 
@@ -102,15 +103,15 @@ class PostControllerTest {
 
 		String json = objectMapper.writeValueAsString(postUpdateDto);
 
-		Mockito.doNothing().when(postFacade).update(ArgumentMatchers.any(), ArgumentMatchers.any());
+		doNothing().when(postFacade).update(ArgumentMatchers.any(), ArgumentMatchers.any());
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/posts/{id}", postId)
+		mockMvc.perform(post("/api/v1/posts/{id}", postId)
 				.content(json)
 				.contentType(MediaType.APPLICATION_JSON))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andDo(MockMvcResultHandlers.print());
+			.andExpect(status().isOk())
+			.andDo(print());
 
-		Mockito.verify(postFacade).update(ArgumentMatchers.any(), ArgumentMatchers.any());
+		verify(postFacade).update(ArgumentMatchers.any(), ArgumentMatchers.any());
 
 	}
 
@@ -145,23 +146,23 @@ class PostControllerTest {
 		String requestJson = objectMapper.writeValueAsString(postRequestDto);
 		String responseJson = objectMapper.writeValueAsString(postResponseDtos);
 
-		Mockito.when(postFacade.findAll(ArgumentMatchers.any())).thenReturn(postResponseDtos);
+		when(postFacade.findAll(ArgumentMatchers.any())).thenReturn(postResponseDtos);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/posts")
+		mockMvc.perform(get("/api/v1/posts")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(requestJson))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.content().json(responseJson))
-			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.postResponseDtoList.[0].id").value(postId))
+			.andExpect(status().isOk())
+			.andExpect(content().json(responseJson))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$.postResponseDtoList.[0].id").value(postId))
 			.andExpect(
-				MockMvcResultMatchers.jsonPath("$.postResponseDtoList.[0].title").value(postResponseDto.getTitle()))
+				jsonPath("$.postResponseDtoList.[0].title").value(postResponseDto.getTitle()))
 			.andExpect(
-				MockMvcResultMatchers.jsonPath("$.postResponseDtoList.[0].content").value(postResponseDto.getContent()))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.cursorId").value(postResponseDtos.getCursorId()))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.hasNext").value(postResponseDtos.getHasNext()))
-			.andDo(MockMvcResultHandlers.print());
+				jsonPath("$.postResponseDtoList.[0].content").value(postResponseDto.getContent()))
+			.andExpect(jsonPath("$.cursorId").value(postResponseDtos.getCursorId()))
+			.andExpect(jsonPath("$.hasNext").value(postResponseDtos.getHasNext()))
+			.andDo(print());
 
-		Mockito.verify(postFacade).findAll(ArgumentMatchers.any());
+		verify(postFacade).findAll(ArgumentMatchers.any());
 	}
 }

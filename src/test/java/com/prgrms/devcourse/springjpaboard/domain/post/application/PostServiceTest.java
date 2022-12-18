@@ -1,5 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.application;
 
+import static org.mockito.Mockito.*;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
@@ -50,11 +51,11 @@ class PostServiceTest {
 
 		Post post = createPost(user);
 
-		Mockito.when(postRepository.save(post)).thenReturn(post);
+		when(postRepository.save(post)).thenReturn(post);
 
 		postService.create(post);
 
-		Mockito.verify(postRepository).save(post);
+		verify(postRepository).save(post);
 
 	}
 
@@ -66,11 +67,11 @@ class PostServiceTest {
 
 		Post post = createPost(user);
 
-		Mockito.when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
+		when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
 
 		Post findPost = postService.findById(post.getId());
 
-		Mockito.verify(postRepository).findById(post.getId());
+		verify(postRepository).findById(post.getId());
 		Assertions.assertThat(findPost).isEqualTo(post);
 
 	}
@@ -84,7 +85,7 @@ class PostServiceTest {
 		Post post1 = createPost(user);
 		Post post2 = createPost(user);
 
-		Mockito.when(postRepository.findById(post1.getId())).thenReturn(Optional.of(post1));
+		when(postRepository.findById(post1.getId())).thenReturn(Optional.of(post1));
 
 		postService.update(post1.getId(), post2);
 
@@ -92,7 +93,7 @@ class PostServiceTest {
 			.hasFieldOrPropertyWithValue("title", post2.getTitle())
 			.hasFieldOrPropertyWithValue("content", post2.getContent());
 
-		Mockito.verify(postRepository).findById(post1.getId());
+		verify(postRepository).findById(post1.getId());
 
 	}
 
@@ -102,11 +103,11 @@ class PostServiceTest {
 
 		Long cursorId = 2L;
 
-		Mockito.when(postRepository.existsByIdLessThan(cursorId)).thenReturn(true);
+		when(postRepository.existsByIdLessThan(cursorId)).thenReturn(true);
 
 		postService.hasNext(cursorId);
 
-		Mockito.verify(postRepository).existsByIdLessThan(cursorId);
+		verify(postRepository).existsByIdLessThan(cursorId);
 
 	}
 
@@ -143,12 +144,12 @@ class PostServiceTest {
 
 		List<Post> postList = List.of(post2, post1);
 
-		Mockito.when(postRepository.findByIdLessThanOrderByIdDesc(cursorId, pageRequest))
+		when(postRepository.findByIdLessThanOrderByIdDesc(cursorId, pageRequest))
 			.thenReturn(postList);
 
 		postService.findAll(cursorId, size);
 
-		Mockito.verify(postRepository).findByIdLessThanOrderByIdDesc(cursorId, pageRequest);
+		verify(postRepository).findByIdLessThanOrderByIdDesc(cursorId, pageRequest);
 
 	}
 }
