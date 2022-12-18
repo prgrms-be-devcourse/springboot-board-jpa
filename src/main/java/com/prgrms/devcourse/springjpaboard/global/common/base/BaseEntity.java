@@ -1,4 +1,4 @@
-package com.prgrms.devcourse.springjpaboard.domain.base;
+package com.prgrms.devcourse.springjpaboard.global.common.base;
 
 import java.time.LocalDateTime;
 

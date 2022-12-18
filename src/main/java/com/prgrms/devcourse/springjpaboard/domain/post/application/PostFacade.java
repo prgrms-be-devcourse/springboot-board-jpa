@@ -1,19 +1,18 @@
-package com.prgrms.devcourse.springjpaboard.domain.post.service.facade;
+package com.prgrms.devcourse.springjpaboard.domain.post.application;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
-import com.prgrms.devcourse.springjpaboard.domain.post.service.PostService;
-import com.prgrms.devcourse.springjpaboard.domain.post.service.converter.PostConverter;
-import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostResponseDtos;
-import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostSaveDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostUpdateDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.application.converter.PostConverter;
+import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDtos;
+import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostSaveDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostUpdateDto;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
-import com.prgrms.devcourse.springjpaboard.domain.user.service.UserService;
+import com.prgrms.devcourse.springjpaboard.domain.user.application.UserService;
 
 import lombok.RequiredArgsConstructor;
 

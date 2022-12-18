@@ -1,4 +1,4 @@
-package com.prgrms.devcourse.springjpaboard.domain.user.service.dto;
+package com.prgrms.devcourse.springjpaboard.domain.user.application.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

@@ -1,13 +1,13 @@
-package com.prgrms.devcourse.springjpaboard.domain.post.service.converter;
+package com.prgrms.devcourse.springjpaboard.domain.post.application.converter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
-import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostResponseDtos;
-import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostSaveDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostUpdateDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDtos;
+import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostSaveDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostUpdateDto;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 
 public class PostConverter {

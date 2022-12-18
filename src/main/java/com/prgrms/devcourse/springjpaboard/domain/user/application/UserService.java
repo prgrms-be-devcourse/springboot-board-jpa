@@ -1,4 +1,4 @@
-package com.prgrms.devcourse.springjpaboard.domain.user.service;
+package com.prgrms.devcourse.springjpaboard.domain.user.application;
 
 import javax.persistence.EntityNotFoundException;
 

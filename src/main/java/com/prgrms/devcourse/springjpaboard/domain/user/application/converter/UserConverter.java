@@ -1,7 +1,7 @@
-package com.prgrms.devcourse.springjpaboard.domain.user.service.converter;
+package com.prgrms.devcourse.springjpaboard.domain.user.application.converter;
 
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
-import com.prgrms.devcourse.springjpaboard.domain.user.service.dto.UserSaveDto;
+import com.prgrms.devcourse.springjpaboard.domain.user.application.dto.UserSaveDto;
 
 public class UserConverter {
 

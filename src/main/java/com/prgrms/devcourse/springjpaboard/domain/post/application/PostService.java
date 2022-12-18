@@ -1,4 +1,4 @@
-package com.prgrms.devcourse.springjpaboard.domain.post.service;
+package com.prgrms.devcourse.springjpaboard.domain.post.application;
 
 import java.util.List;
 
