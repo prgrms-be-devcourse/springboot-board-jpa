@@ -5,6 +5,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
+import com.prgrms.devcourse.springjpaboard.domain.user.exeception.UserNotFoundException;
 import com.prgrms.devcourse.springjpaboard.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class UserService {
 	}
 
 	public User findById(Long userId) {
-		return userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+		return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 	}
 
 }

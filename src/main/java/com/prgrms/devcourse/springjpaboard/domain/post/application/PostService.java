@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
+import com.prgrms.devcourse.springjpaboard.domain.post.exeception.PostNotFoundException;
 import com.prgrms.devcourse.springjpaboard.domain.post.repository.PostRepository;
 
 import lombok.AllArgsConstructor;
@@ -47,7 +48,7 @@ public class PostService {
 
 	@Transactional
 	public Post findById(Long id) {
-		return postRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+		return postRepository.findById(id).orElseThrow(PostNotFoundException::new);
 	}
 
 	@Transactional
