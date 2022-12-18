@@ -1,5 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.api;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +17,6 @@ import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostSaveDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.dto.PostUpdateDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.service.facade.PostFacade;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -42,16 +43,16 @@ public class PostController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> create(@Valid @RequestBody PostSaveDto postRequestDto) {
+	public ResponseEntity<Void> create(@Valid @RequestBody PostSaveDto postSaveDto) {
 
-		postFacade.create(postRequestDto);
+		postFacade.create(postSaveDto);
 
 		return ResponseEntity.ok().build();
 
 	}
 
 	@PostMapping("/{id}")
-	public ResponseEntity<Void> edit(@PathVariable(name = "id") Long id,@Valid @RequestBody PostUpdateDto postUpdateDto) {
+	public ResponseEntity<Void> update(@PathVariable(name = "id") Long id,@Valid @RequestBody PostUpdateDto postUpdateDto) {
 		postFacade.update(id, postUpdateDto);
 
 		return ResponseEntity.ok().build();

@@ -1,5 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.user.api;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prgrms.devcourse.springjpaboard.domain.user.service.dto.UserSaveDto;
 import com.prgrms.devcourse.springjpaboard.domain.user.service.facade.UserFacade;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController

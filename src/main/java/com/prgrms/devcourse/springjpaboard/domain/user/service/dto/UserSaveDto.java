@@ -1,6 +1,8 @@
 package com.prgrms.devcourse.springjpaboard.domain.user.service.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +15,7 @@ public class UserSaveDto {
 	@NotBlank
 	private String name;
 
-	@NotBlank
+	@NotNull
 	private Integer age;
 
 	@NotBlank
