@@ -9,6 +9,7 @@ import com.prgrms.be.app.repository.PostRepository;
 import com.prgrms.be.app.repository.UserRepository;
 import com.prgrms.be.app.service.PostService;
 import jdk.jfr.ContentType;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.restdocs.headers.HeaderDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -28,7 +31,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -90,6 +96,9 @@ class PostControllerTest {
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("포스트 제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("포스트 내용"),
                                 fieldWithPath("userId").type(JsonFieldType.NUMBER).description("포스트 작성자 Id")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.LOCATION).description("생성된 포스트 URI")
                         )));
     }
 
@@ -128,10 +137,10 @@ class PostControllerTest {
     @Test
     void getAllCallTest() throws Exception{
         //given
-        Pageable pageable =  PageRequest.of(0,2);
+        Pageable pageable =  PageRequest.of(1,2);
         for (int i = 0; i < 10; i++) {
             Long postId = postService.createPost(postDto);
-            postService.updatePost(new PostDTO.UpdateRequest("제목"+i,"컨텐츠"+i,postId));
+            postService.updatePost(new PostDTO.UpdateRequest("제목"+i,"컨텐츠"+i),postId);
         }
         //when
 
@@ -143,25 +152,10 @@ class PostControllerTest {
                                 fieldWithPath("content[].title").type(JsonFieldType.STRING).description("포스트 제목"),
                                 fieldWithPath("content[].postId").type(JsonFieldType.NUMBER).description("포스트 아이디"),
                                 fieldWithPath("content[].createdAt").type(JsonFieldType.STRING).description("포스트가 만들어진 때"),
-                                fieldWithPath("pageable.sort.empty").type(JsonFieldType.BOOLEAN).description(""),
-                                fieldWithPath("pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description(""),
-                                fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description(""),
-                                fieldWithPath("pageable.offset").type(JsonFieldType.NUMBER).description(""),
-                                fieldWithPath("pageable.pageSize").type(JsonFieldType.NUMBER).description(""),
-                                fieldWithPath("pageable.pageNumber").type(JsonFieldType.NUMBER).description(""),
-                                fieldWithPath("pageable.unpaged").type(JsonFieldType.BOOLEAN).description(""),
-                                fieldWithPath("pageable.paged").type(JsonFieldType.BOOLEAN).description(""),
-                                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description(""),
-                                fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description(""),
-                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description(""),
-                                fieldWithPath("size").type(JsonFieldType.NUMBER).description(""),
-                                fieldWithPath("number").type(JsonFieldType.VARIES).description(""),
-                                fieldWithPath("sort.empty").type(JsonFieldType.BOOLEAN).description(""),
-                                fieldWithPath("sort.sorted").type(JsonFieldType.BOOLEAN).description(""),
-                                fieldWithPath("sort.unsorted").type(JsonFieldType.BOOLEAN).description(""),
-                                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description(""),
-                                fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description(""),
-                                fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("")
+                                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("마지막 페이지면 true 입니다."),
+                                fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("총 페이지의 수 입니다."),
+                                fieldWithPath("pageNumber").type(JsonFieldType.VARIES).description("현재 페이지의 위치입니다."),
+                                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("첫페이지면 true 입니다.")
                                 )));
 
         //then
@@ -169,8 +163,26 @@ class PostControllerTest {
 
     //toDo : 수정 테스트
     @Test
-    void updateCallTest() {
-
+    void updateCallTest() throws Exception {
+        //given
+        Long postId = postService.createPost(postDto);
+        PostDTO.UpdateRequest updateRequest = new PostDTO.UpdateRequest("수정된 타이틀","수정된 컨텐츠 내용");
+        //when
+        mockMvc.perform(post("/posts/{id}",postId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateRequest)))
+                .andExpect(status().isNoContent())
+                .andDo(print())
+                .andDo(document("update-post",requestFields(
+                        fieldWithPath("title").type(JsonFieldType.STRING).description("업데이트 될 타이틀"),
+                        fieldWithPath("content").type(JsonFieldType.STRING).description("업데이트 될 내용")
+                        ))
+                );
+        //then
+        var updatedPost = postService.findById(postId);
+        assertThat(postDto).isNotEqualTo(updatedPost);
+        assertThat(updatedPost.title()).isEqualTo("수정된 타이틀");
+        assertThat(updatedPost.content()).isEqualTo("수정된 컨텐츠 내용");
     }
 
 }

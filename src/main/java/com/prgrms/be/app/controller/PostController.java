@@ -28,12 +28,14 @@ public class PostController {
     @PostMapping("/posts")
     public ResponseEntity<Object> save(@RequestBody PostDTO.CreateRequest createRequest) {
         Long postId = postService.createPost(createRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+//        ResponseEntity.created(URI.create("/post/"))
+        return ResponseEntity.created(URI.create("/"+postId)).build();
+//        return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
     //toDo : 페이징 조회하는 메서드
     @GetMapping("/posts")
-    public Page<PostDTO.PostsResponse> getAll(Pageable pageable) {
+    public PostDTO.PostsWithPaginationResponse getAll(Pageable pageable) {
         return postService.findAll(pageable);
     }
 
@@ -50,7 +52,9 @@ public class PostController {
     //toDo : 수정
     @PostMapping("/posts/{id}")
     public ResponseEntity<Object> update(
-            @PathVariable Long id) {
-        throw new UnsupportedOperationException();
+            @PathVariable Long id,@RequestBody PostDTO.UpdateRequest updateRequest) {
+        postService.updatePost(updateRequest,id);
+        return ResponseEntity.noContent().build();
+//        throw new UnsupportedOperationException();
     }
 }

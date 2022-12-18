@@ -24,8 +24,9 @@ public class PostService {
     private final PostConverter postConverter;
 
     @Transactional(readOnly = true)
-    public Page<PostDTO.PostsResponse> findAll(Pageable pageable) {
-        return postRepository.findAll(pageable).map(postConverter::convertToPostsResponse);
+    public PostDTO.PostsWithPaginationResponse findAll(Pageable pageable) {
+        return postConverter.convertToPaginationResponse(postRepository.findAll(pageable));
+//        return postRepository.findAll(pageable).map(postConverter::convertToPostsResponse);
 
     }
 
@@ -46,8 +47,8 @@ public class PostService {
     }
 
     @Transactional
-    public Long updatePost(PostDTO.UpdateRequest postUpdateDto) {
-        Post post = postRepository.findById(postUpdateDto.postId()) // 이렇게 하는게 나을까 findById 반환 데이터 타입을 Post로 바꾸고 해당 메서드를 이용하는게 나을까?
+    public Long updatePost(PostDTO.UpdateRequest postUpdateDto, Long postId) {
+        Post post = postRepository.findById(postId) // 이렇게 하는게 나을까 findById 반환 데이터 타입을 Post로 바꾸고 해당 메서드를 이용하는게 나을까?
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
         post.changePost(postUpdateDto.title(), postUpdateDto.content());
         return post.getId();

@@ -65,14 +65,17 @@ class PostServiceTest {
 
         // when
         when(postRepository.findAll(pageable)).thenReturn(postPage);
-        Page<PostDTO.PostsResponse> postDtos = postService.findAll(pageable);
+        var postDtos = postService.findAll(pageable);
 
         // then
         verify(postRepository).findAll(pageable);
-        assertThat(postDtos.getTotalPages()).isEqualTo(4);
-        for (PostDTO.PostsResponse postDto : postDtos) {
-            log.info("{}", postDto);
-        }
+        assertThat(postDtos.pageNumber()).isEqualTo(0);
+        assertThat(postDtos.first()).isEqualTo(true);
+        assertThat(postDtos.last()).isEqualTo(false);
+        assertThat(postDtos.totalPages()).isEqualTo(4);
+//        for (PostDTO.PostsResponse postDto : postDtos) {
+//            log.info("{}", postDto);
+//        }
     }
 
     //todo : 게시글 단건조회 테스트
@@ -108,7 +111,8 @@ class PostServiceTest {
         // given
         User user = new User(1L, "user", 25, "농구");
         Post post = new Post(1L, "title", "content", user);
-        PostDTO.UpdateRequest postUpdateRequest = new PostDTO.UpdateRequest("change title", "change content", post.getId());
+
+        PostDTO.UpdateRequest postUpdateRequest = new PostDTO.UpdateRequest("change title", "change content");
         Post updatedPost = new Post(1L, postUpdateRequest.title(), postUpdateRequest.content(), user);
 
         when(postRepository.findById(post.getId()))
@@ -120,7 +124,7 @@ class PostServiceTest {
                 .thenReturn(Optional.of(updatedPost));
 
         // when
-        Long updatedPostId = postService.updatePost(postUpdateRequest);
+        Long updatedPostId = postService.updatePost(postUpdateRequest,post.getId());
         PostDTO.PostDetailResponse updatedPostDto = postService.findById(updatedPostId);
 
         // then
