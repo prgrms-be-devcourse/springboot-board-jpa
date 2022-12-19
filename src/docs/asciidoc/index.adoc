@@ -69,6 +69,10 @@ include::{snippets}/post-update/http-response.adoc[]
 
 include::{snippets}/post-findAll/http-request.adoc[]
 
+.Request Fields
+
+include::{snippets}/post-findAll/request-fields.adoc[]
+
 .Response
 
 include::{snippets}/post-findAll/http-response.adoc[]
