@@ -13,8 +13,9 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseEntity{
-    @Id @GeneratedValue
+public class User extends BaseEntity {
+    @Id
+    @GeneratedValue
     private Long id;
 
     @NotBlank
@@ -29,10 +30,6 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
 
-    public void addPost(Post post) {
-        post.setCreatedBy(this);
-    }
-
     public User(String name, int age, String hobby) {
         this.name = name;
         this.age = age;
@@ -44,5 +41,9 @@ public class User extends BaseEntity{
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+    }
+
+    public void addPost(Post post) {
+        post.setCreatedBy(this);
     }
 }
