@@ -34,7 +34,7 @@ class PostServiceTest {
     void shouldCreatePost() {
         // given
         PostDTO.CreateRequest postCreateDTO = new PostDTO.CreateRequest("title", "content", 1L);
-        User user = new User(postCreateDTO.userId(), "user", 25, "농구");
+        User user = new User(postCreateDTO.getUserId(), "user", 25, "농구");
         Post post = new Post(1L, "title", "content", user);
 
         when(postConverter.covertToPost(postCreateDTO, user))
@@ -81,7 +81,7 @@ class PostServiceTest {
     void shouldFindPostById() {
         // given
         PostDTO.CreateRequest postCreateDTO = new PostDTO.CreateRequest("title", "content", 1L);
-        User user = new User(postCreateDTO.userId(), "user", 25, "농구");
+        User user = new User(postCreateDTO.getUserId(), "user", 25, "농구");
         Post post = new Post(1L, "title", "content", user);
 
         when(postRepository.findById(1L))
@@ -108,8 +108,8 @@ class PostServiceTest {
         // given
         User user = new User(1L, "user", 25, "농구");
         Post post = new Post(1L, "title", "content", user);
-        PostDTO.UpdateRequest postUpdateRequest = new PostDTO.UpdateRequest("change title", "change content", post.getId());
-        Post updatedPost = new Post(1L, postUpdateRequest.title(), postUpdateRequest.content(), user);
+        PostDTO.UpdateRequest postUpdateRequest = new PostDTO.UpdateRequest("change title", "change content");
+        Post updatedPost = new Post(1L, postUpdateRequest.getTitle(), postUpdateRequest.getContent(), user);
 
         when(postRepository.findById(post.getId()))
                 .thenReturn(Optional.of(post));
@@ -120,12 +120,12 @@ class PostServiceTest {
                 .thenReturn(Optional.of(updatedPost));
 
         // when
-        Long updatedPostId = postService.updatePost(postUpdateRequest);
+        Long updatedPostId = postService.updatePost(post.getId(), postUpdateRequest);
         PostDTO.PostDetailResponse updatedPostDto = postService.findById(updatedPostId);
 
         // then
         assertThat(beforePostDTO).isNotEqualTo(updatedPostDto);
-        assertThat(postUpdateRequest.title()).isEqualTo(updatedPostDto.title());
-        assertThat(postUpdateRequest.content()).isEqualTo(updatedPostDto.content());
+        assertThat(postUpdateRequest.getTitle()).isEqualTo(updatedPostDto.title());
+        assertThat(postUpdateRequest.getContent()).isEqualTo(updatedPostDto.content());
     }
 }

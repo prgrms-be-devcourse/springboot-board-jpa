@@ -8,7 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class PostConverter {
     public Post covertToPost(PostDTO.CreateRequest postCreateDto, User user) {
-        return new Post(postCreateDto.title(), postCreateDto.content(), user);
+        return new Post(
+                postCreateDto.getTitle(),
+                postCreateDto.getContent(),
+                user);
     }
 
     public PostDTO.PostsResponse convertToPostsResponse(Post post) {
