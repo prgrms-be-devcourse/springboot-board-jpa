@@ -6,7 +6,6 @@ import com.prgrms.be.app.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
-    private final static Pageable pageSetUp = PageRequest.of(0, 5);
 
     //toDo : 생성
     @PostMapping("/posts")
@@ -24,31 +22,32 @@ public class PostController {
         Long postId = postService.createPost(createRequest);
         return ResponseEntity.ok(ApiResponse.ok(
                 postId,
-                "게시물 생성 완료"
+                ResponseMessage.CREATED
         ));
     }
 
     //toDo : 단건 조회하는 메서드
     @GetMapping("/posts/{id}")
-    public ResponseEntity<ApiResponse> getOne(
-            @PathVariable Long id) {
+    public ResponseEntity<ApiResponse> getOne(@PathVariable Long id) {
         PostDTO.PostDetailResponse postDetailResponse = postService.findById(id);
         return ResponseEntity.ok(
                 ApiResponse.ok(
                         postDetailResponse,
-                        "게시물 단건 조회 완료"
+                        ResponseMessage.FINDED_ONE
                 )
         );
     }
 
     //toDo : 페이징 조회하는 메서드
     @GetMapping("/posts")
-    public ResponseEntity<ApiResponse> getAll() {
-        Page<PostDTO.PostsResponse> postPages = postService.findAll(pageSetUp);
+    public ResponseEntity<ApiResponse> getAll(
+            @RequestParam int page,
+            @RequestParam int size) {
+        Page<PostDTO.PostsResponse> postPages = postService.findAll(PageRequest.of(page, size));
         return ResponseEntity.ok(
                 ApiResponse.ok(
                         postPages,
-                        "게시물 페이지 조회 완료"
+                        ResponseMessage.FINDED_ALL
                 )
         );
     }
@@ -62,7 +61,7 @@ public class PostController {
         return ResponseEntity.ok(
                 ApiResponse.ok(
                         postId,
-                        "게시글 수정 완료"
+                        ResponseMessage.UPDATED
                 ));
     }
 }
