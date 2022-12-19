@@ -1,0 +1,55 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Member API
+
+== REQUEST
+
+include::{snippets}/member-save/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/member-save/http-response.adoc[]
+
+= Post API
+
+== Post
+
+== REQUEST
+
+include::{snippets}/post-save/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/post-save/http-response.adoc[]
+
+== Get-All
+
+== REQUEST
+
+include::{snippets}/post-getAll/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/post-getAll/http-response.adoc[]
+
+== Get-One
+
+== REQUEST
+
+include::{snippets}/post-getOne/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/post-getOne/http-response.adoc[]
+
+== Update
+
+== REQUEST
+
+include::{snippets}/post-update/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/post-update/http-response.adoc[]
