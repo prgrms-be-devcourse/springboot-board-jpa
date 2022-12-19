@@ -96,6 +96,7 @@ class PostFacadeTest {
 	@DisplayName("Dto를 사용하여 user를 조회하고, Dto를 Post로 변환하여 저장한다.")
 	void createTest() {
 
+		//given
 		Long userId = 1L;
 		MockedStatic<PostConverter> postConverterMockedStatic = mockStatic(PostConverter.class);
 
@@ -108,8 +109,10 @@ class PostFacadeTest {
 		when(PostConverter.toPost(postSaveDto, user)).thenReturn(post);
 		doNothing().when(postService).create(post);
 
+		//when
 		postFacade.create(postSaveDto);
 
+		//then
 		verify(userService).findById(userId);
 		verify(postService).create(post);
 		postConverterMockedStatic.verify(() -> PostConverter.toPost(postSaveDto, user), times(1));
@@ -121,6 +124,7 @@ class PostFacadeTest {
 	@DisplayName("id를 사용하여 수정할 Post를 조회하고, Dto의 내용으로 수정한다.")
 	void updateTest() {
 
+		//given
 		Long postId = 1L;
 		User user = createUser();
 		Post post = createPost(user);
@@ -131,8 +135,10 @@ class PostFacadeTest {
 		when(PostConverter.toPost(postUpdateDto)).thenReturn(post);
 		doNothing().when(postService).update(postId, post);
 
+		//when
 		postFacade.update(postId, postUpdateDto);
 
+		//then
 		verify(postService).update(postId, post);
 		postConverterMockedStatic.verify(() -> PostConverter.toPost(postUpdateDto), times(1));
 
@@ -143,6 +149,7 @@ class PostFacadeTest {
 	@DisplayName("id를 사용하여 Post를 조회하여 dto로 반환한다.")
 	void findById() {
 
+		//given
 		Long postId = 1L;
 		User user = createUser();
 		Post post = createPost(user);
@@ -152,8 +159,10 @@ class PostFacadeTest {
 		when(postService.findById(postId)).thenReturn(post);
 		when(PostConverter.toPostResponseDto(post)).thenReturn(postResponseDto);
 
+		//when
 		postFacade.findById(postId);
 
+		//then
 		verify(postService).findById(postId);
 		postConverterMockedStatic.verify(() -> PostConverter.toPostResponseDto(post), times(1));
 
@@ -164,6 +173,7 @@ class PostFacadeTest {
 	@DisplayName("전제조회")
 	void findAllTest() {
 
+		//given
 		Long cursorId = null;
 		Integer size = 3;
 		User user = createUser();
@@ -188,8 +198,10 @@ class PostFacadeTest {
 
 		when(PostConverter.toPostResponseDtos(postList, lastIdOfList, hasNext)).thenReturn(postResponseDtos);
 
+		//when
 		postFacade.findAll(postRequestDto);
 
+		//then
 		verify(postService).findAll(cursorId, size);
 		verify(postService).getLastIdOfList(postList);
 		verify(postService).hasNext(lastIdOfList);
