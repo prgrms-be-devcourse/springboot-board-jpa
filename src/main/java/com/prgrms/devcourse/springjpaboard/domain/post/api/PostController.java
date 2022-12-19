@@ -28,6 +28,13 @@ public class PostController {
 
 	private final PostFacade postFacade;
 
+	/**
+	 * <pre>
+	 *     커서기반 페이지네이션으로 Post를 조회하여 리턴합니다.
+	 * </pre>
+	 * @param postRequestDto - 페이지네이션을 하기 위한 커서 id 와 페이지 size를 저장한 Dto
+	 * @return status ok 와 postResponseDtos를 ResponseEntity에 담아 리턴합니다.
+	 * */
 	@GetMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostResponseDtos> findAll(@RequestBody PostRequestDto postRequestDto) {
 
@@ -36,6 +43,13 @@ public class PostController {
 		return ResponseEntity.ok(postResponseDtos);
 	}
 
+	/**
+	 * <pre>
+	 *     단건 조회할 Post id를 사용하여 Post를 조회합니다.
+	 * </pre>
+	 * @param id - 조회할 Post의 id
+	 * @return status ok 와 postResponseDto를 ResponseEntity에 담아 리턴합니다.
+	 */
 	@GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostResponseDto> findById(@PathVariable(name = "id") Long id) {
 
@@ -44,6 +58,13 @@ public class PostController {
 		return ResponseEntity.ok(postResponseDto);
 	}
 
+	/**
+	 * <pre>
+	 *     postSaveDto를 사용하여 Post를 만들어 저장합니다.
+	 * </pre>
+	 * @param postSaveDto - post를 작성한 userId와 저장할 Post의 title과 content를 저장한 Dto
+	 * @return status ok를 ResponseEntity에 담아 리턴합니다.
+	 */
 	@PostMapping(consumes = APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> create(@Valid @RequestBody PostSaveDto postSaveDto) {
 
@@ -53,6 +74,14 @@ public class PostController {
 
 	}
 
+	/**
+	 * <pre>
+	 *     수정할 Post id를 사용하여 Post를 수정합니다.
+	 * </pre>
+	 * @param id - 수정할 Post의 id
+	 * @param postUpdateDto - 수정할 Post의 title과 content를 저장한 Dto
+	 * @return status ok를 ResponseEntity에 담아 리턴합니다.
+	 */
 	@PostMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> update(@PathVariable(name = "id") Long id,
 		@Valid @RequestBody PostUpdateDto postUpdateDto) {
