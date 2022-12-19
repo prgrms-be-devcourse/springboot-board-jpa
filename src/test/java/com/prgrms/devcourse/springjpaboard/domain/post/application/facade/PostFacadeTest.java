@@ -146,7 +146,7 @@ class PostFacadeTest {
 	}
 
 	@Test
-	@DisplayName("id를 사용하여 Post를 조회하여 dto로 반환한다.")
+	@DisplayName("id를 사용하여 Post를 조회하고 dto로 반환한다.")
 	void findById() {
 
 		//given
@@ -170,7 +170,7 @@ class PostFacadeTest {
 	}
 
 	@Test
-	@DisplayName("전제조회")
+	@DisplayName("커서기반 페이지네이션으로 post를 조회하고 마지막 post id와 조회 가능한 post 존재 참, 거짓을 반환한다.")
 	void findAllTest() {
 
 		//given

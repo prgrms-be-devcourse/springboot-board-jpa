@@ -122,7 +122,7 @@ class PostServiceTest {
 	}
 
 	@Test
-	@DisplayName("리스트 마지막 요소의 id를 반환한다 - 성공")
+	@DisplayName("List 마지막 요소의 id를 반환한다 - 성공")
 	void getLastIdOfListTest() {
 		//given
 		User user = createUser();
@@ -142,7 +142,7 @@ class PostServiceTest {
 	}
 
 	@Test
-	@DisplayName("파라미터로 받은 커서아이디 보다 낮은 커서 아이디의 데이터를 size 만큼 조회한다 - 성공ㅅ")
+	@DisplayName("파라미터로 받은 cursorId 보다 w작은 Post 데이터를 size 만큼 조회한다 - 성공")
 	void findAllTest() {
 
 		//given
