@@ -1,9 +1,6 @@
 package com.prgrms.boardjpa.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,26 +9,30 @@ import java.util.List;
 @Table(name = "users")
 @Entity
 @Getter
-@SuperBuilder
-@NoArgsConstructor
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class User extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
 
-    @Column(length = 20, nullable = false)
-    private String name;
+  @Id
+  @Column(name = "user_id", nullable = true)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(length = 3, nullable = false)
-    private int age;
+  @Column(name = "name", nullable = false, length = 20)
+  private String name;
 
-    private String hobby;
+  @Column(name = "age", nullable = false, length = 3)
+  private int age;
 
-    @OneToMany(mappedBy = "user")
-    private List<Post> posts = new ArrayList<>();
+  @Column(name = "hobby", nullable = true)
+  private String hobby;
 
-    public void addPost(Post post) {
-        post.changeUser(this);
-    }
+  @Builder.Default
+  @OneToMany(mappedBy = "user")
+  private List<Post> posts = new ArrayList<>();
+
+  public void addPost(Post post) {
+    post.changeUser(this);
+  }
 }

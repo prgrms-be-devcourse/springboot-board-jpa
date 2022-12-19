@@ -1,9 +1,6 @@
 package com.prgrms.boardjpa.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -11,28 +8,38 @@ import java.util.Objects;
 @Table(name = "posts")
 @Entity
 @Getter
-@SuperBuilder
-@NoArgsConstructor
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Post extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+  @Id
+  @Column(name = "post_id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(nullable = false)
-    private String title;
+  @Column(name = "title", nullable = false)
+  private String title;
 
-    private String content;
+  @Column(name = "content", nullable = true)
+  private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private User user;
 
-    public void changeUser(User user) {
-        if (Objects.nonNull(this.user)) {
-            user.getPosts().remove(this);
-        }
-        this.user = user;
-        user.getPosts().add(this);
+  public void changeUser(User user) {
+    if (Objects.nonNull(this.user)) {
+      user.getPosts().remove(this);
     }
+    this.user = user;
+    user.getPosts().add(this);
+  }
+
+  public void changeTitle(String title) {
+    this.title = title;
+  }
+
+  public void changeContent(String content) {
+    this.content = content;
+  }
 }
