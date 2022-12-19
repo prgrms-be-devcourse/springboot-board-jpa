@@ -1,134 +1,264 @@
 package com.prgrms.be.app.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prgrms.be.app.domain.Post;
-import com.prgrms.be.app.domain.User;
 import com.prgrms.be.app.domain.dto.PostDTO;
-import com.prgrms.be.app.repository.PostRepository;
-import com.prgrms.be.app.repository.UserRepository;
 import com.prgrms.be.app.service.PostService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.web.servlet.ResultActions;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+@WebMvcTest
 @AutoConfigureRestDocs
-@AutoConfigureMockMvc
-@SpringBootTest
-@Transactional
 class PostControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private PostService postService;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PostRepository postRepository;
-
-    private PostDTO.CreateRequest postDto;
-    private User user;
-
-    @BeforeEach
-    void setup(){
-        user = userRepository.save(new User("su yong", 25, "패션"));
-        System.out.println("break");
-        postDto = new PostDTO.CreateRequest(
-                "title",
-                "content",
-                user.getId()
-        );
-    }
+    @MockBean
+    private PostService postService;
 
     //toDo : 생성 테스트
     @Test
+    @DisplayName("게시물 생성 성공 시 상태코드 200과 생성된 게시물 id가 반환된다.")
     void saveCallTest() throws Exception {
         // given
+        PostDTO.CreateRequest request = new PostDTO.CreateRequest("title", "content", 1L);
+        when(postService.createPost(any(PostDTO.CreateRequest.class)))
+                .thenReturn(1L);
 
-        // when, then
+        // when
         mockMvc.perform(post("/posts")
-                .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postDto)))
-                .andExpect(status().isCreated())
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("statusCode").value(200))
+                .andExpect(jsonPath("data").value(1L))
+                .andExpect(jsonPath("message").value(ResponseMessage.CREATED))
+                .andExpect(jsonPath("serverDateTime").exists())
                 .andDo(print())
                 .andDo(document("post-save",
                         requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("포스트 제목"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("포스트 내용"),
-                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("포스트 작성자 Id")
-                        )));
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("게시글 글쓴이 Id")
+                        ),
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("게시글 글쓴이 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("응답 HTTP 상태 코드"),
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("응답 결과 - 생성된 게시글 Id"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답 생성 시간")
+                        ))
+                );
+
+        // then
+        verify(postService).createPost(any(PostDTO.CreateRequest.class));
     }
 
     //toDo : 단건 조회 테스트
     @Test
     void getOneCallTest() throws Exception {
         // given
-        Post post = postRepository.save(new Post("title", "content", user));
+        Long id = 1L;
+        PostDTO.PostDetailResponse postDetailResponse = new PostDTO.PostDetailResponse("title", "content", 1L, LocalDateTime.now(), 100L, "userName");
+        when(postService.findById(anyLong()))
+                .thenReturn(postDetailResponse);
 
-        // when, then
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/{id}", post.getId())
-                .contentType(MediaType.APPLICATION_JSON))
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/{id}", id)
+                        .content(objectMapper.writeValueAsString(id))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("statusCode").value(200))
+                .andExpect(jsonPath("message").value(ResponseMessage.FINDED_ONE))
+                .andExpect(jsonPath("serverDateTime").exists())
+                .andExpect(jsonPath("data").exists())
+                .andExpect(jsonPath("data.title").value("title"))
+                .andExpect(jsonPath("data.content").value("content"))
+                .andExpect(jsonPath("data.postId").value(1L))
+                .andExpect(jsonPath("data.createdAt").exists())
+                .andExpect(jsonPath("data.userId").value(100L))
+                .andExpect(jsonPath("data.userName").value("userName"))
                 .andDo(print())
-                .andDo(document("find-post",
+                .andDo(document("find-post-one",
                         pathParameters(
-                                parameterWithName("id").description("포스트 id")
+                                parameterWithName("id").description("게시글 id")
                         ),
                         responseFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("포스트 제목"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("포스트 내용"),
-                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("포스트 Id"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("포스트 생성 시간"),
-                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("포스트 작성자 Id"),
-                                fieldWithPath("userName").type(JsonFieldType.STRING).description("포스트 작성자 이름")
-                        )));
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("응답 HTTP 상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답 생성 시간"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터 - 게시글 관련 DTO"),
+                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("data.content").type(JsonFieldType.STRING).description("게시글 본문"),
+                                fieldWithPath("data.postId").type(JsonFieldType.NUMBER).description("게시글 id"),
+                                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 생성일자 및 시간"),
+                                fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("게시글 글쓴이 id"),
+                                fieldWithPath("data.userName").type(JsonFieldType.STRING).description("게시글 글쓴이 이름")
+                        )
+                ));
+
+        // then
+        verify(postService).findById(anyLong());
     }
-//    this.mockMvc.perform(get("/locations/{latitude}/{longitude}", 51.5072, 0.1275)) // (1)
-//            .andExpect(status().isOk())
-//            .andDo(document("locations", pathParameters( // (2)
-//            parameterWithName("latitude").description("The location's latitude"), // (3)
-//    parameterWithName("longitude").description("The location's longitude") // (4)
-//	)));
 
     //toDo : 페이징 조회 테스트
     @Test
-    void getAllCallTest() {
+    void getAllCallTest() throws Exception {
+        // given
+        Pageable request = PageRequest.of(0, 5);
+        List<PostDTO.PostsResponse> postDtos = List.of(
+                new PostDTO.PostsResponse("title1", 1L, LocalDateTime.now()),
+                new PostDTO.PostsResponse("title2", 2L, LocalDateTime.now()),
+                new PostDTO.PostsResponse("title3", 3L, LocalDateTime.now())
+        );
+        Page<PostDTO.PostsResponse> response = new PageImpl(postDtos, request, 3);
+        when(postService.findAll(any(Pageable.class)))
+                .thenReturn(response);
 
+        // when
+        ResultActions resultActions = mockMvc.perform(get("/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .param("page", "0")
+                        .param("size", "5"))
+                .andDo(print());
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("statusCode").value(200))
+                .andExpect(jsonPath("message").value(ResponseMessage.FINDED_ALL))
+                .andExpect(jsonPath("serverDateTime").exists())
+                .andExpect(jsonPath("data").exists())
+                .andExpect(jsonPath("data.content[0].postId").value(postDtos.get(0).postId()))
+                .andExpect(jsonPath("data.content[0].title").value(postDtos.get(0).title()))
+                .andExpect(jsonPath("data.content[0].createdAt").exists())
+                .andExpect(jsonPath("data.content[1].postId").value(postDtos.get(1).postId()))
+                .andExpect(jsonPath("data.content[1].title").value(postDtos.get(1).title()))
+                .andExpect(jsonPath("data.content[1].createdAt").exists())
+                .andExpect(jsonPath("data.content[2].postId").value(postDtos.get(2).postId()))
+                .andExpect(jsonPath("data.content[2].title").value(postDtos.get(2).title()))
+                .andExpect(jsonPath("data.content[2].createdAt").exists())
+                .andDo(print())
+                .andDo(document("find-post-all",
+                        requestParameters(
+                                parameterWithName("page").description("현재 페이지"),
+                                parameterWithName("size").description("한 페이지에 노출할 데이터 건수")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("응답 HTTP 상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답 생성 시간"),
+
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터 - 게시글 관련 페이지 정보(게시글 정보 집합)"),
+                                fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("응답 데이터 - 게시글 정보"),
+                                fieldWithPath("data.content.[].postId").type(JsonFieldType.NUMBER).description("응답 데이터 - 게시글 id"),
+                                fieldWithPath("data.content.[].title").type(JsonFieldType.STRING).description("응답 데이터 - 게시글 제목"),
+                                fieldWithPath("data.content.[].createdAt").type(JsonFieldType.STRING).description("응답 데이터 - 게시글 생성시간"),
+
+                                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬 되었는지 여부"),
+                                fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("정렬 안되었는지 여부"),
+                                fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("데이터가 비었는지 여부"),
+
+                                fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
+                                fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER).description("한 페이지당 조회할 데이터 개수"),
+                                fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("몇번째 데이터인지 (0부터 시작)"),
+                                fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("페이징 정보를 포함하는지 여부"),
+                                fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("페이징 정보를 안포함하는지 여부"),
+
+                                fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("마지막 페이지인지 여부"),
+                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 개수"),
+                                fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("테이블 총 데이터 개수"),
+                                fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("첫번째 페이지인지 여부"),
+                                fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("요청 페이지에서 조회된 데이터 개수"),
+                                fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
+                                fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("한 페이지당 조회할 데이터 개수"),
+
+                                fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬 됐는지 여부"),
+                                fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("정렬 안됐는지 여부"),
+                                fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("데이터가 비었는지 여부"),
+
+                                fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("데이터가 비었는지 여부")
+                        )
+                ));
+
+        // then
+        verify(postService).findAll(any(Pageable.class));
     }
 
     //toDo : 수정 테스트
     @Test
-    void updateCallTest() {
-
+    void updateCallTest() throws Exception {
+        // given
+        Long id = 1L;
+        PostDTO.UpdateRequest request = new PostDTO.UpdateRequest("title", "content");
+        when(postService.updatePost(anyLong(), any(PostDTO.UpdateRequest.class)))
+                .thenReturn(id);
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/posts/{id}", id)
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("statusCode").value(200))
+                .andExpect(jsonPath("data").value(1L))
+                .andExpect(jsonPath("message").value(ResponseMessage.UPDATED))
+                .andDo(print())
+                .andDo(document("post-update",
+                        pathParameters(
+                                parameterWithName("id").description("게시글 id")
+                        ),
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("응답 HTTP 상태 코드"),
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("응답 결과 - 생성된 게시글 Id"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답 생성 시간")
+                        ))
+                );
+        // then
+        verify(postService).updatePost(anyLong(), any(PostDTO.UpdateRequest.class));
     }
 
 }
