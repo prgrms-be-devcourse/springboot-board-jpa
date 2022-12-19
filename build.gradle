@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.0'
     id 'io.spring.dependency-management' version '1.1.0'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'kdt'
@@ -19,7 +20,7 @@ repositories {
 }
 
 ext {
-    set('testcontainersVersion', "1.17.6")
+    snippetsDir = file('build/generated-snippets')
 }
 
 dependencies {
@@ -31,14 +32,26 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
-    }
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
 }
 
 tasks.named('test') {
+    outputs.dir snippetsDir
     useJUnitPlatform()
 }
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+}
+
