@@ -4,23 +4,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kdt.springbootboardjpa.controller.request.SavePostRequest;
 import kdt.springbootboardjpa.respository.UserRepository;
 import kdt.springbootboardjpa.respository.entity.User;
-import org.hibernate.internal.build.AllowPrintStacktrace;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 public class PostControllerTest {
 
     @Autowired
@@ -87,7 +91,19 @@ public class PostControllerTest {
                 ).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.title").value(title))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-save",
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("포스트 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("포스트 내용"),
+                                fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("포스트 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("포스트 내용"),
+                                fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
+                        )));
     }
 
     @Test
@@ -142,7 +158,19 @@ public class PostControllerTest {
                 .andExpect(jsonPath("$.title").value(title))
                 .andExpect(jsonPath("$.content").value(content))
                 .andExpect(jsonPath("$.createdBy").value(createdBy))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-update",
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("포스트 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("포스트 내용"),
+                                fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("포스트 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("포스트 내용"),
+                                fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
+                        )));
     }
 
     @Test
@@ -184,7 +212,14 @@ public class PostControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(postId))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-get",
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("포스트 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("포스트 내용"),
+                                fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
+                        )));
     }
 
     @Test
@@ -213,6 +248,13 @@ public class PostControllerTest {
                         MockMvcRequestBuilders.get(url)
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-get-all",
+                        responseFields(
+                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
+                                fieldWithPath("[].title").type(JsonFieldType.STRING).description("포스트 제목"),
+                                fieldWithPath("[].content").type(JsonFieldType.STRING).description("포스트 내용"),
+                                fieldWithPath("[].createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
+                        )));
     }
 }

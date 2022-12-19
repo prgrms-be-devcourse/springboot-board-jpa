@@ -1,0 +1,52 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== Post
+
+=== Post 생성하기
+
+==== /posts
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+=== Post 수정하기
+
+==== /posts/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+=== Post 조회하기
+
+==== /posts/{id}
+
+.Request
+include::{snippets}/post-get/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get/http-response.adoc[]
+include::{snippets}/post-get/response-fields.adoc[]
+
+=== Post 전체 조회하기
+
+==== /posts
+
+.Request
+include::{snippets}/post-get-all/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get-all/http-response.adoc[]
+include::{snippets}/post-get-all/response-fields.adoc[]
+
