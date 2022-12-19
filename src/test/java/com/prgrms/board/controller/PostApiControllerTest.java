@@ -35,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
+@Transactional
 @Slf4j
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs
@@ -83,7 +84,6 @@ class PostApiControllerTest {
     }
 
     @Test
-    @Transactional
     void 게시글_저장() throws Exception {
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -106,7 +106,6 @@ class PostApiControllerTest {
     }
 
 
-    @Transactional
     @Test
     void 게시글_단건_조회() throws Exception {
         mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", savedPostId)
@@ -156,7 +155,6 @@ class PostApiControllerTest {
                 ));
     }
 
-    @Transactional
     @Test
     void 게시글_페이징_조회() throws Exception {
         MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();

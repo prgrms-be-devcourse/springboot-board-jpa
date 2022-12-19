@@ -1,10 +1,7 @@
 package com.prgrms.board.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.*;
 import lombok.Builder.Default;
-import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,6 +13,7 @@ import java.util.List;
 @Builder
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "members")
 public class Member {
     @Id
@@ -37,6 +35,4 @@ public class Member {
     @OneToMany(mappedBy = "writer")
     private List<Post> posts = new ArrayList<>();
 
-    protected Member() {
-    }
 }
