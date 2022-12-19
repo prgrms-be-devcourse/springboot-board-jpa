@@ -23,7 +23,7 @@ public class PostService {
 
 	/**
 	 * <pre>
-	 *     현재 페이지 cursorId와 페이지 크기로 Post조회하여 List형태로 리턴합니다.
+	 *     현재 페이지 cursorId와 페이지 크기로 Post를 조회하여 List 형태로 리턴합니다.
 	 * </pre>
 	 * @param cursorId - 마지막으로 조회한 Post id
 	 * @param size - 조회할 페이지 size
@@ -57,7 +57,7 @@ public class PostService {
 	 * <pre>
 	 *     cursorId 보다 작은 id 값을 가지는 Post의 존재 유무를 true, false로 반환합니다.
 	 * </pre>
-	 * @param cursorId - 현재 cursor가 가르키는 Post id
+	 * @param cursorId - 현재 cursor가 가리키는 Post id
 	 * @return cursorId 보다 작은 id를 가지는 Post가 있으면 true, 없으면 false를 리턴합니다.
 	 */
 	public boolean hasNext(Long cursorId) {
@@ -71,7 +71,7 @@ public class PostService {
 	 *     id를 사용하여 Post를 조회하여 리턴합니다.
 	 * </pre>
 	 * @param id - 조회할 Post id
-	 * @return id값이 일치하는 Post를 리턴합니다.
+	 * @return id 값이 일치하는 Post를 리턴합니다.
 	 * @throws PostNotFoundException - 파라미터 id와 일치하는 id를 가진 Post가 없다면 발생합니다.
 	 */
 	public Post findById(Long id) {

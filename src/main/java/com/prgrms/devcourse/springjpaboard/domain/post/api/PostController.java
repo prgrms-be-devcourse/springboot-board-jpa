@@ -30,9 +30,9 @@ public class PostController {
 
 	/**
 	 * <pre>
-	 *     커서기반 페이지네이션으로 Post를 조회하여 리턴합니다.
+	 *     커서 기반 페이지 네이션으로 Post를 조회하여 리턴합니다.
 	 * </pre>
-	 * @param postRequestDto - 페이지네이션을 하기 위한 커서 id 와 페이지 size를 저장한 Dto
+	 * @param postRequestDto - 페이지 네이션을 하기 위한 커서 id 와 페이지 size를 저장한 Dto
 	 * @return status ok 와 postResponseDtos를 ResponseEntity에 담아 리턴합니다.
 	 * */
 	@GetMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
