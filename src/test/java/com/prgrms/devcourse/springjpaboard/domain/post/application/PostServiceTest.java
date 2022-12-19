@@ -83,7 +83,7 @@ class PostServiceTest {
 	}
 
 	@Test
-	@DisplayName("Post를 id를 사용하여 조회하고, Post 객체를 통해 변경감지로 업데이트한다.")
+	@DisplayName("Post를 id를 사용하여 조회하고, Post 객체를 통해 변경감지로 업데이트한다 - 성공")
 	void updateTest() {
 
 		//given
@@ -106,7 +106,7 @@ class PostServiceTest {
 	}
 
 	@Test
-	@DisplayName("파라미터로 받은 cursorId보다 작은 값이 있다면 true, 없으면 false를 반환한다.")
+	@DisplayName("파라미터로 받은 cursorId보다 작은 값이 있다면 true, 없으면 false를 반환한다 - 성공")
 	void hasNextTest() {
 		//given
 		Long cursorId = 2L;
@@ -142,7 +142,7 @@ class PostServiceTest {
 	}
 
 	@Test
-	@DisplayName("파라미터로 받은 커서아이디 보다 낮은 커서 아이디의 데이터를 size 만큼 조회한다.")
+	@DisplayName("파라미터로 받은 커서아이디 보다 낮은 커서 아이디의 데이터를 size 만큼 조회한다 - 성공ㅅ")
 	void findAllTest() {
 
 		//given
