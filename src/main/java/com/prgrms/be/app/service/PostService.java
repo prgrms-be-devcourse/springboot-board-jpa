@@ -38,7 +38,7 @@ public class PostService {
 
     @Transactional
     public Long createPost(PostDTO.CreateRequest postCreateDto) {
-        User user = userRepository.findById(postCreateDto.userId())
+        User user = userRepository.findById(postCreateDto.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
         Post post = postConverter.covertToPost(postCreateDto, user);
 
@@ -46,10 +46,10 @@ public class PostService {
     }
 
     @Transactional
-    public Long updatePost(PostDTO.UpdateRequest postUpdateDto) {
-        Post post = postRepository.findById(postUpdateDto.postId()) // 이렇게 하는게 나을까 findById 반환 데이터 타입을 Post로 바꾸고 해당 메서드를 이용하는게 나을까?
+    public Long updatePost(Long postId, PostDTO.UpdateRequest postUpdateDto) {
+        Post post = postRepository.findById(postId) // 이렇게 하는게 나을까 findById 반환 데이터 타입을 Post로 바꾸고 해당 메서드를 이용하는게 나을까?
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
-        post.changePost(postUpdateDto.title(), postUpdateDto.content());
+        post.changePost(postUpdateDto.getTitle(), postUpdateDto.getContent());
         return post.getId();
     }
 }
