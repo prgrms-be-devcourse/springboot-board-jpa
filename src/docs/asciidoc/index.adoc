@@ -1,0 +1,18 @@
+= Spring REST DOCS
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[resources-get]]
+== GET
+
+[[resources-get-test]]
+=== TEST
+
+==== HTTP request
+
+include::{snippets}/test-kong/http-request.adoc[]
+
+==== HTTP response
+
+include::{snippets}/test-kong/http-response.adoc[]
