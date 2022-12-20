@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public abstract class AbstractBaseEntity {
 
     @CreatedDate
-    private LocalDateTime cratedAt;
+    private LocalDateTime createdAt;
 
     @CreatedBy
     private long createdBy;

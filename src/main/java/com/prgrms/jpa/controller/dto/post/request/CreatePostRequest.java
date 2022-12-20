@@ -1,12 +1,14 @@
-package com.prgrms.jpa.controller.dto.post;
+package com.prgrms.jpa.controller.dto.post.request;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
+@RequiredArgsConstructor
 public class CreatePostRequest {
 
     @NotBlank(message = "제목은 필수 입력사항입니다.")
@@ -18,10 +20,4 @@ public class CreatePostRequest {
 
     @NotNull
     private final Long userId;
-
-    public CreatePostRequest(String title, String content, Long userId) {
-        this.title = title;
-        this.content = content;
-        this.userId = userId;
-    }
 }
