@@ -1,12 +1,15 @@
-package com.prgrms.jpa.controller.dto.post;
+package com.prgrms.jpa.controller.dto.post.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
+@RequiredArgsConstructor
+@Builder
 public class UpdatePostRequest {
 
     @NotBlank(message = "제목은 필수 입력사항입니다.")
@@ -15,10 +18,4 @@ public class UpdatePostRequest {
 
     @NotBlank(message = "내용을 입력해주세요.")
     private final String content;
-
-    @Builder
-    public UpdatePostRequest(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
 }

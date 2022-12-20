@@ -59,6 +59,7 @@ include::{snippets}/post-findById/response-fields.adoc[]
 
 .Request
 include::{snippets}/post-findAll/http-request.adoc[]
+include::{snippets}/post-findAll/request-fields.adoc[]
 
 .Response
 include::{snippets}/post-findAll/http-response.adoc[]

@@ -2,8 +2,9 @@ package com.prgrms.jpa.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.jpa.MysqlTestContainer;
-import com.prgrms.jpa.controller.dto.post.CreatePostRequest;
-import com.prgrms.jpa.controller.dto.post.UpdatePostRequest;
+import com.prgrms.jpa.controller.dto.post.request.CreatePostRequest;
+import com.prgrms.jpa.controller.dto.post.request.FindAllPostRequest;
+import com.prgrms.jpa.controller.dto.post.request.UpdatePostRequest;
 import com.prgrms.jpa.service.PostService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -70,20 +71,23 @@ class PostControllerTest extends MysqlTestContainer {
     @Test
     @DisplayName("게시글 목록을 조회한다.")
     @Sql("classpath:schema.sql")
-    void findAll() throws Exception {
+    void findAllWithoutId() throws Exception {
+        FindAllPostRequest postRequest = new FindAllPostRequest(10);
+
         mockMvc.perform(get("/api/v1/posts")
-                        .param("page", String.valueOf(0))
-                        .param("size", String.valueOf(15))
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-findAll",
+                        requestFields(
+                                fieldWithPath("postId").type(JsonFieldType.NULL).description("커서인 게시글 아이디"),
+                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("페이지의 게시글사이즈")
+                        ),
                         responseFields(
-                                fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("총 페이지"),
-                                fieldWithPath("totalCount").type(JsonFieldType.NUMBER).description("총 개수"),
                                 fieldWithPath("posts[]").type(JsonFieldType.ARRAY).description("게시글들"),
                                 fieldWithPath("posts[].id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
-                                fieldWithPath("posts[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("posts[].title").type(JsonFieldType.STRING).description("게시글 제"),
                                 fieldWithPath("posts[].content").type(JsonFieldType.STRING).description("게시글 내용"),
                                 fieldWithPath("posts[].userId").type(JsonFieldType.NUMBER).description("작성자 아이디")
                         ))

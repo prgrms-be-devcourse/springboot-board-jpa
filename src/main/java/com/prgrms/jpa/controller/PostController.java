@@ -1,13 +1,12 @@
 package com.prgrms.jpa.controller;
 
-import com.prgrms.jpa.controller.dto.post.CreatePostRequest;
-import com.prgrms.jpa.controller.dto.post.CreatePostResponse;
-import com.prgrms.jpa.controller.dto.post.FindAllPostResponse;
-import com.prgrms.jpa.controller.dto.post.GetByIdPostResponse;
-import com.prgrms.jpa.controller.dto.post.UpdatePostRequest;
+import com.prgrms.jpa.controller.dto.post.request.CreatePostRequest;
+import com.prgrms.jpa.controller.dto.post.request.FindAllPostRequest;
+import com.prgrms.jpa.controller.dto.post.response.CreatePostResponse;
+import com.prgrms.jpa.controller.dto.post.response.FindAllPostResponse;
+import com.prgrms.jpa.controller.dto.post.response.GetByIdPostResponse;
+import com.prgrms.jpa.controller.dto.post.request.UpdatePostRequest;
 import com.prgrms.jpa.service.PostService;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,8 +36,8 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<FindAllPostResponse> findAll(@PageableDefault(size = 15) Pageable pageable) {
-        FindAllPostResponse findAllPostResponse = postService.findAll(pageable);
+    public ResponseEntity<FindAllPostResponse> findAll(@RequestBody @Valid FindAllPostRequest findAllPostRequest) {
+        FindAllPostResponse findAllPostResponse = postService.findAll(findAllPostRequest);
         return ResponseEntity.ok(findAllPostResponse);
     }
 
