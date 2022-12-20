@@ -1,6 +1,6 @@
 package com.example.board.domain.member.entity;
 
-import com.example.board.domain.common.entity.BaseEntity;
+import com.example.board.domain.common.entity.BaseTimeEntity;
 import com.example.board.domain.post.entity.Post;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +11,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Member extends BaseEntity {
+public class Member extends BaseTimeEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Column(name = "member_id")
@@ -39,17 +43,15 @@ public class Member extends BaseEntity {
     this.hobby = hobby;
   }
 
-  protected Member(){}
-
-  public void changeName(String newName){
+  public void changeName(String newName) {
     this.name = newName;
   }
 
-  public void changeAge(int newAge){
+  public void changeAge(int newAge) {
     this.age = newAge;
   }
 
-  public void changeHobby(String newHobby){
+  public void changeHobby(String newHobby) {
     this.hobby = newHobby;
   }
 }
