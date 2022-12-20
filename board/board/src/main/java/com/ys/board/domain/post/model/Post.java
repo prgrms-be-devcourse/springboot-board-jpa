@@ -45,13 +45,13 @@ public class Post extends AbstractCreatedColumn {
 
     public Post(String title, String content) {
         validateTitle(title);
-        validateContent(title);
+        validateContent(content);
         this.title = title;
         this.content = content;
     }
 
-    private void validateContent(String title) {
-        Assert.hasText(title, "content 은 빈 값이면 안됩니다.");
+    private void validateContent(String content) {
+        Assert.hasText(content, "content 은 빈 값이면 안됩니다.");
     }
 
     private void validateTitle(String title) {
