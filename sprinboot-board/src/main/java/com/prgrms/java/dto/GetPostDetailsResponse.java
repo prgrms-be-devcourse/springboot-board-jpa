@@ -16,6 +16,18 @@ public class GetPostDetailsResponse {
         this.content = content;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
     public static GetPostDetailsResponse from(Post post) {
         return new GetPostDetailsResponse(post.getId(), post.getTitle(), post.getContent());
     }

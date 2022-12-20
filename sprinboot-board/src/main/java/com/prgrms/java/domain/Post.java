@@ -37,6 +37,10 @@ public class Post extends BaseEntity {
         this(null, title, content, user);
     }
 
+    public Post(String title, String content) {
+        this(title, content, null);
+    }
+
     public Long getId() {
         return id;
     }
@@ -63,5 +67,9 @@ public class Post extends BaseEntity {
     public void editContent(String content) {
         Assert.hasLength(content, MessageFormat.format("content must not be empty or null. [content]: {0}", content));
         this.content = content;
+    }
+
+    public void assignUser(User user) {
+        this.user = user;
     }
 }

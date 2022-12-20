@@ -1,21 +1,18 @@
-package com.prgrms.java;
+package com.prgrms.java.dto;
 
-import com.prgrms.java.domain.Post;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ModifyPostRequest {
 
-    private final long postId;
     private final String title;
+
     private final String content;
 
-    public ModifyPostRequest(long postId, String title, String content) {
-        this.postId = postId;
+    @JsonCreator
+    public ModifyPostRequest(@JsonProperty("title") String title, @JsonProperty("content") String content) {
         this.title = title;
         this.content = content;
-    }
-
-    public long getPostId() {
-        return postId;
     }
 
     public String getTitle() {
