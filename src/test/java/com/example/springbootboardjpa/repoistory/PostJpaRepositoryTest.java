@@ -42,19 +42,44 @@ class PostJpaRepositoryTest {
     @Test
     @DisplayName("post를 id로 정상 조회한다.")
     public void findPostById(){
+        // When
+        var find = postRepository.findById(1);
 
+        // Then
+        assertThat(find.isPresent()).isTrue();
+        assertThat(find.get()).isEqualTo(post);
     }
 
     @Test
-    @DisplayName("post를 user로 정상 조회한다")
+    @DisplayName("post를 user name으로 정상 조회할 수 있다.")
     public void findPostByUser(){
+        // When
+        var posts = postRepository.findByUserName(user.getName());
 
+        // Then
+        assertThat(posts.size()).isEqualTo(1);
+        assertThat(posts.get(0)).isEqualTo(post);
+    }
+
+    @Test
+    @DisplayName("잘못된 user name으로 조회시 빈 list를 반환한다.")
+    public void findFailByUser(){
+        // When
+        var posts = postRepository.findByUserName("오잉");
+
+        // Then
+        assertThat(posts.isEmpty()).isTrue();
     }
 
     @Test
     @DisplayName("post list를 title로 정상 조회한다.")
     public void findPostByTitle(){
+        // When
+        var posts = postRepository.findByTitle("초밥");
 
+        // Then
+        assertThat(posts.size()).isEqualTo(1);
+        assertThat(posts.get(0)).isEqualTo(post);
     }
 
 

@@ -27,7 +27,7 @@ public class User extends BaseEntity{
     @Column(length = 50)
     private String hobby;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Post> posts = new ArrayList<>();
 
     public User(String name, int age, String hobby) {
@@ -37,8 +37,7 @@ public class User extends BaseEntity{
     }
 
     public User( String name, int age) {
-        this.name = name;
-        this.age = age;
+        this(name,age,null);
     }
 
     public void changeName(String name){

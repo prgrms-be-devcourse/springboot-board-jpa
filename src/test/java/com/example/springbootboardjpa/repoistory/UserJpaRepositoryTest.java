@@ -2,6 +2,7 @@ package com.example.springbootboardjpa.repoistory;
 
 import com.example.springbootboardjpa.domian.Post;
 import com.example.springbootboardjpa.domian.User;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DataJpaTest
+@Slf4j
 class UserJpaRepositoryTest {
 
 
@@ -91,6 +93,23 @@ class UserJpaRepositoryTest {
         assertThat(findUser.isPresent()).isTrue();
         assertThat(findUser.get().getName()).isEqualTo("영지2");
         assertThat(findUser.get().getPosts().get(0)).isEqualTo(post);
+    }
+
+    @Test
+    @DisplayName("user post 삭제시 해당 post 객체가 삭제된다.")
+    public void deleteUserPost() {
+        // Given
+        var insertUser = userRepository.save(user);
+        insertUser.getPosts().remove(0);
+
+        // When
+        var findUser = userRepository.findById(1);
+        var findPost = postRepository.findAll();
+
+        // Then
+        assertThat(findUser.isPresent()).isTrue();
+        assertThat(findUser.get().getPosts().size()).isEqualTo(0);
+        assertThat(findPost.isEmpty()).isTrue();
     }
 
     @Test
