@@ -1,7 +1,9 @@
 package com.prgrms.jpa.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "users")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends AbstractBaseEntity {
 
     @Id
@@ -33,9 +36,6 @@ public class User extends AbstractBaseEntity {
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
-
-    public User() {
-    }
 
     @Builder
     public User(String name, int age, String hobby) {

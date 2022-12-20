@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class CreateUserResponse {
+
     private final long id;
 
     public CreateUserResponse(long id) {

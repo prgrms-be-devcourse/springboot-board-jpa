@@ -1,7 +1,9 @@
 package com.prgrms.jpa.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +19,7 @@ import javax.persistence.Table;
 @Getter
 @Entity
 @Table(name = "posts")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends AbstractBaseEntity {
 
     @Id
@@ -32,9 +35,6 @@ public class Post extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    public Post() {
-    }
 
     @Builder
     public Post(String title, String content, User user) {
