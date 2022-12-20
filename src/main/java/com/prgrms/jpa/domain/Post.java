@@ -47,4 +47,8 @@ public class Post extends AbstractBaseEntity {
         this.title = title;
         this.content = content;
     }
+
+    public void updateUser(User user) {
+        this.user = user;
+    }
 }

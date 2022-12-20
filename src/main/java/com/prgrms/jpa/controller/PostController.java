@@ -6,7 +6,7 @@ import com.prgrms.jpa.controller.dto.post.response.CreatePostResponse;
 import com.prgrms.jpa.controller.dto.post.response.FindAllPostResponse;
 import com.prgrms.jpa.controller.dto.post.response.GetByIdPostResponse;
 import com.prgrms.jpa.controller.dto.post.request.UpdatePostRequest;
-import com.prgrms.jpa.service.PostService;
+import com.prgrms.jpa.service.PostFacade;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,33 +23,33 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/posts")
 public class PostController {
 
-    private final PostService postService;
+    private final PostFacade postFacade;
 
-    public PostController(PostService postService) {
-        this.postService = postService;
+    public PostController(PostFacade postFacade) {
+        this.postFacade = postFacade;
     }
 
     @PostMapping
     public ResponseEntity<CreatePostResponse> create(@RequestBody @Valid CreatePostRequest createPostRequest) {
-        CreatePostResponse id = postService.create(createPostRequest);
+        CreatePostResponse id = postFacade.create(createPostRequest);
         return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<FindAllPostResponse> findAll(@RequestBody @Valid FindAllPostRequest findAllPostRequest) {
-        FindAllPostResponse findAllPostResponse = postService.findAll(findAllPostRequest);
+        FindAllPostResponse findAllPostResponse = postFacade.findAll(findAllPostRequest);
         return ResponseEntity.ok(findAllPostResponse);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<GetByIdPostResponse> getById(@PathVariable long id) {
-        GetByIdPostResponse getByIdPostResponse = postService.getById(id);
+        GetByIdPostResponse getByIdPostResponse = postFacade.getById(id);
         return ResponseEntity.ok(getByIdPostResponse);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable long id, @RequestBody @Valid UpdatePostRequest updatePostRequest) {
-        postService.update(id, updatePostRequest);
+        postFacade.update(id, updatePostRequest);
         return ResponseEntity.ok().build();
     }
 }

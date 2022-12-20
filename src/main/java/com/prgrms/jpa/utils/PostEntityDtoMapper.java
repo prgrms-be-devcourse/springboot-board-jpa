@@ -5,7 +5,6 @@ import com.prgrms.jpa.controller.dto.post.response.CreatePostResponse;
 import com.prgrms.jpa.controller.dto.post.response.FindAllPostResponse;
 import com.prgrms.jpa.controller.dto.post.response.GetByIdPostResponse;
 import com.prgrms.jpa.domain.Post;
-import com.prgrms.jpa.domain.User;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -37,11 +36,10 @@ public class PostEntityDtoMapper {
                 .build();
     }
 
-    public static Post toPost(CreatePostRequest createPostRequest, User user) {
+    public static Post toPost(CreatePostRequest createPostRequest) {
         return Post.builder()
                 .title(createPostRequest.getTitle())
                 .content(createPostRequest.getContent())
-                .user(user)
                 .build();
     }
 
