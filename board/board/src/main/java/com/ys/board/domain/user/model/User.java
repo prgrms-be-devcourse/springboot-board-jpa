@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 @Entity
 @Getter
@@ -34,6 +35,8 @@ public class User extends AbstractCreatedColumn {
     private String hobby;
 
     public User(String name, int age, String hobby) {
+        validateName(name);
+        validateAge(age);
         this.name = name;
         this.age = age;
         this.hobby = hobby;
@@ -41,6 +44,14 @@ public class User extends AbstractCreatedColumn {
 
     public static User create(String name, Integer age, String hobby) {
         return new User(name, age, hobby);
+    }
+
+    private void validateAge(int age) {
+        Assert.isTrue(age > 0, "age는 1 이상 이여야 합니다.");
+    }
+
+    private void validateName(String name) {
+        Assert.hasText(name, "이름은 빈 값이면 안되고 1글자 이상이여야 합니다");
     }
 
     @Override
