@@ -19,16 +19,16 @@ public class MemberService {
   }
 
   @Transactional(readOnly = true)
-  public MemberResponse findById(Long id) {
+  public MemberResponse.Detail findById(Long id) {
     Member member = memberRepository.findById(id)
         .orElseThrow(
             () -> new NotFoundException(String.format("NotFoundException member id: %d", id)));
-    return MemberResponse.from(member);
+    return MemberResponse.Detail.from(member);
   }
 
-  public MemberResponse save(MemberRequest memberRequest) {
+  public Long save(MemberRequest memberRequest) {
     Member member = memberRequest.toEntity();
     Member saved = memberRepository.save(member);
-    return MemberResponse.from(saved);
+    return saved.getId();
   }
 }

@@ -23,18 +23,19 @@ public class MemberController {
   }
 
   @GetMapping("/{memberId}")
-  public ResponseEntity<MemberResponse> mypage(@PathVariable Long memberId) {
-    MemberResponse response = memberService.findById(memberId);
+  public ResponseEntity<MemberResponse.Detail> mypage(@PathVariable Long memberId) {
+    MemberResponse.Detail detail = memberService.findById(memberId);
 
-    return ResponseEntity.ok(response);
+    return ResponseEntity.ok(detail);
   }
 
   @PostMapping
   public ResponseEntity<Void> newMember(@RequestBody MemberRequest memberRequest) {
-    MemberResponse response = memberService.save(memberRequest);
-    return ResponseEntity.created(
-            URI.create(
-                String.format("/member/%d", response.getId())))
+    Long savedId = memberService.save(memberRequest);
+
+    return ResponseEntity
+        .created(
+            URI.create(String.format("/member/%d", savedId)))
         .build();
   }
 }
