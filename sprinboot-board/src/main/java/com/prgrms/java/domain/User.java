@@ -28,6 +28,10 @@ public class User extends BaseEntity {
         this.hobby = hobby;
     }
 
+    public User(String name, int age, HobbyType hobby) {
+        this(null, name, age, hobby);
+    }
+
     public Long getId() {
         return id;
     }

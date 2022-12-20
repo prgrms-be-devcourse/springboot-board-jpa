@@ -11,6 +11,7 @@ public class CreatePostRequest {
 
     private final PostUserInfo postUserInfo;
 
+
     public CreatePostRequest(String title, String content, PostUserInfo postUserInfo) {
         Assert.notNull(title, "title should not null");
         Assert.notNull(content, "content should not null");

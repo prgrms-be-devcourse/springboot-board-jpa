@@ -10,6 +10,7 @@ import com.prgrms.java.dto.GetPostsResponse;
 import com.prgrms.java.repository.PostRepository;
 import com.prgrms.java.repository.UserRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,7 +37,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-//@Transactional
 @SpringBootTest
 class PostServiceTest {
 
@@ -49,12 +49,16 @@ class PostServiceTest {
     @Autowired
     private UserRepository userRepository;
 
+    @AfterEach
+    void tearDown() {
+        postRepository.deleteAll();
+    }
 
     @DisplayName("게시글을 페이징 조회할 수 있다.")
     @Test
-    void getPosts() {
+    void getPostsTest() {
         // given
-        User user = userRepository.save(new User(1L, "이택승", 25, HobbyType.MOVIE));
+        User user = userRepository.save(new User("이택승", 25, HobbyType.MOVIE));
         Post post1 = new Post("데브코스 짱짱", "데브코스 짱짱입니다.", user);
         Post post2 = new Post("데브코스 짱짱2", "데브코스 짱짱2입니다.", user);
         List<Post> posts = postRepository.saveAll(List.of(post1, post2));
@@ -74,15 +78,14 @@ class PostServiceTest {
 
     @DisplayName("게시글을 단건 조회할 수 있다.")
     @Test
-    void getPostDetail() {
+    void getPostDetailTest() {
         // given
-        User user = userRepository.save(new User(1L, "이택승", 25, HobbyType.MOVIE));
-        Post post = new Post("데브코스 짱짱2", "데브코스 짱짱2입니다.", user);
-        Post savedPost = postRepository.save(post);
-        GetPostDetailsResponse expected = GetPostDetailsResponse.from(savedPost);
+        User user = userRepository.save(new User("이택승", 25, HobbyType.MOVIE));
+        Post post = postRepository.save(new Post("데브코스 짱짱2", "데브코스 짱짱2입니다.", user));
+        GetPostDetailsResponse expected = GetPostDetailsResponse.from(post);
 
         // when
-        GetPostDetailsResponse actual = postService.getPostDetail(1L);
+        GetPostDetailsResponse actual = postService.getPostDetail(post.getId());
 
         // then
         assertThat(actual)
@@ -91,20 +94,40 @@ class PostServiceTest {
 
     @DisplayName("게시글을 등록할 수 있다.")
     @Test
-    void createPost() {
+    void createPostTest() {
         // given
-        userRepository.save(new User(1L, "이택승", 25, HobbyType.MOVIE));
+        User user = userRepository.save(new User("이택승", 25, HobbyType.MOVIE));
 
         CreatePostRequest createPostRequest = new CreatePostRequest("데브코스 짱짱", "데브코스 짱짱입니다.",
-                new PostUserInfo(1L, "이택승", 25, "MOVIE")
+                new PostUserInfo(user.getId(), "이택승", 25, "MOVIE")
         );
 
         // when
-        postService.addPost(createPostRequest);
+        long postId = postService.addPost(createPostRequest);
 
         // then
-        Optional<Post> maybePost = postRepository.findById(1L);
-        assertThat(maybePost).isPresent();
+        Optional<Post> maybePost = postRepository.findById(postId);
+        assertThat(maybePost)
+                .isPresent();
+    }
 
+    @DisplayName("게시글을 수정할 수 있다.")
+    @Test
+    void modifyPostTest() {
+        // given
+        User user = userRepository.save(new User("이택승", 25, HobbyType.MOVIE));
+        Post post = postRepository.save(new Post("데브코스 짱짱", "데브코스 짱짱입니다.", user));
+
+        ModifyPostRequest request = new ModifyPostRequest(post.getId(), "데브코스 좋아", "데브코스 좋아용!");
+
+        // when
+        postService.modifyPost(request);
+
+        // then
+        Optional<Post> maybePost = postRepository.findById(post.getId());
+        assertThat(maybePost.get().getTitle())
+                .isEqualTo(request.getTitle());
+        assertThat(maybePost.get().getContent())
+                .isEqualTo(request.getContent());
     }
 }

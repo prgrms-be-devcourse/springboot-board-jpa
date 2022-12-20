@@ -43,8 +43,17 @@ public class PostService {
     }
 
     @Transactional
-    public void addPost(CreatePostRequest createPostRequest) {
+    public long addPost(CreatePostRequest createPostRequest) {
         Post postRequestInfo = createPostRequest.toEntity();
         Post savedPost = postRepository.save(postRequestInfo);
+        return savedPost.getId();
+    }
+
+    @Transactional
+    public void modifyPost(ModifyPostRequest modifyPostRequest) {
+        Post post = postRepository.findById(modifyPostRequest.getPostId())
+                .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find Post. Please check post id. [Post ID]: {0}", String.valueOf(modifyPostRequest.getPostId()))));
+
+        post.editPost(modifyPostRequest.getTitle(), modifyPostRequest.getContent());
     }
 }

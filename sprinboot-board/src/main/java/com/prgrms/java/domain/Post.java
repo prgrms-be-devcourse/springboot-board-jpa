@@ -1,6 +1,10 @@
 package com.prgrms.java.domain;
 
 import jakarta.persistence.*;
+import org.springframework.util.Assert;
+
+import java.text.MessageFormat;
+import java.util.Objects;
 
 @Entity
 @Table(name = "posts")
@@ -30,7 +34,7 @@ public class Post extends BaseEntity {
     }
 
     public Post(String title, String content, User user) {
-        this(0L, title, content, user);
+        this(null, title, content, user);
     }
 
     public Long getId() {
@@ -43,5 +47,21 @@ public class Post extends BaseEntity {
 
     public String getContent() {
         return content;
+    }
+
+    public void editPost(String title, String content) {
+        editTitle(title);
+        editContent(content);
+    }
+
+    public void editTitle(String title) {
+        Assert.hasLength(title, MessageFormat.format("title must not be empty or null. [title]: {0}", title));
+        Assert.state(title.length() <= 30, MessageFormat.format("title must be less than or equal to 30 characters. [title]: {0}", title));
+        this.title = title;
+    }
+
+    public void editContent(String content) {
+        Assert.hasLength(content, MessageFormat.format("content must not be empty or null. [content]: {0}", content));
+        this.content = content;
     }
 }

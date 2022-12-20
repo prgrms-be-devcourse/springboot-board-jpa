@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2a1ba826-3dbb-4322-96f8-881d7ab3a722" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/dto/CreatePostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/dto/CreatePostRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/domain/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/domain/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/domain/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,8 +39,8 @@
       <list>
         <option value="Enum" />
         <option value="JUnit5 Test Class" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -72,6 +73,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.prgrms.java" />
       <recent name="com.prgrms.dto" />
       <recent name="com.prgrms.java.exception" />
       <recent name="com.prgrms.java.dto" />
@@ -188,7 +190,7 @@
       <updated>1671164123039</updated>
       <workItem from="1671164127293" duration="13108000" />
       <workItem from="1671298615410" duration="535000" />
-      <workItem from="1671531415647" duration="3587000" />
+      <workItem from="1671531415647" duration="7074000" />
     </task>
     <servers />
   </component>
@@ -211,7 +213,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostServiceTest.java</url>
-          <line>102</line>
+          <line>106</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -221,8 +223,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/GetPostsResponse.java</url>
-          <line>15</line>
+          <line>19</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostServiceTest.java</url>
+          <line>91</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
