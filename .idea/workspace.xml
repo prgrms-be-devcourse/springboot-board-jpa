@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2a1ba826-3dbb-4322-96f8-881d7ab3a722" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/GetPostDetailsResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/GetPostsResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/repository/PostRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/domain/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/domain/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/domain/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,9 +37,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -53,7 +50,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2IyqMXSJnhd18o4tIRwFGJwJcKy" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -69,11 +66,13 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "jdk.selected.JAVA_MODULE": "17",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "spring.configuration.checksum": "c791c3676ad593df995b0df879fd315a"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.prgrms.dto" />
       <recent name="com.prgrms.java.exception" />
       <recent name="com.prgrms.java.dto" />
       <recent name="com.prgrms.java.domain" />
@@ -85,7 +84,7 @@
       <recent name="com.prgrms.java" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.PostServiceTest">
     <configuration name="PostServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -109,8 +108,72 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="PostServiceTest.createPost" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/sprinboot-board" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.prgrms.java.PostServiceTest.createPost&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="PostServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="sprinboot-board.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.prgrms.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.prgrms.java" />
+      <option name="MAIN_CLASS_NAME" value="com.prgrms.java.PostServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PostServiceTest.getPosts" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="sprinboot-board.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.prgrms.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.prgrms.java" />
+      <option name="MAIN_CLASS_NAME" value="com.prgrms.java.PostServiceTest" />
+      <option name="METHOD_NAME" value="getPosts" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringbootBoardApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="sprinboot-board.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.prgrms.java.SpringbootBoardApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.PostServiceTest" />
+        <item itemvalue="JUnit.PostServiceTest.getPosts" />
+        <item itemvalue="Gradle.PostServiceTest.createPost" />
         <item itemvalue="Gradle.PostServiceTest" />
       </list>
     </recent_temporary>
@@ -123,7 +186,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1671164123039</updated>
-      <workItem from="1671164127293" duration="10729000" />
+      <workItem from="1671164127293" duration="13108000" />
+      <workItem from="1671298615410" duration="535000" />
+      <workItem from="1671531415647" duration="3587000" />
     </task>
     <servers />
   </component>
@@ -146,8 +211,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostServiceTest.java</url>
-          <line>46</line>
+          <line>102</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostService.java</url>
+          <line>46</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/GetPostsResponse.java</url>
+          <line>15</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

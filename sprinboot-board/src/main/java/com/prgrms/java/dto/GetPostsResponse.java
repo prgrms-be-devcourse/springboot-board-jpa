@@ -11,6 +11,10 @@ public class GetPostsResponse {
         this.postDetails = postDetails;
     }
 
+    public List<GetPostDetailsResponse> getPostDetails() {
+        return postDetails;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

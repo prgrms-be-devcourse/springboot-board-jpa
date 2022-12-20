@@ -1,5 +1,6 @@
 package com.prgrms.java;
 
+import com.prgrms.dto.CreatePostRequest;
 import com.prgrms.java.domain.Post;
 import com.prgrms.java.dto.GetPostDetailsResponse;
 import com.prgrms.java.dto.GetPostsResponse;
@@ -39,5 +40,11 @@ public class PostService {
                 .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find Post. Please check post id. [Post ID]: {0}", String.valueOf(postId))));
 
         return GetPostDetailsResponse.from(savedPost);
+    }
+
+    @Transactional
+    public void addPost(CreatePostRequest createPostRequest) {
+        Post postRequestInfo = createPostRequest.toEntity();
+        Post savedPost = postRepository.save(postRequestInfo);
     }
 }

@@ -29,6 +29,10 @@ public class Post extends BaseEntity {
         this.user = user;
     }
 
+    public Post(String title, String content, User user) {
+        this(0L, title, content, user);
+    }
+
     public Long getId() {
         return id;
     }
