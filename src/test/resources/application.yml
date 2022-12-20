@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    show-sql: false
+    properties:
+      hibernate.format_sql: true
+  output:
+    ansi:
+      enabled: always
+
+logging:
+  level:
+    org.hibernate.type: trace
