@@ -1,4 +1,4 @@
-package com.example.board.domain.common.exception;
+package com.example.board.common.exception;
 
 public class NotFoundException extends RuntimeException{
 
