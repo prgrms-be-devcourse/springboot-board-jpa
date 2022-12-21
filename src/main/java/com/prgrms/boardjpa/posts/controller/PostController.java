@@ -25,8 +25,8 @@ public class PostController {
   @GetMapping
   @Transactional(readOnly = true)
   public CommonResponse<Page<PostDto>> getPosts(Pageable pageable) {
-    var posts = postService.getPosts(pageable);
-    return CommonResponse.ok(posts);
+    var postDtos = postService.getPosts(pageable);
+    return CommonResponse.ok(postDtos);
   }
 
   @GetMapping("/{id}")
