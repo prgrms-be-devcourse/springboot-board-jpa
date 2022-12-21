@@ -1,6 +1,7 @@
 package com.prgms.springbootboardjpa.dto;
 
 import com.prgms.springbootboardjpa.model.Member;
+import com.prgms.springbootboardjpa.model.Post;
 
 public class DtoMapper {
     public static MemberDto memberToMemberDto(Member member) {
@@ -13,5 +14,9 @@ public class DtoMapper {
 
     public static Member createMemberRequestToMember(CreateMemberRequest createMemberRequest) {
         return new Member(createMemberRequest.getName(), createMemberRequest.getAge(), createMemberRequest.getHobby());
+    }
+
+    public static PostDto postToPostDto(Post post) {
+        return new PostDto(post.getPostId(), post.getTitle(), post.getContent());
     }
 }
