@@ -79,7 +79,7 @@ local.properties
 ### Groovy ###
 # .gitignore created from Groovy contributors in https://github.com/apache/groovy/blob/master/.gitignore
 
-user.gradle
+member.gradle
 .gradle/
 target/
 out/
@@ -293,4 +293,5 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+http
 # End of https://www.toptal.com/developers/gitignore/api/gradle,macos,java,eclipse,groovy,intellij
