@@ -26,6 +26,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -50,10 +51,10 @@ class MemberApiControllerTest {
 
 
     private Long savedMemberId;
-
+    private MemberCreateDto createDto;
     @BeforeEach
     void setup() {
-        MemberCreateDto createDto = MemberCreateDto.builder()
+         createDto = MemberCreateDto.builder()
                 .name("member1")
                 .age(26)
                 .hobby("youTube")
@@ -72,13 +73,18 @@ class MemberApiControllerTest {
         mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/members/{id}", savedMemberId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(savedMemberId)))
-                .andExpect(status().isOk()) // 200
+                .andExpect(jsonPath("$.data.id").value(savedMemberId))
+                .andExpect(jsonPath("$.data.name").value(createDto.getName()))
+                .andExpect(jsonPath("$.data.age").value(createDto.getAge()))
+                .andExpect(jsonPath("$.data.hobby").value(createDto.getHobby()))
                 .andDo(print())
+
                 .andDo(document("member-find",
                         pathParameters(
                                 parameterWithName("id").description("사용자 아이디")
                         ),
                         responseFields(
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("회원PK"),
                                 fieldWithPath("data.name").type(JsonFieldType.STRING).description("회원이름"),
                                 fieldWithPath("data.age").type(JsonFieldType.NUMBER).description("나이"),
                                 fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("취미"),

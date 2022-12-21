@@ -8,6 +8,8 @@ import java.util.List;
 @Data
 @Builder
 public class MemberResponseDto {
+    private Long id;
+
     private String name;
 
     private int age;

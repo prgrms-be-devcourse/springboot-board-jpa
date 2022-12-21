@@ -51,6 +51,7 @@ class MemberServiceTest {
 
         //then
         assertThat(responseDtoList.size()).isEqualTo(1);
+        assertThat(responseDtoList.size()).isNotZero();
     }
 
     @Test

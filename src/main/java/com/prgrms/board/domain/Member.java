@@ -32,7 +32,7 @@ public class Member {
     private String hobby;
 
     @Default
-    @OneToMany(mappedBy = "writer")
+    @OneToMany(mappedBy = "writer", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
 }

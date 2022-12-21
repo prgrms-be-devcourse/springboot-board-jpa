@@ -8,7 +8,7 @@ import com.prgrms.board.dto.PostResponseDto;
 import com.prgrms.board.dto.PostUpdateDto;
 import com.prgrms.board.repository.MemberRepository;
 import com.prgrms.board.repository.PostRepository;
-import com.prgrms.board.service.converter.MemberConverter;
+import com.prgrms.board.service.converter.EntityConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-    private final MemberConverter converter;
+    private final EntityConverter converter;
     private final HttpSession httpSession;
     public static final String SESSION_MEMBER = "member";
 
@@ -34,7 +34,7 @@ public class PostServiceImpl implements PostService {
         Member member = memberRepository.findById(postCreateDto.getWriterId())
                 .orElseThrow(() -> new RuntimeException("잘못된 사용자 정보입니다."));
 
-        httpSession.setAttribute(SESSION_MEMBER, member);
+        httpSession.setAttribute(SESSION_MEMBER , member);
 
         Post newPost = converter.createPostFromDto(postCreateDto);
         newPost.registerMember(member);
@@ -67,7 +67,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public Long update(PostUpdateDto updateDto) {
         Post post = postRepository.findById(updateDto.getPostId())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 게시글입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
 
         post.changeTitle(updateDto.getTitle());
         post.changeContent(updateDto.getContent());

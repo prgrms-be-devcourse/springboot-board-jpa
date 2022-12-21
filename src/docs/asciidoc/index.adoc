@@ -19,11 +19,13 @@ include::{snippets}/member-find/http-response.adoc[]
 === /api/v1/posts
 
 .Request
+include::{snippets}/post-save/request-fields.adoc[]
 include::{snippets}/post-save/http-request.adoc[]
 
 .Response
-
+include::{snippets}/post-save/response-fields.adoc[]
 include::{snippets}/post-save/http-response.adoc[]
+
 
 
 == 게시글 조회
@@ -55,8 +57,9 @@ include::{snippets}/post-paging/http-response.adoc[]
 === /api/v1/posts
 
 .Request
+include::{snippets}/post-update/request-fields.adoc[]
 include::{snippets}/post-update/http-request.adoc[]
 
 .Response
+include::{snippets}/post-update/response-fields.adoc[]
 include::{snippets}/post-update/http-response.adoc[]
-

@@ -2,7 +2,6 @@ package com.prgrms.board.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,6 +27,9 @@ public class ApiResponse<T>{
         return new ApiResponse<>(200, data);
     }
 
+    public static <T> ApiResponse<T> created(T data) {
+        return new ApiResponse<>(201, data);
+    }
     public static <T> ApiResponse<T> fail(int statusCode, T data) {
         return new ApiResponse<>(statusCode, data);
     }

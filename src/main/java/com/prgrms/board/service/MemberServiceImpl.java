@@ -4,7 +4,7 @@ import com.prgrms.board.domain.Member;
 import com.prgrms.board.dto.MemberCreateDto;
 import com.prgrms.board.dto.MemberResponseDto;
 import com.prgrms.board.repository.MemberRepository;
-import com.prgrms.board.service.converter.MemberConverter;
+import com.prgrms.board.service.converter.EntityConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
-    private final MemberConverter converter;
+    private final EntityConverter converter;
 
     @Override
     @Transactional
@@ -35,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberResponseDto findById(Long memberId) {
         Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
         return converter.memberEntityToDto(findMember);
     }
@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
     private void validateDuplicateName(String name) {
         Optional<Member> duplicateMember = memberRepository.findByName(name);
         if (duplicateMember.isPresent()) {
-            throw new RuntimeException("이미 사용중인 이름입니다.");
+            throw new IllegalArgumentException("이미 사용중인 이름입니다.");
         }
     }
 }

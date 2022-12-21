@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -18,21 +20,24 @@ public class PostApiController {
     private static final int DEFAULT_PAGE_SIZE = 10;
     private final PostService postService;
 
-    @PostMapping
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<Long> register(@RequestBody @Valid PostCreateDto createDto) {
         Long savedPostId = postService.register(createDto);
 
-        return ApiResponse.ok(savedPostId);
+        return ApiResponse.created(savedPostId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<PostResponseDto> findById(@PathVariable Long id) {
-        PostResponseDto responseDto = postService.findById(id);
 
+        PostResponseDto responseDto = postService.findById(id);
         return ApiResponse.ok(responseDto);
     }
 
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<CursorResult> findAll(Long cursorId, Integer size) {
         if (size == null) {
             size = DEFAULT_PAGE_SIZE;
@@ -42,7 +47,8 @@ public class PostApiController {
         return ApiResponse.ok(cursorResult);
     }
 
-    @PutMapping
+    @PutMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<Long> update(@RequestBody @Valid PostUpdateDto postUpdateDto) {
         Long updatedPostId = postService.update(postUpdateDto);
 

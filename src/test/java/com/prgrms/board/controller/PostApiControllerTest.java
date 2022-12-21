@@ -31,6 +31,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -88,7 +89,7 @@ class PostApiControllerTest {
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postCreateDto)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("post-save",
                         requestFields(
@@ -102,26 +103,26 @@ class PostApiControllerTest {
                                 fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답 시간")
                         )
                 ));
-        
     }
 
 
     @Test
     void 게시글_단건_조회() throws Exception {
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", savedPostId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(savedPostId)))
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", savedPostId))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.title").value(postCreateDto.getTitle()))
+                .andExpect(jsonPath("$.data.content").value(postCreateDto.getContent()))
+                .andExpect(jsonPath("$.data.writerId").value(savedMemberId))
                 .andDo(print())
                 .andDo(document("post-findOne",
                         pathParameters(
                                 parameterWithName("id").description("게시글 아이디")
                         ),
                         responseFields(
-                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("게시글 ID"),
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("게시글 PK"),
                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
                                 fieldWithPath("data.content").type(JsonFieldType.STRING).description("게시글 내용"),
-                                fieldWithPath("data.writer").type(JsonFieldType.STRING).description("작성자"),
+                                fieldWithPath("data.writerId").type(JsonFieldType.NUMBER).description("작성자 PK"),
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답 시간")
                         )
@@ -136,7 +137,7 @@ class PostApiControllerTest {
                 .content("change content")
                 .build();
 
-        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/v1/posts", postUpdateDto)
+        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postUpdateDto)))
                 .andExpect(status().isOk())
@@ -157,17 +158,17 @@ class PostApiControllerTest {
 
     @Test
     void 게시글_페이징_조회() throws Exception {
-        MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-
         int cursorId = 10;
         int size = 10;
 
         mockMvc.perform(get("/api/v1/posts")
                         .param("cursorId", String.valueOf(cursorId))
                         .param("size", String.valueOf(size))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(multiValueMap)))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.postDtoList[0].title").value(postCreateDto.getTitle()))
+                .andExpect(jsonPath("$.data.postDtoList[0].content").value(postCreateDto.getContent()))
+                .andExpect(jsonPath("$.data.postDtoList[0].writerId").value(postCreateDto.getWriterId()))
                 .andDo(print())
                 .andDo(
                         document("post-paging",
@@ -178,11 +179,11 @@ class PostApiControllerTest {
                                 responseFields(
                                         fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
                                         fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답 시간"),
-                                        fieldWithPath("data.postDtoList[].id").type(JsonFieldType.NUMBER).description("게시글 ID"),
+                                        fieldWithPath("data.postDtoList[].id").type(JsonFieldType.NUMBER).description("게시글 PK"),
                                         fieldWithPath("data.hasNext").type(JsonFieldType.BOOLEAN).description("hasNext"),
                                         fieldWithPath("data.postDtoList[].title").type(JsonFieldType.STRING).description("제목"),
                                         fieldWithPath("data.postDtoList[].content").type(JsonFieldType.STRING).description("내용"),
-                                        fieldWithPath("data.postDtoList[].writer").type(JsonFieldType.STRING).description("작성자")
+                                        fieldWithPath("data.postDtoList[].writerId").type(JsonFieldType.NUMBER).description("작성자 PK")
                                 )
                         )
                 );

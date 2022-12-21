@@ -18,15 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 
-import java.util.Optional;
 
 import static com.prgrms.board.service.PostServiceImpl.SESSION_MEMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Slf4j
+@Transactional
 class PostServiceTest {
     @Autowired
     PostService postService;
@@ -39,6 +38,9 @@ class PostServiceTest {
 
     @Autowired
     MemberService memberService;
+
+    @Autowired
+    HttpSession session;
 
     private Member savedMember;
     private Post savedPost;
@@ -70,7 +72,6 @@ class PostServiceTest {
 
     @Test
     @DisplayName("저장되지 않은 회원이 게시글을 저장할 경우 예외가 발생한다.")
-    @Transactional
     void 게시글_저장_실패() {
         //given
         Long unknownId = 100L;
@@ -86,7 +87,6 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시글을 단건 조회할 때 Member의 정보와 함께 조회할 수 있다.")
-    @Transactional
     void 게시글_조회_성공() {
         //given
         PostResponseDto postResponseDto = postService.findById(savedPost.getId());
@@ -94,13 +94,12 @@ class PostServiceTest {
 
         assertThat(postResponseDto.getTitle()).isEqualTo(savedPost.getTitle());
         assertThat(postResponseDto.getContent()).isEqualTo(savedPost.getContent());
-        assertThat(postResponseDto.getWriter()).isEqualTo(savedMember.getName());
+        assertThat(postResponseDto.getWriterId()).isEqualTo(savedMember.getId());
         assertThat(count).isEqualTo(1);
     }
 
     @Test
     @DisplayName("저장되지 않은 게시글 Id로 조회할 경우 예외가 발생한다.")
-    @Transactional
     void 게시글_조회_실패() {
         //given
         Long unknownId = 100L;
@@ -128,9 +127,6 @@ class PostServiceTest {
         assertThat(responseDto.getTitle()).isEqualTo(updatedTitle);
         assertThat(responseDto.getContent()).isEqualTo(updatedContent);
     }
-
-    @Autowired
-    HttpSession session;
 
     @Test
     @DisplayName("게시글의 CreatedBy는 세션에 저장된 Member의 name으로 자동 저장된다.")

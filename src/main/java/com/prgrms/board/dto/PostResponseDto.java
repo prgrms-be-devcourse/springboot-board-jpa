@@ -12,5 +12,5 @@ public class PostResponseDto {
 
     private String content;
 
-    private String writer;
+    private Long writerId;
 }

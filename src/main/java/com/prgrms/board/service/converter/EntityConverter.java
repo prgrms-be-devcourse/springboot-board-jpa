@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
 
 @Component
-public class MemberConverter {
+public class EntityConverter {
     public Member createMemberFromDto(MemberCreateDto dto) {
         return Member.builder()
                 .name(dto.getName())
@@ -22,6 +22,7 @@ public class MemberConverter {
 
     public MemberResponseDto memberEntityToDto(Member member) {
         return MemberResponseDto.builder()
+                .id(member.getId())
                 .name(member.getName())
                 .age(member.getAge())
                 .hobby(member.getHobby())
@@ -35,7 +36,7 @@ public class MemberConverter {
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .writer(post.getWriter().getName())
+                .writerId(post.getWriter().getId())
                 .build();
     }
 
