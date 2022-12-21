@@ -2,13 +2,17 @@ package com.spring.board.springboard.post.repository;
 
 
 import com.spring.board.springboard.post.domain.Post;
+import com.spring.board.springboard.user.domain.Hobby;
+import com.spring.board.springboard.user.domain.Member;
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,16 +21,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 class PostRepositoryTest {
 
+    private static Member member;
+    private static LocalDateTime createdAt = LocalDateTime.now();
+
     @Autowired
     private PostRepository postRepository;
+
+    @BeforeAll
+    static void setUser(){
+        member = new Member("이수린", 24, Hobby.sleep);
+    }
 
     @Test
     @DisplayName("게시물을 생성할 수 있다.")
     void create_post_test(){
         // given
-        Post post = new Post();
-        post.setTitle("새로운 게시물입니다.");
-        post.setContent("새로운 게시물의 내용입니다.");
+        String title = "새 게시물 제목입니다.";
+        String content = "새 게시물 내용입니다.";
+        Post post = new Post(title, content, createdAt, member);
 
         // when
         postRepository.save(post);
@@ -43,9 +55,9 @@ class PostRepositoryTest {
     @DisplayName("게시물을 삭제할 수 있다.")
     void delete_post_test(){
         // given
-        Post post = new Post();
-        post.setTitle("삭제할 게시물");
-        post.setContent("곧 삭제됩니다.");
+        String title = "삭제할 게시물";
+        String content = "곧 삭제됩니다.";
+        Post post = new Post(title, content, createdAt, member);
 
         postRepository.save(post);
 
@@ -66,9 +78,7 @@ class PostRepositoryTest {
         String afterTitle = "수정 후 제목입니다.";
         String content = "내용은 변하지 않습니다.";
 
-        Post post = new Post();
-        post.setTitle(beforeTitle);
-        post.setContent(content);
+        Post post = new Post(beforeTitle, content, createdAt, member);
 
         postRepository.save(post);
 
@@ -94,9 +104,7 @@ class PostRepositoryTest {
         String afterContent = "수정 후 제목입니다.";
         String title = "제목은 변하지 않습니다.";
 
-        Post post = new Post();
-        post.setTitle(title);
-        post.setContent(beforeContent);
+        Post post = new Post(title, beforeContent, createdAt, member);
 
         postRepository.save(post);
 
@@ -118,13 +126,14 @@ class PostRepositoryTest {
     @DisplayName("모든 게시물을 조회할 수 있다.")
     void find_all_test(){
         // given
-        Post post1 = new Post();
-        post1.setTitle("첫번째 게시물입니다.");
-        post1.setContent("첫번째 게시물 내용입니다.");
+        String title1 = "첫번째 게시물입니다.";
+        String title2 = "두번째 게시물입니다.";
+        String content1 = "첫번째 게시물 내용입니다.";
+        String content2 = "두번째 게시물 내용입니다.";
 
-        Post post2 = new Post();
-        post2.setTitle("두번째 게시물입니다.");
-        post2.setContent("두번째 게시물 내용입니다.");
+        Post post1 = new Post(title1, content1, createdAt, member);
+
+        Post post2 = new Post(title2, content2, createdAt, member);
 
         postRepository.saveAll(
                 Lists.newArrayList(post1, post2));
@@ -148,13 +157,14 @@ class PostRepositoryTest {
     @DisplayName("모든 게시물을 삭제할 수 있다.")
     void find_all_delete_test(){
         // given
-        Post post1 = new Post();
-        post1.setTitle("첫번째 게시물입니다.");
-        post1.setContent("첫번째 게시물 내용입니다.");
+        String title1 = "첫번째 게시물입니다.";
+        String title2 = "두번째 게시물입니다.";
+        String content1 = "첫번째 게시물 내용입니다.";
+        String content2 = "두번째 게시물 내용입니다.";
 
-        Post post2 = new Post();
-        post2.setTitle("두번째 게시물입니다.");
-        post2.setContent("두번째 게시물 내용입니다.");
+        Post post1 = new Post(title1, content1, createdAt, member);
+
+        Post post2 = new Post(title2, content2, createdAt, member);
 
         postRepository.saveAll(
                 Lists.newArrayList(post1, post2));
