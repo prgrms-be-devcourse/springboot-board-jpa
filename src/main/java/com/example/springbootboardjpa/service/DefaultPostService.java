@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Service
 public class DefaultPostService implements PostService {
+
     @Override
     public Optional<PostDTO> findById(String id) {
         return Optional.empty();
