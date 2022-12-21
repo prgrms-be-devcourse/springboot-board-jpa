@@ -3,7 +3,6 @@ package com.spring.board.springboard.post.service;
 import com.spring.board.springboard.post.domain.Post;
 import com.spring.board.springboard.post.domain.dto.RequestPostDTO;
 import com.spring.board.springboard.post.domain.dto.ResponsePostDTO;
-import com.spring.board.springboard.post.domain.dto.UpdatePostDTO;
 import com.spring.board.springboard.post.exception.NoPostException;
 import com.spring.board.springboard.post.repository.PostRepository;
 import com.spring.board.springboard.user.domain.Member;
@@ -61,7 +60,7 @@ public class PostService {
     }
 
     @Transactional
-    public ResponsePostDTO update(Integer postId, UpdatePostDTO updatePostDTO) {
+    public ResponsePostDTO update(Integer postId, RequestPostDTO requestPostDTO) {
         Post findPost = postRepository.findById(postId)
                 .orElseThrow(() -> {
                     throw new NoPostException(
@@ -70,11 +69,11 @@ public class PostService {
                 });
 
         findPost.changeTitle(
-                updatePostDTO.getTitle()
+                requestPostDTO.getTitle()
         );
 
         findPost.changeContent(
-                updatePostDTO.getContent()
+                requestPostDTO.getContent()
         );
 
         return new ResponsePostDTO(findPost, new MemberResponseDTO(findPost.getMember()));

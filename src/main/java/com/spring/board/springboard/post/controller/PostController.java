@@ -3,7 +3,6 @@ package com.spring.board.springboard.post.controller;
 import com.spring.board.springboard.domain.Response;
 import com.spring.board.springboard.post.domain.dto.RequestPostDTO;
 import com.spring.board.springboard.post.domain.dto.ResponsePostDTO;
-import com.spring.board.springboard.post.domain.dto.UpdatePostDTO;
 import com.spring.board.springboard.post.service.PostService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -54,8 +53,8 @@ public class PostController {
     }
 
     @PostMapping("/{postId}")
-    public ResponseEntity<Response<ResponsePostDTO>> updatePost(@PathVariable Integer postId, @RequestBody UpdatePostDTO updatePostDTO) {
-        ResponsePostDTO updatedPostResponseDTO = postService.update(postId, updatePostDTO);
+    public ResponseEntity<Response<ResponsePostDTO>> updatePost(@PathVariable Integer postId, @RequestBody RequestPostDTO requestPostDTO) {
+        ResponsePostDTO updatedPostResponseDTO = postService.update(postId, requestPostDTO);
         Response<ResponsePostDTO> response = new Response<>(updatedPostResponseDTO);
         return ResponseEntity.ok(response);
     }
