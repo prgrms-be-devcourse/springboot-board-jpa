@@ -4,8 +4,9 @@ package com.spring.board.springboard.post.repository;
 import com.spring.board.springboard.post.domain.Post;
 import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
+import com.spring.board.springboard.user.repository.MemberRepository;
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,13 @@ class PostRepositoryTest {
     @Autowired
     private PostRepository postRepository;
 
-    @BeforeAll
-    static void setUser(){
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @BeforeEach
+    void setUser(){
         member = new Member("이수린", 24, Hobby.sleep);
+        memberRepository.save(member);
     }
 
     @Test
