@@ -1,6 +1,6 @@
 package com.example.springbootboardjpa.repoistory;
 
-import com.example.springbootboardjpa.domian.User;
+import com.example.springbootboardjpa.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

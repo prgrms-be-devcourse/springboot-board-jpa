@@ -1,7 +1,7 @@
 package com.example.springbootboardjpa.repoistory;
 
-import com.example.springbootboardjpa.domian.Post;
-import com.example.springbootboardjpa.domian.User;
+import com.example.springbootboardjpa.model.Post;
+import com.example.springbootboardjpa.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -128,4 +128,19 @@ class UserJpaRepositoryTest {
         assertThat(findPost.isEmpty()).isTrue();
     }
 
+    @Test
+    @DisplayName("BaseEntity 필드가 정상 등록된다.")
+    public void BaseEntityTest(){
+        // Given
+        userRepository.save(user);
+
+        // When
+        var findUser = userRepository.findById(1).get();
+        findUser.setCreatedBy("관리자");
+
+        // Then
+        assertThat(findUser.getCreatedAt()).isNotNull();
+        log.info("{}",findUser.getCreatedAt());
+        assertThat(findUser.getCreatedBy()).isEqualTo("관리자");
+    }
 }

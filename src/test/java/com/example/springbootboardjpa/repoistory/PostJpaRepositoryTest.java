@@ -1,16 +1,16 @@
 package com.example.springbootboardjpa.repoistory;
 
-import com.example.springbootboardjpa.domian.Post;
-import com.example.springbootboardjpa.domian.User;
+import com.example.springbootboardjpa.model.Post;
+import com.example.springbootboardjpa.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -86,19 +86,60 @@ class PostJpaRepositoryTest {
     @Test
     @DisplayName("post title을 정상 수정한다.")
     public void updatePostTitle(){
+        // Given
+        var find = postRepository.findById(1);
+        var findPost = find.get();
 
+        // When
+       findPost.changeTitle("초밥 달인");
+        var posts = postRepository.findByTitle("달인");
+
+        // Then
+        assertThat(posts.size()).isEqualTo(1);
+        assertThat(posts.get(0)).isEqualTo(post);
     }
 
     @Test
     @DisplayName("post content를 정상 수정한다.")
     public void updatePostContent(){
+        // Given
+        var find = postRepository.findById(1);
+        var findPost = find.get();
 
+        // When
+        findPost.changeContent("초밥 달인 구하기~~~");
+        var updatePost = postRepository.findById(1);
+
+        // Then
+        assertThat(updatePost.isPresent()).isTrue();
+        assertThat(updatePost.get()).isSameAs(post);
     }
 
     @Test
     @DisplayName("post를 정상 삭제한다.")
     public void deletePost(){
+        // Given
+        var findPost = postRepository.findById(1).get();
 
+        // When
+        postRepository.delete(findPost);
+        var find = postRepository.findById(1);
+
+        // Then
+        assertThat(find.isEmpty()).isTrue();
+    }
+
+    @Test
+    @DisplayName("BaseEntity 필드가 정상 등록된다.")
+    public void BaseEntityTest(){
+        // Given // When
+        var findPost = postRepository.findById(1).get();
+        findPost.setCreatedBy("관리자");
+
+        // Then
+        assertThat(findPost.getCreatedAt()).isNotNull();
+        log.info("{}",findPost.getCreatedAt());
+        assertThat(findPost.getCreatedBy()).isEqualTo("관리자");
     }
 
 }

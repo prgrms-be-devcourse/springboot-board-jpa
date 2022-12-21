@@ -1,4 +1,4 @@
-package com.example.springbootboardjpa.domian;
+package com.example.springbootboardjpa.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -10,7 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Setter
+
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -18,5 +18,9 @@ public class BaseEntity {
     @Column(name = "created_by")
     private String createdBy;
     @CreatedDate
-    private LocalDateTime cratedAt;
+    private LocalDateTime createdAt;
+
+    public void setCreatedBy(String createdBy){
+        this.createdBy = createdBy;
+    }
 }

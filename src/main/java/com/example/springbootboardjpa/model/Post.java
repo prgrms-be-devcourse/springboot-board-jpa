@@ -1,11 +1,13 @@
-package com.example.springbootboardjpa.domian;
+package com.example.springbootboardjpa.model;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
+@ToString(exclude = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "post")
@@ -25,8 +27,9 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+
     public Post(String title, String content, User user) {
-        this.title = title;
+        this.title = blankCheckTitle(title);
         this.content = content;
         setUser(user);
     }
@@ -34,6 +37,12 @@ public class Post extends BaseEntity {
     private void setUser(User user){
         this.user = user;
         user.getPosts().add(this);
+    }
+
+    private String blankCheckTitle(String title){
+        if(title.isBlank())
+            return "(제목없음)";
+        return title;
     }
 
     public void changeContent(String content){
