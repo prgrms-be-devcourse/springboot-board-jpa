@@ -10,4 +10,8 @@ public class DtoMapper {
     public static Member memberDtoToMember(MemberDto memberDto) {
         return new Member(memberDto.getMemberId(), memberDto.getName(), memberDto.getAge(), memberDto.getHobby());
     }
+
+    public static Member createMemberRequestToMember(CreateMemberRequest createMemberRequest) {
+        return new Member(createMemberRequest.getName(), createMemberRequest.getAge(), createMemberRequest.getHobby());
+    }
 }
