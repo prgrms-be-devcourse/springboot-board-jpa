@@ -1,0 +1,18 @@
+[[Post-API]]
+== Post API
+
+[[게시판-페이징-조회]]
+=== 게시판 페이징 조회
+operation::post-getAll[snippets='http-request,http-response,response-fields']
+
+[[게시판-단건-조회]]
+=== 게시판 단건 조회
+operation::post-getDetails[snippets='http-request,path-parameters,http-response,response-fields']
+
+[[게시판-등록]]
+=== 게시판 등록
+operation::post-create[snippets='http-request,request-fields,http-response,response-fields']
+
+[[게시판-수정]]
+=== 게시판 수정
+operation::post-modify[snippets='http-request,path-parameters,request-fields,http-response,response-fields']

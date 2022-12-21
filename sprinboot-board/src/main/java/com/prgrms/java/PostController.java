@@ -33,14 +33,14 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createPost(@RequestBody CreatePostRequest request) {
+    public ResponseEntity<CreatePostResponse> createPost(@RequestBody CreatePostRequest request) {
         long postId = postService.createPost(request);
-        return ResponseEntity.ok(MessageFormat.format("Create Post Success! [Created Post ID]: {0}", postId));
+        return ResponseEntity.ok(new CreatePostResponse(postId));
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<String> modifyPost(@PathVariable(value = "id") Long id, @RequestBody ModifyPostRequest request) {
+    public ResponseEntity<ModifyPostResponse> modifyPost(@PathVariable(value = "id") Long id, @RequestBody ModifyPostRequest request) {
         postService.modifyPost(id, request);
-        return ResponseEntity.ok(MessageFormat.format("Modify Post Success! [Modified Post ID]: {0}", id));
+        return ResponseEntity.ok(new ModifyPostResponse(id));
     }
 }

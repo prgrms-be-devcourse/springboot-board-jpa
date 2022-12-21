@@ -9,7 +9,6 @@ public class ModifyPostRequest {
 
     private final String content;
 
-    @JsonCreator
     public ModifyPostRequest(@JsonProperty("title") String title, @JsonProperty("content") String content) {
         this.title = title;
         this.content = content;

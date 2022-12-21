@@ -6,13 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="2a1ba826-3dbb-4322-96f8-881d7ab3a722" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/dto/CreatePostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/CreatePostRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/dto/PostUserInfo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/ModifyPostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/ModifyPostRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/domain/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/domain/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/GetPostDetailsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/GetPostDetailsResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/ModifyPostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/ModifyPostRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,8 +41,8 @@
       <list>
         <option value="Enum" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -65,6 +62,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
@@ -72,7 +73,10 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "jdk.selected.JAVA_MODULE": "17",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "spring.configuration.checksum": "c791c3676ad593df995b0df879fd315a"
   }
 }]]></component>
@@ -91,22 +95,7 @@
       <recent name="com.prgrms.java" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.PostControllerTest.createPost">
-    <configuration name="PostControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="sprinboot-board.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.prgrms.java.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.prgrms.java" />
-      <option name="MAIN_CLASS_NAME" value="com.prgrms.java.PostControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Spring Boot.SpringbootBoardApplication">
     <configuration name="PostControllerTest.createPost" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="sprinboot-board.test" />
       <extension name="coverage">
@@ -118,6 +107,22 @@
       <option name="PACKAGE_NAME" value="com.prgrms.java" />
       <option name="MAIN_CLASS_NAME" value="com.prgrms.java.PostControllerTest" />
       <option name="METHOD_NAME" value="createPost" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PostControllerTest.getPostDetails" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="sprinboot-board.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.prgrms.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.prgrms.java" />
+      <option name="MAIN_CLASS_NAME" value="com.prgrms.java.PostControllerTest" />
+      <option name="METHOD_NAME" value="getPostDetails" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -179,11 +184,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PostControllerTest.createPost" />
-        <item itemvalue="JUnit.PostServiceTest" />
-        <item itemvalue="JUnit.PostControllerTest.modifyPost" />
-        <item itemvalue="JUnit.PostControllerTest" />
         <item itemvalue="JUnit.PostControllerTest.getPosts" />
+        <item itemvalue="JUnit.PostServiceTest" />
+        <item itemvalue="JUnit.PostControllerTest.getPostDetails" />
+        <item itemvalue="JUnit.PostControllerTest.modifyPost" />
+        <item itemvalue="JUnit.PostControllerTest.createPost" />
       </list>
     </recent_temporary>
   </component>
@@ -197,7 +202,10 @@
       <updated>1671164123039</updated>
       <workItem from="1671164127293" duration="13108000" />
       <workItem from="1671298615410" duration="535000" />
-      <workItem from="1671531415647" duration="14130000" />
+      <workItem from="1671531415647" duration="17199000" />
+      <workItem from="1671567074550" duration="638000" />
+      <workItem from="1671595950594" duration="5226000" />
+      <workItem from="1671613195039" duration="3804000" />
     </task>
     <servers />
   </component>
@@ -225,7 +233,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostService.java</url>
-          <line>55</line>
+          <line>54</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -235,5 +243,9 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
