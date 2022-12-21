@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(uniqueConstraints = {
+    @UniqueConstraint(name = "NAME_UNIQUE", columnNames = {"name"})})
 public class Member extends BaseTimeEntity {
 
   @Id
@@ -25,10 +29,10 @@ public class Member extends BaseTimeEntity {
   @Column(name = "member_id")
   private Long id;
 
-  @Column(name = "name", nullable = false)
+  @Column(name = "name")
   private String name;
 
-  @Column(name = "age") // min 1
+  @Column(name = "age")
   private int age;
 
   @Column(name = "hobby")

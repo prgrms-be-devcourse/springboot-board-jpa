@@ -1,6 +1,6 @@
 package com.example.board.domain.member.service;
 
-import com.example.board.domain.common.exception.NotFoundException;
+import com.example.board.common.exception.NotFoundException;
 import com.example.board.domain.member.dto.MemberRequest;
 import com.example.board.domain.member.dto.MemberResponse;
 import com.example.board.domain.member.entity.Member;
@@ -14,7 +14,7 @@ public class MemberService {
 
   private final MemberRepository memberRepository;
 
-  public MemberService(MemberRepository memberRepository){
+  public MemberService(MemberRepository memberRepository) {
     this.memberRepository = memberRepository;
   }
 
@@ -22,13 +22,14 @@ public class MemberService {
   public MemberResponse.Detail findById(Long id) {
     Member member = memberRepository.findById(id)
         .orElseThrow(
-            () -> new NotFoundException(String.format("NotFoundException member id: %d", id)));
+            () -> new NotFoundException(String.format("member id %d doesn't exist", id)));
     return MemberResponse.Detail.from(member);
   }
 
   public Long save(MemberRequest memberRequest) {
-    Member member = memberRequest.toEntity();
-    Member saved = memberRepository.save(member);
-    return saved.getId();
+    Member member = new Member(memberRequest.getName(), memberRequest.getAge(),
+        memberRequest.getHobby());
+    Member savedMember = memberRepository.save(member);
+    return savedMember.getId();
   }
 }

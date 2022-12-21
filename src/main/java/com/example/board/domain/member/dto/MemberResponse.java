@@ -33,7 +33,7 @@ public class MemberResponse {
       detail.hobby = member.getHobby();
       detail.posts = member.getPosts()
           .stream()
-          .map(PostResponse.Shortcut::withoutMember)
+          .map(PostResponse.Shortcut::from)
           .collect(Collectors.toList());
       detail.createdAt = member.getCreatedAt();
       detail.updatedAt = member.getUpdatedAt();
