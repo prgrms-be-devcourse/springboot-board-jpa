@@ -65,7 +65,7 @@ public class PostService {
 
     private boolean hasNext(int postsSize, int pageSize) {
         if (postsSize == 0) {
-            throw new EntityNotFoundException(Post.class);
+            return false;
         }
 
         return postsSize > pageSize;

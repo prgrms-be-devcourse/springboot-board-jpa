@@ -410,42 +410,6 @@ class PostControllerTest {
             .andDo(print());
     }
 
-    @DisplayName("Post 조회 실패 - get /api/v1/posts - Post가 없으므로 Post 조회에 실패한다.")
-    @Test
-    void findAllPostByCursorIdFailNotFound() throws Exception {
-        //given
-        Long cursorId = 20L;
-
-        int pageSize = 20;
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("cursorId", cursorId.toString());
-        params.add("pageSize", String.valueOf(pageSize));
-
-        this.mockMvc.perform(get("/api/v1/posts")
-                .params(params)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNotFound())
-            .andExpect(jsonPath("$.timeStamp").exists())
-            .andExpect(jsonPath("$.message").exists())
-            .andExpect(jsonPath("$.requestUrl").exists())
-            .andDo(document("posts-findAll-NotFound",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint()),
-                requestParameters(
-                    parameterWithName("cursorId").description("커서 기준 Id (PostId)"),
-                    parameterWithName("pageSize").description("요청할 페이지 사이즈")
-                ),
-                responseFields(
-                    fieldWithPath("timeStamp").description("서버 응답 시간"),
-                    fieldWithPath("message").description("예외 메시지"),
-                    fieldWithPath("requestUrl").description("요청한 url"),
-                    fieldWithPath("method").description("요청 method")
-                )
-            ))
-            .andDo(print());
-    }
-
     private List<Post> saveAll(int size) {
         User user = User.create("name", 28, "");
         userRepository.save(user);

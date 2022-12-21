@@ -290,32 +290,6 @@ class PostServiceFacadeTest {
             .isSortedAccordingTo(Comparator.reverseOrder());
     }
 
-    @DisplayName("findAllByCursorId 조회 테스트 -  cursorId로 요청하지만, 데이터가 없다면 예외를 던진다")
-    @Test
-    void findAllByNotExistsCursorIdNotFound() {
-        //given
-        int pageSize = 10;
-
-        long cursorId = 999;
-
-        //when & then
-        assertThrows(EntityNotFoundException.class,
-            () -> postServiceFacade.findAllPostsByIdCursorBased(
-                cursorId, pageSize));
-    }
-
-    @DisplayName("findAllByCursorId 조회 테스트 - cursorId가 존재하지않고, post가 없다면 예외를 던진다")
-    @Test
-    void findAllByCursorIdNotExistsNotFound() {
-        //given
-        int pageSize = 10;
-
-        //when & then
-        assertThrows(EntityNotFoundException.class,
-            () -> postServiceFacade.findAllPostsByIdCursorBased(
-                null, pageSize));
-    }
-
     private List<Post> saveAll(int size) {
         User user = User.create("name", 28, "");
         userRepository.save(user);
