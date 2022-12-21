@@ -88,13 +88,17 @@ class PostServiceTest {
     @Test
     @DisplayName("게시글을 단건 조회할 때 Member의 정보와 함께 조회할 수 있다.")
     void 게시글_조회_성공() {
-        //given
+        //given & when
         PostResponseDto postResponseDto = postService.findById(savedPost.getId());
         long count = postRepository.count();
 
-        assertThat(postResponseDto.getTitle()).isEqualTo(savedPost.getTitle());
-        assertThat(postResponseDto.getContent()).isEqualTo(savedPost.getContent());
-        assertThat(postResponseDto.getWriterId()).isEqualTo(savedMember.getId());
+        //then
+
+        assertThat(postResponseDto)
+                .hasFieldOrPropertyWithValue("title", savedPost.getTitle())
+                .hasFieldOrPropertyWithValue("content", savedPost.getContent())
+                .hasFieldOrPropertyWithValue("writerId", savedMember.getId());
+
         assertThat(count).isEqualTo(1);
     }
 
@@ -112,6 +116,7 @@ class PostServiceTest {
     @Test
     @DisplayName("게시글의 정보를 수정할 수 있다.")
     void 게시글_수정_성공() {
+        //given
         String updatedTitle = "update title";
         String updatedContent = "update content";
 
@@ -121,31 +126,38 @@ class PostServiceTest {
                 .content(updatedContent)
                 .build();
 
+        //when
         Long updatedPostId = postService.update(updateDto);
         PostResponseDto responseDto = postService.findById(updatedPostId);
 
-        assertThat(responseDto.getTitle()).isEqualTo(updatedTitle);
-        assertThat(responseDto.getContent()).isEqualTo(updatedContent);
+        //then
+        assertThat(responseDto)
+                .hasFieldOrPropertyWithValue("title", updatedTitle)
+                .hasFieldOrPropertyWithValue("content", updatedContent);
     }
 
     @Test
     @DisplayName("게시글의 CreatedBy는 세션에 저장된 Member의 name으로 자동 저장된다.")
     void 게시글_CreatedBy() {
+        //given
         PostCreateDto createDto = PostCreateDto.builder().writerId(savedMember.getId())
                 .title("title!")
                 .content("content!")
                 .build();
 
-        Long postId = postService.register(createDto);
 
+        //when
+        Long postId = postService.register(createDto);
         Member sessionMember = (Member) session.getAttribute(SESSION_MEMBER);
 
-        assertThat(sessionMember.getName()).isEqualTo(savedMember.getName());
-        assertThat(sessionMember.getAge()).isEqualTo(savedMember.getAge());
-        assertThat(sessionMember.getHobby()).isEqualTo(savedMember.getHobby());
+
+        //then
+        assertThat(sessionMember)
+                .hasFieldOrPropertyWithValue("name", savedMember.getName())
+                .hasFieldOrPropertyWithValue("age", savedMember.getAge())
+                .hasFieldOrPropertyWithValue("hobby", savedMember.getHobby());
 
         Post findPost = postRepository.findById(postId).get();
         assertThat(findPost.getCreatedBy()).isEqualTo(sessionMember.getName());
-
     }
 }
