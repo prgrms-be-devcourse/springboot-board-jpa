@@ -4,7 +4,9 @@ import com.example.springbootboardjpa.dto.PostDTO;
 import com.example.springbootboardjpa.dto.UserDto;
 import com.example.springbootboardjpa.model.Post;
 import com.example.springbootboardjpa.model.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PostConverter {
     public Post convertPost(PostDTO postDTO){
         User user = this.convertUser(postDTO.getUserDto());

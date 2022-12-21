@@ -44,7 +44,7 @@ class UserJpaRepositoryTest {
 
         // Then
         var users = userRepository.findAll();
-        assertThat(users.size()).isEqualTo(1);
+        assertThat(users.size()).isEqualTo(1L);
         assertThat(users.get(0)).isEqualTo(insertUser);
     }
 
@@ -56,7 +56,7 @@ class UserJpaRepositoryTest {
         var insertUser = userRepository.save(user);
 
         // When
-        var findUser = userRepository.findById(1);
+        var findUser = userRepository.findById(1L);
 
         // Then
         assertThat(findUser.isPresent()).isTrue();
@@ -87,7 +87,7 @@ class UserJpaRepositoryTest {
         insertUser.changeName("영지2");
 
         // When
-        var findUser = userRepository.findById(1);
+        var findUser = userRepository.findById(1L);
 
         // Then
         assertThat(findUser.isPresent()).isTrue();
@@ -103,7 +103,7 @@ class UserJpaRepositoryTest {
         insertUser.getPosts().remove(0);
 
         // When
-        var findUser = userRepository.findById(1);
+        var findUser = userRepository.findById(1L);
         var findPost = postRepository.findAll();
 
         // Then
@@ -120,8 +120,8 @@ class UserJpaRepositoryTest {
         userRepository.delete(user);
 
         // When
-        var findUser = userRepository.findById(1);
-        var findPost = postRepository.findById(1);
+        var findUser = userRepository.findById(1L);
+        var findPost = postRepository.findById(1L);
 
         // Then
         assertThat(findUser.isEmpty()).isTrue();
@@ -135,7 +135,7 @@ class UserJpaRepositoryTest {
         userRepository.save(user);
 
         // When
-        var findUser = userRepository.findById(1).get();
+        var findUser = userRepository.findById(1L).get();
         findUser.setCreatedBy("관리자");
 
         // Then
