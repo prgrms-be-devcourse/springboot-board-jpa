@@ -1,9 +1,9 @@
 package com.spring.board.springboard.post.domain;
 
-import com.spring.board.springboard.user.domain.User;
-import com.spring.board.springboard.user.exception.AuthenticationException;
+import com.spring.board.springboard.user.domain.Member;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
