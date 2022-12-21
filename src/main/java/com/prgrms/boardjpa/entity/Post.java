@@ -24,7 +24,7 @@ public class Post extends BaseEntity {
   @Column(name = "content", nullable = true)
   private String content;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY)
   private User user;
 
   public void changeUser(User user) {

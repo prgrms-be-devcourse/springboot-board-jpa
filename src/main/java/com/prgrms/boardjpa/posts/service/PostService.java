@@ -8,6 +8,7 @@ import com.prgrms.boardjpa.utils.exception.NoSuchPostException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PostService {
@@ -19,11 +20,13 @@ public class PostService {
 
 
   //1급 컬렉션 객체를 만들어서 사용해보자
+  @Transactional(readOnly = true)
   public Page<PostDto> getPosts(Pageable pageable) {
     return postRepository.findAll(pageable)
         .map(PostConverter::postToPostDto);
   }
 
+  @Transactional(readOnly = true)
   public PostDto getPost(Long postId) {
     var post =  postRepository
         .findById(postId)
@@ -40,6 +43,7 @@ public class PostService {
   }
 
 
+  @Transactional
   public PostDto updatePost(Long id, PostRequest postRequest) {
     var post = postRepository.findById(id).orElseThrow(
         () -> new NoSuchPostException()
