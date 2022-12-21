@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import com.ys.board.common.exception.EntityNotFoundException;
-import com.ys.board.domain.user.DuplicateNameException;
+import com.ys.board.domain.user.exception.DuplicateNameException;
 import com.ys.board.domain.user.model.User;
 import com.ys.board.domain.user.api.UserCreateRequest;
 import com.ys.board.domain.user.api.UserCreateResponse;

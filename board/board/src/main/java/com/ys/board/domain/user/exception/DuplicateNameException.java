@@ -1,4 +1,4 @@
-package com.ys.board.domain.user;
+package com.ys.board.domain.user.exception;
 
 public class DuplicateNameException extends RuntimeException {
 

@@ -2,7 +2,7 @@ package com.ys.board.common;
 
 import com.ys.board.common.exception.EntityNotFoundException;
 import com.ys.board.common.response.ErrorResponse;
-import com.ys.board.domain.user.DuplicateNameException;
+import com.ys.board.domain.user.exception.DuplicateNameException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
