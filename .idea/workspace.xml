@@ -7,7 +7,12 @@
     <list default="true" id="2a1ba826-3dbb-4322-96f8-881d7ab3a722" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sprinboot-board/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/docs/asciidoc/Post-API.adoc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/docs/asciidoc/index.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/docs/asciidoc/index.adoc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/CreatePostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/CreatePostResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/ModifyPostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/ModifyPostResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/CreatePostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/CreatePostRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/ModifyPostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/main/java/com/prgrms/java/dto/ModifyPostRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sprinboot-board/src/test/java/com/prgrms/java/PostControllerTest.java" afterDir="false" />
     </list>
@@ -29,7 +34,47 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="sprinboot-board" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="sprinboot-board" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="sprinboot-board" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="application" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="sprinboot-board" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="sprinboot-board" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build setup" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="sprinboot-board" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="documentation" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="sprinboot-board" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -60,26 +105,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "jdk.selected.JAVA_MODULE": "17",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "spring.configuration.checksum": "c791c3676ad593df995b0df879fd315a"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;c791c3676ad593df995b0df879fd315a&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.prgrms.java" />
@@ -95,7 +140,22 @@
       <recent name="com.prgrms.java" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.SpringbootBoardApplication">
+  <component name="RunManager" selected="JUnit.PostControllerTest">
+    <configuration name="PostControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="sprinboot-board.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.prgrms.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.prgrms.java" />
+      <option name="MAIN_CLASS_NAME" value="com.prgrms.java.PostControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="PostControllerTest.createPost" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="sprinboot-board.test" />
       <extension name="coverage">
@@ -112,7 +172,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PostControllerTest.getPostDetails" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PostControllerTest.createPostEmptyTitle" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="sprinboot-board.test" />
       <extension name="coverage">
         <pattern>
@@ -122,13 +182,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.prgrms.java" />
       <option name="MAIN_CLASS_NAME" value="com.prgrms.java.PostControllerTest" />
-      <option name="METHOD_NAME" value="getPostDetails" />
+      <option name="METHOD_NAME" value="createPostEmptyTitle" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PostControllerTest.getPosts" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PostControllerTest.modifyPostEmptyContent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="sprinboot-board.test" />
       <extension name="coverage">
         <pattern>
@@ -138,13 +198,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.prgrms.java" />
       <option name="MAIN_CLASS_NAME" value="com.prgrms.java.PostControllerTest" />
-      <option name="METHOD_NAME" value="getPosts" />
+      <option name="METHOD_NAME" value="modifyPostEmptyContent" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PostControllerTest.modifyPost" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PostControllerTest.modifyPostEmptyTitle" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="sprinboot-board.test" />
       <extension name="coverage">
         <pattern>
@@ -154,23 +214,8 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.prgrms.java" />
       <option name="MAIN_CLASS_NAME" value="com.prgrms.java.PostControllerTest" />
-      <option name="METHOD_NAME" value="modifyPost" />
+      <option name="METHOD_NAME" value="modifyPostEmptyTitle" />
       <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PostServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="sprinboot-board.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.prgrms.java.dto.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.prgrms.java" />
-      <option name="MAIN_CLASS_NAME" value="com.prgrms.java.PostServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -184,11 +229,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PostControllerTest.getPosts" />
-        <item itemvalue="JUnit.PostServiceTest" />
-        <item itemvalue="JUnit.PostControllerTest.getPostDetails" />
-        <item itemvalue="JUnit.PostControllerTest.modifyPost" />
+        <item itemvalue="JUnit.PostControllerTest" />
+        <item itemvalue="JUnit.PostControllerTest.createPostEmptyTitle" />
         <item itemvalue="JUnit.PostControllerTest.createPost" />
+        <item itemvalue="JUnit.PostControllerTest.modifyPostEmptyContent" />
+        <item itemvalue="JUnit.PostControllerTest.modifyPostEmptyTitle" />
       </list>
     </recent_temporary>
   </component>
@@ -205,7 +250,8 @@
       <workItem from="1671531415647" duration="17199000" />
       <workItem from="1671567074550" duration="638000" />
       <workItem from="1671595950594" duration="5226000" />
-      <workItem from="1671613195039" duration="3804000" />
+      <workItem from="1671613195039" duration="4020000" />
+      <workItem from="1671626510610" duration="3061000" />
     </task>
     <servers />
   </component>

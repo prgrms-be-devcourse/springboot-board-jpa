@@ -5,4 +5,41 @@
 :toclevels: 2
 :sectlinks:
 
-include::Post-API.adoc[]
+[[Post-API]]
+== Post API
+
+[[게시판-페이징-조회]]
+=== 게시판 페이징 조회
+operation::post-getAll[snippets='http-request,http-response,response-fields']
+
+[[게시판-단건-조회]]
+=== 게시판 단건 조회
+operation::post-getDetails[snippets='http-request,path-parameters,http-response,response-fields']
+
+[[게시판-등록]]
+[[게시판-등록-성공]]
+=== 게시판 등록 성공
+==== 게시판 등록
+operation::post-create[snippets='http-request,request-fields,http-response,response-fields']
+
+[[게시판-등록-실패]]
+=== 게시판 등록 실패
+==== 빈 제목인 게시판 등록
+operation::post-create-title-fail[snippets='http-request,request-fields,http-response,response-fields']
+
+==== 빈 내용인 게시판 등록
+operation::post-create-content-fail[snippets='http-request,request-fields,http-response,response-fields']
+
+[[게시판-수정]]
+[[게시판-수정-성공]]
+=== 게시판 수정 성공
+==== 게시판 수정
+operation::post-modify[snippets='http-request,path-parameters,request-fields,http-response,response-fields']
+
+[[게시판-수정-실패]]
+=== 게시판 수정 실패
+==== 빈 제목으로 게시판 수정
+operation::post-modify-title-fail[snippets='http-request,request-fields,http-response,response-fields']
+
+==== 빈 내용으로 게시판 수정
+operation::post-modify-content-fail[snippets='http-request,request-fields,http-response,response-fields']

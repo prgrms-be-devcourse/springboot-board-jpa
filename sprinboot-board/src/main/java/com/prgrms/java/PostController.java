@@ -1,14 +1,10 @@
 package com.prgrms.java;
 
-import com.prgrms.java.dto.CreatePostRequest;
-import com.prgrms.java.dto.GetPostDetailsResponse;
-import com.prgrms.java.dto.GetPostsResponse;
-import com.prgrms.java.dto.ModifyPostRequest;
+import com.prgrms.java.dto.*;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.MessageFormat;
 
 @RestController
 @RequestMapping("/posts")
@@ -27,19 +23,19 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetPostDetailsResponse> modifyPost(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<GetPostDetailsResponse> getPostDetails(@PathVariable(value = "id") Long id) {
         GetPostDetailsResponse postDetail = postService.getPostDetail(id);
         return ResponseEntity.ok(postDetail);
     }
 
     @PostMapping
-    public ResponseEntity<CreatePostResponse> createPost(@RequestBody CreatePostRequest request) {
+    public ResponseEntity<CreatePostResponse> createPost(@Valid @RequestBody CreatePostRequest request) {
         long postId = postService.createPost(request);
         return ResponseEntity.ok(new CreatePostResponse(postId));
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<ModifyPostResponse> modifyPost(@PathVariable(value = "id") Long id, @RequestBody ModifyPostRequest request) {
+    public ResponseEntity<ModifyPostResponse> modifyPost(@PathVariable(value = "id") Long id, @Valid @RequestBody ModifyPostRequest request) {
         postService.modifyPost(id, request);
         return ResponseEntity.ok(new ModifyPostResponse(id));
     }

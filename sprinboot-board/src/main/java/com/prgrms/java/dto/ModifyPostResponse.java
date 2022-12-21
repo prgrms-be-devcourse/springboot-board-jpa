@@ -1,4 +1,4 @@
-package com.prgrms.java;
+package com.prgrms.java.dto;
 
 public class ModifyPostResponse {
 

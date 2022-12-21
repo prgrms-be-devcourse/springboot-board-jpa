@@ -3,18 +3,20 @@ package com.prgrms.java.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.prgrms.java.domain.Post;
-import org.springframework.util.Assert;
+import jakarta.validation.constraints.NotBlank;
 
 public class CreatePostRequest {
 
+    @NotBlank
     private final String title;
+
+    @NotBlank
     private final String content;
+
     private final long userId;
 
     @JsonCreator
     public CreatePostRequest(@JsonProperty("title") String title, @JsonProperty("content") String content, @JsonProperty("userId") long userId) {
-        Assert.notNull(title, "title should not null");
-        Assert.notNull(content, "content should not null");
         this.title = title;
         this.content = content;
         this.userId = userId;
