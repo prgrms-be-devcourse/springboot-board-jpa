@@ -294,4 +294,5 @@ gradle-app.setting
 *.hprof
 
 http
+src/docs/asciidoc/api.adoc
 # End of https://www.toptal.com/developers/gitignore/api/gradle,macos,java,eclipse,groovy,intellij
