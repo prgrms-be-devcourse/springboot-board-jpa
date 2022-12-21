@@ -9,6 +9,8 @@ import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.entity.Post;
 import com.example.board.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +22,18 @@ public class PostService {
   private final PostRepository postRepository;
   private final MemberRepository memberRepository;
 
+  public Page<PostResponse.Shortcut> findPage(Pageable pageable) {
+
+    Page<Post> page = postRepository.findAll(pageable);
+    return page.map(PostResponse.Shortcut::withoutMember);
+  }
+
   public Long save(PostRequest postRequest) {
     Long memberId = postRequest.getMemberId();
     Member member = memberRepository.findById(memberId)
         .orElseThrow(
             () -> new BadRequestException(
-                String.format("Bad request: member_id %d isn't exist in database", memberId)));
+                String.format("member_id %d doesn't exist in database", memberId)));
 
     Post post = new Post(postRequest.getTitle(), postRequest.getContent());
     post.addMember(member);

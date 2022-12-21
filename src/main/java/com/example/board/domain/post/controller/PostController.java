@@ -5,6 +5,8 @@ import com.example.board.domain.post.dto.PostRequest;
 import com.example.board.domain.post.service.PostService;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,8 +23,12 @@ public class PostController {
 
   private final PostService postService;
 
-  @GetMapping("/") // page조회
-  public void getPage(){}
+  @GetMapping
+  public ResponseEntity<Page<PostResponse.Shortcut>> getPage(Pageable pageable){
+    Page<PostResponse.Shortcut> page = postService.findPage(pageable);
+
+    return ResponseEntity.ok(page);
+  }
 
   @PostMapping
   public ResponseEntity<Void> post(@RequestBody PostRequest postRequest){
