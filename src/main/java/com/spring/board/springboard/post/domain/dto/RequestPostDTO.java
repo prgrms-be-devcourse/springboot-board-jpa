@@ -8,23 +8,20 @@ import java.time.LocalDateTime;
 public class RequestPostDTO {
     private String title;
     private String content;
-    private LocalDateTime createdAt;
     private Integer memberId;
 
     public RequestPostDTO() {
     }
 
-    public RequestPostDTO(String title, String content, LocalDateTime createdAt, Integer memberId) {
+    public RequestPostDTO(String title, String content, Integer memberId) {
         this.title = title;
         this.content = content;
-        this.createdAt = createdAt;
         this.memberId = memberId;
     }
 
     public RequestPostDTO(Post post) {
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.createdAt = post.getCreatedAt();
         this.memberId = post.getMemberId();
     }
 
@@ -47,9 +44,5 @@ public class RequestPostDTO {
 
     public Integer getMemberId() {
         return memberId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 }
