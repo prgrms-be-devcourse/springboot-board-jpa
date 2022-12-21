@@ -7,6 +7,7 @@ import com.ys.board.domain.post.api.PostCreateRequest;
 import com.ys.board.domain.post.api.PostResponse;
 import com.ys.board.domain.post.api.PostResponses;
 import com.ys.board.domain.post.repository.PostRepository;
+import com.ys.board.domain.user.model.User;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,8 @@ public class PostService {
     private final PostRepository postRepository;
 
     @Transactional
-    public Post createPost(PostCreateRequest request) {
-        Post post = Post.create(request.getTitle(), request.getContent());
+    public Post createPost(User user, PostCreateRequest request) {
+        Post post = Post.create(user, request.getTitle(), request.getContent());
 
         return postRepository.save(post);
     }

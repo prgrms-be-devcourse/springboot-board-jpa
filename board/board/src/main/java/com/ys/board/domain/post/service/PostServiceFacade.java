@@ -25,8 +25,7 @@ public class PostServiceFacade {
 
         User findUser = userService.findById(request.getUserId());
 
-        Post post = postService.createPost(request);
-        post.changeUser(findUser);
+        Post post = postService.createPost(findUser, request);
 
         return new PostCreateResponse(post.getId());
     }

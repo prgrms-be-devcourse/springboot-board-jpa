@@ -141,8 +141,7 @@ class PostControllerTest {
         String title = "title";
         String content = "content";
 
-        Post post = Post.create(title, content);
-        post.changeUser(user);
+        Post post = Post.create(user, title, content);
         postRepository.save(post);
 
         this.mockMvc.perform(get("/api/v1/posts/{postId}", post.getId())
@@ -210,8 +209,7 @@ class PostControllerTest {
         String title = "title";
         String content = "content";
 
-        Post post = Post.create(title, content);
-        post.changeUser(user);
+        Post post = Post.create(user, title, content);
         postRepository.save(post);
         Long postId = post.getId();
 
@@ -289,8 +287,7 @@ class PostControllerTest {
         String title = "title";
         String content = "content";
 
-        Post post = Post.create(title, content);
-        post.changeUser(user);
+        Post post = Post.create(user, title, content);
         postRepository.save(post);
         Long postId = post.getId();
 
@@ -455,8 +452,7 @@ class PostControllerTest {
 
         List<Post> posts = IntStream.range(0, size)
             .mapToObj(v -> {
-                    Post post = new Post("title" + v, "content" + v);
-                    post.changeUser(user);
+                    Post post = new Post(user, "title" + v, "content" + v);
                     return post;
                 }
             )

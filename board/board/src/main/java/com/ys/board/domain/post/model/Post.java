@@ -43,11 +43,13 @@ public class Post extends AbstractCreatedColumn {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Post(String title, String content) {
+    public Post(User user, String title, String content) {
         validateTitle(title);
         validateContent(content);
+        Assert.notNull(user, "user 는 null 이면 안됩니다.");
         this.title = title;
         this.content = content;
+        this.user = user;
     }
 
     private void validateContent(String content) {
@@ -58,13 +60,8 @@ public class Post extends AbstractCreatedColumn {
         Assert.hasText(title, "title 은 빈 값이면 안됩니다.");
     }
 
-    public static Post create(String title, String content) {
-        return new Post(title, content);
-    }
-
-    public void changeUser(User user) {
-        Assert.notNull(user, "user 는 null 이여서는 안됩니다.");
-        this.user = user;
+    public static Post create(User user, String title, String content) {
+        return new Post(user, title, content);
     }
 
     @Override

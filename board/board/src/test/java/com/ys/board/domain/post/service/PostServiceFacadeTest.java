@@ -91,8 +91,7 @@ class PostServiceFacadeTest {
         String title = "title";
         String content = "content";
 
-        Post post = Post.create(title, content);
-        post.changeUser(user);
+        Post post = Post.create(user, title, content);
         postRepository.save(post);
 
         //when
@@ -127,8 +126,7 @@ class PostServiceFacadeTest {
         String title = "title";
         String content = "content";
 
-        Post post = Post.create(title, content);
-        post.changeUser(user);
+        Post post = Post.create(user, title, content);
         postRepository.save(post);
         Long postId = post.getId();
 
@@ -171,8 +169,7 @@ class PostServiceFacadeTest {
         String title = "title";
         String content = "content";
 
-        Post post = Post.create(title, content);
-        post.changeUser(user);
+        Post post = Post.create(user, title, content);
         postRepository.save(post);
         Long postId = post.getId();
 
@@ -302,8 +299,9 @@ class PostServiceFacadeTest {
         long cursorId = 999;
 
         //when & then
-        assertThrows(EntityNotFoundException.class, () -> postServiceFacade.findAllPostsByIdCursorBased(
-            cursorId, pageSize));
+        assertThrows(EntityNotFoundException.class,
+            () -> postServiceFacade.findAllPostsByIdCursorBased(
+                cursorId, pageSize));
     }
 
     @DisplayName("findAllByCursorId 조회 테스트 - cursorId가 존재하지않고, post가 없다면 예외를 던진다")
@@ -313,8 +311,9 @@ class PostServiceFacadeTest {
         int pageSize = 10;
 
         //when & then
-        assertThrows(EntityNotFoundException.class, () -> postServiceFacade.findAllPostsByIdCursorBased(
-            null, pageSize));
+        assertThrows(EntityNotFoundException.class,
+            () -> postServiceFacade.findAllPostsByIdCursorBased(
+                null, pageSize));
     }
 
     private List<Post> saveAll(int size) {
@@ -323,8 +322,7 @@ class PostServiceFacadeTest {
 
         List<Post> posts = IntStream.range(0, size)
             .mapToObj(v -> {
-                    Post post = new Post("title" + v, "content" + v);
-                    post.changeUser(user);
+                    Post post = new Post(user, "title" + v, "content" + v);
                     return post;
                 }
             )

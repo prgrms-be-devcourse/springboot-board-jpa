@@ -11,6 +11,7 @@ import com.ys.board.domain.post.model.Post;
 import com.ys.board.domain.post.api.PostUpdateRequest;
 import com.ys.board.domain.post.api.PostCreateRequest;
 import com.ys.board.domain.post.repository.PostRepository;
+import com.ys.board.domain.user.model.User;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,26 +34,27 @@ class PostServiceSliceTest {
     @Test
     void createPostSuccess() {
         //given
+        User user = User.create("이름", 28, "취미");
         String title = "title";
         String content = "content";
         long userId = 1L;
         PostCreateRequest postCreateRequest = new PostCreateRequest(title, content, userId);
-        Post post = Post.create(title, content);
+        Post post = Post.create(user, title, content);
 
         given(postRepository.save(post))
             .willReturn(post);
 
         try (MockedStatic<Post> postMockedStatic = mockStatic(Post.class)) {
-            given(Post.create(title, content))
+            given(Post.create(user, title, content))
                 .willReturn(post);
 
             //when
-            Post savedPost = postService.createPost(postCreateRequest);
+            Post savedPost = postService.createPost(user, postCreateRequest);
 
             //then
             assertEquals(post, savedPost);
             verify(postRepository).save(post);
-            postMockedStatic.verify(() -> Post.create(title, content));
+            postMockedStatic.verify(() -> Post.create(user, title, content));
 
         }
 
@@ -62,10 +64,11 @@ class PostServiceSliceTest {
     @Test
     void findByIdPostSuccess() {
         //given
+        User user = User.create("이름", 28, "취미");
         String title = "title";
         String content = "content";
         long postId = 1L;
-        Post post = Post.create(title, content);
+        Post post = Post.create(user, title, content);
 
         given(postRepository.findById(postId))
             .willReturn(Optional.of(post));
@@ -96,10 +99,11 @@ class PostServiceSliceTest {
     @Test
     void updateAllPostSuccess() {
         //given
+        User user = User.create("이름", 28, "취미");
         String title = "title";
         String content = "content";
         long postId = 1L;
-        Post post = Post.create(title, content);
+        Post post = Post.create(user, title, content);
 
         given(postRepository.findById(postId))
             .willReturn(Optional.of(post));
@@ -120,10 +124,11 @@ class PostServiceSliceTest {
     @Test
     void updateAllPostFailTestTitleAndContentEmpty() {
         //given
+        User user = User.create("이름", 28, "취미");
         String title = "title";
         String content = "content";
         long postId = 1L;
-        Post post = Post.create(title, content);
+        Post post = Post.create(user, title, content);
 
         given(postRepository.findById(postId))
             .willReturn(Optional.of(post));
