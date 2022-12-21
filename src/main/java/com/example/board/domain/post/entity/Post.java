@@ -51,9 +51,10 @@ public class Post extends BaseTimeEntity {
   @Column(name = "updated_by")
   private String updatedBy;
 
-  public Post(String title, String content) {
+  public Post(String title, String content, Member member) {
     this.title = title;
     this.content = content;
+    registerMember(member);
   }
 
   public void changeTitle(String newTitle) {
@@ -68,13 +69,13 @@ public class Post extends BaseTimeEntity {
     this.updatedBy = memberName;
   }
 
-  public void addMember(Member member) {
+  public void registerMember(Member member) {
     if (Objects.nonNull(this.member)) {
       this.member.getPosts().remove(this);
     }
 
     this.member = member;
-    member.getPosts().add(this);
+    this.member.getPosts().add(this);
   }
 
   @PrePersist

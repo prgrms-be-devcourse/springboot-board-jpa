@@ -18,7 +18,7 @@ public class PostResponse {
     private Long id;
     private String title;
 
-    public static Shortcut withoutMember(Post post) {
+    public static Shortcut from(Post post) {
       Shortcut shortcut = new Shortcut();
 
       shortcut.id = post.getId();

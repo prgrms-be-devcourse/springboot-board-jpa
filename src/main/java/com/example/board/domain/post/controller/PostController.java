@@ -23,6 +23,13 @@ public class PostController {
 
   private final PostService postService;
 
+  @GetMapping("/{postId}")
+  public ResponseEntity<PostResponse.Detail> getSinglePost(@PathVariable Long postId){
+    PostResponse.Detail detail = postService.findById(postId);
+
+    return ResponseEntity.ok(detail);
+  }
+
   @GetMapping
   public ResponseEntity<Page<PostResponse.Shortcut>> getPage(Pageable pageable){
     Page<PostResponse.Shortcut> page = postService.findPage(pageable);
@@ -38,13 +45,6 @@ public class PostController {
         .created(
             URI.create("/post/" + savedId))
         .build();
-  }
-
-  @GetMapping("/{postId}")
-  public ResponseEntity<PostResponse.Detail> getSinglePost(@PathVariable Long postId){
-    PostResponse.Detail detail = postService.findById(postId);
-
-    return ResponseEntity.ok(detail);
   }
 
   @PutMapping("/{postId}")

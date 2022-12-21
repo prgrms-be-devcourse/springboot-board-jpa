@@ -1,5 +1,6 @@
 package com.example.board.domain.post.entity;
 
+import com.example.board.domain.member.entity.Member;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,11 +11,12 @@ class PostTest {
   @DisplayName("Post를 생성할 수 있습니다")
   void newPost(){
     //given
+    Member member = new Member("김환", 25, "게임");
     String title = "RBF";
     String content = "RBF를 작성합니다";
 
     //when
-    Post post = new Post(title, content);
+    Post post = new Post(title, content, member);
 
     //then
     Assertions.assertThat(post.getTitle()).isEqualTo(title);
@@ -25,10 +27,11 @@ class PostTest {
   @DisplayName("Post의 제목을 변경할 수 있습니다")
   void updateTitle(){
     //given
+    Member member = new Member("김환", 25, "게임");
     String title = "RBF";
     String content = "RBF를 작성합니다";
 
-    Post post = new Post(title, content);
+    Post post = new Post(title, content, member);
 
     //when
     String newTitle = "회고록";
@@ -42,10 +45,11 @@ class PostTest {
   @DisplayName("Post의 내용을 변경할 수 있습니다")
   void updateContent(){
     //given
+    Member member = new Member("김환", 25, "게임");
     String title = "RBF";
     String content = "RBF를 작성합니다";
 
-    Post post = new Post(title, content);
+    Post post = new Post(title, content, member);
 
     //when
     String newContent = "RBF를 더 많이 작성합니다";
