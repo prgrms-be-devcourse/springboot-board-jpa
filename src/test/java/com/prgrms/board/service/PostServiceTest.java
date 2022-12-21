@@ -12,6 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,18 +23,22 @@ import javax.servlet.http.HttpSession;
 import static com.prgrms.board.service.PostServiceImpl.SESSION_MEMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Slf4j
 @Transactional
 class PostServiceTest {
+
     @Autowired
     PostService postService;
 
     @Autowired
+//    @Mock
     PostRepository postRepository;
 
     @Autowired
+//    @Mock
     MemberRepository memberRepository;
 
     @Autowired
@@ -53,6 +58,7 @@ class PostServiceTest {
                 .hobby("농구")
                 .build();
 
+//        when(memberRepository.save(member)).thenReturn(member);
         savedMember = memberRepository.save(member);
 
         Post post = Post.builder()
@@ -90,7 +96,6 @@ class PostServiceTest {
     void 게시글_조회_성공() {
         //given & when
         PostResponseDto postResponseDto = postService.findById(savedPost.getId());
-        long count = postRepository.count();
 
         //then
 
@@ -98,8 +103,6 @@ class PostServiceTest {
                 .hasFieldOrPropertyWithValue("title", savedPost.getTitle())
                 .hasFieldOrPropertyWithValue("content", savedPost.getContent())
                 .hasFieldOrPropertyWithValue("writerId", savedMember.getId());
-
-        assertThat(count).isEqualTo(1);
     }
 
     @Test
@@ -137,14 +140,13 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("게시글의 CreatedBy는 세션에 저장된 Member의 name으로 자동 저장된다.")
+    @DisplayName("게시글의 CreatedBy는 세션에 저장된 Member로 자동 저장된다.")
     void 게시글_CreatedBy() {
         //given
         PostCreateDto createDto = PostCreateDto.builder().writerId(savedMember.getId())
                 .title("title!")
                 .content("content!")
                 .build();
-
 
         //when
         Long postId = postService.register(createDto);
@@ -157,7 +159,7 @@ class PostServiceTest {
                 .hasFieldOrPropertyWithValue("age", savedMember.getAge())
                 .hasFieldOrPropertyWithValue("hobby", savedMember.getHobby());
 
-        Post findPost = postRepository.findById(postId).get();
-        assertThat(findPost.getCreatedBy()).isEqualTo(sessionMember.getName());
+        PostResponseDto responseDto = postService.findById(postId);
+        assertThat(responseDto.getWriterId()).isEqualTo(sessionMember.getId());
     }
 }

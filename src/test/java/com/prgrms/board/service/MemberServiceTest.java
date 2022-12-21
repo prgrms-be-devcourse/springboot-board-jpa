@@ -86,7 +86,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("존재하지 않는 Id로 회원 조회 시 예외가 발생한다.")
     void 회원_조회_실패() {
-        //givne
+        //given
         Long unknownId = 1L;
 
         //when, then
