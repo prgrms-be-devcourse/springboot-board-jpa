@@ -1,9 +1,9 @@
 package com.spring.board.springboard.post.domain;
 
-import com.spring.board.springboard.user.domain.User;
-import com.spring.board.springboard.user.exception.AuthenticationException;
+import com.spring.board.springboard.user.domain.Member;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -20,13 +20,26 @@ public class Post {
     private String title;
 
     @Column(name = "content", nullable = false)
+    @Lob
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @Column(name = "create_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
+    private Member member;
 
     public Post() {
+    }
+
+    public Post(String title, String content, LocalDateTime createdAt, Member member){
+        validate(title);
+        validate(content);
+        this.createdAt = createdAt;
+        this.title = title;
+        this.content = content;
+        this.member = member;
     }
 
     public Integer getId() {
@@ -37,29 +50,16 @@ public class Post {
         return title;
     }
 
-    public void setTitle(String title) {
-        validate(title);
-        this.title = title;
-    }
-
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        if(Objects.nonNull(this.user)){
-            throw new AuthenticationException("작성자는 변경될 수 없습니다.");
-        }
-        this.user = user;
-        user.getPostList().add(this);
+    public Member getMember() {
+        return member;
     }
 
     public void changeTitle(String changeTitle) {
@@ -72,10 +72,42 @@ public class Post {
         this.content = changeContent;
     }
 
+    public Integer getMemberId(){
+        return this.member.getId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null ||
+                getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(id, post.id) &&
+                Objects.equals(title, post.title) &&
+                Objects.equals(content, post.content) &&
+                Objects.equals(createdAt, post.createdAt) &&
+                Objects.equals(member, post.member);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, content, createdAt, member);
+    }
+
     private void validate(String input) {
-        if (Objects.equals(input.length(), NOTHING)) {
+        if (Objects.equals(input.length(), NOTHING)
+                && input.isEmpty()) {
             throw new IllegalArgumentException("빈 값일 수 없습니다. 반드시 입력해야합니다.");
         }
     }
 
+    public void changeMember(Member member) {
+        if(Objects.nonNull(this.member)){
+            this.member.
+                    getPostList()
+                    .remove(this);
+        }
+        this.member = member;
+        member.getPostList().add(this);
+    }
 }
