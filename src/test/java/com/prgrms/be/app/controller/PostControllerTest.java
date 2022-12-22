@@ -3,6 +3,7 @@ package com.prgrms.be.app.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.be.app.domain.dto.PostDTO;
 import com.prgrms.be.app.service.PostService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+@Slf4j
 @WebMvcTest
 @AutoConfigureRestDocs
 class PostControllerTest {
@@ -51,7 +56,28 @@ class PostControllerTest {
 
     //toDo : 생성 테스트
     @Test
-    @DisplayName("게시물 생성 성공 시 상태코드 200과 생성된 게시물 id가 반환된다.")
+    @DisplayName("게시글 생성 시 제목이 입력되지 않는 경우, 메시지를 반환합니다.")
+    void validSavePostTest() throws Exception {
+        // given
+        PostDTO.CreateRequest request = new PostDTO.CreateRequest("", "content", 1L);
+
+        // when
+        MvcResult mvcResult = mockMvc.perform(post("/posts")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andReturn();
+        MockHttpServletResponse response = mvcResult.getResponse();
+        log.error("{}", response.getStatus());
+        log.error("{}", response.getErrorMessage());
+        log.error("{}", response.getContentAsString(Charset.forName("UTF-8")));
+
+        // then
+    }
+
+
+    @Test
+    @DisplayName("게시글 생성 성공 시 상태코드 200과 생성된 게시글 id가 반환된다.")
     void saveCallTest() throws Exception {
         // given
         PostDTO.CreateRequest request = new PostDTO.CreateRequest("title", "content", 1L);
@@ -94,6 +120,7 @@ class PostControllerTest {
 
     //toDo : 단건 조회 테스트
     @Test
+    @DisplayName("게시글 ID로 게시글 단건 조회 시 게시글의 제목 및 본문과 같은 디테일한 내용을 볼 수 있다.")
     void getOneCallTest() throws Exception {
         // given
         Long id = 1L;
@@ -141,8 +168,47 @@ class PostControllerTest {
         verify(postService).findById(anyLong());
     }
 
+    //toDo : 수정 테스트
+    @Test
+    @DisplayName("게시글 ID로 게시글 수정 시 제목과 세부내용을 바꿀 수 있고 데이터로 수정된 게시글 ID가 반환된다.")
+    void updateCallTest() throws Exception {
+        // given
+        Long id = 1L;
+        PostDTO.UpdateRequest request = new PostDTO.UpdateRequest("title", "content");
+        when(postService.updatePost(anyLong(), any(PostDTO.UpdateRequest.class)))
+                .thenReturn(id);
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/posts/{id}", id)
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("statusCode").value(200))
+                .andExpect(jsonPath("data").value(1L))
+                .andExpect(jsonPath("message").value(ResponseMessage.UPDATED))
+                .andDo(print())
+                .andDo(document("post-update",
+                        pathParameters(
+                                parameterWithName("id").description("게시글 id")
+                        ),
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("응답 HTTP 상태 코드"),
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("응답 결과 - 생성된 게시글 Id"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답 생성 시간")
+                        ))
+                );
+        // then
+        verify(postService).updatePost(anyLong(), any(PostDTO.UpdateRequest.class));
+    }
+
     //toDo : 페이징 조회 테스트
     @Test
+    @DisplayName("현재 페이지 정보와 한 페이지 당 게시글 수를 입력 시 페이징된 게시글이 반환되며 게시글의 정보는 게시글 ID, 제목, 생성일자가 반환된다.")
     void getAllCallTest() throws Exception {
         // given
         Pageable request = PageRequest.of(0, 5);
@@ -223,42 +289,4 @@ class PostControllerTest {
         // then
         verify(postService).findAll(any(Pageable.class));
     }
-
-    //toDo : 수정 테스트
-    @Test
-    void updateCallTest() throws Exception {
-        // given
-        Long id = 1L;
-        PostDTO.UpdateRequest request = new PostDTO.UpdateRequest("title", "content");
-        when(postService.updatePost(anyLong(), any(PostDTO.UpdateRequest.class)))
-                .thenReturn(id);
-        // when
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/posts/{id}", id)
-                        .content(objectMapper.writeValueAsString(request))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("statusCode").value(200))
-                .andExpect(jsonPath("data").value(1L))
-                .andExpect(jsonPath("message").value(ResponseMessage.UPDATED))
-                .andDo(print())
-                .andDo(document("post-update",
-                        pathParameters(
-                                parameterWithName("id").description("게시글 id")
-                        ),
-                        requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문")
-                        ),
-                        responseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("응답 HTTP 상태 코드"),
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("응답 결과 - 생성된 게시글 Id"),
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
-                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답 생성 시간")
-                        ))
-                );
-        // then
-        verify(postService).updatePost(anyLong(), any(PostDTO.UpdateRequest.class));
-    }
-
 }
