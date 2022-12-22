@@ -15,10 +15,13 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "age")
     private int age;
 
+    @Column(name = "hobby")
     private String hobby;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

@@ -13,9 +13,11 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "title")
     private String title;
 
     @Lob
+    @Column(name = "content")
     private String content;
 
     @ManyToOne
