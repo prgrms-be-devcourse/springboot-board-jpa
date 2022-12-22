@@ -5,12 +5,13 @@ import com.example.springbootboardjpa.dto.PostDTO;
 import com.example.springbootboardjpa.exception.NotFoundException;
 import com.example.springbootboardjpa.model.Post;
 import com.example.springbootboardjpa.repoistory.PostJpaRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Slf4j
 public class DefaultPostService implements PostService {
 
     private final PostJpaRepository postRepository;
@@ -23,9 +24,9 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    public PostDTO findById(long id) throws NotFoundException {
+    public PostDTO.Response findById(long id) throws NotFoundException {
         return postRepository.findById(id)
-                .map(postConverter::convertPostDto)
+                .map(postConverter::convertResponseOnlyPostDto)
                 .orElseThrow(NotFoundException::new);
     }
 
@@ -35,8 +36,9 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    public long save(PostDTO postDTO) {
-        Post post = postConverter.convertPost(postDTO);
+    public long save(PostDTO.Save postDTO) {
+        Post post = postConverter.convertNewPost(postDTO);
+        log.info(post.toString());
         Post entity = postRepository.save(post);
         return entity.getId();
     }

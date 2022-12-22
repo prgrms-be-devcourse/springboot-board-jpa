@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PostConverter {
-    public Post convertPost(PostDTO postDTO){
+    public Post convertNewPost(PostDTO.Save postDTO){
         User user = this.convertUser(postDTO.getUserDto());
         Post post = new Post(postDTO.getTitle(),postDTO.getContent(),user);
         post.setCreatedBy(postDTO.getUserDto().getName());
@@ -16,23 +16,23 @@ public class PostConverter {
         return post;
     }
 
-    private User convertUser(UserDto userDto){
-        User user = new User(userDto.getName(),userDto.getAge(),userDto.getHobby());
-        return user;
+    private User convertUser(UserDto.Info userDto){
+        return new User(userDto.getId(), userDto.getName(),userDto.getAge(),userDto.getHobby());
     }
 
-    public PostDTO convertPostDto(Post post){
-        PostDTO postDTO = PostDTO.builder()
+    public PostDTO.Response convertResponseOnlyPostDto(Post post){
+        PostDTO.Response postDTO = PostDTO.Response.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .userDto(this.convertUserDto(post.getUser()))
+                .createdAt(post.getCreatedAt())
+                .createdBy(post.getCreatedBy())
                 .build();
         return postDTO;
     }
 
-    private UserDto convertUserDto(User user){
-        UserDto userDto = UserDto.builder()
+    private UserDto.Info convertUserDto(User user){
+        UserDto.Info userDto = UserDto.Info.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .age(user.getAge())

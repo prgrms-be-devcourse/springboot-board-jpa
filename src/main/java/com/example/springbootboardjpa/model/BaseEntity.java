@@ -10,7 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-
+@Setter
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -19,8 +19,4 @@ public class BaseEntity {
     private String createdBy;
     @CreatedDate
     private LocalDateTime createdAt;
-
-    public void setCreatedBy(String createdBy){
-        this.createdBy = createdBy;
-    }
 }

@@ -1,14 +1,46 @@
 package com.example.springbootboardjpa.dto;
 
-import com.example.springbootboardjpa.model.User;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
-@Getter
+import java.time.LocalDateTime;
+
 public class PostDTO {
-    private long id;
-    private String title;
-    private String content;
-    private UserDto userDto;
+
+    @Getter
+    @AllArgsConstructor
+    public static class Save {
+        @NotNull
+        private String title;
+        @NotNull
+        private String content;
+        @NotNull
+        @Valid
+        private UserDto.Info userDto;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class Request {
+        @NotNull
+        private long id;
+        @NotNull
+        private String title;
+        @NotNull
+        private String content;
+    }
+
+    @Getter
+    @Builder
+    public static class Response {
+        private long id;
+        private String title;
+        private String content;
+        private UserDto.Info userDto;
+        private String createdBy;
+        private LocalDateTime createdAt;
+    }
 }

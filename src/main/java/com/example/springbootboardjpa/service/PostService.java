@@ -10,13 +10,13 @@ import java.util.Optional;
 public interface PostService {
 
     @Transactional
-    PostDTO findById(long id) throws NotFoundException;
+    PostDTO.Response findById(long id) throws NotFoundException;
 
     @Transactional
     List<PostDTO> findAll();
 
     @Transactional
-    long save(PostDTO postDTO);
+    long save(PostDTO.Save postDTO);
 
     @Transactional
     void update(long id, String title, String contents) throws NotFoundException;
