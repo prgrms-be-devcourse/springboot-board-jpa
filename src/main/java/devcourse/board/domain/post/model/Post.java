@@ -34,8 +34,22 @@ public class Post {
     protected Post() {
     }
 
-    public void assignMember(Member member) {
+    public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public void createPost(Member member) {
         this.member = member;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void updateContents(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public String findOutWriterName() {
+        return this.member.getName();
     }
 }
