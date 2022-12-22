@@ -1,18 +1,29 @@
 package com.prgrms.jpa.controller.dto.post.request;
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 
 @Getter
-@RequiredArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FindAllPostRequest {
 
-    private Long postId;
+    private Long cursorId;
 
     @Min(value = 1)
-    private final int size;
+    private int pageSize;
+
+    @Builder
+    public FindAllPostRequest(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    @Builder
+    public FindAllPostRequest(Long cursorId, int pageSize) {
+        this.cursorId = cursorId;
+        this.pageSize = pageSize;
+    }
 }

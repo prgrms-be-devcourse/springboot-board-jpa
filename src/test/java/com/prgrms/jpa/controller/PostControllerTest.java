@@ -50,7 +50,11 @@ class PostControllerTest extends MysqlTestContainer {
         String title = "제목2";
         String content = "내용2";
         long userId = 1L;
-        CreatePostRequest postRequest = new CreatePostRequest(title, content, userId);
+        CreatePostRequest postRequest = CreatePostRequest.builder()
+                .title(title)
+                .content(content)
+                .userId(userId)
+                .build();
 
         mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -72,7 +76,9 @@ class PostControllerTest extends MysqlTestContainer {
     @DisplayName("게시글 목록을 조회한다.")
     @Sql("classpath:schema.sql")
     void findAllWithoutId() throws Exception {
-        FindAllPostRequest postRequest = new FindAllPostRequest(10);
+        FindAllPostRequest postRequest = FindAllPostRequest.builder()
+                .pageSize(10)
+                .build();
 
         mockMvc.perform(get("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -81,8 +87,8 @@ class PostControllerTest extends MysqlTestContainer {
                 .andDo(print())
                 .andDo(document("post-findAll",
                         requestFields(
-                                fieldWithPath("postId").type(JsonFieldType.NULL).description("커서인 게시글 아이디"),
-                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("페이지의 게시글사이즈")
+                                fieldWithPath("cursorId").type(JsonFieldType.NULL).description("커서인 게시글 아이디"),
+                                fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지의 게시글사이즈")
                         ),
                         responseFields(
                                 fieldWithPath("posts[]").type(JsonFieldType.ARRAY).description("게시글들"),
@@ -123,7 +129,10 @@ class PostControllerTest extends MysqlTestContainer {
         long id = 1L;
         String title = "제목수정";
         String content = "내용수정";
-        UpdatePostRequest postRequest = new UpdatePostRequest(title, content);
+        UpdatePostRequest postRequest = UpdatePostRequest.builder()
+                .title(title)
+                .content(content)
+                .build();
 
         mockMvc.perform(patch("/api/v1/posts/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)

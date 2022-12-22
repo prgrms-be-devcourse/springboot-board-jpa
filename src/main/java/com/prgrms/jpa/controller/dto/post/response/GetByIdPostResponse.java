@@ -1,16 +1,24 @@
 package com.prgrms.jpa.controller.dto.post.response;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GetByIdPostResponse {
 
-    private final Long id;
-    private final String title;
-    private final String content;
-    private final long userId;
+    private Long id;
+    private String title;
+    private String content;
+    private long userId;
+
+    @Builder
+    public GetByIdPostResponse(Long id, String title, String content, long userId) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.userId = userId;
+    }
 }

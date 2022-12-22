@@ -1,11 +1,18 @@
 package com.prgrms.jpa.controller.dto.post.response;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreatePostResponse {
 
-    private final Long id;
+    private Long id;
+
+    @Builder
+    public CreatePostResponse(Long id) {
+        this.id = id;
+    }
 }

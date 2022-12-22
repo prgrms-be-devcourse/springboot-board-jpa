@@ -29,16 +29,17 @@ public class PostService {
 
     @Transactional
     public Post create(CreatePostRequest createPostRequest) {
+        //service에서 사용하는 dto 만드는게 좋음
         return postRepository.save(toPost(createPostRequest));
     }
 
     @Transactional(readOnly = true)
     public List<Post> findAll(FindAllPostRequest findAllPostRequest) {
-        Pageable pageable = toPageable(findAllPostRequest.getSize());
-        if (findAllPostRequest.getPostId() == null) {
+        Pageable pageable = toPageable(findAllPostRequest.getPageSize());
+        if (findAllPostRequest.getCursorId() == null) {
             return postRepository.findAllByOrderByCreatedAtDesc(pageable);
         }
-         return postRepository.findByIdLessThanOrderByIdDescCreatedAtDesc(findAllPostRequest.getPostId(), pageable);
+         return postRepository.findByIdLessThanOrderByIdDescCreatedAtDesc(findAllPostRequest.getCursorId(), pageable);
     }
 
     @Transactional(readOnly = true)

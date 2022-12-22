@@ -1,11 +1,18 @@
 package com.prgrms.jpa.controller.dto.user;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreateUserResponse {
 
-    private final long id;
+    private long id;
+
+    @Builder
+    public CreateUserResponse(long id) {
+        this.id = id;
+    }
 }
