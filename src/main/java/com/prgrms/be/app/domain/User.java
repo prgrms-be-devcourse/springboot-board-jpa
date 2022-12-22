@@ -5,8 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,27 +18,33 @@ public class User extends BaseEntity {
     private Long id;
 
     @NotBlank
-    @Max(value = 17)
+    @Size(min = 2, max = 17)
     private String name;
 
-    @NotBlank
-    private int age;
+    @NotNull
+    @Min(value = 1)
+    @Max(value = 120)
+    private Integer age;
 
     private String hobby;
 
     @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
 
-    public User(String name, int age, String hobby) {
+    public User(String name, Integer age, String hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
     }
 
-    public User(Long id, String name, int age, String hobby) {
+    public User(Long id, String name, Integer age, String hobby) {
         this.id = id;
         this.name = name;
         this.age = age;
+        this.hobby = hobby;
+    }
+
+    public void setHobby(String hobby) {
         this.hobby = hobby;
     }
 
