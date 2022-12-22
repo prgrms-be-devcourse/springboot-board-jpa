@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.example.board.domain.hobby.exception.HobbyExceptionMessage.WRONG_TYPE_HOBBY_EXCEPTION;
-
 @Getter
 @RequiredArgsConstructor
 public enum HobbyType {
@@ -30,7 +28,7 @@ public enum HobbyType {
     @JsonCreator
     public static HobbyType from(String type) {
         return Optional.ofNullable(HOBBY_MAP.get(type))
-                .orElseThrow(() -> new IllegalArgumentException(WRONG_TYPE_HOBBY_EXCEPTION.getMessage()));
+                .orElseThrow(() -> new IllegalArgumentException("exception.entity.hobby.type"));
     }
 
     @JsonValue
