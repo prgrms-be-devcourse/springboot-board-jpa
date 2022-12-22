@@ -5,9 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 @Entity
 @Getter
@@ -19,12 +21,13 @@ public class Post extends BaseEntity {
     private Long id;
 
     @NotBlank
-    @Max(value = 20)
+    @Size(max = 20)
     private String title;
 
     @NotBlank
     @Column(columnDefinition = "TEXT")
     private String content;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
@@ -43,6 +46,9 @@ public class Post extends BaseEntity {
     }
 
     public Post changePost(String title, String content) {
+        checkArgument(!title.isBlank() && title.length() > 0 && title.length() <= 20, "게시물 제목의 길이가 0보다 크고 20 이하가 되야 합니다.", title);
+        checkArgument(!content.isBlank(), "게시물 본문 내용이 비어있으면 안됩니다.", content);
+
         this.title = title;
         this.content = content;
         return this;
