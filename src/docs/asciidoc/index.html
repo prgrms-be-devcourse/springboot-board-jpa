@@ -2123,13 +2123,15 @@
                         <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="http">POST /api/v1/posts HTTP/1.1
 Content-Type: application/json;charset=UTF-8
+Accept: application/json
 Content-Length: 58
 Host: localhost:8080
 
-{&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용입니다.&quot;,&quot;userId&quot;:5}</code></pre>
+{&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용입니다.&quot;,&quot;userId&quot;:1}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
+                        <caption class="title">Table 1. Request fields</caption>
                         <colgroup>
                             <col style="width: 33.3333%;">
                             <col style="width: 33.3333%;">
@@ -2169,14 +2171,15 @@ Host: localhost:8080
                     <div class="listingblock">
                         <div class="title">Response</div>
                         <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
+<pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 201 Created
 Content-Type: application/json
 Content-Length: 154
 
-{&quot;id&quot;:6,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용입니다.&quot;,&quot;userId&quot;:5,&quot;createdAt&quot;:&quot;2022-12-18T02:52:55.2708327&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-18T02:52:55.2708327&quot;}</code></pre>
+{&quot;id&quot;:1,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용입니다.&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-23T04:37:53.1188395&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-23T04:37:53.1188395&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
+                        <caption class="title">Table 2. Response fields</caption>
                         <colgroup>
                             <col style="width: 33.3333%;">
                             <col style="width: 33.3333%;">
@@ -2239,11 +2242,30 @@ Content-Length: 154
                 <h3 id="_게시판_조회">게시판 조회</h3>
                 <div class="sect3">
                     <h4 id="_get_apiv1postsid">GET /api/v1/posts/{id}</h4>
+                    <table class="tableblock frame-all grid-all stretch">
+                        <caption class="title">Table 3. /api/v1/posts/{id}</caption>
+                        <colgroup>
+                            <col style="width: 50%;">
+                            <col style="width: 50%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="tableblock halign-left valign-top">Parameter</th>
+                            <th class="tableblock halign-left valign-top">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">조회할 게시글 ID</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
                     <div class="listingblock">
                         <div class="title">Request</div>
                         <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="http">GET /api/v1/posts/2 HTTP/1.1
-Content-Type: application/json;charset=UTF-8
+<pre class="CodeRay highlight nowrap"><code data-lang="http">GET /api/v1/posts/1 HTTP/1.1
+Accept: application/json
 Host: localhost:8080</code></pre>
                         </div>
                     </div>
@@ -2252,12 +2274,13 @@ Host: localhost:8080</code></pre>
                         <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 152
+Content-Length: 154
 
-{&quot;id&quot;:2,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용입니다.&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-18T02:52:54.140839&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-18T02:52:54.140839&quot;}</code></pre>
+{&quot;id&quot;:1,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용입니다.&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-23T04:37:43.9318324&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-23T04:37:43.9318324&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
+                        <caption class="title">Table 4. Response fields</caption>
                         <colgroup>
                             <col style="width: 33.3333%;">
                             <col style="width: 33.3333%;">
@@ -2320,11 +2343,31 @@ Content-Length: 152
                 <h3 id="_게시판_수정">게시판 수정</h3>
                 <div class="sect3">
                     <h4 id="_patch_apiv1postsid">PATCH /api/v1/posts/{id}</h4>
+                    <table class="tableblock frame-all grid-all stretch">
+                        <caption class="title">Table 5. /api/v1/posts/{id}</caption>
+                        <colgroup>
+                            <col style="width: 50%;">
+                            <col style="width: 50%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="tableblock halign-left valign-top">Parameter</th>
+                            <th class="tableblock halign-left valign-top">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">수정할 게시글 ID</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
                     <div class="listingblock">
                         <div class="title">Request</div>
                         <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="http">PATCH /api/v1/posts/4 HTTP/1.1
+<pre class="CodeRay highlight nowrap"><code data-lang="http">PATCH /api/v1/posts/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
+Accept: application/json
 Content-Length: 66
 Host: localhost:8080
 
@@ -2332,6 +2375,7 @@ Host: localhost:8080
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
+                        <caption class="title">Table 6. Request fields</caption>
                         <colgroup>
                             <col style="width: 33.3333%;">
                             <col style="width: 33.3333%;">
@@ -2366,12 +2410,13 @@ Host: localhost:8080
                         <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 170
+Content-Length: 173
 
-{&quot;id&quot;:4,&quot;title&quot;:&quot;수정된 제목&quot;,&quot;content&quot;:&quot;수정된 내용입니다&quot;,&quot;userId&quot;:3,&quot;createdAt&quot;:&quot;2022-12-18T02:52:54.967838&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-18T02:52:54.97783&quot;}</code></pre>
+{&quot;id&quot;:1,&quot;title&quot;:&quot;수정된 제목&quot;,&quot;content&quot;:&quot;수정된 내용입니다&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-23T04:37:52.7828296&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-23T04:37:52.7968366&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
+                        <caption class="title">Table 7. Response fields</caption>
                         <colgroup>
                             <col style="width: 33.3333%;">
                             <col style="width: 33.3333%;">
@@ -2435,7 +2480,7 @@ Content-Length: 170
 </div>
 <div id="footer">
     <div id="footer-text">
-        Last updated 2022-12-18 02:43:17 +0900
+        Last updated 2022-12-23 04:48:55 +0900
     </div>
 </div>
 </body>

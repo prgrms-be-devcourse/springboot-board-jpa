@@ -11,31 +11,40 @@ endif::[]
 
 .Request
 include::{snippets}/post-save/http-request.adoc[]
+.Request fields
 include::{snippets}/post-save/request-fields.adoc[]
 
 .Response
 include::{snippets}/post-save/http-response.adoc[]
+.Response fields
 include::{snippets}/post-save/response-fields.adoc[]
 
 === 게시판 조회
 
 ==== GET /api/v1/posts/{id}
 
+.Request parameters
+include::{snippets}/post-get/path-parameters.adoc[]
 .Request
 include::{snippets}/post-get/http-request.adoc[]
 
 .Response
 include::{snippets}/post-get/http-response.adoc[]
+.Response fields
 include::{snippets}/post-get/response-fields.adoc[]
 
 === 게시판 수정
 
 ==== PATCH /api/v1/posts/{id}
 
+.Request parameters
+include::{snippets}/post-update/path-parameters.adoc[]
 .Request
 include::{snippets}/post-update/http-request.adoc[]
+.Request fields
 include::{snippets}/post-update/request-fields.adoc[]
 
 .Response
 include::{snippets}/post-update/http-response.adoc[]
+.Response fields
 include::{snippets}/post-update/response-fields.adoc[]
