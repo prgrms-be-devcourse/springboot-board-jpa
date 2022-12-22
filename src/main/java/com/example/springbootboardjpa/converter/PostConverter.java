@@ -5,6 +5,7 @@ import com.example.springbootboardjpa.dto.UserDto;
 import com.example.springbootboardjpa.model.Post;
 import com.example.springbootboardjpa.model.User;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 @Component
 public class PostConverter {

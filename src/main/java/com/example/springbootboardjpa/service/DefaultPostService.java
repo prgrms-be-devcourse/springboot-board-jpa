@@ -5,15 +5,18 @@ import com.example.springbootboardjpa.dto.PostDTO;
 import com.example.springbootboardjpa.exception.NotFoundException;
 import com.example.springbootboardjpa.model.Post;
 import com.example.springbootboardjpa.repoistory.PostJpaRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Validated
 public class DefaultPostService implements PostService {
 
     private final PostJpaRepository postRepository;
