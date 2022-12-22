@@ -57,5 +57,9 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public SinglePostResponse updatePost(long postId, UpdatePostRequest updatePostRequest) {
+        Optional<Post> mayBePost = postRepository.findById(postId);
+        Post validatedPost = PostValidator.validateOptionalPostExists(mayBePost);
+        validatedPost.updatePost(updatePostRequest);
+        return SinglePostResponse.toResponse(validatedPost);
     }
 }
