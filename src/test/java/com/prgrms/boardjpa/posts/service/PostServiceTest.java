@@ -4,9 +4,7 @@ import com.prgrms.boardjpa.posts.dto.PostDto;
 import com.prgrms.boardjpa.posts.dto.PostRequest;
 import com.prgrms.boardjpa.posts.repository.PostRepository;
 import com.prgrms.boardjpa.users.dto.UserDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PostServiceTest {
