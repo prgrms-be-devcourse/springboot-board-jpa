@@ -1,4 +1,4 @@
-package com.example.springbootboard.audit;
+package com.example.springbootboard.entity;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
