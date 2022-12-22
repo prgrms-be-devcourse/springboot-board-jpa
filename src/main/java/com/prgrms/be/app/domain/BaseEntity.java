@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Getter
 public abstract class BaseEntity {
 
-
     @CreatedDate
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
@@ -23,5 +22,4 @@ public abstract class BaseEntity {
     @LastModifiedDate
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime modifiedAt;
-
 }
