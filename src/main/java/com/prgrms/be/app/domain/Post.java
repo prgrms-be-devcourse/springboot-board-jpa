@@ -32,13 +32,6 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
 
-    public Post(Long id, String title, String content, User createdBy) { // 이걸 두는게 맞나??
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.createdBy = createdBy;
-    }
-
     public Post(String title, String content, User createdBy) {
         this.title = title;
         this.content = content;
