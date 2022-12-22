@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<ErrorResponse> EntityNotFoundException(EntityNotFoundException e) {
+	public ResponseEntity<ErrorResponse> EntityNotFoundException(
+		com.prgrms.devcourse.springjpaboard.global.error.EntityNotFoundException e) {
 
 		ErrorResponse errorResponse = ErrorResponse.builder()
 			.message(e.getMessage())

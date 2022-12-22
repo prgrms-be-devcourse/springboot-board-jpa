@@ -9,6 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.util.StringUtils;
+
+import com.google.common.base.Preconditions;
+import com.prgrms.devcourse.springjpaboard.global.common.base.BaseEntity;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,6 +40,11 @@ public class User {
 
 	@Builder
 	public User(String name, Integer age, String hobby) {
+		Preconditions.checkArgument(StringUtils.hasText(name));
+		Preconditions.checkArgument(name.length() <= 20);
+		Preconditions.checkArgument(Objects.nonNull(age));
+		Preconditions.checkArgument(age >= 0);
+		Preconditions.checkArgument(StringUtils.hasText(hobby));
 		this.name = name;
 		this.age = age;
 		this.hobby = hobby;

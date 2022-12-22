@@ -1,5 +1,6 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.api;
 
+import static com.prgrms.devcourse.springjpaboard.domain.post.PostObjectProvider.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -18,11 +19,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDtos;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostSaveDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostUpdateDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDtos;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateDto;
 
 @WebMvcTest(PostController.class)
 class PostControllerTest {
@@ -41,21 +43,24 @@ class PostControllerTest {
 	void createTest() throws Exception {
 
 		Long userId = 1L;
+		Long postId = 1L;
 
-		PostSaveDto postSaveDto = PostSaveDto.builder()
-			.userId(userId)
-			.title("hello")
-			.content("hi")
-			.build();
+		PostCreateRequestDto postCreateRequestDto = createPostCreateRequestDto(userId);
+		PostCreateResponseDto postCreteResponseDto = createPostCreteResponseDto(postId);
 
-		String json = objectMapper.writeValueAsString(postSaveDto);
+		String request = objectMapper.writeValueAsString(postCreateRequestDto);
+		String response = objectMapper.writeValueAsString(postCreteResponseDto);
 
-		doNothing().when(postFacade).create(ArgumentMatchers.any());
+		when(postFacade.create(ArgumentMatchers.any())).thenReturn(postCreteResponseDto);
 
 		mockMvc.perform(post("/api/v1/posts")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(json))
-			.andExpect(status().isOk())
+				.accept(MediaType.APPLICATION_JSON)
+				.content(request))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(content().json(response))
+			.andExpect(jsonPath("id").value(postId))
+			.andExpect(status().isCreated())
 			.andDo(print());
 
 		verify(postFacade).create(ArgumentMatchers.any());
@@ -66,12 +71,7 @@ class PostControllerTest {
 	void findById() throws Exception {
 
 		Long postId = 1L;
-
-		PostResponseDto postResponseDto = PostResponseDto.builder()
-			.id(postId)
-			.title("hello")
-			.content("hi")
-			.build();
+		PostResponseDto postResponseDto = createPostResponseDto(postId);
 
 		String json = objectMapper.writeValueAsString(postResponseDto);
 
@@ -96,10 +96,7 @@ class PostControllerTest {
 
 		Long postId = 1L;
 
-		PostUpdateDto postUpdateDto = PostUpdateDto.builder()
-			.title("NSYNC")
-			.content("itsgonnabeme")
-			.build();
+		PostUpdateDto postUpdateDto = createPostUpdateDto();
 
 		String json = objectMapper.writeValueAsString(postUpdateDto);
 
@@ -121,19 +118,10 @@ class PostControllerTest {
 
 		Long cursorId = 2L;
 		Integer size = 1;
-
-		PostRequestDto postRequestDto = PostRequestDto.builder()
-			.cursorId(cursorId)
-			.size(size)
-			.build();
+		PostRequestDto postRequestDto = createPostRequestDto(cursorId, size);
 
 		Long postId = 1L;
-
-		PostResponseDto postResponseDto = PostResponseDto.builder()
-			.id(postId)
-			.title("hello")
-			.content("hi")
-			.build();
+		PostResponseDto postResponseDto = createPostResponseDto(postId);
 
 		List<PostResponseDto> postResponseDtoList = List.of(postResponseDto);
 

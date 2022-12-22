@@ -7,11 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.converter.PostConverter;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDtos;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostSaveDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostUpdateDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDtos;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateDto;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 import com.prgrms.devcourse.springjpaboard.domain.user.application.UserService;
 
@@ -21,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PostFacade {
+
+	private final PostConverter postConverter;
 
 	private final PostService postService;
 
@@ -34,11 +37,14 @@ public class PostFacade {
 	 * @param postSaveDto - post를 작성한 userId와 저장할 Post의 title과 content를 저장한 Dto
 	 */
 	@Transactional
-	public void create(PostSaveDto postSaveDto) {
+	public PostCreateResponseDto create(PostCreateRequestDto postSaveDto) {
 
 		User user = userService.findById(postSaveDto.getUserId());
 
-		postService.create(PostConverter.toPost(postSaveDto, user));
+		Long savedId = postService.create(postConverter.toPost(postSaveDto, user));
+
+		return postConverter.toPostCreateResponseDto(savedId);
+
 
 	}
 
@@ -52,7 +58,7 @@ public class PostFacade {
 	@Transactional
 	public void update(Long id, PostUpdateDto postUpdateDto) {
 
-		postService.update(id, PostConverter.toPost(postUpdateDto));
+		postService.update(id, postUpdateDto.getTitle(), postUpdateDto.getContent());
 
 	}
 
@@ -74,7 +80,7 @@ public class PostFacade {
 
 		boolean hasNext = postService.hasNext(lastIdOfList);
 
-		return PostConverter.toPostResponseDtos(postList, lastIdOfList, hasNext);
+		return postConverter.toPostResponseDtos(postList, lastIdOfList, hasNext);
 
 	}
 
@@ -87,6 +93,6 @@ public class PostFacade {
 	 * @return PostConverter로 PostResponseDto를 생성하여 리턴합니다.
 	 */
 	public PostResponseDto findById(Long id) {
-		return PostConverter.toPostResponseDto(postService.findById(id));
+		return postConverter.toPostResponseDto(postService.findById(id));
 	}
 }

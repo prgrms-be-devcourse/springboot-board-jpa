@@ -1,5 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.application;
 
+import static com.prgrms.devcourse.springjpaboard.domain.post.PostObjectProvider.*;
+import static com.prgrms.devcourse.springjpaboard.domain.user.UserObjectProvider.*;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
@@ -26,22 +28,6 @@ class PostServiceTest {
 
 	@InjectMocks
 	PostService postService;
-
-	public User createUser() {
-		return User.builder()
-			.name("geonwoo")
-			.age(25)
-			.hobby("basketball")
-			.build();
-	}
-
-	public Post createPost(User user) {
-		return Post.builder()
-			.user(user)
-			.title("hello")
-			.content("hi~")
-			.build();
-	}
 
 	@Test
 	@DisplayName("Post를 저장한다 - 성공")
@@ -83,19 +69,19 @@ class PostServiceTest {
 	}
 
 	@Test
-	@DisplayName("Post를 id를 사용하여 조회하고, Post 객체를 통해 변경감지로 업데이트한다 - 성공")
+	@DisplayName("Post를 id를 사용하여 조회하고, Post 객체를 사용하여 수정한다 - 성공")
 	void updateTest() {
 
 		//given
 		User user = createUser();
 
-		Post post1 = createPost(user);
-		Post post2 = createPost(user);
+		Post post1 = createPost("제목1", "내용1", user);
+		Post post2 = createPost("제목2", "내용2", user);
 
 		when(postRepository.findById(post1.getId())).thenReturn(Optional.of(post1));
 
 		//when
-		postService.update(post1.getId(), post2);
+		postService.update(post1.getId(), post2.getTitle(), post2.getContent());
 
 		//then
 		Assertions.assertThat(post1)
@@ -110,15 +96,17 @@ class PostServiceTest {
 	void hasNextTest() {
 		//given
 		Long cursorId = 2L;
+		boolean hasNext = true;
 
-		when(postRepository.existsByIdLessThan(cursorId)).thenReturn(true);
+		when(postRepository.existsByIdLessThan(cursorId)).thenReturn(hasNext);
 
 		//when
-		postService.hasNext(cursorId);
+		boolean next = postService.hasNext(cursorId);
 
 		//then
 		verify(postRepository).existsByIdLessThan(cursorId);
 
+		Assertions.assertThat(next).isEqualTo(hasNext);
 	}
 
 	@Test
@@ -127,9 +115,9 @@ class PostServiceTest {
 		//given
 		User user = createUser();
 
-		Post post1 = createPost(user);
-		Post post2 = createPost(user);
-		Post post3 = createPost(user);
+		Post post1 = createPost("제목1", "내용1", user);
+		Post post2 = createPost("제목2", "내용2", user);
+		Post post3 = createPost("제목3", "내용3", user);
 
 		List<Post> postList = List.of(post1, post2, post3);
 
@@ -148,8 +136,8 @@ class PostServiceTest {
 		//given
 		User user = createUser();
 
-		Post post1 = createPost(user);
-		Post post2 = createPost(user);
+		Post post1 = createPost("제목1", "내용1", user);
+		Post post2 = createPost("제목2", "내용2", user);
 
 		Long cursorId = 3L;
 		int size = 2;

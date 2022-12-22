@@ -1,4 +1,4 @@
-package com.prgrms.devcourse.springjpaboard.domain.post.application.dto;
+package com.prgrms.devcourse.springjpaboard.domain.post.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostSaveDto {
+public class PostCreateRequestDto {
 
 	@NotNull
 	private Long userId;
@@ -22,7 +22,7 @@ public class PostSaveDto {
 	private String content;
 
 	@Builder
-	public PostSaveDto(Long userId, String title, String content) {
+	public PostCreateRequestDto(Long userId, String title, String content) {
 		this.userId = userId;
 		this.title = title;
 		this.content = content;

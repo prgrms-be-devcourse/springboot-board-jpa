@@ -1,5 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.api;
 
+import static com.prgrms.devcourse.springjpaboard.domain.post.PostObjectProvider.*;
+import static com.prgrms.devcourse.springjpaboard.domain.user.UserObjectProvider.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -7,6 +9,11 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +27,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostSaveDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostUpdateDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.repository.PostRepository;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 import com.prgrms.devcourse.springjpaboard.domain.user.repository.UserRepository;
@@ -48,39 +55,23 @@ public class PostControllerDocTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	public User createUser() {
+	private User user = createUser();
 
-		return User.builder()
-			.name("geonwoo")
-			.age(25)
-			.hobby("basketball")
-			.build();
-
+	@BeforeEach
+	void setUp() {
+		userRepository.save(user);
 	}
 
-	public Post createPost(User user) {
-
-		return Post.builder()
-			.user(user)
-			.title("hello")
-			.content("hi")
-			.build();
-
+	@AfterEach
+	void tearDown() {
+		userRepository.deleteAll();
 	}
 
 	@Test
 	@DisplayName("저장 api")
 	void create() throws Exception {
 
-		User user = createUser();
-
-		userRepository.save(user);
-
-		PostSaveDto postSaveDto = PostSaveDto.builder()
-			.userId(user.getId())
-			.title("hello")
-			.content("hi")
-			.build();
+		PostCreateRequestDto postSaveDto = createPostCreateRequestDto(user.getId());
 
 		String json = objectMapper.writeValueAsString(postSaveDto);
 
@@ -113,10 +104,6 @@ public class PostControllerDocTest {
 	@DisplayName("조회 api")
 	void findById() throws Exception {
 
-		User user = createUser();
-
-		userRepository.save(user);
-
 		Post post = createPost(user);
 
 		postRepository.save(post);
@@ -147,7 +134,7 @@ public class PostControllerDocTest {
 
 					fieldWithPath("title")
 						.type(JsonFieldType.STRING)
-						.description("조회된 Post title"),
+						.description("조회된 Postassdf title"),
 
 					fieldWithPath("content")
 						.type(JsonFieldType.STRING)
@@ -161,18 +148,11 @@ public class PostControllerDocTest {
 	@DisplayName("수정 api")
 	void update() throws Exception {
 
-		User user = createUser();
-
-		userRepository.save(user);
-
 		Post post = createPost(user);
 
 		postRepository.save(post);
 
-		PostUpdateDto postUpdateDto = PostUpdateDto.builder()
-			.title("NSYNC")
-			.content("itsgonnabeme")
-			.build();
+		PostUpdateDto postUpdateDto = createPostUpdateDto();
 
 		String json = objectMapper.writeValueAsString(postUpdateDto);
 
@@ -201,29 +181,30 @@ public class PostControllerDocTest {
 				)));
 	}
 
+	private List<Post> createPosts(User user, int cnt) {
+		List<Post> postList = new ArrayList<>();
+		for (int i = 1; i <= cnt; i++) {
+			postList.add(createPost("제목" + i, "title" + i, user));
+		}
+		return postList;
+	}
+
 	@Test
 	@DisplayName("전체 조회 api")
 	void findAll() throws Exception {
 
-		User user = createUser();
+		List<Post> postList = createPosts(user, 3);
 
-		userRepository.save(user);
+		postRepository.saveAll(postList);
 
-		Post post1 = createPost(user);
-		Post post2 = createPost(user);
-		Post post3 = createPost(user);
-
-		postRepository.save(post1);
-		postRepository.save(post2);
-		postRepository.save(post3);
-
-		Long cursorId = post3.getId();
+		Long cursorId = null;
 		Integer size = 1;
 
-		PostRequestDto postRequestDto = PostRequestDto.builder()
-			.cursorId(cursorId)
-			.size(size)
-			.build();
+		Long expectId = 3L;
+		String expectTitle = "제목3";
+		String expectContent = "내용3";
+
+		PostRequestDto postRequestDto = createPostRequestDto(cursorId, size);
 
 		String requestJson = objectMapper.writeValueAsString(postRequestDto);
 
@@ -231,11 +212,11 @@ public class PostControllerDocTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(requestJson))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.postResponseDtoList.[0].id").value(post2.getId()))
-			.andExpect(jsonPath("$.postResponseDtoList.[0].title").value(post2.getTitle()))
-			.andExpect(jsonPath("$.postResponseDtoList.[0].content").value(post2.getContent()))
+			.andExpect(jsonPath("$.postResponseDtoList.[0].id").value(expectId))
+			.andExpect(jsonPath("$.postResponseDtoList.[0].title").value(expectTitle))
+			.andExpect(jsonPath("$.postResponseDtoList.[0].content").value(expectContent))
 			.andExpect(jsonPath("$.hasNext").value(true))
-			.andExpect(jsonPath("$.cursorId").value(post2.getId()))
+			.andExpect(jsonPath("$.cursorId").value(expectId))
 			.andDo(print())
 			.andDo(document("post-findAll",
 

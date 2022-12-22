@@ -1,32 +1,37 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.application.facade;
 
+import static com.prgrms.devcourse.springjpaboard.domain.post.PostObjectProvider.*;
+import static com.prgrms.devcourse.springjpaboard.domain.user.UserObjectProvider.*;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.PostService;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.converter.PostConverter;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDtos;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostSaveDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostUpdateDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDtos;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateDto;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 import com.prgrms.devcourse.springjpaboard.domain.user.application.UserService;
 
 @ExtendWith(MockitoExtension.class)
 class PostFacadeTest {
+
+	@Mock
+	PostConverter postConverter;
 
 	@Mock
 	PostService postService;
@@ -37,87 +42,32 @@ class PostFacadeTest {
 	@InjectMocks
 	PostFacade postFacade;
 
-	public User createUser() {
-		return User.builder()
-			.name("geonwoo")
-			.age(25)
-			.hobby("basketball")
-			.build();
-	}
-
-	public Post createPost(User user) {
-		return Post.builder()
-			.user(user)
-			.title("hello")
-			.content("hi~")
-			.build();
-	}
-
-	public PostSaveDto createPostSaveDto(Long userId) {
-		return PostSaveDto.builder()
-			.userId(userId)
-			.title("hello")
-			.content("hi~")
-			.build();
-
-	}
-
-	public PostUpdateDto createPostUpdateDto() {
-		return PostUpdateDto.builder()
-			.title("hello2")
-			.content("hi2")
-			.build();
-	}
-
-	public PostResponseDto createPostResponseDto(Long id) {
-		return PostResponseDto.builder()
-			.id(id)
-			.title("hello")
-			.content("hi")
-			.build();
-	}
-
-	public PostRequestDto createPostRequestDto(Long cursorId, Integer size) {
-		return PostRequestDto.builder()
-			.cursorId(cursorId)
-			.size(size)
-			.build();
-	}
-
-	public PostResponseDtos createPostResponseDtos(List<Post> postList, Long lastIdOfList, boolean hasNext) {
-		return PostResponseDtos.builder()
-			.postResponseDtoList(postList.stream().map(PostConverter::toPostResponseDto).collect(Collectors.toList()))
-			.cursorId(lastIdOfList)
-			.hasNext(hasNext)
-			.build();
-	}
-
 	@Test
 	@DisplayName("Dto를 사용하여 user를 조회하고, Dto를 Post로 변환하여 저장한다.")
 	void createTest() {
 
 		//given
 		Long userId = 1L;
-		MockedStatic<PostConverter> postConverterMockedStatic = mockStatic(PostConverter.class);
-
 		User user = createUser();
+		Long postId = 1L;
 		Post post = createPost(user);
-		PostSaveDto postSaveDto = createPostSaveDto(userId);
+		PostCreateRequestDto postCreateRequestDto = createPostCreateRequestDto(userId);
+		PostCreateResponseDto postCreateResponseDto = createPostCreteResponseDto(postId);
 
 		when(userService.findById(userId)).thenReturn(user);
-
-		when(PostConverter.toPost(postSaveDto, user)).thenReturn(post);
-		doNothing().when(postService).create(post);
+		when(postConverter.toPost(postCreateRequestDto, user)).thenReturn(post);
+		when(postService.create(post)).thenReturn(postId);
+		when(postConverter.toPostCreateResponseDto(postId)).thenReturn(postCreateResponseDto);
 
 		//when
-		postFacade.create(postSaveDto);
+		PostCreateResponseDto createResponseDto = postFacade.create(postCreateRequestDto);
 
 		//then
 		verify(userService).findById(userId);
 		verify(postService).create(post);
-		postConverterMockedStatic.verify(() -> PostConverter.toPost(postSaveDto, user), times(1));
-
-		postConverterMockedStatic.close();
+		verify(postConverter).toPost(postCreateRequestDto, user);
+		verify(postConverter).toPostCreateResponseDto(postId);
+		Assertions.assertThat(createResponseDto).hasFieldOrPropertyWithValue("id", postId);
 	}
 
 	@Test
@@ -128,21 +78,17 @@ class PostFacadeTest {
 		Long postId = 1L;
 		User user = createUser();
 		Post post = createPost(user);
-
-		MockedStatic<PostConverter> postConverterMockedStatic = mockStatic(PostConverter.class);
 		PostUpdateDto postUpdateDto = createPostUpdateDto();
 
-		when(PostConverter.toPost(postUpdateDto)).thenReturn(post);
-		doNothing().when(postService).update(postId, post);
+		doNothing().when(postService).update(postId, postUpdateDto.getTitle(), postUpdateDto.getContent());
 
 		//when
 		postFacade.update(postId, postUpdateDto);
 
 		//then
-		verify(postService).update(postId, post);
-		postConverterMockedStatic.verify(() -> PostConverter.toPost(postUpdateDto), times(1));
+		verify(postService).update(postId, postUpdateDto.getTitle(), postUpdateDto.getContent());
 
-		postConverterMockedStatic.close();
+
 	}
 
 	@Test
@@ -155,18 +101,20 @@ class PostFacadeTest {
 		Post post = createPost(user);
 		PostResponseDto postResponseDto = createPostResponseDto(postId);
 
-		MockedStatic<PostConverter> postConverterMockedStatic = mockStatic(PostConverter.class);
 		when(postService.findById(postId)).thenReturn(post);
-		when(PostConverter.toPostResponseDto(post)).thenReturn(postResponseDto);
+		when(postConverter.toPostResponseDto(post)).thenReturn(postResponseDto);
 
 		//when
-		postFacade.findById(postId);
+		PostResponseDto findPost = postFacade.findById(postId);
 
 		//then
 		verify(postService).findById(postId);
-		postConverterMockedStatic.verify(() -> PostConverter.toPostResponseDto(post), times(1));
+		verify(postConverter).toPostResponseDto(post);
 
-		postConverterMockedStatic.close();
+		Assertions.assertThat(findPost)
+			.hasFieldOrPropertyWithValue("id", postId)
+			.hasFieldOrPropertyWithValue("title", postResponseDto.getTitle())
+			.hasFieldOrPropertyWithValue("content", postResponseDto.getContent());
 	}
 
 	@Test
@@ -186,29 +134,25 @@ class PostFacadeTest {
 		boolean hasNext = false;
 
 		PostRequestDto postRequestDto = createPostRequestDto(cursorId, size);
-		PostResponseDtos postResponseDtos = createPostResponseDtos(postList, lastIdOfList, hasNext);
-		MockedStatic<PostConverter> postConverterMockedStatic = mockStatic(PostConverter.class);
+		PostResponseDtos postResponseDtos = createPostResponseDtos(postList, cursorId, hasNext);
 
-		when(postService.findAll(cursorId, size))
-			.thenReturn(postList);
-
+		when(postService.findAll(cursorId, size)).thenReturn(postList);
 		when(postService.getLastIdOfList(postList)).thenReturn(lastIdOfList);
-
 		when(postService.hasNext(lastIdOfList)).thenReturn(hasNext);
-
-		when(PostConverter.toPostResponseDtos(postList, lastIdOfList, hasNext)).thenReturn(postResponseDtos);
+		when(postConverter.toPostResponseDtos(postList, lastIdOfList, hasNext)).thenReturn(postResponseDtos);
 
 		//when
-		postFacade.findAll(postRequestDto);
+		PostResponseDtos responseDtos = postFacade.findAll(postRequestDto);
 
 		//then
 		verify(postService).findAll(cursorId, size);
 		verify(postService).getLastIdOfList(postList);
 		verify(postService).hasNext(lastIdOfList);
-		postConverterMockedStatic.verify(() -> PostConverter.toPostResponseDtos(postList, lastIdOfList, hasNext),
-			times(1));
+		verify(postConverter).toPostResponseDtos(postList, lastIdOfList, hasNext);
 
-		postConverterMockedStatic.close();
+		Assertions.assertThat(responseDtos)
+			.hasFieldOrPropertyWithValue("cursorId", cursorId)
+			.hasFieldOrPropertyWithValue("hasNext", hasNext);
 
 	}
 

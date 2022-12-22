@@ -4,8 +4,10 @@ import static org.springframework.http.MediaType.*;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostResponseDtos;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostSaveDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.dto.PostUpdateDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDtos;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequestDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +39,7 @@ public class PostController {
 	 * @return status ok 와 postResponseDtos를 ResponseEntity에 담아 리턴합니다.
 	 * */
 	@GetMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<PostResponseDtos> findAll(@RequestBody PostRequestDto postRequestDto) {
+	public ResponseEntity<PostResponseDtos> findAll(@Valid @ModelAttribute PostRequestDto postRequestDto) {
 
 		PostResponseDtos postResponseDtos = postFacade.findAll(postRequestDto);
 
@@ -66,11 +69,11 @@ public class PostController {
 	 * @return status ok를 ResponseEntity에 담아 리턴합니다.
 	 */
 	@PostMapping(consumes = APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> create(@Valid @RequestBody PostSaveDto postSaveDto) {
+	public ResponseEntity<PostCreateResponseDto> create(@Valid @RequestBody PostCreateRequestDto postSaveDto) {
 
-		postFacade.create(postSaveDto);
+		PostCreateResponseDto postCreateResponseDto = postFacade.create(postSaveDto);
 
-		return ResponseEntity.ok().build();
+		return new ResponseEntity<>(postCreateResponseDto, HttpStatus.CREATED);
 
 	}
 

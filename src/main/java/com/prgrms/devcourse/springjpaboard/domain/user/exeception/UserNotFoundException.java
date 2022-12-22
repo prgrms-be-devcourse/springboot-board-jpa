@@ -1,6 +1,6 @@
 package com.prgrms.devcourse.springjpaboard.domain.user.exeception;
 
-import javax.persistence.EntityNotFoundException;
+import com.prgrms.devcourse.springjpaboard.global.error.EntityNotFoundException;
 
 public class UserNotFoundException extends EntityNotFoundException {
 

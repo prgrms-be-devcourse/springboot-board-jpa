@@ -13,7 +13,13 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
+import com.prgrms.devcourse.springjpaboard.global.common.base.BaseEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,7 +30,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Post extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,14 +49,26 @@ public class Post {
 
 	@Builder
 	public Post(String title, String content, User user) {
+		Preconditions.checkArgument(StringUtils.hasText(title));
+		Preconditions.checkArgument(StringUtils.hasText(content));
 		this.title = title;
 		this.content = content;
 		this.updateUser(user);
 	}
 
-	public void updatePost(Post post) {
-		this.title = post.getTitle();
-		this.content = post.getContent();
+	public void updatePost(String title, String content) {
+		Preconditions.checkArgument(StringUtils.hasText(title));
+		Preconditions.checkArgument(StringUtils.hasText(content));
+		updateTitle(title);
+		updateContent(content);
+	}
+
+	public void updateTitle(String title) {
+		this.title = title;
+	}
+
+	public void updateContent(String content) {
+		this.content = content;
 	}
 
 	public void updateUser(User user) {
