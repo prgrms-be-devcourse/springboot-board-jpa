@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PostRepository {
@@ -19,8 +20,8 @@ public class PostRepository {
         em.persist(post);
     }
 
-    public Post findOne(Long id) {
-        return em.find(Post.class, id);
+    public Optional<Post> findOne(Long id) {
+        return Optional.ofNullable(em.find(Post.class, id));
     }
 
     public List<Post> findAll() {
@@ -28,5 +29,10 @@ public class PostRepository {
                 .getResultList();
     }
 
-    // 페이징
+    public List<Post> findWithPaging(int startPosition, int maxResultCount) {
+        return em.createQuery("select p from Post p order by p.id asc", Post.class)
+                .setFirstResult(startPosition)
+                .setMaxResults(maxResultCount)
+                .getResultList();
+    }
 }
