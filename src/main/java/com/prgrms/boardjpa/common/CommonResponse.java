@@ -20,8 +20,8 @@ public class CommonResponse<T> {
     return new CommonResponse<>(data, ResponseMessage.SUCCESS);
   }
 
-  public static <T> CommonResponse<T> fail(T data) {
-    return new CommonResponse<>(data, ResponseMessage.FAIL);
+  public static <T> CommonResponse<T> fail(T data, ResponseMessage responseMessage) {
+    return new CommonResponse<>(data, responseMessage);
   }
 
 }

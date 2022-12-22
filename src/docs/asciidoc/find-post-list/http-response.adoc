@@ -1,0 +1,8 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 776
+
+{"data":{"content":[{"postId":36,"title":"title","content":"content","userDto":{"userId":1,"name":"gsw","age":25,"hobby":""}},{"postId":37,"title":"title","content":"content","userDto":{"userId":1,"name":"gsw","age":25,"hobby":""}},{"postId":38,"title":"title","content":"content","userDto":{"userId":1,"name":"gsw","age":25,"hobby":""}},{"postId":39,"title":"title","content":"content","userDto":{"userId":1,"name":"gsw","age":25,"hobby":""}}],"pageable":{"sort":{"empty":true,"sorted":false,"unsorted":true},"offset":0,"pageNumber":0,"pageSize":10,"paged":true,"unpaged":false},"last":true,"totalPages":1,"totalElements":4,"first":true,"size":10,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},"numberOfElements":4,"empty":false},"responseMessage":"SUCCESS"}
+----

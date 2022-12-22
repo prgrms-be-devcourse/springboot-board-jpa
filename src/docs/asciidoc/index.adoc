@@ -1,0 +1,53 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../docs/asciidoc
+endif::[]
+
+== 게시글
+
+=== 게시글 생성
+
+=== [POST] /posts
+
+.Request
+include::{snippets}/create-post/http-request.adoc[]
+include::{snippets}/create-post/request-fields.adoc[]
+
+.Response
+include::{snippets}/create-post/http-response.adoc[]
+include::{snippets}/create-post/response-fields.adoc[]
+
+=== 게시글 수정
+
+=== [POST] /posts/{id}
+
+.Request
+include::{snippets}/update-post/http-request.adoc[]
+include::{snippets}/update-post/request-fields.adoc[]
+
+.Response
+include::{snippets}/update-post/http-response.adoc[]
+include::{snippets}/update-post/response-fields.adoc[]
+
+=== 게시글 목록 조회
+
+=== [GET] /posts
+
+.Request
+include::{snippets}/find-post-list/http-request.adoc[]
+
+.Response
+include::{snippets}/find-post-list/http-response.adoc[]
+include::{snippets}/find-post-list/response-fields.adoc[]
+
+=== 게시글 조회
+
+=== [GET] /posts/{id}
+
+.Request
+include::{snippets}/find-post/http-request.adoc[]
+
+.Response
+include::{snippets}/find-post/http-response.adoc[]
+include::{snippets}/find-post/response-fields.adoc[]
+
