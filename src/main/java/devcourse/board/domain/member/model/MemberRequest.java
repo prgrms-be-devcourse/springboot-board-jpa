@@ -8,15 +8,14 @@ public class MemberRequest {
     }
 
     public static Member toEntity(JoinDto joinDto) {
-        if (joinDto instanceof SpecificJoinDto specificJoinDto) {
-            return new Member(specificJoinDto.getName(), specificJoinDto.getAge(), specificJoinDto.getHobby());
-        }
-        return new Member(joinDto.getName());
+        return new Member(joinDto.getName(), joinDto.getAge(), joinDto.getHobby());
     }
 
     @Getter
     public static class JoinDto {
         String name;
+        private Integer age;
+        private String hobby;
 
         private JoinDto() {
         }
@@ -24,18 +23,9 @@ public class MemberRequest {
         public JoinDto(String name) {
             this.name = name;
         }
-    }
 
-    @Getter
-    public static class SpecificJoinDto extends JoinDto {
-        private int age;
-        private String hobby;
-
-        private SpecificJoinDto() {
-        }
-
-        public SpecificJoinDto(String name, int age, String hobby) {
-            super.name = name;
+        public JoinDto(String name, Integer age, String hobby) {
+            this.name = name;
             this.age = age;
             this.hobby = hobby;
         }

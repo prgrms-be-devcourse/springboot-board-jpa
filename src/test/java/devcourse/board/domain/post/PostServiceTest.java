@@ -105,7 +105,7 @@ class PostServiceTest {
     }
 
     private Long saveMember(String name) {
-        return memberService.save(new MemberRequest.JoinDto(name));
+        return memberService.join(new MemberRequest.JoinDto(name));
     }
 
     private void createDummyPosts() {
