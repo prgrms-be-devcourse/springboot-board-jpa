@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -32,7 +29,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -211,6 +209,7 @@ class PostControllerTest {
     @DisplayName("현재 페이지 정보와 한 페이지 당 게시글 수를 입력 시 페이징된 게시글이 반환되며 게시글의 정보는 게시글 ID, 제목, 생성일자가 반환된다.")
     void getAllCallTest() throws Exception {
         // given
+        PostDTO.PageRequest pageRequest = new PostDTO.PageRequest(0, 5, Sort.Direction.DESC);
         Pageable request = PageRequest.of(0, 5);
         List<PostDTO.PostsResponse> postDtos = List.of(
                 new PostDTO.PostsResponse("title1", 1L, LocalDateTime.now()),
@@ -223,10 +222,9 @@ class PostControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/posts")
+                        .content(objectMapper.writeValueAsString(pageRequest))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .param("page", "0")
-                        .param("size", "5"))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print());
         resultActions
                 .andExpect(status().isOk())
@@ -245,9 +243,10 @@ class PostControllerTest {
                 .andExpect(jsonPath("data.content[2].createdAt").exists())
                 .andDo(print())
                 .andDo(document("find-post-all",
-                        requestParameters(
-                                parameterWithName("page").description("현재 페이지"),
-                                parameterWithName("size").description("한 페이지에 노출할 데이터 건수")
+                        requestFields(
+                                fieldWithPath("page").type(JsonFieldType.NUMBER).description("현재 페이지 위치"),
+                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("한 페이지의 게시물 수"),
+                                fieldWithPath("direction").type(JsonFieldType.STRING).description("정렬 방법")
                         ),
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("응답 HTTP 상태 코드"),

@@ -48,14 +48,14 @@ class PostServiceTest {
     void shouldCreatePost() {
         // given
         PostDTO.CreateRequest postCreateDTO = new PostDTO.CreateRequest("title", "content", 1L);
-        User user = new User(postCreateDTO.getUserId(), "user", 25, "농구");
-        Post post = new Post(1L, "title", "content", user);
+        User user = new User("user", 25, "농구");
+        Post post = new Post("title", "content", user);
 
         when(postConverter.covertToPost(postCreateDTO, user))
                 .thenReturn(post);
         when(postRepository.save(post))
                 .thenReturn(post);
-        when(userRepository.findById(1L))
+        when(userRepository.findById(anyLong()))
                 .thenReturn(Optional.of(user));
 
         // when
@@ -71,7 +71,7 @@ class PostServiceTest {
         // given
         List<Post> posts = new ArrayList<>();
         for (long id = 1L; id <= 20; id++) {
-            posts.add(new Post(id, "title", "content", new User(id, "user", 25, "농구")));
+            posts.add(new Post("title", "content", new User("user", 25, "농구")));
         }
 
         Pageable pageable = PageRequest.of(0, 5);
@@ -84,9 +84,6 @@ class PostServiceTest {
         // then
         verify(postRepository).findAll(pageable);
         assertThat(postDtos.getTotalPages()).isEqualTo(4);
-        for (PostDTO.PostsResponse postDto : postDtos) {
-            log.info("{}", postDto);
-        }
     }
 
     @Test
@@ -104,10 +101,10 @@ class PostServiceTest {
     void shouldFindPostById() {
         // given
         PostDTO.CreateRequest postCreateDTO = new PostDTO.CreateRequest("title", "content", 1L);
-        User user = new User(postCreateDTO.getUserId(), "user", 25, "농구");
-        Post post = new Post(1L, "title", "content", user);
+        User user = new User("user", 25, "농구");
+        Post post = new Post("title", "content", user);
 
-        when(postRepository.findById(1L))
+        when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.of(post));
         // when
         PostDTO.PostDetailResponse postDetailResponse = postService.findById(1L);
@@ -141,21 +138,24 @@ class PostServiceTest {
     @DisplayName("게시글 수정을 할 수 있다.")
     void shouldUpdatePost() {
         // given
-        User user = new User(1L, "user", 25, "농구");
-        Post post = new Post(1L, "title", "content", user);
+        User user = new User("user", 25, "농구");
+        Post post = new Post("title", "content", user);
         PostDTO.UpdateRequest postUpdateRequest = new PostDTO.UpdateRequest("change title", "change content");
-        Post updatedPost = new Post(1L, postUpdateRequest.getTitle(), postUpdateRequest.getContent(), user);
+        Post updatedPost = new Post(postUpdateRequest.getTitle(), postUpdateRequest.getContent(), user);
 
-        when(postRepository.findById(post.getId()))
+        when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.of(post));
 
-        PostDTO.PostDetailResponse beforePostDTO = postService.findById(post.getId());
+        PostDTO.PostDetailResponse beforePostDTO = postService.findById(anyLong());
 
-        when(postRepository.findById(post.getId()))
+        when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.of(updatedPost));
 
+        Long updatedPostId = postService.updatePost(anyLong(), postUpdateRequest);
+
         // when
-        Long updatedPostId = postService.updatePost(post.getId(), postUpdateRequest);
+        when(postRepository.findById(updatedPostId))
+                .thenReturn(Optional.of(updatedPost));
         PostDTO.PostDetailResponse updatedPostDto = postService.findById(updatedPostId);
 
         // then
