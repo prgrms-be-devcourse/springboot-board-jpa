@@ -1,6 +1,6 @@
 :hardbreaks:
 ifndef::snippets[]
-:snippets: ../../docs/asciidoc
+:snippets: .
 endif::[]
 
 == 게시글
@@ -19,7 +19,7 @@ include::{snippets}/create-post/response-fields.adoc[]
 
 === 게시글 수정
 
-=== [POST] /posts/{id}
+=== [POST] /posts/{postId}
 
 .Request
 include::{snippets}/update-post/http-request.adoc[]
@@ -42,7 +42,7 @@ include::{snippets}/find-post-list/response-fields.adoc[]
 
 === 게시글 조회
 
-=== [GET] /posts/{id}
+=== [GET] /posts/{postId}
 
 .Request
 include::{snippets}/find-post/http-request.adoc[]

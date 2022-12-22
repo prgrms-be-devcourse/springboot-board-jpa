@@ -1,6 +1,6 @@
 [source,http,options="nowrap"]
 ----
-GET /posts/34 HTTP/1.1
+GET /posts/56 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Host: localhost:8080
 

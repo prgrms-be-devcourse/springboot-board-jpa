@@ -4,5 +4,5 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 Content-Length: 142
 
-{"data":{"postId":33,"title":"title","content":"content","userDto":{"userId":1,"name":"gsw","age":25,"hobby":""}},"responseMessage":"SUCCESS"}
+{"data":{"postId":58,"title":"title","content":"content","userDto":{"userId":1,"name":"gsw","age":25,"hobby":""}},"responseMessage":"SUCCESS"}
 ----
