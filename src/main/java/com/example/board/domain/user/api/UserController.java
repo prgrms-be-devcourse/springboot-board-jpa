@@ -24,8 +24,8 @@ public class UserController {
     public BaseResponse<SingleUserDetailResponse> enrollUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
         return BaseResponse.of(
                 HttpStatus.OK,
-                "회원 저장",
-                "회원 저장 결과 데이터 입니다.",
+                "response.enroll-user.title",
+                "response.enroll-user.content",
                 userService.enroll(createUserRequest));
     }
 }

@@ -21,24 +21,24 @@ public class PostController {
     @GetMapping
     public BaseResponse<Page<SinglePostResponse>> pagingPosts(Pageable pageable) {
         return BaseResponse.of(HttpStatus.OK,
-                "게시글 리스트 조회",
-                "게시글 리스트 페이징 데이터 입니다.",
+                "response.paging-posts.title",
+                "response.paging-posts.content",
                 postService.pagingPost(pageable));
     }
 
     @GetMapping("/{id}")
     public BaseResponse<SinglePostResponse> getSinglePost(@PathVariable(name = "id") long postId) {
         return BaseResponse.of(HttpStatus.OK,
-                "게시글 단건 조회",
-                "게시글 단건 조회 데이터 입니다.",
+                "response.get-single-post.title",
+                "response.get-single-post.content",
                 postService.getPost(postId));
     }
 
     @PostMapping
     public BaseResponse<SinglePostResponse> enrollPost(@RequestBody @Valid CreatePostRequest createPostRequest) {
         return BaseResponse.of(HttpStatus.OK,
-                "게시글 저장",
-                "게시글 저장 결과 데이터 입니다.",
+                "response.enroll-post.title",
+                "response.enroll-post.content",
                 postService.post(createPostRequest));
     }
 
@@ -47,8 +47,8 @@ public class PostController {
                                                        @RequestBody @Valid UpdatePostRequest updatePostRequest
     ) {
         return BaseResponse.of(HttpStatus.OK,
-                "게시글 수정",
-                "게시글 수정 결과 데이터 입니다.",
+                "response.update-post.title",
+                "response.update-post.content",
                 postService.updatePost(postId, updatePostRequest));
     }
 }
