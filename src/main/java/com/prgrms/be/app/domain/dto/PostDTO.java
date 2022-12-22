@@ -1,7 +1,10 @@
 package com.prgrms.be.app.domain.dto;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Sort;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +13,36 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class PostDTO {
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static final class PageRequest {
+
+        private static final int DEFAULT_SIZE = 10;
+        private static final int MAX_SIZE = 20;
+
+        private int page;
+        private int size;
+        private Sort.Direction direction;
+
+        public PageRequest(int page, int size, Sort.Direction direction) {
+            this.page = page <= 0 ? 1 : page;
+            this.size = isRangeSize(size) ? size : DEFAULT_SIZE;
+            this.direction = direction;
+        }
+
+        public PageRequest(int page, int size) {
+            this(page, size, Sort.Direction.DESC);
+        }
+
+        private boolean isRangeSize(int size) {
+            return size > 0 && size <= MAX_SIZE;
+        }
+
+        public org.springframework.data.domain.PageRequest of() {
+            return org.springframework.data.domain.PageRequest.of(page - 1, size, direction, "createdAt");
+        }
+    }
 
     @Getter
     @AllArgsConstructor

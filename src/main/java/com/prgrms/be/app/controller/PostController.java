@@ -5,7 +5,6 @@ import com.prgrms.be.app.domain.dto.PostDTO;
 import com.prgrms.be.app.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,10 +37,8 @@ public class PostController {
 
     //toDo : 페이징 조회하는 메서드
     @GetMapping()
-    public ApiResponse<Page<PostDTO.PostsResponse>> getAll(
-            @RequestParam int page,
-            @RequestParam int size) {
-        Page<PostDTO.PostsResponse> postPages = postService.findAll(PageRequest.of(page, size));
+    public ApiResponse<Page<PostDTO.PostsResponse>> getAll(@RequestBody PostDTO.PageRequest pageRequest) {
+        Page<PostDTO.PostsResponse> postPages = postService.findAll(pageRequest.of());
         return ApiResponse.ok(
                 postPages,
                 ResponseMessage.FINDED_ALL);
@@ -51,7 +48,7 @@ public class PostController {
     @PostMapping("/{id}")
     public ApiResponse<Long> update(
             @PathVariable Long id,
-            @Valid @RequestBody PostDTO.UpdateRequest request) {
+            @RequestBody @Valid PostDTO.UpdateRequest request) {
         Long postId = postService.updatePost(id, request);
         return ApiResponse.ok(
                 postId,
