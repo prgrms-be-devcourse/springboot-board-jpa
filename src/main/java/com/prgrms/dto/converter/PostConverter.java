@@ -1,17 +1,11 @@
 package com.prgrms.dto.converter;
 
 import com.prgrms.domain.post.Post;
-import com.prgrms.dto.PostDto.Request;
 import com.prgrms.dto.PostDto.Response;
 
 public class PostConverter {
 
     private PostConverter() {
-    }
-
-    public static Request toPostRequestDto(Post post) {
-
-        return new Request(post.getTitle(), post.getContent(), post.getUser().getId());
     }
 
     public static Response toPostResponseDto(Post post) {
