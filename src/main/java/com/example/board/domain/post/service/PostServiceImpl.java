@@ -39,7 +39,18 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public SinglePostResponse post(CreatePostRequest createPostRequest) {
+        Optional<User> mayBeUser = userRepository.findById(createPostRequest.userId());
+        User validatedUser = UserValidator.validateOptionalUserExists(mayBeUser);
 
+        Post post = Post.builder()
+                .title(createPostRequest.title())
+                .content(createPostRequest.content())
+                .user(validatedUser)
+                .build();
+
+        Post savedPost = postRepository.save(post);
+
+        return SinglePostResponse.toResponse(savedPost);
     }
 
     @Override
