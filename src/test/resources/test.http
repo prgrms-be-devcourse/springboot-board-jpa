@@ -1,0 +1,24 @@
+### 1. create post
+POST http://localhost:8080/api/v1/posts
+content-Type: application/json
+
+{
+  "memberId": 1,
+  "title": "title mvc1",
+  "content": "content mvc1"
+}
+
+### 2. update post
+POST http://localhost:8080/api/v1/posts/10
+content-Type: application/json
+
+{
+  "title": "updated_title",
+  "content": "updated_content"
+}
+
+### 3. get post
+GET http://localhost:8080/api/v1/posts/11
+
+### 4. get post page
+GET http://localhost:8080/api/v1/posts?page=0&size=3
