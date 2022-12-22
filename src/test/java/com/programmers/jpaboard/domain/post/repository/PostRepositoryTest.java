@@ -41,8 +41,9 @@ class PostRepositoryTest {
 		Post findPost = postRepository.findById(savedPost.getId()).get();
 
 		// then
-		assertThat(savedPost.getTitle()).isEqualTo(post.getTitle());
-		assertThat(savedPost.getTitle()).isEqualTo(post.getTitle());
+		assertThat(savedPost)
+			.hasFieldOrPropertyWithValue("title", post.getTitle())
+			.hasFieldOrPropertyWithValue("content", post.getContent());
 		assertThat(findPost).isEqualTo(savedPost);
 	}
 

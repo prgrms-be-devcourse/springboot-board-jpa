@@ -49,12 +49,13 @@ class PostServiceTest {
 		PostResponseDto savedPostDto = postService.createPost(postCreateRequestDto);
 
 		// then
-		assertThat(savedPostDto.getId()).isEqualTo(post.getId());
-		assertThat(savedPostDto.getTitle()).isEqualTo(post.getTitle());
-		assertThat(savedPostDto.getContent()).isEqualTo(post.getContent());
-		assertThat(savedPostDto.getUserId()).isEqualTo(post.getUser().getId());
-		assertThat(savedPostDto.getCreatedAt()).isEqualTo(post.getCreatedAt());
-		assertThat(savedPostDto.getLastModifiedAt()).isEqualTo(post.getLastModifiedAt());
+		assertThat(savedPostDto)
+			.hasFieldOrPropertyWithValue("id", post.getId())
+			.hasFieldOrPropertyWithValue("title", post.getTitle())
+			.hasFieldOrPropertyWithValue("content", post.getContent())
+			.hasFieldOrPropertyWithValue("userId", post.getUser().getId())
+			.hasFieldOrPropertyWithValue("createdAt", post.getCreatedAt())
+			.hasFieldOrPropertyWithValue("lastModifiedAt", post.getLastModifiedAt());
 		verify(userRepository, times(1)).findById(user.getId());
 		verify(postRepository, times(1)).save(any(Post.class));
 	}
@@ -70,10 +71,11 @@ class PostServiceTest {
 		PostResponseDto findPostDto = postService.getPostById(post.getId());
 
 		// then
-		assertThat(findPostDto.getId()).isEqualTo(post.getId());
-		assertThat(findPostDto.getTitle()).isEqualTo(post.getTitle());
-		assertThat(findPostDto.getContent()).isEqualTo(post.getContent());
-		assertThat(findPostDto.getUserId()).isEqualTo(post.getUser().getId());
+		assertThat(findPostDto)
+			.hasFieldOrPropertyWithValue("id", post.getId())
+			.hasFieldOrPropertyWithValue("title", post.getTitle())
+			.hasFieldOrPropertyWithValue("content", post.getContent())
+			.hasFieldOrPropertyWithValue("userId", post.getUser().getId());
 		verify(postRepository, times(1)).findById(post.getId());
 	}
 
@@ -104,12 +106,14 @@ class PostServiceTest {
 		PostResponseDto updatedPostDto = postService.updatePost(post.getId(), postUpdateRequestDto);
 
 		// then
-		assertThat(updatedPostDto.getId()).isEqualTo(post.getId());
-		assertThat(updatedPostDto.getTitle()).isEqualTo(updateTitle);
-		assertThat(updatedPostDto.getContent()).isEqualTo(updateContent);
-		assertThat(updatedPostDto.getUserId()).isEqualTo(post.getUser().getId());
-		assertThat(post.getTitle()).isEqualTo(updateTitle);
-		assertThat(post.getContent()).isEqualTo(updateContent);
+		assertThat(updatedPostDto)
+			.hasFieldOrPropertyWithValue("id", post.getId())
+			.hasFieldOrPropertyWithValue("title", updateTitle)
+			.hasFieldOrPropertyWithValue("content", updateContent)
+			.hasFieldOrPropertyWithValue("userId", post.getUser().getId());
+		assertThat(post)
+			.hasFieldOrPropertyWithValue("title", updateTitle)
+			.hasFieldOrPropertyWithValue("content", updateContent);
 		verify(postRepository, times(1)).findById(post.getId());
 	}
 }

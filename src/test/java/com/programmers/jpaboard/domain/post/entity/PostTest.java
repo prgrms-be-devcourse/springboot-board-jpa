@@ -73,7 +73,8 @@ class PostTest {
 		post.changePost(changeTitle, changeContent);
 
 		// then
-		assertThat(post.getTitle()).isEqualTo(changeTitle);
-		assertThat(post.getContent()).isEqualTo(changeContent);
+		assertThat(post)
+			.hasFieldOrPropertyWithValue("title", changeTitle)
+			.hasFieldOrPropertyWithValue("content", changeContent);
 	}
 }

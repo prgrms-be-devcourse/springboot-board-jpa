@@ -144,7 +144,8 @@ public class UserTest {
 		user.changeUser(changeEmail, changeHobby);
 
 		// then
-		assertThat(user.getEmail()).isEqualTo(changeEmail);
-		assertThat(user.getHobby()).isEqualTo(changeHobby);
+		assertThat(user)
+			.hasFieldOrPropertyWithValue("email", changeEmail)
+			.hasFieldOrPropertyWithValue("hobby", changeHobby);
 	}
 }

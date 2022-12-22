@@ -26,8 +26,9 @@ class PostConverterTest {
 		Post convertPost = PostConverter.toPost(postCreateRequestDto, user);
 
 		// then
-		assertThat(convertPost.getTitle()).isEqualTo(postCreateRequestDto.getTitle());
-		assertThat(convertPost.getContent()).isEqualTo(postCreateRequestDto.getContent());
+		assertThat(convertPost)
+			.hasFieldOrPropertyWithValue("title", postCreateRequestDto.getTitle())
+			.hasFieldOrPropertyWithValue("content", postCreateRequestDto.getContent());
 		assertThat(convertPost.getUser().getId()).isEqualTo(postCreateRequestDto.getUserId());
 	}
 
@@ -41,11 +42,12 @@ class PostConverterTest {
 		PostResponseDto postResponseDto = PostConverter.toPostResponseDto(post);
 
 		// then
-		assertThat(postResponseDto.getId()).isEqualTo(post.getId());
-		assertThat(postResponseDto.getTitle()).isEqualTo(post.getTitle());
-		assertThat(postResponseDto.getContent()).isEqualTo(post.getContent());
-		assertThat(postResponseDto.getUserId()).isEqualTo(post.getUser().getId());
-		assertThat(postResponseDto.getCreatedAt()).isEqualTo(post.getCreatedAt());
-		assertThat(postResponseDto.getLastModifiedAt()).isEqualTo(post.getLastModifiedAt());
+		assertThat(postResponseDto)
+			.hasFieldOrPropertyWithValue("id", post.getId())
+			.hasFieldOrPropertyWithValue("title", post.getTitle())
+			.hasFieldOrPropertyWithValue("content", post.getContent())
+			.hasFieldOrPropertyWithValue("userId", post.getUser().getId())
+			.hasFieldOrPropertyWithValue("createdAt", post.getCreatedAt())
+			.hasFieldOrPropertyWithValue("lastModifiedAt", post.getLastModifiedAt());
 	}
 }

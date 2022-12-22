@@ -34,10 +34,11 @@ class UserRepositoryTest {
 		User findUser = userRepository.findById(savedUser.getId()).get();
 
 		// then
-		assertThat(savedUser.getName()).isEqualTo(user.getName());
-		assertThat(savedUser.getEmail()).isEqualTo(user.getEmail());
-		assertThat(savedUser.getAge()).isEqualTo(user.getAge());
-		assertThat(savedUser.getHobby()).isEqualTo(user.getHobby());
+		assertThat(savedUser)
+			.hasFieldOrPropertyWithValue("name", user.getName())
+			.hasFieldOrPropertyWithValue("email", user.getEmail())
+			.hasFieldOrPropertyWithValue("age", user.getAge())
+			.hasFieldOrPropertyWithValue("hobby", user.getHobby());
 		assertThat(findUser).isEqualTo(savedUser);
 	}
 
