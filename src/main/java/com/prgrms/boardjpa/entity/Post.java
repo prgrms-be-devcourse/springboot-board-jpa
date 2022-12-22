@@ -21,6 +21,7 @@ public class Post extends BaseEntity {
   @Column(name = "title", nullable = false)
   private String title;
 
+  @Lob
   @Column(name = "content", nullable = true)
   private String content;
 
