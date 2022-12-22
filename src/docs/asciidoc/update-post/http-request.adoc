@@ -1,6 +1,6 @@
 [source,http,options="nowrap"]
 ----
-POST /posts/55 HTTP/1.1
+POST /posts/64 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 99
 Host: localhost:8080
