@@ -13,7 +13,9 @@ public class UserDto {
     public static class Info {
         @NotNull
         private long id;
+        @NotNull
         private String name;
+        @NotNull
         private int age;
         private String hobby;
         private String createdBy;

@@ -41,7 +41,7 @@ class PostJpaRepositoryTest {
 
     @Test
     @DisplayName("post를 id로 정상 조회한다.")
-    public void findPostById(){
+    public void findPostById() {
         // When
         var find = postRepository.findById(1L);
 
@@ -52,7 +52,7 @@ class PostJpaRepositoryTest {
 
     @Test
     @DisplayName("post를 user name으로 정상 조회할 수 있다.")
-    public void findPostByUser(){
+    public void findPostByUser() {
         // When
         var posts = postRepository.findByUserName(user.getName());
 
@@ -63,7 +63,7 @@ class PostJpaRepositoryTest {
 
     @Test
     @DisplayName("잘못된 user name으로 조회시 빈 list를 반환한다.")
-    public void findFailByUser(){
+    public void findFailByUser() {
         // When
         var posts = postRepository.findByUserName("오잉");
 
@@ -73,7 +73,7 @@ class PostJpaRepositoryTest {
 
     @Test
     @DisplayName("post list를 title로 정상 조회한다.")
-    public void findPostByTitle(){
+    public void findPostByTitle() {
         // When
         var posts = postRepository.findByTitle("초밥");
 
@@ -85,13 +85,13 @@ class PostJpaRepositoryTest {
 
     @Test
     @DisplayName("post title을 정상 수정한다.")
-    public void updatePostTitle(){
+    public void updatePostTitle() {
         // Given
         var find = postRepository.findById(1L);
         var findPost = find.get();
 
         // When
-       findPost.changeTitle("초밥 달인");
+        findPost.changeTitle("초밥 달인");
         var posts = postRepository.findByTitle("달인");
 
         // Then
@@ -101,7 +101,7 @@ class PostJpaRepositoryTest {
 
     @Test
     @DisplayName("post content를 정상 수정한다.")
-    public void updatePostContent(){
+    public void updatePostContent() {
         // Given
         var find = postRepository.findById(1L);
         var findPost = find.get();
@@ -117,7 +117,7 @@ class PostJpaRepositoryTest {
 
     @Test
     @DisplayName("post를 정상 삭제한다.")
-    public void deletePost(){
+    public void deletePost() {
         // Given
         var findPost = postRepository.findById(1L).get();
 
@@ -131,14 +131,14 @@ class PostJpaRepositoryTest {
 
     @Test
     @DisplayName("BaseEntity 필드가 정상 등록된다.")
-    public void BaseEntityTest(){
+    public void BaseEntityTest() {
         // Given // When
         var findPost = postRepository.findById(1L).get();
         findPost.setCreatedBy("관리자");
 
         // Then
         assertThat(findPost.getCreatedAt()).isNotNull();
-        log.info("{}",findPost.getCreatedAt());
+        log.info("{}", findPost.getCreatedAt());
         assertThat(findPost.getCreatedBy()).isEqualTo("관리자");
     }
 

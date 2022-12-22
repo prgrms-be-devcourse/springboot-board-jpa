@@ -47,22 +47,22 @@ public class Post extends BaseEntity {
         setUser(user);
     }
 
-    private void setUser(User user){
+    private void setUser(User user) {
         this.user = user;
         user.getPosts().add(this);
     }
 
-    private String blankCheckTitle(String title){
-        if(title.isBlank())
+    private String blankCheckTitle(String title) {
+        if (title.isBlank())
             return "(제목없음)";
         return title;
     }
 
-    public void changeContent(String content){
+    public void changeContent(String content) {
         this.content = content;
     }
 
-    public void changeTitle(String title){
+    public void changeTitle(String title) {
         this.title = title;
     }
 }

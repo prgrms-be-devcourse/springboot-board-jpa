@@ -8,19 +8,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PostConverter {
-    public Post convertNewPost(PostDTO.Save postDTO){
+    public Post convertNewPost(PostDTO.Save postDTO) {
         User user = this.convertUser(postDTO.getUserDto());
-        Post post = new Post(postDTO.getTitle(),postDTO.getContent(),user);
+        Post post = new Post(postDTO.getTitle(), postDTO.getContent(), user);
         post.setCreatedBy(postDTO.getUserDto().getName());
 
         return post;
     }
 
-    private User convertUser(UserDto.Info userDto){
-        return new User(userDto.getId(), userDto.getName(),userDto.getAge(),userDto.getHobby());
+    private User convertUser(UserDto.Info userDto) {
+        return new User(userDto.getId(), userDto.getName(), userDto.getAge(), userDto.getHobby());
     }
 
-    public PostDTO.Response convertResponseOnlyPostDto(Post post){
+    public PostDTO.Response convertResponseOnlyPostDto(Post post) {
         PostDTO.Response postDTO = PostDTO.Response.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -31,7 +31,7 @@ public class PostConverter {
         return postDTO;
     }
 
-    private UserDto.Info convertUserDto(User user){
+    private UserDto.Info convertUserDto(User user) {
         UserDto.Info userDto = UserDto.Info.builder()
                 .id(user.getId())
                 .name(user.getName())

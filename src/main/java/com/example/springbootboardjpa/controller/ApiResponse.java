@@ -2,14 +2,15 @@ package com.example.springbootboardjpa.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ApiResponse <T>{
+@RequiredArgsConstructor
+public class ApiResponse<T> {
     private int statusCode;
     private T data;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -21,11 +22,11 @@ public class ApiResponse <T>{
         this.serverDataTime = LocalDateTime.now();
     }
 
-    public static <T> ApiResponse<T> ok(T data){
-        return new ApiResponse<>(200,data);
+    public static <T> ApiResponse<T> ok(T data) {
+        return new ApiResponse<>(200, data);
     }
 
-    public static <T> ApiResponse<T> fail(int statusCode,T data){
-        return new ApiResponse<>(statusCode,data);
+    public static <T> ApiResponse<T> fail(int statusCode, T data) {
+        return new ApiResponse<>(statusCode, data);
     }
 }

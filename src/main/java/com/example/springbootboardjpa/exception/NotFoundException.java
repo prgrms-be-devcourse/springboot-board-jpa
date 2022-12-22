@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 @NoArgsConstructor
 @Slf4j
-public class NotFoundException extends SQLException {
+public class NotFoundException extends RuntimeException {
     public NotFoundException(String s) {
         super(s);
         log.warn(s);

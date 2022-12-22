@@ -130,7 +130,7 @@ class UserJpaRepositoryTest {
 
     @Test
     @DisplayName("BaseEntity 필드가 정상 등록된다.")
-    public void BaseEntityTest(){
+    public void BaseEntityTest() {
         // Given
         userRepository.save(user);
 
@@ -140,7 +140,7 @@ class UserJpaRepositoryTest {
 
         // Then
         assertThat(findUser.getCreatedAt()).isNotNull();
-        log.info("{}",findUser.getCreatedAt());
+        log.info("{}", findUser.getCreatedAt());
         assertThat(findUser.getCreatedBy()).isEqualTo("관리자");
     }
 }

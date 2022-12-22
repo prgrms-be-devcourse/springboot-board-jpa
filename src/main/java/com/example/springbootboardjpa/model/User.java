@@ -2,6 +2,7 @@ package com.example.springbootboardjpa.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,6 +28,7 @@ public class User extends BaseEntity{
     private String name;
 
     @NotNull
+    @PositiveOrZero(message = "나이는 0 이상이어야 합니다.")
     private int age;
 
     @Size(max = 50, message = "유효 글자 수를 초과하였습니다.")
@@ -49,11 +51,11 @@ public class User extends BaseEntity{
         this.hobby = hobby;
     }
 
-    public User( String name, int age) {
-        this(name,age,null);
+    public User(String name, int age) {
+        this(name, age, null);
     }
 
-    public void changeName(String name){
+    public void changeName(String name) {
         this.name = name;
     }
 

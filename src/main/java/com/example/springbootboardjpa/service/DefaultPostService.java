@@ -5,49 +5,46 @@ import com.example.springbootboardjpa.dto.PostDTO;
 import com.example.springbootboardjpa.exception.NotFoundException;
 import com.example.springbootboardjpa.model.Post;
 import com.example.springbootboardjpa.repoistory.PostJpaRepository;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Slf4j
+@RequiredArgsConstructor
 public class DefaultPostService implements PostService {
 
     private final PostJpaRepository postRepository;
 
     private final PostConverter postConverter;
 
-    public DefaultPostService(PostJpaRepository postRepository, PostConverter postConverter) {
-        this.postRepository = postRepository;
-        this.postConverter = postConverter;
-    }
-
     @Override
-    public PostDTO.Response findById(long id) throws NotFoundException {
+    public PostDTO.Response findById(long id) {
         return postRepository.findById(id)
                 .map(postConverter::convertResponseOnlyPostDto)
-                .orElseThrow(NotFoundException::new);
-    }
-
-    @Override
-    public List<PostDTO> findAll() {
-        return null;
+                .orElseThrow(() -> new NotFoundException("해당 Id의 게시물을 찾을 수 없습니다."));
     }
 
     @Override
     public long save(PostDTO.Save postDTO) {
         Post post = postConverter.convertNewPost(postDTO);
-        log.info(post.toString());
         Post entity = postRepository.save(post);
         return entity.getId();
     }
 
     @Override
-    public void update(long id, String title, String contents) throws NotFoundException {
+    public void update(long id, String title, String contents)  {
         Post post = postRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         post.changeTitle(title);
         post.changeContent(contents);
+    }
+
+    @Override
+    public Page<PostDTO.Response> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable)
+                .map(postConverter::convertResponseOnlyPostDto);
     }
 }
