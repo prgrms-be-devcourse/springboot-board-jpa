@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,7 +31,7 @@ public class PostApiController {
 	@PostMapping
 	ResponseEntity<PostResponseDto> createPost(@RequestBody @Valid PostCreateRequestDto postCreateRequestDto) {
 		PostResponseDto createdPostDto = postService.createPost(postCreateRequestDto);
-		return ResponseEntity.ok(createdPostDto);
+		return new ResponseEntity<>(createdPostDto, HttpStatus.CREATED);
 	}
 
 	@GetMapping

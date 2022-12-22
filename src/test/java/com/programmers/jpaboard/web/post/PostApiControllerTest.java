@@ -62,7 +62,7 @@ class PostApiControllerTest {
 		mockMvc.perform(post("/api/v1/posts")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(postCreateRequestDto)))
-			.andExpect(status().isOk())
+			.andExpect(status().isCreated())
 			.andDo(print())
 			.andDo(document("post-save",
 				requestFields(
