@@ -12,11 +12,11 @@ public class UserDto {
     @Getter
     public static class Info {
         @NotNull
-        private long id;
+        private Long id;
         @NotNull
         private String name;
         @NotNull
-        private int age;
+        private Integer age;
         private String hobby;
         private String createdBy;
         private LocalDateTime createdAt;

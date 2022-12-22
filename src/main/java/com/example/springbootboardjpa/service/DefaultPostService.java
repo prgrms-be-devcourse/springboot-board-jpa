@@ -12,11 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
-@Validated
 public class DefaultPostService implements PostService {
 
     private final PostJpaRepository postRepository;
@@ -38,7 +35,7 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    public void update(long id, String title, String contents)  {
+    public void update(long id, String title, String contents) {
         Post post = postRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         post.changeTitle(title);

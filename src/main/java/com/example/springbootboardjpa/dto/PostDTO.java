@@ -26,7 +26,7 @@ public class PostDTO {
     @AllArgsConstructor
     public static class Request {
         @NotNull
-        private long id;
+        private Long id;
         @NotNull
         private String title;
         @NotNull
@@ -36,7 +36,7 @@ public class PostDTO {
     @Getter
     @Builder
     public static class Response {
-        private long id;
+        private Long id;
         private String title;
         private String content;
         private UserDto.Info userDto;

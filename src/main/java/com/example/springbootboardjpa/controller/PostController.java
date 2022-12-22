@@ -3,16 +3,22 @@ package com.example.springbootboardjpa.controller;
 import com.example.springbootboardjpa.dto.PostDTO;
 import com.example.springbootboardjpa.exception.NotFoundException;
 import com.example.springbootboardjpa.service.PostService;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/posts")
+@RestController
 public class PostController {
 
     private final PostService postService;
@@ -23,8 +29,13 @@ public class PostController {
     }
 
     @ExceptionHandler(Exception.class)
-    public ApiResponse<String> internalServerErrorHandler(NotFoundException e) {
+    public ApiResponse<String> internalServerErrorHandler(Exception e) {
         return ApiResponse.fail(500, e.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ApiResponse<String> validationErrorHandler(MethodArgumentNotValidException e) {
+        return ApiResponse.fail(400, e.getBindingResult().toString());
     }
 
 
@@ -34,8 +45,8 @@ public class PostController {
      * @param pageable
      * @return Page<PostDto>
      */
-    @GetMapping("/posts")
-    public ApiResponse<Page<PostDTO.Response>> getPost(Pageable pageable) {
+    @GetMapping()
+    public ApiResponse<Page<PostDTO.Response>> getPost(@PageableDefault(sort = "id",direction = Sort.Direction.DESC) Pageable pageable) {
         Page<PostDTO.Response> pages = postService.findAll(pageable);
         return ApiResponse.ok(pages);
     }
@@ -46,7 +57,7 @@ public class PostController {
      * @param id
      * @return PostDto
      */
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public ApiResponse<PostDTO.Response> getPosts(@PathVariable Long id) {
         PostDTO.Response findPost = postService.findById(id);
         return ApiResponse.ok(findPost);
@@ -58,7 +69,7 @@ public class PostController {
      * @param postDTO
      * @return PostId
      */
-    @PostMapping("/posts")
+    @PostMapping()
     public ApiResponse<String> createPost(@Valid @RequestBody PostDTO.Save postDTO) {
         log.info(postDTO.getUserDto().getHobby());
         long postId = postService.save(postDTO);
@@ -71,7 +82,7 @@ public class PostController {
      * @param id
      * @param postDTO
      */
-    @PostMapping("/posts/{id}")
+    @PostMapping("{id}")
     public void updatePost(@PathVariable Long id, @Valid @RequestBody PostDTO.Request postDTO) {
         postService.update(id, postDTO.getTitle(), postDTO.getContent());
     }
