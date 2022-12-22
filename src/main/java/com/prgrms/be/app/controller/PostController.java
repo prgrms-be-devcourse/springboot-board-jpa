@@ -6,62 +6,55 @@ import com.prgrms.be.app.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 
-@RequiredArgsConstructor
+
 @RestController
+@RequiredArgsConstructor
+@RequestMapping(value = "/posts")
 public class PostController {
 
     private final PostService postService;
 
     //toDo : 생성
-    @PostMapping("/posts")
-    public ResponseEntity<ApiResponse> save(@RequestBody PostDTO.CreateRequest createRequest) {
+    @PostMapping()
+    public ApiResponse<Long> save(@RequestBody @Valid PostDTO.CreateRequest createRequest) {
         Long postId = postService.createPost(createRequest);
-        return ResponseEntity.ok(ApiResponse.ok(
+        return ApiResponse.ok(
                 postId,
-                ResponseMessage.CREATED
-        ));
+                ResponseMessage.CREATED);
     }
 
     //toDo : 단건 조회하는 메서드
-    @GetMapping("/posts/{id}")
-    public ResponseEntity<ApiResponse> getOne(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ApiResponse<PostDTO.PostDetailResponse> getOne(@PathVariable Long id) {
         PostDTO.PostDetailResponse postDetailResponse = postService.findById(id);
-        return ResponseEntity.ok(
-                ApiResponse.ok(
-                        postDetailResponse,
-                        ResponseMessage.FINDED_ONE
-                )
-        );
+        return ApiResponse.ok(
+                postDetailResponse,
+                ResponseMessage.FINDED_ONE);
     }
 
     //toDo : 페이징 조회하는 메서드
-    @GetMapping("/posts")
-    public ResponseEntity<ApiResponse> getAll(
+    @GetMapping()
+    public ApiResponse<Page<PostDTO.PostsResponse>> getAll(
             @RequestParam int page,
             @RequestParam int size) {
         Page<PostDTO.PostsResponse> postPages = postService.findAll(PageRequest.of(page, size));
-        return ResponseEntity.ok(
-                ApiResponse.ok(
-                        postPages,
-                        ResponseMessage.FINDED_ALL
-                )
-        );
+        return ApiResponse.ok(
+                postPages,
+                ResponseMessage.FINDED_ALL);
     }
 
     //toDo : 수정
-    @PostMapping("/posts/{id}")
-    public ResponseEntity<ApiResponse> update(
+    @PostMapping("/{id}")
+    public ApiResponse<Long> update(
             @PathVariable Long id,
-            @RequestBody PostDTO.UpdateRequest request) {
+            @Valid @RequestBody PostDTO.UpdateRequest request) {
         Long postId = postService.updatePost(id, request);
-        return ResponseEntity.ok(
-                ApiResponse.ok(
-                        postId,
-                        ResponseMessage.UPDATED
-                ));
+        return ApiResponse.ok(
+                postId,
+                ResponseMessage.UPDATED);
     }
 }
