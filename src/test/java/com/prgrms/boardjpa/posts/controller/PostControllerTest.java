@@ -1,12 +1,10 @@
 package com.prgrms.boardjpa.posts.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.boardjpa.posts.dto.PostDto;
 import com.prgrms.boardjpa.posts.dto.PostRequest;
 import com.prgrms.boardjpa.posts.service.PostService;
 import com.prgrms.boardjpa.users.dto.UserDto;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,8 +21,9 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -80,7 +80,8 @@ class PostControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("find-post-list",
-            responseFields(
+//            responseFields(
+              relaxedResponseFields(
                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
                 fieldWithPath("data.content[]").type(JsonFieldType.ARRAY).description("content"),
                 fieldWithPath("data.content[].postId").type(JsonFieldType.NUMBER).description("postId"),
@@ -92,6 +93,8 @@ class PostControllerTest {
                 fieldWithPath("data.content[].userDto.age").type(JsonFieldType.NUMBER).description("userDto.age"),
                 fieldWithPath("data.content[].userDto.hobby").type(JsonFieldType.STRING).description("userDto.hobby"),
 
+                /*
+                전체 정보
                 fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("페이지 정보"),
                 fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("sort 정보"),
                 fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("empty"),
@@ -116,9 +119,7 @@ class PostControllerTest {
                 fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted"),
                 fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements"),
                 fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("empty"),
-
-
-
+                */
 
                 fieldWithPath("responseMessage").type(JsonFieldType.STRING).description("응답 메세지")
             )
@@ -127,14 +128,14 @@ class PostControllerTest {
 
   @Test
   void getPostCallTest() throws Exception {
-    mockMvc.perform(get("/posts/{id}", postId)
+    mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/{postId}", postId)
         .contentType(MediaType.APPLICATION_JSON)
     )
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("find-post",
             pathParameters(
-                parameterWithName("id").description("게시글 id")
+                parameterWithName("postId").description("게시글 id")
             ),
             responseFields(
                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
@@ -219,7 +220,7 @@ class PostControllerTest {
         .build();
 
     //when //then
-    mockMvc.perform(post("/posts/{id}", postId)
+    mockMvc.perform(RestDocumentationRequestBuilders.post("/posts/{id}", postId)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(postRequest))
         )
