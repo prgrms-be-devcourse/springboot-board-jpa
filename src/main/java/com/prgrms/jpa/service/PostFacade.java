@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.prgrms.jpa.utils.PostEntityDtoMapper.*;
+import static com.prgrms.jpa.utils.PostEntityDtoMapper.toPostDto;
+import static com.prgrms.jpa.utils.PostEntityDtoMapper.toPostIdDto;
+import static com.prgrms.jpa.utils.PostEntityDtoMapper.toPostsDto;
 
 @Service
 public class PostFacade {
