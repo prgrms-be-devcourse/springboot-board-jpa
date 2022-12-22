@@ -27,6 +27,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<SinglePostResponse> pagingPost(Pageable pageable) {
+        return postRepository.findAll(pageable).map(PostDto.SinglePostResponse::toResponse);
     }
 
     @Override
@@ -56,6 +57,5 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public SinglePostResponse updatePost(long postId, UpdatePostRequest updatePostRequest) {
-
     }
 }
