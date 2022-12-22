@@ -1,11 +1,11 @@
 package devcourse.board.domain.member;
 
 import devcourse.board.domain.member.model.Member;
-import devcourse.board.domain.post.model.Post;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MemberRepository {
@@ -20,8 +20,8 @@ public class MemberRepository {
         em.persist(member);
     }
 
-    public Member findOne(Long id) {
-        return em.find(Member.class, id);
+    public Optional<Member> findOne(Long id) {
+        return Optional.ofNullable(em.find(Member.class, id));
     }
 
     public List<Member> findAll() {

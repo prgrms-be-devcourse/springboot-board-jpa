@@ -1,10 +1,17 @@
 package devcourse.board.domain.member;
 
+import devcourse.board.domain.member.model.Member;
 import devcourse.board.domain.member.model.MemberRequest;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+import java.text.MessageFormat;
+import java.util.NoSuchElementException;
+
 @Service
+@Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -14,7 +21,16 @@ public class MemberService {
     }
 
     @Transactional
-    public void save(MemberRequest.JoinDto joinDto) {
-        memberRepository.save(MemberRequest.toEntity(joinDto));
+    public Long save(MemberRequest.JoinDto joinDto) {
+        Member member = MemberRequest.toEntity(joinDto);
+        memberRepository.save(member);
+        return member.getId();
+    }
+
+    public Member findOne(Long memberId) {
+        return memberRepository.findOne(memberId)
+                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format(
+                        "Member doesn't exist for memberId={0}", memberId
+                )));
     }
 }
