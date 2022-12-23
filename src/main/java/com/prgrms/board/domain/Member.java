@@ -6,6 +6,7 @@ import lombok.Builder.Default;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +23,12 @@ public class Member {
     private Long id;
 
     @Column(nullable = false, length = 10, unique = true)
-    @NotBlank
+    @NotBlank(message = "{exception.member.name.null}")
     private String name;
 
     @Column(nullable = false)
-    @NotNull
+    @NotNull(message = "{exception.member.age.null}")
+    @Positive(message = "{exception.member.age.positive}")
     private int age;
 
     private String hobby;

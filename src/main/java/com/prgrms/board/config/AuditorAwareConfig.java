@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+import static com.prgrms.board.service.PostServiceImpl.SESSION_MEMBER;
+
 @Component
 @RequiredArgsConstructor
 public class AuditorAwareConfig implements AuditorAware<String> {
@@ -15,7 +17,7 @@ public class AuditorAwareConfig implements AuditorAware<String> {
 
     @Override
     public Optional<String> getCurrentAuditor() {
-        Member member = (Member) httpSession.getAttribute("member");
+        Member member = (Member) httpSession.getAttribute(SESSION_MEMBER);
         if (member == null)
             return null;
 
