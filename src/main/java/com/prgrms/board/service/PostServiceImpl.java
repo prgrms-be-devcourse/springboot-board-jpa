@@ -47,20 +47,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponseDto findById(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("exception.post.id.null"));
-        return converter.PostEntityToDto(post);
-    }
-
-    @Override
-    public CursorResult findAll(Long cursorId, Pageable pageable) {
-        List<Post> posts = getPosts(cursorId, pageable);
-        List<PostResponseDto> postResponseDtoList = posts.stream()
-                .map(post -> converter.PostEntityToDto(post))
-                .collect(Collectors.toList());
-
-        Long lastIdOfList = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
-
-        Boolean hasNext = hasNext(lastIdOfList);
-        return new CursorResult(postResponseDtoList, hasNext);
+        return converter.postEntityToDto(post);
     }
 
     @Override
@@ -75,15 +62,28 @@ public class PostServiceImpl implements PostService {
         return post.getId();
     }
 
-    private Boolean hasNext(Long id) {
-        if (id == null) return false;
-        return postRepository.existsByIdLessThan(id);
+    @Override
+    public CursorResult findAll(Long cursorId, Pageable pageable) {
+        List<Post> posts = getPosts(cursorId, pageable);
+        List<PostResponseDto> postResponseDtoList = posts.stream()
+                .map(post -> converter.postEntityToDto(post))
+                .collect(Collectors.toList());
+
+        Long lastIdOfList = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
+
+        Boolean hasNext = hasNext(lastIdOfList);
+        return new CursorResult(postResponseDtoList, hasNext);
     }
 
     private List<Post> getPosts(Long cursorId, Pageable pageable) {
         return cursorId == null ?
                 postRepository.findAllByOrderByIdDesc(pageable) :
                 postRepository.findByIdLessThanOrderByIdDesc(cursorId, pageable);
+    }
+
+    private Boolean hasNext(Long id) {
+        if (id == null) return false;
+        return postRepository.existsByIdLessThan(id);
     }
 
 }

@@ -26,12 +26,12 @@ public class EntityConverter {
                 .name(member.getName())
                 .age(member.getAge())
                 .hobby(member.getHobby())
-                .posts(member.getPosts().stream().map(this::PostEntityToDto).collect(Collectors.toList()))
+                .posts(member.getPosts().stream().map(this::postEntityToDto).collect(Collectors.toList()))
                 .build();
 
     }
 
-    public PostResponseDto PostEntityToDto(Post post) {
+    public PostResponseDto postEntityToDto(Post post) {
         return PostResponseDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())

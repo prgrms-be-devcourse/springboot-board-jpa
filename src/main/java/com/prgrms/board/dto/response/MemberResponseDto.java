@@ -1,11 +1,11 @@
 package com.prgrms.board.dto.response;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 import java.util.List;
 
-@Data
+@Getter
 @Builder
 public class MemberResponseDto {
     private Long id;

@@ -2,8 +2,9 @@ package com.prgrms.board.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @Builder
 public class PostResponseDto {
     private Long id;
