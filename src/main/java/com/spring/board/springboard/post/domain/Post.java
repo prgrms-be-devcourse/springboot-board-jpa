@@ -30,7 +30,7 @@ public class Post {
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
-    public Post() {
+    protected Post() {
     }
 
     public Post(String title, String content, LocalDateTime createdAt, Member member){
