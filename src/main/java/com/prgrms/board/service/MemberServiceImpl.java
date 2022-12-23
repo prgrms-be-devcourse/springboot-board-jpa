@@ -35,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberResponseDto findById(Long memberId) {
         Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("exception.member.id.null"));
 
         return converter.memberEntityToDto(findMember);
     }
@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
     private void validateDuplicateName(String name) {
         Optional<Member> duplicateMember = memberRepository.findByName(name);
         if (duplicateMember.isPresent()) {
-            throw new IllegalArgumentException("이미 사용중인 이름입니다.");
+            throw new IllegalArgumentException("exception.member.name.duplicate");
         }
     }
 }

@@ -32,11 +32,9 @@ class PostServiceTest {
     PostService postService;
 
     @Autowired
-//    @Mock
     PostRepository postRepository;
 
     @Autowired
-//    @Mock
     MemberRepository memberRepository;
 
     @Autowired
@@ -56,7 +54,6 @@ class PostServiceTest {
                 .hobby("농구")
                 .build();
 
-//        when(memberRepository.save(member)).thenReturn(member);
         savedMember = memberRepository.save(member);
 
         Post post = Post.builder()
@@ -96,7 +93,6 @@ class PostServiceTest {
         PostResponseDto postResponseDto = postService.findById(savedPost.getId());
 
         //then
-
         assertThat(postResponseDto)
                 .hasFieldOrPropertyWithValue("title", savedPost.getTitle())
                 .hasFieldOrPropertyWithValue("content", savedPost.getContent())

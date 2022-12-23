@@ -32,7 +32,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Long register(PostCreateDto postCreateDto) {
         Member member = memberRepository.findById(postCreateDto.getWriterId())
-                .orElseThrow(() -> new RuntimeException("잘못된 사용자 정보입니다."));
+                .orElseThrow(() -> new RuntimeException("exception.member.id.null"));
 
         httpSession.setAttribute(SESSION_MEMBER, member);
 
@@ -46,7 +46,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDto findById(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("잘못된 게시글 정보입니다."));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("exception.post.id.null"));
         return converter.PostEntityToDto(post);
     }
 
@@ -67,7 +67,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public Long update(PostUpdateDto updateDto) {
         Post post = postRepository.findById(updateDto.getPostId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("exception.post.id.null"));
 
         post.changeTitle(updateDto.getTitle());
         post.changeContent(updateDto.getContent());
