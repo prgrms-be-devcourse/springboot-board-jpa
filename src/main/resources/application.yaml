@@ -16,6 +16,13 @@ spring:
     ansi:
       enabled: always
 
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
 logging:
   level:
     org.hibernate.SQL: debug
