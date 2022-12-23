@@ -22,7 +22,7 @@ import java.util.Objects;
 public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @NotBlank @Size(min = 2, max = 10, message = "이름은 2글자 이상, 10글자 이하 여야 합니다")
