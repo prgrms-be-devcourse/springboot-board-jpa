@@ -1,7 +1,7 @@
 package com.spring.board.springboard.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring.board.springboard.post.domain.dto.RequestPostDTO;
+import com.spring.board.springboard.post.domain.dto.RequestPostDto;
 import com.spring.board.springboard.post.service.PostService;
 import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
@@ -49,7 +49,7 @@ class PostControllerTest {
                 new Member("이수린", 24, Hobby.sleep)
         );
 
-        RequestPostDTO requestPostDTO = new RequestPostDTO(
+        RequestPostDto requestPostDTO = new RequestPostDto(
                 "스프링 게시판 미션",
                 "이 미션 끝나면 크리스마스에요",
                 1);
@@ -87,7 +87,7 @@ class PostControllerTest {
     @Test
     void createPost() throws Exception {
         // given
-        RequestPostDTO requestPostDTO = new RequestPostDTO(
+        RequestPostDto requestPostDTO = new RequestPostDto(
                 "저장하기",
                 "게시판에 새 글 저장하기",
                 1);
@@ -135,7 +135,7 @@ class PostControllerTest {
     @DisplayName("게시물의 제목과 내용을 수정할 수 있다.")
     @Test
     void updatePost() throws Exception {
-        RequestPostDTO updatePostDTO = new RequestPostDTO(
+        RequestPostDto updatePostDTO = new RequestPostDto(
                 "수정하기",
                 "게시판 새 글 저장하기 -> 수정된 내용임",
                 1
