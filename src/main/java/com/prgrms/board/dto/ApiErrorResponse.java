@@ -6,24 +6,21 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class ApiResponse<T> {
+public class ApiErrorResponse {
+    private String errorMessage;
     private int statusCode;
-    private T data;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime serverDatetime;
 
-    public ApiResponse(int statusCode, T data) {
+    public ApiErrorResponse(String errorMessage, int statusCode) {
+        this.errorMessage = errorMessage;
         this.statusCode = statusCode;
-        this.data = data;
         this.serverDatetime = LocalDateTime.now();
     }
 
-    public static <T> ApiResponse<T> ok(T data) {
-        return new ApiResponse<>(200, data);
-    }
-
-    public static <T> ApiResponse<T> created(T data) {
-        return new ApiResponse<>(201, data);
+    public static ApiErrorResponse fail(String errorMessage, int statusCode) {
+        return new ApiErrorResponse(errorMessage, statusCode);
     }
 }
+

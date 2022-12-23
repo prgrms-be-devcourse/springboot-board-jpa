@@ -9,12 +9,13 @@ import javax.validation.constraints.NotNull;
 @Data
 @Builder
 public class PostCreateDto {
-    @NotBlank
+
+    @NotBlank(message = "exception.post.title.null")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "exception.post.content.null")
     private String content;
 
-    @NotNull
+    @NotNull(message = "exception.post.member.null")
     private Long writerId;
 }
