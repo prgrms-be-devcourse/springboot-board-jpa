@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PostServiceImpl implements PostService {
+    public static final String SESSION_MEMBER = "member";
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final EntityConverter converter;
     private final HttpSession httpSession;
-    public static final String SESSION_MEMBER = "member";
 
     @Transactional
     @Override
@@ -34,7 +34,7 @@ public class PostServiceImpl implements PostService {
         Member member = memberRepository.findById(postCreateDto.getWriterId())
                 .orElseThrow(() -> new RuntimeException("잘못된 사용자 정보입니다."));
 
-        httpSession.setAttribute(SESSION_MEMBER , member);
+        httpSession.setAttribute(SESSION_MEMBER, member);
 
         Post newPost = converter.createPostFromDto(postCreateDto);
         newPost.registerMember(member);
