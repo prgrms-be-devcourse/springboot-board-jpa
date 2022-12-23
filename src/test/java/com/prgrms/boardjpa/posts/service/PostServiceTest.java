@@ -63,7 +63,7 @@ class PostServiceTest {
     Long id = postId;
 
     //when
-    PostDto post = postService.getPost(postId);
+    PostDto post = postService.getPostDto(postId);
 
     //then
     assertThat(post.getPostId()).isEqualTo(id);
@@ -88,7 +88,7 @@ class PostServiceTest {
     PageRequest page = PageRequest.of(0, 10);
 
     //when
-    Page<PostDto> posts = postService.getPosts(page);
+    Page<PostDto> posts = postService.getPostDtos(page);
 
     //then
     assertThat(posts.getTotalElements()).isEqualTo(2);
