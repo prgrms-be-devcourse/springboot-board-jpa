@@ -38,7 +38,7 @@ public class User extends BaseEntity {
     private List<Post> posts = new ArrayList<>();
 
 
-    public User() {
+    protected User() {
     }
 
     public User(String name, String hobby, Integer age) {
