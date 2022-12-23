@@ -3,6 +3,7 @@ package com.prgrms.devcourse.springjpaboard.domain.post;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.CursorResult;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostRequestDto;
@@ -29,13 +30,10 @@ public class PostObjectProvider {
 			.build();
 	}
 
-
 	public static PostCreateRequestDto createPostCreateRequestDto(Long userId) {
-		return PostCreateRequestDto.builder()
-			.userId(userId)
-			.title("제목")
-			.content("내용")
-			.build();
+
+		return new PostCreateRequestDto(userId, "제목", "내용");
+
 	}
 
 	public static PostCreateResponseDto createPostCreteResponseDto(Long postId) {
@@ -45,10 +43,7 @@ public class PostObjectProvider {
 	}
 
 	public static PostUpdateDto createPostUpdateDto() {
-		return PostUpdateDto.builder()
-			.title("수정한 제목")
-			.content("수정한 내용")
-			.build();
+		return new PostUpdateDto("수정한 제목", "수정한 내용");
 	}
 
 	public static PostResponseDto createPostResponseDto(Long postId) {
@@ -60,21 +55,26 @@ public class PostObjectProvider {
 	}
 
 	public static PostRequestDto createPostRequestDto(Long cursorId, Integer size) {
-		return PostRequestDto.builder()
-			.cursorId(cursorId)
-			.size(size)
+		return new PostRequestDto(cursorId, size);
+	}
+
+	public static CursorResult createCursorResult(List<Post> postList, Long nextCursorId, boolean hasNext) {
+		return CursorResult.builder()
+			.postList(postList)
+			.nextCursorId(nextCursorId)
+			.hasNext(hasNext)
 			.build();
 	}
 
-	public static PostResponseDtos createPostResponseDtos(List<Post> postList, Long lastIdOfList, boolean hasNext) {
+	public static PostResponseDtos createPostResponseDtos(CursorResult cursorResult) {
 		return PostResponseDtos.builder()
-			.postResponseDtoList(postList.stream().map(a->PostResponseDto.builder()
+			.postResponseDtoList(cursorResult.getPostList().stream().map(a -> PostResponseDto.builder()
 				.id(a.getId())
 				.title(a.getTitle())
 				.content(a.getContent())
 				.build()).collect(Collectors.toList()))
-			.cursorId(lastIdOfList)
-			.hasNext(hasNext)
+			.nextCursorId(cursorResult.getNextCursorId())
+			.hasNext(cursorResult.getHasNext())
 			.build();
 	}
 

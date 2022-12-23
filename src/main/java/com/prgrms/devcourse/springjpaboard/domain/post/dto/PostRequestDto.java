@@ -1,25 +1,19 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.dto;
 
-import javax.validation.constraints.NotNull;
-
 import lombok.AccessLevel;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class PostRequestDto {
 
-	@NotNull
 	private Long cursorId;
 
-	@NotNull
 	private Integer size;
 
-	@Builder
-	public PostRequestDto(Long cursorId, Integer size) {
-		this.cursorId = cursorId;
-		this.size = size;
-	}
 }

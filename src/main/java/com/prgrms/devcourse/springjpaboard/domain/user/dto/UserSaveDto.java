@@ -21,7 +21,6 @@ public class UserSaveDto {
 	@NotBlank
 	private String hobby;
 
-	@Builder
 	public UserSaveDto(String name, Integer age, String hobby) {
 		this.name = name;
 		this.age = age;

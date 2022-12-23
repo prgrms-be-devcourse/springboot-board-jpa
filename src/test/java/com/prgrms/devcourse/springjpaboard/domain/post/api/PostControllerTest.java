@@ -1,16 +1,17 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.api;
 
 import static com.prgrms.devcourse.springjpaboard.domain.post.PostObjectProvider.*;
+import static com.prgrms.devcourse.springjpaboard.domain.user.UserObjectProvider.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,13 +19,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.CursorResult;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDtos;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateDto;
+import com.prgrms.devcourse.springjpaboard.domain.user.User;
 
 @WebMvcTest(PostController.class)
 class PostControllerTest {
@@ -51,7 +55,7 @@ class PostControllerTest {
 		String request = objectMapper.writeValueAsString(postCreateRequestDto);
 		String response = objectMapper.writeValueAsString(postCreteResponseDto);
 
-		when(postFacade.create(ArgumentMatchers.any())).thenReturn(postCreteResponseDto);
+		when(postFacade.create(postCreateRequestDto)).thenReturn(postCreteResponseDto);
 
 		mockMvc.perform(post("/api/v1/posts")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -63,7 +67,7 @@ class PostControllerTest {
 			.andExpect(status().isCreated())
 			.andDo(print());
 
-		verify(postFacade).create(ArgumentMatchers.any());
+		verify(postFacade).create(postCreateRequestDto);
 	}
 
 	@Test
@@ -100,7 +104,7 @@ class PostControllerTest {
 
 		String json = objectMapper.writeValueAsString(postUpdateDto);
 
-		doNothing().when(postFacade).update(ArgumentMatchers.any(), ArgumentMatchers.any());
+		doNothing().when(postFacade).update(postId, postUpdateDto);
 
 		mockMvc.perform(post("/api/v1/posts/{id}", postId)
 				.content(json)
@@ -108,7 +112,7 @@ class PostControllerTest {
 			.andExpect(status().isOk())
 			.andDo(print());
 
-		verify(postFacade).update(ArgumentMatchers.any(), ArgumentMatchers.any());
+		verify(postFacade).update(postId, postUpdateDto);
 
 	}
 
@@ -116,25 +120,28 @@ class PostControllerTest {
 	@DisplayName("전체 Post 조회 정상요청")
 	void findAll() throws Exception {
 
-		Long cursorId = 2L;
-		Integer size = 1;
+		Long cursorId = null;
+		Integer size = 3;
 		PostRequestDto postRequestDto = createPostRequestDto(cursorId, size);
 
-		Long postId = 1L;
-		PostResponseDto postResponseDto = createPostResponseDto(postId);
+		User user = createUser();
+		Post post1 = createPost(user);
+		Post post2 = createPost(user);
+		Post post3 = createPost(user);
 
-		List<PostResponseDto> postResponseDtoList = List.of(postResponseDto);
+		List<Post> postList = List.of(post3, post2, post1);
 
-		PostResponseDtos postResponseDtos = PostResponseDtos.builder()
-			.postResponseDtoList(postResponseDtoList)
-			.cursorId(cursorId)
-			.hasNext(true)
-			.build();
+		Long lastIdOfList = 1L;
+		boolean hasNext = false;
+
+		CursorResult cursorResult = createCursorResult(postList, lastIdOfList, hasNext);
+
+		PostResponseDtos postResponseDtos = createPostResponseDtos(cursorResult);
 
 		String requestJson = objectMapper.writeValueAsString(postRequestDto);
 		String responseJson = objectMapper.writeValueAsString(postResponseDtos);
 
-		when(postFacade.findAll(ArgumentMatchers.any())).thenReturn(postResponseDtos);
+		when(postFacade.findAll(any(PostRequestDto.class))).thenReturn(postResponseDtos);
 
 		mockMvc.perform(get("/api/v1/posts")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -142,15 +149,16 @@ class PostControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(content().json(responseJson))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(jsonPath("$.postResponseDtoList.[0].id").value(postId))
+			.andExpect(jsonPath("$.postResponseDtoList.[0].id").value(post3.getId()))
 			.andExpect(
-				jsonPath("$.postResponseDtoList.[0].title").value(postResponseDto.getTitle()))
+				jsonPath("$.postResponseDtoList.[0].title").value(post3.getTitle()))
 			.andExpect(
-				jsonPath("$.postResponseDtoList.[0].content").value(postResponseDto.getContent()))
-			.andExpect(jsonPath("$.cursorId").value(postResponseDtos.getCursorId()))
+				jsonPath("$.postResponseDtoList.[0].content").value(post3.getContent()))
+			.andExpect(jsonPath("$.nextCursorId").value(postResponseDtos.getNextCursorId()))
 			.andExpect(jsonPath("$.hasNext").value(postResponseDtos.getHasNext()))
 			.andDo(print());
 
-		verify(postFacade).findAll(ArgumentMatchers.any());
+		verify(postFacade).findAll(any(PostRequestDto.class));
+
 	}
 }

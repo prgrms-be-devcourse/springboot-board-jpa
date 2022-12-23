@@ -4,12 +4,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EqualsAndHashCode
 public class PostCreateRequestDto {
 
 	@NotNull
@@ -20,12 +23,5 @@ public class PostCreateRequestDto {
 
 	@NotBlank
 	private String content;
-
-	@Builder
-	public PostCreateRequestDto(Long userId, String title, String content) {
-		this.userId = userId;
-		this.title = title;
-		this.content = content;
-	}
 
 }

@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.6'
     id 'io.spring.dependency-management' version '1.1.0'
-    id 'org.asciidoctor.convert' version '1.5.8'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.prgrms.devcourse'
@@ -13,6 +13,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
 }
 
 repositories {
@@ -35,6 +36,8 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     implementation 'com.google.guava:guava:31.1-jre'
 
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
 }
 
 tasks.named('test') {
@@ -42,8 +45,24 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-tasks.named('asciidoctor'){
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
     inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
     dependsOn test
 }
 
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+bootJar {
+    dependsOn asciidoctor
+    copy{
+        from asciidoctor.outputDir
+        into "src/main/resources/static/docs"
+    }
+}

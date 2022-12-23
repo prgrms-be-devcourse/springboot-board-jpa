@@ -22,14 +22,11 @@ public class PostResponseDto {
 	@JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss", timezone = "Asia/Seoul")
 	private LocalDateTime createdAt;
 
-	private String createdBy;
-
 	@Builder
-	public PostResponseDto(Long id, String title, String content, LocalDateTime createdAt, String createdBy) {
+	public PostResponseDto(Long id, String title, String content, LocalDateTime createdAt) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.createdAt = createdAt;
-		this.createdBy = createdBy;
 	}
 }

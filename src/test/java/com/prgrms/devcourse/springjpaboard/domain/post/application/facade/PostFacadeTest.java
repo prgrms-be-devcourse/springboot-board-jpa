@@ -2,11 +2,11 @@ package com.prgrms.devcourse.springjpaboard.domain.post.application.facade;
 
 import static com.prgrms.devcourse.springjpaboard.domain.post.PostObjectProvider.*;
 import static com.prgrms.devcourse.springjpaboard.domain.user.UserObjectProvider.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +18,7 @@ import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.PostService;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.converter.PostConverter;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.CursorResult;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostRequestDto;
@@ -67,7 +68,7 @@ class PostFacadeTest {
 		verify(postService).create(post);
 		verify(postConverter).toPost(postCreateRequestDto, user);
 		verify(postConverter).toPostCreateResponseDto(postId);
-		Assertions.assertThat(createResponseDto).hasFieldOrPropertyWithValue("id", postId);
+		assertThat(createResponseDto).hasFieldOrPropertyWithValue("id", postId);
 	}
 
 	@Test
@@ -87,7 +88,6 @@ class PostFacadeTest {
 
 		//then
 		verify(postService).update(postId, postUpdateDto.getTitle(), postUpdateDto.getContent());
-
 
 	}
 
@@ -111,7 +111,7 @@ class PostFacadeTest {
 		verify(postService).findById(postId);
 		verify(postConverter).toPostResponseDto(post);
 
-		Assertions.assertThat(findPost)
+		assertThat(findPost)
 			.hasFieldOrPropertyWithValue("id", postId)
 			.hasFieldOrPropertyWithValue("title", postResponseDto.getTitle())
 			.hasFieldOrPropertyWithValue("content", postResponseDto.getContent());
@@ -133,25 +133,24 @@ class PostFacadeTest {
 		Long lastIdOfList = 1L;
 		boolean hasNext = false;
 
-		PostRequestDto postRequestDto = createPostRequestDto(cursorId, size);
-		PostResponseDtos postResponseDtos = createPostResponseDtos(postList, cursorId, hasNext);
+		CursorResult cursorResult = createCursorResult(postList, lastIdOfList, hasNext);
 
-		when(postService.findAll(cursorId, size)).thenReturn(postList);
-		when(postService.getLastIdOfList(postList)).thenReturn(lastIdOfList);
-		when(postService.hasNext(lastIdOfList)).thenReturn(hasNext);
-		when(postConverter.toPostResponseDtos(postList, lastIdOfList, hasNext)).thenReturn(postResponseDtos);
+		PostRequestDto postRequestDto = createPostRequestDto(cursorId, size);
+		PostResponseDtos postResponseDtos = createPostResponseDtos(cursorResult);
+
+		when(postService.findAll(cursorId, size)).thenReturn(cursorResult);
+
+		when(postConverter.toPostResponseDtos(cursorResult)).thenReturn(postResponseDtos);
 
 		//when
 		PostResponseDtos responseDtos = postFacade.findAll(postRequestDto);
 
 		//then
 		verify(postService).findAll(cursorId, size);
-		verify(postService).getLastIdOfList(postList);
-		verify(postService).hasNext(lastIdOfList);
-		verify(postConverter).toPostResponseDtos(postList, lastIdOfList, hasNext);
+		verify(postConverter).toPostResponseDtos(cursorResult);
 
-		Assertions.assertThat(responseDtos)
-			.hasFieldOrPropertyWithValue("cursorId", cursorId)
+		assertThat(responseDtos)
+			.hasFieldOrPropertyWithValue("nextCursorId", lastIdOfList)
 			.hasFieldOrPropertyWithValue("hasNext", hasNext);
 
 	}

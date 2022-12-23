@@ -1,21 +1,17 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.application.converter;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.PostService;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.CursorResult;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequestDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDto;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDtos;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateDto;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
-
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 @Component
 public class PostConverter {
@@ -40,14 +36,16 @@ public class PostConverter {
 			.id(post.getId())
 			.title(post.getTitle())
 			.content(post.getContent())
+			.createdAt(post.getCreatedAt())
 			.build();
 	}
 
-	public PostResponseDtos toPostResponseDtos(List<Post> postList, Long lastIdOfList, boolean hasNext) {
+	public PostResponseDtos toPostResponseDtos(CursorResult cursorResult) {
 		return PostResponseDtos.builder()
-			.postResponseDtoList(postList.stream().map(this::toPostResponseDto).collect(Collectors.toList()))
-			.cursorId(lastIdOfList)
-			.hasNext(hasNext)
+			.postResponseDtoList(
+				cursorResult.getPostList().stream().map(this::toPostResponseDto).collect(Collectors.toList()))
+			.nextCursorId(cursorResult.getNextCursorId())
+			.hasNext(cursorResult.getHasNext())
 			.build();
 	}
 

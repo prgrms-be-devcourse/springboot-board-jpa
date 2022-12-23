@@ -83,12 +83,12 @@ public class Post extends BaseEntity {
 			return false;
 		Post post = (Post)o;
 		return Objects.equals(getId(), post.getId()) && Objects.equals(getTitle(), post.getTitle())
-			&& Objects.equals(getContent(), post.getContent()) && Objects.equals(getUser(),
-			post.getUser());
+			&& Objects.equals(getContent(), post.getContent()) && Objects.equals(getUser().getId(),
+			post.getUser().getId());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), getTitle(), getContent(), getUser());
+		return Objects.hash(getId(), getTitle(), getContent(), getUser().getId());
 	}
 }

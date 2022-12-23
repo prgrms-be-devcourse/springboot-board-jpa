@@ -15,8 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.CursorResult;
 import com.prgrms.devcourse.springjpaboard.domain.post.repository.PostRepository;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 
@@ -92,67 +94,32 @@ class PostServiceTest {
 	}
 
 	@Test
-	@DisplayName("파라미터로 받은 cursorId보다 작은 값이 있다면 true, 없으면 false를 반환한다 - 성공")
-	void hasNextTest() {
-		//given
-		Long cursorId = 2L;
-		boolean hasNext = true;
-
-		when(postRepository.existsByIdLessThan(cursorId)).thenReturn(hasNext);
-
-		//when
-		boolean next = postService.hasNext(cursorId);
-
-		//then
-		verify(postRepository).existsByIdLessThan(cursorId);
-
-		Assertions.assertThat(next).isEqualTo(hasNext);
-	}
-
-	@Test
-	@DisplayName("List 마지막 요소의 id를 반환한다 - 성공")
-	void getLastIdOfListTest() {
-		//given
-		User user = createUser();
-
-		Post post1 = createPost("제목1", "내용1", user);
-		Post post2 = createPost("제목2", "내용2", user);
-		Post post3 = createPost("제목3", "내용3", user);
-
-		List<Post> postList = List.of(post1, post2, post3);
-
-		//when
-		Long lastIdOfList = postService.getLastIdOfList(postList);
-
-		//then
-		Assertions.assertThat(lastIdOfList).isEqualTo(post3.getId());
-
-	}
-
-	@Test
 	@DisplayName("파라미터로 받은 cursorId 보다 w작은 Post 데이터를 size 만큼 조회한다 - 성공")
 	void findAllTest() {
 
-		//given
+		Long cursorId = null;
+		Integer size = 3;
+		Pageable pageable = PageRequest.of(0, size + 1);
 		User user = createUser();
+		Post post1 = createPost(user);
+		Post post2 = createPost(user);
+		Post post3 = createPost(user);
 
-		Post post1 = createPost("제목1", "내용1", user);
-		Post post2 = createPost("제목2", "내용2", user);
+		List<Post> postList = List.of(post3, post2, post1);
+		Long nextCursorId = postList.get(postList.size() - 1).getId();
 
-		Long cursorId = 3L;
-		int size = 2;
-		PageRequest pageRequest = PageRequest.of(0, size);
+		boolean hasNext = false;
 
-		List<Post> postList = List.of(post2, post1);
+		when(postRepository.findAllByOrderByIdDesc(pageable)).thenReturn(postList);
 
-		when(postRepository.findByIdLessThanOrderByIdDesc(cursorId, pageRequest))
-			.thenReturn(postList);
+		CursorResult cursorResult = postService.findAll(cursorId, size);
 
-		//when
-		postService.findAll(cursorId, size);
+		Assertions.assertThat(cursorResult)
+			.hasFieldOrPropertyWithValue("postList", postList)
+			.hasFieldOrPropertyWithValue("nextCursorId", nextCursorId)
+			.hasFieldOrPropertyWithValue("hasNext", hasNext);
 
-		//then
-		verify(postRepository).findByIdLessThanOrderByIdDesc(cursorId, pageRequest);
+		verify(postRepository).findAllByOrderByIdDesc(pageable);
 
 	}
 }
