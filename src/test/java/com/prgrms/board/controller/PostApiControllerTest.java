@@ -1,9 +1,9 @@
 package com.prgrms.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prgrms.board.dto.MemberCreateDto;
-import com.prgrms.board.dto.PostCreateDto;
-import com.prgrms.board.dto.PostUpdateDto;
+import com.prgrms.board.dto.request.MemberCreateDto;
+import com.prgrms.board.dto.request.PostCreateDto;
+import com.prgrms.board.dto.request.PostUpdateDto;
 import com.prgrms.board.repository.MemberRepository;
 import com.prgrms.board.repository.PostRepository;
 import com.prgrms.board.service.MemberService;
@@ -23,8 +23,6 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;

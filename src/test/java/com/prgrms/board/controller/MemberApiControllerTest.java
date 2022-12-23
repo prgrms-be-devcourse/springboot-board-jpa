@@ -1,8 +1,7 @@
 package com.prgrms.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prgrms.board.dto.MemberCreateDto;
-import com.prgrms.board.dto.MemberResponseDto;
+import com.prgrms.board.dto.request.MemberCreateDto;
 import com.prgrms.board.repository.MemberRepository;
 import com.prgrms.board.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SpringBootTest

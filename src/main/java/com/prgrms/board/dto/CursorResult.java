@@ -1,5 +1,6 @@
 package com.prgrms.board.dto;
 
+import com.prgrms.board.dto.response.PostResponseDto;
 import lombok.Data;
 
 import java.util.List;

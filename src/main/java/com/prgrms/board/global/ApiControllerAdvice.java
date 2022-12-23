@@ -1,7 +1,7 @@
 package com.prgrms.board.global;
 
-import com.prgrms.board.dto.ApiBindErrorResponse;
-import com.prgrms.board.dto.ApiErrorResponse;
+import com.prgrms.board.dto.response.ApiBindErrorResponse;
+import com.prgrms.board.dto.response.ApiErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;

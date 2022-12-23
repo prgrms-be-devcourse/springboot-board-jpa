@@ -1,7 +1,7 @@
 package com.prgrms.board.service;
 
-import com.prgrms.board.dto.MemberCreateDto;
-import com.prgrms.board.dto.MemberResponseDto;
+import com.prgrms.board.dto.request.MemberCreateDto;
+import com.prgrms.board.dto.response.MemberResponseDto;
 import com.prgrms.board.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

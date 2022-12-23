@@ -1,6 +1,10 @@
 package com.prgrms.board.controller;
 
 import com.prgrms.board.dto.*;
+import com.prgrms.board.dto.request.PostCreateDto;
+import com.prgrms.board.dto.request.PostUpdateDto;
+import com.prgrms.board.dto.response.ApiResponse;
+import com.prgrms.board.dto.response.PostResponseDto;
 import com.prgrms.board.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

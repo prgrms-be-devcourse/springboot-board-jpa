@@ -2,10 +2,10 @@ package com.prgrms.board.service.converter;
 
 import com.prgrms.board.domain.Member;
 import com.prgrms.board.domain.Post;
-import com.prgrms.board.dto.MemberCreateDto;
-import com.prgrms.board.dto.MemberResponseDto;
-import com.prgrms.board.dto.PostCreateDto;
-import com.prgrms.board.dto.PostResponseDto;
+import com.prgrms.board.dto.request.MemberCreateDto;
+import com.prgrms.board.dto.response.MemberResponseDto;
+import com.prgrms.board.dto.request.PostCreateDto;
+import com.prgrms.board.dto.response.PostResponseDto;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;

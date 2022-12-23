@@ -1,4 +1,4 @@
-package com.prgrms.board.dto;
+package com.prgrms.board.dto.response;
 
 import lombok.Builder;
 import lombok.Data;

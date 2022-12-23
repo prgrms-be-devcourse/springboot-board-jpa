@@ -1,8 +1,8 @@
 package com.prgrms.board.controller;
 
-import com.prgrms.board.dto.ApiResponse;
-import com.prgrms.board.dto.MemberCreateDto;
-import com.prgrms.board.dto.MemberResponseDto;
+import com.prgrms.board.dto.response.ApiResponse;
+import com.prgrms.board.dto.request.MemberCreateDto;
+import com.prgrms.board.dto.response.MemberResponseDto;
 import com.prgrms.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

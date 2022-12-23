@@ -1,18 +1,19 @@
 package com.prgrms.board.service;
 
 import com.prgrms.board.dto.CursorResult;
-import com.prgrms.board.dto.MemberCreateDto;
-import com.prgrms.board.dto.PostCreateDto;
+import com.prgrms.board.dto.request.MemberCreateDto;
+import com.prgrms.board.dto.request.PostCreateDto;
 import com.prgrms.board.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestClassOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -43,15 +44,16 @@ public class PostPagingTest {
 
         Long joinId = memberService.join(memberDto);
 
-        for (int i = 1; i <= numOfDummyPosts; i++) {
-            PostCreateDto dto = PostCreateDto.builder()
-                    .title("title" + i)
-                    .content("content" + i)
-                    .writerId(joinId)
-                    .build();
+        IntStream.rangeClosed(1, numOfDummyPosts)
+                .forEach(i -> {
+                    PostCreateDto dto = PostCreateDto.builder()
+                            .title("title" + i)
+                            .content("content" + i)
+                            .writerId(joinId)
+                            .build();
 
-            postService.register(dto);
-        }
+                    postService.register(dto);
+                });
     }
 
     @Test
