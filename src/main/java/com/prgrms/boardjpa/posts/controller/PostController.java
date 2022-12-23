@@ -3,6 +3,7 @@ package com.prgrms.boardjpa.posts.controller;
 import com.prgrms.boardjpa.common.CommonResponse;
 import com.prgrms.boardjpa.posts.dto.PostDto;
 import com.prgrms.boardjpa.posts.dto.PostRequest;
+import com.prgrms.boardjpa.posts.service.PostFacade;
 import com.prgrms.boardjpa.posts.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +16,11 @@ import javax.validation.Valid;
 public class PostController {
   private final PostService postService;
 
-  public PostController(PostService postService) {
+  private final PostFacade postFacade;
+
+  public PostController(PostService postService, PostFacade postFacade) {
     this.postService = postService;
+    this.postFacade = postFacade;
   }
 
   /**
@@ -26,7 +30,7 @@ public class PostController {
    */
   @GetMapping
   public CommonResponse<Page<PostDto>> getPosts(Pageable pageable) {
-    var postDtos = postService.getPosts(pageable);
+    var postDtos = postService.getPostDtos(pageable);
     return CommonResponse.ok(postDtos);
   }
 
@@ -37,7 +41,7 @@ public class PostController {
    */
   @GetMapping("/{postId}")
   public CommonResponse<PostDto> getPost(@PathVariable Long postId) {
-    var postDto = postService.getPost(postId);
+    var postDto = postService.getPostDto(postId);
     return CommonResponse.ok(postDto);
   }
 
@@ -50,7 +54,7 @@ public class PostController {
   public CommonResponse<PostDto> createPost(
       @RequestBody @Valid PostRequest postRequest
   ) {
-    var postDto = postService.createPost(postRequest);
+    var postDto = postFacade.createPost(postRequest);
     return CommonResponse.ok(postDto);
   }
 
@@ -65,7 +69,7 @@ public class PostController {
       @PathVariable Long id,
       @RequestBody @Valid PostRequest postRequest
   ) {
-    var postDto = postService.updatePost(id, postRequest);
+    var postDto = postFacade.updatePost(id, postRequest);
     return CommonResponse.ok(postDto);
   }
 }
