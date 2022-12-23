@@ -1,5 +1,6 @@
 package com.prgrms.boardjpa.posts.service;
 
+import com.prgrms.boardjpa.entity.Post;
 import com.prgrms.boardjpa.posts.dto.PostDto;
 import com.prgrms.boardjpa.posts.dto.PostRequest;
 import com.prgrms.boardjpa.posts.repository.PostRepository;
@@ -26,19 +27,23 @@ public class PostService {
 
   //1급 컬렉션 객체를 만들어서 사용해보자
   @Transactional(readOnly = true)
-  public Page<PostDto> getPosts(Pageable pageable) {
+  public Page<PostDto> getPostDtos(Pageable pageable) {
     return postRepository.findAll(pageable)
         .map(PostConverter::postToPostDto);
   }
 
   @Transactional(readOnly = true)
-  public PostDto getPost(Long postId) {
-    var post =  postRepository
+  public PostDto getPostDto(Long postId) {
+    var post = getPost(postId);
+    return postToPostDto(post);
+  }
+
+  private Post getPost(Long postId) {
+    return postRepository
         .findById(postId)
         .orElseThrow(
-            () -> new NoSuchElementException("존재하지 않는 post id " + postId)
+            () -> new NoSuchElementException("존재하지 않는 post post id: " + postId)
         );
-    return postToPostDto(post);
   }
 
 
@@ -52,11 +57,8 @@ public class PostService {
 
   @Transactional
   public PostDto updatePost(Long postId, PostRequest postRequest) {
-    var post = postRepository
-        .findById(postId)
-        .orElseThrow(
-        () -> new NoSuchElementException("존재하지 않는 post id " + postId)
-    );
+    var post = getPost(postId);
+
     post.changeTitle(postRequest.getTitle());
     post.changeContent(postRequest.getContent());
     post.changeUser(userDtoToUser(
