@@ -9,9 +9,5 @@ import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-	List<Post> findAllByOrderByIdDesc(Pageable pageable);
-
-	List<Post> findByIdLessThanOrderByIdDesc(@Param("id") Long id, Pageable pageable);
-
-	Boolean existsByIdLessThan(@Param("id") Long id);
+	Slice<Post> findByIdLessThan(@Param("id") Long id, Pageable pageable);
 }
