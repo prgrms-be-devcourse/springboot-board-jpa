@@ -61,23 +61,5 @@ include::{snippets}/post-update/request-fields.adoc[]
 
 include::{snippets}/post-update/http-response.adoc[]
 
-=== 게시글 전체조회
 
-==== /api/v1/posts
-
-.Request
-
-include::{snippets}/post-findAll/http-request.adoc[]
-
-.Request Fields
-
-include::{snippets}/post-findAll/request-fields.adoc[]
-
-.Response
-
-include::{snippets}/post-findAll/http-response.adoc[]
-
-.Response Fields
-
-include::{snippets}/post-findAll/response-fields.adoc[]
 
