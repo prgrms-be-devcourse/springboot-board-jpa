@@ -1,19 +1,18 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.dto;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-public class PostRequestDto {
+public class PostCreateResponse {
 
-	private Long cursorId;
+	private Long id;
 
-	private Integer size;
-
+	@Builder
+	public PostCreateResponse(Long id) {
+		this.id = id;
+	}
 }

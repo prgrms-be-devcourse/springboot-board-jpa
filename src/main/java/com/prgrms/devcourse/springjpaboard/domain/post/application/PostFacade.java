@@ -1,16 +1,17 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.application;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.converter.PostConverter;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.CursorResult;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDtos;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequest;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponse;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostSearchResponse;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostSearchResponses;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateRequest;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 import com.prgrms.devcourse.springjpaboard.domain.user.application.UserService;
 
@@ -28,29 +29,29 @@ public class PostFacade {
 	private final UserService userService;
 
 	@Transactional
-	public PostCreateResponseDto create(PostCreateRequestDto postSaveDto) {
+	public PostCreateResponse create(PostCreateRequest postSaveDto) {
 
 		User user = userService.findById(postSaveDto.getUserId());
 
 		Long savedId = postService.create(postConverter.toPost(postSaveDto, user));
 
-		return postConverter.toPostCreateResponseDto(savedId);
+		return postConverter.toPostCreateResponse(savedId);
 
 	}
 
 	@Transactional
-	public void update(Long id, PostUpdateDto postUpdateDto) {
+	public void update(Long id, PostUpdateRequest postUpdateRequest) {
 
-		postService.update(id, postUpdateDto.getTitle(), postUpdateDto.getContent());
+		postService.update(id, postUpdateRequest.getTitle(), postUpdateRequest.getContent());
 
 	}
 
-	public PostResponseDtos findAll(PostRequestDto postRequestDto) {
-		CursorResult cursorResult = postService.findAll(postRequestDto.getCursorId(), postRequestDto.getSize());
-		return postConverter.toPostResponseDtos(cursorResult);
+	public PostSearchResponses findAll(Long cursorId, Pageable pageable) {
+		Slice<Post> postSlice = postService.findAll(cursorId, pageable);
+		return new PostSearchResponses(postSlice.getContent(), postSlice.hasNext());
 	}
 
-	public PostResponseDto findById(Long id) {
-		return postConverter.toPostResponseDto(postService.findById(id));
+	public PostSearchResponse findById(Long id) {
+		return postConverter.toPostResponse(postService.findById(id));
 	}
 }

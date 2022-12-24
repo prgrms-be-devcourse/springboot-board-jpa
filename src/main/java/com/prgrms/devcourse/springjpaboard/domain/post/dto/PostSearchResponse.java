@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostResponseDto {
+public class PostSearchResponse {
 
 	private Long id;
 
@@ -23,7 +23,7 @@ public class PostResponseDto {
 	private LocalDateTime createdAt;
 
 	@Builder
-	public PostResponseDto(Long id, String title, String content, LocalDateTime createdAt) {
+	public PostSearchResponse(Long id, String title, String content, LocalDateTime createdAt) {
 		this.id = id;
 		this.title = title;
 		this.content = content;

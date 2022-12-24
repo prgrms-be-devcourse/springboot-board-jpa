@@ -1,7 +1,6 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.dto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -13,10 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EqualsAndHashCode
-public class PostCreateRequestDto {
-
-	@NotNull
-	private Long userId;
+public class PostUpdateRequest {
 
 	@NotBlank
 	private String title;

@@ -2,12 +2,12 @@ package com.prgrms.devcourse.springjpaboard.domain.post.application;
 
 import static com.prgrms.devcourse.springjpaboard.domain.post.PostObjectProvider.*;
 import static com.prgrms.devcourse.springjpaboard.domain.user.UserObjectProvider.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,9 +16,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.CursorResult;
 import com.prgrms.devcourse.springjpaboard.domain.post.repository.PostRepository;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 
@@ -65,7 +66,7 @@ class PostServiceTest {
 		Post findPost = postService.findById(post.getId());
 
 		//then
-		Assertions.assertThat(findPost).isEqualTo(post);
+		assertThat(findPost).isEqualTo(post);
 		verify(postRepository).findById(post.getId());
 
 	}
@@ -86,7 +87,7 @@ class PostServiceTest {
 		postService.update(post1.getId(), post2.getTitle(), post2.getContent());
 
 		//then
-		Assertions.assertThat(post1)
+		assertThat(post1)
 			.hasFieldOrPropertyWithValue("title", post2.getTitle())
 			.hasFieldOrPropertyWithValue("content", post2.getContent());
 		verify(postRepository).findById(post1.getId());
@@ -99,27 +100,21 @@ class PostServiceTest {
 
 		Long cursorId = null;
 		Integer size = 3;
-		Pageable pageable = PageRequest.of(0, size + 1);
 		User user = createUser();
-		Post post1 = createPost(user);
-		Post post2 = createPost(user);
-		Post post3 = createPost(user);
 
-		List<Post> postList = List.of(post3, post2, post1);
-		Long nextCursorId = postList.get(postList.size() - 1).getId();
+		List<Post> postList = createPostList(user);
 
-		boolean hasNext = false;
+		Slice<Post> postSlice = new SliceImpl<>(postList);
 
-		when(postRepository.findAllByOrderByIdDesc(pageable)).thenReturn(postList);
+		Pageable pageable = PageRequest.of(0, size);
 
-		CursorResult cursorResult = postService.findAll(cursorId, size);
+		when(postRepository.findByIdLessThan(cursorId, pageable)).thenReturn(postSlice);
 
-		Assertions.assertThat(cursorResult)
-			.hasFieldOrPropertyWithValue("postList", postList)
-			.hasFieldOrPropertyWithValue("nextCursorId", nextCursorId)
-			.hasFieldOrPropertyWithValue("hasNext", hasNext);
+		Slice<Post> slice = postService.findAll(cursorId, pageable);
 
-		verify(postRepository).findAllByOrderByIdDesc(pageable);
+		assertThat(slice).isEqualTo(postSlice);
+
+		verify(postRepository).findByIdLessThan(cursorId, pageable);
 
 	}
 }

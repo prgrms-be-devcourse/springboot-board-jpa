@@ -4,23 +4,25 @@ import static org.springframework.http.MediaType.*;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDtos;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequest;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponse;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostSearchResponse;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostSearchResponses;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,15 +37,19 @@ public class PostController {
 	 * <pre>
 	 *     커서 기반 페이지 네이션으로 Post를 조회하여 리턴합니다.
 	 * </pre>
-	 * @param postRequestDto - 페이지 네이션을 하기 위한 커서 id 와 페이지 size를 저장한 Dto
-	 * @return status ok 와 postResponseDtos를 ResponseEntity에 담아 리턴합니다.
-	 * */
-	@GetMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<PostResponseDtos> findAll(@Valid @ModelAttribute PostRequestDto postRequestDto) {
+	 * @param cursorId 마지막에 조회한 Post의 id
+	 * @param size 페이지 사이즈
+	 * @return status ok Slice로 조회한 Post 인스턴스를 가지는 Dto
+	 */
+	@GetMapping(produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<PostSearchResponses> findAll(@RequestParam("cursorId") Long cursorId,
+		@RequestParam("size") Integer size) {
 
-		PostResponseDtos postResponseDtos = postFacade.findAll(postRequestDto);
+		Pageable pageable = PageRequest.of(0, size);
 
-		return ResponseEntity.ok(postResponseDtos);
+		PostSearchResponses postSearchResponses = postFacade.findAll(cursorId, pageable);
+
+		return ResponseEntity.ok(postSearchResponses);
 	}
 
 	/**
@@ -54,9 +60,9 @@ public class PostController {
 	 * @return status ok 와 postResponseDto를 ResponseEntity에 담아 리턴합니다.
 	 */
 	@GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<PostResponseDto> findById(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<PostSearchResponse> findById(@PathVariable(name = "id") Long id) {
 
-		PostResponseDto postResponseDto = postFacade.findById(id);
+		PostSearchResponse postResponseDto = postFacade.findById(id);
 
 		return ResponseEntity.ok(postResponseDto);
 	}
@@ -69,9 +75,9 @@ public class PostController {
 	 * @return status ok를 ResponseEntity에 담아 리턴합니다.
 	 */
 	@PostMapping(consumes = APPLICATION_JSON_VALUE)
-	public ResponseEntity<PostCreateResponseDto> create(@Valid @RequestBody PostCreateRequestDto postSaveDto) {
+	public ResponseEntity<PostCreateResponse> create(@Valid @RequestBody PostCreateRequest postSaveDto) {
 
-		PostCreateResponseDto postCreateResponseDto = postFacade.create(postSaveDto);
+		PostCreateResponse postCreateResponseDto = postFacade.create(postSaveDto);
 
 		return new ResponseEntity<>(postCreateResponseDto, HttpStatus.CREATED);
 
@@ -82,13 +88,13 @@ public class PostController {
 	 *     수정할 Post id를 사용하여 Post를 수정합니다.
 	 * </pre>
 	 * @param id - 수정할 Post의 id
-	 * @param postUpdateDto - 수정할 Post의 title과 content를 저장한 Dto
+	 * @param postUpdateRequest - 수정할 Post의 title과 content를 저장한 Dto
 	 * @return status ok를 ResponseEntity에 담아 리턴합니다.
 	 */
-	@PostMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE)
+	@PatchMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> update(@PathVariable(name = "id") Long id,
-		@Valid @RequestBody PostUpdateDto postUpdateDto) {
-		postFacade.update(id, postUpdateDto);
+		@Valid @RequestBody PostUpdateRequest postUpdateRequest) {
+		postFacade.update(id, postUpdateRequest);
 
 		return ResponseEntity.ok().build();
 	}

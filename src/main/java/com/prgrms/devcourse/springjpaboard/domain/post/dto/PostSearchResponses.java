@@ -5,23 +5,17 @@ import java.util.List;
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 
 import lombok.AccessLevel;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CursorResult {
-	private List<Post> postList;
+@AllArgsConstructor
+public class PostSearchResponses {
 
-	private Long nextCursorId;
+	private List<Post> posts;
 
 	private Boolean hasNext;
 
-	@Builder
-	public CursorResult(List<Post> postList, Long nextCursorId, Boolean hasNext) {
-		this.postList = postList;
-		this.nextCursorId = nextCursorId;
-		this.hasNext = hasNext;
-	}
 }

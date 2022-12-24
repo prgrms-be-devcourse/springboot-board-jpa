@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prgrms.devcourse.springjpaboard.domain.user.application.UserFacade;
-import com.prgrms.devcourse.springjpaboard.domain.user.dto.UserSaveDto;
+import com.prgrms.devcourse.springjpaboard.domain.user.dto.UserCreateRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +23,7 @@ public class UserController {
 	private final UserFacade userFacade;
 
 	@PostMapping(consumes = APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> create(@Valid @RequestBody UserSaveDto userRequestDto) {
+	public ResponseEntity<Void> create(@Valid @RequestBody UserCreateRequest userRequestDto) {
 		userFacade.create(userRequestDto);
 
 		return ResponseEntity.ok().build();

@@ -16,6 +16,7 @@ import com.prgrms.devcourse.springjpaboard.global.common.base.BaseEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(callSuper = false)
 public class User extends BaseEntity {
 
 	@Id
@@ -50,19 +52,4 @@ public class User extends BaseEntity {
 		this.hobby = hobby;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		User user = (User)o;
-		return getId().equals(user.getId()) && getName().equals(user.getName()) && getAge().equals(user.getAge())
-			&& getHobby().equals(user.getHobby());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(getId(), getName(), getAge(), getHobby());
-	}
 }

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prgrms.devcourse.springjpaboard.domain.user.application.converter.UserConverter;
-import com.prgrms.devcourse.springjpaboard.domain.user.dto.UserSaveDto;
+import com.prgrms.devcourse.springjpaboard.domain.user.dto.UserCreateRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ public class UserFacade {
 	private final UserConverter userConverter;
 
 	@Transactional
-	public void create(UserSaveDto userRequestDto) {
+	public void create(UserCreateRequest userRequestDto) {
 
 		userService.create(userConverter.toUser(userRequestDto));
 

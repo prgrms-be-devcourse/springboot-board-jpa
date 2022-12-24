@@ -7,24 +7,27 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.PostService;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.converter.PostConverter;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.CursorResult;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostRequestDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDto;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostResponseDtos;
-import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateDto;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequest;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponse;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostSearchResponse;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostSearchResponses;
+import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateRequest;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 import com.prgrms.devcourse.springjpaboard.domain.user.application.UserService;
 
@@ -52,22 +55,22 @@ class PostFacadeTest {
 		User user = createUser();
 		Long postId = 1L;
 		Post post = createPost(user);
-		PostCreateRequestDto postCreateRequestDto = createPostCreateRequestDto(userId);
-		PostCreateResponseDto postCreateResponseDto = createPostCreteResponseDto(postId);
+		PostCreateRequest postCreateRequestDto = createPostCreateRequest(userId);
+		PostCreateResponse postCreateResponseDto = createPostCreteResponse(postId);
 
 		when(userService.findById(userId)).thenReturn(user);
 		when(postConverter.toPost(postCreateRequestDto, user)).thenReturn(post);
 		when(postService.create(post)).thenReturn(postId);
-		when(postConverter.toPostCreateResponseDto(postId)).thenReturn(postCreateResponseDto);
+		when(postConverter.toPostCreateResponse(postId)).thenReturn(postCreateResponseDto);
 
 		//when
-		PostCreateResponseDto createResponseDto = postFacade.create(postCreateRequestDto);
+		PostCreateResponse createResponseDto = postFacade.create(postCreateRequestDto);
 
 		//then
 		verify(userService).findById(userId);
 		verify(postService).create(post);
 		verify(postConverter).toPost(postCreateRequestDto, user);
-		verify(postConverter).toPostCreateResponseDto(postId);
+		verify(postConverter).toPostCreateResponse(postId);
 		assertThat(createResponseDto).hasFieldOrPropertyWithValue("id", postId);
 	}
 
@@ -79,7 +82,7 @@ class PostFacadeTest {
 		Long postId = 1L;
 		User user = createUser();
 		Post post = createPost(user);
-		PostUpdateDto postUpdateDto = createPostUpdateDto();
+		PostUpdateRequest postUpdateDto = createPostUpdateRequest();
 
 		doNothing().when(postService).update(postId, postUpdateDto.getTitle(), postUpdateDto.getContent());
 
@@ -99,22 +102,22 @@ class PostFacadeTest {
 		Long postId = 1L;
 		User user = createUser();
 		Post post = createPost(user);
-		PostResponseDto postResponseDto = createPostResponseDto(postId);
+		PostSearchResponse postSearchResponse = createPostSearchResponse(postId);
 
 		when(postService.findById(postId)).thenReturn(post);
-		when(postConverter.toPostResponseDto(post)).thenReturn(postResponseDto);
+		when(postConverter.toPostResponse(post)).thenReturn(postSearchResponse);
 
 		//when
-		PostResponseDto findPost = postFacade.findById(postId);
+		PostSearchResponse findPost = postFacade.findById(postId);
 
 		//then
 		verify(postService).findById(postId);
-		verify(postConverter).toPostResponseDto(post);
+		verify(postConverter).toPostResponse(post);
 
 		assertThat(findPost)
 			.hasFieldOrPropertyWithValue("id", postId)
-			.hasFieldOrPropertyWithValue("title", postResponseDto.getTitle())
-			.hasFieldOrPropertyWithValue("content", postResponseDto.getContent());
+			.hasFieldOrPropertyWithValue("title", postSearchResponse.getTitle())
+			.hasFieldOrPropertyWithValue("content", postSearchResponse.getContent());
 	}
 
 	@Test
@@ -123,35 +126,25 @@ class PostFacadeTest {
 
 		//given
 		Long cursorId = null;
-		Integer size = 3;
+		int size = 3;
 		User user = createUser();
-		Post post1 = createPost(user);
-		Post post2 = createPost(user);
-		Post post3 = createPost(user);
 
-		List<Post> postList = List.of(post3, post2, post1);
-		Long lastIdOfList = 1L;
-		boolean hasNext = false;
+		List<Post> postList = createPostList(user);
 
-		CursorResult cursorResult = createCursorResult(postList, lastIdOfList, hasNext);
+		Pageable pageable = PageRequest.of(0, size);
+		Slice<Post> postSlice = new SliceImpl<>(postList);
 
-		PostRequestDto postRequestDto = createPostRequestDto(cursorId, size);
-		PostResponseDtos postResponseDtos = createPostResponseDtos(cursorResult);
-
-		when(postService.findAll(cursorId, size)).thenReturn(cursorResult);
-
-		when(postConverter.toPostResponseDtos(cursorResult)).thenReturn(postResponseDtos);
+		when(postService.findAll(cursorId, pageable)).thenReturn(postSlice);
 
 		//when
-		PostResponseDtos responseDtos = postFacade.findAll(postRequestDto);
+		PostSearchResponses postSearchResponses = postFacade.findAll(cursorId, pageable);
 
 		//then
-		verify(postService).findAll(cursorId, size);
-		verify(postConverter).toPostResponseDtos(cursorResult);
+		verify(postService).findAll(cursorId, pageable);
 
-		assertThat(responseDtos)
-			.hasFieldOrPropertyWithValue("nextCursorId", lastIdOfList)
-			.hasFieldOrPropertyWithValue("hasNext", hasNext);
+		Assertions.assertThat(postSearchResponses)
+			.hasFieldOrPropertyWithValue("posts", postSlice.getContent())
+			.hasFieldOrPropertyWithValue("hasNext", postSlice.hasNext());
 
 	}
 

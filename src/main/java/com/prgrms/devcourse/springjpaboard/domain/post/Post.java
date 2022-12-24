@@ -1,5 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post;
 
+import static com.google.common.base.Preconditions.*;
+
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -13,11 +15,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 import com.prgrms.devcourse.springjpaboard.global.common.base.BaseEntity;
 
@@ -49,25 +48,25 @@ public class Post extends BaseEntity {
 
 	@Builder
 	public Post(String title, String content, User user) {
-		Preconditions.checkArgument(StringUtils.hasText(title));
-		Preconditions.checkArgument(StringUtils.hasText(content));
+		checkArgument(StringUtils.hasText(title));
+		checkArgument(StringUtils.hasText(content));
 		this.title = title;
 		this.content = content;
 		this.updateUser(user);
 	}
 
 	public void updatePost(String title, String content) {
-		Preconditions.checkArgument(StringUtils.hasText(title));
-		Preconditions.checkArgument(StringUtils.hasText(content));
 		updateTitle(title);
 		updateContent(content);
 	}
 
 	public void updateTitle(String title) {
+		checkArgument(StringUtils.hasText(title));
 		this.title = title;
 	}
 
 	public void updateContent(String content) {
+		checkArgument(StringUtils.hasText(content));
 		this.content = content;
 	}
 

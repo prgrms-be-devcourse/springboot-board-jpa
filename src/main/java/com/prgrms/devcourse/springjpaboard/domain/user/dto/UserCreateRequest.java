@@ -4,13 +4,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserSaveDto {
+public class UserCreateRequest {
 
 	@NotBlank
 	private String name;
@@ -21,7 +20,7 @@ public class UserSaveDto {
 	@NotBlank
 	private String hobby;
 
-	public UserSaveDto(String name, Integer age, String hobby) {
+	public UserCreateRequest(String name, Integer age, String hobby) {
 		this.name = name;
 		this.age = age;
 		this.hobby = hobby;
