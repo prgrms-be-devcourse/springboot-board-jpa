@@ -47,6 +47,6 @@ public class PostService {
                 .content(postDto.getContent())
                 .user(savedPost.getUser())
                 .build();
-        return postRepository.save(newPost);
+        return newPost;
     }
 }
