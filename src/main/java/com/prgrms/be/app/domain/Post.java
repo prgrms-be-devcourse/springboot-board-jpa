@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
@@ -20,19 +20,21 @@ public class Post extends BaseEntity {
     @GeneratedValue
     private Long id;
 
-    @NotBlank
-    @Size(max = 20)
+    @NotNull
+    @Size(min = 1, max = 20)
     private String title;
 
-    @NotBlank
+    @NotNull
     @Column(columnDefinition = "TEXT")
     private String content;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
 
     public Post(String title, String content, User createdBy) {
+        checkArgument(!title.isBlank(), "제목은 공백으로만 이루어질 수 없습니다.", title);
+        checkArgument(!content.isBlank(), "제목은 공백으로만 이루어질 수 없습니다.", content);
+
         this.title = title;
         this.content = content;
         this.createdBy = createdBy;
