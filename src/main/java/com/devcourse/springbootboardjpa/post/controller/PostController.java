@@ -7,6 +7,7 @@ import com.devcourse.springbootboardjpa.post.domain.Post;
 import com.devcourse.springbootboardjpa.post.domain.dto.PostDTO;
 import com.devcourse.springbootboardjpa.post.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,11 +24,13 @@ public class PostController {
     public ResponseEntity<ResponseDTO> savePost(@RequestBody @Valid PostDTO.SaveRequest saveRequest) {
         Long postId = postService.savePost(saveRequest);
 
-        return ResponseEntity.ok(
+        return new ResponseEntity<>(
                 CommonResponse.builder()
+                        .status(HttpStatus.CREATED)
                         .message("게시물 저장 완료")
                         .data(postId)
-                        .build()
+                        .build(),
+                HttpStatus.CREATED
         );
     }
 
@@ -37,6 +40,7 @@ public class PostController {
 
         return ResponseEntity.ok(
                 CommonResponse.builder()
+                        .status(HttpStatus.OK)
                         .message("게시물 조회 완료")
                         .data(findPostResponse)
                         .build()
@@ -44,11 +48,12 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<ResponseDTO> findPosts(@RequestBody PageDTO.Request pageRequest) {
+    public ResponseEntity<ResponseDTO> findPosts(@RequestBody @Valid PageDTO.Request pageRequest) {
         PageDTO.Response<Post, PostDTO.FindResponse> posts = postService.findAllPostsPage(pageRequest);
 
         return ResponseEntity.ok(
                 CommonResponse.builder()
+                        .status(HttpStatus.OK)
                         .message("게시물 조회 완료")
                         .data(posts)
                         .build()
@@ -63,6 +68,7 @@ public class PostController {
 
         return ResponseEntity.ok(
                 CommonResponse.builder()
+                        .status(HttpStatus.OK)
                         .message("게시물 수정 완료")
                         .data(postId)
                         .build()
