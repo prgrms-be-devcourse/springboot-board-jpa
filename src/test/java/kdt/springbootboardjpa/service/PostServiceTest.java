@@ -149,7 +149,7 @@ public class PostServiceTest {
 
         assertThatThrownBy(
                 () -> postService.updatePost(postDto.getId(), postDto)
-        ).isInstanceOf(RuntimeException.class)
+        ).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Can't find");
     }
 }
