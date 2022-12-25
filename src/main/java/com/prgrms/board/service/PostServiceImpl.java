@@ -65,8 +65,7 @@ public class PostServiceImpl implements PostService {
             throw new IllegalArgumentException("exception.post.member.equal");
         }
 
-        post.changeTitle(updateDto.getTitle());
-        post.changeContent(updateDto.getContent());
+        post.changePost(updateDto);
 
         return post.getId();
     }

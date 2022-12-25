@@ -1,5 +1,6 @@
 package com.prgrms.board.domain;
 
+import com.prgrms.board.dto.request.PostUpdateDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -42,12 +43,8 @@ public class Post extends BaseEntity {
         member.getPosts().add(this);
     }
 
-    public void changeTitle(String title) {
-        this.title = title;
+    public void changePost(PostUpdateDto updateDto) {
+        this.title = updateDto.getTitle();
+        this.content = updateDto.getContent();
     }
-
-    public void changeContent(String content) {
-        this.content = content;
-    }
-
 }
