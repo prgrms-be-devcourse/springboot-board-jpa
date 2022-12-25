@@ -32,14 +32,14 @@ public class PostRepositoryTest {
                 .content("content")
                 .user(user)
                 .build();
-        User savedUser = userRepository.save(user);
-        Post savedPost = postRepository.save(post);
+        userRepository.save(user);
+        postRepository.save(post);
 
-        assertThat(savedPost.getId()).isNotNull();
-        assertThat(savedUser.getId()).isNotNull();
-        assertThat(savedPost.getCreatedAt()).isNotNull();
-        assertThat(savedPost.getCreatedAt()).isInstanceOf(LocalDateTime.class);
-        assertThat(savedPost)
+        assertThat(post.getId()).isNotNull();
+        assertThat(user.getId()).isNotNull();
+        assertThat(post.getCreatedAt()).isNotNull();
+        assertThat(post.getCreatedAt()).isInstanceOf(LocalDateTime.class);
+        assertThat(post)
                 .usingRecursiveComparison()
                 .isEqualTo(post);
     }
