@@ -1,4 +1,4 @@
-package kdt.springbootboardjpa.exception;
+package kdt.springbootboardjpa.global.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kdt.springbootboardjpa.controller.response.ErrorResponse;

@@ -1,8 +1,10 @@
 package kdt.springbootboardjpa.respository.entity;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import kdt.springbootboardjpa.global.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,9 +17,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,9 +31,6 @@ public class User {
 
     @NotNull
     private String hobby;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
 
     @Builder
     public User(Long id, String name, String age, String hobby) {
