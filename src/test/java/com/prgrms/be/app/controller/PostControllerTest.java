@@ -12,14 +12,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -52,30 +49,8 @@ class PostControllerTest {
     @MockBean
     private PostService postService;
 
-    //toDo : 생성 테스트
     @Test
-    @DisplayName("게시글 생성 시 제목이 입력되지 않는 경우, 메시지를 반환합니다.")
-    void validSavePostTest() throws Exception {
-        // given
-        PostDTO.CreateRequest request = new PostDTO.CreateRequest("", "content", 1L);
-
-        // when
-        MvcResult mvcResult = mockMvc.perform(post("/posts")
-                        .content(objectMapper.writeValueAsString(request))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andReturn();
-        MockHttpServletResponse response = mvcResult.getResponse();
-        log.error("{}", response.getStatus());
-        log.error("{}", response.getErrorMessage());
-        log.error("{}", response.getContentAsString(Charset.forName("UTF-8")));
-
-        // then
-    }
-
-
-    @Test
-    @DisplayName("게시글 생성 성공 시 상태코드 200과 생성된 게시글 id가 반환된다.")
+    @DisplayName("게시글 생성 성공 시 생성된 게시글 id가 반환된다.")
     void saveCallTest() throws Exception {
         // given
         PostDTO.CreateRequest request = new PostDTO.CreateRequest("title", "content", 1L);
@@ -88,7 +63,7 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("statusCode").value(200))
+                .andExpect(jsonPath("statusCode").value(201))
                 .andExpect(jsonPath("data").value(1L))
                 .andExpect(jsonPath("message").value(ResponseMessage.CREATED))
                 .andExpect(jsonPath("serverDateTime").exists())
@@ -116,7 +91,6 @@ class PostControllerTest {
         verify(postService).createPost(any(PostDTO.CreateRequest.class));
     }
 
-    //toDo : 단건 조회 테스트
     @Test
     @DisplayName("게시글 ID로 게시글 단건 조회 시 게시글의 제목 및 본문과 같은 디테일한 내용을 볼 수 있다.")
     void getOneCallTest() throws Exception {
@@ -166,7 +140,6 @@ class PostControllerTest {
         verify(postService).findById(anyLong());
     }
 
-    //toDo : 수정 테스트
     @Test
     @DisplayName("게시글 ID로 게시글 수정 시 제목과 세부내용을 바꿀 수 있고 데이터로 수정된 게시글 ID가 반환된다.")
     void updateCallTest() throws Exception {
@@ -176,7 +149,7 @@ class PostControllerTest {
         when(postService.updatePost(anyLong(), any(PostDTO.UpdateRequest.class)))
                 .thenReturn(id);
         // when
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/posts/{id}", id)
+        mockMvc.perform(RestDocumentationRequestBuilders.patch("/posts/{id}", id)
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -204,12 +177,11 @@ class PostControllerTest {
         verify(postService).updatePost(anyLong(), any(PostDTO.UpdateRequest.class));
     }
 
-    //toDo : 페이징 조회 테스트
     @Test
     @DisplayName("현재 페이지 정보와 한 페이지 당 게시글 수를 입력 시 페이징된 게시글이 반환되며 게시글의 정보는 게시글 ID, 제목, 생성일자가 반환된다.")
     void getAllCallTest() throws Exception {
         // given
-        PostDTO.PageRequest pageRequest = new PostDTO.PageRequest(0, 5, Sort.Direction.DESC);
+        PostDTO.PostPageRequest postPageRequest = new PostDTO.PostPageRequest(0, 5, Sort.Direction.DESC);
         Pageable request = PageRequest.of(0, 5);
         List<PostDTO.PostsResponse> postDtos = List.of(
                 new PostDTO.PostsResponse("title1", 1L, LocalDateTime.now()),
@@ -222,7 +194,7 @@ class PostControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/posts")
-                        .content(objectMapper.writeValueAsString(pageRequest))
+                        .content(objectMapper.writeValueAsString(postPageRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print());

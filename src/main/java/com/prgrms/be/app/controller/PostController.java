@@ -21,7 +21,7 @@ public class PostController {
     @PostMapping()
     public ApiResponse<Long> save(@RequestBody @Valid PostDTO.CreateRequest createRequest) {
         Long postId = postService.createPost(createRequest);
-        return ApiResponse.ok(
+        return ApiResponse.created(
                 postId,
                 ResponseMessage.CREATED);
     }
@@ -37,15 +37,15 @@ public class PostController {
 
     //toDo : 페이징 조회하는 메서드
     @GetMapping()
-    public ApiResponse<Page<PostDTO.PostsResponse>> getAll(@RequestBody PostDTO.PageRequest pageRequest) {
-        Page<PostDTO.PostsResponse> postPages = postService.findAll(pageRequest.of());
+    public ApiResponse<Page<PostDTO.PostsResponse>> getAll(@RequestBody PostDTO.PostPageRequest postPageRequest) {
+        Page<PostDTO.PostsResponse> postPages = postService.findAll(postPageRequest.of());
         return ApiResponse.ok(
                 postPages,
                 ResponseMessage.FINDED_ALL);
     }
 
     //toDo : 수정
-    @PostMapping("/{id}")
+    @PatchMapping("/{id}")
     public ApiResponse<Long> update(
             @PathVariable Long id,
             @RequestBody @Valid PostDTO.UpdateRequest request) {

@@ -43,7 +43,7 @@ include::{snippets}/find-post-all/response-fields.adoc[]
 
 === 게시글(Post) 수정
 
-==== 'POST' /posts/{id}
+==== 'PATCH' /posts/{id}
 
 include::{snippets}/post-update/path-parameters.adoc[]
 

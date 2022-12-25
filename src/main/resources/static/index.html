@@ -2174,7 +2174,7 @@ Host: localhost:8080
 Content-Type: application/json
 Content-Length: 102
 
-{&quot;statusCode&quot;:200,&quot;data&quot;:1,&quot;message&quot;:&quot;게시물 생성 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-22 22:49:57&quot;}</code></pre>
+{&quot;statusCode&quot;:201,&quot;data&quot;:1,&quot;message&quot;:&quot;게시물 생성 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-25 10:58:20&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
@@ -2266,7 +2266,7 @@ Host: localhost:8080
 Content-Type: application/json
 Content-Length: 233
 
-{&quot;statusCode&quot;:200,&quot;data&quot;:{&quot;title&quot;:&quot;title&quot;,&quot;content&quot;:&quot;content&quot;,&quot;postId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-22T22:49:57.3292089&quot;,&quot;userId&quot;:100,&quot;userName&quot;:&quot;userName&quot;},&quot;message&quot;:&quot;게시물 단건 조회 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-22 22:49:57&quot;}</code></pre>
+{&quot;statusCode&quot;:200,&quot;data&quot;:{&quot;title&quot;:&quot;title&quot;,&quot;content&quot;:&quot;content&quot;,&quot;postId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-25T10:58:19.6987269&quot;,&quot;userId&quot;:100,&quot;userName&quot;:&quot;userName&quot;},&quot;message&quot;:&quot;게시물 단건 조회 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-25 10:58:19&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
@@ -2416,9 +2416,9 @@ Host: localhost:8080
                         <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 640
+Content-Length: 637
 
-{&quot;statusCode&quot;:200,&quot;data&quot;:{&quot;content&quot;:[{&quot;title&quot;:&quot;title1&quot;,&quot;postId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-22T22:49:57.6607041&quot;},{&quot;title&quot;:&quot;title2&quot;,&quot;postId&quot;:2,&quot;createdAt&quot;:&quot;2022-12-22T22:49:57.6617199&quot;},{&quot;title&quot;:&quot;title3&quot;,&quot;postId&quot;:3,&quot;createdAt&quot;:&quot;2022-12-22T22:49:57.6617199&quot;}],&quot;pageable&quot;:{&quot;sort&quot;:{&quot;empty&quot;:true,&quot;sorted&quot;:false,&quot;unsorted&quot;:true},&quot;offset&quot;:0,&quot;pageNumber&quot;:0,&quot;pageSize&quot;:5,&quot;paged&quot;:true,&quot;unpaged&quot;:false},&quot;last&quot;:true,&quot;totalElements&quot;:3,&quot;totalPages&quot;:1,&quot;size&quot;:5,&quot;number&quot;:0,&quot;sort&quot;:{&quot;empty&quot;:true,&quot;sorted&quot;:false,&quot;unsorted&quot;:true},&quot;first&quot;:true,&quot;numberOfElements&quot;:3,&quot;empty&quot;:false},&quot;message&quot;:&quot;게시물 페이지 조회 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-22 22:49:57&quot;}</code></pre>
+{&quot;statusCode&quot;:200,&quot;data&quot;:{&quot;content&quot;:[{&quot;title&quot;:&quot;title1&quot;,&quot;postId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-25T10:58:20.228096&quot;},{&quot;title&quot;:&quot;title2&quot;,&quot;postId&quot;:2,&quot;createdAt&quot;:&quot;2022-12-25T10:58:20.228096&quot;},{&quot;title&quot;:&quot;title3&quot;,&quot;postId&quot;:3,&quot;createdAt&quot;:&quot;2022-12-25T10:58:20.228096&quot;}],&quot;pageable&quot;:{&quot;sort&quot;:{&quot;empty&quot;:true,&quot;unsorted&quot;:true,&quot;sorted&quot;:false},&quot;offset&quot;:0,&quot;pageNumber&quot;:0,&quot;pageSize&quot;:5,&quot;paged&quot;:true,&quot;unpaged&quot;:false},&quot;last&quot;:true,&quot;totalElements&quot;:3,&quot;totalPages&quot;:1,&quot;size&quot;:5,&quot;number&quot;:0,&quot;sort&quot;:{&quot;empty&quot;:true,&quot;unsorted&quot;:true,&quot;sorted&quot;:false},&quot;first&quot;:true,&quot;numberOfElements&quot;:3,&quot;empty&quot;:false},&quot;message&quot;:&quot;게시물 페이지 조회 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-25 10:58:20&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
@@ -2639,7 +2639,7 @@ Content-Length: 640
             <div class="sect2">
                 <h3 id="_게시글post_수정">게시글(Post) 수정</h3>
                 <div class="sect3">
-                    <h4 id="_post_postsid">'POST' /posts/{id}</h4>
+                    <h4 id="_patch_postsid">'PATCH' /posts/{id}</h4>
                     <table class="tableblock frame-all grid-all stretch">
                         <caption class="title">Table 2. /posts/{id}</caption>
                         <colgroup>
@@ -2662,7 +2662,7 @@ Content-Length: 640
                     <div class="listingblock">
                         <div class="title">Request</div>
                         <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="http">POST /posts/1 HTTP/1.1
+<pre class="CodeRay highlight nowrap"><code data-lang="http">PATCH /posts/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 37
@@ -2708,7 +2708,7 @@ Host: localhost:8080
 Content-Type: application/json
 Content-Length: 102
 
-{&quot;statusCode&quot;:200,&quot;data&quot;:1,&quot;message&quot;:&quot;게시물 수정 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-22 22:49:57&quot;}</code></pre>
+{&quot;statusCode&quot;:200,&quot;data&quot;:1,&quot;message&quot;:&quot;게시물 수정 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-25 18:26:28&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
@@ -2763,7 +2763,7 @@ Content-Length: 102
 </div>
 <div id="footer">
     <div id="footer-text">
-        Last updated 2022-12-22 22:55:03 +0900
+        Last updated 2022-12-25 18:26:18 +0900
     </div>
 </div>
 </body>
