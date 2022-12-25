@@ -58,11 +58,6 @@ class PostApiControllerTest {
     private Long savedPostId;
     private PostCreateDto postCreateDto;
 
-    @AfterEach
-    void clear() {
-        postRepository.deleteAll();
-        memberRepository.deleteAll();
-    }
     @BeforeEach
     void setup() {
         MemberCreateDto createDto = MemberCreateDto.builder()
@@ -133,6 +128,7 @@ class PostApiControllerTest {
                 .postId(savedPostId)
                 .title("change title")
                 .content("change content")
+                .writerId(savedMemberId)
                 .build();
 
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/v1/posts")
@@ -144,7 +140,8 @@ class PostApiControllerTest {
                         requestFields(
                                 fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 ID"),
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용")
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
+                                fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("작성자 ID")
                         ),
                         responseFields(
                                 fieldWithPath("data").type(JsonFieldType.NUMBER).description("게시글 ID"),
