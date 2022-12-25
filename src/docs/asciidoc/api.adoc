@@ -16,6 +16,16 @@ include::{snippets}/post-save/request-fields.adoc[]
 include::{snippets}/post-save/http-response.adoc[]
 include::{snippets}/post-save/response-fields.adoc[]
 
+===== Response Error
+[cols=2*,options=header]
+|===
+|HTTP status code
+|Reason
+
+|404
+|post를 생성하는 user id가 존재하지 않음
+|===
+
 === Post 수정하기
 
 ==== /posts/{id}
@@ -28,6 +38,16 @@ include::{snippets}/post-update/request-fields.adoc[]
 include::{snippets}/post-update/http-response.adoc[]
 include::{snippets}/post-update/response-fields.adoc[]
 
+===== Response Error
+[cols=2*,options=header]
+|===
+|HTTP status code
+|Reason
+
+|404
+|post id가 존재하지 않음
+|===
+
 === Post 조회하기
 
 ==== /posts/{id}
@@ -38,6 +58,16 @@ include::{snippets}/post-get/http-request.adoc[]
 .Response
 include::{snippets}/post-get/http-response.adoc[]
 include::{snippets}/post-get/response-fields.adoc[]
+
+===== Response Error
+[cols=2*,options=header]
+|===
+|HTTP status code
+|Reason
+
+|404
+|post id가 존재하지 않음
+|===
 
 === Post 전체 조회하기
 
