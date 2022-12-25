@@ -16,6 +16,9 @@ public class PostUpdateDto {
     @NotBlank(message = "exception.post.title.null")
     private String title;
 
-    @NotNull(message = "exception.post.content.null")
+    @NotBlank(message = "exception.post.content.null")
     private String content;
+
+    @NotNull
+    private Long writerId;
 }
