@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-
+@RequestMapping("/posts")
 @RequiredArgsConstructor
 @RestController
 public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/posts")
+    @PostMapping
     public ResponseEntity<ResponseDTO> savePost(@RequestBody @Valid PostDTO.SaveRequest saveRequest) {
         Long postId = postService.savePost(saveRequest);
 
@@ -34,7 +34,7 @@ public class PostController {
         );
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO> findPost(@PathVariable Long id) {
         PostDTO.FindResponse findPostResponse = postService.findPost(id);
 
@@ -47,7 +47,7 @@ public class PostController {
         );
     }
 
-    @GetMapping("/posts")
+    @GetMapping
     public ResponseEntity<ResponseDTO> findPosts(@RequestBody @Valid PageDTO.Request pageRequest) {
         PageDTO.Response<Post, PostDTO.FindResponse> posts = postService.findAllPostsPage(pageRequest);
 
@@ -60,7 +60,7 @@ public class PostController {
         );
     }
 
-    @PostMapping("/posts/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<ResponseDTO> updatePost(@PathVariable Long id,
                                                   @RequestBody @Valid PostDTO.UpdateRequest postUpdateRequest) {
 
