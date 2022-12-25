@@ -41,12 +41,8 @@ public class PostService {
     public Post updatePost(Long postId, PostDto postDto) {
         Post savedPost = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Can't find Post"));
-        Post newPost = Post.builder()
-                .id(postId)
-                .title(postDto.title())
-                .content(postDto.content())
-                .user(savedPost.getUser())
-                .build();
-        return newPost;
+        savedPost.updateTitle(postDto.title());
+        savedPost.updateContent(postDto.content());
+        return savedPost;
     }
 }
