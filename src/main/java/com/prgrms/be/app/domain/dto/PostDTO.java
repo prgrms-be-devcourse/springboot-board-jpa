@@ -15,36 +15,6 @@ import java.time.LocalDateTime;
 public class PostDTO {
 
     @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static final class PageRequest {
-
-        private static final int DEFAULT_SIZE = 10;
-        private static final int MAX_SIZE = 20;
-
-        private int page;
-        private int size;
-        private Sort.Direction direction;
-
-        public PageRequest(int page, int size, Sort.Direction direction) {
-            this.page = page <= 0 ? 1 : page;
-            this.size = isRangeSize(size) ? size : DEFAULT_SIZE;
-            this.direction = direction;
-        }
-
-        public PageRequest(int page, int size) {
-            this(page, size, Sort.Direction.DESC);
-        }
-
-        private boolean isRangeSize(int size) {
-            return size > 0 && size <= MAX_SIZE;
-        }
-
-        public org.springframework.data.domain.PageRequest of() {
-            return org.springframework.data.domain.PageRequest.of(page - 1, size, direction, "createdAt");
-        }
-    }
-
-    @Getter
     @AllArgsConstructor
     public static class CreateRequest {
         @NotBlank(message = "게시글의 제목을 기입해야 합니다.")
@@ -84,6 +54,36 @@ public class PostDTO {
             LocalDateTime createdAt,
             Long userId,
             String userName) {
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static final class PostPageRequest {
+
+        private static final int DEFAULT_SIZE = 10;
+        private static final int MAX_SIZE = 20;
+
+        private int page;
+        private int size;
+        private Sort.Direction direction;
+
+        public PostPageRequest(int page, int size, Sort.Direction direction) {
+            this.page = page <= 0 ? 1 : page;
+            this.size = isRangeSize(size) ? size : DEFAULT_SIZE;
+            this.direction = direction;
+        }
+
+        public PostPageRequest(int page, int size) {
+            this(page, size, Sort.Direction.DESC);
+        }
+
+        private boolean isRangeSize(int size) {
+            return size > 0 && size <= MAX_SIZE;
+        }
+
+        public org.springframework.data.domain.PageRequest of() {
+            return org.springframework.data.domain.PageRequest.of(page - 1, size, direction, "createdAt");
+        }
     }
 
 

@@ -40,7 +40,7 @@ public class PostService {
     public Long createPost(PostDTO.CreateRequest postCreateDto) {
         User user = userRepository.findById(postCreateDto.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
-        Post post = postConverter.covertToPost(postCreateDto, user);
+        Post post = postConverter.convertToPost(postCreateDto, user);
 
         return postRepository.save(post).getId();
     }
