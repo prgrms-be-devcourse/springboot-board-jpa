@@ -28,11 +28,11 @@ public class PostService {
     }
 
     public Post createPost(PostDto postDto) {
-        User user = userRepository.findById(postDto.getCreatedBy())
+        User user = userRepository.findById(postDto.createdBy())
                 .orElseThrow(() -> new IllegalArgumentException("Can't find User"));
         Post newPost = Post.builder()
-                .title(postDto.getTitle())
-                .content(postDto.getContent())
+                .title(postDto.title())
+                .content(postDto.content())
                 .user(user)
                 .build();
         return postRepository.save(newPost);
@@ -43,8 +43,8 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("Can't find Post"));
         Post newPost = Post.builder()
                 .id(postId)
-                .title(postDto.getTitle())
-                .content(postDto.getContent())
+                .title(postDto.title())
+                .content(postDto.content())
                 .user(savedPost.getUser())
                 .build();
         return newPost;

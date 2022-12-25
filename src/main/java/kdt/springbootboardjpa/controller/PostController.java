@@ -23,23 +23,23 @@ public class PostController {
     @PostMapping
     public ResponseEntity<PostResponse> createPost(@RequestBody SavePostRequest request) {
         PostDto newPostDto = PostDto.builder()
-                .title(request.getTitle())
-                .content(request.getContent())
-                .createdBy(request.getCreatedBy())
+                .title(request.title())
+                .content(request.content())
+                .createdBy(request.createdBy())
                 .build();
         Post savedPost = postService.createPost(newPostDto);
         HttpHeaders responseHeaders = new HttpHeaders();
         PostResponse response = PostResponse.toPostResponse(savedPost);
-        responseHeaders.set(HttpHeaders.CONTENT_LOCATION, "/posts/" + response.getId());
+        responseHeaders.set(HttpHeaders.CONTENT_LOCATION, "/posts/" + response.id());
         return new ResponseEntity<>(response, responseHeaders, HttpStatus.CREATED);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<PostResponse> updatePost(@PathVariable Long id, @RequestBody SavePostRequest request) {
         PostDto updatedPostDto = PostDto.builder()
-                .title(request.getTitle())
-                .content(request.getContent())
-                .createdBy(request.getCreatedBy())
+                .title(request.title())
+                .content(request.content())
+                .createdBy(request.createdBy())
                 .build();
         Post savedPost = postService.updatePost(id, updatedPostDto);
         PostResponse response = PostResponse.toPostResponse(savedPost);
