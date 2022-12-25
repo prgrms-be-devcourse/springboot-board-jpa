@@ -1,9 +1,9 @@
 package com.devcourse.springbootboardjpa.common.dto.page;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +20,11 @@ public class PageDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
+
+        @Range(min = 0, max = Integer.MAX_VALUE)
         private int page;
+
+        @Range(min = 1, max = Integer.MAX_VALUE)
         private int size;
 
         public Pageable makePageable() {
