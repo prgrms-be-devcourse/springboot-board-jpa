@@ -68,8 +68,8 @@ public class ApiControllerAdvice {
                 400);
     }
 
-    private String getMessage(String e) {
-        return messageSource.getMessage(e, null, Locale.KOREA);
+    private String getMessage(String errorMessage) {
+        return messageSource.getMessage(errorMessage, null, Locale.KOREA);
     }
 
 }

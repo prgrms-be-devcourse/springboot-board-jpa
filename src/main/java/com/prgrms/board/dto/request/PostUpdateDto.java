@@ -19,6 +19,6 @@ public class PostUpdateDto {
     @NotBlank(message = "exception.post.content.null")
     private String content;
 
-    @NotNull
+    @NotNull(message = "exception.post.member.null")
     private Long writerId;
 }

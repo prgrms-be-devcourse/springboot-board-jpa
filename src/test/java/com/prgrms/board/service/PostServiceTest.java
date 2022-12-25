@@ -7,7 +7,6 @@ import com.prgrms.board.dto.response.PostResponseDto;
 import com.prgrms.board.dto.request.PostUpdateDto;
 import com.prgrms.board.repository.MemberRepository;
 import com.prgrms.board.repository.PostRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-@Slf4j
 @Transactional
 class PostServiceTest {
 
@@ -121,6 +119,7 @@ class PostServiceTest {
                 .postId(savedPost.getId())
                 .title(updatedTitle)
                 .content(updatedContent)
+                .writerId(savedMember.getId())
                 .build();
 
         //when
@@ -131,6 +130,27 @@ class PostServiceTest {
         assertThat(responseDto)
                 .hasFieldOrPropertyWithValue("title", updatedTitle)
                 .hasFieldOrPropertyWithValue("content", updatedContent);
+    }
+
+    @Test
+    @DisplayName("수정 요청을 보낸 작성자와 기존 작성자가 다른 경우 예외가 발생한다.")
+    void 게시글_수정_실패() {
+        //given
+        String updatedTitle = "update title";
+        String updatedContent = "update content";
+        Long unknownMemberId = 100L;
+
+        PostUpdateDto updateDto = PostUpdateDto.builder()
+                .postId(savedPost.getId())
+                .title(updatedTitle)
+                .content(updatedContent)
+                .writerId(unknownMemberId)
+                .build();
+
+        //when & then
+        assertThrows(IllegalArgumentException.class,
+                () -> postService.update(updateDto));
+
     }
 
     @Test
@@ -156,4 +176,5 @@ class PostServiceTest {
         PostResponseDto responseDto = postService.findById(postId);
         assertThat(responseDto.getWriterId()).isEqualTo(sessionMember.getId());
     }
+
 }

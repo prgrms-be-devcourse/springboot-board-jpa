@@ -56,6 +56,15 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(updateDto.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("exception.post.id.null"));
 
+        Member postUpdateMember = memberRepository.findById(updateDto.getWriterId())
+                .orElseThrow(() -> new IllegalArgumentException("exception.member.id.null"));
+
+        Member registeredMember = post.getWriter();
+
+        if (!registeredMember.equals(postUpdateMember)) {
+            throw new IllegalArgumentException("exception.post.member.equal");
+        }
+
         post.changeTitle(updateDto.getTitle());
         post.changeContent(updateDto.getContent());
 
