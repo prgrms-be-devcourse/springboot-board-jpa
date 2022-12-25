@@ -7,11 +7,13 @@ import kdt.springbootboardjpa.respository.entity.User;
 import kdt.springbootboardjpa.service.dto.PostDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class PostService {
 
     private final UserRepository userRepository;
@@ -27,6 +29,7 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("Can't find Post"));
     }
 
+    @Transactional
     public Post createPost(PostDto postDto) {
         User user = userRepository.findById(postDto.createdBy())
                 .orElseThrow(() -> new IllegalArgumentException("Can't find User"));
@@ -38,6 +41,7 @@ public class PostService {
         return postRepository.save(newPost);
     }
 
+    @Transactional
     public Post updatePost(Long postId, PostDto postDto) {
         Post savedPost = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Can't find Post"));
