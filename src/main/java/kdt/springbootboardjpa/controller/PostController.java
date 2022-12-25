@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @Controller
@@ -28,10 +29,9 @@ public class PostController {
                 .createdBy(request.createdBy())
                 .build();
         Post savedPost = postService.createPost(newPostDto);
-        HttpHeaders responseHeaders = new HttpHeaders();
         PostResponse response = PostResponse.toPostResponse(savedPost);
-        responseHeaders.set(HttpHeaders.CONTENT_LOCATION, "/posts/" + response.id());
-        return new ResponseEntity<>(response, responseHeaders, HttpStatus.CREATED);
+        URI createdURI = URI.create("/posts/" + response.id());
+        return ResponseEntity.created(createdURI).body(response);
     }
 
     @PostMapping("/{id}")

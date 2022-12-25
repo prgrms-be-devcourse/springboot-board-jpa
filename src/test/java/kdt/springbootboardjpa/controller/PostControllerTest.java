@@ -89,7 +89,7 @@ public class PostControllerTest {
                                 .content(body)
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isCreated())
-                .andExpect(header().exists(HttpHeaders.CONTENT_LOCATION))
+                .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.title").value(title))
                 .andDo(print())
