@@ -6,6 +6,7 @@ import kdt.springbootboardjpa.respository.entity.Post;
 import kdt.springbootboardjpa.service.PostService;
 import kdt.springbootboardjpa.service.dto.PostDto;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,8 +28,10 @@ public class PostController {
                 .createdBy(request.getCreatedBy())
                 .build();
         Post savedPost = postService.createPost(newPostDto);
+        HttpHeaders responseHeaders = new HttpHeaders();
         PostResponse response = PostResponse.toPostResponse(savedPost);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        responseHeaders.set(HttpHeaders.CONTENT_LOCATION, "/posts/" + response.getId());
+        return new ResponseEntity<>(response, responseHeaders, HttpStatus.CREATED);
     }
 
     @PostMapping("/{id}")
