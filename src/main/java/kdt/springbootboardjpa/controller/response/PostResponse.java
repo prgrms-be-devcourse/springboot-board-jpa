@@ -3,10 +3,8 @@ package kdt.springbootboardjpa.controller.response;
 import kdt.springbootboardjpa.respository.entity.Post;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class PostResponse {
     private Long id;
     private String title;
