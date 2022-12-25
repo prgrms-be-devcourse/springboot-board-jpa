@@ -51,7 +51,7 @@ class PostServiceTest {
         User user = new User("user", 25, "농구");
         Post post = new Post("title", "content", user);
 
-        when(postConverter.covertToPost(postCreateDTO, user))
+        when(postConverter.convertToPost(postCreateDTO, user))
                 .thenReturn(post);
         when(postRepository.save(post))
                 .thenReturn(post);
@@ -62,6 +62,9 @@ class PostServiceTest {
         Long postId = postService.createPost(postCreateDTO);
 
         // then
+        verify(postConverter).convertToPost(postCreateDTO, user);
+        verify(postRepository).save(post);
+        verify(userRepository).findById(anyLong());
         assertThat(postId).isEqualTo(post.getId());
     }
 
@@ -109,6 +112,7 @@ class PostServiceTest {
         // when
         PostDTO.PostDetailResponse postDetailResponse = postService.findById(1L);
         // then
+        verify(postRepository).findById(anyLong());
         assertThat(postDetailResponse).isEqualTo(
                 new PostDTO.PostDetailResponse(
                         post.getTitle(),
@@ -160,7 +164,7 @@ class PostServiceTest {
 
         // then
         assertThat(beforePostDTO).isNotEqualTo(updatedPostDto);
-        assertThat(postUpdateRequest.getTitle()).isEqualTo(updatedPostDto.title());
-        assertThat(postUpdateRequest.getContent()).isEqualTo(updatedPostDto.content());
+        assertThat(postUpdateRequest).hasFieldOrPropertyWithValue("title", updatedPostDto.title());
+        assertThat(postUpdateRequest).hasFieldOrPropertyWithValue("content", updatedPostDto.content());
     }
 }
