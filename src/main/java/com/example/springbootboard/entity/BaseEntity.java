@@ -13,7 +13,4 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public abstract class BaseEntity extends BaseTimeEntity{
     @CreatedBy
     private String createdBy;
-
-    @LastModifiedBy
-    private String lastModifiedBy;
 }
