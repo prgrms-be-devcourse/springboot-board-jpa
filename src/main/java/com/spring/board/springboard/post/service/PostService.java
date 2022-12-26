@@ -68,11 +68,8 @@ public class PostService {
                     );
                 });
 
-        findPost.changeTitle(
-                requestPostDto.title()
-        );
-
-        findPost.changeContent(
+        findPost.change(
+                requestPostDto.title(),
                 requestPostDto.content()
         );
 

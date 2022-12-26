@@ -65,14 +65,9 @@ public class Post {
         return member;
     }
 
-    public void changeTitle(String changeTitle) {
-        validate(changeTitle);
-        this.title = changeTitle;
-    }
-
-    public void changeContent(String changeContent) {
-        validate(changeContent);
-        this.content = changeContent;
+    public void change(String newTitle, String newContent){
+        changeTitle(newTitle);
+        changeContent(newContent);
     }
 
     public Integer getMemberId(){
@@ -87,5 +82,15 @@ public class Post {
         }
         this.member = member;
         member.getPostList().add(this);
+    }
+
+    private void changeTitle(String newTitle){
+        Assert.notNull(newTitle, "제목을 입력해주세요");
+        this.title = newTitle;
+    }
+
+    private void changeContent(String newContent){
+        Assert.notNull(newContent, "내용을 입력해주세요.");
+        this.content = newContent;
     }
 }
