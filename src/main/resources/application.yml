@@ -12,11 +12,6 @@ spring:
       minimum-idle: 1
       maximum-pool-size: 5
       pool-name: H2_DB
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/springboot_jpa
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
   jpa:
     generate-ddl: true # ddl 생성 전략
     database: H2
@@ -25,6 +20,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-        query.in_clause_parameter_padding: true # 성능 최적화에 관한 속성인데 어렵구료...
+        query.in_clause_parameter_padding: true # 성능 최적화에 관한 속성
         hbm2ddl:
-          auto: create-drop # 얘도 ddl 생성 전략. hibernate에서 제공해주는 properties를 같이 사용 가능
+          auto: create-drop # ddl 생성 전략. hibernate에서 제공해주는 properties를 같이 사용 가능
