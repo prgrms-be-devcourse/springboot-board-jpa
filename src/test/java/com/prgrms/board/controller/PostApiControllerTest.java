@@ -4,12 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.board.dto.request.MemberCreateDto;
 import com.prgrms.board.dto.request.PostCreateDto;
 import com.prgrms.board.dto.request.PostUpdateDto;
-import com.prgrms.board.repository.MemberRepository;
-import com.prgrms.board.repository.PostRepository;
 import com.prgrms.board.service.MemberService;
 import com.prgrms.board.service.PostService;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,13 +43,10 @@ class PostApiControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private MemberService memberService;
-    @Autowired
-    private MemberRepository memberRepository;
+
     @Autowired
     private PostService postService;
 
-    @Autowired
-    private PostRepository postRepository;
 
     private Long savedMemberId;
     private Long savedPostId;

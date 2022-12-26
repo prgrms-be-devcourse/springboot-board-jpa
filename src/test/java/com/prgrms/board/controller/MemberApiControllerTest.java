@@ -5,7 +5,6 @@ import com.prgrms.board.dto.request.MemberCreateDto;
 import com.prgrms.board.repository.MemberRepository;
 import com.prgrms.board.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -50,20 +50,16 @@ class MemberApiControllerTest {
 
     private Long savedMemberId;
     private MemberCreateDto createDto;
+
     @BeforeEach
     void setup() {
-         createDto = MemberCreateDto.builder()
+        createDto = MemberCreateDto.builder()
                 .name("member1")
                 .age(26)
                 .hobby("youTube")
                 .build();
 
         savedMemberId = memberService.join(createDto);
-    }
-
-    @AfterEach
-    void clear() {
-        memberRepository.deleteAll();
     }
 
     @Test

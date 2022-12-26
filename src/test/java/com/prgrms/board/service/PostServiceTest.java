@@ -3,11 +3,10 @@ package com.prgrms.board.service;
 import com.prgrms.board.domain.Member;
 import com.prgrms.board.domain.Post;
 import com.prgrms.board.dto.request.PostCreateDto;
-import com.prgrms.board.dto.response.PostResponseDto;
 import com.prgrms.board.dto.request.PostUpdateDto;
+import com.prgrms.board.dto.response.PostResponseDto;
 import com.prgrms.board.repository.MemberRepository;
 import com.prgrms.board.repository.PostRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
-
 
 import static com.prgrms.board.service.PostServiceImpl.SESSION_MEMBER;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,12 +59,6 @@ class PostServiceTest {
                 .build();
 
         savedPost = postRepository.save(post);
-    }
-
-    @AfterEach
-    void clear() {
-        postRepository.deleteAll();
-        memberRepository.deleteAll();
     }
 
     @Test

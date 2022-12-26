@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
+@Transactional
 public class PostPagingTest {
 
     @Autowired
@@ -30,8 +31,8 @@ public class PostPagingTest {
     @Autowired
     MemberService memberService;
 
-    private Pageable page = PageRequest.of(0, 10);
-    private int numOfDummyPosts = 20;
+    private final Pageable page = PageRequest.of(0, 10);
+    private final int numOfDummyPosts = 20;
 
     @BeforeEach
     void setup() {
@@ -57,7 +58,6 @@ public class PostPagingTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("게시글을 페이징해서 조회할 수 있다.")
     void 조회_페이징() {
         CursorResult firstSelection = postService.findAll(null, page);

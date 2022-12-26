@@ -3,12 +3,12 @@ package com.prgrms.board.service;
 import com.prgrms.board.dto.request.MemberCreateDto;
 import com.prgrms.board.dto.response.MemberResponseDto;
 import com.prgrms.board.repository.MemberRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
+@Transactional
 class MemberServiceTest {
     @Autowired
     MemberService memberService;
@@ -32,11 +33,6 @@ class MemberServiceTest {
                 .age(26)
                 .hobby("농구")
                 .build();
-    }
-
-    @AfterEach
-    void clear() {
-        memberRepository.deleteAll();
     }
 
     @Test
