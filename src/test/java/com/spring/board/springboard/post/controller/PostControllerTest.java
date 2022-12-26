@@ -46,7 +46,7 @@ class PostControllerTest {
     @BeforeEach
     void setUp() {
         memberRepository.save(
-                new Member("이수린", 24, Hobby.sleep)
+                new Member("이수린", 24, Hobby.SLEEP)
         );
 
         RequestPostDto requestPostDTO = new RequestPostDto(

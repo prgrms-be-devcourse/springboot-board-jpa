@@ -26,7 +26,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp(){
-        Member member = new Member("이수린", 24, Hobby.sleep);
+        Member member = new Member("이수린", 24, Hobby.SLEEP);
         memberRepository.save(member);
 
         RequestPostDto requestPostDTO1 = new RequestPostDto(
