@@ -134,7 +134,7 @@ class PostServiceTest {
     void shouldFindPosts() {
         // given
         User user = createUser(1L , "name", 10, "hobby");
-        PageDTO.Request request = new PageDTO.Request(0, 5);
+        PageDTO.Request request = new PageDTO.Request(0, 5, 10);
         List<Post> postList = new ArrayList<>();
         for (long i = 1; i <= 5; i++) {
             postList.add(new Post(i, "title " + i, "content " + i, user));

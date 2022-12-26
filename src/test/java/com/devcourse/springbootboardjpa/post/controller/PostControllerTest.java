@@ -180,7 +180,7 @@ class PostControllerTest {
     @DisplayName("페이지로 Post 조회 성공")
     void findPostsPage() throws Exception {
         // given
-        PageDTO.Request pageRequest = new PageDTO.Request(0, 5);
+        PageDTO.Request pageRequest = new PageDTO.Request(0, 5, 10);
         User user = User.builder().id(1L).name("name").age(10).hobby("hobby").build();
         List<PostDTO.FindResponse> findPosts = new ArrayList<>();
         for (long i = 1; i <= 2; i++) {
@@ -219,7 +219,8 @@ class PostControllerTest {
                 .andDo(document("find-posts-page",
                         requestFields(
                                 fieldWithPath("page").type(JsonFieldType.NUMBER).description("게시글 페이지"),
-                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("한 페이지당 게시글 수")
+                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("한 페이지당 게시글 수"),
+                                fieldWithPath("totalPage").type(JsonFieldType.NUMBER).description("표시할 총 페이지 수")
                         ),
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.NUMBER).description("상태코드"),

@@ -27,6 +27,9 @@ public class PageDTO {
         @Range(min = 1, max = Integer.MAX_VALUE)
         private int size;
 
+        @Range(min = 1, max = Integer.MAX_VALUE)
+        private int totalPage;
+
         public Pageable makePageable() {
             return PageRequest.of(page, size, Sort.by("createAt"));
         }
@@ -41,15 +44,15 @@ public class PageDTO {
         private List<Integer> pages;
         private int nowPage;
 
-        public Response(Page<E> page, Function<E, DTO> entityToDtoFunction) {
-            int startPageNumber = 10 * ((page.getNumber()) / 10) + 1;
-            int endPageNumber = Math.min(page.getTotalPages(), startPageNumber + 9);
+        public Response(Page<E> page, Function<E, DTO> entityToDtoFunction, int totalPage) {
+            int startPageNumber = totalPage * ((page.getNumber()) / totalPage) + 1;
+            int endPageNumber = Math.min(page.getTotalPages(), startPageNumber + totalPage - 1);
 
             this.nowPage = page.getNumber() + 1;
             this.data = page.getContent()
                     .stream().map(entityToDtoFunction)
                     .collect(Collectors.toList());
-            this.isNext = startPageNumber + 8 < page.getTotalPages();
+            this.isNext = startPageNumber + totalPage - 2 < page.getTotalPages();
             this.isPrev = startPageNumber > 1;
             this.pages = IntStream.rangeClosed(startPageNumber, endPageNumber)
                     .boxed()

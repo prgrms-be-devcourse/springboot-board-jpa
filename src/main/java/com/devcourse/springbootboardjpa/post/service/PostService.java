@@ -45,7 +45,7 @@ public class PostService {
     public PageDTO.Response<Post, PostDTO.FindResponse> findAllPostsPage(PageDTO.Request pageRequest) {
         Page<Post> pages = postRepository.findAll(pageRequest.makePageable());
 
-        return new PageDTO.Response<>(pages, PostConverter::postToFindResponse);
+        return new PageDTO.Response<>(pages, PostConverter::postToFindResponse, pageRequest.getTotalPage());
     }
 
     public Long updatePost(Long id, PostDTO.UpdateRequest postUpdateRequest) {
