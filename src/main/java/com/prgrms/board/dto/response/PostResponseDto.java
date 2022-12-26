@@ -1,7 +1,6 @@
 package com.prgrms.board.dto.response;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 
 @Getter

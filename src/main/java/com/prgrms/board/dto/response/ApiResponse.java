@@ -1,7 +1,6 @@
 package com.prgrms.board.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

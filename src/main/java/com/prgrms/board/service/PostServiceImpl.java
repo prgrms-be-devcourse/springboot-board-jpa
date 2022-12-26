@@ -1,14 +1,14 @@
 package com.prgrms.board.service;
 
+import com.prgrms.board.converter.EntityConverter;
 import com.prgrms.board.domain.Member;
 import com.prgrms.board.domain.Post;
 import com.prgrms.board.dto.CursorResult;
 import com.prgrms.board.dto.request.PostCreateDto;
-import com.prgrms.board.dto.response.PostResponseDto;
 import com.prgrms.board.dto.request.PostUpdateDto;
+import com.prgrms.board.dto.response.PostResponseDto;
 import com.prgrms.board.repository.MemberRepository;
 import com.prgrms.board.repository.PostRepository;
-import com.prgrms.board.service.converter.EntityConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Long register(PostCreateDto postCreateDto) {
         Member member = memberRepository.findById(postCreateDto.getWriterId())
-                .orElseThrow(() -> new RuntimeException("exception.member.id.null"));
+                .orElseThrow(() -> new IllegalArgumentException("exception.member.id.null"));
 
         httpSession.setAttribute(SESSION_MEMBER, member);
 
@@ -46,7 +46,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDto findById(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("exception.post.id.null"));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("exception.post.id.null"));
         return converter.postEntityToDto(post);
     }
 
@@ -62,7 +62,7 @@ public class PostServiceImpl implements PostService {
         Member registeredMember = post.getWriter();
 
         if (!registeredMember.equals(postUpdateMember)) {
-            throw new IllegalArgumentException("exception.post.member.equal");
+            throw new IllegalArgumentException("exception.post.writer.notEqual");
         }
 
         post.changePost(updateDto);

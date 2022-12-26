@@ -1,6 +1,6 @@
 package com.prgrms.board.controller;
 
-import com.prgrms.board.dto.*;
+import com.prgrms.board.dto.CursorResult;
 import com.prgrms.board.dto.request.PostCreateDto;
 import com.prgrms.board.dto.request.PostRequestDto;
 import com.prgrms.board.dto.request.PostUpdateDto;
@@ -9,8 +9,6 @@ import com.prgrms.board.dto.response.PostResponseDto;
 import com.prgrms.board.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

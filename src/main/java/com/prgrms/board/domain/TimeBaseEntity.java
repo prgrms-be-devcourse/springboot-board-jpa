@@ -13,9 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(value = AuditingEntityListener.class)
-abstract public class BaseEntity extends TimeBaseEntity{
-
-    @CreatedBy
-    @Column(name = "created_by", updatable = false)
-    private String createdBy;
+abstract public class TimeBaseEntity {
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP")
+    private LocalDateTime createdAt;
 }

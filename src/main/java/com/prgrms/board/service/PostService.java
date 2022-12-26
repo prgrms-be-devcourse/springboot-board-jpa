@@ -2,8 +2,8 @@ package com.prgrms.board.service;
 
 import com.prgrms.board.dto.CursorResult;
 import com.prgrms.board.dto.request.PostCreateDto;
-import com.prgrms.board.dto.response.PostResponseDto;
 import com.prgrms.board.dto.request.PostUpdateDto;
+import com.prgrms.board.dto.response.PostResponseDto;
 import org.springframework.data.domain.Pageable;
 
 public interface PostService {

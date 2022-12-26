@@ -1,10 +1,10 @@
 package com.prgrms.board.service;
 
+import com.prgrms.board.converter.EntityConverter;
 import com.prgrms.board.domain.Member;
 import com.prgrms.board.dto.request.MemberCreateDto;
 import com.prgrms.board.dto.response.MemberResponseDto;
 import com.prgrms.board.repository.MemberRepository;
-import com.prgrms.board.service.converter.EntityConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
