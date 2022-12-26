@@ -45,8 +45,8 @@ public class RequestBodyAuditorAware implements AuditorAware<String> {
     try {
       PostRequest postRequest = mapper.readValue(stringBuilder.toString(), PostRequest.class);
       Detail foundMember = memberService.findById(
-          postRequest.getMemberId());
-      return Optional.of(foundMember.getName());
+          postRequest.memberId());
+      return Optional.of(foundMember.name());
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }

@@ -2,11 +2,9 @@ package com.example.board.domain.member.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@Slf4j
 class MemberTest {
 
   @Test
@@ -21,9 +19,12 @@ class MemberTest {
     Member member = new Member(name, age, hobby);
 
     //then
-    assertThat(member.getAge()).isEqualTo(age);
-    assertThat(member.getName()).isEqualTo(name);
-    assertThat(member.getHobby()).isEqualTo(hobby);
+    assertThat(member.getAge())
+        .isEqualTo(age);
+    assertThat(member.getName())
+        .isEqualTo(name);
+    assertThat(member.getHobby())
+        .isEqualTo(hobby);
   }
 
   @Test
@@ -37,10 +38,11 @@ class MemberTest {
 
     // when
     int newAge = 10;
-    member.changeAge(newAge);
+    member.update(name, newAge, hobby);
 
     //then
-    assertThat(member.getAge()).isEqualTo(newAge);
+    assertThat(member.getAge())
+        .isEqualTo(newAge);
   }
 
   @Test
@@ -54,10 +56,11 @@ class MemberTest {
 
     // when
     String newName = "김환";
-    member.changeName(newName);
+    member.update(newName, age, hobby);
 
     //then
-    assertThat(member.getName()).isEqualTo(newName);
+    assertThat(member.getName())
+        .isEqualTo(newName);
   }
 
   @Test
@@ -71,9 +74,10 @@ class MemberTest {
 
     // when
     String newHobby= "코딩";
-    member.changeHobby(newHobby);
+    member.update(name, age, newHobby);
 
     //then
-    assertThat(member.getHobby()).isEqualTo(newHobby);
+    assertThat(member.getHobby())
+        .isEqualTo(newHobby);
   }
 }

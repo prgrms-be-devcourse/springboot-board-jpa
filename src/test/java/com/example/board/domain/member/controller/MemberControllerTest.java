@@ -9,10 +9,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.example.board.domain.member.dto.MemberRequest;
+import com.example.board.domain.member.repository.MemberRepository;
 import com.example.board.domain.member.service.MemberService;
 import com.example.board.domain.post.dto.PostRequest;
 import com.example.board.domain.post.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -34,18 +37,27 @@ class MemberControllerTest {
   private MemberService memberService;
 
   @Autowired
+  private MemberRepository memberRepository;
+
+  @Autowired
   private PostService postService;
 
   @Autowired
   private ObjectMapper objectMapper;
 
+  @BeforeEach
+  void tearDown(){
+    memberRepository.deleteAll();
+  }
+
   @Test
+  @DisplayName("사용자를 등록할 수 있습니다")
   void newMember() throws Exception {
     //given
     MemberRequest memberRequest = new MemberRequest("김환", 25, "게임");
 
     //when & then
-    mockMvc.perform(post("/member")
+    mockMvc.perform(post("/members")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(memberRequest)))
         .andExpect(status().isCreated())
@@ -59,6 +71,7 @@ class MemberControllerTest {
   }
 
   @Test
+  @DisplayName("사용자를 조회할 수 있습니다")
   void findMemberById() throws Exception {
     //given
     MemberRequest memberRequest = new MemberRequest("김환", 25, "게임");
@@ -66,7 +79,7 @@ class MemberControllerTest {
     postService.save(new PostRequest("으앙", "응아아아아앙", savedMemberId));
 
     //when & then
-    mockMvc.perform(get("/member/" + savedMemberId))
+    mockMvc.perform(get("/members/" + savedMemberId))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("member-find-by-id",

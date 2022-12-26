@@ -12,15 +12,17 @@ class PostTest {
   void newPost(){
     //given
     Member member = new Member("김환", 25, "게임");
-    String title = "RBF";
-    String content = "RBF를 작성합니다";
 
     //when
-    Post post = new Post(title, content, member);
+    Post post = new Post("RBF", "RBF를 작성합니다", member);
+    String title = post.getTitle();
+    String content = post.getContent();
 
     //then
-    Assertions.assertThat(post.getTitle()).isEqualTo(title);
-    Assertions.assertThat(post.getContent()).isEqualTo(content);
+    Assertions.assertThat(post.getTitle())
+        .isEqualTo(title);
+    Assertions.assertThat(post.getContent())
+        .isEqualTo(content);
   }
 
   @Test
@@ -35,10 +37,11 @@ class PostTest {
 
     //when
     String newTitle = "회고록";
-    post.changeTitle(newTitle);
+    post.update(newTitle, content, member.getName());
 
     //then
-    Assertions.assertThat(post.getTitle()).isEqualTo(newTitle);
+    Assertions.assertThat(post.getTitle())
+        .isEqualTo(newTitle);
   }
 
   @Test
@@ -53,9 +56,10 @@ class PostTest {
 
     //when
     String newContent = "RBF를 더 많이 작성합니다";
-    post.changeContent(newContent);
+    post.update(title, newContent, member.getName());
 
     //then
-    Assertions.assertThat(post.getContent()).isEqualTo(newContent);
+    Assertions.assertThat(post.getContent())
+        .isEqualTo(newContent);
   }
 }

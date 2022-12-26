@@ -9,10 +9,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.example.board.domain.member.dto.MemberRequest;
+import com.example.board.domain.member.repository.MemberRepository;
 import com.example.board.domain.member.service.MemberService;
 import com.example.board.domain.post.dto.PostRequest;
+import com.example.board.domain.post.repository.PostRepository;
 import com.example.board.domain.post.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -34,12 +38,25 @@ class PostControllerTest {
   private MemberService memberService;
 
   @Autowired
+  private MemberRepository memberRepository;
+
+  @Autowired
   private PostService postService;
+
+  @Autowired
+  private PostRepository postRepository;
 
   @Autowired
   private ObjectMapper objectMapper;
 
+  @BeforeEach
+  void tearDown(){
+    postRepository.deleteAll();
+    memberRepository.deleteAll();
+  }
+
   @Test
+  @DisplayName("게시글을 생성할 수 있습니다.")
   void newPost() throws Exception {
     //given
     MemberRequest memberRequest = new MemberRequest("김환", 25, "게임");
@@ -47,7 +64,7 @@ class PostControllerTest {
     PostRequest postRequest = new PostRequest("제목", "내용", savedMemberId);
 
     //when & then
-    mockMvc.perform(post("/post")
+    mockMvc.perform(post("/posts")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(postRequest)))
         .andExpect(status().isCreated())
@@ -61,6 +78,7 @@ class PostControllerTest {
   }
 
   @Test
+  @DisplayName("post_id로 게시글을 찾을 수 있습니다")
   void findPostById() throws Exception {
     //given
     MemberRequest memberRequest = new MemberRequest("김환", 25, "게임");
@@ -69,7 +87,7 @@ class PostControllerTest {
     Long savedPostId = postService.save(postRequest);
 
     //when & then
-    mockMvc.perform(get("/post/" + savedPostId))
+    mockMvc.perform(get(String.format("/posts/%d", savedPostId)))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("post-find-by-id",
@@ -88,6 +106,7 @@ class PostControllerTest {
   }
 
   @Test
+  @DisplayName("게시글을 수정할 수 있습니다")
   void updatePost() throws Exception {
     //given
     MemberRequest memberRequest = new MemberRequest("김환", 25, "게임");
@@ -98,7 +117,7 @@ class PostControllerTest {
     PostRequest updatePostRequest = new PostRequest("수정된 제목", "수정된 내용", savedMemberId);
 
     //when & then
-    mockMvc.perform(put("/post/" + savedPostId)
+    mockMvc.perform(put(String.format("/posts/%d", savedPostId))
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(updatePostRequest)))
         .andExpect(status().isCreated())
