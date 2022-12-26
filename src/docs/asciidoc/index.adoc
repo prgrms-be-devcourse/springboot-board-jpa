@@ -54,7 +54,7 @@ include::{snippets}/post-paging/http-response.adoc[]
 
 
 == 게시글 수정
-=== /api/v1/posts
+=== /api/v1/posts/{id}
 
 .Request
 include::{snippets}/post-update/request-fields.adoc[]

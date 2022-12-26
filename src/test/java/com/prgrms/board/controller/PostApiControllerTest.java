@@ -91,7 +91,7 @@ class PostApiControllerTest {
                                 fieldWithPath("writerId").description("작성자 ID")
                         ),
                         responseFields(
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("게시글 ID"),
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("게시글 PK"),
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답 시간")
                         )
@@ -125,26 +125,24 @@ class PostApiControllerTest {
     @Test
     void 게시글_수정() throws Exception {
         PostUpdateDto postUpdateDto = PostUpdateDto.builder()
-                .postId(savedPostId)
                 .title("change title")
                 .content("change content")
                 .writerId(savedMemberId)
                 .build();
 
-        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/v1/posts")
+        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/v1/posts/{id}", savedPostId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postUpdateDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-update",
                         requestFields(
-                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 ID"),
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
                                 fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("작성자 ID")
                         ),
                         responseFields(
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("게시글 ID"),
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("게시글 PK"),
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답 시간")
                         )
@@ -168,8 +166,8 @@ class PostApiControllerTest {
                 .andDo(
                         document("post-paging",
                                 requestParameters(
-                                        parameterWithName("cursorId").optional().description("cursorId"), // 필수여부 false
-                                        parameterWithName("size").optional().description("size") // 필수여부 false
+                                        parameterWithName("cursorId").optional().description("cursorId"),
+                                        parameterWithName("size").optional().description("size")
                                 ),
                                 responseFields(
                                         fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),

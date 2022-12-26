@@ -31,11 +31,11 @@ public class PostApiController {
         return ApiResponse.created(savedPostId);
     }
 
-    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{postId}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<PostResponseDto> findById(@PathVariable Long id) {
+    public ApiResponse<PostResponseDto> findById(@PathVariable Long postId) {
 
-        PostResponseDto responseDto = postService.findById(id);
+        PostResponseDto responseDto = postService.findById(postId);
         return ApiResponse.ok(responseDto);
     }
 
@@ -50,10 +50,10 @@ public class PostApiController {
         return ApiResponse.ok(cursorResult);
     }
 
-    @PutMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{postId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<Long> update(@RequestBody @Valid PostUpdateDto postUpdateDto) {
-        Long updatedPostId = postService.update(postUpdateDto);
+    public ApiResponse<Long> update(@PathVariable Long postId, @RequestBody @Valid PostUpdateDto postUpdateDto) {
+        Long updatedPostId = postService.update(postId, postUpdateDto);
 
         return ApiResponse.ok(updatedPostId);
     }

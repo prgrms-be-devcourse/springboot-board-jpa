@@ -13,5 +13,5 @@ public interface PostService {
 
     CursorResult findAll(Long cursorId, Pageable pageable);
 
-    Long update(PostUpdateDto updateDto);
+    Long update(Long postId, PostUpdateDto updateDto);
 }

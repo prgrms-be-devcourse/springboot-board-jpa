@@ -52,8 +52,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Long update(PostUpdateDto updateDto) {
-        Post post = postRepository.findById(updateDto.getPostId())
+    public Long update(Long postId, PostUpdateDto updateDto) {
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("exception.post.id.null"));
 
         Member postUpdateMember = memberRepository.findById(updateDto.getWriterId())

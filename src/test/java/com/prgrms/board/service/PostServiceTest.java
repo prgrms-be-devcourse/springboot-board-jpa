@@ -115,15 +115,15 @@ class PostServiceTest {
         String updatedTitle = "update title";
         String updatedContent = "update content";
 
+        Long postId = savedPost.getId();
         PostUpdateDto updateDto = PostUpdateDto.builder()
-                .postId(savedPost.getId())
                 .title(updatedTitle)
                 .content(updatedContent)
                 .writerId(savedMember.getId())
                 .build();
 
         //when
-        Long updatedPostId = postService.update(updateDto);
+        Long updatedPostId = postService.update(postId, updateDto);
         PostResponseDto responseDto = postService.findById(updatedPostId);
 
         //then
@@ -139,9 +139,9 @@ class PostServiceTest {
         String updatedTitle = "update title";
         String updatedContent = "update content";
         Long unknownMemberId = 100L;
+        Long postId = savedPost.getId();
 
         PostUpdateDto updateDto = PostUpdateDto.builder()
-                .postId(savedPost.getId())
                 .title(updatedTitle)
                 .content(updatedContent)
                 .writerId(unknownMemberId)
@@ -149,7 +149,7 @@ class PostServiceTest {
 
         //when & then
         assertThrows(IllegalArgumentException.class,
-                () -> postService.update(updateDto));
+                () -> postService.update(postId, updateDto));
 
     }
 

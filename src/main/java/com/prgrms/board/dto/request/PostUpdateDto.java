@@ -9,10 +9,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @Builder
 public class PostUpdateDto {
-
-    @NotNull(message = "exception.post.postId.null")
-    private Long postId;
-
     @NotBlank(message = "exception.post.title.null")
     private String title;
 
