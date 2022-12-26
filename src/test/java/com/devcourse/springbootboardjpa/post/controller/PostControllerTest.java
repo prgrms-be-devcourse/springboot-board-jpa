@@ -27,8 +27,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -150,7 +149,7 @@ class PostControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(
-                post("/posts/{id}", request)
+                put("/posts/{id}", request)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(postUpdateRequest)));
 

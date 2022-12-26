@@ -60,7 +60,7 @@ public class PostController {
         );
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ResponseDTO> updatePost(@PathVariable Long id,
                                                   @RequestBody @Valid PostDTO.UpdateRequest postUpdateRequest) {
 
