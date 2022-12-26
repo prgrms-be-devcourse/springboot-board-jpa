@@ -151,12 +151,12 @@ class DefaultPostServiceTest {
     public void findAllTest() {
         // Given
         List<Post> posts = Arrays.asList(new Post("test_title0", "content0", user),
-                new Post("test_title1", "content2", user),
-                new Post("test_title2", "content3", user),
-                new Post("test_title3", "content4", user),
-                new Post("test_title4", "content5", user),
-                new Post("test_title5", "content6", user),
-                new Post("test_title6", "content7", user));
+                new Post("test_title1", "content1", user),
+                new Post("test_title2", "content2", user),
+                new Post("test_title3", "content3", user),
+                new Post("test_title4", "content4", user),
+                new Post("test_title5", "content5", user),
+                new Post("test_title6", "content6", user));
         postRepository.saveAll(posts);
         PageRequest pageable = PageRequest.of(0,3);
 

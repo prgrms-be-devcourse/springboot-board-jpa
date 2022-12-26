@@ -26,8 +26,6 @@ public class PostDTO {
     @AllArgsConstructor
     public static class Request {
         @NotNull
-        private Long id;
-        @NotNull
         private String title;
         @NotNull
         private String content;
@@ -39,7 +37,6 @@ public class PostDTO {
         private Long id;
         private String title;
         private String content;
-        private UserDto.Info userDto;
         private String createdBy;
         private LocalDateTime createdAt;
     }
