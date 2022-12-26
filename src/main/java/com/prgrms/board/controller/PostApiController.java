@@ -2,12 +2,15 @@ package com.prgrms.board.controller;
 
 import com.prgrms.board.dto.*;
 import com.prgrms.board.dto.request.PostCreateDto;
+import com.prgrms.board.dto.request.PostRequestDto;
 import com.prgrms.board.dto.request.PostUpdateDto;
 import com.prgrms.board.dto.response.ApiResponse;
 import com.prgrms.board.dto.response.PostResponseDto;
 import com.prgrms.board.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,12 +44,8 @@ public class PostApiController {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<CursorResult> findAll(Long cursorId, Integer size) {
-        if (size == null) {
-            size = DEFAULT_PAGE_SIZE;
-        }
-
-        CursorResult cursorResult = postService.findAll(cursorId, PageRequest.of(0, size));
+    public ApiResponse<CursorResult> findAll(@Valid PostRequestDto postRequestDto) {
+        CursorResult cursorResult = postService.findAll(postRequestDto.getCursorId(), PageRequest.of(0, postRequestDto.getSize()));
         return ApiResponse.ok(cursorResult);
     }
 

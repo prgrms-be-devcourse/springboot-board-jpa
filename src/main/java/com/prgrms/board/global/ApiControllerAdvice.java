@@ -57,7 +57,7 @@ public class ApiControllerAdvice {
     public ApiBindErrorResponse bindExceptionHandler(BindException e) {
         FieldError fieldError = e.getFieldError();
 
-        String message = getMessage(Objects.requireNonNull(fieldError).getDefaultMessage());
+        String message = Objects.requireNonNull(fieldError).getDefaultMessage();
 
         log.warn("BindException 발생-> {}", message);
 

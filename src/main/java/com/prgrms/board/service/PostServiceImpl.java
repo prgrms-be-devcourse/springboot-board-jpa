@@ -73,6 +73,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public CursorResult findAll(Long cursorId, Pageable pageable) {
         List<Post> posts = getPosts(cursorId, pageable);
+
         List<PostResponseDto> postResponseDtoList = posts.stream()
                 .map(post -> converter.postEntityToDto(post))
                 .collect(Collectors.toList());
