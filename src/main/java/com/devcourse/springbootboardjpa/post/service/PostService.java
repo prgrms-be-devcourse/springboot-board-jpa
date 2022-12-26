@@ -52,8 +52,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(PostNotFoundException::new);
 
-        post.changeTitle(postUpdateRequest.getTitle());
-        post.changeContent(postUpdateRequest.getContent());
+        post.changePostInfo(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
 
         return post.getId();
     }
