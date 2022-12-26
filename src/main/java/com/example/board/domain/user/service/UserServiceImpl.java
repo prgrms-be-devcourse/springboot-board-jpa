@@ -8,6 +8,7 @@ import com.example.board.domain.user.repository.UserRepository;
 import com.example.board.domain.userhobby.entity.UserHobby;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,11 +17,13 @@ import static com.example.board.domain.user.dto.UserDto.SingleUserDetailResponse
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final HobbyRepository hobbyRepository;
 
+    @Transactional
     @Override
     public SingleUserDetailResponse enroll(CreateUserRequest createUserRequest) {
         User user = createUserRequest.toEntity();
