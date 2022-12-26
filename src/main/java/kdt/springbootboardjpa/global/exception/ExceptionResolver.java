@@ -1,16 +1,20 @@
 package kdt.springbootboardjpa.global.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kdt.springbootboardjpa.controller.response.ErrorResponse;
+import kdt.springbootboardjpa.global.dto.ApiError;
+import kdt.springbootboardjpa.global.dto.BaseResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-@ControllerAdvice
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
 public class ExceptionResolver {
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({IllegalArgumentException.class})
-    public ResponseEntity<ErrorResponse> handleForbiddenException(HttpServletRequest request, RuntimeException e){
-        ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND.toString(), request.getRequestURI());
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    public BaseResponse handleForbiddenException(HttpServletRequest request, RuntimeException e) {
+        ApiError apiError = new ApiError(e.getMessage(), request.getRequestURI());
+        return BaseResponse.error(HttpStatus.NOT_FOUND, apiError);
     }
 }

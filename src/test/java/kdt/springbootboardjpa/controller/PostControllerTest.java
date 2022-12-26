@@ -90,8 +90,8 @@ public class PostControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.title").value(title))
+                .andExpect(jsonPath("$.response.id").exists())
+                .andExpect(jsonPath("$.response.title").value(title))
                 .andDo(print())
                 .andDo(document("post-save",
                         requestFields(
@@ -100,10 +100,12 @@ public class PostControllerTest {
                                 fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
                         ),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("포스트 제목"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("포스트 내용"),
-                                fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
+                                fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
+                                fieldWithPath("error").type(JsonFieldType.NULL).description("응답 에러"),
+                                fieldWithPath("response.id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
+                                fieldWithPath("response.title").type(JsonFieldType.STRING).description("포스트 제목"),
+                                fieldWithPath("response.content").type(JsonFieldType.STRING).description("포스트 내용"),
+                                fieldWithPath("response.createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
                         )));
     }
 
@@ -127,10 +129,9 @@ public class PostControllerTest {
                                 .content(body)
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.errorMsg").value("Can't find User"))
-                .andExpect(jsonPath("$.statusCode").value("404 NOT_FOUND"))
-                .andExpect(jsonPath("$.uriRequested").value(url))
-                .andExpect(jsonPath("$.timestamp").exists())
+                .andExpect(jsonPath("$.error.errorMsg").value("Can't find User"))
+                .andExpect(jsonPath("$.error.uriRequested").value(url))
+                .andExpect(jsonPath("$.error.timestamp").exists())
                 .andDo(print());
     }
 
@@ -155,10 +156,10 @@ public class PostControllerTest {
                                 .content(body)
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(postId))
-                .andExpect(jsonPath("$.title").value(title))
-                .andExpect(jsonPath("$.content").value(content))
-                .andExpect(jsonPath("$.createdBy").value(createdBy))
+                .andExpect(jsonPath("$.response.id").value(postId))
+                .andExpect(jsonPath("$.response.title").value(title))
+                .andExpect(jsonPath("$.response.content").value(content))
+                .andExpect(jsonPath("$.response.createdBy").value(createdBy))
                 .andDo(print())
                 .andDo(document("post-update",
                         requestFields(
@@ -167,10 +168,12 @@ public class PostControllerTest {
                                 fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
                         ),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("포스트 제목"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("포스트 내용"),
-                                fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
+                                fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
+                                fieldWithPath("error").type(JsonFieldType.NULL).description("응답 에러"),
+                                fieldWithPath("response.id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
+                                fieldWithPath("response.title").type(JsonFieldType.STRING).description("포스트 제목"),
+                                fieldWithPath("response.content").type(JsonFieldType.STRING).description("포스트 내용"),
+                                fieldWithPath("response.createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
                         )));
     }
 
@@ -195,10 +198,9 @@ public class PostControllerTest {
                                 .content(body)
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.errorMsg").value("Can't find Post"))
-                .andExpect(jsonPath("$.statusCode").value("404 NOT_FOUND"))
-                .andExpect(jsonPath("$.uriRequested").value(url))
-                .andExpect(jsonPath("$.timestamp").exists())
+                .andExpect(jsonPath("$.error.errorMsg").value("Can't find Post"))
+                .andExpect(jsonPath("$.error.uriRequested").value(url))
+                .andExpect(jsonPath("$.error.timestamp").exists())
                 .andDo(print());
     }
 
@@ -212,31 +214,32 @@ public class PostControllerTest {
                         MockMvcRequestBuilders.get(url)
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(postId))
+                .andExpect(jsonPath("$.response.id").value(postId))
                 .andDo(print())
                 .andDo(document("post-get",
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("포스트 제목"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("포스트 내용"),
-                                fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
+                                fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
+                                fieldWithPath("error").type(JsonFieldType.NULL).description("응답 에러"),
+                                fieldWithPath("response.id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
+                                fieldWithPath("response.title").type(JsonFieldType.STRING).description("포스트 제목"),
+                                fieldWithPath("response.content").type(JsonFieldType.STRING).description("포스트 내용"),
+                                fieldWithPath("response.createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
                         )));
     }
 
     @Test
     @DisplayName("[실패] Post 조회하기, Post가 존재하지 않는 경우")
     void getPost_fail() throws Exception {
-        Long postId = 100L;
+        long postId = 100L;
         String url = "/posts/" + postId;
 
         mockMvc.perform(
                         MockMvcRequestBuilders.get(url)
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.errorMsg").value("Can't find Post"))
-                .andExpect(jsonPath("$.statusCode").value("404 NOT_FOUND"))
-                .andExpect(jsonPath("$.uriRequested").value(url))
-                .andExpect(jsonPath("$.timestamp").exists())
+                .andExpect(jsonPath("$.error.errorMsg").value("Can't find Post"))
+                .andExpect(jsonPath("$.error.uriRequested").value(url))
+                .andExpect(jsonPath("$.error.timestamp").exists())
                 .andDo(print());
     }
 
@@ -252,10 +255,12 @@ public class PostControllerTest {
                 .andDo(print())
                 .andDo(document("post-get-all",
                         responseFields(
-                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
-                                fieldWithPath("[].title").type(JsonFieldType.STRING).description("포스트 제목"),
-                                fieldWithPath("[].content").type(JsonFieldType.STRING).description("포스트 내용"),
-                                fieldWithPath("[].createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
+                                fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
+                                fieldWithPath("error").type(JsonFieldType.NULL).description("응답 에러"),
+                                fieldWithPath("response.[].id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
+                                fieldWithPath("response.[].title").type(JsonFieldType.STRING).description("포스트 제목"),
+                                fieldWithPath("response.[].content").type(JsonFieldType.STRING).description("포스트 내용"),
+                                fieldWithPath("response.[].createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
                         )));
     }
 }
