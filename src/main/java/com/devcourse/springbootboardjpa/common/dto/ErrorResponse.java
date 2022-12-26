@@ -8,14 +8,12 @@ import org.springframework.validation.BindException;
 
 public class ErrorResponse extends ResponseDTO {
 
-    private static final Integer CONFLICT_STATUS = 409;
-
     public ErrorResponse(ErrorCode errorCode) {
         super(errorCode.getStatus(), errorCode.getMessage());
     }
 
     public ErrorResponse(BindException bindException) {
-        super(CONFLICT_STATUS, getBindingErrorMessages(bindException));
+        super(HttpStatus.CONFLICT.value(), getBindingErrorMessages(bindException));
     }
 
     public ErrorResponse(RuntimeException e) {
