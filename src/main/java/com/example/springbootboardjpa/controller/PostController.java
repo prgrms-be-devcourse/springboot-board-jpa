@@ -14,6 +14,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -79,9 +82,11 @@ public class PostController {
      * @return PostId
      */
     @PostMapping()
-    public ApiResponse<String> createPost(@Valid @RequestBody PostDTO.Save postDTO) {
+    public ApiResponse<Map<String, String>> createPost(@Valid @RequestBody PostDTO.Save postDTO) {
         long postId = postService.save(postDTO);
-        return ApiResponse.ok(postId + "","/posts");
+        Map<String, String> result = new HashMap<>();
+        result.put("id",postId+"");
+        return ApiResponse.ok(result,"/posts");
     }
 
     /**

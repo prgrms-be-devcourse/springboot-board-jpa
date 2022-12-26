@@ -17,8 +17,5 @@ public class UserDto {
         private String name;
         @NotNull
         private Integer age;
-        private String hobby;
-        private String createdBy;
-        private LocalDateTime createdAt;
     }
 }

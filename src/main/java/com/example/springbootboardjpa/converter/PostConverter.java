@@ -20,7 +20,7 @@ public class PostConverter {
     }
 
     private User convertUser(UserDto.Info userDto) {
-        return new User(userDto.getId(), userDto.getName(), userDto.getAge(), userDto.getHobby());
+        return new User(userDto.getId(), userDto.getName(), userDto.getAge());
     }
 
     public PostDTO.Response convertResponseOnlyPostDto(@Valid Post post) {
@@ -39,7 +39,6 @@ public class PostConverter {
                 .id(user.getId())
                 .name(user.getName())
                 .age(user.getAge())
-                .hobby(user.getHobby())
                 .build();
         return userDto;
     }
