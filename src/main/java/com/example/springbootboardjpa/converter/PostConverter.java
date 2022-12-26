@@ -4,13 +4,16 @@ import com.example.springbootboardjpa.dto.PostDTO;
 import com.example.springbootboardjpa.dto.UserDto;
 import com.example.springbootboardjpa.model.Post;
 import com.example.springbootboardjpa.model.User;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 @Component
+@Validated
 public class PostConverter {
     public Post convertNewPost(PostDTO.Save postDTO) {
-        User user = this.convertUser(postDTO.getUserDto());
-        Post post = new Post(postDTO.getTitle(), postDTO.getContent(), user);
+        @Valid User user = this.convertUser(postDTO.getUserDto());
+        @Valid Post post = new Post(postDTO.getTitle(), postDTO.getContent(), user);
         post.setCreatedBy(postDTO.getUserDto().getName());
 
         return post;
@@ -20,7 +23,7 @@ public class PostConverter {
         return new User(userDto.getId(), userDto.getName(), userDto.getAge(), userDto.getHobby());
     }
 
-    public PostDTO.Response convertResponseOnlyPostDto(Post post) {
+    public PostDTO.Response convertResponseOnlyPostDto(@Valid Post post) {
         PostDTO.Response postDTO = PostDTO.Response.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -31,7 +34,7 @@ public class PostConverter {
         return postDTO;
     }
 
-    private UserDto.Info convertUserDto(User user) {
+    private UserDto.Info convertUserDto(@Valid User user) {
         UserDto.Info userDto = UserDto.Info.builder()
                 .id(user.getId())
                 .name(user.getName())

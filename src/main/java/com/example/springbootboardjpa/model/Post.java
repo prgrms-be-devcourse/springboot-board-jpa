@@ -20,7 +20,7 @@ public class Post extends BaseEntity {
     private Long id;
 
     @NotNull
-    @Length(max = 50, message = "유효 글자 수를 초과하였습니다.")
+    @Length(max = 50, message = "title 유효 글자 수를 초과하였습니다.")
     @Column(length = 50)
     private String title;
 

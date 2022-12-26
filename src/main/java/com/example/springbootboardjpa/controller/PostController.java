@@ -25,17 +25,26 @@ public class PostController {
 
     @ExceptionHandler(NotFoundException.class)
     public ApiResponse<String> notFoundHandler(NotFoundException e) {
+        log.info("NotFoundException 발생 : "+e.getMessage());
         return ApiResponse.fail(404, e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     public ApiResponse<String> internalServerErrorHandler(Exception e) {
+        log.info("Exception 발생 : "+e.getMessage());
         return ApiResponse.fail(500, e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ApiResponse<String> validationErrorHandler(MethodArgumentNotValidException e) {
+    public ApiResponse<String> controllerValidationErrorHandler(MethodArgumentNotValidException e) {
+        log.info("MethodArgumentNotValidException 발생 : "+e.getMessage());
         return ApiResponse.fail(400, e.getBindingResult().toString());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ApiResponse<String> ServiceValidationErrorHandler(ConstraintViolationException e) {
+        log.info("ConstraintViolationException 발생 : "+e.getMessage());
+        return ApiResponse.fail(400, e.toString());
     }
 
 
@@ -46,7 +55,7 @@ public class PostController {
      * @return Page<PostDto>
      */
     @GetMapping()
-    public ApiResponse<Page<PostDTO.Response>> getPost(@PageableDefault(sort = "id",direction = Sort.Direction.DESC) Pageable pageable) {
+    public ApiResponse<Page<PostDTO.Response>> getPost(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<PostDTO.Response> pages = postService.findAll(pageable);
         return ApiResponse.ok(pages);
     }
@@ -71,7 +80,6 @@ public class PostController {
      */
     @PostMapping()
     public ApiResponse<String> createPost(@Valid @RequestBody PostDTO.Save postDTO) {
-        log.info(postDTO.getUserDto().getHobby());
         long postId = postService.save(postDTO);
         return ApiResponse.ok(postId + "");
     }
@@ -83,7 +91,8 @@ public class PostController {
      * @param postDTO
      */
     @PostMapping("{id}")
-    public void updatePost(@PathVariable Long id, @Valid @RequestBody PostDTO.Request postDTO) {
+    public ApiResponse<String> updatePost(@PathVariable Long id, @Valid @RequestBody PostDTO.Request postDTO) {
         postService.update(id, postDTO.getTitle(), postDTO.getContent());
+        return ApiResponse.ok("success!");
     }
 }

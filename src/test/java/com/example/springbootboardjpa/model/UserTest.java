@@ -10,14 +10,13 @@ import org.junit.jupiter.api.Test;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
 
     private Validator validator;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
@@ -57,7 +56,7 @@ class UserTest {
     @Test
     @DisplayName("hobby는 50자를 초과하면 안된다.")
     public void UserNullTest() {
-        var user = new User("영지", 28,"012345678901234567890123456789012345678901234567891");
+        var user = new User("영지", 28, "012345678901234567890123456789012345678901234567891");
 
         Set<ConstraintViolation<User>> validate = validator.validate(user);
         assertThat(validate.size()).isEqualTo(1);

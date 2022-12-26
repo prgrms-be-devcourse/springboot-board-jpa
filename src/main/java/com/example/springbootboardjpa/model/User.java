@@ -3,8 +3,6 @@ package com.example.springbootboardjpa.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -39,7 +37,7 @@ public class User extends BaseEntity {
     private final List<Post> posts = new ArrayList<>();
 
     public User(String name, Integer age, String hobby) {
-        this(null,name,age,hobby);
+        this(null, name, age, hobby);
     }
 
     public User(String name, Integer age) {
