@@ -29,4 +29,12 @@ public class GlobalExceptionHandler {
                 HttpStatus.CONFLICT
         );
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ResponseDTO> handleRuntimeException(RuntimeException e) {
+        return new ResponseEntity<>(
+                new ErrorResponse(e),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
 }

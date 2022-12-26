@@ -2,6 +2,7 @@ package com.devcourse.springbootboardjpa.common.dto;
 
 import com.devcourse.springbootboardjpa.common.exception.ErrorCode;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 
 
@@ -15,6 +16,10 @@ public class ErrorResponse extends ResponseDTO {
 
     public ErrorResponse(BindException bindException) {
         super(CONFLICT_STATUS, getBindingErrorMessages(bindException));
+    }
+
+    public ErrorResponse(RuntimeException e) {
+        super(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
     }
 
     private static String getBindingErrorMessages(BindException bindException) {
