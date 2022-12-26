@@ -1,9 +1,6 @@
 package com.example.springbootboard.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,9 +9,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class User extends BaseEntity {
     @Id
-    @Column(nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "name", length = 20)
     private String name;
+
+    @Column(name = "age")
     private int age;
+
+    @Column(name = "hobby")
+    @Enumerated(EnumType.STRING)
     private Hobby hobby;
 }
