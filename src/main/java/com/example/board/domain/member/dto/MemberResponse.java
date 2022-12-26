@@ -4,58 +4,37 @@ import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.post.dto.PostResponse;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberResponse {
 
-  @Getter
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class Detail{
+  private MemberResponse(){}
 
-    private Long id;
-    private String name;
-    private int age;
-    private String hobby;
-    private List<PostResponse.Shortcut> posts;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+  public record Detail(Long id, String name, int age, String hobby, List<PostResponse.Shortcut> posts,
+                              LocalDateTime createdAt, LocalDateTime updatedAt){
 
     public static Detail from(Member member) {
-      Detail detail = new Detail();
-
-      detail.id = member.getId();
-      detail.name = member.getName();
-      detail.age = member.getAge();
-      detail.hobby = member.getHobby();
-      detail.posts = member.getPosts()
-          .stream()
-          .map(PostResponse.Shortcut::from)
-          .collect(Collectors.toList());
-      detail.createdAt = member.getCreatedAt();
-      detail.updatedAt = member.getUpdatedAt();
-
-      return detail;
+      return new Detail(
+          member.getId(),
+          member.getName(),
+          member.getAge(),
+          member.getHobby(),
+          member.getPosts()
+              .stream()
+              .map(PostResponse.Shortcut::from)
+              .toList(),
+          member.getCreatedAt(),
+          member.getUpdatedAt()
+      );
     }
   }
 
-  @Getter
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class OnlyAuthor {
-
-    private Long id;
-    private String name;
+  public record OnlyAuthor(Long id, String name) {
 
     public static OnlyAuthor from(Member member) {
-      OnlyAuthor onlyAuthor = new OnlyAuthor();
-
-      onlyAuthor.id = member.getId();
-      onlyAuthor.name = member.getName();
-
-      return onlyAuthor;
+      return new OnlyAuthor(
+          member.getId(),
+          member.getName()
+      );
     }
   }
 }

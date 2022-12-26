@@ -45,17 +45,17 @@ public class PostService {
   }
 
   public Long save(PostRequest postRequest) {
-    Long memberId = postRequest.getMemberId();
+    Long memberId = postRequest.memberId();
     Member member = findMemberById(memberId);
 
-    Post post = new Post(postRequest.getTitle(), postRequest.getContent(), member);
-    Post savedPost = postRepository.save(post);
+    Post post = new Post(postRequest.title(), postRequest.content(), member);
+    postRepository.save(post);
 
-    return savedPost.getId();
+    return post.getId();
   }
 
   public Long update(Long postId, PostRequest postRequest) {
-    Long memberId = postRequest.getMemberId();
+    Long memberId = postRequest.memberId();
     Member member = findMemberById(memberId);
 
     Post post = postRepository.findById(postId)
@@ -63,9 +63,7 @@ public class PostService {
             () -> new NotFoundException(
                 String.format("NotFoundException post id: %d", postId)));
 
-    post.changeTitle(postRequest.getTitle());
-    post.changeContent(postRequest.getContent());
-    post.preUpdate(member.getName());
+    post.update(postRequest.title(), postRequest.content(), member.getName());
 
     return post.getId();
   }

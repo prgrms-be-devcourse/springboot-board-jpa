@@ -27,9 +27,9 @@ public class MemberService {
   }
 
   public Long save(MemberRequest memberRequest) {
-    Member member = new Member(memberRequest.getName(), memberRequest.getAge(),
-        memberRequest.getHobby());
-    Member savedMember = memberRepository.save(member);
-    return savedMember.getId();
+    Member member = new Member(memberRequest.name(), memberRequest.age(),
+        memberRequest.hobby());
+    memberRepository.save(member);
+    return member.getId();
   }
 }

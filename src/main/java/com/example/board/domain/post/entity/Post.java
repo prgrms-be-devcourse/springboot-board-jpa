@@ -14,13 +14,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @SequenceGenerator(
     name = "POST_SEQ_GENERATOR",
@@ -51,22 +46,18 @@ public class Post extends BaseTimeEntity {
   @Column(name = "updated_by")
   private String updatedBy;
 
+  protected Post(){}
+
   public Post(String title, String content, Member member) {
     this.title = title;
     this.content = content;
     registerMember(member);
   }
 
-  public void changeTitle(String newTitle) {
+  public void update(String newTitle, String newContent, String memberName){
     this.title = newTitle;
-  }
-
-  public void changeContent(String newContent) {
     this.content = newContent;
-  }
-
-  public void preUpdate(String memberName){
-    this.updatedBy = memberName;
+    preUpdate(memberName);
   }
 
   public void registerMember(Member member) {
@@ -82,5 +73,33 @@ public class Post extends BaseTimeEntity {
   public void prePersist(){
     this.createdBy = this.getMember().getName();
     this.updatedBy = this.createdBy;
+  }
+
+  private void preUpdate(String memberName){
+    this.updatedBy = memberName;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getContent() {
+    return content;
+  }
+
+  public Member getMember() {
+    return member;
+  }
+
+  public String getCreatedBy() {
+    return createdBy;
+  }
+
+  public String getUpdatedBy() {
+    return updatedBy;
   }
 }

@@ -13,12 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(uniqueConstraints = {
     @UniqueConstraint(name = "NAME_UNIQUE", columnNames = {"name"})})
@@ -41,21 +36,37 @@ public class Member extends BaseTimeEntity {
   @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
   private List<Post> posts = new ArrayList<>();
 
+  protected Member(){}
+
   public Member(String name, int age, String hobby) {
     this.name = name;
     this.age = age;
     this.hobby = hobby;
   }
 
-  public void changeName(String newName) {
-    this.name = newName;
+  public void update(String newName, int newAge, String newHobby){
+    name = newName;
+    age = newAge;
+    hobby = newHobby;
   }
 
-  public void changeAge(int newAge) {
-    this.age = newAge;
+  public Long getId(){
+    return id;
   }
 
-  public void changeHobby(String newHobby) {
-    this.hobby = newHobby;
+  public String getName(){
+    return name;
+  }
+
+  public int getAge(){
+    return age;
+  }
+
+  public String getHobby(){
+    return hobby;
+  }
+
+  public List<Post> getPosts(){
+    return posts;
   }
 }

@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/members")
 public class MemberController {
 
   private final MemberService memberService;
@@ -33,9 +34,14 @@ public class MemberController {
   public ResponseEntity<Void> newMember(@RequestBody MemberRequest memberRequest) {
     Long savedId = memberService.save(memberRequest);
 
-    return ResponseEntity
-        .created(
-            URI.create(String.format("/member/%d", savedId)))
+    URI uri = UriComponentsBuilder.newInstance()
+        .path("/members/{memberId}")
+        .build()
+        .expand(savedId)
+        .encode()
+        .toUri();
+
+    return ResponseEntity.created(uri)
         .build();
   }
 }
