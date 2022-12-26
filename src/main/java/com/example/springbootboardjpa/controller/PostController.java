@@ -81,7 +81,7 @@ public class PostController {
     @PostMapping()
     public ApiResponse<String> createPost(@Valid @RequestBody PostDTO.Save postDTO) {
         long postId = postService.save(postDTO);
-        return ApiResponse.ok(postId + "");
+        return ApiResponse.ok(postId + "","/posts");
     }
 
     /**
@@ -93,6 +93,6 @@ public class PostController {
     @PostMapping("{id}")
     public ApiResponse<String> updatePost(@PathVariable Long id, @Valid @RequestBody PostDTO.Request postDTO) {
         postService.update(id, postDTO.getTitle(), postDTO.getContent());
-        return ApiResponse.ok("success!");
+        return ApiResponse.ok("success!","/posts/"+id);
     }
 }
