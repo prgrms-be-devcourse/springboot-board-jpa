@@ -11,7 +11,7 @@ class PostTest {
   @DisplayName("Post를 생성할 수 있습니다")
   void newPost(){
     //given
-    Member member = new Member("김환", 25, "게임");
+    Member member = new Member("김환", "email123@naver.com", "password123!", 25, "게임");
 
     //when
     Post post = new Post("RBF", "RBF를 작성합니다", member);
@@ -29,7 +29,7 @@ class PostTest {
   @DisplayName("Post의 제목을 변경할 수 있습니다")
   void updateTitle(){
     //given
-    Member member = new Member("김환", 25, "게임");
+    Member member = new Member("김환", "email123@naver.com", "password123!", 25, "게임");
     String title = "RBF";
     String content = "RBF를 작성합니다";
 
@@ -48,7 +48,7 @@ class PostTest {
   @DisplayName("Post의 내용을 변경할 수 있습니다")
   void updateContent(){
     //given
-    Member member = new Member("김환", 25, "게임");
+    Member member = new Member("김환", "email123@naver.com", "password123!", 25, "게임");
     String title = "RBF";
     String content = "RBF를 작성합니다";
 

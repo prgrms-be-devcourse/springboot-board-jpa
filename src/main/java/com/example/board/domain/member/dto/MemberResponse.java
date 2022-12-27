@@ -9,13 +9,15 @@ public class MemberResponse {
 
   private MemberResponse(){}
 
-  public record Detail(Long id, String name, int age, String hobby, List<PostResponse.Shortcut> posts,
+  public record Detail(Long id, String name, String email, String password, int age, String hobby, List<PostResponse.Shortcut> posts,
                               LocalDateTime createdAt, LocalDateTime updatedAt){
 
     public static Detail from(Member member) {
       return new Detail(
           member.getId(),
           member.getName(),
+          member.getEmail(),
+          member.getPassword(),
           member.getAge(),
           member.getHobby(),
           member.getPosts()

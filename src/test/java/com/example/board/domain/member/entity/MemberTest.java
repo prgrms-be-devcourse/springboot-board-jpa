@@ -12,11 +12,13 @@ class MemberTest {
   public void createMember(){
     //given
     String name = "김환";
+    String email = "email123@naver.com";
+    String password = "password123!";
     int age = 25;
     String hobby = "게임";
 
     // when
-    Member member = new Member(name, age, hobby);
+    Member member = new Member(name, email, password, age, hobby);
 
     //then
     assertThat(member.getAge())
@@ -32,9 +34,11 @@ class MemberTest {
   public void updateMemberAge(){
     //given
     String name = "김환";
+    String email = "email123@naver.com";
+    String password = "password123!";
     int age = 25;
     String hobby = "게임";
-    Member member = new Member(name, age, hobby);
+    Member member = new Member(name, email, password, age, hobby);
 
     // when
     int newAge = 10;
@@ -50,9 +54,11 @@ class MemberTest {
   public void updateMemberName(){
     //given
     String name = "김환";
+    String email = "email123@naver.com";
+    String password = "password123!";
     int age = 25;
     String hobby = "게임";
-    Member member = new Member(name, age, hobby);
+    Member member = new Member(name, email, password, age, hobby);
 
     // when
     String newName = "김환";
@@ -68,9 +74,11 @@ class MemberTest {
   public void updateMemberHobby(){
     //given
     String name = "김환";
+    String email = "email123@naver.com";
+    String password = "password123!";
     int age = 25;
     String hobby = "게임";
-    Member member = new Member(name, age, hobby);
+    Member member = new Member(name, email, password, age, hobby);
 
     // when
     String newHobby= "코딩";
