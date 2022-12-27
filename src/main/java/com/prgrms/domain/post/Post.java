@@ -10,14 +10,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Table(name = "posts")
 public class Post extends BaseEntity {
 
     @Id
@@ -43,12 +40,11 @@ public class Post extends BaseEntity {
     public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
-        this.setCreatedAt(LocalDateTime.now());
-        this.setCreatedBy(user.getName());
+        this.beWrittenBy(user.getName());
         registerUser(user);
     }
 
-    public void registerUser(User user) {
+    private void registerUser(User user) {
         if (Objects.nonNull(this.user)) {
             this.user.getPosts().remove(this);
         }
