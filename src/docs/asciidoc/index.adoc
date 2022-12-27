@@ -10,7 +10,7 @@
 
 === 회원 생성
 
-operation::member-join[snippets='http-request,request-fields,http-response,response-fields']
+operation::member-join[snippets='http-request,request-fields,http-response']
 
 == 게시글
 

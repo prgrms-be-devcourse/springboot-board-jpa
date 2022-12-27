@@ -15,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,10 +50,6 @@ class MemberApiControllerTest {
                                 fieldWithPath("name").type(STRING).description("이름"),
                                 fieldWithPath("age").type(NUMBER).description("나이").optional(),
                                 fieldWithPath("hobby").type(STRING).description("취미").optional()
-                        ),
-                        responseFields(
-                                fieldWithPath("description").type(STRING).description("회원 생성 결과"),
-                                fieldWithPath("data").type(NUMBER).description("회원 아이디")
                         )));
     }
 }

@@ -19,10 +19,11 @@ public class MemberApiController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Long>> createMember(
+    public ResponseEntity<Void> join(
             @RequestBody MemberRequest.JoinDto joinDto
     ) {
+        memberService.join(memberJoinDto);
         return ResponseEntity.ok()
-                .body(new ApiResponse<>("member-id", memberService.join(joinDto)));
+                .build();
     }
 }
