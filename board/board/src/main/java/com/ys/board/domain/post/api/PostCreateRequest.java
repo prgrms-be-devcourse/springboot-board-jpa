@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostCreateRequest {
 
-    @NotBlank
+    @NotBlank(message = "제목을 입력해주세요.")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "내용을 입력해주세요.")
     private String content;
 
-    @NotNull
+    @NotNull(message = "userId는 필수 값입니다.")
     private Long userId;
 
 }

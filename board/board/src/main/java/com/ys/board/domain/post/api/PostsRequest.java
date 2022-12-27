@@ -2,7 +2,6 @@ package com.ys.board.domain.post.api;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +14,7 @@ public class PostsRequest {
 
     private Long cursorId;
 
-    @Max(100) @Min(0)
+    @Max(value = 100, message = "최대값은 100입니다.") @Min(value = 0, message = "최소값은 0입니다. ")
     private int pageSize;
 
 }

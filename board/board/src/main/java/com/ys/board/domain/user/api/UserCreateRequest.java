@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UserCreateRequest {
 
-    @NotBlank @Size(min = 1)
+    @NotBlank(message = "이름을 입력해주세요.") @Size(min = 1, message = "최소 1글자 이상이여야 합니다.")
     private String name;
 
-    @NotNull @Min(1)
-    private Integer age;
+    @Min(value = 1, message = "최소 1살 이상 이여야 합니다.")
+    private int age;
 
     private String hobby;
 
