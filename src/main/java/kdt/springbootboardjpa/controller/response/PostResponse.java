@@ -1,9 +1,11 @@
 package kdt.springbootboardjpa.controller.response;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import kdt.springbootboardjpa.respository.entity.Post;
 import lombok.Builder;
 
-public record PostResponse(Long id, String title, String content, Long createdBy) {
+public record PostResponse(@Positive Long id, @NotBlank String title, @NotBlank String content, @Positive Long createdBy) {
 
     @Builder
     public PostResponse {

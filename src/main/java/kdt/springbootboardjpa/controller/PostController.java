@@ -1,5 +1,6 @@
 package kdt.springbootboardjpa.controller;
 
+import jakarta.validation.Valid;
 import kdt.springbootboardjpa.controller.request.SavePostRequest;
 import kdt.springbootboardjpa.controller.response.PostResponse;
 import kdt.springbootboardjpa.global.dto.BaseResponse;
@@ -21,7 +22,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<BaseResponse<PostResponse>> createPost(@RequestBody SavePostRequest request) {
+    public ResponseEntity<BaseResponse<PostResponse>> createPost(@Valid @RequestBody SavePostRequest request) {
         PostDto newPostDto = PostDto.builder()
                 .title(request.title())
                 .content(request.content())
@@ -35,7 +36,7 @@ public class PostController {
     }
 
     @PostMapping("/{id}")
-    public BaseResponse<PostResponse> updatePost(@PathVariable Long id, @RequestBody SavePostRequest request) {
+    public BaseResponse<PostResponse> updatePost(@PathVariable Long id, @Valid @RequestBody SavePostRequest request) {
         PostDto updatedPostDto = PostDto.builder()
                 .title(request.title())
                 .content(request.content())

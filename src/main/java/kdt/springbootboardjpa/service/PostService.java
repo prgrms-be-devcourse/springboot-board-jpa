@@ -1,5 +1,6 @@
 package kdt.springbootboardjpa.service;
 
+import jakarta.validation.Valid;
 import kdt.springbootboardjpa.respository.PostRepository;
 import kdt.springbootboardjpa.respository.UserRepository;
 import kdt.springbootboardjpa.respository.entity.Post;
@@ -30,7 +31,7 @@ public class PostService {
     }
 
     @Transactional
-    public Post createPost(PostDto postDto) {
+    public Post createPost(@Valid PostDto postDto) {
         User user = userRepository.findById(postDto.createdBy())
                 .orElseThrow(() -> new IllegalArgumentException("Can't find User"));
         Post newPost = Post.builder()
@@ -42,7 +43,7 @@ public class PostService {
     }
 
     @Transactional
-    public Post updatePost(Long postId, PostDto postDto) {
+    public Post updatePost(Long postId, @Valid PostDto postDto) {
         Post savedPost = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Can't find Post"));
         savedPost.updateTitle(postDto.title());
