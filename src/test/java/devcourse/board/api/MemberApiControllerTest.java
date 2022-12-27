@@ -1,7 +1,7 @@
 package devcourse.board.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import devcourse.board.domain.member.model.MemberRequest;
+import devcourse.board.domain.member.model.MemberJoinDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ class MemberApiControllerTest {
     @DisplayName("회원 생성")
     void createMember() throws Exception {
         // given
-        MemberRequest.JoinDto joinDto = new MemberRequest.JoinDto("member");
+        MemberJoinDto joinDto = new MemberJoinDto("member");
 
         // when & then
         mockMvc.perform(post("/members")

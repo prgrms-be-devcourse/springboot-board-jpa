@@ -1,7 +1,7 @@
 package devcourse.board.domain.post;
 
 import devcourse.board.domain.member.MemberService;
-import devcourse.board.domain.member.model.MemberRequest;
+import devcourse.board.domain.member.model.MemberJoinDto;
 import devcourse.board.domain.post.model.PostRequest;
 import devcourse.board.domain.post.model.PostResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -103,7 +103,7 @@ class PostServiceTest {
     }
 
     private Long saveMember(String name) {
-        return memberService.join(new MemberRequest.JoinDto(name));
+        return memberService.join(new MemberJoinDto(name));
     }
 
     private void createDummyPosts() {

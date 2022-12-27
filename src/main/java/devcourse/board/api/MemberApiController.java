@@ -1,7 +1,7 @@
 package devcourse.board.api;
 
 import devcourse.board.domain.member.MemberService;
-import devcourse.board.domain.member.model.MemberRequest;
+import devcourse.board.domain.member.model.MemberJoinDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +20,7 @@ public class MemberApiController {
 
     @PostMapping
     public ResponseEntity<Void> join(
-            @RequestBody MemberRequest.JoinDto joinDto
+            @RequestBody MemberJoinDto memberJoinDto
     ) {
         memberService.join(memberJoinDto);
         return ResponseEntity.ok()

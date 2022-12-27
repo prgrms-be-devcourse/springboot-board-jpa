@@ -2,7 +2,7 @@ package devcourse.board.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import devcourse.board.domain.member.MemberService;
-import devcourse.board.domain.member.model.MemberRequest;
+import devcourse.board.domain.member.model.MemberJoinDto;
 import devcourse.board.domain.post.PostService;
 import devcourse.board.domain.post.model.PostRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -158,7 +158,7 @@ class PostApiControllerTest {
     }
 
     private Long saveDummyMember(String name) {
-        return memberService.join(new MemberRequest.JoinDto(name));
+        return memberService.join(new MemberJoinDto(name));
     }
 
     private Long createDummyPost(String memberName, String title, String content) {

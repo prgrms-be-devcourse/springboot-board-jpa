@@ -1,7 +1,7 @@
 package devcourse.board.domain.member;
 
 import devcourse.board.domain.member.model.Member;
-import devcourse.board.domain.member.model.MemberRequest;
+import devcourse.board.domain.member.model.MemberJoinDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,8 @@ class MemberServiceTest {
     @DisplayName("회원 저장")
     void save() {
         // given
-        MemberRequest.JoinDto joinDto1 = new MemberRequest.JoinDto("member1");
-        MemberRequest.JoinDto joinDto2 = new MemberRequest.JoinDto("member2", 27, "hobby2");
+        MemberJoinDto joinDto1 = new MemberJoinDto("member1");
+        MemberJoinDto joinDto2 = new MemberJoinDto("member2", 27, "hobby2");
 
         // when
         memberService.join(joinDto1);
