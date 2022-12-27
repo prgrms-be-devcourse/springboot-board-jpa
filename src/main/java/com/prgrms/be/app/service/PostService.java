@@ -24,9 +24,9 @@ public class PostService {
     private final PostConverter postConverter;
 
     @Transactional(readOnly = true)
-    public Page<PostDTO.PostsResponse> findAll(Pageable pageable) {
-        return postRepository.findAll(pageable).map(postConverter::convertToPostsResponse);
-
+    public PostDTO.PostsResponse findAll(Pageable pageable) {
+        Page<Post> all = postRepository.findAll(pageable);
+        return postConverter.convertToPostsResponse(all);
     }
 
     @Transactional(readOnly = true)

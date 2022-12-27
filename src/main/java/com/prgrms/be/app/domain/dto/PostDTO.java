@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PostDTO {
 
@@ -42,9 +43,9 @@ public class PostDTO {
     }
 
     public record PostsResponse(
-            String title,
-            Long postId,
-            LocalDateTime createdAt) {
+            List<PostDTO.PostDetailResponse> posts,
+            int totalPages,
+            boolean hasNext) {
     }
 
     public record PostDetailResponse(

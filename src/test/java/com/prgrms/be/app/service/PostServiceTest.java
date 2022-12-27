@@ -82,11 +82,11 @@ class PostServiceTest {
 
         // when
         when(postRepository.findAll(pageable)).thenReturn(postPage);
-        Page<PostDTO.PostsResponse> postDtos = postService.findAll(pageable);
+        PostDTO.PostsResponse postDtos = postService.findAll(pageable);
 
         // then
         verify(postRepository).findAll(pageable);
-        assertThat(postDtos.getTotalPages()).isEqualTo(4);
+        assertThat(postDtos.totalPages()).isEqualTo(4);
     }
 
     @Test
