@@ -6,9 +6,10 @@ import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
 import com.spring.board.springboard.user.repository.MemberRepository;
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Sort;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DataJpaTest
 class PostRepositoryTest {
 
@@ -31,7 +33,7 @@ class PostRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @BeforeEach
+    @BeforeAll
     void setUser(){
         member = new Member("이수린", 24, Hobby.SLEEP);
         memberRepository.save(member);
