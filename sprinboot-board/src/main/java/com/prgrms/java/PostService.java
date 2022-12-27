@@ -18,6 +18,7 @@ import java.text.MessageFormat;
 
 
 @Service
+@Transactional(readOnly = true)
 public class PostService {
 
     private final PostRepository postRepository;
@@ -28,7 +29,6 @@ public class PostService {
         this.userRepository = userRepository;
     }
 
-    @Transactional(readOnly = true)
     public GetPostsResponse getPosts(Pageable pageable) {
         Page<Post> postPage = postRepository.findAll(pageable);
 
@@ -39,31 +39,27 @@ public class PostService {
         );
     }
 
-    @Transactional(readOnly = true)
     public GetPostDetailsResponse getPostDetail(long postId) {
         Post savedPost = postRepository.findById(postId)
-                .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find Post. Please check post id. [Post ID]: {0}", String.valueOf(postId))));
+                .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find Post. Please check post id. [Post ID]: {0}", postId)));
 
         return GetPostDetailsResponse.from(savedPost);
     }
 
     @Transactional
     public long createPost(CreatePostRequest createPostRequest) {
-        User user = userRepository.findById(createPostRequest.getUserId())
-                .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find User. Please check user id. [User ID]: {0}", createPostRequest.getUserId())));
+        User user = userRepository.findById(createPostRequest.userId())
+                .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find User. Please check user id. [User ID]: {0}", createPostRequest.userId())));
 
-        Post post = createPostRequest.toEntity();
-        post.assignUser(user);
-
-        Post savedPost = postRepository.save(post);
-        return savedPost.getId();
+        Post post = postRepository.save(createPostRequest.toEntity(user));
+        return post.getId();
     }
 
     @Transactional
     public void modifyPost(long id, ModifyPostRequest modifyPostRequest) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find Post. Please check post id. [Post ID]: {0}", String.valueOf(id))));
+                .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find Post. Please check post id. [Post ID]: {0}", id)));
 
-        post.editPost(modifyPostRequest.getTitle(), modifyPostRequest.getContent());
+        post.editPost(modifyPostRequest.title(), modifyPostRequest.content());
     }
 }

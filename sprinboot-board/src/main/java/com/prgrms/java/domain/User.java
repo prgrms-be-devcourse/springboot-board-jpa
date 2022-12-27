@@ -1,6 +1,9 @@
 package com.prgrms.java.domain;
 
 import jakarta.persistence.*;
+import org.springframework.util.Assert;
+
+import java.text.MessageFormat;
 
 @Entity
 @Table(name = "users")
@@ -18,10 +21,13 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private HobbyType hobby;
 
-    public User() {
+    protected User() {
     }
 
     public User(Long id, String name, int age, HobbyType hobby) {
+        Assert.hasLength(name, MessageFormat.format("name must not be empty or null. [name]: {0}", name));
+        Assert.state(name.length() <= 30, MessageFormat.format("name must be less than or equal to 30 characters. [name]: {0}", name));
+        Assert.state(age > 1, MessageFormat.format("age must be more than one. [name]: {0}", name));
         this.id = id;
         this.name = name;
         this.age = age;

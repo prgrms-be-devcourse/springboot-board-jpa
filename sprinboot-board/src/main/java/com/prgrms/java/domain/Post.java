@@ -23,10 +23,13 @@ public class Post extends BaseEntity {
     @ManyToOne
     private User user;
 
-    public Post() {
+    protected Post() {
     }
 
     public Post(Long id, String title, String content, User user) {
+        Assert.hasLength(title, MessageFormat.format("title must not be empty or null. [title]: {0}", title));
+        Assert.state(title.length() <= 30, MessageFormat.format("title must be less than or equal to 30 characters. [title]: {0}", title));
+        Assert.hasLength(content, MessageFormat.format("content must not be empty or null. [content]: {0}", content));
         this.id = id;
         this.title = title;
         this.content = content;
@@ -53,6 +56,10 @@ public class Post extends BaseEntity {
         return content;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void editPost(String title, String content) {
         editTitle(title);
         editContent(content);
@@ -69,7 +76,4 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public void assignUser(User user) {
-        this.user = user;
-    }
 }

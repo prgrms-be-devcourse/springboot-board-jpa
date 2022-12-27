@@ -23,7 +23,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetPostDetailsResponse> getPostDetails(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<GetPostDetailsResponse> getPostDetails(@PathVariable Long id) {
         GetPostDetailsResponse postDetail = postService.getPostDetail(id);
         return ResponseEntity.ok(postDetail);
     }
@@ -35,7 +35,7 @@ public class PostController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<ModifyPostResponse> modifyPost(@PathVariable(value = "id") Long id, @Valid @RequestBody ModifyPostRequest request) {
+    public ResponseEntity<ModifyPostResponse> modifyPost(@PathVariable Long id, @Valid @RequestBody ModifyPostRequest request) {
         postService.modifyPost(id, request);
         return ResponseEntity.ok(new ModifyPostResponse(id));
     }
