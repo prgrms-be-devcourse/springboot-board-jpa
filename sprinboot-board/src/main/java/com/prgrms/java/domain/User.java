@@ -25,9 +25,8 @@ public class User extends BaseEntity {
     }
 
     public User(Long id, String name, int age, HobbyType hobby) {
-        Assert.hasLength(name, MessageFormat.format("name must not be empty or null. [name]: {0}", name));
-        Assert.state(name.length() <= 30, MessageFormat.format("name must be less than or equal to 30 characters. [name]: {0}", name));
-        Assert.state(age > 1, MessageFormat.format("age must be more than one. [name]: {0}", name));
+        validName(name);
+        validAge(age);
         this.id = id;
         this.name = name;
         this.age = age;
@@ -53,4 +52,14 @@ public class User extends BaseEntity {
     public HobbyType getHobby() {
         return hobby;
     }
+
+    private static void validAge(int age) {
+        Assert.state(age > 1, MessageFormat.format("age must be more than one. [age]: {0}", age));
+    }
+
+    private static void validName(String name) {
+        Assert.hasLength(name, MessageFormat.format("name must not be empty or null. [name]: {0}", name));
+        Assert.state(name.length() <= 30, MessageFormat.format("name must be less than or equal to 30 characters. [name]: {0}", name));
+    }
+
 }

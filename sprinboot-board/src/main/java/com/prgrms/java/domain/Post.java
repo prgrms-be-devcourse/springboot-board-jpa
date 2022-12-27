@@ -27,9 +27,8 @@ public class Post extends BaseEntity {
     }
 
     public Post(Long id, String title, String content, User user) {
-        Assert.hasLength(title, MessageFormat.format("title must not be empty or null. [title]: {0}", title));
-        Assert.state(title.length() <= 30, MessageFormat.format("title must be less than or equal to 30 characters. [title]: {0}", title));
-        Assert.hasLength(content, MessageFormat.format("content must not be empty or null. [content]: {0}", content));
+        validTitle(title);
+        validContent(content);
         this.id = id;
         this.title = title;
         this.content = content;
@@ -66,14 +65,23 @@ public class Post extends BaseEntity {
     }
 
     public void editTitle(String title) {
-        Assert.hasLength(title, MessageFormat.format("title must not be empty or null. [title]: {0}", title));
-        Assert.state(title.length() <= 30, MessageFormat.format("title must be less than or equal to 30 characters. [title]: {0}", title));
+        validTitle(title);
+
         this.title = title;
     }
 
     public void editContent(String content) {
-        Assert.hasLength(content, MessageFormat.format("content must not be empty or null. [content]: {0}", content));
+        validContent(content);
         this.content = content;
+    }
+
+    private static void validTitle(String title) {
+        Assert.hasLength(title, MessageFormat.format("title must not be empty or null. [title]: {0}", title));
+        Assert.state(title.length() <= 30, MessageFormat.format("title must be less than or equal to 30 characters. [title]: {0}", title));
+    }
+
+    private static void validContent(String content) {
+        Assert.hasLength(content, MessageFormat.format("content must not be empty or null. [content]: {0}", content));
     }
 
 }
