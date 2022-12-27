@@ -203,7 +203,7 @@ class PostServiceFacadeTest {
             cursorId, pageSize);
 
         //then
-        assertTrue(postResponses.hasNext());
+        assertTrue(postResponses.isHasNext());
         assertEquals(pageSize, postResponses.getPostResponses().size());
         assertThat(postResponses.getPostResponses())
             .map(PostResponse::getPostId)
@@ -228,7 +228,7 @@ class PostServiceFacadeTest {
             cursorId, pageSize);
 
         //then
-        assertFalse(postResponses.hasNext());
+        assertFalse(postResponses.isHasNext());
         assertThat(postResponses.getPostResponses()).hasSizeLessThan(pageSize);
 
         assertThat(postResponses.getPostResponses())
@@ -253,7 +253,7 @@ class PostServiceFacadeTest {
             null, pageSize);
 
         //then
-        assertTrue(postResponses.hasNext());
+        assertTrue(postResponses.isHasNext());
         assertEquals(pageSize, postResponses.getPostResponses().size());
 
         assertThat(postResponses.getPostResponses())
@@ -278,7 +278,7 @@ class PostServiceFacadeTest {
             null, pageSize);
 
         //then
-        assertFalse(postResponses.hasNext());
+        assertFalse(postResponses.isHasNext());
         assertThat(postResponses.getPostResponses()).hasSizeLessThan(pageSize);
 
         assertThat(postResponses.getPostResponses())
