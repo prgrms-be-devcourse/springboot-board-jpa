@@ -13,16 +13,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.domain.user.UserService;
 import com.prgrms.dto.PostDto;
-import com.prgrms.dto.PostDto.update;
+import com.prgrms.dto.PostDto.Update;
 import com.prgrms.dto.UserDto;
 import com.prgrms.dto.UserDto.Request;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,7 +33,6 @@ import org.springframework.util.MultiValueMap;
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 class PostControllerTest {
 
@@ -52,6 +48,8 @@ class PostControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private final long userId = 1L;
+    private final long postId = 1L;
 
     @BeforeAll
     void setUpUser() {
@@ -61,16 +59,21 @@ class PostControllerTest {
 
         UserDto.Request userDto = new Request(userName, hobby, age);
         userService.insertUser(userDto);
+
+        String title = "타이틀 테스트1";
+        String content = "컨텐트 테스트1";
+
+        PostDto.Request postDto = new PostDto.Request(title, content, userId);
+
+        postService.insertPost(postDto);
     }
 
 
     @DisplayName("post 를 저장한다")
-    @Order(1)
     @Test
     void savePost() throws Exception {
-        String title = "타이틀 테스트";
-        String content = "컨텐트 테스트";
-        Long userId = 1L;
+        String title = "타이틀 테스트2";
+        String content = "컨텐트 테스트2";
 
         PostDto.Request postDto = new PostDto.Request(title, content, userId);
 
@@ -88,10 +91,10 @@ class PostControllerTest {
     }
 
     @DisplayName("특정 id의 post를 리턴한다")
-    @Order(2)
     @Test
     void postFindById() throws Exception {
-        mockMvc.perform(get("/api/posts/1"))
+
+        mockMvc.perform(get("/api/posts/" + postId))
             .andExpect(status().isOk())
             .andDo(document("post-find-by-id",
                 responseFields(
@@ -104,7 +107,6 @@ class PostControllerTest {
     }
 
     @DisplayName("pageable 조건에 맞는 post 를 리턴한다")
-    @Order(3)
     @Test
     void postFindByPage() throws Exception {
         MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
@@ -129,16 +131,15 @@ class PostControllerTest {
     }
 
     @DisplayName("post 의 title 과 content 를 수정할수 있다")
-    @Order(4)
     @Test
     void updatePost() throws Exception {
         String title = "업데이트 타이틀";
         String content = "업데이트 컨텐트";
 
-        PostDto.update postDto = new update(title, content);
+        Update postDto = new Update(title, content);
         String resource = objectMapper.writeValueAsString(postDto);
 
-        mockMvc.perform(put("/api/posts/1")
+        mockMvc.perform(put("/api/posts/" + postId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(resource))
             .andExpect(status().isOk())
@@ -155,5 +156,5 @@ class PostControllerTest {
                     fieldWithPath("userName").type(JsonFieldType.STRING).description("userName")
                 )));
     }
-}
 
+}
