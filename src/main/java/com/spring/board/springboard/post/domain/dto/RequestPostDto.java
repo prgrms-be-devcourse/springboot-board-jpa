@@ -15,10 +15,10 @@ public record RequestPostDto(String title, String content, Integer memberId){
         );
     }
 
-    public Post toEntity(RequestPostDto postDto, Member member) {
+    public Post toEntity(Member member) {
         return new Post(
-                postDto.title,
-                postDto.content,
+                title,
+                content,
                 LocalDateTime.now(),
                 member
         );
