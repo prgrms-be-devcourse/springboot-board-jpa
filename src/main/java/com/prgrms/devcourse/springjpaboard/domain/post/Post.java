@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 import com.prgrms.devcourse.springjpaboard.global.common.base.BaseEntity;
 
@@ -42,14 +43,15 @@ public class Post extends BaseEntity {
 	@Column(name = "content", nullable = false)
 	private String content;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 
 	@Builder
 	public Post(String title, String content, User user) {
-		checkArgument(StringUtils.hasText(title));
-		checkArgument(StringUtils.hasText(content));
+		checkArgument(StringUtils.hasText(title),"제목 오류");
+		checkArgument(StringUtils.hasText(content),"내용 오류");
 		this.title = title;
 		this.content = content;
 		this.updateUser(user);
@@ -61,12 +63,12 @@ public class Post extends BaseEntity {
 	}
 
 	public void updateTitle(String title) {
-		checkArgument(StringUtils.hasText(title));
+		checkArgument(StringUtils.hasText(title),"제목 오류");
 		this.title = title;
 	}
 
 	public void updateContent(String content) {
-		checkArgument(StringUtils.hasText(content));
+		checkArgument(StringUtils.hasText(content),"내용 오류");
 		this.content = content;
 	}
 

@@ -1,5 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.user;
 
+import static com.google.common.base.Preconditions.*;
+
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -11,7 +13,6 @@ import javax.persistence.Table;
 
 import org.springframework.util.StringUtils;
 
-import com.google.common.base.Preconditions;
 import com.prgrms.devcourse.springjpaboard.global.common.base.BaseEntity;
 
 import lombok.AccessLevel;
@@ -42,11 +43,11 @@ public class User extends BaseEntity {
 
 	@Builder
 	public User(String name, Integer age, String hobby) {
-		Preconditions.checkArgument(StringUtils.hasText(name));
-		Preconditions.checkArgument(name.length() <= 20);
-		Preconditions.checkArgument(Objects.nonNull(age));
-		Preconditions.checkArgument(age >= 0);
-		Preconditions.checkArgument(StringUtils.hasText(hobby));
+		checkArgument(StringUtils.hasText(name),"이름 오류");
+		checkArgument(name.length() <= 20);
+		checkArgument(Objects.nonNull(age),"나이 오류");
+		checkArgument(age >= 0);
+		checkArgument(StringUtils.hasText(hobby), "취미 오류");
 		this.name = name;
 		this.age = age;
 		this.hobby = hobby;

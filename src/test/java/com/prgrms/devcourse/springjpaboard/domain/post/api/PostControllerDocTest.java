@@ -12,8 +12,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -21,14 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
@@ -39,6 +36,7 @@ import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateRequest;
 import com.prgrms.devcourse.springjpaboard.domain.post.repository.PostRepository;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 import com.prgrms.devcourse.springjpaboard.domain.user.repository.UserRepository;
+import com.prgrms.devcourse.springjpaboard.global.error.ErrorResponse;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -68,8 +66,8 @@ public class PostControllerDocTest {
 		userRepository.save(user);
 	}
 
-	@BeforeEach
-	void clear() {
+	@AfterEach
+	void tearDown() {
 		postRepository.deleteAll();
 	}
 
@@ -107,7 +105,7 @@ public class PostControllerDocTest {
 	}
 
 	@Test
-	@DisplayName("조회 api")
+	@DisplayName("단건 조회 api")
 	void findById() throws Exception {
 
 		Post post = createPost(user);
@@ -122,10 +120,10 @@ public class PostControllerDocTest {
 			.andExpect(status().isOk())
 			.andExpect(content().json(json))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(jsonPath("$.id").value(post.getId()))
-			.andExpect(jsonPath("$.title").value(postResponseDto.getTitle()))
-			.andExpect(jsonPath("$.content").value(postResponseDto.getContent()))
-			.andExpect(jsonPath("$.createdAt").value(
+			.andExpect(jsonPath("id").value(post.getId()))
+			.andExpect(jsonPath("title").value(postResponseDto.getTitle()))
+			.andExpect(jsonPath("content").value(postResponseDto.getContent()))
+			.andExpect(jsonPath("createdAt").value(
 				postResponseDto.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss"))))
 			.andDo(print())
 			.andDo(document("post-findById",
@@ -153,6 +151,41 @@ public class PostControllerDocTest {
 						.description("조회된 Post content 생성시간")
 
 				)
+			));
+
+	}
+
+	@Test
+	@DisplayName("단건 조회 실패")
+	void findByIdFail() throws Exception {
+
+		Long postId = 100L;
+
+		ErrorResponse errorResponse = new ErrorResponse("존재하지 않는 Post입니다.");
+
+		String json = objectMapper.writeValueAsString(errorResponse);
+
+		mockMvc.perform(get("/api/v1/posts/{id}", postId))
+			.andExpect(status().isNotFound())
+			.andExpect(content().json(json))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$.message").value(errorResponse.getMessage()))
+			.andDo(print())
+			.andDo(document("post-findById-notfound",
+
+				pathParameters(
+
+					parameterWithName("id")
+						.description("조회할 Post id")
+				),
+
+				responseFields(
+
+					fieldWithPath("message")
+						.type(JsonFieldType.STRING)
+						.description("에러 메시지 내용")
+				)
+
 			));
 
 	}
@@ -202,57 +235,57 @@ public class PostControllerDocTest {
 
 		postRepository.saveAll(postList);
 
-		Long cursorId = 3L;
-		Integer size = 2;
+		Long cursorId = 15L;
+		Integer size = 3;
 
-		Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
-
-		Slice<Post> slice = new SliceImpl<>(postList, pageable, false);
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("cursorId", String.valueOf(cursorId));
+		params.add("size", String.valueOf(size));
 
 		mockMvc.perform(get("/api/v1/posts")
-				.param("cursorId", String.valueOf(cursorId))
-				.param("size", String.valueOf(size)))
-
+				.params(params))
 			.andExpect(status().isOk())
-			// .andExpect(jsonPath("$.hasNext").value(slice.hasNext()))
-			// .andExpect(jsonPath("$.posts").value(slice.getContent()))
+			.andExpect(jsonPath("hasNext").value(true))
+			.andExpect(jsonPath("posts").exists())
 
-			.andDo(print());
-		// .andDo(document("post-findAll",
-		//
-		// 	requestFields(
-		//
-		// 		fieldWithPath("cursorId")
-		// 			.type(JsonFieldType.NULL)
-		// 			.description("현재 cursorId"),
-		//
-		// 		fieldWithPath("size")
-		// 			.type(JsonFieldType.NUMBER)
-		// 			.description("조회 size")
-		// 	)
-		//
-		// 	responseFields(
-		//
-		// 		fieldWithPath("postResponseDtoList.[].id")
-		// 			.type(JsonFieldType.NUMBER)
-		// 			.description("조회된 Post id"),
-		//
-		// 		fieldWithPath("postResponseDtoList.[].title")
-		// 			.type(JsonFieldType.STRING)
-		// 			.description("조회된 Post title"),
-		//
-		// 		fieldWithPath("postResponseDtoList.[].content")
-		// 			.type(JsonFieldType.STRING)
-		// 			.description("조회된 Post content"),
-		//
-		// 		fieldWithPath("postResponseDtoList.[].createdAt")
-		// 			.type(JsonFieldType.STRING)
-		// 			.description("조회된 Post createdAt")
-		//
-		// 	)
-		//
-		// )
-		// );
+			.andDo(print())
+			.andDo(document("post-findAll",
+
+					requestParameters(
+
+						parameterWithName("cursorId")
+							.description("현재 cursorId"),
+
+						parameterWithName("size")
+							.description("조회 size")
+					),
+
+					responseFields(
+
+						fieldWithPath("posts.[].id")
+							.type(JsonFieldType.NUMBER)
+							.description("조회된 Post id"),
+
+						fieldWithPath("posts.[].title")
+							.type(JsonFieldType.STRING)
+							.description("조회된 Post title"),
+
+						fieldWithPath("posts.[].content")
+							.type(JsonFieldType.STRING)
+							.description("조회된 Post content"),
+
+						fieldWithPath("posts.[].createdAt")
+							.type(JsonFieldType.STRING)
+							.description("조회된 Post createdAt"),
+
+						fieldWithPath("hasNext")
+							.type(JsonFieldType.BOOLEAN)
+							.description("다음에 조회할 Post 존재 유무")
+
+					)
+
+				)
+			);
 
 	}
 }

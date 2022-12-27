@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.Sort;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
 import com.prgrms.devcourse.springjpaboard.domain.post.repository.PostRepository;
@@ -98,20 +99,22 @@ class PostServiceTest {
 	@DisplayName("파라미터로 받은 cursorId 보다 w작은 Post 데이터를 size 만큼 조회한다 - 성공")
 	void findAllTest() {
 
-		Long cursorId = null;
+		//given
+		Long cursorId = 14L;
 		Integer size = 3;
 		User user = createUser();
-
 		List<Post> postList = createPostList(user);
 
-		Slice<Post> postSlice = new SliceImpl<>(postList);
+		Pageable pageable = PageRequest.of(0, size, Sort.by("id").descending());
 
-		Pageable pageable = PageRequest.of(0, size);
+		Slice<Post> postSlice = new SliceImpl<>(postList, pageable, true);
 
 		when(postRepository.findByIdLessThan(cursorId, pageable)).thenReturn(postSlice);
 
-		Slice<Post> slice = postService.findAll(cursorId, pageable);
+		//when
+		Slice<Post> slice = postService.findAll(cursorId, size);
 
+		//then
 		assertThat(slice).isEqualTo(postSlice);
 
 		verify(postRepository).findByIdLessThan(cursorId, pageable);

@@ -1,7 +1,9 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.application;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +20,9 @@ public class PostService {
 
 	private final PostRepository postRepository;
 
-	public Slice<Post> findAll(Long cursorId, Pageable pageable) {
-
+	public Slice<Post> findAll(Long cursorId, Integer size) {
+		Pageable pageable = PageRequest.of(0, size, Sort.by("id").descending());
 		return postRepository.findByIdLessThan(cursorId, pageable);
-
 	}
 
 	public Post findById(Long id) {
@@ -30,8 +31,7 @@ public class PostService {
 
 	@Transactional
 	public Long create(Post post) {
-		Post save = postRepository.save(post);
-		return save.getId();
+		return postRepository.save(post).getId();
 	}
 
 	@Transactional

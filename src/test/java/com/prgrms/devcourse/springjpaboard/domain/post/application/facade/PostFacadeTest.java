@@ -134,13 +134,13 @@ class PostFacadeTest {
 		Pageable pageable = PageRequest.of(0, size);
 		Slice<Post> postSlice = new SliceImpl<>(postList);
 
-		when(postService.findAll(cursorId, pageable)).thenReturn(postSlice);
+		when(postService.findAll(cursorId, size)).thenReturn(postSlice);
 
 		//when
-		PostSearchResponses postSearchResponses = postFacade.findAll(cursorId, pageable);
+		PostSearchResponses postSearchResponses = postFacade.findAll(cursorId, size);
 
 		//then
-		verify(postService).findAll(cursorId, pageable);
+		verify(postService).findAll(cursorId, size);
 
 		Assertions.assertThat(postSearchResponses)
 			.hasFieldOrPropertyWithValue("posts", postSlice.getContent())

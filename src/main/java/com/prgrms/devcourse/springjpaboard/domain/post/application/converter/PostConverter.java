@@ -29,9 +29,7 @@ public class PostConverter {
 	}
 
 	public PostCreateResponse toPostCreateResponse(Long id) {
-		return PostCreateResponse.builder()
-			.id(id)
-			.build();
+		return new PostCreateResponse(id);
 	}
 
 }

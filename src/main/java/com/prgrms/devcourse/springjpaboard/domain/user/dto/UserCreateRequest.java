@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserCreateRequest {
 
-	@NotBlank
+	@NotBlank(message = "이름을 입력해 주세요")
 	private String name;
 
-	@NotNull
+	@NotNull(message = "나이를 입력해 주세요")
 	private Integer age;
 
-	@NotBlank
+	@NotBlank(message = "취미를 입력해 주세요")
 	private String hobby;
 
 	public UserCreateRequest(String name, Integer age, String hobby) {

@@ -14,10 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
@@ -27,7 +27,9 @@ import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponse;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostSearchResponse;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostSearchResponses;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateRequest;
+import com.prgrms.devcourse.springjpaboard.domain.post.exeception.PostNotFoundException;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
+import com.prgrms.devcourse.springjpaboard.global.error.ErrorResponse;
 
 @WebMvcTest(PostController.class)
 class PostControllerTest {
@@ -94,6 +96,29 @@ class PostControllerTest {
 	}
 
 	@Test
+	@DisplayName("단건 조회 실패")
+	void findByIdFail() throws Exception {
+
+		Long postId = 100L;
+
+		ErrorResponse errorResponse = new ErrorResponse("존재하지 않는 Post입니다.");
+
+		when(postFacade.findById(postId)).thenThrow(new PostNotFoundException());
+
+		String json = objectMapper.writeValueAsString(errorResponse);
+
+		mockMvc.perform(get("/api/v1/posts/{id}", postId))
+			.andExpect(status().isNotFound())
+			.andExpect(content().json(json))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$.message").value(errorResponse.getMessage()))
+			.andDo(print());
+
+		verify(postFacade).findById(postId);
+
+	}
+
+	@Test
 	@DisplayName("Post 수정 정상요청")
 	void updateTest() throws Exception {
 
@@ -125,25 +150,26 @@ class PostControllerTest {
 		User user = createUser();
 		List<Post> postList = createPostList(user);
 
-		Pageable pageable = PageRequest.of(0, size);
-
 		PostSearchResponses postSearchResponses = createPostSearchResponses(postList, false);
 
 		String responseJson = objectMapper.writeValueAsString(postSearchResponses);
 
-		when(postFacade.findAll(cursorId, pageable)).thenReturn(postSearchResponses);
+		when(postFacade.findAll(cursorId, size)).thenReturn(postSearchResponses);
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("cursorId", String.valueOf(cursorId));
+		params.add("size", String.valueOf(size));
 
 		mockMvc.perform(get("/api/v1/posts")
-				.param("cursorId", String.valueOf(cursorId))
-				.param("size", String.valueOf(size)))
+				.params(params))
 			.andExpect(status().isOk())
 			.andExpect(content().json(responseJson))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			// .andExpect(jsonPath("$.hasNext").value(postSearchResponses.getHasNext()))
-			// .andExpect(jsonPath("$.posts").value(postSearchResponses.getPosts()))
+			.andExpect(jsonPath("$.hasNext").value(postSearchResponses.getHasNext()))
+			.andExpect(jsonPath("$.posts").exists())
 			.andDo(print());
 
-		verify(postFacade).findAll(cursorId, pageable);
+		verify(postFacade).findAll(cursorId, size);
 
 	}
 }

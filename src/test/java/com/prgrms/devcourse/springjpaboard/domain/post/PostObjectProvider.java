@@ -3,8 +3,6 @@ package com.prgrms.devcourse.springjpaboard.domain.post;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import org.springframework.data.domain.Slice;
-
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequest;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponse;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostSearchResponse;
@@ -44,9 +42,7 @@ public class PostObjectProvider {
 	}
 
 	public static PostCreateResponse createPostCreteResponse(Long postId) {
-		return PostCreateResponse.builder()
-			.id(postId)
-			.build();
+		return new PostCreateResponse(postId);
 	}
 
 	public static PostUpdateRequest createPostUpdateRequest() {

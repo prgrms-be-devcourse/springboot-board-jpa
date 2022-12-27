@@ -1,6 +1,5 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.application;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +28,11 @@ public class PostFacade {
 	private final UserService userService;
 
 	@Transactional
-	public PostCreateResponse create(PostCreateRequest postSaveDto) {
+	public PostCreateResponse create(PostCreateRequest postCreateRequest) {
 
-		User user = userService.findById(postSaveDto.getUserId());
+		User user = userService.findById(postCreateRequest.getUserId());
 
-		Long savedId = postService.create(postConverter.toPost(postSaveDto, user));
+		Long savedId = postService.create(postConverter.toPost(postCreateRequest, user));
 
 		return postConverter.toPostCreateResponse(savedId);
 
@@ -41,13 +40,13 @@ public class PostFacade {
 
 	@Transactional
 	public void update(Long id, PostUpdateRequest postUpdateRequest) {
-
 		postService.update(id, postUpdateRequest.getTitle(), postUpdateRequest.getContent());
-
 	}
 
-	public PostSearchResponses findAll(Long cursorId, Pageable pageable) {
-		Slice<Post> postSlice = postService.findAll(cursorId, pageable);
+	public PostSearchResponses findAll(Long cursorId, Integer size) {
+
+		Slice<Post> postSlice = postService.findAll(cursorId, size);
+
 		return new PostSearchResponses(postSlice.getContent(), postSlice.hasNext());
 	}
 
