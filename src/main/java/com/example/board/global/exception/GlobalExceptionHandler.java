@@ -53,14 +53,14 @@ public class GlobalExceptionHandler {
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public InnerErrorResponse illegalArgEx(IllegalArgumentException e) {
-        log.warn("[IllegalArgumentException] - {}", e.getMessage());
+        log.error("[IllegalArgumentException] - {}", e.getMessage());
         return InnerErrorResponse.of(BAD_REQUEST.name(), e.getMessage());
     }
 
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public InnerErrorResponse exceptionEx(Exception e) {
-        log.warn("[Exception] - {} ", e.getMessage());
+        log.error("[Exception] - {} ", e.getMessage());
         return InnerErrorResponse.of(INTERNAL_SERVER_ERROR.name(), e.getMessage());
     }
 }
