@@ -1,0 +1,105 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 게시글
+
+=== 게시글 등록
+
+==== /api/v1/posts
+
+.Request
+
+include::{snippets}/post-create/http-request.adoc[]
+
+.Request Fields
+
+include::{snippets}/post-create/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-create/http-response.adoc[]
+
+=== 게시글 조회
+
+==== /api/v1/posts/{id}
+
+.Request
+
+include::{snippets}/post-findById/http-request.adoc[]
+
+.Request Parameter
+
+include::{snippets}/post-findById/path-parameters.adoc[]
+
+.Response
+
+include::{snippets}/post-findById/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-findById/response-fields.adoc[]
+
+=== 게시글 조회 실패
+
+==== /api/v1/posts/{id}
+
+.Request
+
+include::{snippets}/post-findById-notfound/http-request.adoc[]
+
+.Request Parameter
+
+include::{snippets}/post-findById-notfound/path-parameters.adoc[]
+
+.Response
+
+include::{snippets}/post-findById-notfound/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-findById-notfound/response-fields.adoc[]
+
+=== 게시글 수정
+
+==== /api/v1/posts/{id}
+
+.Request
+
+include::{snippets}/post-update/http-request.adoc[]
+
+.Request Parameter
+
+include::{snippets}/post-update/path-parameters.adoc[]
+
+.Request Fields
+
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-update/http-response.adoc[]
+
+=== 게시글 전체 조회
+
+==== /api/v1/posts}
+
+.Request
+
+include::{snippets}/post-findAll/http-request.adoc[]
+
+.Request Parameter
+
+include::{snippets}/post-findAll/request-parameters.adoc[]
+
+.Response
+
+include::{snippets}/post-findAll/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-findAll/response-fields.adoc[]
+
+
+
