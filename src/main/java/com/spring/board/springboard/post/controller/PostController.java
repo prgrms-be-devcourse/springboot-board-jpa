@@ -1,11 +1,9 @@
 package com.spring.board.springboard.post.controller;
 
-import com.spring.board.springboard.domain.Response;
 import com.spring.board.springboard.post.domain.dto.RequestPostDto;
 import com.spring.board.springboard.post.domain.dto.ResponsePostDto;
 import com.spring.board.springboard.post.service.PostService;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -24,13 +22,9 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<Response<List<ResponsePostDto>>> getAllPosts(Pageable pageable) {
+    public ResponseEntity<List<ResponsePostDto>> getAllPosts(Pageable pageable) {
         List<ResponsePostDto> postList = postService.getAll(pageable);
-        Response<List<ResponsePostDto>> response = new Response<>(postList);
-        if (postList.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
-        }
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(postList);
     }
 
     @PostMapping
@@ -46,16 +40,14 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<Response<ResponsePostDto>> getPost(@PathVariable Integer postId) {
+    public ResponseEntity<ResponsePostDto> getPost(@PathVariable Integer postId) {
         ResponsePostDto postResponseDTO = postService.getOne(postId);
-        Response<ResponsePostDto> response = new Response<>(postResponseDTO);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(postResponseDTO);
     }
 
     @PostMapping("/{postId}")
-    public ResponseEntity<Response<ResponsePostDto>> updatePost(@PathVariable Integer postId, @RequestBody RequestPostDto requestPostDTO) {
+    public ResponseEntity<ResponsePostDto> updatePost(@PathVariable Integer postId, @RequestBody RequestPostDto requestPostDTO) {
         ResponsePostDto updatedPostResponseDto = postService.update(postId, requestPostDTO);
-        Response<ResponsePostDto> response = new Response<>(updatedPostResponseDto);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(updatedPostResponseDto);
     }
 }
