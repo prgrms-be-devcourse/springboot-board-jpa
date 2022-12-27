@@ -25,6 +25,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -189,18 +191,18 @@ class PostServiceFacadeTest {
         assertEquals(content, findPost.getContent());
     }
 
-    @DisplayName("findAllByCursorId 조회 테스트 - cursorId가 존재하고 조회하는 양보다 데이터의 양이 많으면 hasNext가 true, id와 createdAt의 desc로 조회된다")
+    @DisplayName("findAllByCursorId 조회 테스트 - cursorId가 존재하고 조회하는 양보다 데이터의 양이 많으면 hasNext가 true, id의 desc로 조회된다")
     @Test
     void findAllByCursorIdSuccessHasNext() {
         //given
-        int size = 30;
+        int size = 40;
         List<Post> posts = saveAll(size);
         Long cursorId = posts.get(size / 2).getId();
         int pageSize = 10;
 
         //when
         PostResponses postResponses = postServiceFacade.findAllPostsByIdCursorBased(
-            cursorId, pageSize);
+            cursorId, PageRequest.ofSize(pageSize).withSort(Sort.by("id").descending()));
 
         //then
         assertTrue(postResponses.isHasNext());
@@ -225,7 +227,7 @@ class PostServiceFacadeTest {
 
         //when
         PostResponses postResponses = postServiceFacade.findAllPostsByIdCursorBased(
-            cursorId, pageSize);
+            cursorId, PageRequest.ofSize(pageSize).withSort(Sort.by("id").descending()));
 
         //then
         assertFalse(postResponses.isHasNext());
@@ -250,7 +252,7 @@ class PostServiceFacadeTest {
 
         //when
         PostResponses postResponses = postServiceFacade.findAllPostsByIdCursorBased(
-            null, pageSize);
+            null, PageRequest.ofSize(pageSize).withSort(Sort.by("id").descending()));
 
         //then
         assertTrue(postResponses.isHasNext());
@@ -275,7 +277,7 @@ class PostServiceFacadeTest {
 
         //when
         PostResponses postResponses = postServiceFacade.findAllPostsByIdCursorBased(
-            null, pageSize);
+            null, PageRequest.ofSize(pageSize).withSort(Sort.by("id").descending()));
 
         //then
         assertFalse(postResponses.isHasNext());

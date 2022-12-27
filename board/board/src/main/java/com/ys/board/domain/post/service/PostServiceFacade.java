@@ -9,6 +9,7 @@ import com.ys.board.domain.post.api.PostResponses;
 import com.ys.board.domain.user.model.User;
 import com.ys.board.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,8 +43,8 @@ public class PostServiceFacade {
     }
 
     @Transactional(readOnly = true)
-    public PostResponses findAllPostsByIdCursorBased(Long cursorId, int pageSize) {
-        return postService.findAllByIdCursorBased(cursorId, pageSize);
+    public PostResponses findAllPostsByIdCursorBased(Long cursorId, Pageable pageable) {
+        return postService.findAllByIdCursorBased(cursorId, pageable);
     }
 
 }

@@ -14,7 +14,4 @@ public class PostsRequest {
 
     private Long cursorId;
 
-    @Max(value = 100, message = "최대값은 100입니다.") @Min(value = 0, message = "최소값은 0입니다. ")
-    private int pageSize;
-
 }

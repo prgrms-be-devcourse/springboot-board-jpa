@@ -38,6 +38,9 @@ dependencies {
 
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
+
 }
 
 tasks.named('test') {

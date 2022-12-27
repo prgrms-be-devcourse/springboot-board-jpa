@@ -5,6 +5,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import com.ys.board.domain.post.service.PostServiceFacade;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,9 +52,10 @@ public class PostController {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<PostResponses> findAll(@ModelAttribute @Valid PostsRequest request) {
+    public ResponseEntity<PostResponses> findAll(@ModelAttribute @Valid PostsRequest request,
+        @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable) {
         PostResponses postResponses = postServiceFacade.findAllPostsByIdCursorBased(
-            request.getCursorId(), request.getPageSize());
+            request.getCursorId(), pageable);
 
         return ResponseEntity.ok(postResponses);
     }

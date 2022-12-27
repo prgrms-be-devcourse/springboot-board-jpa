@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -336,7 +337,8 @@ class PostControllerTest {
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("cursorId", cursorId.toString());
-        params.add("pageSize", String.valueOf(pageSize));
+        params.add("size", String.valueOf(pageSize));
+        params.add("direction", Direction.DESC.name());
 
         this.mockMvc.perform(get("/api/v1/posts")
                 .params(params)
@@ -350,7 +352,8 @@ class PostControllerTest {
                 preprocessResponse(prettyPrint()),
                 requestParameters(
                     parameterWithName("cursorId").description("커서 기준 Id (PostId)"),
-                    parameterWithName("pageSize").description("요청할 페이지 사이즈")
+                    parameterWithName("size").description("요청할 페이지 사이즈"),
+                    parameterWithName("direction").description("커서 기준 Id 정렬 방식. ASC, DESC")
                 ),
                 responseFields(
                     fieldWithPath("cursorId").type(JsonFieldType.NUMBER).description("커서 기준 Id PostId"),
@@ -379,7 +382,8 @@ class PostControllerTest {
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("cursorId", cursorId.toString());
-        params.add("pageSize", String.valueOf(pageSize));
+        params.add("size", String.valueOf(pageSize));
+        params.add("direction", Direction.DESC.name());
 
         this.mockMvc.perform(get("/api/v1/posts")
                 .params(params)
@@ -393,8 +397,9 @@ class PostControllerTest {
                 preprocessResponse(prettyPrint()),
                 requestParameters(
                     parameterWithName("cursorId").description("커서 기준 Id (PostId)"),
-                    parameterWithName("pageSize").description("요청할 페이지 사이즈")
-                ),
+                    parameterWithName("size").description("요청할 페이지 사이즈"),
+                    parameterWithName("direction").description("커서 기준 Id 정렬 방식. ASC, DESC")
+                    ),
                 responseFields(
                     fieldWithPath("cursorId").type(JsonFieldType.NUMBER).description("커서 기준 Id PostId"),
                     fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부"),
