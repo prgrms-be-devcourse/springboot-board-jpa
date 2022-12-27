@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -50,8 +49,7 @@ public class User extends BaseEntity {
         this.name = name;
         this.hobby = hobby;
         this.age = age;
-        this.setCreatedBy(name);
-        this.setCreatedAt(LocalDateTime.now());
+        this.beWrittenBy(name);
     }
 
     public Long getId() {
@@ -67,7 +65,7 @@ public class User extends BaseEntity {
     }
 
     public List<Post> getPosts() {
-        return posts;
+        return new ArrayList<>(posts);
     }
 
     public Integer getAge() {
