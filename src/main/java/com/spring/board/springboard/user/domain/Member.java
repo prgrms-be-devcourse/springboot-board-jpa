@@ -2,9 +2,12 @@ package com.spring.board.springboard.user.domain;
 
 import com.spring.board.springboard.post.domain.Post;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "member")
@@ -15,9 +18,12 @@ public class Member {
     private Integer id;
 
     @Column(name = "name", nullable = false)
+    @NotBlank(message = "이름은 빈 값일 수 없습니다.")
     private String name;
 
     @Column(name = "age", nullable = false)
+    @NotNull(message = "나이는 빈 값일 수 없습니다.")
+    @Min(value = 10, message = "10살 미만은 서비스 이용이 불가능합니다.")
     private Integer age;
 
     @Column(name = "hobby")
@@ -25,9 +31,9 @@ public class Member {
     private Hobby hobby;
 
     @OneToMany(mappedBy = "member")
-    private List<Post> postList;
+    private List<Post> postList = new ArrayList<>();
 
-    public Member() {
+    protected Member() {
     }
 
     public Member(String name, Integer age, Hobby hobby) {
@@ -53,23 +59,6 @@ public class Member {
     }
 
     public List<Post> getPostList() {
-        return postList;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Member member = (Member) o;
-        return Objects.equals(id, member.id) &&
-                Objects.equals(name, member.name) &&
-                Objects.equals(age, member.age) &&
-                hobby == member.hobby &&
-                Objects.equals(postList, member.postList);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, age, hobby, postList);
+        return new ArrayList<>(postList);
     }
 }

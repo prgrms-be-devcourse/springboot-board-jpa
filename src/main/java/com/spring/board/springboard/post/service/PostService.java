@@ -1,12 +1,12 @@
 package com.spring.board.springboard.post.service;
 
 import com.spring.board.springboard.post.domain.Post;
-import com.spring.board.springboard.post.domain.dto.RequestPostDTO;
-import com.spring.board.springboard.post.domain.dto.ResponsePostDTO;
+import com.spring.board.springboard.post.domain.dto.RequestPostDto;
+import com.spring.board.springboard.post.domain.dto.ResponsePostDto;
 import com.spring.board.springboard.post.exception.NoPostException;
 import com.spring.board.springboard.post.repository.PostRepository;
 import com.spring.board.springboard.user.domain.Member;
-import com.spring.board.springboard.user.domain.MemberResponseDTO;
+import com.spring.board.springboard.user.domain.MemberResponseDto;
 import com.spring.board.springboard.user.service.MemberService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,39 +28,39 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<ResponsePostDTO> getAll(Pageable pageable) {
+    public List<ResponsePostDto> getAll(Pageable pageable) {
         List<Post> postList = postRepository.findAll(pageable).getContent();
         return postList.stream()
-                .map(post -> new ResponsePostDTO(
-                        post, new MemberResponseDTO(post.getMember())))
+                .map(post -> new ResponsePostDto(
+                        post, new MemberResponseDto(post.getMember())))
                 .toList();
     }
 
     @Transactional(readOnly = true)
-    public ResponsePostDTO getOne(Integer postId) {
+    public ResponsePostDto getOne(Integer postId) {
         Post findPost = postRepository.findById(postId)
                 .orElseThrow(() -> {
                     throw new NoPostException(
                             MessageFormat.format("해당 id ({0})의 게시물이 없습니다.", postId));
                 });
 
-        return new ResponsePostDTO(
-                findPost, new MemberResponseDTO(findPost.getMember())
+        return new ResponsePostDto(
+                findPost, new MemberResponseDto(findPost.getMember())
         );
     }
 
     @Transactional
-    public ResponsePostDTO createPost(RequestPostDTO requestPostDTO) {
-        Member findMember = memberService.find(requestPostDTO.getMemberId());
+    public ResponsePostDto createPost(RequestPostDto requestPostDto) {
+        Member findMember = memberService.find(requestPostDto.memberId());
 
-        Post post = requestPostDTO.toEntity(requestPostDTO, findMember);
+        Post post = requestPostDto.toEntity(requestPostDto, findMember);
         postRepository.save(post);
 
-        return new ResponsePostDTO(post, new MemberResponseDTO(findMember));
+        return new ResponsePostDto(post, new MemberResponseDto(findMember));
     }
 
     @Transactional
-    public ResponsePostDTO update(Integer postId, RequestPostDTO requestPostDTO) {
+    public ResponsePostDto update(Integer postId, RequestPostDto requestPostDto) {
         Post findPost = postRepository.findById(postId)
                 .orElseThrow(() -> {
                     throw new NoPostException(
@@ -68,14 +68,11 @@ public class PostService {
                     );
                 });
 
-        findPost.changeTitle(
-                requestPostDTO.getTitle()
+        findPost.change(
+                requestPostDto.title(),
+                requestPostDto.content()
         );
 
-        findPost.changeContent(
-                requestPostDTO.getContent()
-        );
-
-        return new ResponsePostDTO(findPost, new MemberResponseDTO(findPost.getMember()));
+        return new ResponsePostDto(findPost, new MemberResponseDto(findPost.getMember()));
     }
 }

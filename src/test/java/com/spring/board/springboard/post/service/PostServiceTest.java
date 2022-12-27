@@ -1,7 +1,7 @@
 package com.spring.board.springboard.post.service;
 
-import com.spring.board.springboard.post.domain.dto.RequestPostDTO;
-import com.spring.board.springboard.post.domain.dto.ResponsePostDTO;
+import com.spring.board.springboard.post.domain.dto.RequestPostDto;
+import com.spring.board.springboard.post.domain.dto.ResponsePostDto;
 import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
 import com.spring.board.springboard.user.repository.MemberRepository;
@@ -26,18 +26,18 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp(){
-        Member member = new Member("이수린", 24, Hobby.sleep);
+        Member member = new Member("이수린", 24, Hobby.SLEEP);
         memberRepository.save(member);
 
-        RequestPostDTO requestPostDTO1 = new RequestPostDTO(
+        RequestPostDto requestPostDTO1 = new RequestPostDto(
                 "스프링 게시판 미션",
                 "이 미션 끝나면 크리스마스에요",
                 1);
-        RequestPostDTO requestPostDTO2 = new RequestPostDTO(
+        RequestPostDto requestPostDTO2 = new RequestPostDto(
                 "데브코스",
                 "프로그래머스 데브코스 완전 좋아요",
                 1);
-        RequestPostDTO requestPostDTO3 = new RequestPostDTO(
+        RequestPostDto requestPostDTO3 = new RequestPostDto(
                 "하기싫어",
                 "자고싶다",
                 1);
@@ -54,7 +54,7 @@ class PostServiceTest {
         PageRequest page = PageRequest.of(0, size);
 
         // when
-        List<ResponsePostDTO> postList = postService.getAll(page);
+        List<ResponsePostDto> postList = postService.getAll(page);
 
         // then
         assertThat(postList.size())
@@ -67,28 +67,28 @@ class PostServiceTest {
         int id = 1;
 
         // when
-        ResponsePostDTO findPostDTO = postService.getOne(id);
+        ResponsePostDto findPostDTO = postService.getOne(id);
 
         // then
-        assertThat(findPostDTO.getPostId())
+        assertThat(findPostDTO.postId())
                 .isEqualTo(id);
     }
 
     @Test
     void createPost() {
         // given
-        RequestPostDTO requestPostDTO = new RequestPostDTO(
+        RequestPostDto requestPostDTO = new RequestPostDto(
                 "새로운 게시글입니다.",
                 "새로운 게시글입니다. 매번 뭘 써야할 지 고민이네요",
                 1
         );
 
         // when
-        ResponsePostDTO createdPostDTO = postService.createPost(requestPostDTO);
+        ResponsePostDto createdPostDTO = postService.createPost(requestPostDTO);
 
         // then
-        ResponsePostDTO findPostDTO = postService.getOne(
-                createdPostDTO.getPostId());
+        ResponsePostDto findPostDTO = postService.getOne(
+                createdPostDTO.postId());
         assertThat(findPostDTO)
                 .usingRecursiveComparison()
                 .isEqualTo(createdPostDTO);
@@ -100,7 +100,7 @@ class PostServiceTest {
         String changeTitle = "수정제목";
         String changeContent = "수정 내용입니다. 쿠쿠쿠쿠쿠";
 
-        RequestPostDTO beforeUpdatePostDTO = new RequestPostDTO(
+        RequestPostDto beforeUpdatePostDTO = new RequestPostDto(
                 changeTitle,
                 changeContent,
                 1
@@ -108,14 +108,14 @@ class PostServiceTest {
 
         // when
         int postId = 3;
-        ResponsePostDTO updatedPostDTO = postService.update(postId, beforeUpdatePostDTO);
+        ResponsePostDto updatedPostDto = postService.update(postId, beforeUpdatePostDTO);
 
         // then
         assertThat(postId)
                 .isEqualTo(
-                        updatedPostDTO.getPostId());
+                        updatedPostDto.postId());
 
-        assertThat(updatedPostDTO)
+        assertThat(updatedPostDto)
                 .usingRecursiveComparison()
                 .isNotEqualTo(beforeUpdatePostDTO);
     }

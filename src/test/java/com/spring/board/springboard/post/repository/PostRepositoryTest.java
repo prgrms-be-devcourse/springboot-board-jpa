@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PostRepositoryTest {
 
     private static Member member;
-    private static LocalDateTime createdAt = LocalDateTime.now();
+    private static final LocalDateTime createdAt = LocalDateTime.now();
 
     @Autowired
     private PostRepository postRepository;
@@ -33,7 +33,7 @@ class PostRepositoryTest {
 
     @BeforeEach
     void setUser(){
-        member = new Member("이수린", 24, Hobby.sleep);
+        member = new Member("이수린", 24, Hobby.SLEEP);
         memberRepository.save(member);
     }
 
@@ -88,7 +88,7 @@ class PostRepositoryTest {
         postRepository.save(post);
 
         // when
-        post.changeTitle(afterTitle);
+        post.change(afterTitle, content);
 
         // then
         Integer id = post.getId();
@@ -114,7 +114,7 @@ class PostRepositoryTest {
         postRepository.save(post);
 
         // when
-        post.changeContent(afterContent);
+        post.change(title, afterContent);
 
         // then
         Integer id = post.getId();

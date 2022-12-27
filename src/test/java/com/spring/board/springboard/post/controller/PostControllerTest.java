@@ -1,14 +1,15 @@
 package com.spring.board.springboard.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring.board.springboard.post.domain.dto.RequestPostDTO;
+import com.spring.board.springboard.post.domain.dto.RequestPostDto;
 import com.spring.board.springboard.post.service.PostService;
 import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
 import com.spring.board.springboard.user.repository.MemberRepository;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -28,6 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
+@TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
+@Transactional
 @SpringBootTest
 class PostControllerTest {
 
@@ -43,13 +47,13 @@ class PostControllerTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @BeforeEach
+    @BeforeAll
     void setUp() {
         memberRepository.save(
-                new Member("이수린", 24, Hobby.sleep)
+                new Member("이수린", 24, Hobby.SLEEP)
         );
 
-        RequestPostDTO requestPostDTO = new RequestPostDTO(
+        RequestPostDto requestPostDTO = new RequestPostDto(
                 "스프링 게시판 미션",
                 "이 미션 끝나면 크리스마스에요",
                 1);
@@ -70,15 +74,15 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(document("get-all-post",
                         responseFields(
-                                fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("return data"),
-                                fieldWithPath("data[].postId").type(JsonFieldType.NUMBER).description("post id"),
-                                fieldWithPath("data[].title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("data[].content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("created at"),
-                                fieldWithPath("data[].member").type(JsonFieldType.OBJECT).description("member"),
-                                fieldWithPath("data[].member.name").type(JsonFieldType.STRING).description("member name"),
-                                fieldWithPath("data[].member.age").type(JsonFieldType.NUMBER).description("member age"),
-                                fieldWithPath("data[].member.hobby").type(JsonFieldType.STRING).description("member hobby")
+                                fieldWithPath("[]").type(JsonFieldType.ARRAY).description("post array"),
+                                fieldWithPath("[].postId").type(JsonFieldType.NUMBER).description("post id"),
+                                fieldWithPath("[].title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("[].content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("created at"),
+                                fieldWithPath("[].member").type(JsonFieldType.OBJECT).description("member"),
+                                fieldWithPath("[].member.name").type(JsonFieldType.STRING).description("member name"),
+                                fieldWithPath("[].member.age").type(JsonFieldType.NUMBER).description("member age"),
+                                fieldWithPath("[].member.hobby").type(JsonFieldType.STRING).description("member hobby")
                         ))
                 );
     }
@@ -87,7 +91,7 @@ class PostControllerTest {
     @Test
     void createPost() throws Exception {
         // given
-        RequestPostDTO requestPostDTO = new RequestPostDTO(
+        RequestPostDto requestPostDTO = new RequestPostDto(
                 "저장하기",
                 "게시판에 새 글 저장하기",
                 1);
@@ -119,15 +123,14 @@ class PostControllerTest {
                                 parameterWithName("postId").description("post id")
                         ),
                         responseFields(
-                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("return data"),
-                                fieldWithPath("data.postId").type(JsonFieldType.NUMBER).description("post id"),
-                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("created at"),
-                                fieldWithPath("data.member").type(JsonFieldType.OBJECT).description("member"),
-                                fieldWithPath("data.member.name").type(JsonFieldType.STRING).description("member name"),
-                                fieldWithPath("data.member.age").type(JsonFieldType.NUMBER).description("member age"),
-                                fieldWithPath("data.member.hobby").type(JsonFieldType.STRING).description("member hobby")
+                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("post id"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("created at"),
+                                fieldWithPath("member").type(JsonFieldType.OBJECT).description("member"),
+                                fieldWithPath("member.name").type(JsonFieldType.STRING).description("member name"),
+                                fieldWithPath("member.age").type(JsonFieldType.NUMBER).description("member age"),
+                                fieldWithPath("member.hobby").type(JsonFieldType.STRING).description("member hobby")
                         ))
                 );
     }
@@ -135,7 +138,7 @@ class PostControllerTest {
     @DisplayName("게시물의 제목과 내용을 수정할 수 있다.")
     @Test
     void updatePost() throws Exception {
-        RequestPostDTO updatePostDTO = new RequestPostDTO(
+        RequestPostDto updatePostDTO = new RequestPostDto(
                 "수정하기",
                 "게시판 새 글 저장하기 -> 수정된 내용임",
                 1
@@ -153,15 +156,14 @@ class PostControllerTest {
                                 fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("writer member id")
                         ),
                         responseFields(
-                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("return data"),
-                                fieldWithPath("data.postId").type(JsonFieldType.NUMBER).description("post id"),
-                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("created at"),
-                                fieldWithPath("data.member").type(JsonFieldType.OBJECT).description("member"),
-                                fieldWithPath("data.member.name").type(JsonFieldType.STRING).description("member name"),
-                                fieldWithPath("data.member.age").type(JsonFieldType.NUMBER).description("member age"),
-                                fieldWithPath("data.member.hobby").type(JsonFieldType.STRING).description("member hobby")
+                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("post id"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("created at"),
+                                fieldWithPath("member").type(JsonFieldType.OBJECT).description("member"),
+                                fieldWithPath("member.name").type(JsonFieldType.STRING).description("member name"),
+                                fieldWithPath("member.age").type(JsonFieldType.NUMBER).description("member age"),
+                                fieldWithPath("member.hobby").type(JsonFieldType.STRING).description("member hobby")
                         ))
                 );
     }
