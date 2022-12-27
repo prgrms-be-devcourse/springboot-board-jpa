@@ -1,7 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.api;
 
-import static com.prgrms.devcourse.springjpaboard.domain.post.PostObjectProvider.*;
-import static com.prgrms.devcourse.springjpaboard.domain.user.UserObjectProvider.*;
+import static com.prgrms.devcourse.springjpaboard.domain.post.TestPostObjectProvider.*;
+import static com.prgrms.devcourse.springjpaboard.domain.user.TestUserObjectProvider.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -44,7 +44,7 @@ class PostControllerTest {
 	private PostFacade postFacade;
 
 	@Test
-	@DisplayName("저장 정상요청")
+	@DisplayName("post 저장 정상요청")
 	void createTest() throws Exception {
 
 		Long userId = 1L;
@@ -72,7 +72,7 @@ class PostControllerTest {
 	}
 
 	@Test
-	@DisplayName("단건 조회 정상요청")
+	@DisplayName("post 단건 조회 정상요청")
 	void findById() throws Exception {
 
 		Long postId = 1L;
@@ -96,7 +96,7 @@ class PostControllerTest {
 	}
 
 	@Test
-	@DisplayName("단건 조회 실패")
+	@DisplayName("post 단건 조회 실패")
 	void findByIdFail() throws Exception {
 
 		Long postId = 100L;
@@ -119,7 +119,7 @@ class PostControllerTest {
 	}
 
 	@Test
-	@DisplayName("Post 수정 정상요청")
+	@DisplayName("post 수정 정상요청")
 	void updateTest() throws Exception {
 
 		Long postId = 1L;
@@ -141,16 +141,16 @@ class PostControllerTest {
 	}
 
 	@Test
-	@DisplayName("전체 Post 조회 정상요청")
+	@DisplayName("전체 post 조회 정상요청")
 	void findAll() throws Exception {
 
-		Long cursorId = 3L;
+		Long cursorId = 15L;
 		Integer size = 3;
 
 		User user = createUser();
 		List<Post> postList = createPostList(user);
 
-		PostSearchResponses postSearchResponses = createPostSearchResponses(postList, false);
+		PostSearchResponses postSearchResponses = createPostSearchResponses(postList, true);
 
 		String responseJson = objectMapper.writeValueAsString(postSearchResponses);
 

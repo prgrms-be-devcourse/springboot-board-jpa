@@ -8,7 +8,11 @@ import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponse;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostSearchResponse;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 @Component
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostConverter {
 
 	public Post toPost(PostCreateRequest postSaveRequest, User user) {

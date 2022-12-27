@@ -1,7 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.api;
 
-import static com.prgrms.devcourse.springjpaboard.domain.post.PostObjectProvider.*;
-import static com.prgrms.devcourse.springjpaboard.domain.user.UserObjectProvider.*;
+import static com.prgrms.devcourse.springjpaboard.domain.post.TestPostObjectProvider.*;
+import static com.prgrms.devcourse.springjpaboard.domain.user.TestUserObjectProvider.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -85,23 +85,10 @@ public class PostControllerDocTest {
 			.andExpect(status().isCreated())
 			.andDo(print())
 			.andDo(document("post-create",
-
 				requestFields(
-
-					fieldWithPath("userId")
-						.type(JsonFieldType.NUMBER)
-						.description("Post 작성 User id"),
-
-					fieldWithPath("title")
-						.type(JsonFieldType.STRING)
-						.description("Post 제목"),
-
-					fieldWithPath("content")
-						.type(JsonFieldType.STRING)
-						.description("Post 내용")
-				)
-			));
-
+					fieldWithPath("userId").type(JsonFieldType.NUMBER).description("Post 작성 User id"),
+					fieldWithPath("title").type(JsonFieldType.STRING).description("Post 제목"),
+					fieldWithPath("content").type(JsonFieldType.STRING).description("Post 내용"))));
 	}
 
 	@Test
@@ -127,32 +114,13 @@ public class PostControllerDocTest {
 				postResponseDto.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss"))))
 			.andDo(print())
 			.andDo(document("post-findById",
-
 				pathParameters(
-
-					parameterWithName("id")
-						.description("조회할 Post id")
-				),
-
+					parameterWithName("id").description("조회할 Post id")),
 				responseFields(
-
 					fieldWithPath("id").type(JsonFieldType.NUMBER).description("조회된 Post id"),
-
-					fieldWithPath("title")
-						.type(JsonFieldType.STRING)
-						.description("조회된 title"),
-
-					fieldWithPath("content")
-						.type(JsonFieldType.STRING)
-						.description("조회된 Post content"),
-
-					fieldWithPath("createdAt")
-						.type(JsonFieldType.STRING)
-						.description("조회된 Post content 생성시간")
-
-				)
-			));
-
+					fieldWithPath("title").type(JsonFieldType.STRING).description("조회된 title"),
+					fieldWithPath("content").type(JsonFieldType.STRING).description("조회된 Post content"),
+					fieldWithPath("createdAt").type(JsonFieldType.STRING).description("조회된 Post content 생성시간"))));
 	}
 
 	@Test
@@ -172,22 +140,8 @@ public class PostControllerDocTest {
 			.andExpect(jsonPath("$.message").value(errorResponse.getMessage()))
 			.andDo(print())
 			.andDo(document("post-findById-notfound",
-
-				pathParameters(
-
-					parameterWithName("id")
-						.description("조회할 Post id")
-				),
-
-				responseFields(
-
-					fieldWithPath("message")
-						.type(JsonFieldType.STRING)
-						.description("에러 메시지 내용")
-				)
-
-			));
-
+				pathParameters(parameterWithName("id").description("조회할 Post id")),
+				responseFields(fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지 내용"))));
 	}
 
 	@Test
@@ -208,23 +162,9 @@ public class PostControllerDocTest {
 			.andExpect(status().isOk())
 			.andDo(print())
 			.andDo(document("post-update",
-
-				pathParameters(
-
-					parameterWithName("id")
-						.description("수정할 Post id")
-				),
-
-				requestFields(
-
-					fieldWithPath("title")
-						.type(JsonFieldType.STRING)
-						.description("수정할 Post title"),
-
-					fieldWithPath("content")
-						.type(JsonFieldType.STRING)
-						.description("수정할 Post content")
-				)));
+				pathParameters(parameterWithName("id").description("수정할 Post id")),
+				requestFields(fieldWithPath("title").type(JsonFieldType.STRING).description("수정할 Post title"),
+					fieldWithPath("content").type(JsonFieldType.STRING).description("수정할 Post content"))));
 	}
 
 	@Test
@@ -247,45 +187,17 @@ public class PostControllerDocTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("hasNext").value(true))
 			.andExpect(jsonPath("posts").exists())
-
 			.andDo(print())
 			.andDo(document("post-findAll",
-
-					requestParameters(
-
-						parameterWithName("cursorId")
-							.description("현재 cursorId"),
-
-						parameterWithName("size")
-							.description("조회 size")
-					),
-
-					responseFields(
-
-						fieldWithPath("posts.[].id")
-							.type(JsonFieldType.NUMBER)
-							.description("조회된 Post id"),
-
-						fieldWithPath("posts.[].title")
-							.type(JsonFieldType.STRING)
-							.description("조회된 Post title"),
-
-						fieldWithPath("posts.[].content")
-							.type(JsonFieldType.STRING)
-							.description("조회된 Post content"),
-
-						fieldWithPath("posts.[].createdAt")
-							.type(JsonFieldType.STRING)
-							.description("조회된 Post createdAt"),
-
-						fieldWithPath("hasNext")
-							.type(JsonFieldType.BOOLEAN)
-							.description("다음에 조회할 Post 존재 유무")
-
-					)
-
-				)
-			);
+				requestParameters(
+					parameterWithName("cursorId").description("현재 cursorId"),
+					parameterWithName("size").description("조회 size")),
+				responseFields(
+					fieldWithPath("posts.[].id").type(JsonFieldType.NUMBER).description("조회된 Post id"),
+					fieldWithPath("posts.[].title").type(JsonFieldType.STRING).description("조회된 Post title"),
+					fieldWithPath("posts.[].content").type(JsonFieldType.STRING).description("조회된 Post content"),
+					fieldWithPath("posts.[].createdAt").type(JsonFieldType.STRING).description("조회된 Post createdAt"),
+					fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음에 조회할 Post 존재 유무"))));
 
 	}
 }

@@ -1,7 +1,7 @@
-package com.prgrms.devcourse.springjpaboard.domain.post.application.facade;
+package com.prgrms.devcourse.springjpaboard.domain.post.application;
 
-import static com.prgrms.devcourse.springjpaboard.domain.post.PostObjectProvider.*;
-import static com.prgrms.devcourse.springjpaboard.domain.user.UserObjectProvider.*;
+import static com.prgrms.devcourse.springjpaboard.domain.post.TestPostObjectProvider.*;
+import static com.prgrms.devcourse.springjpaboard.domain.user.TestUserObjectProvider.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -14,14 +14,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.Post;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.PostFacade;
-import com.prgrms.devcourse.springjpaboard.domain.post.application.PostService;
 import com.prgrms.devcourse.springjpaboard.domain.post.application.converter.PostConverter;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequest;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateResponse;
@@ -47,7 +43,7 @@ class PostFacadeTest {
 	PostFacade postFacade;
 
 	@Test
-	@DisplayName("Dto를 사용하여 user를 조회하고, Dto를 Post로 변환하여 저장한다.")
+	@DisplayName("dto를 사용하여 user를 조회하고, dto를 post로 변환하여 저장한다.")
 	void createTest() {
 
 		//given
@@ -75,13 +71,12 @@ class PostFacadeTest {
 	}
 
 	@Test
-	@DisplayName("id를 사용하여 수정할 Post를 조회하고, Dto의 내용으로 수정한다.")
+	@DisplayName("id를 사용하여 수정할 post를 조회하고, dto의 내용으로 수정한다.")
 	void updateTest() {
 
 		//given
 		Long postId = 1L;
 		User user = createUser();
-		Post post = createPost(user);
 		PostUpdateRequest postUpdateDto = createPostUpdateRequest();
 
 		doNothing().when(postService).update(postId, postUpdateDto.getTitle(), postUpdateDto.getContent());
@@ -121,7 +116,7 @@ class PostFacadeTest {
 	}
 
 	@Test
-	@DisplayName("커서기반 페이지네이션으로 post를 조회하고 마지막 post id와 조회 가능한 post 존재 참, 거짓을 반환한다.")
+	@DisplayName("커서기반 페이지네이션으로 post를 조회하고, 조회한 post와 다음 페이지 존재 여부를 반환한다.")
 	void findAllTest() {
 
 		//given
@@ -131,7 +126,6 @@ class PostFacadeTest {
 
 		List<Post> postList = createPostList(user);
 
-		Pageable pageable = PageRequest.of(0, size);
 		Slice<Post> postSlice = new SliceImpl<>(postList);
 
 		when(postService.findAll(cursorId, size)).thenReturn(postSlice);

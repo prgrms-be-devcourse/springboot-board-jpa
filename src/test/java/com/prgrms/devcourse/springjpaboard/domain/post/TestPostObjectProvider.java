@@ -10,7 +10,11 @@ import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostSearchResponses;
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostUpdateRequest;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 
-public class PostObjectProvider {
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class TestPostObjectProvider {
 
 	public static Post createPost(User user) {
 		return createPost("hello", "hi", user);

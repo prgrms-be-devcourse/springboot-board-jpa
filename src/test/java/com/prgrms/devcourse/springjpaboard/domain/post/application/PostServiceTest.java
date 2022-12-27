@@ -1,7 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post.application;
 
-import static com.prgrms.devcourse.springjpaboard.domain.post.PostObjectProvider.*;
-import static com.prgrms.devcourse.springjpaboard.domain.user.UserObjectProvider.*;
+import static com.prgrms.devcourse.springjpaboard.domain.post.TestPostObjectProvider.*;
+import static com.prgrms.devcourse.springjpaboard.domain.user.TestUserObjectProvider.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -96,12 +96,38 @@ class PostServiceTest {
 	}
 
 	@Test
-	@DisplayName("파라미터로 받은 cursorId 보다 w작은 Post 데이터를 size 만큼 조회한다 - 성공")
+	@DisplayName("파라미터로 받은 cursorId 보다 작은 Post 데이터를 size 만큼 조회한다 - 성공")
 	void findAllTest() {
 
 		//given
 		Long cursorId = 14L;
 		Integer size = 3;
+		User user = createUser();
+		List<Post> postList = createPostList(user);
+
+		Pageable pageable = PageRequest.of(0, size, Sort.by("id").descending());
+
+		Slice<Post> postSlice = new SliceImpl<>(postList, pageable, true);
+
+		when(postRepository.findByIdLessThan(cursorId, pageable)).thenReturn(postSlice);
+
+		//when
+		Slice<Post> slice = postService.findAll(cursorId, size);
+
+		//then
+		assertThat(slice).isEqualTo(postSlice);
+
+		verify(postRepository).findByIdLessThan(cursorId, pageable);
+
+	}
+
+	@Test
+	@DisplayName("파라미터로 받은 cursorId 보다 작은 Post 데이터를 size 만큼 조회한다 - 성공")
+	void findAllSizeTest() {
+
+		//given
+		Long cursorId = 16L;
+		Integer size = 8;
 		User user = createUser();
 		List<Post> postList = createPostList(user);
 
