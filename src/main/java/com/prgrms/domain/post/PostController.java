@@ -2,7 +2,8 @@ package com.prgrms.domain.post;
 
 import com.prgrms.dto.PostDto;
 import com.prgrms.dto.PostDto.Response;
-import com.prgrms.dto.PostDto.ResponseArray;
+import com.prgrms.dto.PostDto.ResponsePostDtos;
+import com.prgrms.dto.PostDto.Update;
 import java.net.URI;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostDto.Response> getPostById(@PathVariable Long id) {
+    public ResponseEntity<Response> getPostById(@PathVariable Long id) {
 
         return ResponseEntity.ok(service.findPostById(id));
     }
@@ -35,23 +36,22 @@ public class PostController {
     public ResponseEntity<Void> registerPost(@RequestBody PostDto.Request postDto) {
 
         Response responsePostDto = service.insertPost(postDto);
+        URI redirectPath = URI.create("api/posts/" + responsePostDto.getPostId());
 
-        return ResponseEntity.created(URI.create("api/posts/" + responsePostDto.id())).build();
+        return ResponseEntity.created(redirectPath)
+            .build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response> modifyPost(
-
-        @PathVariable Long id,
-        @RequestBody PostDto.update postDto) {
+    public ResponseEntity<Response> modifyPost(@PathVariable Long id,
+        @RequestBody Update postDto) {
         Response response = service.updatePost(id, postDto);
 
         return ResponseEntity.ok(response);
-
     }
 
     @GetMapping
-    public ResponseEntity<ResponseArray> getPostsByPage(Pageable pageable) {
+    public ResponseEntity<ResponsePostDtos> getPostsByPage(Pageable pageable) {
 
         return ResponseEntity.ok(service.getPostsByPage(pageable));
     }

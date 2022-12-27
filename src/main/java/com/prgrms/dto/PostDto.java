@@ -15,16 +15,18 @@ public class PostDto {
         }
     }
 
-    public record Response(@NotNull Long id, @NotBlank String title, @NotBlank String content,
-                           @NotNull Long userId, @NotBlank String userName) {
+    public record Response(Post post) {
+
+        public long getPostId() {
+            return post.getId();
+        }
+    }
+
+    public record Update(@NotBlank String title, @NotBlank String content) {
 
     }
 
-    public record update(@NotBlank String title, @NotBlank String content) {
-
-    }
-
-    public record ResponseArray(List<Response> postDtos) {
+    public record ResponsePostDtos(List<Response> postDtos) {
 
     }
 

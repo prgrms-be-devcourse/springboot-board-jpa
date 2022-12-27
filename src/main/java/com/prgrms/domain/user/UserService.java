@@ -1,7 +1,8 @@
 package com.prgrms.domain.user;
 
-import com.prgrms.dto.converter.UserConverter;
-import com.prgrms.dto.UserDto;
+import static com.prgrms.dto.UserDto.*;
+
+import com.prgrms.dto.UserDto.Response;
 import com.prgrms.exception.ErrorCode;
 import com.prgrms.exception.customException.UserNotFoundException;
 import jakarta.validation.Valid;
@@ -18,16 +19,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDto.Response insertUser(@Valid UserDto.Request userDto) {
+    public Response insertUser(@Valid Request userDto) {
 
         User savedUser = userRepository.save(userDto.toUser());
-        return UserConverter.toUserResponseDto(savedUser);
+        return new Response(savedUser);
     }
 
-    public UserDto.Response findUserById(Long id) {
+    public Response findUserById(Long id) {
 
         return userRepository.findById(id)
-            .map(UserConverter::toUserResponseDto)
+            .map(Response::new)
             .orElseThrow(() -> new UserNotFoundException("id: " + id, ErrorCode.USER_NOT_FOUND));
     }
 

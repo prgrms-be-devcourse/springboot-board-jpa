@@ -1,6 +1,7 @@
 package com.prgrms.domain.user;
 
-import com.prgrms.dto.UserDto;
+import static com.prgrms.dto.UserDto.*;
+
 import com.prgrms.dto.UserDto.Response;
 import java.net.URI;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +23,17 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto.Response> getUserById(@PathVariable Long id) {
+    public ResponseEntity<Response> getUserById(@PathVariable Long id) {
 
         Response userById = service.findUserById(id);
         return ResponseEntity.ok(userById);
     }
 
     @PostMapping
-    public ResponseEntity<Void> registerUser(@RequestBody UserDto.Request userDto) {
+    public ResponseEntity<Void> registerUser(@RequestBody Request userDto) {
 
         Response response = service.insertUser(userDto);
-        return ResponseEntity.created(URI.create("/users/"+ response.id())).build();
+        return ResponseEntity.created(URI.create("/users/" + response.getUserId())).build();
     }
 
 }
