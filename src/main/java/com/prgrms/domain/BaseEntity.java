@@ -8,19 +8,17 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 
+    @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    private String createdBy;
+    private String author;
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void beWrittenBy(String author) {
+        this.author = author;
     }
 
 }
