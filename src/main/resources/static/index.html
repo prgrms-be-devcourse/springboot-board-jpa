@@ -2174,7 +2174,7 @@ Host: localhost:8080
 Content-Type: application/json
 Content-Length: 102
 
-{&quot;statusCode&quot;:201,&quot;data&quot;:1,&quot;message&quot;:&quot;게시물 생성 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-25 10:58:20&quot;}</code></pre>
+{&quot;statusCode&quot;:201,&quot;data&quot;:1,&quot;message&quot;:&quot;게시물 생성 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-27 18:19:47&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
@@ -2266,7 +2266,7 @@ Host: localhost:8080
 Content-Type: application/json
 Content-Length: 233
 
-{&quot;statusCode&quot;:200,&quot;data&quot;:{&quot;title&quot;:&quot;title&quot;,&quot;content&quot;:&quot;content&quot;,&quot;postId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-25T10:58:19.6987269&quot;,&quot;userId&quot;:100,&quot;userName&quot;:&quot;userName&quot;},&quot;message&quot;:&quot;게시물 단건 조회 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-25 10:58:19&quot;}</code></pre>
+{&quot;statusCode&quot;:200,&quot;data&quot;:{&quot;title&quot;:&quot;title&quot;,&quot;content&quot;:&quot;content&quot;,&quot;postId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-27T18:19:47.1954271&quot;,&quot;userId&quot;:100,&quot;userName&quot;:&quot;userName&quot;},&quot;message&quot;:&quot;게시물 단건 조회 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-27 18:19:47&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
@@ -2416,9 +2416,9 @@ Host: localhost:8080
                         <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 637
+Content-Length: 521
 
-{&quot;statusCode&quot;:200,&quot;data&quot;:{&quot;content&quot;:[{&quot;title&quot;:&quot;title1&quot;,&quot;postId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-25T10:58:20.228096&quot;},{&quot;title&quot;:&quot;title2&quot;,&quot;postId&quot;:2,&quot;createdAt&quot;:&quot;2022-12-25T10:58:20.228096&quot;},{&quot;title&quot;:&quot;title3&quot;,&quot;postId&quot;:3,&quot;createdAt&quot;:&quot;2022-12-25T10:58:20.228096&quot;}],&quot;pageable&quot;:{&quot;sort&quot;:{&quot;empty&quot;:true,&quot;unsorted&quot;:true,&quot;sorted&quot;:false},&quot;offset&quot;:0,&quot;pageNumber&quot;:0,&quot;pageSize&quot;:5,&quot;paged&quot;:true,&quot;unpaged&quot;:false},&quot;last&quot;:true,&quot;totalElements&quot;:3,&quot;totalPages&quot;:1,&quot;size&quot;:5,&quot;number&quot;:0,&quot;sort&quot;:{&quot;empty&quot;:true,&quot;unsorted&quot;:true,&quot;sorted&quot;:false},&quot;first&quot;:true,&quot;numberOfElements&quot;:3,&quot;empty&quot;:false},&quot;message&quot;:&quot;게시물 페이지 조회 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-25 10:58:20&quot;}</code></pre>
+{&quot;statusCode&quot;:200,&quot;data&quot;:{&quot;posts&quot;:[{&quot;title&quot;:&quot;title1&quot;,&quot;content&quot;:&quot;content1&quot;,&quot;postId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-27T18:19:47.6642168&quot;,&quot;userId&quot;:1,&quot;userName&quot;:&quot;user1&quot;},{&quot;title&quot;:&quot;title2&quot;,&quot;content&quot;:&quot;content2&quot;,&quot;postId&quot;:2,&quot;createdAt&quot;:&quot;2022-12-27T18:19:47.6642168&quot;,&quot;userId&quot;:2,&quot;userName&quot;:&quot;user2&quot;},{&quot;title&quot;:&quot;title3&quot;,&quot;content&quot;:&quot;content3&quot;,&quot;postId&quot;:3,&quot;createdAt&quot;:&quot;2022-12-27T18:19:47.6642168&quot;,&quot;userId&quot;:3,&quot;userName&quot;:&quot;user3&quot;}],&quot;totalPages&quot;:1,&quot;hasNext&quot;:true},&quot;message&quot;:&quot;게시물 페이지 조회 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-27 18:19:47&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
@@ -2466,27 +2466,51 @@ Content-Length: 637
                         </tr>
                         <tr>
                             <td class="tableblock halign-left valign-top"><p class="tableblock">
-                                <code>data.content</code></p></td>
+                                <code>data.hasNext</code></p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">응답 데이터 - 게시글 다음 게시글 존재
+                                여부</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">
+                                <code>data.totalPages</code></p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">응답 데이터 - 게시글을 포함한 페이지의
+                                개수</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.posts</code>
+                            </p></td>
                             <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p>
                             </td>
                             <td class="tableblock halign-left valign-top"><p class="tableblock">응답 데이터 - 게시글 정보</p></td>
                         </tr>
                         <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].postId</code>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.posts.[].postId</code>
                             </p></td>
                             <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
                             </td>
                             <td class="tableblock halign-left valign-top"><p class="tableblock">응답 데이터 - 게시글 id</p></td>
                         </tr>
                         <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].title</code>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.posts.[].title</code>
                             </p></td>
                             <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
                             </td>
                             <td class="tableblock halign-left valign-top"><p class="tableblock">응답 데이터 - 게시글 제목</p></td>
                         </tr>
                         <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].createdAt</code>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.posts.[].content</code>
+                            </p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">응답 데이터 - 게시글 본문내용</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.posts.[].createdAt</code>
                             </p></td>
                             <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
                             </td>
@@ -2494,143 +2518,20 @@ Content-Length: 637
                             </td>
                         </tr>
                         <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.sort.sorted</code>
-                            </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">정렬 되었는지 여부</p></td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.sort.unsorted</code>
-                            </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">정렬 안되었는지 여부</p></td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.sort.empty</code>
-                            </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 비었는지 여부</p></td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.pageNumber</code>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.posts.[].userId</code>
                             </p></td>
                             <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
                             </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지 번호</p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">응답 데이터 - 게시글 작성자 id</p>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.pageSize</code>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.posts.[].userName</code>
                             </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
                             </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">한 페이지당 조회할 데이터 개수</p>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">응답 데이터 - 게시글 작성자 이름</p>
                             </td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.offset</code>
-                            </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">몇번째 데이터인지 (0부터 시작)</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.paged</code>
-                            </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 정보를 포함하는지 여부</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.unpaged</code>
-                            </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 정보를 안포함하는지 여부</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.last</code>
-                            </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">마지막 페이지인지 여부</p></td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">
-                                <code>data.totalPages</code></p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">전체 페이지 개수</p></td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">
-                                <code>data.totalElements</code></p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">테이블 총 데이터 개수</p></td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.first</code>
-                            </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">첫번째 페이지인지 여부</p></td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.numberOfElements</code>
-                            </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">요청 페이지에서 조회된 데이터 개수</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.number</code>
-                            </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지 번호</p></td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.size</code>
-                            </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">한 페이지당 조회할 데이터 개수</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">
-                                <code>data.sort.sorted</code></p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">정렬 됐는지 여부</p></td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">
-                                <code>data.sort.unsorted</code></p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">정렬 안됐는지 여부</p></td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">
-                                <code>data.sort.empty</code></p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 비었는지 여부</p></td>
-                        </tr>
-                        <tr>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.empty</code>
-                            </p></td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
-                            </td>
-                            <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 비었는지 여부</p></td>
                         </tr>
                         </tbody>
                     </table>
@@ -2708,7 +2609,7 @@ Host: localhost:8080
 Content-Type: application/json
 Content-Length: 102
 
-{&quot;statusCode&quot;:200,&quot;data&quot;:1,&quot;message&quot;:&quot;게시물 수정 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-25 18:26:28&quot;}</code></pre>
+{&quot;statusCode&quot;:200,&quot;data&quot;:1,&quot;message&quot;:&quot;게시물 수정 완료&quot;,&quot;serverDateTime&quot;:&quot;2022-12-27 18:19:47&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">

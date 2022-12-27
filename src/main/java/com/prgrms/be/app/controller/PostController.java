@@ -4,7 +4,6 @@ import com.prgrms.be.app.domain.dto.ApiResponse;
 import com.prgrms.be.app.domain.dto.PostDTO;
 import com.prgrms.be.app.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,11 +36,12 @@ public class PostController {
 
     //toDo : 페이징 조회하는 메서드
     @GetMapping()
-    public ApiResponse<Page<PostDTO.PostsResponse>> getAll(@RequestBody PostDTO.PostPageRequest postPageRequest) {
-        Page<PostDTO.PostsResponse> postPages = postService.findAll(postPageRequest.of());
+    public ApiResponse<PostDTO.PostsResponse> getAll(@RequestBody PostDTO.PostPageRequest postPageRequest) {
+        PostDTO.PostsResponse postPages = postService.findAll(postPageRequest.of());
         return ApiResponse.ok(
                 postPages,
-                ResponseMessage.FINDED_ALL);
+                ResponseMessage.FINDED_ALL
+        );
     }
 
     //toDo : 수정

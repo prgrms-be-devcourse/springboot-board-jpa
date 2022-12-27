@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -183,12 +185,12 @@ class PostControllerTest {
         // given
         PostDTO.PostPageRequest postPageRequest = new PostDTO.PostPageRequest(0, 5, Sort.Direction.DESC);
         Pageable request = PageRequest.of(0, 5);
-        List<PostDTO.PostsResponse> postDtos = List.of(
-                new PostDTO.PostsResponse("title1", 1L, LocalDateTime.now()),
-                new PostDTO.PostsResponse("title2", 2L, LocalDateTime.now()),
-                new PostDTO.PostsResponse("title3", 3L, LocalDateTime.now())
+        List<PostDTO.PostDetailResponse> postDtos = List.of(
+                new PostDTO.PostDetailResponse("title1", "content1", 1L, LocalDateTime.now(), 1L, "user1"),
+                new PostDTO.PostDetailResponse("title2", "content2", 2L, LocalDateTime.now(), 2L, "user2"),
+                new PostDTO.PostDetailResponse("title3", "content3", 3L, LocalDateTime.now(), 3L, "user3")
         );
-        Page<PostDTO.PostsResponse> response = new PageImpl(postDtos, request, 3);
+        PostDTO.PostsResponse response = new PostDTO.PostsResponse(postDtos, 1, true);
         when(postService.findAll(any(Pageable.class)))
                 .thenReturn(response);
 
@@ -204,15 +206,27 @@ class PostControllerTest {
                 .andExpect(jsonPath("message").value(ResponseMessage.FINDED_ALL))
                 .andExpect(jsonPath("serverDateTime").exists())
                 .andExpect(jsonPath("data").exists())
-                .andExpect(jsonPath("data.content[0].postId").value(postDtos.get(0).postId()))
-                .andExpect(jsonPath("data.content[0].title").value(postDtos.get(0).title()))
-                .andExpect(jsonPath("data.content[0].createdAt").exists())
-                .andExpect(jsonPath("data.content[1].postId").value(postDtos.get(1).postId()))
-                .andExpect(jsonPath("data.content[1].title").value(postDtos.get(1).title()))
-                .andExpect(jsonPath("data.content[1].createdAt").exists())
-                .andExpect(jsonPath("data.content[2].postId").value(postDtos.get(2).postId()))
-                .andExpect(jsonPath("data.content[2].title").value(postDtos.get(2).title()))
-                .andExpect(jsonPath("data.content[2].createdAt").exists())
+                .andExpect(jsonPath("data.totalPages").value(1))
+                .andExpect(jsonPath("data.hasNext").value(true))
+                .andExpect(jsonPath("data.posts").exists())
+                .andExpect(jsonPath("data.posts[0].postId").value(postDtos.get(0).postId()))
+                .andExpect(jsonPath("data.posts[0].title").value(postDtos.get(0).title()))
+                .andExpect(jsonPath("data.posts[0].content").value(postDtos.get(0).content()))
+                .andExpect(jsonPath("data.posts[0].createdAt").exists())
+                .andExpect(jsonPath("data.posts[0].userId").value(postDtos.get(0).userId()))
+                .andExpect(jsonPath("data.posts[0].userName").value(postDtos.get(0).userName()))
+                .andExpect(jsonPath("data.posts[1].postId").value(postDtos.get(1).postId()))
+                .andExpect(jsonPath("data.posts[1].title").value(postDtos.get(1).title()))
+                .andExpect(jsonPath("data.posts[1].content").value(postDtos.get(1).content()))
+                .andExpect(jsonPath("data.posts[1].createdAt").exists())
+                .andExpect(jsonPath("data.posts[1].userId").value(postDtos.get(1).userId()))
+                .andExpect(jsonPath("data.posts[1].userName").value(postDtos.get(1).userName()))
+                .andExpect(jsonPath("data.posts[2].postId").value(postDtos.get(2).postId()))
+                .andExpect(jsonPath("data.posts[2].title").value(postDtos.get(2).title()))
+                .andExpect(jsonPath("data.posts[2].content").value(postDtos.get(2).content()))
+                .andExpect(jsonPath("data.posts[2].createdAt").exists())
+                .andExpect(jsonPath("data.posts[2].userId").value(postDtos.get(2).userId()))
+                .andExpect(jsonPath("data.posts[2].userName").value(postDtos.get(2).userName()))
                 .andDo(print())
                 .andDo(document("find-post-all",
                         requestFields(
@@ -226,34 +240,15 @@ class PostControllerTest {
                                 fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답 생성 시간"),
 
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터 - 게시글 관련 페이지 정보(게시글 정보 집합)"),
-                                fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("응답 데이터 - 게시글 정보"),
-                                fieldWithPath("data.content.[].postId").type(JsonFieldType.NUMBER).description("응답 데이터 - 게시글 id"),
-                                fieldWithPath("data.content.[].title").type(JsonFieldType.STRING).description("응답 데이터 - 게시글 제목"),
-                                fieldWithPath("data.content.[].createdAt").type(JsonFieldType.STRING).description("응답 데이터 - 게시글 생성시간"),
-
-                                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬 되었는지 여부"),
-                                fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("정렬 안되었는지 여부"),
-                                fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("데이터가 비었는지 여부"),
-
-                                fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
-                                fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER).description("한 페이지당 조회할 데이터 개수"),
-                                fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("몇번째 데이터인지 (0부터 시작)"),
-                                fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("페이징 정보를 포함하는지 여부"),
-                                fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("페이징 정보를 안포함하는지 여부"),
-
-                                fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("마지막 페이지인지 여부"),
-                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 개수"),
-                                fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("테이블 총 데이터 개수"),
-                                fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("첫번째 페이지인지 여부"),
-                                fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("요청 페이지에서 조회된 데이터 개수"),
-                                fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
-                                fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("한 페이지당 조회할 데이터 개수"),
-
-                                fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬 됐는지 여부"),
-                                fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("정렬 안됐는지 여부"),
-                                fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("데이터가 비었는지 여부"),
-
-                                fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("데이터가 비었는지 여부")
+                                fieldWithPath("data.hasNext").type(JsonFieldType.BOOLEAN).description("응답 데이터 - 게시글 다음 게시글 존재 여부"),
+                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("응답 데이터 - 게시글을 포함한 페이지의 개수"),
+                                fieldWithPath("data.posts").type(JsonFieldType.ARRAY).description("응답 데이터 - 게시글 정보"),
+                                fieldWithPath("data.posts.[].postId").type(JsonFieldType.NUMBER).description("응답 데이터 - 게시글 id"),
+                                fieldWithPath("data.posts.[].title").type(JsonFieldType.STRING).description("응답 데이터 - 게시글 제목"),
+                                fieldWithPath("data.posts.[].content").type(JsonFieldType.STRING).description("응답 데이터 - 게시글 본문내용"),
+                                fieldWithPath("data.posts.[].createdAt").type(JsonFieldType.STRING).description("응답 데이터 - 게시글 생성시간"),
+                                fieldWithPath("data.posts.[].userId").type(JsonFieldType.NUMBER).description("응답 데이터 - 게시글 작성자 id"),
+                                fieldWithPath("data.posts.[].userName").type(JsonFieldType.STRING).description("응답 데이터 - 게시글 작성자 이름")
                         )
                 ));
 
