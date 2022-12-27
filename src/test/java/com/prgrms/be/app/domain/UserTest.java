@@ -55,12 +55,9 @@ class UserTest {
     })
     @DisplayName("유저의 이름을 비어있거나 공백만으로 설정할 수 없다.")
     void blankUserNameTest(String name) {
-        // given
-        User user = new User(name, AGE, HOBBY);
-        // when
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
         // then
-        Assertions.assertThat(violations).isNotEmpty();
+        Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new User(name, AGE, HOBBY));
     }
 
     @ParameterizedTest

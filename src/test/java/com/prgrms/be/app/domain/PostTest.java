@@ -37,14 +37,9 @@ class PostTest {
     @ValueSource(strings = {"", "  "})
     @DisplayName("게시글의 제목에 빈 값이나 공백만 넣고 게시글을 생성할 수 없다.")
     void blankTitlePostCreateTest(String title) {
-        // given
-        Post post = new Post(title, CONTENT, USER);
-
-        // when
-        Set<ConstraintViolation<Post>> violations = validator.validate(post);
-
         // then
-        Assertions.assertThat(violations).isNotEmpty();
+        Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new Post(title, CONTENT, USER));
     }
 
     @ParameterizedTest
@@ -52,13 +47,8 @@ class PostTest {
     @DisplayName("게시글의 본문에 빈 값이나 공백만 넣고 게시글을 생성할 수 없다.")
     void blankContentPostCreateTest(String content) {
         // given
-        Post post = new Post(TITLE, content, USER);
-
-        // when
-        Set<ConstraintViolation<Post>> violations = validator.validate(post);
-
-        // then
-        Assertions.assertThat(violations).isNotEmpty();
+        Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new Post(TITLE, content, USER));
     }
 
     @ParameterizedTest
@@ -72,7 +62,8 @@ class PostTest {
         Assertions.assertThat(violations).isEmpty();
 
         // when, then
-        assertThrows(IllegalArgumentException.class, () -> post.changePost(title, CONTENT));
+        Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> post.changePost(title, CONTENT));
     }
 
     @ParameterizedTest
