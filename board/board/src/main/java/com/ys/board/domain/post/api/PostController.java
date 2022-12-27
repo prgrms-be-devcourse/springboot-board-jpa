@@ -22,7 +22,8 @@ public class PostController {
     private final PostServiceFacade postServiceFacade;
 
     @PostMapping
-    public ResponseEntity<PostCreateResponse> createPost(@RequestBody @Valid PostCreateRequest request) {
+    public ResponseEntity<PostCreateResponse> createPost(
+        @RequestBody @Valid PostCreateRequest request) {
         PostCreateResponse createResponse = postServiceFacade.createPost(request);
 
         return new ResponseEntity<>(createResponse, HttpStatus.CREATED);

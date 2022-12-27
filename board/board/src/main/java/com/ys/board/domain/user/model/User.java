@@ -34,7 +34,7 @@ public class User extends AbstractCreatedColumn {
 
     private String hobby;
 
-    public User(String name, int age, String hobby) {
+    protected User(String name, int age, String hobby) {
         validateName(name);
         validateAge(age);
         this.name = name;
