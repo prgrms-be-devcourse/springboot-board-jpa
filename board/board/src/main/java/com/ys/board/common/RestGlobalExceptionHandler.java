@@ -20,7 +20,7 @@ public class RestGlobalExceptionHandler {
 
 
     @ExceptionHandler(DuplicateNameException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> duplicateEmailHandle(DuplicateNameException e,
         HttpServletRequest request) {
 
@@ -31,7 +31,7 @@ public class RestGlobalExceptionHandler {
             .method(request.getMethod())
             .build();
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
