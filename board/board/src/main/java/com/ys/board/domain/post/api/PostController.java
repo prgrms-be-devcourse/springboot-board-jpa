@@ -1,5 +1,7 @@
 package com.ys.board.domain.post.api;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import com.ys.board.domain.post.service.PostServiceFacade;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,7 @@ public class PostController {
 
     private final PostServiceFacade postServiceFacade;
 
-    @PostMapping
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PostCreateResponse> createPost(
         @RequestBody @Valid PostCreateRequest request) {
         PostCreateResponse createResponse = postServiceFacade.createPost(request);
@@ -29,13 +31,13 @@ public class PostController {
         return new ResponseEntity<>(createResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{postId}")
+    @GetMapping(value = "/{postId}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PostResponse> findPostById(@PathVariable Long postId) {
         PostResponse postResponse = postServiceFacade.findPostById(postId);
         return ResponseEntity.ok(postResponse);
     }
 
-    @PutMapping("/{postId}")
+    @PutMapping(value = "/{postId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateAllPost(
         @PathVariable Long postId,
         @RequestBody @Valid PostUpdateRequest request) {
@@ -45,7 +47,7 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PostResponses> findAll(@ModelAttribute @Valid PostsRequest request) {
         PostResponses postResponses = postServiceFacade.findAllPostsByIdCursorBased(
             request.getCursorId(), request.getPageSize());
