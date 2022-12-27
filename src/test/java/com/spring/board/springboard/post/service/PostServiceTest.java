@@ -5,16 +5,20 @@ import com.spring.board.springboard.post.domain.dto.ResponsePostDto;
 import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
 import com.spring.board.springboard.user.repository.MemberRepository;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
 class PostServiceTest {
 
@@ -24,7 +28,7 @@ class PostServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @BeforeEach
+    @BeforeAll
     void setUp(){
         Member member = new Member("이수린", 24, Hobby.SLEEP);
         memberRepository.save(member);
