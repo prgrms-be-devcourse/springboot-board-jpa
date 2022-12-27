@@ -1,7 +1,5 @@
 package devcourse.board.domain.post.model;
 
-import lombok.Getter;
-
 public class PostRequest {
 
     private PostRequest() {
@@ -11,7 +9,6 @@ public class PostRequest {
         return new Post(creationDto.getTitle(), creationDto.getContent());
     }
 
-    @Getter
     public static class CreationDto {
         private Long memberId;
         private String title;
@@ -25,9 +22,20 @@ public class PostRequest {
             this.title = title;
             this.content = content;
         }
+
+        public Long getMemberId() {
+            return memberId;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getContent() {
+            return content;
+        }
     }
 
-    @Getter
     public static class UpdateDto {
         private String title;
         private String content;
@@ -38,6 +46,14 @@ public class PostRequest {
         public UpdateDto(String title, String content) {
             this.title = title;
             this.content = content;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getContent() {
+            return content;
         }
     }
 }

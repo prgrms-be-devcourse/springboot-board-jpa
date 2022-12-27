@@ -1,7 +1,5 @@
 package devcourse.board.domain.member.model;
 
-import lombok.Getter;
-
 public class MemberRequest {
 
     private MemberRequest() {
@@ -11,7 +9,6 @@ public class MemberRequest {
         return new Member(joinDto.getName(), joinDto.getAge(), joinDto.getHobby());
     }
 
-    @Getter
     public static class JoinDto {
         String name;
         private Integer age;
@@ -28,6 +25,18 @@ public class MemberRequest {
             this.name = name;
             this.age = age;
             this.hobby = hobby;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Integer getAge() {
+            return age;
+        }
+
+        public String getHobby() {
+            return hobby;
         }
     }
 }

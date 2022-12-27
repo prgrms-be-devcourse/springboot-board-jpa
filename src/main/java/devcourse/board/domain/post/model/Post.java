@@ -1,7 +1,6 @@
 package devcourse.board.domain.post.model;
 
 import devcourse.board.domain.member.model.Member;
-import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,7 +8,6 @@ import java.time.LocalDateTime;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Getter
 public class Post {
 
     @Id
@@ -51,5 +49,25 @@ public class Post {
 
     public String findOutWriterName() {
         return this.member.getName();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public Member getMember() {
+        return member;
     }
 }

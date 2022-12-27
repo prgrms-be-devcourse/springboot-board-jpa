@@ -1,12 +1,9 @@
 package devcourse.board.domain.member.model;
 
-import lombok.Getter;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
 public class Member {
 
     @Id
@@ -36,5 +33,25 @@ public class Member {
         this.age = age;
         this.hobby = hobby;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public String getHobby() {
+        return hobby;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }
