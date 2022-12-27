@@ -8,7 +8,6 @@ import kdt.springbootboardjpa.respository.entity.Post;
 import kdt.springbootboardjpa.service.PostService;
 import kdt.springbootboardjpa.service.dto.PostDto;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,20 +43,20 @@ public class PostController {
                 .build();
         Post savedPost = postService.updatePost(id, updatedPostDto);
         PostResponse response = PostResponse.toPostResponse(savedPost);
-        return BaseResponse.success(HttpStatus.OK, response);
+        return BaseResponse.success(response);
     }
 
     @GetMapping("/{id}")
     public BaseResponse<PostResponse> getPost(@PathVariable Long id) {
         Post returnedPost = postService.getPostById(id);
         PostResponse response = PostResponse.toPostResponse(returnedPost);
-        return BaseResponse.success(HttpStatus.OK, response);
+        return BaseResponse.success(response);
     }
 
     @GetMapping
     public BaseResponse<List<PostResponse>> getAllPosts() {
         List<PostResponse> response = postService.getAllPosts()
                 .stream().map(PostResponse::toPostResponse).toList();
-        return BaseResponse.success(HttpStatus.OK, response);
+        return BaseResponse.success(response);
     }
 }

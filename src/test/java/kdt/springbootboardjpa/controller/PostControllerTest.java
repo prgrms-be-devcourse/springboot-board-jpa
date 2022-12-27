@@ -100,7 +100,6 @@ public class PostControllerTest {
                                 fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
                         ),
                         responseFields(
-                                fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
                                 fieldWithPath("error").type(JsonFieldType.NULL).description("응답 에러"),
                                 fieldWithPath("response.id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
                                 fieldWithPath("response.title").type(JsonFieldType.STRING).description("포스트 제목"),
@@ -168,7 +167,6 @@ public class PostControllerTest {
                                 fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("글쓴이")
                         ),
                         responseFields(
-                                fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
                                 fieldWithPath("error").type(JsonFieldType.NULL).description("응답 에러"),
                                 fieldWithPath("response.id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
                                 fieldWithPath("response.title").type(JsonFieldType.STRING).description("포스트 제목"),
@@ -218,7 +216,6 @@ public class PostControllerTest {
                 .andDo(print())
                 .andDo(document("post-get",
                         responseFields(
-                                fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
                                 fieldWithPath("error").type(JsonFieldType.NULL).description("응답 에러"),
                                 fieldWithPath("response.id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
                                 fieldWithPath("response.title").type(JsonFieldType.STRING).description("포스트 제목"),
@@ -255,7 +252,6 @@ public class PostControllerTest {
                 .andDo(print())
                 .andDo(document("post-get-all",
                         responseFields(
-                                fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
                                 fieldWithPath("error").type(JsonFieldType.NULL).description("응답 에러"),
                                 fieldWithPath("response.[].id").type(JsonFieldType.NUMBER).description("포스트 아이디"),
                                 fieldWithPath("response.[].title").type(JsonFieldType.STRING).description("포스트 제목"),

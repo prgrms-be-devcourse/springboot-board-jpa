@@ -15,6 +15,6 @@ public class ExceptionResolver {
     @ExceptionHandler({IllegalArgumentException.class})
     public BaseResponse handleForbiddenException(HttpServletRequest request, RuntimeException e) {
         ApiError apiError = new ApiError(e.getMessage(), request.getRequestURI());
-        return BaseResponse.error(HttpStatus.NOT_FOUND, apiError);
+        return BaseResponse.error(apiError);
     }
 }
