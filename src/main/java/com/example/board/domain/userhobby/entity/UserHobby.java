@@ -2,7 +2,7 @@ package com.example.board.domain.userhobby.entity;
 
 import com.example.board.domain.hobby.entity.Hobby;
 import com.example.board.domain.user.entity.User;
-import com.example.board.global.entity.BaseTimeEntity;
+import com.example.board.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -17,7 +17,7 @@ import static com.example.board.global.validator.UserHobbyValidator.validateUser
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user_hobby")
 @Entity
-public class UserHobby extends BaseTimeEntity {
+public class UserHobby extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "user_hobby_id", updatable = false)

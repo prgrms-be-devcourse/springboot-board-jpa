@@ -1,7 +1,7 @@
 package com.example.board.domain.post.entity;
 
 import com.example.board.domain.user.entity.User;
-import com.example.board.global.entity.BaseTimeEntity;
+import com.example.board.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -17,7 +17,7 @@ import static com.example.board.global.validator.PostValidator.validateTitle;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Post extends BaseTimeEntity {
+public class Post extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "post_id", updatable = false)

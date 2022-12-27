@@ -1,7 +1,7 @@
 package com.example.board.domain.user.entity;
 
 import com.example.board.domain.userhobby.entity.UserHobby;
-import com.example.board.global.entity.BaseTimeEntity;
+import com.example.board.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -21,7 +21,7 @@ import static com.example.board.global.validator.UserValidator.validateName;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 @Entity
-public class User extends BaseTimeEntity {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue
