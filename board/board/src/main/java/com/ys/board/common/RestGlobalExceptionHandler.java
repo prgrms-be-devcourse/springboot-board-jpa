@@ -65,6 +65,7 @@ public class RestGlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> defaultHandle(MethodArgumentNotValidException e, HttpServletRequest request) {
 
         ErrorResponse errorResponse = makeErrorResponseWithBindingResult(e.getBindingResult());
