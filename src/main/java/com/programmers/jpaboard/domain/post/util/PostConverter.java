@@ -7,6 +7,9 @@ import com.programmers.jpaboard.domain.user.entity.User;
 
 public class PostConverter {
 
+	private PostConverter() {
+	}
+
 	public static Post toPost(PostCreateRequestDto postCreateRequestDto, User user) {
 		return new Post(postCreateRequestDto.getTitle(), postCreateRequestDto.getContent(), user);
 	}

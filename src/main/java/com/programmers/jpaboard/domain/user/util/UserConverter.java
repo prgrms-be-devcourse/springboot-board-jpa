@@ -7,6 +7,9 @@ import com.programmers.jpaboard.domain.user.entity.User;
 
 public class UserConverter {
 
+	private UserConverter() {
+	}
+
 	public static User toUser(UserCreateRequestDto userCreateRequestDto) {
 		return new User(
 			userCreateRequestDto.getName(),
