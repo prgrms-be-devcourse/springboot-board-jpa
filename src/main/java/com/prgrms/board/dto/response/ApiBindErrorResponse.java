@@ -15,7 +15,7 @@ public class ApiBindErrorResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime serverDatetime;
 
-    public ApiBindErrorResponse(String objectName, String field, String errorMessage, int statusCode) {
+    private ApiBindErrorResponse(String objectName, String field, String errorMessage, int statusCode) {
         this.objectName = objectName;
         this.field = field;
         this.errorMessage = errorMessage;

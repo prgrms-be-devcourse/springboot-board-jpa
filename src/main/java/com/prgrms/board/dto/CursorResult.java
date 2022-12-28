@@ -7,8 +7,8 @@ import java.util.List;
 
 @Getter
 public class CursorResult {
-    private List<PostResponseDto> postDtoList;
-    private Boolean hasNext;
+    private final List<PostResponseDto> postDtoList;
+    private final Boolean hasNext;
 
     public CursorResult(List<PostResponseDto> postDtoList, Boolean hasNext) {
         this.postDtoList = postDtoList;

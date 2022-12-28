@@ -13,7 +13,7 @@ public class ApiErrorResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime serverDatetime;
 
-    public ApiErrorResponse(String errorMessage, int statusCode) {
+    private ApiErrorResponse(String errorMessage, int statusCode) {
         this.errorMessage = errorMessage;
         this.statusCode = statusCode;
         this.serverDatetime = LocalDateTime.now();

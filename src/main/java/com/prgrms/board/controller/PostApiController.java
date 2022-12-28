@@ -32,7 +32,6 @@ public class PostApiController {
     }
 
     @GetMapping(value = "/{postId}", produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<PostResponseDto> findById(@PathVariable Long postId) {
 
         PostResponseDto responseDto = postService.findById(postId);
@@ -40,14 +39,12 @@ public class PostApiController {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<CursorResult> findAll(@Valid PostRequestDto postRequestDto) {
         CursorResult cursorResult = postService.findAll(postRequestDto.getCursorId(), PageRequest.of(0, postRequestDto.getSize()));
         return ApiResponse.ok(cursorResult);
     }
 
     @PutMapping(value = "/{postId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<Long> update(@PathVariable Long postId, @RequestBody @Valid PostUpdateDto postUpdateDto) {
         Long updatedPostId = postService.update(postId, postUpdateDto);
 

@@ -17,6 +17,7 @@ import java.util.Objects;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "members")
+@EqualsAndHashCode(of = {"id", "name"}, callSuper = false)
 public class Member extends TimeBaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,16 +39,4 @@ public class Member extends TimeBaseEntity{
     @OneToMany(mappedBy = "writer", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Member member = (Member) o;
-        return Objects.equals(getId(), member.getId()) && Objects.equals(getName(), member.getName());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName());
-    }
 }

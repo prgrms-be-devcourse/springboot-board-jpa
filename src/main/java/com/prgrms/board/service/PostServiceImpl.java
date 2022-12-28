@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,7 +62,7 @@ public class PostServiceImpl implements PostService {
 
         Member registeredMember = post.getWriter();
 
-        if (!registeredMember.equals(postUpdateMember)) {
+        if (!Objects.equals(registeredMember, postUpdateMember)) {
             throw new IllegalArgumentException("exception.post.writer.notEqual");
         }
 
