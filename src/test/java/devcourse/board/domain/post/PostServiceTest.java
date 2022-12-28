@@ -40,7 +40,7 @@ class PostServiceTest {
         Long savedPostId = postService.createPost(creationRequest);
 
         // then
-        PostResponse findPost = postService.findOneAsDto(savedPostId);
+        PostResponse findPost = postService.findOne(savedPostId);
         String actualPostWriter = findPost.createdBy();
 
         assertThat(actualPostWriter).as("게시글 작성자 이름이 같아야 한다.")
@@ -60,7 +60,7 @@ class PostServiceTest {
         Long invalidPostId = -1L;
 
         assertThrows(EntityNotFoundException.class, () -> {
-            postService.findOneAsDto(invalidPostId);
+            postService.findOne(invalidPostId);
         });
     }
 
@@ -96,7 +96,7 @@ class PostServiceTest {
         postService.updatePost(createdPostId, updateRequest);
 
         // then
-        PostResponse responseDto = postService.findOneAsDto(createdPostId);
+        PostResponse responseDto = postService.findOne(createdPostId);
         String actualUpdatedTitle = responseDto.title();
         String expectedUpdatedTitle = "new-title";
 

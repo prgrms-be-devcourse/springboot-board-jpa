@@ -32,8 +32,8 @@ public class PostService {
         return newPost.getId();
     }
 
-    public PostResponse findOneAsDto(Long postId) {
-        return new PostResponse(findOne(postId));
+    public PostResponse findOne(Long postId) {
+        return new PostResponse(findPostEntity(postId));
     }
 
     public List<PostResponse> findAll() {
@@ -54,14 +54,14 @@ public class PostService {
 
     @Transactional
     public PostResponse updatePost(Long postId, PostUpdateRequest updateRequest) {
-        Post post = findOne(postId);
+        Post post = findPostEntity(postId);
 
         post.updateContents(updateRequest.title(), updateRequest.content());
 
         return new PostResponse(post);
     }
 
-    private Post findOne(Long postId) {
+    private Post findPostEntity(Long postId) {
         return postRepository.findOne(postId)
                 .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format(
                         "Post doesn't exist for postId={0}", postId
