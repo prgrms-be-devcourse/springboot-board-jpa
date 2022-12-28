@@ -53,7 +53,7 @@ public class User extends BaseEntity {
 	@Size(max = 20)
 	private String hobby;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
 	List<Post> posts = new ArrayList<>();
 
 	public User(String name, String email, int age, String hobby) {
