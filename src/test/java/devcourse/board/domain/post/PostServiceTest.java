@@ -1,11 +1,11 @@
 package devcourse.board.domain.post;
 
 import devcourse.board.domain.member.MemberService;
-import devcourse.board.domain.member.model.MemberJoinDto;
+import devcourse.board.domain.member.model.MemberJoinRequest;
 import devcourse.board.domain.post.model.MultiplePostResponse;
-import devcourse.board.domain.post.model.PostCreationDto;
+import devcourse.board.domain.post.model.PostCreationRequest;
 import devcourse.board.domain.post.model.PostResponse;
-import devcourse.board.domain.post.model.PostUpdateDto;
+import devcourse.board.domain.post.model.PostUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +33,11 @@ class PostServiceTest {
         // given
         String postWriter = "post-writer";
         Long savedMemberId = saveMember(postWriter);
-        PostCreationDto postCreationDto =
-                new PostCreationDto(savedMemberId, "post-title", "post-content");
+        PostCreationRequest creationRequest =
+                new PostCreationRequest(savedMemberId, "post-title", "post-content");
 
         // when
-        Long savedPostId = postService.createPost(postCreationDto);
+        Long savedPostId = postService.createPost(creationRequest);
 
         // then
         PostResponse findPost = postService.findOneAsDto(savedPostId);
@@ -52,9 +52,9 @@ class PostServiceTest {
     void should_throw_exception_when_finding_post_for_invalid_postId() {
         // given
         Long savedMemberId = saveMember("post-writer");
-        PostCreationDto postCreationDto =
-                new PostCreationDto(savedMemberId, "post-title", "post-content");
-        Long savedPostId = postService.createPost(postCreationDto);
+        PostCreationRequest creationRequest =
+                new PostCreationRequest(savedMemberId, "post-title", "post-content");
+        Long savedPostId = postService.createPost(creationRequest);
 
         // when & then
         Long invalidPostId = -1L;
@@ -85,15 +85,15 @@ class PostServiceTest {
     void updatePost() {
         // given
         Long savedMemberId = saveMember("writer");
-        PostCreationDto postCreationDto =
-                new PostCreationDto(savedMemberId, "old-title", "old-content");
-        Long createdPostId = postService.createPost(postCreationDto);
+        PostCreationRequest creationRequest =
+                new PostCreationRequest(savedMemberId, "old-title", "old-content");
+        Long createdPostId = postService.createPost(creationRequest);
 
-        PostUpdateDto updateDto =
-                new PostUpdateDto("new-title", "new-content");
+        PostUpdateRequest updateRequest =
+                new PostUpdateRequest("new-title", "new-content");
 
         // when
-        postService.updatePost(createdPostId, updateDto);
+        postService.updatePost(createdPostId, updateRequest);
 
         // then
         PostResponse responseDto = postService.findOneAsDto(createdPostId);
@@ -104,16 +104,16 @@ class PostServiceTest {
     }
 
     private Long saveMember(String name) {
-        return memberService.join(new MemberJoinDto(name));
+        return memberService.join(new MemberJoinRequest(name));
     }
 
     private void createDummyPosts() {
         for (int i = 0; i < 100; i++) {
             Long savedMemberId = saveMember("writer" + i);
-            PostCreationDto postCreationDto
-                    = new PostCreationDto(savedMemberId, "title" + i, "content" + i);
+            PostCreationRequest creationRequest
+                    = new PostCreationRequest(savedMemberId, "title" + i, "content" + i);
 
-            postService.createPost(postCreationDto);
+            postService.createPost(creationRequest);
         }
     }
 }

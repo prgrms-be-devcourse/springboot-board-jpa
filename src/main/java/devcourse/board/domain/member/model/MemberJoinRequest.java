@@ -1,12 +1,12 @@
 package devcourse.board.domain.member.model;
 
-public record MemberJoinDto(
+public record MemberJoinRequest(
         String name,
         Integer age,
         String hobby
 ) {
 
-    public MemberJoinDto(String name) {
+    public MemberJoinRequest(String name) {
         this(name, null, null);
     }
 

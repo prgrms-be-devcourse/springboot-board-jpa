@@ -2,10 +2,10 @@ package devcourse.board.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import devcourse.board.domain.member.MemberService;
-import devcourse.board.domain.member.model.MemberJoinDto;
+import devcourse.board.domain.member.model.MemberJoinRequest;
 import devcourse.board.domain.post.PostService;
-import devcourse.board.domain.post.model.PostCreationDto;
-import devcourse.board.domain.post.model.PostUpdateDto;
+import devcourse.board.domain.post.model.PostCreationRequest;
+import devcourse.board.domain.post.model.PostUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +46,13 @@ class PostApiControllerTest {
     void call_createPost() throws Exception {
         // given
         Long savedMemberId = saveDummyMember("member");
-        PostCreationDto postCreationDto =
-                new PostCreationDto(savedMemberId, "title", "content");
+        PostCreationRequest creationRequest =
+                new PostCreationRequest(savedMemberId, "title", "content");
 
         // when & then
         mockMvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postCreationDto)))
+                        .content(objectMapper.writeValueAsString(creationRequest)))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("post-create",
@@ -124,12 +124,12 @@ class PostApiControllerTest {
     void call_updatePost() throws Exception {
         // given
         Long createdPostId = createDummyPost("dummy-member", "old-title", "old-content");
-        PostUpdateDto updateDto = new PostUpdateDto("new-title", "new-content");
+        PostUpdateRequest updateRequest = new PostUpdateRequest("new-title", "new-content");
 
         // when & then
         mockMvc.perform(patch("/posts/{postId}", createdPostId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateDto)))
+                        .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-update",
@@ -150,15 +150,15 @@ class PostApiControllerTest {
     }
 
     private Long saveDummyMember(String name) {
-        return memberService.join(new MemberJoinDto(name));
+        return memberService.join(new MemberJoinRequest(name));
     }
 
     private Long createDummyPost(String memberName, String title, String content) {
         Long savedMemberId = saveDummyMember(memberName);
-        PostCreationDto postCreationDto =
-                new PostCreationDto(savedMemberId, title, content);
+        PostCreationRequest creationRequest =
+                new PostCreationRequest(savedMemberId, title, content);
 
-        return postService.createPost(postCreationDto);
+        return postService.createPost(creationRequest);
     }
 
     private void createDummyPosts(int size) {

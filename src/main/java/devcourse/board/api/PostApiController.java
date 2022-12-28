@@ -3,9 +3,9 @@ package devcourse.board.api;
 import devcourse.board.api.model.CreateDataResponse;
 import devcourse.board.domain.post.PostService;
 import devcourse.board.domain.post.model.MultiplePostResponse;
-import devcourse.board.domain.post.model.PostCreationDto;
+import devcourse.board.domain.post.model.PostCreationRequest;
 import devcourse.board.domain.post.model.PostResponse;
-import devcourse.board.domain.post.model.PostUpdateDto;
+import devcourse.board.domain.post.model.PostUpdateRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +39,7 @@ public class PostApiController {
 
     @PostMapping
     public ResponseEntity<CreateDataResponse> createPost(
-            @RequestBody PostCreationDto creationDto
+            @RequestBody PostCreationRequest creationDto
     ) {
         Long postIdentifier = postService.createPost(creationDto);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -49,9 +49,9 @@ public class PostApiController {
     @PatchMapping("/{postId}")
     public ResponseEntity<PostResponse> updatePost(
             @PathVariable Long postId,
-            @RequestBody PostUpdateDto updateDto
+            @RequestBody PostUpdateRequest updateRequest
     ) {
         return ResponseEntity.ok()
-                .body(postService.updatePost(postId, updateDto));
+                .body(postService.updatePost(postId, updateRequest));
     }
 }

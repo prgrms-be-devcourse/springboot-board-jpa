@@ -24,9 +24,9 @@ public class PostService {
     }
 
     @Transactional
-    public Long createPost(PostCreationDto creationDto) {
-        Member findMember = memberService.findOne(creationDto.memberId());
-        Post newPost = Post.createPost(findMember, creationDto.title(), creationDto.content());
+    public Long createPost(PostCreationRequest creationRequest) {
+        Member findMember = memberService.findOne(creationRequest.memberId());
+        Post newPost = Post.createPost(findMember, creationRequest.title(), creationRequest.content());
         postRepository.save(newPost);
 
         return newPost.getId();
@@ -53,10 +53,10 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponse updatePost(Long postId, PostUpdateDto updateDto) {
+    public PostResponse updatePost(Long postId, PostUpdateRequest updateRequest) {
         Post post = findOne(postId);
 
-        post.updateContents(updateDto.title(), updateDto.content());
+        post.updateContents(updateRequest.title(), updateRequest.content());
 
         return new PostResponse(post);
     }

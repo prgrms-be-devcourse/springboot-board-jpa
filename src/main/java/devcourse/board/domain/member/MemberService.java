@@ -1,7 +1,7 @@
 package devcourse.board.domain.member;
 
 import devcourse.board.domain.member.model.Member;
-import devcourse.board.domain.member.model.MemberJoinDto;
+import devcourse.board.domain.member.model.MemberJoinRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +19,8 @@ public class MemberService {
     }
 
     @Transactional
-    public Long join(MemberJoinDto memberJoinDto) {
-        Member member = memberJoinDto.toEntity();
+    public Long join(MemberJoinRequest joinRequest) {
+        Member member = joinRequest.toEntity();
         memberRepository.save(member);
         return member.getId();
     }
