@@ -1,6 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.prgrms.devcourse.springjpaboard.domain.post.dto.PostCreateRequest;
@@ -61,8 +62,19 @@ public class TestPostObjectProvider {
 			.build();
 	}
 
+	public static PostSearchResponse createPostSearchResponse(Post post) {
+		return PostSearchResponse.builder()
+			.id(post.getId())
+			.title(post.getTitle())
+			.content(post.getContent())
+			.build();
+	}
+
 	public static PostSearchResponses createPostSearchResponses(List<Post> postList, boolean hasNext) {
-		return new PostSearchResponses(postList, hasNext);
+		return PostSearchResponses.builder()
+			.posts(postList.stream().map(TestPostObjectProvider::createPostSearchResponse).collect(Collectors.toList()))
+			.hasNext(hasNext)
+			.build();
 	}
 
 }

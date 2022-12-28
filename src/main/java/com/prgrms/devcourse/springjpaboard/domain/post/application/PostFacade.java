@@ -47,10 +47,10 @@ public class PostFacade {
 
 		Slice<Post> postSlice = postService.findAll(cursorId, size);
 
-		return new PostSearchResponses(postSlice.getContent(), postSlice.hasNext());
+		return postConverter.toPostSearchResponses(postSlice.getContent(), postSlice.hasNext());
 	}
 
 	public PostSearchResponse findById(Long id) {
-		return postConverter.toPostResponse(postService.findById(id));
+		return postConverter.toPostSearchResponse(postService.findById(id));
 	}
 }

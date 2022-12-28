@@ -31,7 +31,8 @@ public class PostService {
 
 	@Transactional
 	public Long create(Post post) {
-		return postRepository.save(post).getId();
+		postRepository.save(post);
+		return post.getId();
 	}
 
 	@Transactional

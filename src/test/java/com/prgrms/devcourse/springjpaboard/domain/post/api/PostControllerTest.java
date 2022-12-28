@@ -50,13 +50,13 @@ class PostControllerTest {
 		Long userId = 1L;
 		Long postId = 1L;
 
-		PostCreateRequest postCreateRequestDto = createPostCreateRequest(userId);
-		PostCreateResponse postCreteResponseDto = createPostCreteResponse(postId);
+		PostCreateRequest postCreateRequest = createPostCreateRequest(userId);
+		PostCreateResponse postCreteResponse = createPostCreteResponse(postId);
 
-		String request = objectMapper.writeValueAsString(postCreateRequestDto);
-		String response = objectMapper.writeValueAsString(postCreteResponseDto);
+		String request = objectMapper.writeValueAsString(postCreateRequest);
+		String response = objectMapper.writeValueAsString(postCreteResponse);
 
-		when(postFacade.create(postCreateRequestDto)).thenReturn(postCreteResponseDto);
+		when(postFacade.create(any(PostCreateRequest.class))).thenReturn(postCreteResponse);
 
 		mockMvc.perform(post("/api/v1/posts")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -68,7 +68,7 @@ class PostControllerTest {
 			.andExpect(status().isCreated())
 			.andDo(print());
 
-		verify(postFacade).create(postCreateRequestDto);
+		verify(postFacade).create(any(PostCreateRequest.class));
 	}
 
 	@Test
@@ -130,7 +130,7 @@ class PostControllerTest {
 
 		doNothing().when(postFacade).update(postId, postUpdateRequest);
 
-		mockMvc.perform(patch("/api/v1/posts/{id}", postId)
+		mockMvc.perform(put("/api/v1/posts/{id}", postId)
 				.content(json)
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())

@@ -156,7 +156,7 @@ public class PostControllerDocTest {
 
 		String json = objectMapper.writeValueAsString(postUpdateRequest);
 
-		mockMvc.perform(patch("/api/v1/posts/{id}", post.getId())
+		mockMvc.perform(put("/api/v1/posts/{id}", post.getId())
 				.content(json)
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())

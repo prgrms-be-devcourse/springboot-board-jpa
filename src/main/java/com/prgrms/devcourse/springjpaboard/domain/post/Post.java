@@ -1,6 +1,7 @@
 package com.prgrms.devcourse.springjpaboard.domain.post;
 
 import static com.google.common.base.Preconditions.*;
+import static org.springframework.util.StringUtils.*;
 
 import java.util.Objects;
 
@@ -17,12 +18,12 @@ import javax.persistence.Table;
 
 import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.prgrms.devcourse.springjpaboard.domain.user.User;
 import com.prgrms.devcourse.springjpaboard.global.common.base.BaseEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,10 +31,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(exclude = "user", callSuper = false)
 public class Post extends BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	@Column(name = "title", nullable = false, length = 20)
@@ -43,15 +45,14 @@ public class Post extends BaseEntity {
 	@Column(name = "content", nullable = false)
 	private String content;
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 
 	@Builder
 	public Post(String title, String content, User user) {
-		checkArgument(StringUtils.hasText(title),"제목 오류");
-		checkArgument(StringUtils.hasText(content),"내용 오류");
+		checkArgument(hasText(title), "제목 오류");
+		checkArgument(hasText(content), "내용 오류");
 		this.title = title;
 		this.content = content;
 		this.updateUser(user);
@@ -63,12 +64,12 @@ public class Post extends BaseEntity {
 	}
 
 	public void updateTitle(String title) {
-		checkArgument(StringUtils.hasText(title),"제목 오류");
+		checkArgument(hasText(title), "제목 오류");
 		this.title = title;
 	}
 
 	public void updateContent(String content) {
-		checkArgument(StringUtils.hasText(content),"내용 오류");
+		checkArgument(hasText(content), "내용 오류");
 		this.content = content;
 	}
 
@@ -76,20 +77,4 @@ public class Post extends BaseEntity {
 		this.user = user;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		Post post = (Post)o;
-		return Objects.equals(getId(), post.getId()) && Objects.equals(getTitle(), post.getTitle())
-			&& Objects.equals(getContent(), post.getContent()) && Objects.equals(getUser().getId(),
-			post.getUser().getId());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(getId(), getTitle(), getContent(), getUser().getId());
-	}
 }

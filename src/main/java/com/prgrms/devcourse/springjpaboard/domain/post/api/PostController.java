@@ -7,9 +7,9 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,9 +41,9 @@ public class PostController {
 	@PostMapping(consumes = APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostCreateResponse> create(@Valid @RequestBody PostCreateRequest postCreateRequest) {
 
-		PostCreateResponse postCreateResponseDto = postFacade.create(postCreateRequest);
+		PostCreateResponse postCreateResponse = postFacade.create(postCreateRequest);
 
-		return new ResponseEntity<>(postCreateResponseDto, HttpStatus.CREATED);
+		return new ResponseEntity<>(postCreateResponse, HttpStatus.CREATED);
 
 	}
 
@@ -74,9 +74,9 @@ public class PostController {
 	@GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostSearchResponse> findById(@PathVariable(name = "id") Long id) {
 
-		PostSearchResponse postResponseDto = postFacade.findById(id);
+		PostSearchResponse postResponse = postFacade.findById(id);
 
-		return ResponseEntity.ok(postResponseDto);
+		return ResponseEntity.ok(postResponse);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class PostController {
 	 * @param postUpdateRequest - 수정할 Post의 title과 content를 저장한 Dto
 	 * @return status : ok , body : void
 	 */
-	@PatchMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> update(@PathVariable(name = "id") Long id,
 		@Valid @RequestBody PostUpdateRequest postUpdateRequest) {
 		postFacade.update(id, postUpdateRequest);

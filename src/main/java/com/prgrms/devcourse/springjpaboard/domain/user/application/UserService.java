@@ -17,8 +17,9 @@ public class UserService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public void create(User user) {
+	public Long create(User user) {
 		userRepository.save(user);
+		return user.getId();
 	}
 
 	public User findById(Long userId) {

@@ -1,6 +1,8 @@
 package com.prgrms.devcourse.springjpaboard.domain.user;
 
 import static com.google.common.base.Preconditions.*;
+import static java.util.Objects.*;
+import static org.springframework.util.StringUtils.*;
 
 import java.util.Objects;
 
@@ -29,7 +31,7 @@ import lombok.NoArgsConstructor;
 public class User extends BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "name", nullable = false, length = 20)
@@ -43,11 +45,11 @@ public class User extends BaseEntity {
 
 	@Builder
 	public User(String name, Integer age, String hobby) {
-		checkArgument(StringUtils.hasText(name),"이름 오류");
+		checkArgument(hasText(name),"이름 오류");
 		checkArgument(name.length() <= 20);
-		checkArgument(Objects.nonNull(age),"나이 오류");
+		checkArgument(nonNull(age),"나이 오류");
 		checkArgument(age >= 0);
-		checkArgument(StringUtils.hasText(hobby), "취미 오류");
+		checkArgument(hasText(hobby), "취미 오류");
 		this.name = name;
 		this.age = age;
 		this.hobby = hobby;

@@ -100,14 +100,14 @@ class PostFacadeTest {
 		PostSearchResponse postSearchResponse = createPostSearchResponse(postId);
 
 		when(postService.findById(postId)).thenReturn(post);
-		when(postConverter.toPostResponse(post)).thenReturn(postSearchResponse);
+		when(postConverter.toPostSearchResponse(post)).thenReturn(postSearchResponse);
 
 		//when
 		PostSearchResponse findPost = postFacade.findById(postId);
 
 		//then
 		verify(postService).findById(postId);
-		verify(postConverter).toPostResponse(post);
+		verify(postConverter).toPostSearchResponse(post);
 
 		assertThat(findPost)
 			.hasFieldOrPropertyWithValue("id", postId)
@@ -128,17 +128,21 @@ class PostFacadeTest {
 
 		Slice<Post> postSlice = new SliceImpl<>(postList);
 
-		when(postService.findAll(cursorId, size)).thenReturn(postSlice);
+		PostSearchResponses responses = createPostSearchResponses(postSlice.getContent(),
+			postSlice.hasNext());
 
+		when(postService.findAll(cursorId, size)).thenReturn(postSlice);
+		when(postConverter.toPostSearchResponses(postSlice.getContent(), postSlice.hasNext())).thenReturn(responses);
 		//when
 		PostSearchResponses postSearchResponses = postFacade.findAll(cursorId, size);
 
 		//then
 		verify(postService).findAll(cursorId, size);
+		verify(postConverter).toPostSearchResponses(postSlice.getContent(), postSlice.hasNext());
 
 		Assertions.assertThat(postSearchResponses)
-			.hasFieldOrPropertyWithValue("posts", postSlice.getContent())
-			.hasFieldOrPropertyWithValue("hasNext", postSlice.hasNext());
+			.hasFieldOrPropertyWithValue("posts", responses.getPosts())
+			.hasFieldOrPropertyWithValue("hasNext", responses.getHasNext());
 
 	}
 

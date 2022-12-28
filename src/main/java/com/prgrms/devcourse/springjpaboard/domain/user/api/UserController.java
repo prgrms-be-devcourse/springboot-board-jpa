@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.prgrms.devcourse.springjpaboard.domain.user.application.UserFacade;
 import com.prgrms.devcourse.springjpaboard.domain.user.dto.UserCreateRequest;
+import com.prgrms.devcourse.springjpaboard.domain.user.dto.UserCreateResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,11 +23,18 @@ public class UserController {
 
 	private final UserFacade userFacade;
 
+	/**
+	 * <pre>
+	 *     user 생성
+	 * </pre>
+	 * @param userCreateRequest - user의 name, age, hobby를 저장한 Dto
+	 * @return
+	 */
 	@PostMapping(consumes = APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> create(@Valid @RequestBody UserCreateRequest userRequestDto) {
-		userFacade.create(userRequestDto);
+	public ResponseEntity<UserCreateResponse> create(@Valid @RequestBody UserCreateRequest userCreateRequest) {
+		UserCreateResponse userCreateResponse = userFacade.create(userCreateRequest);
 
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(userCreateResponse);
 	}
 
 }
