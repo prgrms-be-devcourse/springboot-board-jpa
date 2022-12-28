@@ -1,5 +1,6 @@
 package devcourse.board.api;
 
+import devcourse.board.api.model.CreateDataResponse;
 import devcourse.board.domain.post.PostService;
 import devcourse.board.domain.post.model.MultiplePostResponse;
 import devcourse.board.domain.post.model.PostCreationDto;
