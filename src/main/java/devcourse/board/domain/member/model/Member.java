@@ -1,6 +1,7 @@
 package devcourse.board.domain.member.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,6 +13,7 @@ public class Member {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotNull
     private String name;
 
     private Integer age;
