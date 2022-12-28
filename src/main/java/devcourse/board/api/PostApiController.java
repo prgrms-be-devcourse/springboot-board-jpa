@@ -1,12 +1,13 @@
 package devcourse.board.api;
 
 import devcourse.board.domain.post.PostService;
-import devcourse.board.domain.post.model.PostRequest;
+import devcourse.board.domain.post.model.MultiplePostResponse;
+import devcourse.board.domain.post.model.PostCreationDto;
 import devcourse.board.domain.post.model.PostResponse;
+import devcourse.board.domain.post.model.PostUpdateDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
@@ -19,36 +20,37 @@ public class PostApiController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<ApiResponse<PostResponse>> getPost(
+    public ResponseEntity<PostResponse> getPost(
             @PathVariable Long postId
     ) {
         return ResponseEntity.ok()
-                .body(new ApiResponse<>("post-info", postService.findOneAsDto(postId)));
+                .body(postService.findOneAsDto(postId));
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<PostResponse>>> getPosts(
+    public ResponseEntity<MultiplePostResponse> getPosts(
             @RequestParam int page,
             @RequestParam int size
     ) {
         return ResponseEntity.ok()
-                .body(new ApiResponse<>("content", postService.findWithPaging(page, size)));
+                .body(postService.findWithPaging(page, size));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Long>> createPost(
-            @RequestBody PostRequest.CreationDto creationDto
+    public ResponseEntity<CreateDataResponse> createPost(
+            @RequestBody PostCreationDto creationDto
     ) {
-        return ResponseEntity.ok()
-                .body(new ApiResponse<>("post-id", postService.createPost(creationDto)));
+        Long postIdentifier = postService.createPost(creationDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new CreateDataResponse(postIdentifier));
     }
 
     @PatchMapping("/{postId}")
-    public ResponseEntity<ApiResponse<PostResponse>> updatePost(
+    public ResponseEntity<PostResponse> updatePost(
             @PathVariable Long postId,
-            @RequestBody PostRequest.UpdateDto updateDto
+            @RequestBody PostUpdateDto updateDto
     ) {
         return ResponseEntity.ok()
-                .body(new ApiResponse<>("post-info", postService.updatePost(postId, updateDto)));
+                .body(postService.updatePost(postId, updateDto));
     }
 }

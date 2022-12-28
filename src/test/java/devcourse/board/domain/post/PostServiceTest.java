@@ -2,8 +2,10 @@ package devcourse.board.domain.post;
 
 import devcourse.board.domain.member.MemberService;
 import devcourse.board.domain.member.model.MemberJoinDto;
-import devcourse.board.domain.post.model.PostRequest;
+import devcourse.board.domain.post.model.MultiplePostResponse;
+import devcourse.board.domain.post.model.PostCreationDto;
 import devcourse.board.domain.post.model.PostResponse;
+import devcourse.board.domain.post.model.PostUpdateDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,11 +33,11 @@ class PostServiceTest {
         // given
         String postWriter = "post-writer";
         Long savedMemberId = saveMember(postWriter);
-        PostRequest.CreationDto creationDto =
-                new PostRequest.CreationDto(savedMemberId, "post-title", "post-content");
+        PostCreationDto postCreationDto =
+                new PostCreationDto(savedMemberId, "post-title", "post-content");
 
         // when
-        Long savedPostId = postService.createPost(creationDto);
+        Long savedPostId = postService.createPost(postCreationDto);
 
         // then
         PostResponse findPost = postService.findOneAsDto(savedPostId);
@@ -51,9 +52,9 @@ class PostServiceTest {
     void should_throw_exception_when_finding_post_for_invalid_postId() {
         // given
         Long savedMemberId = saveMember("post-writer");
-        PostRequest.CreationDto creationDto =
-                new PostRequest.CreationDto(savedMemberId, "post-title", "post-content");
-        Long savedPostId = postService.createPost(creationDto);
+        PostCreationDto postCreationDto =
+                new PostCreationDto(savedMemberId, "post-title", "post-content");
+        Long savedPostId = postService.createPost(postCreationDto);
 
         // when & then
         Long invalidPostId = -1L;
@@ -70,10 +71,10 @@ class PostServiceTest {
         createDummyPosts();
 
         // when
-        List<PostResponse> findPostsWithPaging = postService.findWithPaging(0, 50);
+        MultiplePostResponse multiplePostResponse = postService.findWithPaging(0, 50);
 
         // then
-        int actualResultCount = findPostsWithPaging.size();
+        int actualResultCount = multiplePostResponse.postResponses().size();
         int expectedResultCount = 50;
 
         assertThat(actualResultCount).isEqualTo(expectedResultCount);
@@ -84,19 +85,19 @@ class PostServiceTest {
     void updatePost() {
         // given
         Long savedMemberId = saveMember("writer");
-        PostRequest.CreationDto creationDto =
-                new PostRequest.CreationDto(savedMemberId, "old-title", "old-content");
-        Long createdPostId = postService.createPost(creationDto);
+        PostCreationDto postCreationDto =
+                new PostCreationDto(savedMemberId, "old-title", "old-content");
+        Long createdPostId = postService.createPost(postCreationDto);
 
-        PostRequest.UpdateDto updateDto =
-                new PostRequest.UpdateDto("new-title", "new-content");
+        PostUpdateDto updateDto =
+                new PostUpdateDto("new-title", "new-content");
 
         // when
         postService.updatePost(createdPostId, updateDto);
 
         // then
-        PostResponse postResponse = postService.findOneAsDto(createdPostId);
-        String actualUpdatedTitle = postResponse.title();
+        PostResponse responseDto = postService.findOneAsDto(createdPostId);
+        String actualUpdatedTitle = responseDto.title();
         String expectedUpdatedTitle = "new-title";
 
         assertThat(actualUpdatedTitle).isEqualTo(expectedUpdatedTitle);
@@ -109,10 +110,10 @@ class PostServiceTest {
     private void createDummyPosts() {
         for (int i = 0; i < 100; i++) {
             Long savedMemberId = saveMember("writer" + i);
-            PostRequest.CreationDto creationDto
-                    = new PostRequest.CreationDto(savedMemberId, "title" + i, "content" + i);
+            PostCreationDto postCreationDto
+                    = new PostCreationDto(savedMemberId, "title" + i, "content" + i);
 
-            postService.createPost(creationDto);
+            postService.createPost(postCreationDto);
         }
     }
 }

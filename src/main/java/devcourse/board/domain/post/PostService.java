@@ -2,9 +2,7 @@ package devcourse.board.domain.post;
 
 import devcourse.board.domain.member.MemberService;
 import devcourse.board.domain.member.model.Member;
-import devcourse.board.domain.post.model.Post;
-import devcourse.board.domain.post.model.PostRequest;
-import devcourse.board.domain.post.model.PostResponse;
+import devcourse.board.domain.post.model.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,15 +24,12 @@ public class PostService {
     }
 
     @Transactional
-    public Long createPost(PostRequest.CreationDto creationDto) {
-        Member member = memberService.findOne(creationDto.getMemberId());
+    public Long createPost(PostCreationDto creationDto) {
+        Member findMember = memberService.findOne(creationDto.memberId());
+        Post newPost = Post.createPost(findMember, creationDto.title(), creationDto.content());
+        postRepository.save(newPost);
 
-        Post post = PostRequest.toEntity(creationDto);
-        post.createPost(member);
-
-        postRepository.save(post);
-
-        return post.getId();
+        return newPost.getId();
     }
 
     public PostResponse findOneAsDto(Long postId) {
@@ -48,18 +43,20 @@ public class PostService {
                 .toList();
     }
 
-    public List<PostResponse> findWithPaging(int startPosition, int maxResultCount) {
-        return postRepository.findWithPaging(startPosition, maxResultCount)
+    public MultiplePostResponse findWithPaging(int startPosition, int maxResultCount) {
+        List<PostResponse> postResponses = postRepository.findWithPaging(startPosition, maxResultCount)
                 .stream()
                 .map(PostResponse::new)
                 .toList();
+
+        return new MultiplePostResponse(postResponses);
     }
 
     @Transactional
-    public PostResponse updatePost(Long postId, PostRequest.UpdateDto updateDto) {
+    public PostResponse updatePost(Long postId, PostUpdateDto updateDto) {
         Post post = findOne(postId);
 
-        post.updateContents(updateDto.getTitle(), updateDto.getContent());
+        post.updateContents(updateDto.title(), updateDto.content());
 
         return new PostResponse(post);
     }
