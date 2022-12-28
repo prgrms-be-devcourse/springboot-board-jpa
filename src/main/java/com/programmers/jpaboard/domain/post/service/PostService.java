@@ -31,7 +31,6 @@ public class PostService {
 			.orElseThrow(() -> new UserNotFoundException());
 
 		Post post = PostConverter.toPost(postCreateRequestDto, user);
-		post.setUser(user);
 		Post savedPost = postRepository.save(post);
 		PostResponseDto postResponseDto = PostConverter.toPostResponseDto(savedPost);
 

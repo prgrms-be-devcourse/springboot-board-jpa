@@ -19,7 +19,7 @@ import com.programmers.jpaboard.domain.post.entity.Post;
 @DataJpaTest
 public class UserTest {
 
-	Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+	private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
 	@Test
 	@DisplayName("정상적인 사용자 값이 입력되면 생성에 성공한다.")
@@ -122,7 +122,7 @@ public class UserTest {
 	void successSetUser() {
 		// given
 		User user = new User("권성준", "google@gmail.com", 26, "취미");
-		Post post = new Post("제목", "내용입니다");
+		Post post = new Post("제목", "내용입니다", user);
 
 		// when
 		user.addPost(post);

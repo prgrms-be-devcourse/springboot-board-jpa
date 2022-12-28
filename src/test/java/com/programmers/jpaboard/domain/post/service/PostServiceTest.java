@@ -34,14 +34,13 @@ class PostServiceTest {
 	UserRepository userRepository;
 
 	private User user = new User(1L, "권성준", "naver@naver.com", 26, "취미");
-	private Post post = new Post(1L, "제목", "내용입니다");
+	private Post post = new Post(1L, "제목", "내용입니다", user);
 
 	@Test
 	@DisplayName("게시물 생성에 성공한다.")
 	void successCreatePost() {
 		// given
-		post.setUser(user);
-		PostCreateRequestDto postCreateRequestDto = new PostCreateRequestDto("제목", "내용입니다.", user.getId());
+		PostCreateRequestDto postCreateRequestDto = new PostCreateRequestDto("제목", "내용입니다.", post.getUser().getId());
 		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 		when(postRepository.save(any(Post.class))).thenReturn(post);
 
@@ -64,7 +63,6 @@ class PostServiceTest {
 	@DisplayName("게시물 아이디로 조회에 성공한다.")
 	void getPostById() {
 		// given
-		post.setUser(user);
 		when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
 
 		// when
@@ -83,7 +81,7 @@ class PostServiceTest {
 	@DisplayName("게시물 아이디로 조회에 실패한다.")
 	void failGetPostById() {
 		// given
-		Post noIdPost = new Post("제목", "내용입니다.");
+		Post noIdPost = new Post("제목", "내용입니다.", user);
 		when(postRepository.findById(noIdPost.getId())).thenReturn(Optional.empty());
 
 		// when, then
@@ -96,7 +94,6 @@ class PostServiceTest {
 	@DisplayName("게시물 수정에 성공한다.")
 	void updatePost() {
 		// given
-		post.setUser(user);
 		String updateTitle = "수정된 제목";
 		String updateContent = "수정된 내용입니다.";
 		PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto(updateTitle, updateContent);

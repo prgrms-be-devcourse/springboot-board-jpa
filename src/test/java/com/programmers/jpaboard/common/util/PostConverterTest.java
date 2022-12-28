@@ -14,13 +14,13 @@ import com.programmers.jpaboard.domain.user.entity.User;
 class PostConverterTest {
 
 	private User user = new User(1L, "권성준", "google@gmail.com", 26, "취미");
-	private Post post = new Post(1L, "제목", "내용입니다");
+	private Post post = new Post(1L, "제목", "내용입니다", user);
 
 	@Test
 	@DisplayName("Post 생성 DTO 를 Post 엔티티로 변환하는 것에 성공한다.")
 	void toPost() {
 		// given
-		PostCreateRequestDto postCreateRequestDto = new PostCreateRequestDto("제목", "내용입니다", user.getId());
+		PostCreateRequestDto postCreateRequestDto = new PostCreateRequestDto("제목", "내용입니다", post.getUser().getId());
 
 		// when
 		Post convertPost = PostConverter.toPost(postCreateRequestDto, user);
@@ -35,10 +35,7 @@ class PostConverterTest {
 	@Test
 	@DisplayName("Post 엔티티를 Post 응답 DTO 로 변환하는 것에 성공한다.")
 	void toPostResponseDto() {
-		// given
-		post.setUser(user);
-
-		// when
+		// given & when
 		PostResponseDto postResponseDto = PostConverter.toPostResponseDto(post);
 
 		// then
