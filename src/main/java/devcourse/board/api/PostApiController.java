@@ -25,7 +25,7 @@ public class PostApiController {
             @PathVariable Long postId
     ) {
         return ResponseEntity.ok()
-                .body(postService.findOne(postId));
+                .body(postService.getPost(postId));
     }
 
     @GetMapping

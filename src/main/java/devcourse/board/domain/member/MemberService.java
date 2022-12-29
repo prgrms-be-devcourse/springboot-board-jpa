@@ -35,7 +35,7 @@ public class MemberService {
     }
 
     public Member findById(Long memberId) {
-        return memberRepository.findOne(memberId)
+        return memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format(
                         "Member doesn't exist for memberId={0}", memberId
                 )));

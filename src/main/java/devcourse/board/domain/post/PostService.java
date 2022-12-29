@@ -25,15 +25,15 @@ public class PostService {
 
     @Transactional
     public Long createPost(PostCreationRequest creationRequest) {
-        Member findMember = memberService.findOne(creationRequest.memberId());
+        Member findMember = memberService.findById(creationRequest.memberId());
         Post newPost = Post.createPost(findMember, creationRequest.title(), creationRequest.content());
         postRepository.save(newPost);
 
         return newPost.getId();
     }
 
-    public PostResponse findOne(Long postId) {
-        return new PostResponse(findPostEntity(postId));
+    public PostResponse getPost(Long postId) {
+        return new PostResponse(findById(postId));
     }
 
     public List<PostResponse> findAll() {
@@ -54,15 +54,15 @@ public class PostService {
 
     @Transactional
     public PostResponse updatePost(Long postId, PostUpdateRequest updateRequest) {
-        Post post = findPostEntity(postId);
+        Post post = findById(postId);
 
         post.updateContents(updateRequest.title(), updateRequest.content());
 
         return new PostResponse(post);
     }
 
-    private Post findPostEntity(Long postId) {
-        return postRepository.findOne(postId)
+    private Post findById(Long postId) {
+        return postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format(
                         "Post doesn't exist for postId={0}", postId
                 )));

@@ -21,13 +21,8 @@ public class MemberRepository {
         em.persist(member);
     }
 
-    public Optional<Member> findOne(Long id) {
+    public Optional<Member> findById(Long id) {
         return Optional.ofNullable(em.find(Member.class, id));
-    }
-
-    public List<Member> findAll() {
-        return em.createQuery("select m from Member m", Member.class)
-                .getResultList();
     }
 
     public Optional<Member> findByEmail(String email) {
@@ -40,5 +35,10 @@ public class MemberRepository {
         } catch (NoResultException noResultException) {
             return Optional.empty();
         }
+    }
+
+    public List<Member> findAll() {
+        return em.createQuery("select m from Member m", Member.class)
+                .getResultList();
     }
 }

@@ -20,9 +20,10 @@ public class PostRepository {
         em.persist(post);
     }
 
-    public Optional<Post> findOne(Long id) {
+    public Optional<Post> findById(Long id) {
         return Optional.ofNullable(em.find(Post.class, id));
     }
+
 
     public List<Post> findAll() {
         return em.createQuery("select p from Post p", Post.class)
