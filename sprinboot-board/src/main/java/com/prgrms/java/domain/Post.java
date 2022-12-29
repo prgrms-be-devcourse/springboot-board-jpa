@@ -1,23 +1,25 @@
 package com.prgrms.java.domain;
 
 import jakarta.persistence.*;
-import org.springframework.util.Assert;
-
-import java.text.MessageFormat;
-import java.util.Objects;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "posts")
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 30, nullable = false)
+    @NotNull
+    @Size(min = 1, max = 30, message = "title must be over 0 and under 31.")
     private String title;
 
     @Column(columnDefinition = "LONGTEXT", nullable = false)
+    @NotNull
+    @Size(min = 1, message = "content must be over 0.")
     private String content;
 
     @ManyToOne
@@ -27,8 +29,6 @@ public class Post extends BaseEntity {
     }
 
     public Post(Long id, String title, String content, User user) {
-        validTitle(title);
-        validContent(content);
         this.id = id;
         this.title = title;
         this.content = content;
@@ -65,23 +65,11 @@ public class Post extends BaseEntity {
     }
 
     public void editTitle(String title) {
-        validTitle(title);
-
         this.title = title;
     }
 
     public void editContent(String content) {
-        validContent(content);
         this.content = content;
-    }
-
-    private static void validTitle(String title) {
-        Assert.hasLength(title, MessageFormat.format("title must not be empty or null. [title]: {0}", title));
-        Assert.state(title.length() <= 30, MessageFormat.format("title must be less than or equal to 30 characters. [title]: {0}", title));
-    }
-
-    private static void validContent(String content) {
-        Assert.hasLength(content, MessageFormat.format("content must not be empty or null. [content]: {0}", content));
     }
 
 }
