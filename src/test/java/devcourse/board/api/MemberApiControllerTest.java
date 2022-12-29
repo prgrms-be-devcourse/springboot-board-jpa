@@ -37,16 +37,19 @@ class MemberApiControllerTest {
     @DisplayName("회원 생성")
     void createMember() throws Exception {
         // given
-        MemberJoinRequest joinRequest = new MemberJoinRequest("member");
+        MemberJoinRequest joinRequest =
+                new MemberJoinRequest("example@gmail.com", "0000", "member");
 
         // when & then
         mockMvc.perform(post("/members")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(joinRequest)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("member-join",
                         requestFields(
+                                fieldWithPath("email").type(STRING).description("이메일"),
+                                fieldWithPath("password").type(STRING).description("비밀번호"),
                                 fieldWithPath("name").type(STRING).description("이름"),
                                 fieldWithPath("age").type(NUMBER).description("나이").optional(),
                                 fieldWithPath("hobby").type(STRING).description("취미").optional()
