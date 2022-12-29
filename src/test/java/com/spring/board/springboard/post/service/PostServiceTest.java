@@ -6,6 +6,7 @@ import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
 import com.spring.board.springboard.user.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ class PostServiceTest {
     private MemberRepository memberRepository;
 
     @BeforeAll
-    void setUp(){
+    void setUp() {
         Member member = new Member("user@naver.com", "password1234", "이수린", 24, Hobby.SLEEP);
         memberRepository.save(member);
 
@@ -52,6 +53,7 @@ class PostServiceTest {
     }
 
     @Test
+    @DisplayName("모든 게시물을 페이지 단위로 가져올 수 있다.")
     void getAll() {
         // given
         int size = 2;
@@ -66,6 +68,7 @@ class PostServiceTest {
     }
 
     @Test
+    @DisplayName("하나의 게시물을 조회할 수 있다.")
     void getOne() {
         // given
         int id = 1;
@@ -79,6 +82,7 @@ class PostServiceTest {
     }
 
     @Test
+    @DisplayName("새로운 게시글을 등록할 수 있다.")
     void createPost() {
         // given
         PostCreateRequestDto postCreateRequestDTO = new PostCreateRequestDto(
@@ -99,6 +103,7 @@ class PostServiceTest {
     }
 
     @Test
+    @DisplayName("게시물의 제목과 내용을 수정할 수 있다.")
     void update() {
         // given
         String changeTitle = "수정제목";
