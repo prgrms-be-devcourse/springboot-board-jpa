@@ -66,7 +66,7 @@ public class Post extends BaseTimeEntity {
     }
 
     this.member = member;
-    this.member.getPosts().add(this);
+    this.member.addPost(this);
   }
 
   @PrePersist
