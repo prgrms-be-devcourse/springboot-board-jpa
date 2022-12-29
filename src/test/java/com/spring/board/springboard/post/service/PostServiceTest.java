@@ -30,7 +30,7 @@ class PostServiceTest {
 
     @BeforeAll
     void setUp(){
-        Member member = new Member("이수린", 24, Hobby.SLEEP);
+        Member member = new Member("user@naver.com", "password1234", "이수린", 24, Hobby.SLEEP);
         memberRepository.save(member);
 
         PostCreateRequestDto postCreateRequestDTO1 = new PostCreateRequestDto(

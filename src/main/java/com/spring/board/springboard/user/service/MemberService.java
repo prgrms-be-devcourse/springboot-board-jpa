@@ -16,7 +16,8 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public Member find(Integer memberId){
+    @Transactional(readOnly = true)
+    public Member findById(Integer memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> {
                     throw new NoMemberException(

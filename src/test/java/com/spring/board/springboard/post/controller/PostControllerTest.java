@@ -1,7 +1,7 @@
 package com.spring.board.springboard.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring.board.springboard.post.domain.dto.RequestPostDto;
+import com.spring.board.springboard.post.domain.dto.PostCreateRequestDto;
 import com.spring.board.springboard.post.service.PostService;
 import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
@@ -50,7 +50,7 @@ class PostControllerTest {
     @BeforeAll
     void setUp() {
         memberRepository.save(
-                new Member("이수린", 24, Hobby.SLEEP)
+                new Member("user@naver.com", "password1234","이수린", 24, Hobby.SLEEP)
         );
 
         PostCreateRequestDto postCreateRequestDTO = new PostCreateRequestDto(
@@ -80,6 +80,8 @@ class PostControllerTest {
                                 fieldWithPath("[].content").type(JsonFieldType.STRING).description("content"),
                                 fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("created at"),
                                 fieldWithPath("[].member").type(JsonFieldType.OBJECT).description("member"),
+                                fieldWithPath("[].member.memberId").type(JsonFieldType.NUMBER).description("member id"),
+                                fieldWithPath("[].member.email").type(JsonFieldType.STRING).description("member email"),
                                 fieldWithPath("[].member.name").type(JsonFieldType.STRING).description("member name"),
                                 fieldWithPath("[].member.age").type(JsonFieldType.NUMBER).description("member age"),
                                 fieldWithPath("[].member.hobby").type(JsonFieldType.STRING).description("member hobby")
@@ -128,6 +130,8 @@ class PostControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("created at"),
                                 fieldWithPath("member").type(JsonFieldType.OBJECT).description("member"),
+                                fieldWithPath("member.memberId").type(JsonFieldType.NUMBER).description("member id"),
+                                fieldWithPath("member.email").type(JsonFieldType.STRING).description("member email"),
                                 fieldWithPath("member.name").type(JsonFieldType.STRING).description("member name"),
                                 fieldWithPath("member.age").type(JsonFieldType.NUMBER).description("member age"),
                                 fieldWithPath("member.hobby").type(JsonFieldType.STRING).description("member hobby")
@@ -161,6 +165,8 @@ class PostControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("created at"),
                                 fieldWithPath("member").type(JsonFieldType.OBJECT).description("member"),
+                                fieldWithPath("member.memberId").type(JsonFieldType.NUMBER).description("member id"),
+                                fieldWithPath("member.email").type(JsonFieldType.STRING).description("member email"),
                                 fieldWithPath("member.name").type(JsonFieldType.STRING).description("member name"),
                                 fieldWithPath("member.age").type(JsonFieldType.NUMBER).description("member age"),
                                 fieldWithPath("member.hobby").type(JsonFieldType.STRING).description("member hobby")

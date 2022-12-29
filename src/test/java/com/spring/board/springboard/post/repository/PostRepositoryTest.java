@@ -35,7 +35,7 @@ class PostRepositoryTest {
 
     @BeforeAll
     void setUser(){
-        member = new Member("이수린", 24, Hobby.SLEEP);
+        member = new Member("user@naver.com", "password1234", "이수린", 24, Hobby.SLEEP);
         memberRepository.save(member);
     }
 
