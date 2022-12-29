@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="login.js" type="text/javascript"></script>
+    <style>
+        .container {
+            max-width: 560px;
+        }
+
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center"><h2>로그인</h2>
+    </div>
+    <div>
+        <label for="email">이메일</label>
+        <input type="text" id="email" class="form-control" errorclass="field-error">
+        <div class="field-error" errors="{email}"></div>
+    </div>
+    <div>
+        <label for="password">비밀번호</label>
+        <input type="text" id="password" class="form-control" errorclass="field-error">
+        <div class="field-error" errors="{password}"></div>
+    </div>
+    <hr class="my-4">
+    <div class="row">
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg" type="submit" onclick="login()">로그인</button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg" type="button" onclick="location.href='index.html'">취소</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
