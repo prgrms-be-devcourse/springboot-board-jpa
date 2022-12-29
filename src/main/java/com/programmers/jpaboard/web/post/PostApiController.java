@@ -2,7 +2,6 @@ package com.programmers.jpaboard.web.post;
 
 import javax.validation.Valid;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.programmers.jpaboard.domain.post.dto.PostCreateRequestDto;
 import com.programmers.jpaboard.domain.post.dto.PostResponseDto;
+import com.programmers.jpaboard.domain.post.dto.PostResponseDtoList;
 import com.programmers.jpaboard.domain.post.dto.PostUpdateRequestDto;
 import com.programmers.jpaboard.domain.post.service.PostService;
 
@@ -35,8 +35,8 @@ public class PostApiController {
 	}
 
 	@GetMapping
-	ResponseEntity<Page<PostResponseDto>> getPosts(Pageable pageable) {
-		Page<PostResponseDto> posts = postService.getPosts(pageable);
+	ResponseEntity<PostResponseDtoList> getPosts(Pageable pageable) {
+		PostResponseDtoList posts = postService.getPosts(pageable);
 		return ResponseEntity.ok(posts);
 	}
 

@@ -1,6 +1,7 @@
 package com.programmers.jpaboard.domain.post.service;
 
-import org.springframework.data.domain.Page;
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +10,7 @@ import com.programmers.jpaboard.common.exception.PostNotFoundException;
 import com.programmers.jpaboard.common.exception.UserNotFoundException;
 import com.programmers.jpaboard.domain.post.dto.PostCreateRequestDto;
 import com.programmers.jpaboard.domain.post.dto.PostResponseDto;
+import com.programmers.jpaboard.domain.post.dto.PostResponseDtoList;
 import com.programmers.jpaboard.domain.post.dto.PostUpdateRequestDto;
 import com.programmers.jpaboard.domain.post.entity.Post;
 import com.programmers.jpaboard.domain.post.repository.PostRepository;
@@ -47,9 +49,14 @@ public class PostService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<PostResponseDto> getPosts(Pageable pageable) {
-		return postRepository.findAll(pageable)
-			.map(PostConverter::toPostResponseDto);
+	public PostResponseDtoList getPosts(Pageable pageable) {
+		List<PostResponseDto> postResponseDtoList
+			= postRepository.findAll(pageable)
+			.stream()
+			.map(PostConverter::toPostResponseDto)
+			.toList();
+
+		return new PostResponseDtoList(postResponseDtoList);
 	}
 
 	@Transactional
