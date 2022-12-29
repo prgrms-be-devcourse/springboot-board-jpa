@@ -1,6 +1,6 @@
 package com.spring.board.springboard.post.controller;
 
-import com.spring.board.springboard.post.domain.dto.RequestPostDto;
+import com.spring.board.springboard.post.domain.dto.PostCreateRequestDto;
 import com.spring.board.springboard.post.domain.dto.ResponsePostDto;
 import com.spring.board.springboard.post.service.PostService;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +28,8 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createPost(@RequestBody RequestPostDto requestPostDTO) {
-        ResponsePostDto newPostDto = postService.createPost(requestPostDTO);
+    public ResponseEntity<Void> createPost(@RequestBody PostCreateRequestDto postCreateRequestDTO) {
+        ResponsePostDto newPostDto = postService.createPost(postCreateRequestDTO);
 
         URI uriComponents = UriComponentsBuilder.fromUriString("/posts/{postId}")
                 .buildAndExpand(
@@ -46,8 +46,8 @@ public class PostController {
     }
 
     @PostMapping("/{postId}")
-    public ResponseEntity<ResponsePostDto> updatePost(@PathVariable Integer postId, @RequestBody RequestPostDto requestPostDTO) {
-        ResponsePostDto updatedPostResponseDto = postService.update(postId, requestPostDTO);
+    public ResponseEntity<ResponsePostDto> updatePost(@PathVariable Integer postId, @RequestBody PostCreateRequestDto postCreateRequestDTO) {
+        ResponsePostDto updatedPostResponseDto = postService.update(postId, postCreateRequestDTO);
         return ResponseEntity.ok(updatedPostResponseDto);
     }
 }

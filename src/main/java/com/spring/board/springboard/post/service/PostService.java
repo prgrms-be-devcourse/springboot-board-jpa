@@ -1,12 +1,12 @@
 package com.spring.board.springboard.post.service;
 
 import com.spring.board.springboard.post.domain.Post;
-import com.spring.board.springboard.post.domain.dto.RequestPostDto;
+import com.spring.board.springboard.post.domain.dto.PostCreateRequestDto;
 import com.spring.board.springboard.post.domain.dto.ResponsePostDto;
 import com.spring.board.springboard.post.exception.NoPostException;
 import com.spring.board.springboard.post.repository.PostRepository;
 import com.spring.board.springboard.user.domain.Member;
-import com.spring.board.springboard.user.domain.MemberResponseDto;
+import com.spring.board.springboard.user.domain.dto.MemberResponseDto;
 import com.spring.board.springboard.user.service.MemberService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -50,17 +50,17 @@ public class PostService {
     }
 
     @Transactional
-    public ResponsePostDto createPost(RequestPostDto requestPostDto) {
-        Member findMember = memberService.find(requestPostDto.memberId());
+    public ResponsePostDto createPost(PostCreateRequestDto postCreateRequestDto) {
+        Member findMember = memberService.findById(postCreateRequestDto.memberId());
 
-        Post post = requestPostDto.toEntity(requestPostDto, findMember);
+        Post post = postCreateRequestDto.toEntity(findMember);
         postRepository.save(post);
 
         return new ResponsePostDto(post, new MemberResponseDto(findMember));
     }
 
     @Transactional
-    public ResponsePostDto update(Integer postId, RequestPostDto requestPostDto) {
+    public ResponsePostDto update(Integer postId, PostCreateRequestDto postCreateRequestDto) {
         Post findPost = postRepository.findById(postId)
                 .orElseThrow(() -> {
                     throw new NoPostException(
@@ -69,8 +69,8 @@ public class PostService {
                 });
 
         findPost.change(
-                requestPostDto.title(),
-                requestPostDto.content()
+                postCreateRequestDto.title(),
+                postCreateRequestDto.content()
         );
 
         return new ResponsePostDto(findPost, new MemberResponseDto(findPost.getMember()));

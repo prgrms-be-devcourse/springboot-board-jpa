@@ -1,6 +1,6 @@
 package com.spring.board.springboard.post.service;
 
-import com.spring.board.springboard.post.domain.dto.RequestPostDto;
+import com.spring.board.springboard.post.domain.dto.PostCreateRequestDto;
 import com.spring.board.springboard.post.domain.dto.ResponsePostDto;
 import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
@@ -33,22 +33,22 @@ class PostServiceTest {
         Member member = new Member("이수린", 24, Hobby.SLEEP);
         memberRepository.save(member);
 
-        RequestPostDto requestPostDTO1 = new RequestPostDto(
+        PostCreateRequestDto postCreateRequestDTO1 = new PostCreateRequestDto(
                 "스프링 게시판 미션",
                 "이 미션 끝나면 크리스마스에요",
                 1);
-        RequestPostDto requestPostDTO2 = new RequestPostDto(
+        PostCreateRequestDto postCreateRequestDTO2 = new PostCreateRequestDto(
                 "데브코스",
                 "프로그래머스 데브코스 완전 좋아요",
                 1);
-        RequestPostDto requestPostDTO3 = new RequestPostDto(
+        PostCreateRequestDto postCreateRequestDTO3 = new PostCreateRequestDto(
                 "하기싫어",
                 "자고싶다",
                 1);
 
-        postService.createPost(requestPostDTO1);
-        postService.createPost(requestPostDTO2);
-        postService.createPost(requestPostDTO3);
+        postService.createPost(postCreateRequestDTO1);
+        postService.createPost(postCreateRequestDTO2);
+        postService.createPost(postCreateRequestDTO3);
     }
 
     @Test
@@ -81,14 +81,14 @@ class PostServiceTest {
     @Test
     void createPost() {
         // given
-        RequestPostDto requestPostDTO = new RequestPostDto(
+        PostCreateRequestDto postCreateRequestDTO = new PostCreateRequestDto(
                 "새로운 게시글입니다.",
                 "새로운 게시글입니다. 매번 뭘 써야할 지 고민이네요",
                 1
         );
 
         // when
-        ResponsePostDto createdPostDTO = postService.createPost(requestPostDTO);
+        ResponsePostDto createdPostDTO = postService.createPost(postCreateRequestDTO);
 
         // then
         ResponsePostDto findPostDTO = postService.getOne(
@@ -104,7 +104,7 @@ class PostServiceTest {
         String changeTitle = "수정제목";
         String changeContent = "수정 내용입니다. 쿠쿠쿠쿠쿠";
 
-        RequestPostDto beforeUpdatePostDTO = new RequestPostDto(
+        PostCreateRequestDto beforeUpdatePostDTO = new PostCreateRequestDto(
                 changeTitle,
                 changeContent,
                 1

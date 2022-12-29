@@ -53,12 +53,12 @@ class PostControllerTest {
                 new Member("이수린", 24, Hobby.SLEEP)
         );
 
-        RequestPostDto requestPostDTO = new RequestPostDto(
+        PostCreateRequestDto postCreateRequestDTO = new PostCreateRequestDto(
                 "스프링 게시판 미션",
                 "이 미션 끝나면 크리스마스에요",
                 1);
 
-        postService.createPost(requestPostDTO);
+        postService.createPost(postCreateRequestDTO);
     }
 
     @DisplayName("모든 게시물을 불러올 수 있다.")
@@ -91,7 +91,7 @@ class PostControllerTest {
     @Test
     void createPost() throws Exception {
         // given
-        RequestPostDto requestPostDTO = new RequestPostDto(
+        PostCreateRequestDto postCreateRequestDTO = new PostCreateRequestDto(
                 "저장하기",
                 "게시판에 새 글 저장하기",
                 1);
@@ -99,7 +99,7 @@ class PostControllerTest {
         // when and then
         mockMvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestPostDTO)))
+                        .content(objectMapper.writeValueAsString(postCreateRequestDTO)))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("post-save",
@@ -138,7 +138,7 @@ class PostControllerTest {
     @DisplayName("게시물의 제목과 내용을 수정할 수 있다.")
     @Test
     void updatePost() throws Exception {
-        RequestPostDto updatePostDTO = new RequestPostDto(
+        PostCreateRequestDto updatePostDTO = new PostCreateRequestDto(
                 "수정하기",
                 "게시판 새 글 저장하기 -> 수정된 내용임",
                 1
