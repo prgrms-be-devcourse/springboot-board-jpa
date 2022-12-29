@@ -1,6 +1,9 @@
 package devcourse.board.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import devcourse.board.api.model.CookieName;
+import devcourse.board.domain.member.MemberRepository;
+import devcourse.board.domain.member.model.Member;
 import devcourse.board.domain.member.model.MemberJoinRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,11 +15,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,9 +38,12 @@ class MemberApiControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     @Test
-    @DisplayName("회원 생성")
-    void createMember() throws Exception {
+    @DisplayName("회원 가입")
+    void join() throws Exception {
         // given
         MemberJoinRequest joinRequest =
                 new MemberJoinRequest("example@gmail.com", "0000", "member");
@@ -54,5 +62,34 @@ class MemberApiControllerTest {
                                 fieldWithPath("age").type(NUMBER).description("나이").optional(),
                                 fieldWithPath("hobby").type(STRING).description("취미").optional()
                         )));
+    }
+
+    @Test
+    @DisplayName("회원 단건 조회")
+    void getMember() throws Exception {
+        // given
+        Member member = Member.create(
+                "example@email.com",
+                "0000",
+                "member",
+                null,
+                null);
+        memberRepository.save(member);
+
+        Cookie idCookie = new Cookie(CookieName.MEMBER_ID.getCookieName(), String.valueOf(member.getId()));
+
+        // when & then
+        mockMvc.perform(get("/members")
+                        .cookie(idCookie))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("member-get-one",
+                        responseFields(
+                                fieldWithPath("email").type(STRING).description("이메일"),
+                                fieldWithPath("name").type(STRING).description("이름"),
+                                fieldWithPath("age").type(NUMBER).description("나이").optional(),
+                                fieldWithPath("hobby").type(STRING).description("취미").optional()
+                        )
+                ));
     }
 }

@@ -2,14 +2,15 @@ package devcourse.board.api;
 
 import devcourse.board.domain.member.MemberService;
 import devcourse.board.domain.member.model.MemberJoinRequest;
+import devcourse.board.domain.member.model.MemberResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import static devcourse.board.api.util.AuthenticationUtil.getLoggedInMemberId;
 
 @RestController
 @RequestMapping("/members")
@@ -19,6 +20,15 @@ public class MemberApiController {
 
     public MemberApiController(MemberService memberService) {
         this.memberService = memberService;
+    }
+
+    @GetMapping
+    public ResponseEntity<MemberResponse> getMember(
+            HttpServletRequest request
+    ) {
+        Long loggedInMemberId = getLoggedInMemberId(request);
+        return ResponseEntity.ok()
+                .body(memberService.getMember(loggedInMemberId));
     }
 
     @PostMapping
