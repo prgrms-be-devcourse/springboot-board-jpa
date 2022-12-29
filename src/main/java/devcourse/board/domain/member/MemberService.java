@@ -36,6 +36,13 @@ public class MemberService {
                 )));
     }
 
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format(
+                        "Member doesn't exist for email={0}", email
+                )));
+    }
+
     private void save(MemberJoinRequest joinRequest) {
         memberRepository.save(
                 Member.create(
@@ -51,6 +58,6 @@ public class MemberService {
     private boolean isEmailAlreadyInUse(String email) {
         return memberRepository.findAll()
                 .stream()
-                .anyMatch(member -> member.isUsingEmail(email));
+                .anyMatch(member -> member.matchEmail(email));
     }
 }
