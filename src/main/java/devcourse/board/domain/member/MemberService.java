@@ -19,10 +19,15 @@ public class MemberService {
     }
 
     @Transactional
-    public Long join(MemberJoinRequest joinRequest) {
-        Member member = joinRequest.toEntity();
+    public void join(MemberJoinRequest joinRequest) {
+        Member member = Member.create(
+                joinRequest.email(),
+                joinRequest.password(),
+                joinRequest.name(),
+                joinRequest.age(),
+                joinRequest.hobby()
+        );
         memberRepository.save(member);
-        return member.getId();
     }
 
     public Member findOne(Long memberId) {

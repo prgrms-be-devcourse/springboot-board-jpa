@@ -23,21 +23,16 @@ class MemberServiceTest {
     private MemberRepository memberRepository;
 
     @Test
-    @DisplayName("회원 저장")
+    @DisplayName("회원 가입")
     void save() {
         // given
-        MemberJoinRequest joinRequest1 = new MemberJoinRequest("member1");
-        MemberJoinRequest joinRequest2 = new MemberJoinRequest("member2", 27, "hobby2");
+        MemberJoinRequest joinRequest = new MemberJoinRequest("example@gmail.com", "0000", "member");
 
         // when
-        memberService.join(joinRequest1);
-        memberService.join(joinRequest2);
+        memberService.join(joinRequest);
 
         // then
-        List<Member> findMembers = memberRepository.findAll();
-        int actualSize = findMembers.size();
-        int expectedSize = 2;
-
-        assertThat(actualSize).isEqualTo(expectedSize);
+        List<Member> findAllMember = memberRepository.findAll();
+        assertThat(findAllMember).isNotEmpty();
     }
 }
