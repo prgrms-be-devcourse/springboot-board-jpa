@@ -11,9 +11,13 @@ import javax.validation.constraints.Positive;
 @Data
 @Builder
 public class MemberCreateDto {
+    public static final int MEMBER_NAME_MIN_LENGTH = 2;
+    public static final int MEMBER_NAME_MAX_LENGTH = 20;
 
     @NotBlank(message = "{exception.member.name.null}")
-    @Length(min = 2, message = "{exception.member.name.length}")
+    @Length(min = MEMBER_NAME_MIN_LENGTH,
+            max = MEMBER_NAME_MAX_LENGTH,
+            message = "{exception.member.name.length}" )
     private String name;
 
     @NotNull(message = "{exception.member.age.null}")

@@ -7,11 +7,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
+import static com.prgrms.board.util.PostValidator.validatePostContent;
+import static com.prgrms.board.util.PostValidator.validatePostTitle;
+
 @Entity
 @Getter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "posts")
 public class Post extends BaseEntity {
 
@@ -33,6 +34,22 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member writer;
 
+    protected Post() {
+    }
+
+    @Builder
+    private Post(Long id, String title, String content, Member writer) {
+        this.id = id;
+
+        validatePostTitle(title);
+        this.title = title;
+
+        validatePostContent(content);
+        this.content = content;
+
+        this.writer = writer;
+    }
+
     //연관관계 편의 메소드
     public void registerMember(Member member) {
         if (Objects.nonNull(this.writer)) {
@@ -44,6 +61,9 @@ public class Post extends BaseEntity {
     }
 
     public void changePost(PostUpdateDto updateDto) {
+        validatePostTitle(updateDto.getTitle());
+        validatePostContent(updateDto.getContent());
+
         this.title = updateDto.getTitle();
         this.content = updateDto.getContent();
     }

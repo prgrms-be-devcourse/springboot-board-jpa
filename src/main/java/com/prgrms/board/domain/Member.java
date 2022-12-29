@@ -4,18 +4,14 @@ import lombok.*;
 import lombok.Builder.Default;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import static com.prgrms.board.util.MemberValidator.validateMemberAge;
+import static com.prgrms.board.util.MemberValidator.validateMemberName;
 
 @Entity
-@Builder
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "members")
 @EqualsAndHashCode(of = {"id", "name"}, callSuper = false)
 public class Member extends TimeBaseEntity{
@@ -25,12 +21,9 @@ public class Member extends TimeBaseEntity{
     private Long id;
 
     @Column(nullable = false, length = 10, unique = true)
-    @NotBlank(message = "{exception.member.name.null}")
     private String name;
 
     @Column(nullable = false)
-    @NotNull(message = "{exception.member.age.null}")
-    @Positive(message = "{exception.member.age.positive}")
     private int age;
 
     private String hobby;
@@ -39,4 +32,21 @@ public class Member extends TimeBaseEntity{
     @OneToMany(mappedBy = "writer", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
+
+    protected Member() {
+    }
+
+    @Builder
+    private Member(Long id, String name, int age, String hobby, List<Post> posts) {
+        this.id = id;
+
+        validateMemberName(name);
+        this.name = name;
+
+        validateMemberAge(age);
+        this.age = age;
+
+        this.hobby = hobby;
+        this.posts = posts;
+    }
 }
