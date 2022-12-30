@@ -16,7 +16,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(uniqueConstraints = {
-    @UniqueConstraint(name = "EMAIL_UNIQUE", columnNames = {"email"})})
+    @UniqueConstraint(name = "NAME_UNIQUE", columnNames = {"name"})})
 public class Member extends BaseTimeEntity {
 
   @Id
@@ -26,12 +26,6 @@ public class Member extends BaseTimeEntity {
 
   @Column(name = "name")
   private String name;
-
-  @Column(name = "email")
-  private String email;
-
-  @Column(name = "password")
-  private String password;
 
   @Column(name = "age")
   private int age;
@@ -44,10 +38,8 @@ public class Member extends BaseTimeEntity {
 
   protected Member(){}
 
-  public Member(String name, String email, String password, int age, String hobby) {
+  public Member(String name, int age, String hobby) {
     this.name = name;
-    this.email = email;
-    this.password = password;
     this.age = age;
     this.hobby = hobby;
   }
@@ -64,14 +56,6 @@ public class Member extends BaseTimeEntity {
 
   public String getName(){
     return name;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public String getPassword() {
-    return password;
   }
 
   public int getAge(){

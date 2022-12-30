@@ -54,12 +54,12 @@ class MemberControllerTest {
   @DisplayName("사용자를 등록할 수 있습니다")
   void newMember() throws Exception {
     //given
-    MemberRequest.SignUp signUpRequest = new MemberRequest.SignUp("김환", "email123@naver.com", "password123!", 25, "게임");
+    MemberRequest memberRequest = new MemberRequest("김환", 25, "게임");
 
     //when & then
     mockMvc.perform(post("/members")
         .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(signUpRequest)))
+        .content(objectMapper.writeValueAsString(memberRequest)))
         .andExpect(status().isCreated())
         .andDo(print())
         .andDo(document("member-save",
@@ -74,8 +74,8 @@ class MemberControllerTest {
   @DisplayName("사용자를 조회할 수 있습니다")
   void findMemberById() throws Exception {
     //given
-    MemberRequest.SignUp signUpRequest = new MemberRequest.SignUp("김환", "email123@naver.com", "password123!", 25, "게임");
-    Long savedMemberId = memberService.save(signUpRequest);
+    MemberRequest memberRequest = new MemberRequest("김환", 25, "게임");
+    Long savedMemberId = memberService.save(memberRequest);
     postService.save(new PostRequest("으앙", "응아아아아앙", savedMemberId));
 
     //when & then
