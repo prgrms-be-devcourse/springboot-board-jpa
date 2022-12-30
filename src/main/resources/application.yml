@@ -1,0 +1,25 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: "jdbc:h2:mem:springboot_jpa;MODE=MySQL;DB_CLOSE_DELAY=-1"
+    username: sa
+    password:
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 5
+      pool-name: H2_DB
+  jpa:
+    generate-ddl: true # ddl 생성 전략
+    database: H2
+    show-sql: true
+    open-in-view: false # OSIV : Transaction 범위에 대한 속성
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        query.in_clause_parameter_padding: true # 성능 최적화에 관한 속성
+        hbm2ddl:
+          auto: create-drop # ddl 생성 전략. hibernate에서 제공해주는 properties를 같이 사용 가능
