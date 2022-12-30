@@ -1,19 +1,36 @@
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    username: root
+#    password: root1234!
+#    url: jdbc:mysql://localhost/
+#  jpa:
+#    open-in-view: false
+#    hibernate:
+#      ddl-auto: create-drop
+#    show-sql: true
+#    properties:
+#      hibernate.format_sql: true
+#  server:
+#    servlet:
+#      encoding:
+#        charset: UTF-8
+#        enabled: true
+#        force: true
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/board?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: root1234!
-    url: jdbc:mysql://localhost/
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     show-sql: true
     properties:
-      hibernate.format_sql: true
-  server:
-    servlet:
-      encoding:
-        charset: UTF-8
-        enabled: true
-        force: true
+      hibernate:
+        format_sql: true
+    # defer-datasource-initialization: true
+    database: mysql
+    # database-platform: org.hibernate.dialect.MySQLInnoDBDialect

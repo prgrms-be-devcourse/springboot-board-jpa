@@ -1,9 +1,7 @@
 package com.example.springbootboard.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -12,6 +10,7 @@ import lombok.NoArgsConstructor;
 // @Builder
 public class Post extends BaseEntity{
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 

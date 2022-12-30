@@ -1,14 +1,16 @@
 package com.example.springbootboard.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity @Getter
 @NoArgsConstructor
 @Table(name = "users")
 public class User extends BaseEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -21,4 +23,12 @@ public class User extends BaseEntity {
     @Column(name = "hobby")
     @Enumerated(EnumType.STRING)
     private Hobby hobby;
+
+    @Builder
+    public User(String name, int age, Hobby hobby){
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+        setCreatedAt(LocalDateTime.now());
+    }
 }

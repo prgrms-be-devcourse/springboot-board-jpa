@@ -1,3 +1,5 @@
+USE board;
+
 DROP TABLE IF EXISTS users;
 DROP TABLE if EXISTS posts;
 
@@ -17,7 +19,3 @@ CREATE TABLE posts(
       created_at  TIMESTAMP NOT NULL,
       created_by  BIGINT
 );
-
-INSERT INTO users(name, age, hobby, created_at) VALUES("BS_KIM", 25, "MUSIC", CURRENT_TIMESTAMP);
-
-INSERT INTO posts(title, content, created_at, created_by) VALUES("test_title", "test_content", CURRENT_TIMESTAMP, 1);
