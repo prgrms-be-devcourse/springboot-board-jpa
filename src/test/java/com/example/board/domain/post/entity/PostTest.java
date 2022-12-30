@@ -1,81 +1,65 @@
 package com.example.board.domain.post.entity;
 
-import static org.assertj.core.api.Assertions.*;
-
 import com.example.board.domain.member.entity.Member;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class PostTest {
-  private static final String NAME = "김환";
-  private static final String EMAIL = "email123@naver.com";
-  private static final String PASSWORD = "password123!";
-  private static final int AGE = 25;
-  private static final String HOBBY = "게임";
-  private final Member member = new Member(NAME, EMAIL, PASSWORD, AGE, HOBBY);
-
-  private static final String TITLE = "RBF";
-  private static final String CONTENT = "RBF를 작성합니다";
 
   @Test
   @DisplayName("Post를 생성할 수 있습니다")
   void newPost(){
-    //given & when
-    Post post = new Post(TITLE, CONTENT, member);
+    //given
+    Member member = new Member("김환", "email123@naver.com", "password123!", 25, "게임");
+
+    //when
+    Post post = new Post("RBF", "RBF를 작성합니다", member);
+    String title = post.getTitle();
+    String content = post.getContent();
 
     //then
-    String actualTitle = post.getTitle();
-    String actualContent = post.getContent();
-
-    assertThat(actualTitle)
-        .isEqualTo("RBF");
-    assertThat(actualContent)
-        .isEqualTo("RBF를 작성합니다");
-  }
-
-  @Test
-  @DisplayName("Post를 생성 시 Member와의 연관관계를 설정합니다")
-  void mappingPostAndMember(){
-    //given & when
-    Post post = new Post(TITLE, CONTENT, member);
-
-    //then
-    int actualPostSize = member.getPosts().size();
-    Member actualMember = post.getMember();
-
-    assertThat(actualPostSize).isEqualTo(1);
-    assertThat(actualMember).isEqualTo(member);
+    Assertions.assertThat(post.getTitle())
+        .isEqualTo(title);
+    Assertions.assertThat(post.getContent())
+        .isEqualTo(content);
   }
 
   @Test
   @DisplayName("Post의 제목을 변경할 수 있습니다")
   void updateTitle(){
     //given
-    Post post = new Post(TITLE, CONTENT, member);
+    Member member = new Member("김환", "email123@naver.com", "password123!", 25, "게임");
+    String title = "RBF";
+    String content = "RBF를 작성합니다";
+
+    Post post = new Post(title, content, member);
 
     //when
     String newTitle = "회고록";
-    post.update(newTitle, CONTENT, member.getName());
+    post.update(newTitle, content, member.getName());
 
     //then
-    String actualTitle = post.getTitle();
-    assertThat(actualTitle)
-        .isEqualTo("회고록");
+    Assertions.assertThat(post.getTitle())
+        .isEqualTo(newTitle);
   }
 
   @Test
   @DisplayName("Post의 내용을 변경할 수 있습니다")
   void updateContent(){
     //given
-    Post post = new Post(TITLE, CONTENT, member);
+    Member member = new Member("김환", "email123@naver.com", "password123!", 25, "게임");
+    String title = "RBF";
+    String content = "RBF를 작성합니다";
+
+    Post post = new Post(title, content, member);
 
     //when
     String newContent = "RBF를 더 많이 작성합니다";
-    post.update(TITLE, newContent, member.getName());
+    post.update(title, newContent, member.getName());
 
     //then
-    String actualContent = post.getContent();
-    assertThat(actualContent)
-        .isEqualTo("RBF를 더 많이 작성합니다");
+    Assertions.assertThat(post.getContent())
+        .isEqualTo(newContent);
   }
 }
