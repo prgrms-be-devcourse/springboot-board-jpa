@@ -59,8 +59,8 @@ class PostControllerTest {
   @DisplayName("게시글을 생성할 수 있습니다.")
   void newPost() throws Exception {
     //given
-    MemberRequest memberRequest = new MemberRequest("김환", 25, "게임");
-    Long savedMemberId = memberService.save(memberRequest);
+    MemberRequest.SignUp signUpRequest = new MemberRequest.SignUp("김환", "email123@naver.com", "password123!", 25, "게임");
+    Long savedMemberId = memberService.save(signUpRequest);
     PostRequest postRequest = new PostRequest("제목", "내용", savedMemberId);
 
     //when & then
@@ -81,8 +81,8 @@ class PostControllerTest {
   @DisplayName("post_id로 게시글을 찾을 수 있습니다")
   void findPostById() throws Exception {
     //given
-    MemberRequest memberRequest = new MemberRequest("김환", 25, "게임");
-    Long savedMemberId = memberService.save(memberRequest);
+    MemberRequest.SignUp signUpRequest = new MemberRequest.SignUp("김환", "email123@naver.com", "password123!", 25, "게임");
+    Long savedMemberId = memberService.save(signUpRequest);
     PostRequest postRequest = new PostRequest("제목", "내용", savedMemberId);
     Long savedPostId = postService.save(postRequest);
 
@@ -109,8 +109,8 @@ class PostControllerTest {
   @DisplayName("게시글을 수정할 수 있습니다")
   void updatePost() throws Exception {
     //given
-    MemberRequest memberRequest = new MemberRequest("김환", 25, "게임");
-    Long savedMemberId = memberService.save(memberRequest);
+    MemberRequest.SignUp signUpRequest = new MemberRequest.SignUp("김환", "email123@naver.com", "password123!", 25, "게임");
+    Long savedMemberId = memberService.save(signUpRequest);
     PostRequest postRequest = new PostRequest("제목", "내용", savedMemberId);
     Long savedPostId = postService.save(postRequest);
 
@@ -118,8 +118,8 @@ class PostControllerTest {
 
     //when & then
     mockMvc.perform(put(String.format("/posts/%d", savedPostId))
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(updatePostRequest)))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(updatePostRequest)))
         .andExpect(status().isCreated())
         .andDo(print())
         .andDo(document("post-update",
