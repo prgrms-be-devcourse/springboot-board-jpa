@@ -13,11 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(uniqueConstraints = {
@@ -29,27 +24,18 @@ public class Member extends BaseTimeEntity {
   @Column(name = "member_id")
   private Long id;
 
-  @NotNull
-  @Length(min = 2, max = 10)
   @Column(name = "name")
   private String name;
 
-  @NotNull
-  @Email
   @Column(name = "email")
   private String email;
 
-  @NotNull
-  @Length(min = 6, max = 20)
   @Column(name = "password")
   private String password;
 
-  @Min(value = 6)
-  @Max(value = 140)
   @Column(name = "age")
   private int age;
 
-  @Length(max = 20)
   @Column(name = "hobby")
   private String hobby;
 
