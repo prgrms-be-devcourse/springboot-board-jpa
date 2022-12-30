@@ -2,16 +2,16 @@ package com.prgrms.exception.customException;
 
 import com.prgrms.exception.ErrorCode;
 
-public class UserNotFoundException extends RuntimeException{
-
-    private final ErrorCode errorCode;
+public class UserNotFoundException extends CustomException {
 
     public UserNotFoundException(String message, ErrorCode errorCode) {
-        super(message);
-        this.errorCode = errorCode;
+
+        super(message, errorCode);
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
+    public UserNotFoundException(ErrorCode errorCode) {
+
+        super(errorCode);
     }
+
 }
