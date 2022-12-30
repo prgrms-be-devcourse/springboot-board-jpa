@@ -4,9 +4,15 @@ import com.example.board.domain.member.dto.MemberRequest;
 import com.example.board.domain.member.dto.MemberResponse;
 import com.example.board.domain.member.service.MemberService;
 import java.net.URI;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,23 +25,19 @@ public class MemberController {
 
   private final MemberService memberService;
 
+  @Value("${set-cookie.max-age}")
+  private int maxAge;
+
   public MemberController(MemberService memberService) {
     this.memberService = memberService;
   }
 
-  @GetMapping("/{memberId}")
-  public ResponseEntity<MemberResponse.Detail> mypage(@PathVariable Long memberId) {
-    MemberResponse.Detail detail = memberService.findById(memberId);
-
-    return ResponseEntity.ok(detail);
-  }
-
   @PostMapping
-  public ResponseEntity<Void> newMember(@RequestBody MemberRequest memberRequest) {
-    Long savedId = memberService.save(memberRequest);
+  public ResponseEntity<Void> signUp(@RequestBody MemberRequest.SignUp signUpRequest) {
+    Long savedId = memberService.save(signUpRequest);
 
     URI uri = UriComponentsBuilder.newInstance()
-        .path("/members/{memberId}")
+        .path("/member/login")
         .build()
         .expand(savedId)
         .encode()
@@ -43,5 +45,34 @@ public class MemberController {
 
     return ResponseEntity.created(uri)
         .build();
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<Void> login(@RequestBody MemberRequest.Login loginRequest) {
+    Long loginId = memberService.login(loginRequest);
+    ResponseCookie responseCookie = ResponseCookie.from("loginId", String.valueOf(loginId))
+        .httpOnly(Boolean.TRUE)
+        .maxAge(maxAge)
+        .build();
+
+    return ResponseEntity.ok()
+        .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+        .build();
+  }
+
+  @GetMapping("/mypage")
+  public ResponseEntity<MemberResponse.Detail> mypage(@CookieValue(name = "loginId") Long memberId) {
+    MemberResponse.Detail detail = memberService.findById(memberId);
+
+    return ResponseEntity.ok(detail);
+  }
+
+  @PostMapping("/logout")
+  public ResponseEntity<Void> logout(HttpServletResponse response) {
+    Cookie cookie = new Cookie("loginId", null);
+    cookie.setMaxAge(0);
+    response.addCookie(cookie);
+
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }
