@@ -2,7 +2,7 @@ package devcourse.board.api.controller;
 
 import devcourse.board.api.model.CreateDataResponse;
 import devcourse.board.domain.post.PostService;
-import devcourse.board.domain.post.model.MultiplePostResponse;
+import devcourse.board.domain.post.model.MultipleSimplePostResponse;
 import devcourse.board.domain.post.model.PostCreationRequest;
 import devcourse.board.domain.post.model.PostResponse;
 import devcourse.board.domain.post.model.PostUpdateRequest;
@@ -33,7 +33,7 @@ public class PostApiController {
     }
 
     @GetMapping
-    public ResponseEntity<MultiplePostResponse> getPosts(
+    public ResponseEntity<MultipleSimplePostResponse> getPosts(
             @RequestParam int page,
             @RequestParam int size
     ) {

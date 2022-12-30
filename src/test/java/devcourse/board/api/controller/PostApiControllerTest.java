@@ -111,7 +111,7 @@ class PostApiControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 전체 조회 (페이징)")
+    @DisplayName("게시글 페이징 조회")
     void call_getPosts() throws Exception {
         // given
         Member member = Member.create(
@@ -138,13 +138,10 @@ class PostApiControllerTest {
                                 parameterWithName("size").description("조회할 게시글 개수")
                         ),
                         responseFields(
-                                fieldWithPath("postResponses").description("게시글 전체 조회 결과"),
+                                fieldWithPath("simplePostResponses").description("게시글 페이징 조회 결과"),
 
-                                fieldWithPath("postResponses[].postId").description("게시글 식별자"),
-                                fieldWithPath("postResponses[].title").description("게시글 제목"),
-                                fieldWithPath("postResponses[].content").description("게시글 내용"),
-                                fieldWithPath("postResponses[].createdAt").description("게시글 아이디"),
-                                fieldWithPath("postResponses[].createdBy").description("게시글 작성자 이름")
+                                fieldWithPath("simplePostResponses[].postId").description("게시글 식별자"),
+                                fieldWithPath("simplePostResponses[].title").description("게시글 제목")
                         )));
     }
 

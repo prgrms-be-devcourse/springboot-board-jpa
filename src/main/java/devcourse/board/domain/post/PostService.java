@@ -47,13 +47,13 @@ public class PostService {
                 .toList();
     }
 
-    public MultiplePostResponse findWithPaging(int startPosition, int maxResultCount) {
-        List<PostResponse> postResponses = postRepository.findWithPaging(startPosition, maxResultCount)
+    public MultipleSimplePostResponse findWithPaging(int startPosition, int maxResultCount) {
+        List<SimplePostResponse> simplePostResponses = postRepository.findWithPaging(startPosition, maxResultCount)
                 .stream()
-                .map(PostResponse::new)
+                .map(SimplePostResponse::new)
                 .toList();
 
-        return new MultiplePostResponse(postResponses);
+        return new MultipleSimplePostResponse(simplePostResponses);
     }
 
     @Transactional
