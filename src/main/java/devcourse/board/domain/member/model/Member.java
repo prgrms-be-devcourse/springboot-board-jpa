@@ -43,6 +43,10 @@ public class Member {
         return member;
     }
 
+    public boolean matchId(Long id) {
+        return this.id.equals(id);
+    }
+
     public boolean matchEmail(String email) {
         return this.email.equals(email);
     }

@@ -51,6 +51,10 @@ public class Post {
         return this.member.getName();
     }
 
+    public boolean matchMember(Long memberId) {
+        return this.member.matchId(memberId);
+    }
+
     public Long getId() {
         return id;
     }

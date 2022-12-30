@@ -3,6 +3,8 @@ package devcourse.board.domain.post;
 import devcourse.board.domain.member.MemberService;
 import devcourse.board.domain.member.model.Member;
 import devcourse.board.domain.post.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,8 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class PostService {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final MemberService memberService;
 
@@ -53,8 +57,19 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponse updatePost(Long postId, PostUpdateRequest updateRequest) {
+    public PostResponse updatePost(Long loggedInMemberId, Long postId, PostUpdateRequest updateRequest) {
         Post post = findById(postId);
+
+        if (!post.matchMember(loggedInMemberId)) {
+            log.warn(
+                    "An unauthorized Member attempted to update post. memberId={}, postId={}",
+                    loggedInMemberId,
+                    postId
+            );
+            throw new IllegalStateException(MessageFormat.format(
+                    "Member has no authority updated post. memberId={0}", loggedInMemberId
+            ));
+        }
 
         post.updateContents(updateRequest.title(), updateRequest.content());
 

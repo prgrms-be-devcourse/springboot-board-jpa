@@ -10,6 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
+import static devcourse.board.api.util.AuthenticationUtil.getLoggedInMemberId;
+
 @RestController
 @RequestMapping("/posts")
 public class PostApiController {
@@ -48,10 +52,12 @@ public class PostApiController {
 
     @PatchMapping("/{postId}")
     public ResponseEntity<PostResponse> updatePost(
+            HttpServletRequest request,
             @PathVariable Long postId,
             @RequestBody PostUpdateRequest updateRequest
     ) {
+        Long loggedInMemberId = getLoggedInMemberId(request);
         return ResponseEntity.ok()
-                .body(postService.updatePost(postId, updateRequest));
+                .body(postService.updatePost(loggedInMemberId, postId, updateRequest));
     }
 }
