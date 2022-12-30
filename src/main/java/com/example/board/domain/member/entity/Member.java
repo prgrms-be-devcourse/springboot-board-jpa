@@ -52,6 +52,10 @@ public class Member extends BaseTimeEntity {
     this.hobby = hobby;
   }
 
+  public void addPost(Post post){
+    posts.add(post);
+  }
+
   public void update(String newName, int newAge, String newHobby){
     name = newName;
     age = newAge;
@@ -83,6 +87,6 @@ public class Member extends BaseTimeEntity {
   }
 
   public List<Post> getPosts(){
-    return posts;
+    return new ArrayList<>(posts);
   }
 }
