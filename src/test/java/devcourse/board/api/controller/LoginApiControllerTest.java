@@ -1,4 +1,4 @@
-package devcourse.board.api;
+package devcourse.board.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import devcourse.board.domain.login.model.LoginRequest;

@@ -1,4 +1,4 @@
-package devcourse.board.api;
+package devcourse.board.api.controller;
 
 import devcourse.board.domain.member.MemberService;
 import devcourse.board.domain.member.model.MemberJoinRequest;

@@ -1,4 +1,4 @@
-package devcourse.board.api;
+package devcourse.board.api.controller;
 
 import devcourse.board.api.model.CreateDataResponse;
 import devcourse.board.domain.post.PostService;

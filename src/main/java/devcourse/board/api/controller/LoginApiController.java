@@ -1,4 +1,4 @@
-package devcourse.board.api;
+package devcourse.board.api.controller;
 
 import devcourse.board.api.model.CookieName;
 import devcourse.board.domain.login.LoginService;
