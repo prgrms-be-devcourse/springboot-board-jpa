@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Asciidoctor 2.0.17">
-    <title>게시판</title>
+    <title>게시글</title>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
     <style>
@@ -2112,10 +2112,10 @@
 </div>
 <div id="content">
     <div class="sect1">
-        <h2 id="_게시판">게시판</h2>
+        <h2 id="_게시글">게시글</h2>
         <div class="sectionbody">
             <div class="sect2">
-                <h3 id="_게시판_생성">게시판 생성</h3>
+                <h3 id="_게시글_생성">게시글 생성</h3>
                 <div class="sect3">
                     <h4 id="_post_apiv1posts">POST /api/v1/posts</h4>
                     <div class="listingblock">
@@ -2175,7 +2175,7 @@ Host: localhost:8080
 Content-Type: application/json
 Content-Length: 154
 
-{&quot;id&quot;:1,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용입니다.&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-23T04:37:53.1188395&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-23T04:37:53.1188395&quot;}</code></pre>
+{&quot;id&quot;:1,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용입니다.&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-30T16:26:00.6120397&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-30T16:26:00.6120397&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
@@ -2239,9 +2239,17 @@ Content-Length: 154
                 </div>
             </div>
             <div class="sect2">
-                <h3 id="_게시판_조회">게시판 조회</h3>
+                <h3 id="_게시글_단건_조회">게시글 단건 조회</h3>
                 <div class="sect3">
                     <h4 id="_get_apiv1postsid">GET /api/v1/posts/{id}</h4>
+                    <div class="listingblock">
+                        <div class="title">Request</div>
+                        <div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">GET /api/v1/posts/1 HTTP/1.1
+Accept: application/json
+Host: localhost:8080</code></pre>
+                        </div>
+                    </div>
                     <table class="tableblock frame-all grid-all stretch">
                         <caption class="title">Table 3. /api/v1/posts/{id}</caption>
                         <colgroup>
@@ -2262,21 +2270,13 @@ Content-Length: 154
                         </tbody>
                     </table>
                     <div class="listingblock">
-                        <div class="title">Request</div>
-                        <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="http">GET /api/v1/posts/1 HTTP/1.1
-Accept: application/json
-Host: localhost:8080</code></pre>
-                        </div>
-                    </div>
-                    <div class="listingblock">
                         <div class="title">Response</div>
                         <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
 Content-Length: 154
 
-{&quot;id&quot;:1,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용입니다.&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-23T04:37:43.9318324&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-23T04:37:43.9318324&quot;}</code></pre>
+{&quot;id&quot;:1,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용입니다.&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-30T16:25:47.6013156&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-30T16:25:47.6013156&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
@@ -2340,11 +2340,131 @@ Content-Length: 154
                 </div>
             </div>
             <div class="sect2">
-                <h3 id="_게시판_수정">게시판 수정</h3>
+                <h3 id="_게시글_페이지_조회">게시글 페이지 조회</h3>
+                <div class="sect3">
+                    <h4 id="_get_apiv1postspage0size2">GET /api/v1/posts?page=0&amp;size=2</h4>
+                    <div class="listingblock">
+                        <div class="title">Request</div>
+                        <div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">GET /api/v1/posts?page=0&amp;size=2 HTTP/1.1
+Accept: application/json
+Host: localhost:8080</code></pre>
+                        </div>
+                    </div>
+                    <table class="tableblock frame-all grid-all stretch">
+                        <caption class="title">Table 5. Request parameters</caption>
+                        <colgroup>
+                            <col style="width: 50%;">
+                            <col style="width: 50%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="tableblock halign-left valign-top">Parameter</th>
+                            <th class="tableblock halign-left valign-top">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">조회할 페이지</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">한 페이지에 담을 데이터 수</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="listingblock">
+                        <div class="title">Response</div>
+                        <div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 750
+
+{&quot;postResponseDtoList&quot;:[{&quot;id&quot;:1,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-30T16:26:00.7660384&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-30T16:26:00.7660384&quot;},{&quot;id&quot;:2,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-30T16:26:00.7660384&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-30T16:26:00.7660384&quot;},{&quot;id&quot;:3,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-30T16:26:00.7660384&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-30T16:26:00.7660384&quot;},{&quot;id&quot;:4,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-30T16:26:00.7660384&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-30T16:26:00.7660384&quot;},{&quot;id&quot;:5,&quot;title&quot;:&quot;제목&quot;,&quot;content&quot;:&quot;내용&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-30T16:26:00.7660384&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-30T16:26:00.7660384&quot;}]}</code></pre>
+                        </div>
+                    </div>
+                    <table class="tableblock frame-all grid-all stretch">
+                        <caption class="title">Table 6. Response fields</caption>
+                        <colgroup>
+                            <col style="width: 33.3333%;">
+                            <col style="width: 33.3333%;">
+                            <col style="width: 33.3334%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="tableblock halign-left valign-top">Path</th>
+                            <th class="tableblock halign-left valign-top">Type</th>
+                            <th class="tableblock halign-left valign-top">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>postResponseDtoList.[].id</code>
+                            </p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 ID</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>postResponseDtoList.[].title</code>
+                            </p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 제목</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>postResponseDtoList.[].content</code>
+                            </p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 내용</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>postResponseDtoList.[].userId</code>
+                            </p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 작성자 Id</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>postResponseDtoList.[].createdAt</code>
+                            </p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 생성시간</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>postResponseDtoList.[].lastModifiedAt</code>
+                            </p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 최종 수정시간</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_게시글_수정">게시글 수정</h3>
                 <div class="sect3">
                     <h4 id="_patch_apiv1postsid">PATCH /api/v1/posts/{id}</h4>
+                    <div class="listingblock">
+                        <div class="title">Request</div>
+                        <div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">PATCH /api/v1/posts/1 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Content-Length: 66
+Host: localhost:8080
+
+{&quot;title&quot;:&quot;수정된 제목&quot;,&quot;content&quot;:&quot;수정된 내용입니다&quot;}</code></pre>
+                        </div>
+                    </div>
                     <table class="tableblock frame-all grid-all stretch">
-                        <caption class="title">Table 5. /api/v1/posts/{id}</caption>
+                        <caption class="title">Table 7. /api/v1/posts/{id}</caption>
                         <colgroup>
                             <col style="width: 50%;">
                             <col style="width: 50%;">
@@ -2362,20 +2482,8 @@ Content-Length: 154
                         </tr>
                         </tbody>
                     </table>
-                    <div class="listingblock">
-                        <div class="title">Request</div>
-                        <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="http">PATCH /api/v1/posts/1 HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Accept: application/json
-Content-Length: 66
-Host: localhost:8080
-
-{&quot;title&quot;:&quot;수정된 제목&quot;,&quot;content&quot;:&quot;수정된 내용입니다&quot;}</code></pre>
-                        </div>
-                    </div>
                     <table class="tableblock frame-all grid-all stretch">
-                        <caption class="title">Table 6. Request fields</caption>
+                        <caption class="title">Table 8. Request fields</caption>
                         <colgroup>
                             <col style="width: 33.3333%;">
                             <col style="width: 33.3333%;">
@@ -2412,11 +2520,11 @@ Host: localhost:8080
 Content-Type: application/json
 Content-Length: 173
 
-{&quot;id&quot;:1,&quot;title&quot;:&quot;수정된 제목&quot;,&quot;content&quot;:&quot;수정된 내용입니다&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-23T04:37:52.7828296&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-23T04:37:52.7968366&quot;}</code></pre>
+{&quot;id&quot;:1,&quot;title&quot;:&quot;수정된 제목&quot;,&quot;content&quot;:&quot;수정된 내용입니다&quot;,&quot;userId&quot;:1,&quot;createdAt&quot;:&quot;2022-12-30T16:26:00.1880398&quot;,&quot;lastModifiedAt&quot;:&quot;2022-12-30T16:26:00.2080387&quot;}</code></pre>
                         </div>
                     </div>
                     <table class="tableblock frame-all grid-all stretch">
-                        <caption class="title">Table 7. Response fields</caption>
+                        <caption class="title">Table 9. Response fields</caption>
                         <colgroup>
                             <col style="width: 33.3333%;">
                             <col style="width: 33.3333%;">
@@ -2477,10 +2585,146 @@ Content-Length: 173
             </div>
         </div>
     </div>
+    <div class="sect1">
+        <h2 id="_사용자">사용자</h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_사용자_생성">사용자 생성</h3>
+                <div class="sect3">
+                    <h4 id="_post_apiv1posts_2">POST /api/v1/posts</h4>
+                    <div class="listingblock">
+                        <div class="title">Request</div>
+                        <div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">POST /api/v1/users HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Content-Length: 76
+Host: localhost:8080
+
+{&quot;name&quot;:&quot;권성준&quot;,&quot;email&quot;:&quot;google@gmail.com&quot;,&quot;age&quot;:26,&quot;hobby&quot;:&quot;달리기&quot;}</code></pre>
+                        </div>
+                    </div>
+                    <table class="tableblock frame-all grid-all stretch">
+                        <caption class="title">Table 10. Request fields</caption>
+                        <colgroup>
+                            <col style="width: 33.3333%;">
+                            <col style="width: 33.3333%;">
+                            <col style="width: 33.3334%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="tableblock halign-left valign-top">Path</th>
+                            <th class="tableblock halign-left valign-top">Type</th>
+                            <th class="tableblock halign-left valign-top">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 이름</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 이메일</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>age</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 나이</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>hobby</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 취미</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="listingblock">
+                        <div class="title">Response</div>
+                        <div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 201 Created
+Content-Type: application/json
+Content-Length: 96
+
+{&quot;id&quot;:1,&quot;name&quot;:&quot;권성준&quot;,&quot;email&quot;:&quot;google@gmail.com&quot;,&quot;age&quot;:26,&quot;hobby&quot;:&quot;달리기&quot;,&quot;postIds&quot;:[]}</code></pre>
+                        </div>
+                    </div>
+                    <table class="tableblock frame-all grid-all stretch">
+                        <caption class="title">Table 11. Response fields</caption>
+                        <colgroup>
+                            <col style="width: 33.3333%;">
+                            <col style="width: 33.3333%;">
+                            <col style="width: 33.3334%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="tableblock halign-left valign-top">Path</th>
+                            <th class="tableblock halign-left valign-top">Type</th>
+                            <th class="tableblock halign-left valign-top">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 ID</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 이름</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 이메일</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>age</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 나이</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>hobby</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 취미</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>postIds</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">사용자의 게시글 ID 리스트</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="footer">
     <div id="footer-text">
-        Last updated 2022-12-23 04:48:55 +0900
+        Last updated 2022-12-30 16:51:14 +0900
     </div>
 </div>
 </body>

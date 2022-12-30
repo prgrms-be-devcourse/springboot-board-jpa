@@ -9,14 +9,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -26,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.programmers.jpaboard.domain.post.dto.PostCreateRequestDto;
 import com.programmers.jpaboard.domain.post.dto.PostResponseDto;
+import com.programmers.jpaboard.domain.post.dto.PostResponseDtoList;
 import com.programmers.jpaboard.domain.post.dto.PostUpdateRequestDto;
 import com.programmers.jpaboard.domain.post.service.PostService;
 
@@ -36,16 +38,13 @@ import com.programmers.jpaboard.domain.post.service.PostService;
 class PostApiControllerTest {
 
 	@Autowired
-	ObjectMapper objectMapper;
+	private ObjectMapper objectMapper;
 
 	@Autowired
 	private MockMvc mockMvc;
 
-	@InjectMocks
-	PostApiController postApiController;
-
 	@MockBean
-	PostService postService;
+	private PostService postService;
 
 	private PostCreateRequestDto postCreateRequestDto = new PostCreateRequestDto("제목", "내용입니다.", 1L);
 	private PostResponseDto createdPostDto = new PostResponseDto(
@@ -56,6 +55,16 @@ class PostApiControllerTest {
 		LocalDateTime.now(),
 		LocalDateTime.now()
 	);
+	private PostResponseDtoList postResponseDtoList =
+		new PostResponseDtoList(
+			List.of(
+				new PostResponseDto(1L, "제목", "내용", 1L, LocalDateTime.now(), LocalDateTime.now()),
+				new PostResponseDto(2L, "제목", "내용", 1L, LocalDateTime.now(), LocalDateTime.now()),
+				new PostResponseDto(3L, "제목", "내용", 1L, LocalDateTime.now(), LocalDateTime.now()),
+				new PostResponseDto(4L, "제목", "내용", 1L, LocalDateTime.now(), LocalDateTime.now()),
+				new PostResponseDto(5L, "제목", "내용", 1L, LocalDateTime.now(), LocalDateTime.now())
+			)
+		);
 
 	@Test
 	void createPost() throws Exception {
@@ -93,11 +102,35 @@ class PostApiControllerTest {
 
 	@Test
 	void getPosts() throws Exception {
+
+		String responseBody = objectMapper.writeValueAsString(postResponseDtoList);
+		when(postService.getPosts(any(Pageable.class))).thenReturn(postResponseDtoList);
+
 		mockMvc.perform(get("/api/v1/posts")
 				.param("page", String.valueOf(0))
-				.param("size", String.valueOf(2)))
+				.param("size", String.valueOf(2))
+				.accept(MediaType.APPLICATION_JSON))
+			.andExpect(content().json(responseBody))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andDo(print());
+			.andDo(print())
+			.andDo(document("post-page-get",
+				requestParameters(
+					parameterWithName("page").description("조회할 페이지"),
+					parameterWithName("size").description("한 페이지에 담을 데이터 수")
+				),
+				responseFields(
+					fieldWithPath("postResponseDtoList.[].id").type(JsonFieldType.NUMBER).description("게시글 ID"),
+					fieldWithPath("postResponseDtoList.[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+					fieldWithPath("postResponseDtoList.[].content").type(JsonFieldType.STRING).description("게시글 내용"),
+					fieldWithPath("postResponseDtoList.[].userId").type(JsonFieldType.NUMBER).description("게시글 작성자 Id"),
+					fieldWithPath("postResponseDtoList.[].createdAt").type(JsonFieldType.STRING)
+						.description("게시글 생성시간"),
+					fieldWithPath("postResponseDtoList.[].lastModifiedAt").type(JsonFieldType.STRING)
+						.description("게시글 최종 수정시간")
+				)));
+
+		verify(postService).getPosts(any(Pageable.class));
 	}
 
 	@Test

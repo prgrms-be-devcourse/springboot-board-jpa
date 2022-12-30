@@ -3,9 +3,9 @@ ifndef::snippets[]
 :snippets: ../../../build/generated-snippets
 endif::[]
 
-== 게시판
+== 게시글
 
-=== 게시판 생성
+=== 게시글 생성
 
 ==== POST /api/v1/posts
 
@@ -19,28 +19,42 @@ include::{snippets}/post-save/http-response.adoc[]
 .Response fields
 include::{snippets}/post-save/response-fields.adoc[]
 
-=== 게시판 조회
+=== 게시글 단건 조회
 
 ==== GET /api/v1/posts/{id}
 
-.Request parameters
-include::{snippets}/post-get/path-parameters.adoc[]
 .Request
 include::{snippets}/post-get/http-request.adoc[]
+.Request parameters
+include::{snippets}/post-get/path-parameters.adoc[]
 
 .Response
 include::{snippets}/post-get/http-response.adoc[]
 .Response fields
 include::{snippets}/post-get/response-fields.adoc[]
 
-=== 게시판 수정
+=== 게시글 페이지 조회
+
+==== GET /api/v1/posts?page=0&size=2
+
+.Request
+include::{snippets}/post-page-get/http-request.adoc[]
+.Request parameters
+include::{snippets}/post-page-get/request-parameters.adoc[]
+
+.Response
+include::{snippets}/post-page-get/http-response.adoc[]
+.Response fields
+include::{snippets}/post-page-get/response-fields.adoc[]
+
+=== 게시글 수정
 
 ==== PATCH /api/v1/posts/{id}
 
-.Request parameters
-include::{snippets}/post-update/path-parameters.adoc[]
 .Request
 include::{snippets}/post-update/http-request.adoc[]
+.Request parameters
+include::{snippets}/post-update/path-parameters.adoc[]
 .Request fields
 include::{snippets}/post-update/request-fields.adoc[]
 
@@ -48,3 +62,19 @@ include::{snippets}/post-update/request-fields.adoc[]
 include::{snippets}/post-update/http-response.adoc[]
 .Response fields
 include::{snippets}/post-update/response-fields.adoc[]
+
+== 사용자
+
+=== 사용자 생성
+
+==== POST /api/v1/posts
+
+.Request
+include::{snippets}/user-save/http-request.adoc[]
+.Request fields
+include::{snippets}/user-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-save/http-response.adoc[]
+.Response fields
+include::{snippets}/user-save/response-fields.adoc[]
