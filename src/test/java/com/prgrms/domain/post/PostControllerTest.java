@@ -56,8 +56,10 @@ class PostControllerTest {
         String userName = "홍길동";
         String hobby = "독서";
         int age = 15;
+        String email = "guildong@gmail.com";
+        String password = "hong1234!";
 
-        UserDto.Request userDto = new Request(userName, hobby, age);
+        UserDto.Request userDto = new Request(userName, hobby, age, email, password);
         userService.insertUser(userDto);
 
         String title = "타이틀 테스트1";
