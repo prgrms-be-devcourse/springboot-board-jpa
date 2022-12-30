@@ -6,86 +6,74 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class MemberTest {
+  private static final String NAME = "김환";
+  private static final String EMAIL = "email123@naver.com";
+  private static final String PASSWORD = "password123!";
+  private static final int AGE = 25;
+  private static final String HOBBY = "게임";
 
   @Test
   @DisplayName("Member를 생성합니다")
-  public void createMember(){
-    //given
-    String name = "김환";
-    String email = "email123@naver.com";
-    String password = "password123!";
-    int age = 25;
-    String hobby = "게임";
-
-    // when
-    Member member = new Member(name, email, password, age, hobby);
+  void createMember(){
+    //given & when
+    Member member = new Member(NAME, EMAIL, PASSWORD, AGE, HOBBY);
 
     //then
-    assertThat(member.getAge())
-        .isEqualTo(age);
-    assertThat(member.getName())
-        .isEqualTo(name);
-    assertThat(member.getHobby())
-        .isEqualTo(hobby);
+    String actualName = member.getName();
+    String actualEmail = member.getEmail();
+    String actualPassword = member.getPassword();
+    int actualAge = member.getAge();
+    String actualHobby = member.getHobby();
+
+    assertThat(actualName).isEqualTo("김환");
+    assertThat(actualEmail).isEqualTo("email123@naver.com");
+    assertThat(actualPassword).isEqualTo("password123!");
+    assertThat(actualAge).isEqualTo(25);
+    assertThat(actualHobby).isEqualTo("게임");
   }
 
   @Test
   @DisplayName("Member의 나이를 변경합니다")
-  public void updateMemberAge(){
+  void updateMemberAge(){
     //given
-    String name = "김환";
-    String email = "email123@naver.com";
-    String password = "password123!";
-    int age = 25;
-    String hobby = "게임";
-    Member member = new Member(name, email, password, age, hobby);
+    Member member = new Member(NAME, EMAIL, PASSWORD, AGE, HOBBY);
 
-    // when
+    //when
     int newAge = 10;
-    member.update(name, newAge, hobby);
+    member.update(NAME, newAge, HOBBY);
 
     //then
-    assertThat(member.getAge())
-        .isEqualTo(newAge);
+    int actualAge = member.getAge();
+    assertThat(actualAge).isEqualTo(10);
   }
 
   @Test
   @DisplayName("Member의 이름을 변경합니다")
-  public void updateMemberName(){
+  void updateMemberName(){
     //given
-    String name = "김환";
-    String email = "email123@naver.com";
-    String password = "password123!";
-    int age = 25;
-    String hobby = "게임";
-    Member member = new Member(name, email, password, age, hobby);
+    Member member = new Member(NAME, EMAIL, PASSWORD, AGE, HOBBY);
 
     // when
-    String newName = "김환";
-    member.update(newName, age, hobby);
+    String newName = "홍길동";
+    member.update(newName, AGE, HOBBY);
 
     //then
-    assertThat(member.getName())
-        .isEqualTo(newName);
+    String actualName = member.getName();
+    assertThat(actualName).isEqualTo("홍길동");
   }
 
   @Test
   @DisplayName("Member의 취미를 변경합니다")
-  public void updateMemberHobby(){
+  void updateMemberHobby(){
     //given
-    String name = "김환";
-    String email = "email123@naver.com";
-    String password = "password123!";
-    int age = 25;
-    String hobby = "게임";
-    Member member = new Member(name, email, password, age, hobby);
+    Member member = new Member(NAME, EMAIL, PASSWORD, AGE, HOBBY);
 
     // when
     String newHobby= "코딩";
-    member.update(name, age, newHobby);
+    member.update(NAME, AGE, newHobby);
 
     //then
-    assertThat(member.getHobby())
-        .isEqualTo(newHobby);
+    String actualHobby = member.getHobby();
+    assertThat(actualHobby).isEqualTo("코딩");
   }
 }
