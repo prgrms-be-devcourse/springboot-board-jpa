@@ -57,7 +57,7 @@ public class Post extends BaseTimeEntity {
   public void update(String newTitle, String newContent, String memberName){
     this.title = newTitle;
     this.content = newContent;
-    this.updatedBy = memberName;
+    preUpdate(memberName);
   }
 
   public void registerMember(Member member) {
@@ -73,6 +73,10 @@ public class Post extends BaseTimeEntity {
   public void prePersist(){
     this.createdBy = this.getMember().getName();
     this.updatedBy = this.createdBy;
+  }
+
+  private void preUpdate(String memberName){
+    this.updatedBy = memberName;
   }
 
   public Long getId() {
