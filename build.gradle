@@ -34,6 +34,7 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
 }
 
 tasks.named('test') {
