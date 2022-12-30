@@ -14,6 +14,7 @@ import com.example.board.domain.member.service.MemberService;
 import com.example.board.domain.post.dto.PostRequest;
 import com.example.board.domain.post.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,7 +53,7 @@ class MemberControllerTest {
 
   @Test
   @DisplayName("사용자를 등록할 수 있습니다")
-  void newMember() throws Exception {
+  void signUp() throws Exception {
     //given
     MemberRequest.SignUp signUpRequest = new MemberRequest.SignUp("김환", "email123@naver.com", "password123!", 25, "게임");
 
@@ -65,10 +66,36 @@ class MemberControllerTest {
         .andDo(document("member-save",
             requestFields(
                 fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
+                fieldWithPath("email").type(JsonFieldType.STRING).description("email"),
+                fieldWithPath("password").type(JsonFieldType.STRING).description("password"),
                 fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
                 fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
             )));
   }
+
+  @Test
+  @DisplayName("이메일과 비밀번호로 로그인할 수 있습니다.")
+  void loginSuccess() throws Exception {
+    //given
+    MemberRequest.SignUp signUpRequest = new MemberRequest.SignUp("김환", "email123@naver.com", "password123!", 25, "게임");
+    Long savedMemberId = memberService.save(signUpRequest);
+    postService.save(new PostRequest("으앙", "응아아아아앙", savedMemberId));
+
+    MemberRequest.Login loginMember = new MemberRequest.Login("email123@naver.com", "password123!");
+
+    //when & then
+    mockMvc.perform(post("/members/login")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(loginMember)))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("member-login",
+            requestFields(
+                fieldWithPath("email").type(JsonFieldType.STRING).description("email"),
+                fieldWithPath("password").type(JsonFieldType.STRING).description("password")
+            )));
+  }
+
 
   @Test
   @DisplayName("사용자를 조회할 수 있습니다")
@@ -79,13 +106,16 @@ class MemberControllerTest {
     postService.save(new PostRequest("으앙", "응아아아아앙", savedMemberId));
 
     //when & then
-    mockMvc.perform(get("/members/" + savedMemberId))
+    mockMvc.perform(get("/members/mypage")
+            .cookie(new Cookie("loginId", savedMemberId.toString())))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("member-find-by-id",
             responseFields(
                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("member id"),
                 fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
+                fieldWithPath("email").type(JsonFieldType.STRING).description("email"),
+                fieldWithPath("password").type(JsonFieldType.STRING).description("password"),
                 fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
                 fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby"),
                 fieldWithPath("posts[]").type(JsonFieldType.ARRAY).optional().description("list of posts"),
@@ -95,5 +125,15 @@ class MemberControllerTest {
                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("title of post")
             )));
   }
+
+  @Test
+  @DisplayName("로그아웃할 수 있습니다.")
+  void logout() throws Exception {
+    mockMvc.perform(post("/members/logout"))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("member-logout"));
+  }
+
 
 }
