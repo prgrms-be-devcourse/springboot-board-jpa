@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/mission_board
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+  output:
+    ansi:
+      enabled: always
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
