@@ -1,19 +1,22 @@
 package com.prgrms.domain.user;
 
-import static com.prgrms.dto.UserDto.*;
+import static com.prgrms.dto.UserDto.Request;
 
+import com.prgrms.dto.UserDto.Request.Login;
 import com.prgrms.dto.UserDto.Response;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
+import java.nio.file.AccessDeniedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/users")
 public class UserController {
 
     private final UserService service;
@@ -22,18 +25,47 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Response> getUserById(@PathVariable Long id) {
+    @GetMapping("/me")
+    public ResponseEntity<Response> getLoggedUserInfo(HttpServletRequest request)
+        throws AccessDeniedException {
 
-        Response userById = service.findUserById(id);
-        return ResponseEntity.ok(userById);
+        long loggedUserId = Long.parseLong(service.getCookieUserId(request).getValue());
+        Response userInfo = service.findUserById(loggedUserId);
+
+        return ResponseEntity.ok(userInfo);
     }
 
-    @PostMapping
-    public ResponseEntity<Void> registerUser(@RequestBody Request userDto) {
+    @PostMapping("/new")
+    public ResponseEntity<Void> userSignUp(@RequestBody Request userDto) {
 
-        Response response = service.insertUser(userDto);
-        return ResponseEntity.created(URI.create("/users/" + response.getUserId())).build();
+        service.insertUser(userDto);
+        URI loginPageUri = URI.create("api/users/login");
+
+        return ResponseEntity.created(loginPageUri)
+            .build();
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Void> login(@RequestBody Login loginDto,
+        HttpServletResponse servletResponse) {
+
+        Response response = service.login(loginDto, servletResponse);
+
+        URI myPageUri = URI.create("api/users/me" + response.getUserId());
+
+        return ResponseEntity.created(myPageUri)
+            .build();
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response,HttpServletRequest request)
+        throws AccessDeniedException {
+
+        service.logout(request, response);
+
+        return ResponseEntity.ok().build();
+    }
+
+
 
 }
