@@ -1,0 +1,46 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: build/generated-snippets
+endif::[]
+
+== Post
+=== post create
+==== /api/posts/
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+
+=== post get by postId
+==== /api/posts/{id}
+
+.Request
+include::{snippets}/post-find-by-id/http-request.adoc[]
+
+.Response
+include::{snippets}/post-find-by-id/http-response.adoc[]
+include::{snippets}/post-find-by-id/response-fields.adoc[]
+
+=== post get by pageable param
+==== /api/posts/
+
+.Request
+include::{snippets}/post-find-by-pageable/http-request.adoc[]
+
+.Response
+include::{snippets}/post-find-by-pageable/http-response.adoc[]
+include::{snippets}/post-find-by-pageable/response-fields.adoc[]
+
+=== post update
+==== /api/posts/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
