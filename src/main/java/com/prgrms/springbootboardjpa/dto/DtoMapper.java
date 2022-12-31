@@ -6,43 +6,46 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DtoMapper {
-    public User convertUser(UserDto userDto) {
+    public User convertUser(UserRequest userRequest) {
         User user = new User();
-        user.setId(userDto.getId());
-        user.setName(userDto.getName());
-        user.setAge(userDto.getAge());
-        user.setHobby(userDto.getHobby());
+        user.setName(userRequest.getName());
+        user.setAge(userRequest.getAge());
+        user.setHobby(userRequest.getHobby());
 
         return user;
     }
 
-    public UserDto convertUserDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setName(user.getName());
-        userDto.setAge(user.getAge());
-        userDto.setHobby(user.getHobby());
+    public Post convertPost(PostRequest postRequest) {
+        UserResponse userResponse = (UserResponse) postRequest.getUser();
+        User user = new User();
+        user.setId(userResponse.getId());
+        user.setName(userResponse.getName());
+        user.setAge(userResponse.getAge());
+        user.setHobby(userResponse.getHobby());
 
-        return userDto;
-    }
-
-    public Post convertPost(PostDto postDto) {
         Post post = new Post();
-        post.setId(postDto.getId());
-        post.setTitle(postDto.getTitle());
-        post.setContent(postDto.getContent());
-        post.setUser(convertUser(postDto.getUserDto()));
+        post.setTitle(postRequest.getTitle());
+        post.setContent(postRequest.getContent());
+        post.setUser(user);
 
         return post;
     }
 
-    public PostDto convertPostDto(Post post) {
-        PostDto postDto = new PostDto();
-        postDto.setId(post.getId());
-        postDto.setTitle(post.getTitle());
-        postDto.setContent(post.getContent());
-        postDto.setUserDto(convertUserDto(post.getUser()));
+    public UserResponse convertUser(User user) {
+        return UserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .age(user.getAge())
+                .hobby(user.getHobby())
+                .build();
+    }
 
-        return postDto;
+    public PostResponse convertPost(Post post) {
+        return PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .userId(post.getUser().getId())
+                .build();
     }
 }

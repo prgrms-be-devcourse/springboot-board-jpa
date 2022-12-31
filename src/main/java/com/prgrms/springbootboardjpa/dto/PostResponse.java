@@ -3,13 +3,11 @@ package com.prgrms.springbootboardjpa.dto;
 import lombok.*;
 
 @Getter
-@Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class PostDto {
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public class PostResponse {
     private Long id;
     private String title;
     private String content;
-    private UserDto userDto;
+    private Long userId;
 }

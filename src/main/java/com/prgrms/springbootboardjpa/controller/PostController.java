@@ -1,55 +1,46 @@
 package com.prgrms.springbootboardjpa.controller;
 
-import com.prgrms.springbootboardjpa.dto.PostDto;
-import com.prgrms.springbootboardjpa.exception.NotFoundException;
+import com.prgrms.springbootboardjpa.dto.PostRequest;
+import com.prgrms.springbootboardjpa.dto.PostResponse;
+import com.prgrms.springbootboardjpa.facade.PostFacade;
 import com.prgrms.springbootboardjpa.service.PostService;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1/")
 @RestController
+@AllArgsConstructor
 public class PostController {
+
     private final PostService postService;
 
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ApiResponse<String>> notFoundHandler(NotFoundException e) {
-        return new ResponseEntity<>(ApiResponse.of(e.getMessage()), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<String>> internalServerErrorHandler(Exception e) {
-        return new ResponseEntity<>(ApiResponse.of(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    private final PostFacade postFacade;
 
     @GetMapping("posts/{id}")
-    public ResponseEntity<ApiResponse<PostDto>> getOne(@PathVariable long id) throws NotFoundException {
+    public ResponseEntity<ApiResponse<PostResponse>> getOne(@PathVariable long id) {
         return ResponseEntity.ok(ApiResponse.of(postService.getOne(id)));
     }
 
     @GetMapping("posts")
-    public ResponseEntity<ApiResponse<Page<PostDto>>> getAll(Pageable pageable) {
+    public ResponseEntity<ApiResponse<Page<PostResponse>>> getAll(Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.of(postService.getAll(pageable)));
     }
 
     @PostMapping("posts")
-    public ResponseEntity<ApiResponse<PostDto>> save(@RequestBody PostDto postDto) {
-        return ResponseEntity.ok(ApiResponse.of(postService.save(postDto)));
+    public ResponseEntity<ApiResponse<PostResponse>> save(@RequestBody PostRequest postRequest) {
+        return ResponseEntity.ok(ApiResponse.of(postFacade.save(postRequest)));
     }
 
     @PostMapping("posts/{id}")
-    public ResponseEntity<ApiResponse<PostDto>> update(@PathVariable long id, @RequestBody PostDto postDto) throws NotFoundException {
-        return ResponseEntity.ok(ApiResponse.of(postService.update(id, postDto)));
+    public ResponseEntity<ApiResponse<PostResponse>> update(@PathVariable long id, @RequestBody PostRequest postRequest) {
+        return ResponseEntity.ok(ApiResponse.of(postService.update(id, postRequest)));
     }
 
     @DeleteMapping("posts/{id}")
-    public ResponseEntity<ApiResponse<String>> delete(@PathVariable long id) throws NotFoundException {
+    public ResponseEntity<ApiResponse<String>> delete(@PathVariable long id) {
         postService.delete(id);
         return ResponseEntity.ok(ApiResponse.of("성공적으로 삭제 됐습니다."));
     }
