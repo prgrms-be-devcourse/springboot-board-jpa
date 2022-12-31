@@ -1,10 +1,10 @@
 package com.prgrms.domain.user;
 
-import static com.prgrms.domain.Regex.EMAIL_REGEX;
-import static com.prgrms.domain.Regex.PASSWORD_REGEX;
+import static com.prgrms.domain.user.Regex.EMAIL_REGEX;
+import static com.prgrms.domain.user.Regex.PASSWORD_REGEX;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.prgrms.domain.BaseEntity;
-import com.prgrms.domain.Regex;
 import com.prgrms.domain.post.Post;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,6 +42,7 @@ public class User extends BaseEntity {
     private Integer age;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Post> posts = new ArrayList<>();
 
     protected User() {

@@ -1,5 +1,6 @@
 package com.prgrms.domain.post;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.prgrms.domain.BaseEntity;
 import com.prgrms.domain.user.User;
 import jakarta.persistence.Column;
@@ -32,6 +33,7 @@ public class Post extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     protected Post() {
