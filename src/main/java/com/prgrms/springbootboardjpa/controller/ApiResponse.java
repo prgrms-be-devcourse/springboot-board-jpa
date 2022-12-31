@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApiResponse<T> {
+    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private T data;
-    private String message = "NO MESSAGE";
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime serverDatetime;
@@ -19,20 +19,18 @@ public class ApiResponse<T> {
         this.serverDatetime = LocalDateTime.now();
     }
 
-    private ApiResponse(String message) {
-        this.message = message;
-        this.serverDatetime = LocalDateTime.now();
-    }
-
-    public static <T> ApiResponse<T> of(T data, String message) {
-        return new ApiResponse<>(data, message, LocalDateTime.now());
-    }
-
     public static <T> ApiResponse<T> of(T data) {
         return new ApiResponse<>(data);
     }
 
-    public static <T> ApiResponse<T> of(String message) {
-        return new ApiResponse<>(message);
+    public static ErrorResponse error(String message) { return new ErrorResponse(message); }
+
+    static class ErrorResponse {
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
+        private final String error;
+
+        private ErrorResponse(String error) {
+            this.error = error;
+        }
     }
 }
