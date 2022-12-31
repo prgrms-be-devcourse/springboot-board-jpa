@@ -1,4 +1,4 @@
-package com.prgrms.domain;
+package com.prgrms.domain.user;
 
 public enum Regex {
 
