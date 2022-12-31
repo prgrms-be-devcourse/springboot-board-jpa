@@ -1,9 +1,10 @@
 package com.programmers.jpaboard.web.post;
 
+import java.net.URI;
+
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,9 +30,10 @@ public class PostApiController {
 	private final PostService postService;
 
 	@PostMapping
-	ResponseEntity<PostResponseDto> createPost(@RequestBody @Valid PostCreateRequestDto postCreateRequestDto) {
+	ResponseEntity<String> createPost(@RequestBody @Valid PostCreateRequestDto postCreateRequestDto) {
 		PostResponseDto createdPostDto = postService.createPost(postCreateRequestDto);
-		return new ResponseEntity<>(createdPostDto, HttpStatus.CREATED);
+		URI location = URI.create("/api/v1/posts/" + createdPostDto.getId());
+		return ResponseEntity.created(location).build();
 	}
 
 	@GetMapping

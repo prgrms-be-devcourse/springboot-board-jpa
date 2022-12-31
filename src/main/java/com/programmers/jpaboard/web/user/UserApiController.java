@@ -1,8 +1,9 @@
 package com.programmers.jpaboard.web.user;
 
+import java.net.URI;
+
 import javax.validation.Valid;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,8 +24,9 @@ public class UserApiController {
 	private final UserService userService;
 
 	@PostMapping
-	ResponseEntity<UserResponseDto> createUser(@RequestBody @Valid UserCreateRequestDto userCreateRequestDto) {
+	ResponseEntity<String> createUser(@RequestBody @Valid UserCreateRequestDto userCreateRequestDto) {
 		UserResponseDto createdUserDto = userService.createUser(userCreateRequestDto);
-		return new ResponseEntity<>(createdUserDto, HttpStatus.CREATED);
+		URI location = URI.create("/api/v1/users/" + createdUserDto.getId());
+		return ResponseEntity.created(location).build();
 	}
 }

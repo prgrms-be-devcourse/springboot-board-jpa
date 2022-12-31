@@ -16,8 +16,8 @@ include::{snippets}/post-save/request-fields.adoc[]
 
 .Response
 include::{snippets}/post-save/http-response.adoc[]
-.Response fields
-include::{snippets}/post-save/response-fields.adoc[]
+.Response headers
+include::{snippets}/post-save/response-headers.adoc[]
 
 === 게시글 단건 조회
 
@@ -76,5 +76,5 @@ include::{snippets}/user-save/request-fields.adoc[]
 
 .Response
 include::{snippets}/user-save/http-response.adoc[]
-.Response fields
-include::{snippets}/user-save/response-fields.adoc[]
+.Response headers
+include::{snippets}/user-save/response-headers.adoc[]

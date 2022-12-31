@@ -1,6 +1,7 @@
 package com.programmers.jpaboard.web.post;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -76,10 +77,7 @@ class PostApiControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON)
 				.content(requestBody))
-			.andExpect(jsonPath("id").value(createdPostDto.getId()))
-			.andExpect(jsonPath("title").value(createdPostDto.getTitle()))
-			.andExpect(jsonPath("content").value(createdPostDto.getContent()))
-			.andExpect(jsonPath("userId").value(createdPostDto.getUserId()))
+			.andExpect(header().string("Location", "/api/v1/posts/" + createdPostDto.getId()))
 			.andExpect(status().isCreated())
 			.andDo(print())
 			.andDo(document("post-save",
@@ -88,13 +86,8 @@ class PostApiControllerTest {
 					fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
 					fieldWithPath("userId").type(JsonFieldType.NUMBER).description("게시글 작성자 ID")
 				),
-				responseFields(
-					fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 ID"),
-					fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
-					fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
-					fieldWithPath("userId").type(JsonFieldType.NUMBER).description("게시글 작성자 Id"),
-					fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시글 생성시간"),
-					fieldWithPath("lastModifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정시간")
+				responseHeaders(
+					headerWithName("Location").description("생성된 게시글 URI")
 				)));
 
 		verify(postService).createPost(any(PostCreateRequestDto.class));
