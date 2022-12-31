@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequestMapping("/api/v1/")
 @RestController
 @AllArgsConstructor
@@ -30,12 +32,12 @@ public class PostController {
     }
 
     @PostMapping("posts")
-    public ResponseEntity<ApiResponse<PostResponse>> save(@RequestBody PostRequest postRequest) {
+    public ResponseEntity<ApiResponse<PostResponse>> save(@RequestBody @Valid PostRequest postRequest) {
         return ResponseEntity.ok(ApiResponse.of(postFacade.save(postRequest)));
     }
 
     @PostMapping("posts/{id}")
-    public ResponseEntity<ApiResponse<PostResponse>> update(@PathVariable long id, @RequestBody PostRequest postRequest) {
+    public ResponseEntity<ApiResponse<PostResponse>> update(@PathVariable long id, @RequestBody @Valid PostRequest postRequest) {
         return ResponseEntity.ok(ApiResponse.of(postService.update(id, postRequest)));
     }
 
