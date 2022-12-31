@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Table(name = "users")
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,14 +24,4 @@ public class User extends BaseEntity {
 
     @Column(name = "hobby")
     private String hobby;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Post> posts = new ArrayList<>();
-
-    public void addPost(Post post) {
-        if (!posts.contains(post)) {
-            posts.add(post);
-            post.setUser(this);
-        }
-    }
 }

@@ -2,7 +2,6 @@ package com.prgrms.springbootboardjpa.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -15,8 +14,11 @@ import java.time.LocalDateTime;
 @Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntity extends BaseTimeEntity {
-    @Column(name = "created_by")
-    @CreatedBy
-    private String createdBy;
+public abstract class BaseTimeEntity {
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }
