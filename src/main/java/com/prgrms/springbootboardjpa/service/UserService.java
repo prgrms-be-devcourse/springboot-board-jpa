@@ -1,7 +1,7 @@
 package com.prgrms.springbootboardjpa.service;
 
 import com.prgrms.springbootboardjpa.dto.UserRequest;
-import com.prgrms.springbootboardjpa.dto.DtoMapper;
+import com.prgrms.springbootboardjpa.dto.UserDtoMapper;
 import com.prgrms.springbootboardjpa.dto.UserResponse;
 import com.prgrms.springbootboardjpa.entity.User;
 import com.prgrms.springbootboardjpa.exception.NotFoundException;
@@ -19,16 +19,18 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final DtoMapper dtoMapper;
+    private final UserDtoMapper userDtoMapper;
 
-    public UserService(UserRepository userRepository, DtoMapper dtoMapper) {
+    public UserService(UserRepository userRepository, UserDtoMapper userDtoMapper) {
         this.userRepository = userRepository;
-        this.dtoMapper = dtoMapper;
+        this.userDtoMapper = userDtoMapper;
     }
 
     @Transactional
     public long save(UserRequest userRequest) {
-        User user = dtoMapper.convertUser(userRequest);
+        User user = userDtoMapper.convertUser(userRequest);
+        // 임시 처리 (AuditAware 컴포넌트 추가 예정)
+        user.setCreatedBy(user.getName());
 
         User entity = userRepository.save(user);
 
@@ -38,19 +40,19 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponse getOne(long id) {
         return userRepository.findById(id)
-                .map(dtoMapper::convertUser)
+                .map(userDtoMapper::convertUser)
                 .orElseThrow(NotFoundException::new);
     }
 
     @Transactional(readOnly = true)
     public Page<UserResponse> getAll(Pageable pageable) {
         return userRepository.findAll(pageable)
-                .map(dtoMapper::convertUser);
+                .map(userDtoMapper::convertUser);
     }
 
     @Transactional
     public UserResponse update(long id, UserRequest userRequest) {
-        return dtoMapper.convertUser(
+        return userDtoMapper.convertUser(
                 userRepository.findById(id)
                         .map(user -> {
                             if (userRequest.getName() != null && !userRequest.getName().equals(user.getName())) user.setName(userRequest.getName());
