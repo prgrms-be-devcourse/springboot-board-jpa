@@ -1,0 +1,80 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 게시글
+
+=== 게시글 생성
+
+==== POST /api/v1/posts
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+.Request fields
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+.Response headers
+include::{snippets}/post-save/response-headers.adoc[]
+
+=== 게시글 단건 조회
+
+==== GET /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-get/http-request.adoc[]
+.Request parameters
+include::{snippets}/post-get/path-parameters.adoc[]
+
+.Response
+include::{snippets}/post-get/http-response.adoc[]
+.Response fields
+include::{snippets}/post-get/response-fields.adoc[]
+
+=== 게시글 페이지 조회
+
+==== GET /api/v1/posts?page=0&size=2
+
+.Request
+include::{snippets}/post-page-get/http-request.adoc[]
+.Request parameters
+include::{snippets}/post-page-get/request-parameters.adoc[]
+
+.Response
+include::{snippets}/post-page-get/http-response.adoc[]
+.Response fields
+include::{snippets}/post-page-get/response-fields.adoc[]
+
+=== 게시글 수정
+
+==== PATCH /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+.Request parameters
+include::{snippets}/post-update/path-parameters.adoc[]
+.Request fields
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+.Response fields
+include::{snippets}/post-update/response-fields.adoc[]
+
+== 사용자
+
+=== 사용자 생성
+
+==== POST /api/v1/posts
+
+.Request
+include::{snippets}/user-save/http-request.adoc[]
+.Request fields
+include::{snippets}/user-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-save/http-response.adoc[]
+.Response headers
+include::{snippets}/user-save/response-headers.adoc[]

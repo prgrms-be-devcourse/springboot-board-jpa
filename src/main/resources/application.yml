@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    hikari:
+      driver-class-name: org.h2.Driver
+      url: ${DB_URL}
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
+logging:
+  level:
+    org.springframework: debug
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
