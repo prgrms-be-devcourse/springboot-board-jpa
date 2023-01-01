@@ -37,8 +37,10 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String hobby;
 
+    @Column(nullable = false)
     private Integer age;
 
     @OneToMany(mappedBy = "user")
