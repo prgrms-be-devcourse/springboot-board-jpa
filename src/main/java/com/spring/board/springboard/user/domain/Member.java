@@ -6,6 +6,7 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -97,7 +98,7 @@ public class Member {
             throw new IllegalArgumentException("이메일 형식이 맞지 않습니다.");
         }
 
-        if(name.isBlank()){
+        if(Objects.isNull(name) || name.isBlank()){
             throw new IllegalArgumentException("이름은 공백일 수 없습니다.");
         }
 
