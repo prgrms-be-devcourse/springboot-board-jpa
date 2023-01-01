@@ -1,0 +1,35 @@
+= 유저 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== 유저 저장
+
+=== 요청
+
+include::{snippets}/users-save/http-request.adoc[]
+
+include::{snippets}/users-save/request-fields.adoc[]
+
+=== 응답
+
+include::{snippets}/users-save/http-response.adoc[]
+
+include::{snippets}/users-save/response-fields.adoc[]
+
+== 유저 조회
+
+=== 요청
+
+include::{snippets}/users-get/http-request.adoc[]
+
+include::{snippets}/users-get/path-parameters.adoc[]
+
+=== 응답
+
+include::{snippets}/users-get/http-response.adoc[]
+
+include::{snippets}/users-get/response-fields.adoc[]

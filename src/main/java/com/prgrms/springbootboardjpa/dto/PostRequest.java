@@ -1,13 +1,11 @@
 package com.prgrms.springbootboardjpa.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostRequest {
     @NotBlank(message = "제목은 공백일 수 없습니다.")

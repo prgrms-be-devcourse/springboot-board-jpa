@@ -2,6 +2,7 @@ package com.prgrms.springbootboardjpa.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Getter
+@Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserRequest {
     @NotBlank(message = "이름은 공백일 수 없습니다.")
