@@ -16,8 +16,6 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.springframework.util.Assert;
 
 @Entity
@@ -57,8 +55,8 @@ public class User extends BaseEntity {
 
     public User(Long id, String name, String hobby, Integer age, String email, String password) {
 
-        Assert.isTrue(verifyRegex(email, EMAIL_REGEX), "이메일 형식을 확인해주세요");
-        Assert.isTrue(verifyRegex(password, PASSWORD_REGEX),
+        Assert.isTrue(EMAIL_REGEX.match(email), "이메일 형식을 확인해주세요");
+        Assert.isTrue(PASSWORD_REGEX.match(password),
             "비밀번호는 영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다.");
         validateAge(age);
         validateName(name);
@@ -100,12 +98,12 @@ public class User extends BaseEntity {
         return age;
     }
 
-    private boolean verifyRegex(String subject, Regex regex) {
+   /* private boolean verifyRegex(String subject, Regex regex) {
         String ePattern = regex.getRgx();
         Pattern p = Pattern.compile(ePattern);
         Matcher m = p.matcher(subject);
         return m.matches();
-    }
+    }*/
 
     private void validateAge(int age) {
         Assert.isTrue(age > 0, "나이는 1 이상 이여야 합니다.");
