@@ -2,14 +2,13 @@ package com.spring.board.springboard.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.board.springboard.post.domain.dto.PostCreateRequestDto;
+import com.spring.board.springboard.post.domain.dto.ResponsePostDto;
 import com.spring.board.springboard.post.service.PostService;
 import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
 import com.spring.board.springboard.user.repository.MemberRepository;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -42,28 +40,36 @@ class PostControllerTest {
     private PostService postService;
 
     @Autowired
-    ObjectMapper objectMapper;
-
-    @Autowired
     private MemberRepository memberRepository;
 
-    @BeforeAll
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    private static Member member;
+
+    @BeforeEach
     void setUp() {
-        memberRepository.save(
-                new Member("user@naver.com", "password1234","이수린", 24, Hobby.SLEEP)
-        );
-
-        PostCreateRequestDto postCreateRequestDTO = new PostCreateRequestDto(
-                "스프링 게시판 미션",
-                "이 미션 끝나면 크리스마스에요",
-                1);
-
-        postService.createPost(postCreateRequestDTO);
+        member = new Member("user@naver.com", "password1234", "아무개", 49, Hobby.SLEEP);
+        memberRepository.save(member);
     }
+
+    @AfterAll
+    void clean() {
+        System.out.println(memberRepository.findAll().size());
+    }
+
 
     @DisplayName("모든 게시물을 불러올 수 있다.")
     @Test
     void getAllPosts() throws Exception {
+        postService.createPost(
+                new PostCreateRequestDto(
+                        "새로운 글의 제목,",
+                        "새로운 글의 내용",
+                        member.getId()
+                )
+        );
+
         mockMvc.perform(get("/posts")
                         .param("page",
                                 String.valueOf(0))
@@ -96,7 +102,7 @@ class PostControllerTest {
         PostCreateRequestDto postCreateRequestDTO = new PostCreateRequestDto(
                 "저장하기",
                 "게시판에 새 글 저장하기",
-                1);
+                member.getId());
 
         // when and then
         mockMvc.perform(post("/posts")
@@ -116,7 +122,16 @@ class PostControllerTest {
     @DisplayName("하나의 게시물을 조회할 수 있다.")
     @Test
     void getPost() throws Exception {
-        mockMvc.perform(get("/posts/{postId}", 1)
+        // given
+        ResponsePostDto newPost = postService.createPost(
+                new PostCreateRequestDto(
+                        "하나의 게시물 조회",
+                        "하나의 게시물을 조회할 수 있다.",
+                        member.getId()
+                )
+        );
+
+        mockMvc.perform(get("/posts/{postId}", newPost.postId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -142,13 +157,21 @@ class PostControllerTest {
     @DisplayName("게시물의 제목과 내용을 수정할 수 있다.")
     @Test
     void updatePost() throws Exception {
+        ResponsePostDto newPost = postService.createPost(
+                new PostCreateRequestDto(
+                        "hi hello",
+                        "hello world",
+                        member.getId()
+                )
+        );
+
         PostCreateRequestDto updatePostDTO = new PostCreateRequestDto(
                 "수정하기",
                 "게시판 새 글 저장하기 -> 수정된 내용임",
-                1
+                member.getId()
         );
 
-        mockMvc.perform(post("/posts/{postId}", 1)
+        mockMvc.perform(post("/posts/{postId}", newPost.postId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatePostDTO)))
                 .andExpect(status().isOk())

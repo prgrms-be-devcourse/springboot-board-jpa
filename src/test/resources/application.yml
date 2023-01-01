@@ -1,13 +1,23 @@
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/spring-board;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:~/spring-board
     username: sa
     password:
+
   jpa:
+    generate-ddl: true
     open-in-view: false
-    hibernate:
-      ddl-auto: create
     show-sql: true
     properties:
-      hibernate.format_sql: true
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        hbm2ddl:
+          auto: create-drop
+        format_sql: false
+
+    database: h2
+  h2:
+    console:
+      enabled: true
+      path: /spring-board

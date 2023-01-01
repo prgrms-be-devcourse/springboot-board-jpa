@@ -36,6 +36,11 @@ class PostRepositoryTest {
         memberRepository.save(member);
     }
 
+    @AfterAll
+    void after() {
+        System.out.println(memberRepository.findAll().size());
+    }
+
     @Test
     @DisplayName("게시물을 생성할 수 있다.")
     void create_post_test() {
