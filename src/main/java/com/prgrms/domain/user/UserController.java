@@ -1,15 +1,15 @@
 package com.prgrms.domain.user;
 
-import static com.prgrms.dto.UserDto.Request;
+import static com.prgrms.dto.UserDto.UserCreateRequest;
 
-import com.prgrms.dto.UserDto.Request.Login;
+import com.prgrms.dto.UserDto.LoginRequest;
 import com.prgrms.dto.UserDto.Response;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
-import java.nio.file.AccessDeniedException;
 import java.util.Arrays;
+import javax.naming.AuthenticationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<Response> getLoggedUserInfo(HttpServletRequest request)
-        throws AccessDeniedException {
+        throws AuthenticationException {
 
         long loggedUserId = Long.parseLong(getCookieUserId(request).getValue());
         Response userInfo = service.findUserById(loggedUserId);
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> userSignUp(@RequestBody Request userDto) {
+    public ResponseEntity<Void> userSignUp(@RequestBody UserCreateRequest userDto) {
 
         service.insertUser(userDto);
         URI loginPageUri = URI.create("api/users/login");
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody Login loginDto,
+    public ResponseEntity<Void> login(@RequestBody LoginRequest loginDto,
         HttpServletResponse servletResponse) {
 
         Response response = service.login(loginDto);
@@ -63,7 +63,7 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response,HttpServletRequest request)
-        throws AccessDeniedException {
+        throws AuthenticationException {
 
         Cookie cookieUserId = getCookieUserId(request);
         cookieUserId.setValue("");
@@ -79,13 +79,14 @@ public class UserController {
         response.addCookie(userCookie);
     }
 
-    private Cookie getCookieUserId(HttpServletRequest request) throws AccessDeniedException {
+    private Cookie getCookieUserId(HttpServletRequest request)
+        throws AuthenticationException {
 
         return Arrays.stream(request.getCookies())
-            .filter(i -> "userId".equals(i.getName()))
-            .filter(i -> !"".equals(i.getValue()))
+            .filter(cookie -> "userId".equals(cookie.getName()))
+            .filter(cookie -> !"".equals(cookie.getValue()))
             .findAny()
-            .orElseThrow(() -> new AccessDeniedException("접근 권한이 없습니다"));
+            .orElseThrow(() -> new AuthenticationException("접근 권한이 없습니다."));
     }
 
 }
