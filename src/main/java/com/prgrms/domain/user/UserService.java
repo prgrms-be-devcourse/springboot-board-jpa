@@ -1,11 +1,11 @@
 package com.prgrms.domain.user;
 
-import static com.prgrms.dto.UserDto.Request;
-
-import com.prgrms.dto.UserDto.Request.Login;
+import com.prgrms.dto.UserDto.UserCreateRequest;
+import com.prgrms.dto.UserDto.LoginRequest;
 import com.prgrms.dto.UserDto.Response;
 import com.prgrms.exception.ErrorCode;
 import com.prgrms.exception.customException.EmailDuplicateException;
+import com.prgrms.exception.customException.LoginFailException;
 import com.prgrms.exception.customException.UserNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class UserService {
     }
 
     @Transactional
-    public Response insertUser(@Valid Request userDto) {
+    public Response insertUser(@Valid UserCreateRequest userDto) {
 
         checkEmailDuplicate(userDto.email());
 
@@ -47,11 +47,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Response login(@Valid Login loginDto) {
+    public Response login(@Valid LoginRequest loginDto) {
 
         return userRepository.findUser(loginDto.email(), loginDto.password())
             .map(Response::new)
-            .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new LoginFailException(ErrorCode.LOGIN_FAILED));
     }
 
 }

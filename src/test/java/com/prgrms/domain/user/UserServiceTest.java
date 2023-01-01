@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import com.prgrms.dto.UserDto.Request;
+import com.prgrms.dto.UserDto.UserCreateRequest;
 import com.prgrms.dto.UserDto.Response;
 import com.prgrms.exception.customException.EmailDuplicateException;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +34,7 @@ class UserServiceTest {
     void joinUser() {
         //Given
         String email = "dog1234@gmail.com";
-        Request request = new Request(name, hobby, age, email, password);
+        UserCreateRequest request = new UserCreateRequest(name, hobby, age, email, password);
         User user = new User(
             request.name(),
             request.hobby(),
@@ -58,7 +58,7 @@ class UserServiceTest {
 
         //Given
         String email = "test@naver.com";
-        Request request = new Request(name, hobby, age, email, password);
+        UserCreateRequest request = new UserCreateRequest(name, hobby, age, email, password);
 
         userService.insertUser(request);
         verify(userRepository).existsByEmail(email);
