@@ -98,13 +98,6 @@ public class User extends BaseEntity {
         return age;
     }
 
-   /* private boolean verifyRegex(String subject, Regex regex) {
-        String ePattern = regex.getRgx();
-        Pattern p = Pattern.compile(ePattern);
-        Matcher m = p.matcher(subject);
-        return m.matches();
-    }*/
-
     private void validateAge(int age) {
         Assert.isTrue(age > 0, "나이는 1 이상 이여야 합니다.");
     }
