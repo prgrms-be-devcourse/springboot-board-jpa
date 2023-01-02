@@ -87,16 +87,10 @@ public class Member {
 
 
     private void validate(String email, String password, String name, Integer age){
-        Assert.notNull(email, "이메일은 필수입니다.");
         Assert.notNull(password, "비밀번호는 필수입니다.");
         Assert.notNull(age, "나이는 필수입니다.");
 
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-
-        if(!matcher.matches()){
-            throw new IllegalArgumentException("이메일 형식이 맞지 않습니다.");
-        }
+        EmailValidator.validate(email);
 
         if(Objects.isNull(name) || name.isBlank()){
             throw new IllegalArgumentException("이름은 공백일 수 없습니다.");
