@@ -1,0 +1,92 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== User
+
+=== User 생성하기
+
+==== /api/users
+
+.Request
+include::{snippets}/user-create/http-request.adoc[]
+include::{snippets}/user-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-create/http-response.adoc[]
+include::{snippets}/user-create/response-fields.adoc[]
+
+== Post
+
+=== Post 생성하기
+
+==== /api/posts/{id}
+
+.Request
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+=== Post 수정하기
+
+==== /api/posts/user/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+=== Post postId로 조회하기
+
+==== /api/posts/{id}
+
+.Request
+include::{snippets}/post-getByPostId/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getByPostId/http-response.adoc[]
+include::{snippets}/post-getByPostId/response-fields.adoc[]
+
+=== Post userId로 조회하기
+
+==== /api/posts/user/{id}
+
+.Request
+include::{snippets}/post-getByUserId/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getByUserId/http-response.adoc[]
+include::{snippets}/post-getByUserId/response-fields.adoc[]
+
+=== Post 전체 조회하기
+
+==== /api/posts/user/{id}
+
+.Request
+include::{snippets}/post-getAll/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getAll/http-response.adoc[]
+include::{snippets}/post-getAll/response-fields.adoc[]
+
+=== Post 페이지 단위로 조회하기
+
+==== /api/posts/user/{id}
+
+.Request
+include::{snippets}/post-getPostsToPage/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getPostsToPage/http-response.adoc[]
+include::{snippets}/post-getPostsToPage/response-fields.adoc[]
+
+
+
+
