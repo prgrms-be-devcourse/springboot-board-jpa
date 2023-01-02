@@ -9,6 +9,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -21,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 // @SpringBootTest
 @DataJpaTest
-// @ExtendWith(SpringExtension.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UserRepositoryTest{// extends MySQLContainer {
 
     @Autowired
@@ -39,9 +41,12 @@ public class UserRepositoryTest{// extends MySQLContainer {
 
         // When
         List<User> allRetrieved = repository.findAll();
+        User retrieved_user = allRetrieved.get(0);
 
         // Then
         assertThat(allRetrieved).hasSize(1);
-
+        assertThat(retrieved_user.getAge()).isEqualTo(tmpAge);
+        assertThat(retrieved_user.getHobby()).isEqualTo(tmpHobby);
+        assertThat(retrieved_user.getName()).isEqualTo(tmpName);
     }
 }
