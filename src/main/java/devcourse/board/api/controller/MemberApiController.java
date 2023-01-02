@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import static devcourse.board.api.util.AuthenticationUtil.getLoggedInMemberId;
+import static devcourse.board.api.authentication.AuthenticationUtil.getLoggedInMemberId;
 
 @RestController
 @RequestMapping("/members")
