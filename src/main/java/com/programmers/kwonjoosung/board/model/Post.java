@@ -3,7 +3,6 @@ package com.programmers.kwonjoosung.board.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -13,10 +12,10 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Post extends BaseEntity {
+public class Post extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 30)
@@ -45,7 +44,7 @@ public class Post extends BaseEntity {
     }
 
     public void setUser(User user) { // 연관관계 편의 메소드
-        if(Objects.nonNull(this.user)) {
+        if (Objects.nonNull(this.user)) {
             this.user.getPosts().remove(this);
         }
         this.user = user;

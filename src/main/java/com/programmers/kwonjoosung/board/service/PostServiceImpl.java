@@ -1,15 +1,16 @@
 package com.programmers.kwonjoosung.board.service;
 
-import com.programmers.kwonjoosung.board.model.User;
-import com.programmers.kwonjoosung.board.model.dto.IdResponse;
-import com.programmers.kwonjoosung.board.model.dto.PostResponse;
-import com.programmers.kwonjoosung.board.repository.PostRepository;
 import com.programmers.kwonjoosung.board.model.Post;
+import com.programmers.kwonjoosung.board.model.User;
 import com.programmers.kwonjoosung.board.model.dto.CreatePostRequest;
+import com.programmers.kwonjoosung.board.model.dto.IdResponse;
+import com.programmers.kwonjoosung.board.model.dto.PostInfo;
 import com.programmers.kwonjoosung.board.model.dto.UpdatePostRequest;
+import com.programmers.kwonjoosung.board.repository.PostRepository;
 import com.programmers.kwonjoosung.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,29 +28,35 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    private static void isEmpty(List<?> list, String message) {
+        if (list == null || list.isEmpty()) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
     @Transactional(readOnly = true)
     @Override
-    public PostResponse findPostByPostId(Long postId) {
+    public PostInfo findPostByPostId(Long postId) {
         return postRepository.findById(postId)
-                .map(PostResponse::new)
+                .map(PostInfo::of)
                 .orElseThrow(() ->
                         new IllegalArgumentException(NOT_FOUND_POST_BY_POST_ID_MESSAGE));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<PostResponse> findPostByUserId(Long userId) {
-        List<Post> posts = postRepository.findByUser_Id(userId);
-        isEmpty(posts,NOT_FOUND_POST_BY_USER_ID_MESSAGE);
-        return posts.stream().map(PostResponse::new).toList();
+    public List<PostInfo> findPostByUserId(Long userId) {
+        List<PostInfo> posts = postRepository.findByUserId(userId);
+        isEmpty(posts, NOT_FOUND_POST_BY_USER_ID_MESSAGE);
+        return posts;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<PostResponse> findAllPost() {
+    public List<PostInfo> findAllPost() {
         List<Post> posts = postRepository.findAll();
-        isEmpty(posts,NOT_FOUND_POST_MESSAGE);
-        return posts.stream().map(PostResponse::new).toList();
+        isEmpty(posts, NOT_FOUND_POST_MESSAGE);
+        return posts.stream().map(PostInfo::of).toList();
     }
 
     @Transactional
@@ -64,32 +71,24 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public void updatePost(Long postId, UpdatePostRequest request) {
+    public PostInfo updatePost(Long postId, UpdatePostRequest request) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() ->
                         new IllegalArgumentException(NOT_FOUND_POST_BY_POST_ID_MESSAGE));
 
-        if(request.getTitle() != null) {
+        if (request.getTitle() != null) {
             post.changeTitle(request.getTitle());
         }
 
-        if(request.getContent() != null) {
+        if (request.getContent() != null) {
             post.changeContent(request.getContent());
         }
+        return PostInfo.of(post);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<PostResponse> findAllPost(PageRequest pageRequest) {
-        return postRepository.findAll(pageRequest)
-                .stream()
-                .map(PostResponse::new)
-                .toList();
-    }
-
-    private static void isEmpty(List<?> list, String message) {
-        if(list == null || list.size() == 0 ) {
-            throw new IllegalArgumentException(message);
-        }
+    public Page<PostInfo> findAllPost(Pageable pageable) {
+        return postRepository.findAll(pageable).map(PostInfo::of);
     }
 }

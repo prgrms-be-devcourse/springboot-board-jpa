@@ -2,23 +2,24 @@ package com.programmers.kwonjoosung.board.service;
 
 import com.programmers.kwonjoosung.board.model.dto.CreatePostRequest;
 import com.programmers.kwonjoosung.board.model.dto.IdResponse;
-import com.programmers.kwonjoosung.board.model.dto.PostResponse;
+import com.programmers.kwonjoosung.board.model.dto.PostInfo;
 import com.programmers.kwonjoosung.board.model.dto.UpdatePostRequest;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface PostService {
 
-    PostResponse findPostByPostId(Long postId);
+    PostInfo findPostByPostId(Long postId);
 
-    List<PostResponse> findPostByUserId(Long userId);
+    List<PostInfo> findPostByUserId(Long userId);
 
-    List<PostResponse> findAllPost();
+    List<PostInfo> findAllPost();
 
-    List<PostResponse> findAllPost(PageRequest pageRequest);
+    Page<PostInfo> findAllPost(Pageable pageable);
 
     IdResponse createPost(Long userId, CreatePostRequest request);
 
-    void updatePost(Long postId, UpdatePostRequest request);
+    PostInfo updatePost(Long postId, UpdatePostRequest request);
 }
