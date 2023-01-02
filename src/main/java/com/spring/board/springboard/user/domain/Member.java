@@ -1,14 +1,14 @@
 package com.spring.board.springboard.user.domain;
 
 import com.spring.board.springboard.post.domain.Post;
+import com.spring.board.springboard.user.domain.validation.EmailValidator;
+import com.spring.board.springboard.user.exception.AuthenticateException;
 import jakarta.persistence.*;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "member")
@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
         allocationSize = 1)
 public class Member {
 
-    private static final String EMAIL_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
     private static final Integer MIN_AGE = 9;
 
     @Id
@@ -85,23 +84,28 @@ public class Member {
         return new ArrayList<>(postList);
     }
 
+    public void login(String requestPassword) {
+        if (!Objects.equals(requestPassword, this.password)) {
+            throw new AuthenticateException("password가 올바르지 않습니다.");
+        }
+    }
 
-    private void validate(String email, String password, String name, Integer age){
+    private void validate(String email, String password, String name, Integer age) {
         Assert.notNull(password, "비밀번호는 필수입니다.");
         Assert.notNull(age, "나이는 필수입니다.");
 
         EmailValidator.validate(email);
 
-        if(Objects.isNull(name) || name.isBlank()){
+        if (Objects.isNull(name) || name.isBlank()) {
             throw new IllegalArgumentException("이름은 공백일 수 없습니다.");
         }
 
-        if(age <= MIN_AGE){
+        if (age <= MIN_AGE) {
             throw new IllegalArgumentException("10살 미만은 서비스 이용이 불가능합니다");
         }
 
-        if(password.length() > 30
-                || password.length() < 5){
+        if (password.length() > 30
+                || password.length() < 5) {
             throw new IllegalArgumentException("비밀번호는 5자리 이상 30자리 이하여야 합니다.");
         }
     }
