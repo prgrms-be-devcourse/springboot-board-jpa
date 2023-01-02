@@ -49,7 +49,7 @@ public class MemberService {
 
     @Transactional
     public MemberDetailResponseDto login(MemberLoginDto memberLoginDto) {
-        Member findMember = memberRepository.findByEmail(
+        final Member findMember = memberRepository.findByEmail(
                         memberLoginDto.email())
                 .orElseThrow(() -> {
                     throw new NoMemberException(
