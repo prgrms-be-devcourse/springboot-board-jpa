@@ -12,14 +12,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class MemberExceptionHandler {
 
     @ExceptionHandler(NoMemberException.class)
-    public ResponseEntity<ErrorResponse> handleNoMemberException(NoMemberException noMemberException){
+    public ResponseEntity<ErrorResponse> handleNoMemberException(NoMemberException noMemberException) {
         ErrorResponse errorResponse = new ErrorResponse(noMemberException.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(errorResponse);
     }
 
     @ExceptionHandler(AuthenticateException.class)
-    public ResponseEntity<ErrorResponse> handleAuthenticateException(AuthenticateException authenticateException){
+    public ResponseEntity<ErrorResponse> handleAuthenticateException(AuthenticateException authenticateException) {
         ErrorResponse errorResponse = new ErrorResponse(authenticateException.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(errorResponse);
     }
 }

@@ -12,23 +12,25 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<ValidationErrorResponse>> handleDtoValidationException(MethodArgumentNotValidException methodArgumentNotValidException){
+    public ResponseEntity<List<ValidationErrorResponse>> handleDtoValidationException(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<ValidationErrorResponse> responses = methodArgumentNotValidException.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(fieldError -> new ValidationErrorResponse(
-                        fieldError.getField(),
-                        fieldError.getDefaultMessage()
-                )
+                                fieldError.getField(),
+                                fieldError.getDefaultMessage()
+                        )
                 ).toList();
 
-        return ResponseEntity.badRequest().body(responses);
+        return ResponseEntity.badRequest()
+                .body(responses);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleEntityValidationException(IllegalArgumentException illegalArgumentException){
+    public ResponseEntity<ErrorResponse> handleEntityValidationException(IllegalArgumentException illegalArgumentException) {
         ErrorResponse errorResponse = new ErrorResponse(illegalArgumentException.getMessage());
 
-        return ResponseEntity.badRequest().body(errorResponse);
+        return ResponseEntity.badRequest()
+                .body(errorResponse);
     }
 }
