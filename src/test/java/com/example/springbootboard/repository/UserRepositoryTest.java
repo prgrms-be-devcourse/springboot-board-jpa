@@ -1,71 +1,73 @@
 package com.example.springbootboard.repository;
 
-import com.example.springbootboard.MySQLContainer;
-import com.example.springbootboard.entity.Hobby;
 import com.example.springbootboard.entity.User;
-import com.example.springbootboard.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.springbootboard.entity.Hobby.getRandomHobby;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 
-// @SpringBootTest
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@SpringBootTest
+// @DataJpaTest
+// @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UserRepositoryTest{// extends MySQLContainer {
 
     @Autowired
     private UserRepository repository;
 
-    void addUserByNum(int n){
+    @Autowired
+    EntityManagerFactory emf;
+
+    List<User> getUsers(int n){
+        List<User> users = new ArrayList<>();
         for(int i = 0; i < n; i++){
-            repository.save(User.builder().name("user"+ i ).age(i + 20).hobby(getRandomHobby()).build());
+            users.add(User.builder().name("user" + i).age(20 + i).hobby(getRandomHobby()).build());
         }
+        return users;
     }
+
 
     @AfterEach
     void cleanUp(){
         repository.deleteAll();
+        //entityManagr
+//        emf.createEntityManager()
+//            .createNativeQuery("ALTER TABLE users AUTO_INCREMENT = 1;")
+//            .executeUpdate();
     }
 
-    @Test
-    @DisplayName("유저 생성 테스트")
-    void userGenerationTest() {
-        // Given
-        addUserByNum(1);
-
-        // When
-        List<User> allRetrieved = repository.findAll();
-        User retrieved_user = allRetrieved.get(0);
-
-        // Then
-        assertThat(allRetrieved).hasSize(1);
-        assertThat(retrieved_user.getAge()).isEqualTo(20);
-        assertThat(retrieved_user.getName()).isEqualTo("user0");
-    }
 
     @Test
-    @DisplayName("유저 변경 테스트")
-    void  updateTest() {
+    @DisplayName("저장, 조회")
+    void persistenceTest () {
         // Given
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        User user = getUsers(1).get(0);
 
         // When
+        transaction.begin();
+        em.persist(user);
+        transaction.commit();
 
         // Then
-
+        Optional<User> retrieved = repository.findById(1L);
+        assertThat(retrieved).isPresent();
+        assertThat(retrieved.get().getName()).isEqualTo("user0");
+        assertThat(retrieved.get().getAge()).isEqualTo(20);
     }
 }
