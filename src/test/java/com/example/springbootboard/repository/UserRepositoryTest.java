@@ -29,6 +29,12 @@ public class UserRepositoryTest{// extends MySQLContainer {
     @Autowired
     private UserRepository repository;
 
+    void addUserByNum(int n){
+        for(int i = 0; i < n; i++){
+            repository.save(User.builder().name("user"+ i ).age(i + 20).hobby())
+        }
+    }
+
     @Test
     @DisplayName("유저 생성 테스트")
     void userGenerationTest() {
@@ -48,5 +54,16 @@ public class UserRepositoryTest{// extends MySQLContainer {
         assertThat(retrieved_user.getAge()).isEqualTo(tmpAge);
         assertThat(retrieved_user.getHobby()).isEqualTo(tmpHobby);
         assertThat(retrieved_user.getName()).isEqualTo(tmpName);
+    }
+
+    @Test
+    @DisplayName("유저 변경 테스트")
+    void  updateTest() {
+        // Given
+        User user
+        // When
+
+        // Then
+
     }
 }
