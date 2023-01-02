@@ -1,7 +1,8 @@
 package com.spring.board.springboard.post.service;
 
 import com.spring.board.springboard.post.domain.dto.PostCreateRequestDto;
-import com.spring.board.springboard.post.domain.dto.ResponsePostDto;
+import com.spring.board.springboard.post.domain.dto.PostSummaryResponseDto;
+import com.spring.board.springboard.post.domain.dto.PostDetailResponseDto;
 import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
 import com.spring.board.springboard.user.repository.MemberRepository;
@@ -51,7 +52,8 @@ class PostServiceTest {
                 "자고싶다",
                 member.getId());
 
-        postId = postService.createPost(postCreateRequestDTO1).postId();
+        postId = postService.createPost(postCreateRequestDTO1)
+                .postId();
         postService.createPost(postCreateRequestDTO2);
         postService.createPost(postCreateRequestDTO3);
     }
@@ -64,7 +66,7 @@ class PostServiceTest {
         PageRequest page = PageRequest.of(0, size);
 
         // when
-        List<ResponsePostDto> postList = postService.getAll(page);
+        List<PostSummaryResponseDto> postList = postService.getAll(page);
 
         // then
         assertThat(postList.size())
@@ -76,7 +78,7 @@ class PostServiceTest {
     void getOne() {
 
         // when
-        ResponsePostDto findPostDTO = postService.getOne(postId);
+        PostDetailResponseDto findPostDTO = postService.getOne(postId);
 
         // then
         assertThat(findPostDTO.postId())
@@ -94,11 +96,12 @@ class PostServiceTest {
         );
 
         // when
-        ResponsePostDto createdPostDTO = postService.createPost(postCreateRequestDTO);
+        PostDetailResponseDto createdPostDTO = postService.createPost(postCreateRequestDTO);
 
         // then
-        ResponsePostDto findPostDTO = postService.getOne(
+        PostDetailResponseDto findPostDTO = postService.getOne(
                 createdPostDTO.postId());
+
         assertThat(findPostDTO)
                 .usingRecursiveComparison()
                 .isEqualTo(createdPostDTO);
@@ -118,7 +121,7 @@ class PostServiceTest {
         );
 
         // when
-        ResponsePostDto updatedPostDto = postService.update(postId, beforeUpdatePostDTO);
+        PostDetailResponseDto updatedPostDto = postService.update(postId, beforeUpdatePostDTO);
 
         // then
         assertThat(postId)

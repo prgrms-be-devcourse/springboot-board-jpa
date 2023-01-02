@@ -2,7 +2,7 @@ package com.spring.board.springboard.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.board.springboard.post.domain.dto.PostCreateRequestDto;
-import com.spring.board.springboard.post.domain.dto.ResponsePostDto;
+import com.spring.board.springboard.post.domain.dto.PostDetailResponseDto;
 import com.spring.board.springboard.post.service.PostService;
 import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
@@ -53,12 +53,6 @@ class PostControllerTest {
         memberRepository.save(member);
     }
 
-    @AfterAll
-    void clean() {
-        System.out.println(memberRepository.findAll().size());
-    }
-
-
     @DisplayName("모든 게시물을 불러올 수 있다.")
     @Test
     void getAllPosts() throws Exception {
@@ -83,15 +77,8 @@ class PostControllerTest {
                                 fieldWithPath("[]").type(JsonFieldType.ARRAY).description("post array"),
                                 fieldWithPath("[].postId").type(JsonFieldType.NUMBER).description("post id"),
                                 fieldWithPath("[].title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("[].content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("created at"),
-                                fieldWithPath("[].member").type(JsonFieldType.OBJECT).description("member"),
-                                fieldWithPath("[].member.memberId").type(JsonFieldType.NUMBER).description("member id"),
-                                fieldWithPath("[].member.email").type(JsonFieldType.STRING).description("member email"),
-                                fieldWithPath("[].member.name").type(JsonFieldType.STRING).description("member name"),
-                                fieldWithPath("[].member.age").type(JsonFieldType.NUMBER).description("member age"),
-                                fieldWithPath("[].member.hobby").type(JsonFieldType.STRING).description("member hobby")
-                        ))
+                                fieldWithPath("[].memberName").type(JsonFieldType.STRING).description("writer name")
+                                ))
                 );
     }
 
@@ -123,7 +110,7 @@ class PostControllerTest {
     @Test
     void getPost() throws Exception {
         // given
-        ResponsePostDto newPost = postService.createPost(
+        PostDetailResponseDto newPost = postService.createPost(
                 new PostCreateRequestDto(
                         "하나의 게시물 조회",
                         "하나의 게시물을 조회할 수 있다.",
@@ -145,11 +132,8 @@ class PostControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("created at"),
                                 fieldWithPath("member").type(JsonFieldType.OBJECT).description("member"),
-                                fieldWithPath("member.memberId").type(JsonFieldType.NUMBER).description("member id"),
                                 fieldWithPath("member.email").type(JsonFieldType.STRING).description("member email"),
-                                fieldWithPath("member.name").type(JsonFieldType.STRING).description("member name"),
-                                fieldWithPath("member.age").type(JsonFieldType.NUMBER).description("member age"),
-                                fieldWithPath("member.hobby").type(JsonFieldType.STRING).description("member hobby")
+                                fieldWithPath("member.name").type(JsonFieldType.STRING).description("member name")
                         ))
                 );
     }
@@ -157,7 +141,7 @@ class PostControllerTest {
     @DisplayName("게시물의 제목과 내용을 수정할 수 있다.")
     @Test
     void updatePost() throws Exception {
-        ResponsePostDto newPost = postService.createPost(
+        PostDetailResponseDto newPost = postService.createPost(
                 new PostCreateRequestDto(
                         "hi hello",
                         "hello world",
@@ -188,11 +172,8 @@ class PostControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("created at"),
                                 fieldWithPath("member").type(JsonFieldType.OBJECT).description("member"),
-                                fieldWithPath("member.memberId").type(JsonFieldType.NUMBER).description("member id"),
                                 fieldWithPath("member.email").type(JsonFieldType.STRING).description("member email"),
-                                fieldWithPath("member.name").type(JsonFieldType.STRING).description("member name"),
-                                fieldWithPath("member.age").type(JsonFieldType.NUMBER).description("member age"),
-                                fieldWithPath("member.hobby").type(JsonFieldType.STRING).description("member hobby")
+                                fieldWithPath("member.name").type(JsonFieldType.STRING).description("member name")
                         ))
                 );
     }
