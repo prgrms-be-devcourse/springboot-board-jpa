@@ -1,5 +1,6 @@
 package com.example.springbootboard.repository;
 
+import com.example.springbootboard.entity.Hobby;
 import com.example.springbootboard.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
@@ -21,9 +24,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 
-@SpringBootTest
-// @DataJpaTest
-// @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+// @SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UserRepositoryTest{// extends MySQLContainer {
 
     @Autowired
@@ -53,7 +56,7 @@ public class UserRepositoryTest{// extends MySQLContainer {
 
     @Test
     @DisplayName("저장, 조회")
-    void persistenceTest () {
+    void persistenceSaveNFindTest () {
         // Given
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
@@ -69,5 +72,49 @@ public class UserRepositoryTest{// extends MySQLContainer {
         assertThat(retrieved).isPresent();
         assertThat(retrieved.get().getName()).isEqualTo("user0");
         assertThat(retrieved.get().getAge()).isEqualTo(20);
+    }
+
+    @Test
+    @DisplayName("수정 테스트")
+    void updateTest() {
+        // Given
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        User user = User.builder().name("tmp").age(22).hobby(Hobby.SOCCER).build();
+
+        // When
+        transaction.begin();
+        em.persist(user);
+        transaction.commit();
+
+        transaction.begin();
+        user.changeHobby(Hobby.CODING);
+        transaction.commit();
+
+        // Then
+        User user0 = em.find(User.class, 1L);
+        assertThat(user0.getHobby()).isEqualTo(Hobby.CODING);
+    }
+
+    @Test
+    @DisplayName("삭제 테스트")
+    void deleteTest() {
+        // Given
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        User user = getUsers(1).get(0);
+
+        // When
+        transaction.begin();
+        em.persist(user);
+        transaction.commit();
+
+        transaction.begin();
+        em.remove(user);
+        transaction.commit();
+
+        // Then
+        List<User> users = repository.findAll();
+        assertThat(users).hasSize(0);
     }
 }

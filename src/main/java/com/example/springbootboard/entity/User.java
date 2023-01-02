@@ -31,4 +31,8 @@ public class User extends BaseEntity {
         this.hobby = hobby;
         setCreatedAt(LocalDateTime.now());
     }
+
+    public void changeHobby(Hobby hobby){
+        this.hobby = hobby;
+    }
 }

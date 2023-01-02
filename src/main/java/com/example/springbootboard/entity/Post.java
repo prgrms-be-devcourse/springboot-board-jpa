@@ -19,4 +19,11 @@ public class Post extends BaseEntity{
     @Lob
     @Column(name = "content")
     private String content;
+
+    public void changeTitle(String title){
+        this.title = title;
+    }
+    public void changeContent(String content){
+        this.content = content;
+    }
 }
