@@ -7,16 +7,22 @@ Spring:
   jpa:
     generate-ddl: true
     database: MYSQL
-    show-sql: true
     hibernate:
       ddl-auto: create
     open-in-view: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
         query.in_clause_parameter_padding: true
         format_sql: true
         check_nullability: true
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 logging:
   level:
