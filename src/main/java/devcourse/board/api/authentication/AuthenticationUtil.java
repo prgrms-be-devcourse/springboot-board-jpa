@@ -16,7 +16,7 @@ public class AuthenticationUtil {
         return Long.valueOf(
                 getCookieValueByCookieName(
                         request.getCookies(),
-                        CookieName.MEMBER_ID.getCookieName()
+                        CookieConst.MEMBER_ID
                 )
         );
     }

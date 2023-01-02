@@ -1,7 +1,7 @@
 package devcourse.board.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import devcourse.board.api.model.CookieName;
+import devcourse.board.api.authentication.CookieConst;
 import devcourse.board.domain.member.MemberRepository;
 import devcourse.board.domain.member.model.Member;
 import devcourse.board.domain.post.PostRepository;
@@ -162,7 +162,7 @@ class PostApiControllerTest {
 
         PostUpdateRequest updateRequest = new PostUpdateRequest("new-title", "new-content");
 
-        Cookie idCookie = new Cookie(CookieName.MEMBER_ID.getCookieName(), String.valueOf(member.getId()));
+        Cookie idCookie = new Cookie(CookieConst.MEMBER_ID, String.valueOf(member.getId()));
 
         // when & then
         mockMvc.perform(patch("/posts/{postId}", post.getId())
