@@ -11,14 +11,6 @@ public record PostCreateRequestDto(@NotBlank(message = "제목을 입력해주�
                                    @NotBlank(message = "내용을 입력해주세요.") String content,
                                    @NotNull(message = "작성자가 없을 수 없습니다.") Integer memberId) {
 
-    public PostCreateRequestDto(Post post) {
-        this(
-                post.getTitle(),
-                post.getContent(),
-                post.getMemberId()
-        );
-    }
-
     public Post toEntity(Member member) {
         return new Post(
                 title,
