@@ -3,23 +3,23 @@ package com.programmers.kwonjoosung.board.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "user")
-public class User extends BaseEntity {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false,length = 20, unique = true)
+    @Column(nullable = false, length = 20, unique = true)
     private String name;
 
     @Column(nullable = false)
@@ -29,7 +29,7 @@ public class User extends BaseEntity {
     private String hobby;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> posts;
+    private final List<Post> posts = new ArrayList<>();
 
     public User(String name, Integer age, String hobby) {
         validateName(name);
@@ -41,7 +41,7 @@ public class User extends BaseEntity {
     }
 
     private void validateHobby(String hobby) {
-        if(hobby == null) {
+        if (hobby == null) {
             return;
         }
         Assert.isTrue(hobby.length() <= 20, "취미는 최대 20글자 입니다.");
