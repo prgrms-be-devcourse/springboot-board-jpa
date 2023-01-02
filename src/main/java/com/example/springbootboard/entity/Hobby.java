@@ -10,6 +10,6 @@ public enum Hobby {
 
     private static final List<Hobby> HOBBY_LIST = Arrays.asList(MUSIC, GAME, CODING, SOCCER);
     public static Hobby getRandomHobby(){
-        return HOBBY_LIST.get(new Random().nextInt(HOBBY_LIST.size()));
+        return HOBBY_LIST.get(new Random().nextInt(HOBBY_LIST.size() - 1));
     }
 }
