@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "post")
@@ -66,27 +65,16 @@ public class Post {
     }
 
     public void change(String newTitle, String newContent) {
-        Assert.notNull(newTitle, "제목을 입력해주세요");
-        Assert.notNull(newContent, "내용을 입력해주세요.");
+        validate(newTitle, newContent, this.createdAt, this.member);
         this.title = newTitle;
         this.content = newContent;
     }
 
-    public Integer getMemberId() {
-        return this.member.getId();
+    public String getMemberName() {
+        return this.member.getName();
     }
 
-    public void changeMember(Member member) {
-        if (Objects.nonNull(this.member)) {
-            this.member.
-                    getPostList()
-                    .remove(this);
-        }
-        this.member = member;
-        member.getPostList().add(this);
-    }
-
-    private void validate(String title, String content, LocalDateTime createdAt, Member member){
+    private void validate(String title, String content, LocalDateTime createdAt, Member member) {
         Assert.notNull(title, "제목을 입력해주세요.");
         Assert.notNull(content, "내용을 입력해주세요.");
         Assert.notNull(member, "작성자가 없을 수 없습니다.");
