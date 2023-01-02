@@ -1,4 +1,4 @@
-package devcourse.board.exception.model;
+package devcourse.board.errors.model;
 
 public record ErrorResponse(
         String errorMessage
