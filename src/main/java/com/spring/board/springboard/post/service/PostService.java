@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.List;
 
+@Transactional
 @Service
 public class PostService {
 
@@ -53,7 +54,6 @@ public class PostService {
         );
     }
 
-    @Transactional
     public PostDetailResponseDto createPost(PostCreateRequestDto postCreateRequestDto) {
         Member findMember = memberService.getMember(postCreateRequestDto.memberId());
 
@@ -63,7 +63,6 @@ public class PostService {
         return new PostDetailResponseDto(post, new MemberSummaryResponseDto(findMember));
     }
 
-    @Transactional
     public PostDetailResponseDto update(Integer postId, PostCreateRequestDto postCreateRequestDto) {
         Post findPost = postRepository.findById(postId)
                 .orElseThrow(() -> {

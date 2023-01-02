@@ -31,15 +31,10 @@ public class MemberController {
     public ResponseEntity<Void> login(@Valid @RequestBody MemberLoginDto memberLoginDto, HttpServletResponse response) {
         final MemberDetailResponseDto authorizedMember = memberService.login(memberLoginDto);
 
-        URI rootUrl = UriComponentsBuilder.fromPath("/")
-                .build()
-                .toUri();
-
         Cookie cookie = createUserInfoCookie(authorizedMember.email());
         response.addCookie(cookie);
 
         return ResponseEntity.ok()
-                .location(rootUrl)
                 .build();
     }
 

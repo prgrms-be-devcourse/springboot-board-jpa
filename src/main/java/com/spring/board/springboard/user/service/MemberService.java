@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 
+@Transactional
 @Service
 public class MemberService {
 
@@ -41,13 +42,12 @@ public class MemberService {
         return new MemberDetailResponseDto(findMember);
     }
 
-    @Transactional
     public void register(MemberRequestDto memberRequestDto) {
         final Member newMember = memberRequestDto.toEntity();
         memberRepository.save(newMember);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public MemberDetailResponseDto login(MemberLoginDto memberLoginDto) {
         final Member findMember = memberRepository.findByEmail(
                         memberLoginDto.email())
