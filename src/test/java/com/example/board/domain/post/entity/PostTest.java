@@ -7,16 +7,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class PostTest {
-  private static final String NAME = "김환";
-  private static final String EMAIL = "email123@naver.com";
-  private static final String PASSWORD = "password123!";
-  private static final int AGE = 25;
-  private static final String HOBBY = "게임";
 
   private static final String TITLE = "RBF";
   private static final String CONTENT = "RBF를 작성합니다";
 
-  private final Member member = new Member(NAME, EMAIL, PASSWORD, AGE, HOBBY);
+  private final Member member = new Member("김환", "email123@naver.com", "password123!", 25, "게임");
 
   @Test
   @DisplayName("Post를 생성할 수 있습니다")

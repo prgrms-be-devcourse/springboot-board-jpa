@@ -12,6 +12,7 @@ import com.example.board.domain.member.dto.MemberRequest;
 import com.example.board.domain.member.repository.MemberRepository;
 import com.example.board.domain.member.service.MemberService;
 import com.example.board.domain.post.dto.PostRequest;
+import com.example.board.domain.post.repository.PostRepository;
 import com.example.board.domain.post.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.servlet.http.Cookie;
@@ -32,22 +33,26 @@ import org.springframework.test.web.servlet.MockMvc;
 class MemberControllerTest {
 
   @Autowired
-  private MockMvc mockMvc;
+  private MemberRepository memberRepository;
+
+  @Autowired
+  private PostRepository postRepository;
 
   @Autowired
   private MemberService memberService;
 
   @Autowired
-  private MemberRepository memberRepository;
+  private PostService postService;
 
   @Autowired
-  private PostService postService;
+  private MockMvc mockMvc;
 
   @Autowired
   private ObjectMapper objectMapper;
 
   @BeforeEach
   void tearDown(){
+    postRepository.deleteAll();
     memberRepository.deleteAll();
   }
 
