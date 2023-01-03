@@ -34,7 +34,7 @@ public class Post extends BaseEntity {
 
     public Post(Long id, String title, String content, User user) {
         this.id = id;
-        this.title = checkTitleBlank(title);
+        this.title = checkBlankTitle(title);
         this.content = content;
         this.user = user != null ? setUser(user) : null;
     }
@@ -48,14 +48,14 @@ public class Post extends BaseEntity {
         return user;
     }
 
-    private String checkTitleBlank(String title) {
+    private String checkBlankTitle(String title) {
         if (title != null && title.isBlank())
             return "(제목없음)";
         return title;
     }
 
     public void changePost(String title ,String content) {
-        this.title = title;
+        this.title = checkBlankTitle(title);
         this.content = content;
     }
 

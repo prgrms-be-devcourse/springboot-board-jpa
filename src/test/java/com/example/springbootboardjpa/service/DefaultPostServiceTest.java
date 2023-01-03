@@ -128,6 +128,22 @@ class DefaultPostServiceTest {
         assertThat(postRepository.findById(save.getId()).get().getContent()).isEqualTo("update_content");
     }
 
+    @Test
+    @DisplayName("post title이 빈칸일때 (제목없음)으로 정상 변경한다.")
+    public void updateBlankTitleTest() {
+        // Given
+        var post = new Post("test_title", "content", user);
+        var save = postRepository.save(post);
+
+        // When
+        postService.update(save.getId(), "", "update_content");
+
+        // Then
+        assertThat(postRepository.findById(save.getId()).isPresent()).isTrue();
+        assertThat(postRepository.findById(save.getId()).get().getTitle()).isEqualTo("(제목없음)");
+        assertThat(postRepository.findById(save.getId()).get().getContent()).isEqualTo("update_content");
+    }
+
     @Transactional(propagation = Propagation.NESTED)
     @Test
     @DisplayName("post title이 50자 이상인 경우 변경에 실패한다.") // modified logic
