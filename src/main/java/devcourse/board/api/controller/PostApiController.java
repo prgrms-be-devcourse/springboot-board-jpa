@@ -2,10 +2,10 @@ package devcourse.board.api.controller;
 
 import devcourse.board.api.model.CreateDataResponse;
 import devcourse.board.domain.post.PostService;
-import devcourse.board.domain.post.model.MultipleSimplePostResponse;
 import devcourse.board.domain.post.model.PostCreationRequest;
 import devcourse.board.domain.post.model.PostResponse;
 import devcourse.board.domain.post.model.PostUpdateRequest;
+import devcourse.board.domain.post.model.SimplePostResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +33,7 @@ public class PostApiController {
     }
 
     @GetMapping
-    public ResponseEntity<MultipleSimplePostResponse> getPosts(
+    public ResponseEntity<SimplePostResponses> getPosts(
             @RequestParam int page,
             @RequestParam int size
     ) {
