@@ -68,7 +68,7 @@ class PostServiceTest {
         Member member = this.dummyMember;
         memberRepository.save(member);
 
-        Post post = Post.createPost(member, "post-title", "post-content");
+        Post post = Post.create(member, "post-title", "post-content");
         postRepository.save(post);
 
         Long unAuthorizedMemberId = -1L;

@@ -30,7 +30,7 @@ public class PostService {
     @Transactional
     public Long createPost(PostCreationRequest creationRequest) {
         Member findMember = memberService.findById(creationRequest.memberId());
-        Post newPost = Post.createPost(findMember, creationRequest.title(), creationRequest.content());
+        Post newPost = Post.create(findMember, creationRequest.title(), creationRequest.content());
         postRepository.save(newPost);
 
         return newPost.getId();
@@ -71,7 +71,7 @@ public class PostService {
             ));
         }
 
-        post.updateContents(updateRequest.title(), updateRequest.content());
+        post.updateTitleAndContent(updateRequest.title(), updateRequest.content());
 
         return new PostResponse(post);
     }

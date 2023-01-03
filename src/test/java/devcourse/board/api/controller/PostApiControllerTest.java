@@ -91,7 +91,7 @@ class PostApiControllerTest {
         Member member = this.dummyMember;
         memberRepository.save(member);
 
-        Post post = Post.createPost(member, "post-title", "post-content");
+        Post post = Post.create(member, "post-title", "post-content");
         postRepository.save(post);
 
         // when & then
@@ -124,7 +124,7 @@ class PostApiControllerTest {
                 null);
         memberRepository.save(member);
 
-        Post post = Post.createPost(member, "post-title", "post-content");
+        Post post = Post.create(member, "post-title", "post-content");
         postRepository.save(post);
 
         // when & then
@@ -154,7 +154,7 @@ class PostApiControllerTest {
         Member member = this.dummyMember;
         memberRepository.save(member);
 
-        Post post = Post.createPost(member, "old-title", "old-content");
+        Post post = Post.create(member, "old-title", "old-content");
         postRepository.save(post);
 
         PostUpdateRequest updateRequest = new PostUpdateRequest("new-title", "new-content");

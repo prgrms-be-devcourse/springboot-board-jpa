@@ -32,7 +32,7 @@ public class Post {
     protected Post() {
     }
 
-    public static Post createPost(Member member, String title, String content) {
+    public static Post create(Member member, String title, String content) {
         Post post = new Post();
         post.member = member;
         post.title = title;
@@ -42,7 +42,7 @@ public class Post {
         return post;
     }
 
-    public void updateContents(String title, String content) {
+    public void updateTitleAndContent(String title, String content) {
         this.title = title;
         this.content = content;
     }
