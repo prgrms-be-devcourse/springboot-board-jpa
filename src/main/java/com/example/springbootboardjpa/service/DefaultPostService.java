@@ -4,7 +4,9 @@ import com.example.springbootboardjpa.converter.PostConverter;
 import com.example.springbootboardjpa.dto.PostDTO;
 import com.example.springbootboardjpa.exception.NotFoundException;
 import com.example.springbootboardjpa.model.Post;
+import com.example.springbootboardjpa.model.User;
 import com.example.springbootboardjpa.repoistory.PostJpaRepository;
+import com.example.springbootboardjpa.repoistory.UserJpaRepository;
 import com.example.springbootboardjpa.utils.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,12 +16,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class DefaultPostService implements PostService {
 
     private final PostJpaRepository postRepository;
+
+    private final UserJpaRepository userJpaRepository;
 
     private final ValidationUtil validationUtil;
 
@@ -37,8 +43,10 @@ public class DefaultPostService implements PostService {
 
     @Override
     public long save(PostDTO.Save postDTO) {
-        Post post = postConverter.convertNewPost(postDTO); // 1. find user 2. convert 3. validation 4. save 5. return
-        validationUtil.validation(post);
+        // 1. find user 2. convert 3. validation 4. save 5. return
+        Optional<User> findUser = userJpaRepository.findById(postDTO.getUserId());
+        Post post = findUser.map(user -> postConverter.convertNewPost(postDTO,user))
+                .orElseThrow(() -> new NotFoundException("해당 Id의 사용자를 찾을 수 없습니다."));
         Post entity = postRepository.save(post);
         return entity.getId();
     }

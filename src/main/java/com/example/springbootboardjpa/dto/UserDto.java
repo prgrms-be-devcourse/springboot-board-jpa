@@ -4,8 +4,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 
 public class UserDto {
     @Builder

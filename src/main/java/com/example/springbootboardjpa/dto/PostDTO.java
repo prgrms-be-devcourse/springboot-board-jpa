@@ -18,8 +18,7 @@ public class PostDTO {
         @NotNull
         private String content;
         @NotNull
-        @Valid
-        private UserDto.Info userDto;
+        private Long userId;
     }
 
     @Getter
@@ -39,5 +38,11 @@ public class PostDTO {
         private String content;
         private String createdBy;
         private LocalDateTime createdAt;
+    }
+
+    @Getter // Response에는 getter를 해줘야한다...안그럼 Not Acceptable 예외 발생
+    @AllArgsConstructor
+    public static class ResponseId{
+        private Long id;
     }
 }

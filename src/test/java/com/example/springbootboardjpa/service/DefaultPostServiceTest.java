@@ -61,11 +61,7 @@ class DefaultPostServiceTest {
     @DisplayName("post가 정상 저장된디.")
     public void saveTest() {
         // Given
-        var userDto = UserDto.Info.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .age(user.getAge()).build();
-        var postDto = new PostDTO.Save("test_title", "content", userDto);
+        var postDto = new PostDTO.Save("test_title", "content", user.getId());
 
         // When
         var saveId = postService.save(postDto);
@@ -81,11 +77,7 @@ class DefaultPostServiceTest {
     @DisplayName("post title이 50자 이상일 경우 저장되지않는다.")
     public void saveFailTest() {
         // Given
-        var userDto = UserDto.Info.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .age(user.getAge()).build();
-        var postDto = new PostDTO.Save("012345678901234567890123456789012345678901234567891", "content", userDto);
+        var postDto = new PostDTO.Save("012345678901234567890123456789012345678901234567891", "content", user.getId());
 
         // When// Then
         var exception = assertThrows(ConstraintViolationException.class, () -> postService.save(postDto));

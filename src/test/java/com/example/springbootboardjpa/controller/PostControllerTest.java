@@ -64,12 +64,7 @@ class PostControllerTest {
     @DisplayName("post를 정상 생성한다.")
     public void createPost() throws Exception {
         // Given
-        UserDto.Info userDto = UserDto.Info.builder()
-                .id(user.getId())
-                .age(user.getAge())
-                .name(user.getName())
-                .build();
-        PostDTO.Save postDto = new PostDTO.Save("제목", "내용", userDto);
+        PostDTO.Save postDto = new PostDTO.Save("제목", "내용", user.getId());
 
         // When // Then
         mockMvc.perform(post("/api/v1/posts")
@@ -81,11 +76,9 @@ class PostControllerTest {
                 .andDo(document("post-save",
                         requestFields(fieldWithPath("title").type(JsonFieldType.STRING).description("post title"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("post content"),
-                                fieldWithPath("userDto.id").type(JsonFieldType.NUMBER).description("user id"),
-                                fieldWithPath("userDto.name").type(JsonFieldType.STRING).description("user name"),
-                                fieldWithPath("userDto.age").type(JsonFieldType.NUMBER).description("user age")),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("user id")),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.STRING).description("post id")
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("post id")
                         )
                 ));
     }
@@ -94,12 +87,7 @@ class PostControllerTest {
     @DisplayName("title이 null이면 post를 생성할 수 없다.")
     public void nullTitleCreateFailTest() throws Exception {
         // Given
-        UserDto.Info userDto = UserDto.Info.builder()
-                .id(user.getId())
-                .age(user.getAge())
-                .name(user.getName())
-                .build();
-        PostDTO.Save postDto = new PostDTO.Save(null, "내용", userDto);
+        PostDTO.Save postDto = new PostDTO.Save(null, "내용", user.getId());
 
         // When // Then
         mockMvc.perform(post("/api/v1/posts")
@@ -113,26 +101,7 @@ class PostControllerTest {
     @DisplayName("context가 null이면 post를 생성할 수 없다.") // 5ta
     public void nullContextCreateFailTest() throws Exception {
         // Given
-        UserDto.Info userDto = UserDto.Info.builder()
-                .id(user.getId())
-                .age(user.getAge())
-                .name(user.getName())
-                .build();
-        PostDTO.Save postDto = new PostDTO.Save("제목", null, userDto);
-
-        // When // Then
-        mockMvc.perform(post("/api/v1/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postDto)))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
-    }
-
-    @Test
-    @DisplayName("user가 null이면 post를 생성할 수 없다.")
-    public void nullUserCreateFailTest() throws Exception {
-        // Given
-        PostDTO.Save postDto = new PostDTO.Save("제목", "내용", null);
+        PostDTO.Save postDto = new PostDTO.Save("제목", null, user.getId());
 
         // When // Then
         mockMvc.perform(post("/api/v1/posts")
@@ -146,12 +115,7 @@ class PostControllerTest {
     @DisplayName("user id가 null이면 post를 생성할 수 없다.")
     public void nullUserIdCreateFailTest() throws Exception {
         // Given
-        UserDto.Info userDto = UserDto.Info.builder()
-                .id(null)
-                .age(user.getAge())
-                .name(user.getName())
-                .build();
-        PostDTO.Save postDto = new PostDTO.Save("제목", "내용", userDto);
+        PostDTO.Save postDto = new PostDTO.Save("제목", "내용", null);
 
         // When // Then
         mockMvc.perform(post("/api/v1/posts")
@@ -160,6 +124,22 @@ class PostControllerTest {
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("존재하지 않는 userId 일 경우, post를 생성할 수 없다.")
+    public void nullUserCreateFailTest() throws Exception {
+        // Given
+        assertThat(user.getId()).isNotEqualTo(1);
+        PostDTO.Save postDto = new PostDTO.Save("제목", "내용", 1L);
+
+        // When // Then
+        mockMvc.perform(post("/api/v1/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postDto)))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
 
     @Test
     @DisplayName("post를 정상 업데이트한다.")

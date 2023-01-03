@@ -8,16 +8,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PostConverter {
-    public Post convertNewPost(PostDTO.Save postDTO) {
-        User user = this.convertUser(postDTO.getUserDto());
+    public Post convertNewPost(PostDTO.Save postDTO, User user) {
         Post post = new Post(postDTO.getTitle(), postDTO.getContent(), user);
-        post.setCreatedBy(postDTO.getUserDto().getName());
-
+        post.setCreatedBy(user.getName());
         return post;
-    }
-
-    private User convertUser(UserDto.Info userDto) {
-        return new User(userDto.getId(), userDto.getName(), userDto.getAge());
     }
 
     public PostDTO.Response convertResponseOnlyPostDto(Post post) {

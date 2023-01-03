@@ -19,6 +19,7 @@ public class PostExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ApiResponse<String> internalServerErrorHandler(Exception e) {
+        e.printStackTrace();
         log.warning("Exception 발생 : "+e.getMessage());
         return ApiResponse.fail(500, e.getMessage());
     }

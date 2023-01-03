@@ -1,9 +1,7 @@
 package com.example.springbootboardjpa.controller;
 
 import com.example.springbootboardjpa.dto.PostDTO;
-import com.example.springbootboardjpa.exception.NotFoundException;
 import com.example.springbootboardjpa.service.PostService;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,12 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Slf4j
@@ -58,11 +51,10 @@ public class PostController {
      * @return PostId
      */
     @PostMapping()
-    public ApiResponse<Map<String, String>> createPost(@Valid @RequestBody PostDTO.Save postDTO) {
+    public ApiResponse<PostDTO.ResponseId> createPost(@Valid @RequestBody PostDTO.Save postDTO) {
         long postId = postService.save(postDTO);
-        Map<String, String> result = new HashMap<>();
-        result.put("id",postId+"");
-        return ApiResponse.ok(result,"/api/v1/posts"); // 201, 202 CREATED // post /api/posts -> id 1 - /api/posts/1
+        PostDTO.ResponseId response = new PostDTO.ResponseId(postId);
+        return ApiResponse.ok(response, "/api/v1/posts"); // 201, 202 CREATED // post /api/posts -> id 1 - /api/posts/1
     }
 
     /**
@@ -74,6 +66,6 @@ public class PostController {
     @PostMapping("/{id}") // slash // update is method post? - put or patch
     public ApiResponse<String> updatePost(@PathVariable Long id, @Valid @RequestBody PostDTO.Request postDTO) {
         postService.update(id, postDTO.getTitle(), postDTO.getContent());
-        return ApiResponse.ok("success!","/api/v1/posts/"+id);
+        return ApiResponse.ok("success!", "/api/v1/posts/" + id);
     }
 }
