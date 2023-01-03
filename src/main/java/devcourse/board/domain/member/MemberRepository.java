@@ -37,6 +37,20 @@ public class MemberRepository {
         }
     }
 
+    public Optional<Member> findByEmailAndPassword(String email, String password) {
+        try {
+            return Optional.of(
+                    em.createQuery("select m from Member m " +
+                                    "where m.email=:email and m.password=:password", Member.class)
+                            .setParameter("email", email)
+                            .setParameter("password", password)
+                            .getSingleResult()
+            );
+        } catch (NoResultException noResultException) {
+            return Optional.empty();
+        }
+    }
+
     public List<Member> findAll() {
         return em.createQuery("select m from Member m", Member.class)
                 .getResultList();

@@ -17,13 +17,16 @@ public class LoginService {
     }
 
     public Long login(LoginRequest loginRequest) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(loginRequest.email());
+        Optional<Member> findMember = memberRepository.findByEmailAndPassword(
+                loginRequest.email(),
+                loginRequest.password()
+        );
 
-        if (optionalMember.isEmpty() || !optionalMember.get().matchPassword(loginRequest.password())) {
+        if (findMember.isEmpty()) {
             throw new IllegalArgumentException("존재하지 않는 회원이거나 비밀번호가 일치하지 않습니다.");
         }
 
-        return optionalMember.get()
+        return findMember.get()
                 .getId();
     }
 }
