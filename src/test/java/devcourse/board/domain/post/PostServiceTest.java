@@ -68,16 +68,15 @@ class PostServiceTest {
         Member member = this.dummyMember;
         memberRepository.save(member);
 
-        Post post = Post.create(member, "post-title", "post-content");
+        Post post = Post.create(member, "old-title", "old-content");
         postRepository.save(post);
 
         Long unAuthorizedMemberId = -1L;
-        Long authorId = member.getId();
-        PostUpdateRequest updateRequest = new PostUpdateRequest("title", "content");
+        PostUpdateRequest updateRequest = new PostUpdateRequest("new-title", "new-content");
 
         // when & then
         assertThrows(IllegalStateException.class, () -> {
-            postService.updatePost(unAuthorizedMemberId, authorId, updateRequest);
+            postService.updatePost(unAuthorizedMemberId, post.getId(), updateRequest);
         });
     }
 }
