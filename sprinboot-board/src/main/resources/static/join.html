@@ -40,10 +40,13 @@
         <input type="number" id="age" class="form-control" errorclass="field-error">
         <div class="field-error" errors="*{age}"></div>
     </div>
-    <div>
-        <label for="hobby">취미</label>
-        <input type="text" id="hobby" class="form-control" errorclass="field-error">
-        <div class="field-error" errors="*{hobby}"></div>
+    <div class="form-check-inline">
+        <input class="form-check-input" type="radio" id="h1" name="hobby" value="MOVIE">
+        <label class="form-check-label" for="h1">영화</label>
+    </div>
+    <div class="form-check-inline">
+        <input class="form-check-input" type="radio" id="h2" name="hobby" value="RUNNING" checked="checked">
+        <label class="form-check-label" for="h2">러닝</label>
     </div>
     <hr class="my-4">
     <div class="row">

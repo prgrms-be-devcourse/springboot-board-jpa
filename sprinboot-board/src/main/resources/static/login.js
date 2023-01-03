@@ -16,6 +16,6 @@ async function login() {
 
     if (response.status === 200) {
 
-        // window.location.replace("/login-home.html")
+        window.location.replace("/login-home.html")
     }
 }

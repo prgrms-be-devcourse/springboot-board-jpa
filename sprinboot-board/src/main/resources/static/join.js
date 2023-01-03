@@ -4,7 +4,7 @@ async function join() {
     const password = document.getElementById('password').value
     const name = document.getElementById('name').value
     const age = document.getElementById('age').value
-    const hobby = document.getElementById('hobby').value
+    const hobby = document.querySelector('input[name="hobby"]:checked').value
     const url = "/users"
     const response = await fetch(url, {
         method: "POST",

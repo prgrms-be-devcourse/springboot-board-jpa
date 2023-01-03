@@ -4,6 +4,7 @@ import com.prgrms.java.domain.Email;
 import com.prgrms.java.dto.post.*;
 import com.prgrms.java.service.PostService;
 import com.prgrms.java.service.UserService;
+import com.prgrms.java.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -23,36 +24,28 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<GetPostsResponse> getPosts(Pageable pageable, HttpServletRequest httpServletRequest) {
-        Email email = Email.fromCookie(httpServletRequest);
-        userService.validMember(email);
-
+    public ResponseEntity<GetPostsResponse> getPosts(Pageable pageable) {
         GetPostsResponse posts = postService.getPosts(pageable);
         return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<GetPostDetailsResponse> getPostDetails(@PathVariable Long id, HttpServletRequest httpServletRequest) {
-        Email email = Email.fromCookie(httpServletRequest);
-        userService.validMember(email);
-
         GetPostDetailsResponse postDetail = postService.getPostDetail(id);
         return ResponseEntity.ok(postDetail);
     }
 
     @PostMapping
     public ResponseEntity<CreatePostResponse> createPost(@Valid @RequestBody CreatePostRequest request, HttpServletRequest httpServletRequest) {
-        Email email = Email.fromCookie(httpServletRequest);
-        userService.validMember(email);
+        userService.authenticateUser(httpServletRequest);
 
         long postId = postService.createPost(request);
         return ResponseEntity.ok(new CreatePostResponse(postId));
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ModifyPostResponse> modifyPost(@PathVariable Long id, @Valid @RequestBody ModifyPostRequest request, HttpServletRequest httpServletRequest) {
-        Email email = Email.fromCookie(httpServletRequest);
-        userService.validMember(email);
+        userService.authenticateUser(httpServletRequest);
 
         postService.modifyPost(id, request);
         return ResponseEntity.ok(new ModifyPostResponse(id));

@@ -3,23 +3,21 @@ package com.prgrms.java.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "posts")
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(length = 30, nullable = false)
-    @NotNull
-    @Size(min = 1, max = 30, message = "title must be over 0 and under 31.")
     private String title;
 
     @Column(columnDefinition = "LONGTEXT", nullable = false)
-    @NotNull
-    @Size(min = 1, message = "content must be over 0.")
     private String content;
 
     @ManyToOne
@@ -29,6 +27,7 @@ public class Post extends BaseEntity {
     }
 
     public Post(Long id, String title, String content, User user) {
+        validate(title, content);
         this.id = id;
         this.title = title;
         this.content = content;
@@ -65,11 +64,27 @@ public class Post extends BaseEntity {
     }
 
     public void editTitle(String title) {
+        validateTitle(title);
         this.title = title;
     }
 
     public void editContent(String content) {
+        validateContent(content);
         this.content = content;
+    }
+
+    private void validate(String title, String content) {
+        validateTitle(title);
+        validateContent(content);
+    }
+
+    private void validateContent(String content) {
+        Assert.state(StringUtils.hasText(content), "content must be at least one character");
+    }
+
+    private void validateTitle(String title) {
+        Assert.state(StringUtils.hasText(title), "title must be at least one character");
+        Assert.state(title.length() <= 30, "title must be under 31.");
     }
 
 }

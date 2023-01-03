@@ -4,18 +4,20 @@ import com.prgrms.java.domain.Email;
 import com.prgrms.java.domain.LoginState;
 import com.prgrms.java.domain.User;
 import com.prgrms.java.dto.user.GetUserDetailsResponse;
-import com.prgrms.java.dto.user.PostLoginRequest;
-import com.prgrms.java.dto.user.PostUserRequest;
+import com.prgrms.java.dto.user.LoginRequest;
+import com.prgrms.java.dto.user.CreateUserRequest;
 import com.prgrms.java.exception.AuthenticationFailedException;
 import com.prgrms.java.exception.ResourceNotFountException;
 import com.prgrms.java.repository.UserRepository;
+import com.prgrms.java.util.CookieUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -24,36 +26,39 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void joinUser(PostUserRequest postUserRequest) {
-        User user = postUserRequest.toEntity();
+    @Transactional
+    public Long joinUser(CreateUserRequest createUserRequest) {
+        final User user = createUserRequest.toEntity();
         userRepository.save(user);
+        return user.getId();
     }
 
-    public LoginState loginUser(PostLoginRequest postLoginRequest) {
-        User user = findByEmail(postLoginRequest.email());
-
-        if (user.getPassword().equals(postLoginRequest.password())) {
-            return LoginState.SUCCESS;
-        } else {
-            return LoginState.FAIL;
-        }
+    @Transactional
+    public Long loginUser(LoginRequest loginRequest) {
+        final User user = findByEmail(loginRequest.email());
+        user.login(loginRequest.password());
+        return user.getId();
     }
 
     public GetUserDetailsResponse getUserDetails(Email email) {
-        User user = findByEmail(email.value());
-
+        validMember(email);
+        final User user = findByEmail(email.value());
         return GetUserDetailsResponse.from(user);
     }
 
-    private User findByEmail(String email) {
+    public User findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find User. Please check email. [Email]: {0}", email)));
     }
 
-    public void validMember(Email email) {
-        Long userCountByEmail = userRepository.countUserByEmail(email.value());
-        if (userCountByEmail < 1L) {
+    private void validMember(Email email) {
+        if (!userRepository.existsUserByEmail(email.value())) {
             throw new AuthenticationFailedException(MessageFormat.format("Can not find User by given email. [Email]: {0}", email));
         }
+    }
+
+    public void authenticateUser(HttpServletRequest httpServletRequest) {
+        final Email email = CookieUtil.getLoginToken(httpServletRequest);
+        validMember(email);
     }
 }

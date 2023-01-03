@@ -1,14 +1,12 @@
 package com.prgrms.java.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.java.domain.HobbyType;
 import com.prgrms.java.domain.User;
-import com.prgrms.java.dto.user.PostLoginRequest;
-import com.prgrms.java.dto.user.PostUserRequest;
+import com.prgrms.java.dto.user.LoginRequest;
+import com.prgrms.java.dto.user.CreateUserRequest;
 import com.prgrms.java.dto.user.UserLoginInfo;
 import com.prgrms.java.dto.user.UserSideInfo;
-import com.prgrms.java.repository.PostRepository;
 import com.prgrms.java.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
@@ -23,13 +21,11 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -57,11 +53,11 @@ class UserControllerTest {
     @DisplayName("유저는 회원가입을 할 수 있다.")
     @Test
     void joinUser() throws Exception {
-        PostUserRequest postUserRequest = new PostUserRequest(new UserLoginInfo("example@gmail.com", "1234"), new UserSideInfo("택승", 25, "MOVIE"));
+        CreateUserRequest createUserRequest = new CreateUserRequest(new UserLoginInfo("example@gmail.com", "1234"), new UserSideInfo("택승", 25, HobbyType.MOVIE));
 
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postUserRequest)))
+                        .content(objectMapper.writeValueAsString(createUserRequest)))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(
@@ -85,12 +81,12 @@ class UserControllerTest {
         User user = new User("이택승", "example@gmail.com", "1234", 25, HobbyType.MOVIE);
         userRepository.save(user);
 
-        PostLoginRequest postLoginRequest = new PostLoginRequest("example@gmail.com", "1234");
-        String expectCookie = new StringBuilder().append("login-token=").append(postLoginRequest.email()).toString();
+        LoginRequest loginRequest = new LoginRequest("example@gmail.com", "1234");
+        String expectCookie = new StringBuilder().append("login-token=").append(loginRequest.email()).toString();
 
         mockMvc.perform(post("/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postLoginRequest)))
+                        .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isOk())
                 .andExpect(header().string(HttpHeaders.SET_COOKIE, expectCookie))
                 .andDo(print())

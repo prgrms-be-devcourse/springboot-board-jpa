@@ -1,6 +1,7 @@
 package com.prgrms.java.service;
 
 import com.prgrms.java.domain.Email;
+import com.prgrms.java.domain.HobbyType;
 import com.prgrms.java.domain.LoginState;
 import com.prgrms.java.dto.user.*;
 import com.prgrms.java.exception.AuthenticationFailedException;
@@ -26,10 +27,10 @@ class UserServiceTest {
     @Test
     void joinUser() {
         // given
-        PostUserRequest postUserRequest = new PostUserRequest(new UserLoginInfo("example@gmail.com", "1234"), new UserSideInfo("택승", 25, "MOVIE"));
+        CreateUserRequest createUserRequest = new CreateUserRequest(new UserLoginInfo("example@gmail.com", "1234"), new UserSideInfo("택승", 25, HobbyType.MOVIE));
 
         // when
-        userService.joinUser(postUserRequest);
+        userService.joinUser(createUserRequest);
 
         // then
         Long count = userRepository.count();
@@ -40,29 +41,29 @@ class UserServiceTest {
     @Test
     void loginUser() {
         // given
-        PostUserRequest postUserRequest = new PostUserRequest(new UserLoginInfo("example@gmail.com", "1234"), new UserSideInfo("택승", 25, "MOVIE"));
-        userService.joinUser(postUserRequest);
+        CreateUserRequest createUserRequest = new CreateUserRequest(new UserLoginInfo("example@gmail.com", "1234"), new UserSideInfo("택승", 25, HobbyType.MOVIE));
+        Long expect = userService.joinUser(createUserRequest);
 
-        PostLoginRequest postLoginRequest = new PostLoginRequest("example@gmail.com", "1234");
+        LoginRequest loginRequest = new LoginRequest("example@gmail.com", "1234");
 
         // when
-        LoginState actual = userService.loginUser(postLoginRequest);
+        Long actual = userService.loginUser(loginRequest);
 
         // then
         assertThat(actual)
-                .isEqualTo(LoginState.SUCCESS);
+                .isEqualTo(expect);
     }
 
     @DisplayName("유저는 개인정보를 조회할 수 있다.")
     @Test
     void getUserDetails() {
         // given
-        PostUserRequest postUserRequest = new PostUserRequest(new UserLoginInfo("example@gmail.com", "1234"), new UserSideInfo("택승", 25, "MOVIE"));
-        userService.joinUser(postUserRequest);
+        CreateUserRequest createUserRequest = new CreateUserRequest(new UserLoginInfo("example@gmail.com", "1234"), new UserSideInfo("택승", 25, HobbyType.MOVIE));
+        userService.joinUser(createUserRequest);
 
         Email email = new Email("example@gmail.com");
 
-        GetUserDetailsResponse expect = new GetUserDetailsResponse(postUserRequest.userSideInfo().name(), postUserRequest.userLoginInfo().email(), postUserRequest.userSideInfo().age(), postUserRequest.userSideInfo().hobby());
+        GetUserDetailsResponse expect = new GetUserDetailsResponse(createUserRequest.userSideInfo().name(), createUserRequest.userLoginInfo().email(), createUserRequest.userSideInfo().age(), createUserRequest.userSideInfo().hobby());
 
         // when
         GetUserDetailsResponse actual = userService.getUserDetails(email);
@@ -70,15 +71,5 @@ class UserServiceTest {
         // then
         assertThat(actual)
                 .isEqualTo(expect);
-    }
-
-    @DisplayName("유저가 회원이 아닌지 확인할 수 있다.")
-    @Test
-    void validMember() {
-        // given
-        Email email = new Email("example@gmail.com");
-
-        // when then
-        assertThrows(AuthenticationFailedException.class, () -> userService.validMember(email));
     }
 }

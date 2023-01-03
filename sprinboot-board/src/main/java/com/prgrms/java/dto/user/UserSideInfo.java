@@ -1,6 +1,7 @@
 package com.prgrms.java.dto.user;
 
-import jakarta.validation.constraints.NotEmpty;
+import com.prgrms.java.domain.HobbyType;
+import jakarta.validation.constraints.NotBlank;
 
-public record UserSideInfo(@NotEmpty String name, int age, @NotEmpty String hobby) {
+public record UserSideInfo(@NotBlank String name, int age, HobbyType hobby) {
 }
