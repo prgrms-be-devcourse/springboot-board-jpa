@@ -27,7 +27,7 @@ public class MemberService {
             ));
         }
 
-        save(joinRequest);
+        memberRepository.save(joinRequest.toEntity());
     }
 
     public MemberResponse getMember(Long memberId) {
@@ -46,17 +46,5 @@ public class MemberService {
                 .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format(
                         "Member doesn't exist for email={0}", email
                 )));
-    }
-
-    private void save(MemberJoinRequest joinRequest) {
-        memberRepository.save(
-                Member.create(
-                        joinRequest.email(),
-                        joinRequest.password(),
-                        joinRequest.name(),
-                        joinRequest.age(),
-                        joinRequest.hobby()
-                )
-        );
     }
 }

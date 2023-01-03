@@ -20,4 +20,8 @@ public record MemberJoinRequest(
     public MemberJoinRequest(String email, String password, String name) {
         this(email, password, name, null, null);
     }
+
+    public Member toEntity() {
+        return Member.create(email, password, name, age, hobby);
+    }
 }
