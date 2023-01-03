@@ -1,15 +1,16 @@
-package com.prgrms.domain.user;
+package com.prgrms.web.api;
 
 import static com.prgrms.dto.UserDto.UserCreateRequest;
+import static com.prgrms.web.CookieManager.createCookie;
+import static com.prgrms.web.CookieManager.getCookie;
+import static com.prgrms.web.CookieManager.removeCookie;
 
+import com.prgrms.domain.user.UserService;
 import com.prgrms.dto.UserDto.LoginRequest;
 import com.prgrms.dto.UserDto.Response;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
-import java.util.Arrays;
-import javax.naming.AuthenticationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("api/v1/users")
 public class UserController {
 
     private final UserService service;
@@ -28,10 +29,9 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<Response> getLoggedUserInfo(HttpServletRequest request)
-        throws AuthenticationException {
+    public ResponseEntity<Response> getLoggedUserInfo(HttpServletRequest request) {
 
-        long loggedUserId = Long.parseLong(getCookieUserId(request).getValue());
+        long loggedUserId = Long.parseLong(getCookie(request).getValue());
         Response userInfo = service.findUserById(loggedUserId);
 
         return ResponseEntity.ok(userInfo);
@@ -41,7 +41,7 @@ public class UserController {
     public ResponseEntity<Void> userSignUp(@RequestBody UserCreateRequest userDto) {
 
         service.insertUser(userDto);
-        URI loginPageUri = URI.create("api/users/login");
+        URI loginPageUri = URI.create("api/v1/users/login");
 
         return ResponseEntity.created(loginPageUri)
             .build();
@@ -52,9 +52,9 @@ public class UserController {
         HttpServletResponse servletResponse) {
 
         Response response = service.login(loginDto);
-        setCookieUserId(response.getUserId(), servletResponse);
+        createCookie(response.getUserId(), servletResponse);
 
-        URI myPageUri = URI.create("api/users/me");
+        URI myPageUri = URI.create("api/v1/users/me");
 
         return ResponseEntity.ok()
             .location(myPageUri)
@@ -62,31 +62,13 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletResponse response,HttpServletRequest request)
-        throws AuthenticationException {
+    public ResponseEntity<Void> logout(HttpServletResponse response, HttpServletRequest request) {
 
-        Cookie cookieUserId = getCookieUserId(request);
-        cookieUserId.setValue("");
-        response.addCookie(cookieUserId);
+        removeCookie(request, response);
 
         return ResponseEntity.ok()
             .build();
     }
 
-    private void setCookieUserId(Long userId, HttpServletResponse response) {
-
-        Cookie userCookie = new Cookie("userId", String.valueOf(userId));
-        response.addCookie(userCookie);
-    }
-
-    private Cookie getCookieUserId(HttpServletRequest request)
-        throws AuthenticationException {
-
-        return Arrays.stream(request.getCookies())
-            .filter(cookie -> "userId".equals(cookie.getName()))
-            .filter(cookie -> !"".equals(cookie.getValue()))
-            .findAny()
-            .orElseThrow(() -> new AuthenticationException("접근 권한이 없습니다."));
-    }
 
 }
