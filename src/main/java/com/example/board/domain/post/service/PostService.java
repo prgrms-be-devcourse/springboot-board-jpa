@@ -45,10 +45,8 @@ public class PostService {
   }
 
   public Long save(PostRequest postRequest) {
-    Long memberId = postRequest.memberId();
-    Member member = findMemberById(memberId);
-
-    Post post = new Post(postRequest.title(), postRequest.content(), member);
+    Member member = findMemberById(postRequest.memberId());
+    Post post = postRequest.toEntity(member);
     postRepository.save(post);
 
     return post.getId();
