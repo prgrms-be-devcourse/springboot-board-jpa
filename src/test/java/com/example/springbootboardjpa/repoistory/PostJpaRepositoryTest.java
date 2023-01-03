@@ -82,30 +82,14 @@ class PostJpaRepositoryTest {
 
 
     @Test
-    @DisplayName("post title을 정상 수정한다.")
-    public void updatePostTitle() {
+    @DisplayName("post를 정상 수정한다.")
+    public void updatePost() {
         // Given
         var find = postRepository.findById(1L);
         var findPost = find.get();
 
         // When
-        findPost.changeTitle("초밥 달인");
-        var posts = postRepository.findByTitle("달인");
-
-        // Then
-        assertThat(posts.size()).isEqualTo(1L);
-        assertThat(posts.get(0)).isEqualTo(post);
-    }
-
-    @Test
-    @DisplayName("post content를 정상 수정한다.")
-    public void updatePostContent() {
-        // Given
-        var find = postRepository.findById(1L);
-        var findPost = find.get();
-
-        // When
-        findPost.changeContent("초밥 달인 구하기~~~");
+        findPost.changePost("초밥 달인", "초밥 달인 구하기~~~");
         var updatePost = postRepository.findById(1L);
 
         // Then

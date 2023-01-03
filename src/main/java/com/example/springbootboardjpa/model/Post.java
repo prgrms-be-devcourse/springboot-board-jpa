@@ -3,10 +3,8 @@ package com.example.springbootboardjpa.model;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.validation.annotation.Validated;
 
 @Getter
 @ToString(exclude = "user")
@@ -36,7 +34,7 @@ public class Post extends BaseEntity {
 
     public Post(Long id, String title, String content, User user) {
         this.id = id;
-        this.title = blankCheckTitle(title);
+        this.title = checkTitleBlank(title);
         this.content = content;
         this.user = user != null ? setUser(user) : null;
     }
@@ -50,17 +48,15 @@ public class Post extends BaseEntity {
         return user;
     }
 
-    private String blankCheckTitle(String title) {
+    private String checkTitleBlank(String title) {
         if (title != null && title.isBlank())
             return "(제목없음)";
         return title;
     }
 
-    public void changeContent(String content) {
+    public void changePost(String title ,String content) {
+        this.title = title;
         this.content = content;
     }
 
-    public void changeTitle(String title) {
-        this.title = title;
-    }
 }

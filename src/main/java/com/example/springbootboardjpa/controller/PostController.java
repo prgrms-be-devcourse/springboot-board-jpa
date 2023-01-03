@@ -11,6 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class PostController {
      * @param pageable
      * @return Page<PostDto>
      */
-    @GetMapping()
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ApiResponse<Page<PostDTO.Response>> getPost(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) { // method name, page default value
         Page<PostDTO.Response> pages = postService.findAll(pageable);
         return ApiResponse.ok(pages);
@@ -38,7 +40,7 @@ public class PostController {
      * @param id
      * @return PostDto
      */
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}",produces = APPLICATION_JSON_VALUE)
     public ApiResponse<PostDTO.Response> getPosts(@PathVariable Long id) { // method name
         PostDTO.Response findPost = postService.findById(id);
         return ApiResponse.ok(findPost);
@@ -50,7 +52,7 @@ public class PostController {
      * @param postDTO
      * @return PostId
      */
-    @PostMapping()
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ApiResponse<PostDTO.ResponseId> createPost(@Valid @RequestBody PostDTO.Save postDTO) {
         long postId = postService.save(postDTO);
         PostDTO.ResponseId response = new PostDTO.ResponseId(postId);
@@ -63,7 +65,7 @@ public class PostController {
      * @param id
      * @param postDTO
      */
-    @PostMapping("/{id}") // slash // update is method post? - put or patch
+    @PostMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE) // slash // update is method post? - put or patch
     public ApiResponse<String> updatePost(@PathVariable Long id, @Valid @RequestBody PostDTO.Request postDTO) {
         postService.update(id, postDTO.getTitle(), postDTO.getContent());
         return ApiResponse.ok("success!", "/api/v1/posts/" + id);
