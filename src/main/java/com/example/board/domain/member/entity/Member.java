@@ -46,6 +46,7 @@ public class Member extends BaseTimeEntity {
   @Column(name = "password")
   private String password;
 
+  @NotNull
   @Min(value = 6)
   @Max(value = 140)
   @Column(name = "age")

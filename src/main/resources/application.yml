@@ -24,5 +24,6 @@ spring:
         hbm2ddl:
           auto: create-drop # ddl 생성 전략. hibernate에서 제공해주는 properties를 같이 사용 가능
 
-set-cookie:
+cookie:
+  name: loginId
   max-age: 3600

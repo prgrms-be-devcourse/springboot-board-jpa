@@ -1,17 +1,19 @@
 package com.example.board.domain.member.controller;
 
+import com.example.board.common.exception.UnAuthorizedException;
+import com.example.board.common.util.AuthorityUtils;
 import com.example.board.domain.member.dto.MemberRequest;
 import com.example.board.domain.member.dto.MemberResponse;
 import com.example.board.domain.member.service.MemberService;
 import java.net.URI;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +27,10 @@ public class MemberController {
 
   private final MemberService memberService;
 
-  @Value("${set-cookie.max-age}")
+  @Value("${cookie.name}")
+  private String cookieName;
+
+  @Value("${cookie.max-age}")
   private int maxAge;
 
   public MemberController(MemberService memberService) {
@@ -50,7 +55,7 @@ public class MemberController {
   @PostMapping("/login")
   public ResponseEntity<Void> login(@RequestBody MemberRequest.Login loginRequest) {
     Long loginId = memberService.login(loginRequest);
-    ResponseCookie responseCookie = ResponseCookie.from("loginId", String.valueOf(loginId))
+    ResponseCookie responseCookie = ResponseCookie.from(cookieName, String.valueOf(loginId))
         .httpOnly(Boolean.TRUE)
         .maxAge(maxAge)
         .build();
@@ -61,15 +66,25 @@ public class MemberController {
   }
 
   @GetMapping("/mypage")
-  public ResponseEntity<MemberResponse.Detail> mypage(@CookieValue(name = "loginId") Long memberId) {
-    MemberResponse.Detail detail = memberService.findById(memberId);
+  public ResponseEntity<MemberResponse.Detail> mypage(HttpServletRequest request) {
+    Cookie loginIdCookie = AuthorityUtils.getCookie(request, cookieName);
 
-    return ResponseEntity.ok(detail);
+    try{
+      Long memberId = Long.valueOf(loginIdCookie.getValue());
+
+      MemberResponse.Detail detail = memberService.findById(memberId);
+
+      return ResponseEntity.ok(detail);
+    } catch(NumberFormatException e){
+      throw new UnAuthorizedException(
+          String.format("UnAuthorized cookie value: \"%s\"", loginIdCookie.getValue()));
+    }
+
   }
 
   @PostMapping("/logout")
   public ResponseEntity<Void> logout(HttpServletResponse response) {
-    Cookie cookie = new Cookie("loginId", null);
+    Cookie cookie = new Cookie(cookieName, null);
     cookie.setMaxAge(0);
     response.addCookie(cookie);
 
