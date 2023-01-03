@@ -41,4 +41,8 @@ public class MemberRepository {
         return em.createQuery("select m from Member m", Member.class)
                 .getResultList();
     }
+
+    public boolean existsByEmail(String email) {
+        return findByEmail(email).isPresent();
+    }
 }

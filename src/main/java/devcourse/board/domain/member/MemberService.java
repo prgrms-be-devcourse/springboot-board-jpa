@@ -21,10 +21,10 @@ public class MemberService {
 
     @Transactional
     public void join(MemberJoinRequest joinRequest) {
-        if (isEmailAlreadyInUse(joinRequest.email())) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format("Email ''{0}'' is already in use", joinRequest.email())
-            );
+        if (memberRepository.existsByEmail(joinRequest.email())) {
+            throw new IllegalArgumentException(MessageFormat.format(
+                    "Email ''{0}'' is already in use", joinRequest.email()
+            ));
         }
 
         save(joinRequest);
@@ -58,11 +58,5 @@ public class MemberService {
                         joinRequest.hobby()
                 )
         );
-    }
-
-    private boolean isEmailAlreadyInUse(String email) {
-        return memberRepository.findAll()
-                .stream()
-                .anyMatch(member -> member.matchEmail(email));
     }
 }
