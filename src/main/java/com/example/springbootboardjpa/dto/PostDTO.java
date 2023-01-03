@@ -32,7 +32,7 @@ public class PostDTO {
     }
 
     @Getter
-    @Builder
+    @Builder //  constructor level builder 알아보기
     public static class Response {
         private Long id;
         private String title;

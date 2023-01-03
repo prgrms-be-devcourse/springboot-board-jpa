@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface PostService {
 
-    @Transactional
+    @Transactional // readonly
     PostDTO.Response findById(long id);
 
     @Transactional
@@ -16,6 +16,6 @@ public interface PostService {
     @Transactional
     void update(long id, String title, String contents);
 
-    @Transactional
-    Page<PostDTO.Response> findAll(Pageable pageable);
+    @Transactional // (readOnly = true)
+    Page<PostDTO.Response> findAll(Pageable pageable); // read only, write only read / write -> jpa transational readonly
 }

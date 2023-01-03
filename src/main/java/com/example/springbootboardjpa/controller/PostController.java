@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,36 +21,11 @@ import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/posts")
+@RequestMapping("api/v1/posts")
 @RestController
 public class PostController {
 
     private final PostService postService;
-
-    @ExceptionHandler(NotFoundException.class)
-    public ApiResponse<String> notFoundHandler(NotFoundException e) {
-        log.info("NotFoundException 발생 : "+e.getMessage());
-        return ApiResponse.fail(404, e.getMessage());
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ApiResponse<String> internalServerErrorHandler(Exception e) {
-        log.info("Exception 발생 : "+e.getMessage());
-        return ApiResponse.fail(500, e.getMessage());
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ApiResponse<String> controllerValidationErrorHandler(MethodArgumentNotValidException e) {
-        log.info("MethodArgumentNotValidException 발생 : "+e.getMessage());
-        return ApiResponse.fail(400, e.getBindingResult().toString());
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ApiResponse<String> ServiceValidationErrorHandler(ConstraintViolationException e) {
-        log.info("ConstraintViolationException 발생 : "+e.getMessage());
-        return ApiResponse.fail(400, e.toString());
-    }
-
 
     /**
      * 게시물 page 조회
@@ -58,7 +34,7 @@ public class PostController {
      * @return Page<PostDto>
      */
     @GetMapping()
-    public ApiResponse<Page<PostDTO.Response>> getPost(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ApiResponse<Page<PostDTO.Response>> getPost(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) { // method name, page default value
         Page<PostDTO.Response> pages = postService.findAll(pageable);
         return ApiResponse.ok(pages);
     }
@@ -70,7 +46,7 @@ public class PostController {
      * @return PostDto
      */
     @GetMapping("/{id}")
-    public ApiResponse<PostDTO.Response> getPosts(@PathVariable Long id) {
+    public ApiResponse<PostDTO.Response> getPosts(@PathVariable Long id) { // method name
         PostDTO.Response findPost = postService.findById(id);
         return ApiResponse.ok(findPost);
     }
@@ -86,7 +62,7 @@ public class PostController {
         long postId = postService.save(postDTO);
         Map<String, String> result = new HashMap<>();
         result.put("id",postId+"");
-        return ApiResponse.ok(result,"/posts");
+        return ApiResponse.ok(result,"/api/v1/posts"); // 201, 202 CREATED // post /api/posts -> id 1 - /api/posts/1
     }
 
     /**
@@ -95,9 +71,9 @@ public class PostController {
      * @param id
      * @param postDTO
      */
-    @PostMapping("{id}")
+    @PostMapping("/{id}") // slash // update is method post? - put or patch
     public ApiResponse<String> updatePost(@PathVariable Long id, @Valid @RequestBody PostDTO.Request postDTO) {
         postService.update(id, postDTO.getTitle(), postDTO.getContent());
-        return ApiResponse.ok("success!","/posts/"+id);
+        return ApiResponse.ok("success!","/api/v1/posts/"+id);
     }
 }

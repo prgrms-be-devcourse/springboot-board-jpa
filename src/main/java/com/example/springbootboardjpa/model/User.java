@@ -33,7 +33,7 @@ public class User extends BaseEntity {
     @Column(length = 50)
     private String hobby;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // JSonManagedReference, JsonBackReference
     private final List<Post> posts = new ArrayList<>();
 
     public User(String name, Integer age, String hobby) {

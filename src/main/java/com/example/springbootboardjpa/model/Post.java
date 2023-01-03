@@ -29,7 +29,7 @@ public class Post extends BaseEntity {
     private String content;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) // @JoinColumn
     @Valid
     private User user;
 

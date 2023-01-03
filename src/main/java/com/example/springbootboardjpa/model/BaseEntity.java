@@ -14,9 +14,10 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity {
+public class BaseEntity { // abstract class 고려
     @Column(name = "created_by",updatable = false)
-    private String createdBy;
+//    @Setter
+    private String createdBy; // setter 필요하면 얘만 ?
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;

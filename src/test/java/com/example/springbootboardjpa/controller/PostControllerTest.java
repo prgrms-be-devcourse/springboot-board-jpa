@@ -72,11 +72,11 @@ class PostControllerTest {
         PostDTO.Save postDto = new PostDTO.Save("제목", "내용", userDto);
 
         // When // Then
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isOk())
-                .andExpect(redirectedUrl("/posts"))
+                .andExpect(redirectedUrl("/api/v1/posts"))
                 .andDo(print())
                 .andDo(document("post-save",
                         requestFields(fieldWithPath("title").type(JsonFieldType.STRING).description("post title"),
@@ -102,7 +102,7 @@ class PostControllerTest {
         PostDTO.Save postDto = new PostDTO.Save(null, "내용", userDto);
 
         // When // Then
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isBadRequest())
@@ -110,7 +110,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("context가 null이면 post를 생성할 수 없다.")
+    @DisplayName("context가 null이면 post를 생성할 수 없다.") // 5ta
     public void nullContextCreateFailTest() throws Exception {
         // Given
         UserDto.Info userDto = UserDto.Info.builder()
@@ -121,7 +121,7 @@ class PostControllerTest {
         PostDTO.Save postDto = new PostDTO.Save("제목", null, userDto);
 
         // When // Then
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isBadRequest())
@@ -135,7 +135,7 @@ class PostControllerTest {
         PostDTO.Save postDto = new PostDTO.Save("제목", "내용", null);
 
         // When // Then
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isBadRequest())
@@ -154,7 +154,7 @@ class PostControllerTest {
         PostDTO.Save postDto = new PostDTO.Save("제목", "내용", userDto);
 
         // When // Then
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isBadRequest())
@@ -163,17 +163,17 @@ class PostControllerTest {
 
     @Test
     @DisplayName("post를 정상 업데이트한다.")
-    public void updatePost() throws Exception {
+    public void updatePost() throws Exception { // where is verify return value
         // Given
         var post = postJpaRepository.save(new Post("제목", "내용", user));
         PostDTO.Request postDto = new PostDTO.Request("update_title", "update_context");
 
         // When // Then
-        mockMvc.perform(post("/posts/{id}", post.getId())
+        mockMvc.perform(post("/api/v1/posts/{id}", post.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isOk())
-                .andExpect(redirectedUrl("/posts/" + post.getId()))
+                .andExpect(redirectedUrl("/api/v1/posts/" + post.getId()))
                 .andDo(print())
                 .andDo(document("post-update",
                         pathParameters(
@@ -193,7 +193,7 @@ class PostControllerTest {
 
         // When // Then
         var id = post.getId();
-        mockMvc.perform(post("/posts/" + id)
+        mockMvc.perform(post("/api/v1/posts/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isBadRequest())
@@ -209,7 +209,7 @@ class PostControllerTest {
 
         // When // Then
         var id = post.getId();
-        mockMvc.perform(post("/posts/" + id)
+        mockMvc.perform(post("/api/v1/posts/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isBadRequest())
@@ -228,9 +228,10 @@ class PostControllerTest {
 
         // When // Then
         var id = post.getId();
-        mockMvc.perform(get("/posts/{id}", id))
+        mockMvc.perform(get("/api/v1/posts/{id}", id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(ResponseTitle, "제목").exists())
+                .andExpect(jsonPath("$.title").value(post.getTitle()))
                 .andExpect(jsonPath(ResponseContext, "내용").exists())
                 .andDo(print())
                 .andDo(document("find-post-one",
@@ -255,13 +256,13 @@ class PostControllerTest {
         assertThat(postJpaRepository.findById(nonPresentedId).isEmpty()).isTrue();
 
         // When // Then
-        mockMvc.perform(get("/posts/" + nonPresentedId))
+        mockMvc.perform(get("/api/v1/posts/" + nonPresentedId))
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }
 
     @Test
-    @DisplayName("posts page 정상 생성한다.")
+    @DisplayName("posts page 정상 조회한다.")
     public void getAllByPage() throws Exception {
         // Given
         List<Post> posts = Arrays.asList(new Post("test_title0", "content0", user),
@@ -278,6 +279,7 @@ class PostControllerTest {
                         .param("page", String.valueOf(0))
                         .param("size", String.valueOf(5)))
                 .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.responses.length()").value(5))
                 .andDo(print());
     }
 }

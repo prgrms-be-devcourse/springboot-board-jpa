@@ -13,31 +13,32 @@ import java.net.URI;
 public class ApiResponse<T> extends ResponseEntity<T> {
 
 
-    public ApiResponse(int statusCode, @RequestBody T data) {
-        super(data,HttpStatus.valueOf(statusCode));
+    public ApiResponse(T data, int statusCode) {
+        super(data, HttpStatus.valueOf(statusCode));
     }
 
-    public ApiResponse(int statusCode,HttpHeaders httpHeaders, @RequestBody T data) {
-        super(data,httpHeaders,HttpStatus.valueOf(statusCode));
+    public ApiResponse(T data, HttpHeaders httpHeaders, int statusCode) {
+        super(data, httpHeaders, HttpStatus.valueOf(statusCode));
     }
+
     public static <T> ApiResponse<T> ok(T data) {
-        return new ApiResponse<>(200, data);
+        return new ApiResponse<>(data, 200);
     }
 
     public static <T> ApiResponse<T> ok(T data, String uri) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(URI.create(uri));
-        return new ApiResponse<>(200,httpHeaders, data);
+        return new ApiResponse<>(data, httpHeaders, 200);
     }
 
     public static <T> ApiResponse<T> fail(int statusCode, T data) {
-        return new ApiResponse<>(statusCode, data);
+        return new ApiResponse<>(data, statusCode);
     }
 
     public static <T> ApiResponse<T> fail(int statusCode, T data, String uri) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(URI.create(uri));
-        return new ApiResponse<>(statusCode,httpHeaders, data);
+        return new ApiResponse<>(data, httpHeaders, statusCode);
     }
 
 }
