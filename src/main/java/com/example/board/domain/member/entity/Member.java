@@ -69,6 +69,12 @@ public class Member extends BaseTimeEntity {
     this.hobby = hobby;
   }
 
+  public void login(String loginPassword) {
+    if(password.equals(loginPassword)){
+      throw new IllegalArgumentException("login failed. wrong password");
+    }
+  }
+
   public void addPost(Post post){
     posts.add(post);
   }

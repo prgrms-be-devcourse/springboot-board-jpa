@@ -39,15 +39,13 @@ public class MemberService {
             () -> new UnAuthorizedException(
                 String.format("email %s not found", loginRequest.email())));
 
-    if(wrongPassword(loginRequest.password(), member.getPassword())){
+    try{
+      member.login(loginRequest.password());
+      return member.getId();
+
+    } catch(IllegalArgumentException e){
       throw new UnAuthorizedException(
           String.format("password doesn't match. request: %s, actual: %s", loginRequest.password(), member.getPassword()));
     }
-
-    return member.getId();
-  }
-
-  private boolean wrongPassword(String expected, String actual){
-    return !expected.equals(actual);
   }
 }
