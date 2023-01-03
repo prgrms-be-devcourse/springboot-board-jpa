@@ -146,7 +146,7 @@ class PostControllerTest {
     public void updatePost() throws Exception { // where is verify return value
         // Given
         var post = postJpaRepository.save(new Post("제목", "내용", user));
-        PostDTO.Request postDto = new PostDTO.Request("update_title", "update_context");
+        PostDTO.Request postDto = new PostDTO.Request("update_title", "update_context",user.getId());
 
         // When // Then
         mockMvc.perform(post("/api/v1/posts/{id}", post.getId())
@@ -160,7 +160,8 @@ class PostControllerTest {
                                 parameterWithName("id").description("post Id")
                         ),
                         requestFields(fieldWithPath("title").type(JsonFieldType.STRING).description("update title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("update content"))
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("update content"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("request user id"))
                 ));
     }
 
@@ -169,7 +170,7 @@ class PostControllerTest {
     public void nullTitleUpdateFailTest() throws Exception {
         // Given
         var post = postJpaRepository.save(new Post("제목", "내용", user));
-        PostDTO.Request postDto = new PostDTO.Request(null, "update_context");
+        PostDTO.Request postDto = new PostDTO.Request(null, "update_context",user.getId());
 
         // When // Then
         var id = post.getId();
@@ -185,7 +186,7 @@ class PostControllerTest {
     public void nullContextUpdateFailTest() throws Exception {
         // Given
         var post = postJpaRepository.save(new Post("제목", "내용", user));
-        PostDTO.Request postDto = new PostDTO.Request("update_title", null);
+        PostDTO.Request postDto = new PostDTO.Request("update_title", null,user.getId());
 
         // When // Then
         var id = post.getId();

@@ -1,6 +1,5 @@
 package com.example.springbootboardjpa.dto;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +27,8 @@ public class PostDTO {
         private String title;
         @NotNull
         private String content;
+        @NotNull
+        private Long userId;
     }
 
     @Getter
@@ -42,7 +43,7 @@ public class PostDTO {
 
     @Getter // Response에는 getter를 해줘야한다...안그럼 Not Acceptable 예외 발생
     @AllArgsConstructor
-    public static class ResponseId{
+    public static class ResponseId {
         private Long id;
     }
 }
