@@ -2,6 +2,7 @@ package devcourse.board.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import devcourse.board.domain.login.model.LoginRequest;
+import devcourse.board.domain.member.MemberRepository;
 import devcourse.board.domain.member.MemberService;
 import devcourse.board.domain.member.model.MemberJoinRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -29,11 +30,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class LoginApiControllerTest {
 
     @Autowired
-    MemberService memberService;
-    @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private MemberService memberService;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("로그인")
@@ -54,10 +60,20 @@ class LoginApiControllerTest {
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("login",
+                .andDo(document("authentication-login",
                         requestFields(
                                 fieldWithPath("email").type(STRING).description("이메일"),
                                 fieldWithPath("password").type(STRING).description("비밀번호")
                         )));
+    }
+
+    @Test
+    @DisplayName("로그아웃")
+    void logout() throws Exception {
+        // when & then
+        mockMvc.perform(post("/logout"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("authentication-logout"));
     }
 }
