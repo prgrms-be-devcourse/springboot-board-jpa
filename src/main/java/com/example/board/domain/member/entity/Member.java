@@ -70,7 +70,7 @@ public class Member extends BaseTimeEntity {
   }
 
   public void login(String loginPassword) {
-    if(password.equals(loginPassword)){
+    if(!password.equals(loginPassword)){
       throw new IllegalArgumentException("login failed. wrong password");
     }
   }
