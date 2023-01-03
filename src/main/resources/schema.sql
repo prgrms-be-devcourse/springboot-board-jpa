@@ -9,7 +9,7 @@ CREATE TABLE users(
     age         INT,
     hobby       VARCHAR(15),
     created_at  TIMESTAMP NOT NULL ,
-    created_by  VARCHAR(20) DEFAULT NULL
+    created_by  bigint DEFAULT NULL
 );
 
 CREATE TABLE posts(

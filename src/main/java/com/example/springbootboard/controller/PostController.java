@@ -4,6 +4,7 @@ import com.example.springbootboard.service.PostService;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+
 public class PostController {
     private final PostService postService;
 

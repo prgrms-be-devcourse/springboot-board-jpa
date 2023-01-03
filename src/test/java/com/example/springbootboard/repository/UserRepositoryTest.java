@@ -33,7 +33,7 @@ public class UserRepositoryTest{// extends MySQLContainer {
     private UserRepository repository;
 
     @Autowired
-    EntityManagerFactory emf;
+    private EntityManagerFactory emf;
 
     List<User> getUsers(int n){
         List<User> users = new ArrayList<>();
@@ -44,14 +44,18 @@ public class UserRepositoryTest{// extends MySQLContainer {
     }
 
 
-    @AfterEach
-    void cleanUp(){
-        repository.deleteAll();
-        //entityManagr
-//        emf.createEntityManager()
-//            .createNativeQuery("ALTER TABLE users AUTO_INCREMENT = 1;")
-//            .executeUpdate();
-    }
+//    @AfterEach
+//    void cleanUp(){
+//        repository.deleteAll();
+//        //entityManagr
+////        emf.createEntityManager()
+////            .createNativeQuery("ALTER TABLE users AUTO_INCREMENT = 1;")
+////            .executeUpdate();
+//    }
+//    @BeforeEach
+//    void setUp(){
+//        repository.deleteAll();
+//    }
 
 
     @Test
