@@ -78,8 +78,8 @@ class MemberApiControllerTest {
 
         Cookie idCookie = new Cookie(CookieConst.MEMBER_ID, String.valueOf(member.getId()));
 
-        // when & t경hen
-        mockMvc.perform(get("/members")
+        // when & then
+        mockMvc.perform(get("/members/{memberId}", member.getId())
                         .cookie(idCookie))
                 .andExpect(status().isOk())
                 .andDo(print())
