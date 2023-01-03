@@ -4,9 +4,6 @@ import static com.prgrms.exception.ErrorCode.INTERNAL_SERVER_ERROR;
 import static com.prgrms.exception.ErrorCode.INVALID_PARAMETER;
 
 import com.prgrms.exception.customException.CustomException;
-import com.prgrms.exception.customException.EmailDuplicateException;
-import com.prgrms.exception.customException.PostNotFoundException;
-import com.prgrms.exception.customException.UserNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.nio.file.AccessDeniedException;
@@ -22,8 +19,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
 
-    @ExceptionHandler(EmailDuplicateException.class)
-    public ResponseEntity<ErrorResponse> handleException(EmailDuplicateException e) {
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ErrorResponse> handleException(CustomException e) {
         ErrorResponse response = getErrorResponse(e);
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
@@ -50,18 +47,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleException(
         MissingServletRequestParameterException e) {
         ErrorResponse response = ErrorResponse.of(INVALID_PARAMETER);
-        return ResponseEntity.status(response.httpStatus()).body(response);
-    }
-
-    @ExceptionHandler(PostNotFoundException.class)
-    protected ResponseEntity<ErrorResponse> handleException(PostNotFoundException e) {
-        ErrorResponse response = getErrorResponse(e);
-        return ResponseEntity.status(response.httpStatus()).body(response);
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    protected ResponseEntity<ErrorResponse> handleException(UserNotFoundException e) {
-        ErrorResponse response = getErrorResponse(e);
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
 
