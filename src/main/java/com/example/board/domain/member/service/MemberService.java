@@ -24,7 +24,7 @@ public class MemberService {
     Member member = memberRepository.findById(id)
         .orElseThrow(
             () -> new NotFoundException(String.format("member id %d doesn't exist", id)));
-    return MemberResponse.Detail.from(member);
+    return new MemberResponse.Detail(member);
   }
 
   public Long save(MemberRequest.SignUp signUpRequest) {
