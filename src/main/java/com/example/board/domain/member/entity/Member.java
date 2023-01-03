@@ -17,6 +17,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -35,7 +36,8 @@ public class Member extends BaseTimeEntity {
   private String name;
 
   @NotNull
-  @Email
+  @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
+      flags = Pattern.Flag.CASE_INSENSITIVE)
   @Column(name = "email")
   private String email;
 
