@@ -12,13 +12,23 @@
 
 operation::member-join[snippets='http-request,request-fields,http-response']
 
-=== 회원 단건 조회
+=== 회원 조회
+
+==== 단건 조회
 
 operation::member-get-one[snippets='http-request,http-response,response-fields']
 
-== 로그인
+== 사용자 인증
 
-operation::login[snippets='http-request,request-fields,http-response']
+=== 로그인/로그아웃
+
+==== 로그인
+
+operation::authentication-login[snippets='http-request,request-fields,http-response']
+
+==== 로그아웃
+
+operation::authentication-logout[snippets='http-request,http-response']
 
 == 게시글
 
