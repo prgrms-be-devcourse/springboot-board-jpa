@@ -1,4 +1,4 @@
-package com.spring.board.springboard.user.controller;
+package com.spring.board.springboard.user.controller.authenticate;
 
 import com.spring.board.springboard.user.domain.dto.MemberDetailResponseDto;
 import com.spring.board.springboard.user.exception.AuthenticateException;
@@ -15,18 +15,25 @@ public class CookieUtils {
     private static final Integer COOKIE_AGE = 600;
 
     public static void validateMemberByCookie(HttpServletRequest request, MemberDetailResponseDto findMember) {
-        Cookie cookie = WebUtils.getCookie(request, USER_INFO_COOKIE_NAME);
-
-        if(Objects.isNull(cookie)){
-            throw new AuthenticateException(NO_COOKIE);
-        }
+        Cookie cookie = getUserCookie(request);
 
         if (isNotEqual(cookie.getValue(), findMember.email())) {
             throw new AuthenticateException("권한이 없습니다.");
         }
     }
 
+    public static Cookie getUserCookie(HttpServletRequest request) {
+        Cookie cookie = WebUtils.getCookie(request, USER_INFO_COOKIE_NAME);
+
+        if (Objects.isNull(cookie)) {
+            throw new AuthenticateException(NO_COOKIE);
+        }
+
+        return cookie;
+    }
+
     public static Cookie createUserInfoCookie(String cookieValue) {
+        System.out.println(cookieValue);
         Cookie cookie = new Cookie(USER_INFO_COOKIE_NAME, cookieValue);
         cookie.setHttpOnly(true);
         cookie.setMaxAge(COOKIE_AGE);
