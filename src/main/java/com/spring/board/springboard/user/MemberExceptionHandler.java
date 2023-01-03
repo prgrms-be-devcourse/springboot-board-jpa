@@ -3,6 +3,7 @@ package com.spring.board.springboard.user;
 import com.spring.board.springboard.domain.ErrorResponse;
 import com.spring.board.springboard.user.exception.AuthenticateException;
 import com.spring.board.springboard.user.exception.NoMemberException;
+import com.spring.board.springboard.user.exception.SessionCreateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,6 +23,13 @@ public class MemberExceptionHandler {
     public ResponseEntity<ErrorResponse> handleAuthenticateException(AuthenticateException authenticateException) {
         ErrorResponse errorResponse = new ErrorResponse(authenticateException.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(SessionCreateException.class)
+    public ResponseEntity<ErrorResponse> handleSessionCreateException(SessionCreateException sessionCreateException) {
+        ErrorResponse errorResponse = new ErrorResponse(sessionCreateException.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(errorResponse);
     }
 }
