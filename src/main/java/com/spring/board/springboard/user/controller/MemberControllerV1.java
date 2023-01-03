@@ -14,16 +14,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-import static com.spring.board.springboard.user.controller.CookieUtils.createUserInfoCookie;
-import static com.spring.board.springboard.user.controller.CookieUtils.validateMemberByCookie;
+import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.createUserInfoCookie;
+import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.validateMemberByCookie;
 
 @RestController
-public class MemberController {
+@RequestMapping("/v1")
+public class MemberControllerV1 {
 
     private final MemberService memberService;
 
 
-    public MemberController(MemberService memberService) {
+    public MemberControllerV1(MemberService memberService) {
         this.memberService = memberService;
     }
 
