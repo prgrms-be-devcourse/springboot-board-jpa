@@ -68,12 +68,7 @@ class MemberApiControllerTest {
     @DisplayName("회원 단건 조회")
     void getMember() throws Exception {
         // given
-        Member member = Member.create(
-                "example@email.com",
-                "0000",
-                "member",
-                null,
-                null);
+        Member member = Member.create("example@email.com", "0000", "member");
         memberRepository.save(member);
 
         Cookie idCookie = new Cookie(CookieConst.MEMBER_ID, String.valueOf(member.getId()));

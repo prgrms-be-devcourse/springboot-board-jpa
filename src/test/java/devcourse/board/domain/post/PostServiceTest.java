@@ -32,13 +32,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.dummyMember = Member.create(
-                "example@email.com",
-                "0000",
-                "member",
-                null,
-                null
-        );
+        this.dummyMember = Member.create("example@email.com", "0000", "member");
     }
 
     @Test

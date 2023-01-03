@@ -31,13 +31,7 @@ class LoginServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.dummyMember = Member.create(
-                VALID_EMAIL,
-                VALID_PASSWORD,
-                "member",
-                null,
-                null
-        );
+        this.dummyMember = Member.create(VALID_EMAIL, VALID_PASSWORD, "member");
     }
 
     @Test

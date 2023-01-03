@@ -33,6 +33,10 @@ public class Member {
     protected Member() {
     }
 
+    public static Member create(String email, String password, String name) {
+        return create(email, password, name, null, null);
+    }
+
     public static Member create(String email, String password, String name, Integer age, String hobby) {
         Member member = new Member();
         member.email = email;

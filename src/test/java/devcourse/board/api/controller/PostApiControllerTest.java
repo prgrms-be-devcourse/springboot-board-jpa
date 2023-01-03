@@ -50,11 +50,7 @@ class PostApiControllerTest {
 
     @BeforeEach
     void setUp() {
-        this.dummyMember = Member.create(
-                "example@email.com",
-                "0000",
-                "member"
-        );
+        this.dummyMember = Member.create("example@email.com", "0000", "member");
     }
 
     @Test
