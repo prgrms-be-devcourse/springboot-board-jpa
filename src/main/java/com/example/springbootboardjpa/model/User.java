@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends TimeBaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

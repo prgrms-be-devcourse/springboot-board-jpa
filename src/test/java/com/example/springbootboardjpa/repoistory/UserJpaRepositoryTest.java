@@ -48,6 +48,8 @@ class UserJpaRepositoryTest {
         var users = userRepository.findAll();
         assertThat(users.size()).isEqualTo(1L);
         assertThat(users.get(0)).isEqualTo(insertUser);
+        assertThat(users.get(0).getCreatedAt()).isNotNull();
+        log.info("{}", users.get(0).getCreatedAt());
     }
 
 
@@ -130,19 +132,4 @@ class UserJpaRepositoryTest {
         assertThat(findPost.isEmpty()).isTrue();
     }
 
-    @Test
-    @DisplayName("BaseEntity 필드가 정상 등록된다.")
-    public void BaseEntityTest() {
-        // Given
-        userRepository.save(user);
-
-        // When
-        var findUser = userRepository.findById(1L).get();
-        findUser.setCreatedBy("관리자");
-
-        // Then
-        assertThat(findUser.getCreatedAt()).isNotNull();
-        log.info("{}", findUser.getCreatedAt());
-        assertThat(findUser.getCreatedBy()).isEqualTo("관리자");
-    }
 }

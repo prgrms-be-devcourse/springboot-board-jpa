@@ -41,11 +41,13 @@ class PostJpaRepositoryTest {
     @DisplayName("post를 id로 정상 조회한다.")
     public void findPostById() {
         // When
-        var find = postRepository.findById(1L);
+        var find = postRepository.findById(post.getId());
 
         // Then
         assertThat(find.isPresent()).isTrue();
         assertThat(find.get()).isEqualTo(post);
+        assertThat(find.get().getCreatedAt()).isNotNull();
+        log.info("{}", find.get().getCreatedAt());
     }
 
     @Test
@@ -76,7 +78,7 @@ class PostJpaRepositoryTest {
         var posts = postRepository.findByTitle("초밥");
 
         // Then
-        assertThat(posts.size()).isEqualTo(1L);
+        assertThat(posts.size()).isEqualTo(1);
         assertThat(posts.get(0)).isEqualTo(post);
     }
 
@@ -85,12 +87,12 @@ class PostJpaRepositoryTest {
     @DisplayName("post를 정상 수정한다.")
     public void updatePost() {
         // Given
-        var find = postRepository.findById(1L);
+        var find = postRepository.findById(post.getId());
         var findPost = find.get();
 
         // When
         findPost.changePost("초밥 달인", "초밥 달인 구하기~~~");
-        var updatePost = postRepository.findById(1L);
+        var updatePost = postRepository.findById(post.getId());
 
         // Then
         assertThat(updatePost.isPresent()).isTrue();
@@ -101,27 +103,14 @@ class PostJpaRepositoryTest {
     @DisplayName("post를 정상 삭제한다.")
     public void deletePost() {
         // Given
-        var findPost = postRepository.findById(1L).get();
+        var findPost = postRepository.findById(post.getId()).get();
 
         // When
         postRepository.delete(findPost);
-        var find = postRepository.findById(1L);
+        var find = postRepository.findById(post.getId());
 
         // Then
         assertThat(find.isEmpty()).isTrue();
-    }
-
-    @Test
-    @DisplayName("BaseEntity 필드가 정상 등록된다.")
-    public void BaseEntityTest() {
-        // Given // When
-        var findPost = postRepository.findById(1L).get();
-        findPost.setCreatedBy("관리자");
-
-        // Then
-        assertThat(findPost.getCreatedAt()).isNotNull();
-        log.info("{}", findPost.getCreatedAt());
-        assertThat(findPost.getCreatedBy()).isEqualTo("관리자");
     }
 
 }
