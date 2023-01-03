@@ -8,6 +8,7 @@ import devcourse.board.domain.post.PostRepository;
 import devcourse.board.domain.post.model.Post;
 import devcourse.board.domain.post.model.PostCreationRequest;
 import devcourse.board.domain.post.model.PostUpdateRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,16 +46,22 @@ class PostApiControllerTest {
     @Autowired
     private PostRepository postRepository;
 
+    private Member dummyMember;
+
+    @BeforeEach
+    void setUp() {
+        this.dummyMember = Member.create(
+                "example@email.com",
+                "0000",
+                "member"
+        );
+    }
+
     @Test
     @DisplayName("게시글 생성")
     void call_createPost() throws Exception {
         // given
-        Member member = Member.create(
-                "example@email.com",
-                "0000",
-                "member",
-                null,
-                null);
+        Member member = this.dummyMember;
         memberRepository.save(member);
 
         PostCreationRequest creationRequest =
@@ -81,12 +88,7 @@ class PostApiControllerTest {
     @DisplayName("게시글 단건 조회")
     void call_getPost() throws Exception {
         // given
-        Member member = Member.create(
-                "example@email.com",
-                "0000",
-                "member",
-                null,
-                null);
+        Member member = this.dummyMember;
         memberRepository.save(member);
 
         Post post = Post.createPost(member, "post-title", "post-content");
@@ -149,12 +151,7 @@ class PostApiControllerTest {
     @DisplayName("회원은 자신이 작성한 게시글에 대해서만 수정할 수 있다.")
     void call_updatePost() throws Exception {
         // given
-        Member member = Member.create(
-                "example@email.com",
-                "0000",
-                "member",
-                null,
-                null);
+        Member member = this.dummyMember;
         memberRepository.save(member);
 
         Post post = Post.createPost(member, "old-title", "old-content");
