@@ -40,11 +40,4 @@ public class MemberService {
                         "Member doesn't exist for memberId={0}", memberId
                 )));
     }
-
-    public Member findByEmail(String email) {
-        return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format(
-                        "Member doesn't exist for email={0}", email
-                )));
-    }
 }

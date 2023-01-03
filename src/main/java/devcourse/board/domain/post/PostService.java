@@ -67,7 +67,7 @@ public class PostService {
                     postId
             );
             throw new IllegalStateException(MessageFormat.format(
-                    "Member has no authority updated post. memberId={0}", loggedInMemberId
+                    "Member ''{0}'' has no authority to update post.", loggedInMemberId
             ));
         }
 
