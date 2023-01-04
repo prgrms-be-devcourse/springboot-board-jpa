@@ -1,9 +1,9 @@
-package devcourse.board.api.controller;
+package devcourse.board.web.api.v1;
 
 import devcourse.board.domain.member.MemberService;
 import devcourse.board.domain.member.model.MemberJoinRequest;
 import devcourse.board.domain.member.model.MemberResponse;
-import devcourse.board.errors.exception.ForbiddenException;
+import devcourse.board.global.errors.exception.ForbiddenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -14,17 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.MessageFormat;
 
-import static devcourse.board.api.authentication.AuthenticationUtil.getLoggedInMemberId;
+import static devcourse.board.web.authentication.AuthenticationUtil.getLoggedInMemberId;
 
 @RestController
-@RequestMapping("/members")
-public class MemberApiController {
+@RequestMapping("/api/v1/members")
+public class MemberApiV1 {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final MemberService memberService;
 
-    public MemberApiController(MemberService memberService) {
+    public MemberApiV1(MemberService memberService) {
         this.memberService = memberService;
     }
 

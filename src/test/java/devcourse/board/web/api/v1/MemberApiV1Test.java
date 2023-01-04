@@ -1,10 +1,10 @@
-package devcourse.board.api.controller;
+package devcourse.board.web.api.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import devcourse.board.api.authentication.AuthenticationUtil;
 import devcourse.board.domain.member.MemberRepository;
 import devcourse.board.domain.member.model.Member;
 import devcourse.board.domain.member.model.MemberJoinRequest;
+import devcourse.board.web.authentication.AuthenticationUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @SpringBootTest
 @Transactional
-class MemberApiControllerTest {
+class MemberApiV1Test {
 
     @Autowired
     private MockMvc mockMvc;
@@ -49,12 +49,12 @@ class MemberApiControllerTest {
                 new MemberJoinRequest("example@gmail.com", "0000", "member");
 
         // when & then
-        mockMvc.perform(post("/members")
+        mockMvc.perform(post("/api/v1/members")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(joinRequest)))
                 .andExpect(status().isCreated())
                 .andDo(print())
-                .andDo(document("member-join",
+                .andDo(document("member-join-v1",
                         requestFields(
                                 fieldWithPath("email").type(STRING).description("이메일"),
                                 fieldWithPath("password").type(STRING).description("비밀번호"),
@@ -71,14 +71,14 @@ class MemberApiControllerTest {
         Member member = Member.create("example@email.com", "0000", "member");
         memberRepository.save(member);
 
-        Cookie idCookie = new Cookie(AuthenticationUtil.MEMBER_ID, String.valueOf(member.getId()));
+        Cookie idCookie = new Cookie(AuthenticationUtil.COOKIE_NAME, String.valueOf(member.getId()));
 
         // when & then
-        mockMvc.perform(get("/members/{memberId}", member.getId())
+        mockMvc.perform(get("/api/v1/members/{memberId}", member.getId())
                         .cookie(idCookie))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("member-get-one",
+                .andDo(document("member-get-one-v1",
                         responseFields(
                                 fieldWithPath("email").type(STRING).description("이메일"),
                                 fieldWithPath("name").type(STRING).description("이름"),

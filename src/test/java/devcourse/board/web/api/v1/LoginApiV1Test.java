@@ -1,8 +1,7 @@
-package devcourse.board.api.controller;
+package devcourse.board.web.api.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import devcourse.board.domain.login.model.LoginRequest;
-import devcourse.board.domain.member.MemberRepository;
 import devcourse.board.domain.member.MemberService;
 import devcourse.board.domain.member.model.MemberJoinRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @SpringBootTest
 @Transactional
-class LoginApiControllerTest {
+class LoginApiV1Test {
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,9 +36,6 @@ class LoginApiControllerTest {
 
     @Autowired
     private MemberService memberService;
-
-    @Autowired
-    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("로그인")
@@ -55,12 +51,12 @@ class LoginApiControllerTest {
         LoginRequest loginRequest = new LoginRequest(email, password);
 
         // when & then
-        mockMvc.perform(post("/login")
+        mockMvc.perform(post("/api/v1/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("authentication-login",
+                .andDo(document("member-login-v1",
                         requestFields(
                                 fieldWithPath("email").type(STRING).description("이메일"),
                                 fieldWithPath("password").type(STRING).description("비밀번호")
@@ -71,9 +67,9 @@ class LoginApiControllerTest {
     @DisplayName("로그아웃")
     void logout() throws Exception {
         // when & then
-        mockMvc.perform(post("/logout"))
+        mockMvc.perform(post("/api/v1/logout"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("authentication-logout"));
+                .andDo(document("member-logout-v1"));
     }
 }

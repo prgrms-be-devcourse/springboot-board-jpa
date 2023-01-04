@@ -1,6 +1,6 @@
-package devcourse.board.errors;
+package devcourse.board.global.errors;
 
-import devcourse.board.errors.model.ErrorResponse;
+import devcourse.board.global.errors.model.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;

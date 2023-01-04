@@ -1,4 +1,4 @@
-package devcourse.board.api.authentication;
+package devcourse.board.web.authentication;
 
 import devcourse.board.domain.member.MemberRepository;
 import devcourse.board.domain.member.model.Member;
@@ -43,7 +43,7 @@ class AuthenticationUtilTest {
         Member member = this.dummyMember;
         memberRepository.save(member);
 
-        Cookie memberIdCookie = new Cookie(AuthenticationUtil.MEMBER_ID, String.valueOf(member.getId()));
+        Cookie memberIdCookie = new Cookie(AuthenticationUtil.COOKIE_NAME, String.valueOf(member.getId()));
         response.addCookie(memberIdCookie);
         request.setCookies(response.getCookies());
 

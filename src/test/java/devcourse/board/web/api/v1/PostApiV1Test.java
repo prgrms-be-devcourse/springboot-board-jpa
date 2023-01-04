@@ -1,13 +1,13 @@
-package devcourse.board.api.controller;
+package devcourse.board.web.api.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import devcourse.board.api.authentication.AuthenticationUtil;
 import devcourse.board.domain.member.MemberRepository;
 import devcourse.board.domain.member.model.Member;
 import devcourse.board.domain.post.PostRepository;
 import devcourse.board.domain.post.model.Post;
 import devcourse.board.domain.post.model.PostCreationRequest;
 import devcourse.board.domain.post.model.PostUpdateRequest;
+import devcourse.board.web.authentication.AuthenticationUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 @Transactional
-class PostApiControllerTest {
+class PostApiV1Test {
 
     @Autowired
     private MockMvc mockMvc;
@@ -64,12 +64,12 @@ class PostApiControllerTest {
                 new PostCreationRequest(member.getId(), "title", "content");
 
         // when & then
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(creationRequest)))
                 .andExpect(status().isCreated())
                 .andDo(print())
-                .andDo(document("post-create",
+                .andDo(document("post-create-v1",
                         requestFields(
                                 fieldWithPath("memberId").description("회원 식별자"),
                                 fieldWithPath("title").description("게시글 제목"),
@@ -91,11 +91,11 @@ class PostApiControllerTest {
         postRepository.save(post);
 
         // when & then
-        mockMvc.perform(get("/posts/{postId}", post.getId())
+        mockMvc.perform(get("/api/v1/posts/{postId}", post.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("post-get-one",
+                .andDo(document("post-get-one-v1",
                         pathParameters(
                                 parameterWithName("postId").description("게시글 식별자")
                         ),
@@ -124,13 +124,13 @@ class PostApiControllerTest {
         postRepository.save(post);
 
         // when & then
-        mockMvc.perform(get("/posts")
+        mockMvc.perform(get("/api/v1/posts")
                         .param("page", String.valueOf(0))
                         .param("size", String.valueOf(10))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("post-get-all",
+                .andDo(document("post-get-all-v1",
                         requestParameters(
                                 parameterWithName("page").description("시작 페이지"),
                                 parameterWithName("size").description("조회할 게시글 개수")
@@ -155,16 +155,16 @@ class PostApiControllerTest {
 
         PostUpdateRequest updateRequest = new PostUpdateRequest("new-title", "new-content");
 
-        Cookie idCookie = new Cookie(AuthenticationUtil.MEMBER_ID, String.valueOf(member.getId()));
+        Cookie idCookie = new Cookie(AuthenticationUtil.COOKIE_NAME, String.valueOf(member.getId()));
 
         // when & then
-        mockMvc.perform(patch("/posts/{postId}", post.getId())
+        mockMvc.perform(patch("/api/v1/posts/{postId}", post.getId())
                         .cookie(idCookie)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("post-update",
+                .andDo(document("post-update-v1",
                         pathParameters(
                                 parameterWithName("postId").description("게시글 식별자")
                         ),
