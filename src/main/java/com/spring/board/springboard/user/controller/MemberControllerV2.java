@@ -17,7 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.createUserInfoCookie;
-import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.getUserCookie;
 
 @RestController
 @RequestMapping("/v2")
@@ -59,8 +58,7 @@ public class MemberControllerV2 {
 
     @GetMapping("/me")
     public ResponseEntity<MemberDetailResponseDto> getInfo(HttpServletRequest request) {
-        Cookie cookie = getUserCookie(request);
-        Session session = sessionManager.findSession(cookie);
+        Session session = sessionManager.findSession(request);
 
         MemberDetailResponseDto findMember = memberService.findByEmail(session.email());
 

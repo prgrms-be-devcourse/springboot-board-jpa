@@ -9,9 +9,7 @@ import com.spring.board.springboard.user.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
-
-@Transactional
+@Transactional(readOnly = true)
 @Service
 public class MemberService {
 
@@ -22,15 +20,13 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    @Transactional(readOnly = true)
-    public Member getMember(Integer memberId) {
-        return memberRepository.findById(memberId)
+    public Member getMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
                 .orElseThrow(() -> {
                     throw new NoMemberException("사용자 정보를 찾을 수 없습니다.");
                 });
     }
 
-    @Transactional(readOnly = true)
     public MemberDetailResponseDto findById(Integer memberId) {
         final Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> {
@@ -40,18 +36,17 @@ public class MemberService {
         return new MemberDetailResponseDto(findMember);
     }
 
+    @Transactional
     public void register(MemberRequestDto memberRequestDto) {
         final Member newMember = memberRequestDto.toEntity();
         memberRepository.save(newMember);
     }
 
-    @Transactional(readOnly = true)
     public MemberDetailResponseDto login(MemberLoginDto memberLoginDto) {
         final Member findMember = memberRepository.findByEmail(
                         memberLoginDto.email())
                 .orElseThrow(() -> {
-                    throw new NoMemberException(
-                            MessageFormat.format("입력한 email: [{0}] 정보로 회원을 찾을 수 없습니다.", memberLoginDto.email()));
+                    throw new NoMemberException("회원 정보를 찾을 수 없습니다.");
                 });
 
         findMember.login(
