@@ -1,4 +1,4 @@
-package com.prgrms.web.authManager;
+package com.prgrms.web.auth;
 
 import com.prgrms.exception.ErrorCode;
 import com.prgrms.exception.customException.AuthenticationFailedException;
@@ -7,15 +7,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.util.WebUtils;
 
-public class CookieManager {
+public class CookieUtil {
 
-    private static final String COOKIE_NAME = "cookieId";
+    private static final String COOKIE_NAME = "userId";
 
-    public static void createCookie(Long userId, HttpServletResponse response) {
+    private CookieUtil() {}
 
-        Cookie cookie = new Cookie(COOKIE_NAME, String.valueOf(userId));
+    public static Cookie createCookie(Long userId) {
 
-        response.addCookie(cookie);
+        return new Cookie(COOKIE_NAME, String.valueOf(userId));
     }
 
     public static void removeCookie(HttpServletRequest request, HttpServletResponse response) {
