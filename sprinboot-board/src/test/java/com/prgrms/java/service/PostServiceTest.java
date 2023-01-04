@@ -1,12 +1,12 @@
-package com.prgrms.java;
+package com.prgrms.java.service;
 
-import com.prgrms.java.dto.CreatePostRequest;
+import com.prgrms.java.dto.post.CreatePostRequest;
 import com.prgrms.java.domain.HobbyType;
 import com.prgrms.java.domain.Post;
 import com.prgrms.java.domain.User;
-import com.prgrms.java.dto.GetPostDetailsResponse;
-import com.prgrms.java.dto.GetPostsResponse;
-import com.prgrms.java.dto.ModifyPostRequest;
+import com.prgrms.java.dto.post.GetPostDetailsResponse;
+import com.prgrms.java.dto.post.GetPostsResponse;
+import com.prgrms.java.dto.post.ModifyPostRequest;
 import com.prgrms.java.repository.PostRepository;
 import com.prgrms.java.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -49,7 +49,7 @@ class PostServiceTest {
     @Test
     void getPostsTest() {
         // given
-        User user = new User("이택승", 25, HobbyType.MOVIE);
+        User user = new User("이택승", "test@gmail.com", "test", 25, HobbyType.MOVIE);
         List<Post> posts = new ArrayList<>();
         posts.add(new Post(1L, "데브코스 짱짱", "데브코스 짱짱입니다.", user));
         posts.add(new Post(2L, "데브코스 짱짱2", "데브코스 짱짱2입니다.", user));
@@ -73,7 +73,7 @@ class PostServiceTest {
     @Test
     void getPostDetailTest() {
         // given
-        User user = new User("이택승", 25, HobbyType.MOVIE);
+        User user = new User("이택승", "test@gmail.com", "test", 25, HobbyType.MOVIE);
         Post post = new Post(1L, "데브코스 짱짱2", "데브코스 짱짱2입니다.", user);
         GetPostDetailsResponse expected = GetPostDetailsResponse.from(post);
         given(postRepository.findById(any())).willReturn(Optional.ofNullable(post));
@@ -91,7 +91,7 @@ class PostServiceTest {
     void createPostTest() {
         // given
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
-        User user = new User(1L, "이택승", 25, HobbyType.MOVIE);
+        User user = new User(1L, "이택승", "test@gmail.com", "test", 25, HobbyType.MOVIE);
         CreatePostRequest createPostRequest = new CreatePostRequest(
                 "데브코스 짱짱",
                 "데브코스 짱짱입니다.",
@@ -114,7 +114,7 @@ class PostServiceTest {
     @Test
     void modifyPostTest() {
         // given
-        User user = new User(1L, "이택승", 25, HobbyType.MOVIE);
+        User user = new User(1L, "이택승", "test@gmail.com", "test", 25, HobbyType.MOVIE);
         Post post = new Post(1L, "데브코스 짱짱", "데브코스 짱짱입니다.", user);
 
         ModifyPostRequest request = new ModifyPostRequest("데브코스 좋아", "데브코스 좋아용!");

@@ -1,11 +1,11 @@
-package com.prgrms.java;
+package com.prgrms.java.service;
 
-import com.prgrms.java.domain.User;
-import com.prgrms.java.dto.CreatePostRequest;
 import com.prgrms.java.domain.Post;
-import com.prgrms.java.dto.GetPostDetailsResponse;
-import com.prgrms.java.dto.GetPostsResponse;
-import com.prgrms.java.dto.ModifyPostRequest;
+import com.prgrms.java.domain.User;
+import com.prgrms.java.dto.post.CreatePostRequest;
+import com.prgrms.java.dto.post.GetPostDetailsResponse;
+import com.prgrms.java.dto.post.GetPostsResponse;
+import com.prgrms.java.dto.post.ModifyPostRequest;
 import com.prgrms.java.exception.ResourceNotFountException;
 import com.prgrms.java.repository.PostRepository;
 import com.prgrms.java.repository.UserRepository;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-
 
 @Service
 @Transactional(readOnly = true)
@@ -40,8 +39,7 @@ public class PostService {
     }
 
     public GetPostDetailsResponse getPostDetail(long postId) {
-        Post savedPost = postRepository.findById(postId)
-                .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find Post. Please check post id. [Post ID]: {0}", postId)));
+        Post savedPost = findById(postId);
 
         return GetPostDetailsResponse.from(savedPost);
     }
@@ -57,9 +55,14 @@ public class PostService {
 
     @Transactional
     public void modifyPost(long id, ModifyPostRequest modifyPostRequest) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find Post. Please check post id. [Post ID]: {0}", id)));
+        Post post = findById(id);
 
         post.editPost(modifyPostRequest.title(), modifyPostRequest.content());
+    }
+
+    private Post findById(long postId) {
+        Post savedPost = postRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find Post. Please check post id. [Post ID]: {0}", postId)));
+        return savedPost;
     }
 }

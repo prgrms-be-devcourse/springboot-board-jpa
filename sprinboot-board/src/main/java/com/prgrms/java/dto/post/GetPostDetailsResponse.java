@@ -1,4 +1,4 @@
-package com.prgrms.java.dto;
+package com.prgrms.java.dto.post;
 
 import com.prgrms.java.domain.Post;
 

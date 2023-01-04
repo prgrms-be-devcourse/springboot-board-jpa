@@ -1,8 +1,12 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
 = 게시판 미션 API Docs
 :doctype: book
 :icons: font
+:source-highlighter: highlightjs
 :toc: left
-:toclevels: 2
+:toclevels: 3
 :sectlinks:
 
 [[Post-API]]
@@ -43,3 +47,18 @@ operation::post-modify-title-fail[snippets='http-request,request-fields,http-res
 
 ==== 빈 내용으로 게시판 수정
 operation::post-modify-content-fail[snippets='http-request,request-fields,http-response,response-fields']
+
+[[User-API]]
+== User API
+
+[[유저-회원가입]]
+=== 회원가입
+operation::user-join[snippets='http-request,request-fields,http-response']
+
+[[유저-로그인]]
+=== 로그인
+operation::user-login[snippets='http-request,request-fields,http-response,response-headers']
+
+[[유저-정보조회]]
+=== 정보조회
+operation::user-getDetails[snippets='http-request,http-response,response-fields']
