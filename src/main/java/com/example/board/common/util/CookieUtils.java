@@ -6,9 +6,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.util.Assert;
 
-public class AuthorityUtils {
+public class CookieUtils {
 
-  private AuthorityUtils(){}
+  private CookieUtils(){}
 
   public static Cookie getCookie(HttpServletRequest request, String cookieName){
     Assert.notNull(cookieName, "parameter [cookieName] should not be null");

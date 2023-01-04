@@ -1,7 +1,7 @@
 package com.example.board.domain.member.controller.v2;
 
 import com.example.board.common.exception.UnAuthorizedException;
-import com.example.board.common.util.AuthorityUtils;
+import com.example.board.common.util.CookieUtils;
 import com.example.board.domain.member.dto.MemberRequest;
 import com.example.board.domain.member.dto.MemberResponse;
 import com.example.board.domain.member.service.MemberService;
@@ -67,7 +67,7 @@ public class SessionMemberController {
 
   @GetMapping("/mypage")
   public ResponseEntity<MemberResponse.Detail> mypage(HttpServletRequest request) {
-    Cookie loginIdCookie = AuthorityUtils.getCookie(request, cookieName);
+    Cookie loginIdCookie = CookieUtils.getCookie(request, cookieName);
 
     try{
       Long memberId = Long.valueOf(loginIdCookie.getValue());
