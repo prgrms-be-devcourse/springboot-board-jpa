@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @ToString(exclude = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User extends TimeBaseEntity {
@@ -37,15 +36,13 @@ public class User extends TimeBaseEntity {
     private final List<Post> posts = new ArrayList<>();
 
     public User(String name, Integer age, String hobby) {
-        this(null, name, age, hobby);
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
     }
 
     public User(String name, Integer age) {
         this(name, age, null);
-    }
-
-    public User(Long id, String name, Integer age) {
-        this(id ,name, age, null);
     }
 
     public void changeName(String name) {

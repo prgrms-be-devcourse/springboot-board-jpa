@@ -16,5 +16,5 @@ public interface PostService {
     void update(long id, String title, String contents);
 
     @Transactional(readOnly = true)
-    Page<PostDTO.Response> findAll(Pageable pageable); // read only, write only read / write -> jpa transational readonly
+    Page<PostDTO.Response> findAll(Pageable pageable);
 }

@@ -27,20 +27,14 @@ public class Post extends BaseEntity {
     private String content;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY) // @JoinColumn
+    @ManyToOne(fetch = FetchType.LAZY)
     @Valid
     private User user;
 
-
-    public Post(Long id, String title, String content, User user) {
-        this.id = id;
+    public Post(String title, String content, User user) {
         this.title = checkBlankTitle(title);
         this.content = content;
         this.user = user != null ? setUser(user) : null;
-    }
-
-    public Post(String title, String content, User user) {
-        this(null,title,content,user);
     }
 
     private User setUser(User user) {
