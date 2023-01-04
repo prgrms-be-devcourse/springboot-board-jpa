@@ -17,13 +17,6 @@ public class PostExceptionHandler {
         return ApiResponse.fail(404, e.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ApiResponse<String> internalServerErrorHandler(Exception e) {
-        e.printStackTrace();
-        log.warning("Exception 발생 : "+e.getMessage());
-        return ApiResponse.fail(500, e.getMessage());
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ApiResponse<String> controllerValidationErrorHandler(MethodArgumentNotValidException e) {
         log.warning("MethodArgumentNotValidException 발생 : "+e.getMessage());
@@ -35,4 +28,12 @@ public class PostExceptionHandler {
         log.warning("ConstraintViolationException 발생 : "+e.getMessage());
         return ApiResponse.fail(400, e.toString());
     }
+
+    @ExceptionHandler(Exception.class)
+    public ApiResponse<String> internalServerErrorHandler(Exception e) {
+        e.printStackTrace();
+        log.warning("Exception 발생 : "+e.getMessage());
+        return ApiResponse.fail(500, e.getMessage());
+    }
+
 }

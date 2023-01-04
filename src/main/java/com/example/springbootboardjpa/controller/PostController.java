@@ -56,7 +56,7 @@ public class PostController {
     public ApiResponse<PostDTO.ResponseId> createPost(@Valid @RequestBody PostDTO.Save postDTO) {
         long postId = postService.save(postDTO);
         PostDTO.ResponseId response = new PostDTO.ResponseId(postId);
-        return ApiResponse.ok(response, "/api/v1/posts"); // 201, 202 CREATED // post /api/posts -> id 1 - /api/posts/1
+        return ApiResponse.created(response, "/api/v1/posts/" + postId);
     }
 
     /**
@@ -65,9 +65,9 @@ public class PostController {
      * @param id
      * @param postDTO
      */
-    @PostMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE) // slash // update is method post? - put or patch
+    @PatchMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ApiResponse<String> updatePost(@PathVariable Long id, @Valid @RequestBody PostDTO.Request postDTO) {
         postService.update(id, postDTO.getTitle(), postDTO.getContent());
-        return ApiResponse.ok("success!", "/api/v1/posts/" + id);
+        return ApiResponse.ok("success update", "/api/v1/posts/" + id);
     }
 }

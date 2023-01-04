@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.payload.RequestBodySnippet;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +26,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -53,6 +53,7 @@ class PostControllerTest {
     private PostJpaRepository postJpaRepository;
 
     private User user;
+    private RequestBodySnippet requestBodySnippet;
 
     @BeforeEach
     public void setUp() {
@@ -70,8 +71,8 @@ class PostControllerTest {
         mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
-                .andExpect(status().isOk())
-                .andExpect(redirectedUrl("/api/v1/posts"))
+                .andExpect(status().isCreated())
+                .andExpect(redirectedUrl("/api/v1/posts/"))
                 .andDo(print())
                 .andDo(document("post-save",
                         requestFields(fieldWithPath("title").type(JsonFieldType.STRING).description("post title"),
@@ -149,7 +150,7 @@ class PostControllerTest {
         PostDTO.Request postDto = new PostDTO.Request("update_title", "update_context",user.getId());
 
         // When // Then
-        mockMvc.perform(post("/api/v1/posts/{id}", post.getId())
+        mockMvc.perform(patch("/api/v1/posts/{id}", post.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isOk())

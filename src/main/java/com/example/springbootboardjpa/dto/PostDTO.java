@@ -32,7 +32,7 @@ public class PostDTO {
     }
 
     @Getter
-    @Builder //  constructor level builder 알아보기
+    @Builder
     public static class Response {
         private Long id;
         private String title;
@@ -41,7 +41,7 @@ public class PostDTO {
         private LocalDateTime createdAt;
     }
 
-    @Getter // Response에는 getter를 해줘야한다...안그럼 Not Acceptable 예외 발생
+    @Getter
     @AllArgsConstructor
     public static class ResponseId {
         private Long id;
