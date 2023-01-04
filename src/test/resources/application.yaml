@@ -3,11 +3,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
   output:
     ansi:
       enabled: always
-#
+
+cookie:
+  max-age: 600
+
 logging:
   level:
     org.hibernate.SQL: debug

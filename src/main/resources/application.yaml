@@ -4,17 +4,18 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-
   jpa:
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
         format_sql: true
-
   output:
     ansi:
       enabled: always
+
+cookie:
+  max-age: 600
 
 server:
   servlet:
