@@ -1,9 +1,9 @@
 package com.prgrms.web.api;
 
 import static com.prgrms.dto.UserDto.UserCreateRequest;
-import static com.prgrms.web.authManager.CookieManager.createCookie;
-import static com.prgrms.web.authManager.CookieManager.getCookie;
-import static com.prgrms.web.authManager.CookieManager.removeCookie;
+import static com.prgrms.web.auth.CookieUtil.createCookie;
+import static com.prgrms.web.auth.CookieUtil.getCookie;
+import static com.prgrms.web.auth.CookieUtil.removeCookie;
 
 import com.prgrms.domain.user.UserService;
 import com.prgrms.dto.UserDto.LoginRequest;
@@ -53,7 +53,7 @@ public class UserController {
         HttpServletResponse servletResponse) {
 
         Response response = service.login(loginDto);
-        createCookie(response.getUserId(), servletResponse);
+        servletResponse.addCookie(createCookie(response.getUserId()));
 
         URI myPageUri = URI.create("api/v1/users/me");
 
