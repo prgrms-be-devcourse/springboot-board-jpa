@@ -37,4 +37,19 @@ public class Converter {
                 .content(post.getContent())
                 .build();
     }
+
+    public static User userCreateRequestToUser(UserCreateRequest request){
+        return User.builder()
+                .name(request.getName())
+                .age(request.getAge())
+                .hobby(request.getHobby())
+                .build();
+    }
+
+    public static Post postCreateRequestToPost(PostCreateRequest request){
+        return Post.builder()
+                .title(request.getTitle())
+                .content(request.getContent())
+                .build();
+    }
 }

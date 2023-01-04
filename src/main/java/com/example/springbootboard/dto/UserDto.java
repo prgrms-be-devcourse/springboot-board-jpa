@@ -1,7 +1,6 @@
 package com.example.springbootboard.dto;
 
 import com.example.springbootboard.entity.Hobby;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 

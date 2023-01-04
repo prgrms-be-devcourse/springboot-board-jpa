@@ -35,7 +35,6 @@ public class User extends BaseEntity {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        setCreatedAt(LocalDateTime.now());
     }
 
     public void changeHobby(Hobby hobby){

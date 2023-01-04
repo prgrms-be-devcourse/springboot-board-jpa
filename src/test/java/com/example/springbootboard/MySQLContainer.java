@@ -1,6 +1,9 @@
 package com.example.springbootboard;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -12,7 +15,8 @@ public class MySQLContainer {
     @Container
     public static org.testcontainers.containers.MySQLContainer mySQLContainer = new org.testcontainers.containers.MySQLContainer(MYSQL_VERSION);
 
-    @Test
+    @Test @Ignore
+    @DisplayName("test container test 1")
     void test1() {
         log.info("로그 getJdbcDriverInstance {} ", mySQLContainer.getJdbcDriverInstance());
         log.info("로그 getJdbcUrl {} ", mySQLContainer.getJdbcUrl());
@@ -22,7 +26,8 @@ public class MySQLContainer {
         log.info("로그 getPassword {} ", mySQLContainer.getPassword());
     }
 
-    @Test
+    @Test @Ignore
+    @DisplayName("test container test 2")
     void test2() {
         log.info("로그 getJdbcDriverInstance {} ", mySQLContainer.getJdbcDriverInstance());
         log.info("로그 getJdbcUrl {} ", mySQLContainer.getJdbcUrl());

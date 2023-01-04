@@ -1,6 +1,7 @@
 package com.example.springbootboard.service;
 
 import com.example.springbootboard.dto.Converter;
+import com.example.springbootboard.dto.UserCreateRequest;
 import com.example.springbootboard.dto.UserDto;
 import com.example.springbootboard.entity.User;
 import com.example.springbootboard.exception.UserNotFoundException;
@@ -20,8 +21,8 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(UserDto dto){
-        return repository.save(dtoToUser(dto));
+    public User createUser(UserCreateRequest request){
+        return repository.save(userCreateRequestToUser(request));
     }
 
     @Transactional(readOnly = true)
