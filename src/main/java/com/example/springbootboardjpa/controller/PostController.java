@@ -29,7 +29,7 @@ public class PostController {
      * @return Page<PostDto>
      */
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public ApiResponse<Page<PostDTO.Response>> getPost(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) { // method name, page default value
+    public ApiResponse<Page<PostDTO.Response>> getPosts(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<PostDTO.Response> pages = postService.findAll(pageable);
         return ApiResponse.ok(pages);
     }
@@ -41,7 +41,7 @@ public class PostController {
      * @return PostDto
      */
     @GetMapping(value = "/{id}",produces = APPLICATION_JSON_VALUE)
-    public ApiResponse<PostDTO.Response> getPosts(@PathVariable Long id) { // method name
+    public ApiResponse<PostDTO.Response> getPost(@PathVariable Long id) { // method name
         PostDTO.Response findPost = postService.findById(id);
         return ApiResponse.ok(findPost);
     }

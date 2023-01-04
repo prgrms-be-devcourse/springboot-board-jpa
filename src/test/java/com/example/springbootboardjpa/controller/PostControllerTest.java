@@ -2,7 +2,6 @@ package com.example.springbootboardjpa.controller;
 
 
 import com.example.springbootboardjpa.dto.PostDTO;
-import com.example.springbootboardjpa.dto.UserDto;
 import com.example.springbootboardjpa.model.Post;
 import com.example.springbootboardjpa.model.User;
 import com.example.springbootboardjpa.repoistory.PostJpaRepository;
@@ -17,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.payload.RequestBodySnippet;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +51,6 @@ class PostControllerTest {
     private PostJpaRepository postJpaRepository;
 
     private User user;
-    private RequestBodySnippet requestBodySnippet;
 
     @BeforeEach
     public void setUp() {
@@ -72,7 +69,7 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isCreated())
-               // .andExpect(redirectedUrl("/api/v1/posts/"))
+                .andExpect(redirectedUrlPattern("/api/v1/posts/*"))
                 .andDo(print())
                 .andDo(document("post-save",
                         requestFields(fieldWithPath("title").type(JsonFieldType.STRING).description("post title"),
@@ -99,7 +96,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("context가 null이면 post를 생성할 수 없다.") // 5ta
+    @DisplayName("context가 null이면 post를 생성할 수 없다.")
     public void nullContextCreateFailTest() throws Exception {
         // Given
         PostDTO.Save postDto = new PostDTO.Save("제목", null, user.getId());
@@ -144,10 +141,10 @@ class PostControllerTest {
 
     @Test
     @DisplayName("post를 정상 업데이트한다.")
-    public void updatePost() throws Exception { // where is verify return value
+    public void updatePost() throws Exception {
         // Given
         var post = postJpaRepository.save(new Post("제목", "내용", user));
-        PostDTO.Request postDto = new PostDTO.Request("update_title", "update_context",user.getId());
+        PostDTO.Request postDto = new PostDTO.Request("update_title", "update_context", user.getId());
 
         // When // Then
         mockMvc.perform(patch("/api/v1/posts/{id}", post.getId())
@@ -171,11 +168,10 @@ class PostControllerTest {
     public void nullTitleUpdateFailTest() throws Exception {
         // Given
         var post = postJpaRepository.save(new Post("제목", "내용", user));
-        PostDTO.Request postDto = new PostDTO.Request(null, "update_context",user.getId());
+        PostDTO.Request postDto = new PostDTO.Request(null, "update_context", user.getId());
 
         // When // Then
-        var id = post.getId();
-        mockMvc.perform(post("/api/v1/posts/" + id)
+        mockMvc.perform(patch("/api/v1/posts/" + post.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isBadRequest())
@@ -187,11 +183,11 @@ class PostControllerTest {
     public void nullContextUpdateFailTest() throws Exception {
         // Given
         var post = postJpaRepository.save(new Post("제목", "내용", user));
-        PostDTO.Request postDto = new PostDTO.Request("update_title", null,user.getId());
+        PostDTO.Request postDto = new PostDTO.Request("update_title", null, user.getId());
 
         // When // Then
         var id = post.getId();
-        mockMvc.perform(post("/api/v1/posts/" + id)
+        mockMvc.perform(patch("/api/v1/posts/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isBadRequest())
@@ -202,8 +198,6 @@ class PostControllerTest {
     @DisplayName("post를 정상 조회한다.")
     public void getPostById() throws Exception {
         // Given
-        var ResponseTitle = "$.[?(@.title == '%s')]";
-        var ResponseContext = "$.[?(@.content == '%s')]";
         var post = new Post("제목", "내용", user);
         post.setCreatedBy(user.getName());
         post = postJpaRepository.save(post);
@@ -212,9 +206,8 @@ class PostControllerTest {
         var id = post.getId();
         mockMvc.perform(get("/api/v1/posts/{id}", id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath(ResponseTitle, "제목").exists())
                 .andExpect(jsonPath("$.title").value(post.getTitle()))
-                .andExpect(jsonPath(ResponseContext, "내용").exists())
+                .andExpect(jsonPath("$.content").value(post.getContent()))
                 .andDo(print())
                 .andDo(document("find-post-one",
                         pathParameters(
@@ -256,12 +249,16 @@ class PostControllerTest {
                 new Post("test_title6", "content6", user));
         postJpaRepository.saveAll(posts);
 
+
         // When // Then
-        mockMvc.perform(get("/posts")
+        mockMvc.perform(get("/api/v1/posts")
                         .param("page", String.valueOf(0))
                         .param("size", String.valueOf(5)))
                 .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.responses.length()").value(5))
+                .andExpect(jsonPath("$.content.length()").value(5))
+                .andExpect(jsonPath("$.first").value(true))
+                .andExpect(jsonPath("$.size").value(5))
+                .andExpect(jsonPath("$.number").value(0))
                 .andDo(print());
     }
 }
