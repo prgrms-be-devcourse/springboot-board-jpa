@@ -4,12 +4,11 @@ import com.spring.board.springboard.user.exception.SessionCreateException;
 
 import java.util.Objects;
 
-public record Session(String sessionId, Integer memberId, String email) {
+public record Session(String sessionId, String email) {
 
     public Session {
         if (sessionId.isEmpty() ||
                 sessionId.isBlank() ||
-                Objects.isNull(memberId) ||
                 Objects.isNull(email) ||
                 email.isBlank()
         ) {
@@ -17,7 +16,7 @@ public record Session(String sessionId, Integer memberId, String email) {
         }
     }
 
-    public static Session create(String sessionId, Integer memberId, String email) {
-        return new Session(sessionId, memberId, email);
+    public static Session create(String sessionId, String email) {
+        return new Session(sessionId, email);
     }
 }

@@ -2,8 +2,8 @@ package com.spring.board.springboard.post.service;
 
 import com.spring.board.springboard.post.domain.Post;
 import com.spring.board.springboard.post.domain.dto.PostCreateRequestDto;
-import com.spring.board.springboard.post.domain.dto.PostSummaryResponseDto;
 import com.spring.board.springboard.post.domain.dto.PostDetailResponseDto;
+import com.spring.board.springboard.post.domain.dto.PostSummaryResponseDto;
 import com.spring.board.springboard.post.exception.NoPostException;
 import com.spring.board.springboard.post.repository.PostRepository;
 import com.spring.board.springboard.user.domain.Member;
@@ -54,8 +54,8 @@ public class PostService {
         );
     }
 
-    public PostDetailResponseDto createPost(PostCreateRequestDto postCreateRequestDto) {
-        Member findMember = memberService.getMember(postCreateRequestDto.memberId());
+    public PostDetailResponseDto createPost(PostCreateRequestDto postCreateRequestDto, String email) {
+        Member findMember = memberService.getMemberByEmail(email);
 
         Post post = postCreateRequestDto.toEntity(findMember);
         postRepository.save(post);
@@ -63,7 +63,7 @@ public class PostService {
         return new PostDetailResponseDto(post, new MemberSummaryResponseDto(findMember));
     }
 
-    public PostDetailResponseDto update(Integer postId, PostCreateRequestDto postCreateRequestDto) {
+    public PostDetailResponseDto update(Integer postId, PostCreateRequestDto postCreateRequestDto, String email) {
         Post findPost = postRepository.findById(postId)
                 .orElseThrow(() -> {
                     throw new NoPostException(
@@ -71,11 +71,26 @@ public class PostService {
                     );
                 });
 
+        findPost.validateWriter(email);
+
         findPost.change(
                 postCreateRequestDto.title(),
                 postCreateRequestDto.content()
         );
 
         return new PostDetailResponseDto(findPost, new MemberSummaryResponseDto(findPost.getMember()));
+    }
+
+    public void deleteOne(Integer postId, String email) {
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(() -> {
+                    throw new NoPostException(
+                            MessageFormat.format("(id: {0})에 해당하는 게시물이 없습니다.", postId)
+                    );
+                });
+
+        findPost.validateWriter(email);
+
+        postRepository.deleteById(postId);
     }
 }

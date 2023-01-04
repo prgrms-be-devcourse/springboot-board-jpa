@@ -3,11 +3,14 @@ package com.spring.board.springboard.user.controller.authenticate;
 import com.spring.board.springboard.user.domain.dto.MemberDetailResponseDto;
 import com.spring.board.springboard.user.exception.SessionCreateException;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+
+import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.getUserCookie;
 
 @Component
 public class SessionManager {
@@ -22,7 +25,8 @@ public class SessionManager {
         this.sessionStorage = sessionStorage;
     }
 
-    public Session findSession(Cookie cookie) {
+    public Session findSession(HttpServletRequest request) {
+        Cookie cookie = getUserCookie(request);
         return sessionStorage.getSession(cookie.getValue());
     }
 
@@ -32,7 +36,6 @@ public class SessionManager {
                     String newSessionId = createSessionId(memberDetailResponseDto.memberId());
                     Session session = Session.create(
                             newSessionId,
-                            memberDetailResponseDto.memberId(),
                             memberDetailResponseDto.email());
                     sessionStorage.putSession(session);
                     return session;

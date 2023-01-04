@@ -1,10 +1,12 @@
 package com.spring.board.springboard.post.domain;
 
 import com.spring.board.springboard.user.domain.Member;
+import com.spring.board.springboard.user.exception.AuthenticateException;
 import jakarta.persistence.*;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "post")
@@ -72,6 +74,12 @@ public class Post {
 
     public String getMemberName() {
         return this.member.getName();
+    }
+
+    public void validateWriter(String requestEmail) {
+        if (!Objects.equals(this.member.getEmail(), requestEmail)) {
+            throw new AuthenticateException("접근 권한이 없습니다.");
+        }
     }
 
     private void validate(String title, String content, LocalDateTime createdAt, Member member) {
