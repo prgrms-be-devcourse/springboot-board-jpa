@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.board.domain.member.dto.MemberRequest;
 import com.example.board.domain.member.repository.MemberRepository;
-import com.example.board.domain.member.service.MemberService;
+import com.example.board.domain.member.service.v1.CookieMemberService;
 import com.example.board.domain.post.dto.PostRequest;
 import com.example.board.domain.post.repository.PostRepository;
 import com.example.board.domain.post.service.PostService;
@@ -39,7 +39,7 @@ class MemberControllerTest {
   private PostRepository postRepository;
 
   @Autowired
-  private MemberService memberService;
+  private CookieMemberService memberService;
 
   @Autowired
   private PostService postService;
@@ -63,7 +63,7 @@ class MemberControllerTest {
     MemberRequest.SignUp signUpRequest = new MemberRequest.SignUp("김환", "email123@naver.com", "password123!", 25, "게임");
 
     //when & then
-    mockMvc.perform(post("/members")
+    mockMvc.perform(post("/api/v1/members")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(signUpRequest)))
         .andExpect(status().isCreated())
@@ -89,7 +89,7 @@ class MemberControllerTest {
     MemberRequest.Login loginMember = new MemberRequest.Login("email123@naver.com", "password123!");
 
     //when & then
-    mockMvc.perform(post("/members/login")
+    mockMvc.perform(post("/api/v1/members/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(loginMember)))
         .andExpect(status().isOk())
@@ -111,7 +111,7 @@ class MemberControllerTest {
     postService.save(new PostRequest("으앙", "응아아아아앙", savedMemberId));
 
     //when & then
-    mockMvc.perform(get("/members/mypage")
+    mockMvc.perform(get("/api/v1/members/mypage")
             .cookie(new Cookie("loginId", savedMemberId.toString())))
         .andExpect(status().isOk())
         .andDo(print())
@@ -134,7 +134,7 @@ class MemberControllerTest {
   @Test
   @DisplayName("로그아웃할 수 있습니다.")
   void logout() throws Exception {
-    mockMvc.perform(post("/members/logout"))
+    mockMvc.perform(post("/api/v1/members/logout"))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("member-logout"));

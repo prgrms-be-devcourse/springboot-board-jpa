@@ -4,7 +4,7 @@ import com.example.board.common.exception.UnAuthorizedException;
 import com.example.board.common.util.CookieUtils;
 import com.example.board.domain.member.dto.MemberRequest;
 import com.example.board.domain.member.dto.MemberResponse;
-import com.example.board.domain.member.service.MemberService;
+import com.example.board.domain.member.service.v1.CookieMemberService;
 import java.net.URI;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/api/v2/members")
 public class SessionMemberController {
 
-  private final MemberService memberService;
+  private final CookieMemberService memberService;
 
   @Value("${cookie.name}")
   private String cookieName;
@@ -33,7 +33,7 @@ public class SessionMemberController {
   @Value("${cookie.max-age}")
   private int maxAge;
 
-  public SessionMemberController(MemberService memberService) {
+  public SessionMemberController(CookieMemberService memberService) {
     this.memberService = memberService;
   }
 

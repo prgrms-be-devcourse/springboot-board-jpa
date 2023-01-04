@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.board.domain.member.dto.MemberRequest;
 import com.example.board.domain.member.repository.MemberRepository;
-import com.example.board.domain.member.service.MemberService;
+import com.example.board.domain.member.service.v1.CookieMemberService;
 import com.example.board.domain.post.dto.PostRequest;
 import com.example.board.domain.post.repository.PostRepository;
 import com.example.board.domain.post.service.PostService;
@@ -35,7 +35,7 @@ class PostControllerTest {
   private MockMvc mockMvc;
 
   @Autowired
-  private MemberService memberService;
+  private CookieMemberService memberService;
 
   @Autowired
   private MemberRepository memberRepository;

@@ -1,7 +1,7 @@
 package com.example.board.domain.common.entity;
 
 import com.example.board.domain.member.dto.MemberResponse.Detail;
-import com.example.board.domain.member.service.MemberService;
+import com.example.board.domain.member.service.v1.CookieMemberService;
 import com.example.board.domain.post.dto.PostRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,9 +17,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 public class RequestBodyAuditorAware implements AuditorAware<String> {
 
-  private final MemberService memberService;
+  private final CookieMemberService memberService;
 
-  public RequestBodyAuditorAware(MemberService memberService){
+  public RequestBodyAuditorAware(CookieMemberService memberService){
     this.memberService = memberService;
   }
 
