@@ -43,9 +43,11 @@ public class PostApiV1 {
 
     @PostMapping
     public ResponseEntity<CreateDataResponse> createPost(
+            HttpServletRequest request,
             @RequestBody PostCreationRequest creationRequest
     ) {
-        Long postIdentifier = postService.createPost(creationRequest);
+        Long loggedInMemberId = getLoggedInMemberId(request);
+        Long postIdentifier = postService.createPost(loggedInMemberId, creationRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new CreateDataResponse(postIdentifier));
     }

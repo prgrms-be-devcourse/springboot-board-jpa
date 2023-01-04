@@ -36,17 +36,17 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("게시글 생성")
+    @DisplayName("게시글을 작성할 수 있다.")
     void createPost() {
         // given
         Member member = this.dummyMember;
         memberRepository.save(member);
 
         PostCreationRequest creationRequest =
-                new PostCreationRequest(member.getId(), "post-title", "post-content");
+                new PostCreationRequest("post-title", "post-content");
 
         // when
-        Long createdPostId = postService.createPost(creationRequest);
+        Long createdPostId = postService.createPost(member.getId(), creationRequest);
 
         // then
         Post findPost = postRepository.findById(createdPostId).get();

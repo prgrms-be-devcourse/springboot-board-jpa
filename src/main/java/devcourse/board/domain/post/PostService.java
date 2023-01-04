@@ -28,8 +28,8 @@ public class PostService {
     }
 
     @Transactional
-    public Long createPost(PostCreationRequest creationRequest) {
-        Member findMember = memberService.findById(creationRequest.memberId());
+    public Long createPost(Long memberId, PostCreationRequest creationRequest) {
+        Member findMember = memberService.findById(memberId);
         Post newPost = Post.create(findMember, creationRequest.title(), creationRequest.content());
         postRepository.save(newPost);
 

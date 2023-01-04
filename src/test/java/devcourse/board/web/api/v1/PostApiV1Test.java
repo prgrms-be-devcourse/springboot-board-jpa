@@ -61,17 +61,19 @@ class PostApiV1Test {
         memberRepository.save(member);
 
         PostCreationRequest creationRequest =
-                new PostCreationRequest(member.getId(), "title", "content");
+                new PostCreationRequest("post-title", "post-content");
+
+        Cookie memberIdCookie = new Cookie(AuthenticationUtil.COOKIE_NAME, String.valueOf(member.getId()));
 
         // when & then
         mockMvc.perform(post("/api/v1/posts")
+                        .cookie(memberIdCookie)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(creationRequest)))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("post-create-v1",
                         requestFields(
-                                fieldWithPath("memberId").description("회원 식별자"),
                                 fieldWithPath("title").description("게시글 제목"),
                                 fieldWithPath("content").description("게시글 내용")
                         ),
