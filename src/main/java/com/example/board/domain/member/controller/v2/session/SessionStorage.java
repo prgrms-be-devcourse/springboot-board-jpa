@@ -1,6 +1,8 @@
 package com.example.board.domain.member.controller.v2.session;
 
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Component;
@@ -10,7 +12,7 @@ public class SessionStorage {
 
   private final Map<UUID, AuthenticatedMember> storage = new ConcurrentHashMap<>();
 
-  public boolean checkLogin(UUID key) {
+  public boolean checkSession(UUID key) {
     return storage.containsKey(key);
   }
 
@@ -29,5 +31,15 @@ public class SessionStorage {
 
   public void clear(){
     storage.clear();
+  }
+
+  public Optional<UUID> getLoginedSessionId(Long memberId, String email) {
+    Set<UUID> keys = storage.keySet();
+    return keys.stream()
+        .filter(key -> {
+          AuthenticatedMember member = storage.get(key);
+          return member.equals(AuthenticatedMember.from(memberId, email));
+        })
+        .findAny();
   }
 }
