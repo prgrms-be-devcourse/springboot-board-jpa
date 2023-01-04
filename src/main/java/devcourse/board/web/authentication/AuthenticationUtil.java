@@ -22,4 +22,11 @@ public class AuthenticationUtil {
 
         return Long.valueOf(memberIdCookie.getValue());
     }
+
+    public static Cookie newEmptyCookie(String cookieName) {
+        Cookie emptyCookie = new Cookie(cookieName, null);
+        emptyCookie.setPath("/");
+        emptyCookie.setMaxAge(0);
+        return emptyCookie;
+    }
 }

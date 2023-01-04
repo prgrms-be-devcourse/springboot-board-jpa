@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import static devcourse.board.web.authentication.AuthenticationUtil.COOKIE_NAME;
+import static devcourse.board.web.authentication.AuthenticationUtil.newEmptyCookie;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -39,10 +40,7 @@ public class LoginApiV1 {
     public ResponseEntity<Void> logout(
             HttpServletResponse response
     ) {
-        Cookie cookie = new Cookie(COOKIE_NAME, null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-
+        response.addCookie(newEmptyCookie(COOKIE_NAME));
         return ResponseEntity.ok()
                 .build();
     }
