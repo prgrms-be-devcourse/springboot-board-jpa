@@ -1,6 +1,7 @@
 package com.spring.board.springboard.user.controller;
 
-import com.spring.board.springboard.user.controller.authenticate.SessionStorage;
+import com.spring.board.springboard.user.controller.authenticate.Session;
+import com.spring.board.springboard.user.controller.authenticate.SessionManager;
 import com.spring.board.springboard.user.domain.dto.MemberDetailResponseDto;
 import com.spring.board.springboard.user.domain.dto.MemberLoginDto;
 import com.spring.board.springboard.user.domain.dto.MemberRequestDto;
@@ -16,29 +17,27 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.createUserInfoCookie;
-import static com.spring.board.springboard.user.controller.authenticate.SessionStorage.putSession;
-import static com.spring.board.springboard.user.controller.authenticate.SessionUtils.validateMember;
+import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.getUserCookie;
 
 @RestController
 @RequestMapping("/v2")
 public class MemberControllerV2 {
 
     private final MemberService memberService;
+    private final SessionManager sessionManager;
 
-    public MemberControllerV2(MemberService memberService) {
+    public MemberControllerV2(MemberService memberService, SessionManager sessionManager) {
         this.memberService = memberService;
+        this.sessionManager = sessionManager;
     }
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(@Valid @RequestBody MemberLoginDto memberLoginDto, HttpServletResponse response) {
         final MemberDetailResponseDto authorizedMember = memberService.login(memberLoginDto);
 
-        String sessionId = SessionStorage.getSessionOrCreateIfNotExist(
-                authorizedMember.memberId());
+        Session session = sessionManager.getSessionOrCreateIfNotExist(authorizedMember);
 
-        Cookie cookie = createUserInfoCookie(sessionId);
-
-        putSession(sessionId, authorizedMember.memberId());
+        Cookie cookie = createUserInfoCookie(session.sessionId());
 
         response.addCookie(cookie);
 
@@ -58,11 +57,12 @@ public class MemberControllerV2 {
                 .build();
     }
 
-    @GetMapping("/members/{memberId}")
-    public ResponseEntity<MemberDetailResponseDto> getInfo(@PathVariable Integer memberId, HttpServletRequest request) {
-        final MemberDetailResponseDto findMember = memberService.findById(memberId);
+    @GetMapping("/me")
+    public ResponseEntity<MemberDetailResponseDto> getInfo(HttpServletRequest request) {
+        Cookie cookie = getUserCookie(request);
+        Session session = sessionManager.findSession(cookie);
 
-        validateMember(request, findMember);
+        MemberDetailResponseDto findMember = memberService.findByEmail(session.email());
 
         return ResponseEntity.ok(findMember);
     }
