@@ -12,7 +12,7 @@ public class SessionStorage {
 
   private final Map<UUID, AuthenticatedMember> storage = new ConcurrentHashMap<>();
 
-  public boolean checkSession(UUID key) {
+  public boolean containsKey(UUID key) {
     return storage.containsKey(key);
   }
 
@@ -41,5 +41,9 @@ public class SessionStorage {
           return member.equals(AuthenticatedMember.from(memberId, email));
         })
         .findAny();
+  }
+
+  public void remove(UUID sessionId) {
+    storage.remove(sessionId);
   }
 }

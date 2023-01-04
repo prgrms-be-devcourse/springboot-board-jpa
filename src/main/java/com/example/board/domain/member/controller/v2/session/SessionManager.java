@@ -1,7 +1,7 @@
 package com.example.board.domain.member.controller.v2.session;
 
+import com.example.board.common.exception.SessionNotFoundException;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -39,6 +39,18 @@ public class SessionManager {
   }
 
   public AuthenticatedMember getSession(UUID sessionId) {
+    checkSession(sessionId);
     return sessionStorage.get(sessionId);
+  }
+
+  public void removeSession(UUID sessionId) {
+    checkSession(sessionId);
+    sessionStorage.remove(sessionId);
+  }
+
+  public void checkSession(UUID sessionId){
+    if(!sessionStorage.containsKey(sessionId)){
+      throw new SessionNotFoundException(String.format("Invalid session id. Session id %s Not found", sessionId.toString()));
+    }
   }
 }

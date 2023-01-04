@@ -1,7 +1,9 @@
 package com.example.board.domain.member.controller.v2.session;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
+import com.example.board.common.exception.SessionNotFoundException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
@@ -24,7 +26,7 @@ class SessionManagerTest {
   }
 
   @AfterEach
-  private void tearDown(){
+  public void tearDown(){
     sessionStorage.clear();
   }
 
@@ -70,13 +72,26 @@ class SessionManagerTest {
     assertThat(member.getEmail()).isEqualTo("email@naver.com");
   }
 
-//  @Test
-//  @DisplayName("세션 id를 통해 사용자 권한을 확인할 수 있습니다.")
-//  void checkAuthentication(){
-//    //given
-//    UUID sessionId = saveSingleLoginMember();
-//
-//    //when
-//    sessionManager.checkLogin(sessionId);
-//  }
+  @Test
+  @DisplayName("로그아웃 시 세션 정보가 삭제됩니다.")
+  void removeSession(){
+    //given
+    UUID sessionId = saveSingleAuthenticatedMember();
+
+    //when
+    sessionManager.removeSession(sessionId);
+
+    //then
+    assertThrows(SessionNotFoundException.class, () -> sessionManager.getSession(sessionId));
+  }
+
+  @Test
+  @DisplayName("유효하지 않은 session id로 권한 확인을 요청하면 권한 확인에 실패한다.")
+  void checkAuthentication(){
+    //given & when
+    saveSingleAuthenticatedMember();
+
+    //then
+    assertThrows(SessionNotFoundException.class, () -> sessionManager.checkSession(UUID.randomUUID()));
+  }
 }
