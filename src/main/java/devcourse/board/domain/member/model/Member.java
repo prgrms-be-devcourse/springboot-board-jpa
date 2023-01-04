@@ -1,7 +1,8 @@
 package devcourse.board.domain.member.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,8 +13,14 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}", flags = Pattern.Flag.CASE_INSENSITIVE)
     @Column(unique = true, nullable = false)
-    @NotNull
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
     private String name;
 
     private Integer age;
@@ -26,19 +33,44 @@ public class Member {
     protected Member() {
     }
 
-    public Member(String name) {
-        this(name, null, null);
+    public static Member create(String email, String password, String name) {
+        return create(email, password, name, null, null);
     }
 
-    public Member(String name, Integer age, String hobby) {
-        this.name = name;
-        this.age = age;
-        this.hobby = hobby;
-        this.createdAt = LocalDateTime.now();
+    public static Member create(String email, String password, String name, Integer age, String hobby) {
+        Member member = new Member();
+        member.email = email;
+        member.password = password;
+        member.name = name;
+        member.age = age;
+        member.hobby = hobby;
+        member.createdAt = LocalDateTime.now();
+
+        return member;
+    }
+
+    public boolean matchId(Long id) {
+        return this.id.equals(id);
+    }
+
+    public boolean matchEmail(String email) {
+        return this.email.equals(email);
+    }
+
+    public boolean matchPassword(String password) {
+        return this.password.equals(password);
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getName() {

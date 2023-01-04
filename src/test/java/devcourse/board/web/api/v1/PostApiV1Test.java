@@ -1,11 +1,14 @@
-package devcourse.board.api;
+package devcourse.board.web.api.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import devcourse.board.domain.member.MemberService;
-import devcourse.board.domain.member.model.MemberJoinRequest;
-import devcourse.board.domain.post.PostService;
+import devcourse.board.domain.member.MemberRepository;
+import devcourse.board.domain.member.model.Member;
+import devcourse.board.domain.post.PostRepository;
+import devcourse.board.domain.post.model.Post;
 import devcourse.board.domain.post.model.PostCreationRequest;
 import devcourse.board.domain.post.model.PostUpdateRequest;
+import devcourse.board.web.authentication.AuthenticationUtil;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.Cookie;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -27,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 @Transactional
-class PostApiControllerTest {
+class PostApiV1Test {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,26 +41,35 @@ class PostApiControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private PostService postService;
+    private MemberRepository memberRepository;
 
     @Autowired
-    private MemberService memberService;
+    private PostRepository postRepository;
+
+    private Member dummyMember;
+
+    @BeforeEach
+    void setUp() {
+        this.dummyMember = Member.create("example@email.com", "0000", "member");
+    }
 
     @Test
     @DisplayName("게시글 생성")
     void call_createPost() throws Exception {
         // given
-        Long savedMemberId = saveDummyMember("member");
+        Member member = this.dummyMember;
+        memberRepository.save(member);
+
         PostCreationRequest creationRequest =
-                new PostCreationRequest(savedMemberId, "title", "content");
+                new PostCreationRequest(member.getId(), "title", "content");
 
         // when & then
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(creationRequest)))
                 .andExpect(status().isCreated())
                 .andDo(print())
-                .andDo(document("post-create",
+                .andDo(document("post-create-v1",
                         requestFields(
                                 fieldWithPath("memberId").description("회원 식별자"),
                                 fieldWithPath("title").description("게시글 제목"),
@@ -70,14 +84,18 @@ class PostApiControllerTest {
     @DisplayName("게시글 단건 조회")
     void call_getPost() throws Exception {
         // given
-        Long createdPostId = createDummyPost("dummy-member", "title", "content");
+        Member member = this.dummyMember;
+        memberRepository.save(member);
+
+        Post post = Post.create(member, "post-title", "post-content");
+        postRepository.save(post);
 
         // when & then
-        mockMvc.perform(get("/posts/{postId}", createdPostId)
+        mockMvc.perform(get("/api/v1/posts/{postId}", post.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("post-get-one",
+                .andDo(document("post-get-one-v1",
                         pathParameters(
                                 parameterWithName("postId").description("게시글 식별자")
                         ),
@@ -85,54 +103,68 @@ class PostApiControllerTest {
                                 fieldWithPath("postId").description("게시글 식별자"),
                                 fieldWithPath("title").description("게시글 제목"),
                                 fieldWithPath("content").description("게시글 내용"),
-                                fieldWithPath("createdAt").description("게시글 아이디"),
+                                fieldWithPath("createdAt").description("게시글 작성 시각"),
                                 fieldWithPath("createdBy").description("게시글 작성자 이름")
                         )));
     }
 
     @Test
-    @DisplayName("게시글 전체 조회 (페이징)")
+    @DisplayName("게시글 페이징 조회")
     void call_getPosts() throws Exception {
         // given
-        createDummyPosts(20);
+        Member member = Member.create(
+                "example@email.com",
+                "0000",
+                "member",
+                null,
+                null);
+        memberRepository.save(member);
+
+        Post post = Post.create(member, "post-title", "post-content");
+        postRepository.save(post);
 
         // when & then
-        mockMvc.perform(get("/posts")
+        mockMvc.perform(get("/api/v1/posts")
                         .param("page", String.valueOf(0))
                         .param("size", String.valueOf(10))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("post-get-all",
+                .andDo(document("post-get-all-v1",
                         requestParameters(
                                 parameterWithName("page").description("시작 페이지"),
                                 parameterWithName("size").description("조회할 게시글 개수")
                         ),
                         responseFields(
-                                fieldWithPath("postResponses").description("게시글 전체 조회 결과"),
+                                fieldWithPath("simplePostResponses").description("게시글 페이징 조회 결과"),
 
-                                fieldWithPath("postResponses[].postId").description("게시글 식별자"),
-                                fieldWithPath("postResponses[].title").description("게시글 제목"),
-                                fieldWithPath("postResponses[].content").description("게시글 내용"),
-                                fieldWithPath("postResponses[].createdAt").description("게시글 아이디"),
-                                fieldWithPath("postResponses[].createdBy").description("게시글 작성자 이름")
+                                fieldWithPath("simplePostResponses[].postId").description("게시글 식별자"),
+                                fieldWithPath("simplePostResponses[].title").description("게시글 제목")
                         )));
     }
 
     @Test
-    @DisplayName("게시글 업데이트")
+    @DisplayName("회원은 자신이 작성한 게시글에 대해서만 수정할 수 있다.")
     void call_updatePost() throws Exception {
         // given
-        Long createdPostId = createDummyPost("dummy-member", "old-title", "old-content");
+        Member member = this.dummyMember;
+        memberRepository.save(member);
+
+        Post post = Post.create(member, "old-title", "old-content");
+        postRepository.save(post);
+
         PostUpdateRequest updateRequest = new PostUpdateRequest("new-title", "new-content");
 
+        Cookie idCookie = new Cookie(AuthenticationUtil.COOKIE_NAME, String.valueOf(member.getId()));
+
         // when & then
-        mockMvc.perform(patch("/posts/{postId}", createdPostId)
+        mockMvc.perform(patch("/api/v1/posts/{postId}", post.getId())
+                        .cookie(idCookie)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("post-update",
+                .andDo(document("post-update-v1",
                         pathParameters(
                                 parameterWithName("postId").description("게시글 식별자")
                         ),
@@ -147,23 +179,5 @@ class PostApiControllerTest {
                                 fieldWithPath("createdAt").description("게시글 아이디"),
                                 fieldWithPath("createdBy").description("게시글 작성자 이름")
                         )));
-    }
-
-    private Long saveDummyMember(String name) {
-        return memberService.join(new MemberJoinRequest(name));
-    }
-
-    private Long createDummyPost(String memberName, String title, String content) {
-        Long savedMemberId = saveDummyMember(memberName);
-        PostCreationRequest creationRequest =
-                new PostCreationRequest(savedMemberId, title, content);
-
-        return postService.createPost(creationRequest);
-    }
-
-    private void createDummyPosts(int size) {
-        for (int i = 1; i <= size; i++) {
-            createDummyPost("member" + i, "title" + i, "content" + i);
-        }
     }
 }

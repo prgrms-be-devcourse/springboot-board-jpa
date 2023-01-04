@@ -1,4 +1,4 @@
-package devcourse.board.api.model;
+package devcourse.board.web.model;
 
 public record CreateDataResponse(
         Long identifier

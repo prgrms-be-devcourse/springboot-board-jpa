@@ -2148,6 +2148,12 @@
       <li><a href="#_회원">회원</a>
         <ul class="sectlevel2">
           <li><a href="#_회원_생성">회원 생성</a></li>
+          <li><a href="#_회원_조회">회원 조회</a></li>
+        </ul>
+      </li>
+      <li><a href="#_사용자_인증">사용자 인증</a>
+        <ul class="sectlevel2">
+          <li><a href="#_로그인로그아웃">로그인/로그아웃</a></li>
         </ul>
       </li>
       <li><a href="#_게시글">게시글</a>
@@ -2172,10 +2178,10 @@
             <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /members HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 41
+Content-Length: 87
 Host: localhost:8080
 
-{"name":"member","age":null,"hobby":null}</code></pre>
+{"email":"example@gmail.com","password":"0000","name":"member","age":null,"hobby":null}</code></pre>
             </div>
           </div>
         </div>
@@ -2195,6 +2201,16 @@ Host: localhost:8080
             </tr>
             </thead>
             <tbody>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>password</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">비밀번호</p></td>
+            </tr>
             <tr>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
@@ -2217,42 +2233,159 @@ Host: localhost:8080
           <h4 id="_회원_생성_http_response">HTTP response</h4>
           <div class="listingblock">
             <div class="content">
+              <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_회원_조회">회원 조회</h3>
+        <div class="sect3">
+          <h4 id="_단건_조회">단건 조회</h4>
+          <div class="sect4">
+            <h5 id="_단건_조회_http_request">HTTP request</h5>
+            <div class="listingblock">
+              <div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/3 HTTP/1.1
+Host: localhost:8080
+Cookie: memberId=3</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="sect4">
+            <h5 id="_단건_조회_http_response">HTTP response</h5>
+            <div class="listingblock">
+              <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 36
+Content-Length: 69
 
-{"description":"member-id","data":1}</code></pre>
+{"email":"example@email.com","name":"member","age":null,"hobby":null}</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="sect4">
+            <h5 id="_단건_조회_response_fields">Response fields</h5>
+            <table class="tableblock frame-all grid-all stretch">
+              <colgroup>
+                <col style="width: 33.3333%;">
+                <col style="width: 33.3333%;">
+                <col style="width: 33.3334%;">
+              </colgroup>
+              <thead>
+              <tr>
+                <th class="tableblock halign-left valign-top">Path</th>
+                <th class="tableblock halign-left valign-top">Type</th>
+                <th class="tableblock halign-left valign-top">Description</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
+              </tr>
+              <tr>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock">이름</p></td>
+              </tr>
+              <tr>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>age</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock">나이</p></td>
+              </tr>
+              <tr>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>hobby</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock">취미</p></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sect1">
+    <h2 id="_사용자_인증">사용자 인증</h2>
+    <div class="sectionbody">
+      <div class="sect2">
+        <h3 id="_로그인로그아웃">로그인/로그아웃</h3>
+        <div class="sect3">
+          <h4 id="_로그인">로그인</h4>
+          <div class="sect4">
+            <h5 id="_로그인_http_request">HTTP request</h5>
+            <div class="listingblock">
+              <div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /login HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 47
+Host: localhost:8080
+
+{"email":"example@gmail.com","password":"0000"}</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="sect4">
+            <h5 id="_로그인_request_fields">Request fields</h5>
+            <table class="tableblock frame-all grid-all stretch">
+              <colgroup>
+                <col style="width: 33.3333%;">
+                <col style="width: 33.3333%;">
+                <col style="width: 33.3334%;">
+              </colgroup>
+              <thead>
+              <tr>
+                <th class="tableblock halign-left valign-top">Path</th>
+                <th class="tableblock halign-left valign-top">Type</th>
+                <th class="tableblock halign-left valign-top">Description</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
+              </tr>
+              <tr>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>password</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock">비밀번호</p></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="sect4">
+            <h5 id="_로그인_http_response">HTTP response</h5>
+            <div class="listingblock">
+              <div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Set-Cookie: memberId=1</code></pre>
+              </div>
             </div>
           </div>
         </div>
         <div class="sect3">
-          <h4 id="_회원_생성_response_fields">Response fields</h4>
-          <table class="tableblock frame-all grid-all stretch">
-            <colgroup>
-              <col style="width: 33.3333%;">
-              <col style="width: 33.3333%;">
-              <col style="width: 33.3334%;">
-            </colgroup>
-            <thead>
-            <tr>
-              <th class="tableblock halign-left valign-top">Path</th>
-              <th class="tableblock halign-left valign-top">Type</th>
-              <th class="tableblock halign-left valign-top">Description</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-              <td class="tableblock halign-left valign-top"><p class="tableblock">회원 생성 결과</p></td>
-            </tr>
-            <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-              <td class="tableblock halign-left valign-top"><p class="tableblock">회원 아이디</p></td>
-            </tr>
-            </tbody>
-          </table>
+          <h4 id="_로그아웃">로그아웃</h4>
+          <div class="sect4">
+            <h5 id="_로그아웃_http_request">HTTP request</h5>
+            <div class="listingblock">
+              <div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /logout HTTP/1.1
+Host: localhost:8080</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="sect4">
+            <h5 id="_로그아웃_http_response">HTTP response</h5>
+            <div class="listingblock">
+              <div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Set-Cookie: memberId=; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT</code></pre>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2268,10 +2401,10 @@ Content-Length: 36
             <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /posts HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 51
+Content-Length: 50
 Host: localhost:8080
 
-{"memberId":23,"title":"title","content":"content"}</code></pre>
+{"memberId":6,"title":"title","content":"content"}</code></pre>
             </div>
           </div>
         </div>
@@ -2279,11 +2412,11 @@ Host: localhost:8080
           <h4 id="_게시글_생성_http_response">HTTP response</h4>
           <div class="listingblock">
             <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
 Content-Type: application/json
-Content-Length: 35
+Content-Length: 16
 
-{"description":"post-id","data":22}</code></pre>
+{"identifier":3}</code></pre>
             </div>
           </div>
         </div>
@@ -2304,12 +2437,7 @@ Content-Length: 35
             </thead>
             <tbody>
             <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-              <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 생성 결과</p></td>
-            </tr>
-            <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>identifier</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 식별자</p></td>
             </tr>
@@ -2320,19 +2448,19 @@ Content-Length: 35
       <div class="sect2">
         <h3 id="_게시글_조회">게시글 조회</h3>
         <div class="sect3">
-          <h4 id="_단건_조회">단건 조회</h4>
+          <h4 id="_단건_조회_2">단건 조회</h4>
           <div class="sect4">
-            <h5 id="_단건_조회_http_request">HTTP request</h5>
+            <h5 id="_단건_조회_2_http_request">HTTP request</h5>
             <div class="listingblock">
               <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts/21 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts/2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Host: localhost:8080</code></pre>
               </div>
             </div>
           </div>
           <div class="sect4">
-            <h5 id="_단건_조회_path_parameters">Path parameters</h5>
+            <h5 id="_단건_조회_2_path_parameters">Path parameters</h5>
             <table class="tableblock frame-all grid-all stretch">
               <caption class="title">Table 1. /posts/{postId}</caption>
               <colgroup>
@@ -2354,19 +2482,19 @@ Host: localhost:8080</code></pre>
             </table>
           </div>
           <div class="sect4">
-            <h5 id="_단건_조회_http_response">HTTP response</h5>
+            <h5 id="_단건_조회_2_http_response">HTTP response</h5>
             <div class="listingblock">
               <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 152
+Content-Length: 120
 
-{"description":"post-info","data":{"postId":21,"title":"title","content":"content","createdAt":"2022-12-24T05:03:22.098824","createdBy":"dummy-member"}}</code></pre>
+{"postId":2,"title":"post-title","content":"post-content","createdAt":"2023-01-03T17:35:24.932315","createdBy":"member"}</code></pre>
               </div>
             </div>
           </div>
           <div class="sect4">
-            <h5 id="_단건_조회_response_fields">Response fields</h5>
+            <h5 id="_단건_조회_2_response_fields">Response fields</h5>
             <table class="tableblock frame-all grid-all stretch">
               <colgroup>
                 <col style="width: 33.3333%;">
@@ -2382,37 +2510,27 @@ Content-Length: 152
               </thead>
               <tbody>
               <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 단건 조회 결과</p></td>
-              </tr>
-              <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 정보</p></td>
-              </tr>
-              <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.postId</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>postId</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 식별자</p></td>
               </tr>
               <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.title</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 제목</p></td>
               </tr>
               <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 내용</p></td>
               </tr>
               <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.createdAt</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdAt</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 아이디</p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 작성 시각</p></td>
               </tr>
               <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.createdBy</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdBy</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 작성자 이름</p></td>
               </tr>
@@ -2421,9 +2539,9 @@ Content-Length: 152
           </div>
         </div>
         <div class="sect3">
-          <h4 id="_전체_조회">전체 조회</h4>
+          <h4 id="_페이징_조회">페이징 조회</h4>
           <div class="sect4">
-            <h5 id="_전체_조회_http_request">HTTP request</h5>
+            <h5 id="_페이징_조회_http_request">HTTP request</h5>
             <div class="listingblock">
               <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts?page=0&amp;size=10 HTTP/1.1
@@ -2433,7 +2551,7 @@ Host: localhost:8080</code></pre>
             </div>
           </div>
           <div class="sect4">
-            <h5 id="_전체_조회_request_parameters">Request parameters</h5>
+            <h5 id="_페이징_조회_request_parameters">Request parameters</h5>
             <table class="tableblock frame-all grid-all stretch">
               <colgroup>
                 <col style="width: 50%;">
@@ -2458,19 +2576,19 @@ Host: localhost:8080</code></pre>
             </table>
           </div>
           <div class="sect4">
-            <h5 id="_전체_조회_http_response">HTTP response</h5>
+            <h5 id="_페이징_조회_http_response">HTTP response</h5>
             <div class="listingblock">
               <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 1176
+Content-Length: 59
 
-{"description":"content","data":[{"postId":1,"title":"title1","content":"content1","createdAt":"2022-12-24T05:03:21.885039","createdBy":"member1"},{"postId":2,"title":"title2","content":"content2","createdAt":"2022-12-24T05:03:21.896672","createdBy":"member2"},{"postId":3,"title":"title3","content":"content3","createdAt":"2022-12-24T05:03:21.900023","createdBy":"member3"},{"postId":4,"title":"title4","content":"content4","createdAt":"2022-12-24T05:03:21.902751","createdBy":"member4"},{"postId":5,"title":"title5","content":"content5","createdAt":"2022-12-24T05:03:21.906013","createdBy":"member5"},{"postId":6,"title":"title6","content":"content6","createdAt":"2022-12-24T05:03:21.908945","createdBy":"member6"},{"postId":7,"title":"title7","content":"content7","createdAt":"2022-12-24T05:03:21.911549","createdBy":"member7"},{"postId":8,"title":"title8","content":"content8","createdAt":"2022-12-24T05:03:21.91454","createdBy":"member8"},{"postId":9,"title":"title9","content":"content9","createdAt":"2022-12-24T05:03:21.91784","createdBy":"member9"},{"postId":10,"title":"title10","content":"content10","createdAt":"2022-12-24T05:03:21.920399","createdBy":"member10"}]}</code></pre>
+{"simplePostResponses":[{"postId":1,"title":"post-title"}]}</code></pre>
               </div>
             </div>
           </div>
           <div class="sect4">
-            <h5 id="_전체_조회_response_fields">Response fields</h5>
+            <h5 id="_페이징_조회_response_fields">Response fields</h5>
             <table class="tableblock frame-all grid-all stretch">
               <colgroup>
                 <col style="width: 33.3333%;">
@@ -2486,41 +2604,22 @@ Content-Length: 1176
               </thead>
               <tbody>
               <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 전체 조회 결과</p></td>
-              </tr>
-              <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>simplePostResponses</code></p>
+                </td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 정보</p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 페이징 조회 결과</p></td>
               </tr>
               <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].postId</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock">
+                  <code>simplePostResponses[].postId</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 식별자</p></td>
               </tr>
               <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].title</code></p></td>
+                <td class="tableblock halign-left valign-top"><p class="tableblock">
+                  <code>simplePostResponses[].title</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
                 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 제목</p></td>
-              </tr>
-              <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].content</code></p></td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 내용</p></td>
-              </tr>
-              <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].createdAt</code></p>
-                </td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 아이디</p></td>
-              </tr>
-              <tr>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].createdBy</code></p>
-                </td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-                <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 작성자 이름</p></td>
               </tr>
               </tbody>
             </table>
@@ -2533,10 +2632,11 @@ Content-Length: 1176
           <h4 id="_게시글_수정_http_request">HTTP request</h4>
           <div class="listingblock">
             <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /posts/23 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /posts/4 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 45
 Host: localhost:8080
+Cookie: memberId=7
 
 {"title":"new-title","content":"new-content"}</code></pre>
             </div>
@@ -2599,9 +2699,9 @@ Host: localhost:8080
             <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 160
+Content-Length: 118
 
-{"description":"post-info","data":{"postId":23,"title":"new-title","content":"new-content","createdAt":"2022-12-24T05:03:22.165392","createdBy":"dummy-member"}}</code></pre>
+{"postId":4,"title":"new-title","content":"new-content","createdAt":"2023-01-03T17:35:25.011568","createdBy":"member"}</code></pre>
             </div>
           </div>
         </div>
@@ -2622,37 +2722,27 @@ Content-Length: 160
             </thead>
             <tbody>
             <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-              <td class="tableblock halign-left valign-top"><p class="tableblock">전체 게시글 조회 결과</p></td>
-            </tr>
-            <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-              <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 정보</p></td>
-            </tr>
-            <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.postId</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>postId</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 식별자</p></td>
             </tr>
             <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.title</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 제목</p></td>
             </tr>
             <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 내용</p></td>
             </tr>
             <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.createdAt</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdAt</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 아이디</p></td>
             </tr>
             <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.createdBy</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdBy</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 작성자 이름</p></td>
             </tr>
@@ -2666,7 +2756,7 @@ Content-Length: 160
 <div id="footer">
   <div id="footer-text">
     Version 0.0.1-SNAPSHOT<br>
-    Last updated 2022-12-24 05:03:09 +0900
+    Last updated 2023-01-03 17:34:55 +0900
   </div>
 </div>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" rel="stylesheet">
