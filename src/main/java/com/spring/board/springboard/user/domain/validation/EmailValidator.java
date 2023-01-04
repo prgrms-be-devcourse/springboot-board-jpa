@@ -1,11 +1,9 @@
 package com.spring.board.springboard.user.domain.validation;
 
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.regex.Pattern;
 
-@Component
 public class EmailValidator {
 
     private static final String EMAIL_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
