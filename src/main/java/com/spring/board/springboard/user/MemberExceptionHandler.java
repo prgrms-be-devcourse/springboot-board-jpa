@@ -15,7 +15,7 @@ public class MemberExceptionHandler {
     @ExceptionHandler(NoMemberException.class)
     public ResponseEntity<ErrorResponse> handleNoMemberException(NoMemberException noMemberException) {
         ErrorResponse errorResponse = new ErrorResponse(noMemberException.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(errorResponse);
     }
 

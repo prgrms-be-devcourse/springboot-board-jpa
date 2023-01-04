@@ -26,8 +26,7 @@ public class MemberService {
     public Member getMember(Integer memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> {
-                    throw new NoMemberException(
-                            MessageFormat.format("No Member data by id : {0}", memberId));
+                    throw new NoMemberException("사용자 정보를 찾을 수 없습니다.");
                 });
     }
 
@@ -35,8 +34,7 @@ public class MemberService {
     public MemberDetailResponseDto findById(Integer memberId) {
         final Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> {
-                    throw new NoMemberException(
-                            MessageFormat.format("No Member data by id : {0}", memberId));
+                    throw new NoMemberException("사용자 정보를 찾을 수 없습니다.");
                 });
 
         return new MemberDetailResponseDto(findMember);
@@ -58,6 +56,15 @@ public class MemberService {
 
         findMember.login(
                 memberLoginDto.password());
+
+        return new MemberDetailResponseDto(findMember);
+    }
+
+    public MemberDetailResponseDto findByEmail(String email) {
+        final Member findMember = memberRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    throw new NoMemberException("사용자 정보를 찾을 수 없습니다.");
+                });
 
         return new MemberDetailResponseDto(findMember);
     }
