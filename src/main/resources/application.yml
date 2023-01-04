@@ -27,3 +27,8 @@ spring:
 cookie:
   name: loginId
   max-age: 3600
+
+session:
+  cookie:
+    name: sessionId
+  duration: 3600
