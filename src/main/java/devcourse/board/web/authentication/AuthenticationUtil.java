@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 public class AuthenticationUtil {
 
     public static final String COOKIE_NAME = "memberId";
+    public static final String SESSION_NAME = "sessionId";
 
     private AuthenticationUtil() {
     }
