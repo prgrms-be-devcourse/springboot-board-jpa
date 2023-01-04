@@ -1,4 +1,4 @@
-package com.prgrms.web;
+package com.prgrms.web.authManager;
 
 import com.prgrms.exception.ErrorCode;
 import com.prgrms.exception.customException.AuthenticationFailedException;
@@ -27,11 +27,11 @@ public class CookieManager {
         response.addCookie(cookie);
     }
 
-    public static Cookie getCookie(HttpServletRequest request){
+    public static Cookie getCookie(HttpServletRequest request) {
 
         Cookie cookie = WebUtils.getCookie(request, COOKIE_NAME);
 
-        if(cookie == null) {
+        if (cookie == null) {
             throw new AuthenticationFailedException(ErrorCode.AUTHENCTICATION_FAILED);
         }
         return cookie;
