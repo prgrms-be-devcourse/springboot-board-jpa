@@ -1,4 +1,4 @@
-package com.example.board.domain.member.controller;
+package com.example.board.domain.member.controller.v1;
 
 import com.example.board.common.exception.UnAuthorizedException;
 import com.example.board.common.util.AuthorityUtils;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/api/v1/members")
 public class MemberController {
 
   private final MemberService memberService;
@@ -42,7 +42,7 @@ public class MemberController {
     Long savedId = memberService.save(signUpRequest);
 
     URI uri = UriComponentsBuilder.newInstance()
-        .path("/member/login")
+        .path("/api/v1/member/login")
         .build()
         .expand(savedId)
         .encode()
