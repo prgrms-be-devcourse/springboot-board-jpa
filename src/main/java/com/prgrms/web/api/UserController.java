@@ -1,13 +1,11 @@
 package com.prgrms.web.api;
 
 import static com.prgrms.dto.UserDto.UserCreateRequest;
-import static com.prgrms.web.CookieManager.createCookie;
-import static com.prgrms.web.CookieManager.getCookie;
-import static com.prgrms.web.CookieManager.removeCookie;
 
 import com.prgrms.domain.user.UserService;
 import com.prgrms.dto.UserDto.LoginRequest;
 import com.prgrms.dto.UserDto.Response;
+import com.prgrms.web.authManager.CookieManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
@@ -24,14 +22,17 @@ public class UserController {
 
     private final UserService service;
 
-    public UserController(UserService service) {
+    private final CookieManager cookieManager;
+
+    public UserController(UserService service, CookieManager cookieManager) {
         this.service = service;
+        this.cookieManager = cookieManager;
     }
 
     @GetMapping("/me")
     public ResponseEntity<Response> getLoggedUserInfo(HttpServletRequest request) {
 
-        long loggedUserId = Long.parseLong(getCookie(request).getValue());
+        long loggedUserId = Long.parseLong(cookieManager.getCookie(request).getValue());
         Response userInfo = service.findUserById(loggedUserId);
 
         return ResponseEntity.ok(userInfo);
@@ -52,7 +53,7 @@ public class UserController {
         HttpServletResponse servletResponse) {
 
         Response response = service.login(loginDto);
-        createCookie(response.getUserId(), servletResponse);
+        cookieManager.createCookie(response.getUserId(), servletResponse);
 
         URI myPageUri = URI.create("api/v1/users/me");
 
@@ -64,11 +65,10 @@ public class UserController {
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response, HttpServletRequest request) {
 
-        removeCookie(request, response);
+        cookieManager.removeCookie(request, response);
 
         return ResponseEntity.ok()
             .build();
     }
-
 
 }
