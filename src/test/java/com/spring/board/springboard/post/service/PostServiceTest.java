@@ -7,10 +7,7 @@ import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
 import com.spring.board.springboard.user.repository.MemberRepository;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
@@ -33,29 +30,33 @@ class PostServiceTest {
     private static Integer postId;
     private static Member member;
 
-
-    @BeforeAll
-    void setUp() {
+    @BeforeEach
+    void setUp(){
         member = new Member("user@naver.com", "password1234", "이수린", 24, Hobby.SLEEP);
         memberRepository.save(member);
 
         PostCreateRequestDto postCreateRequestDTO1 = new PostCreateRequestDto(
                 "스프링 게시판 미션",
-                "이 미션 끝나면 크리스마스에요",
-                member.getId());
+                "이 미션 끝나면 크리스마스에요"
+        );
         PostCreateRequestDto postCreateRequestDTO2 = new PostCreateRequestDto(
                 "데브코스",
-                "프로그래머스 데브코스 완전 좋아요",
-                member.getId());
+                "프로그래머스 데브코스 완전 좋아요"
+        );
         PostCreateRequestDto postCreateRequestDTO3 = new PostCreateRequestDto(
                 "하기싫어",
-                "자고싶다",
-                member.getId());
+                "자고싶다"
+        );
 
-        postId = postService.createPost(postCreateRequestDTO1)
+        postId = postService.createPost(postCreateRequestDTO1, member.getEmail())
                 .postId();
-        postService.createPost(postCreateRequestDTO2);
-        postService.createPost(postCreateRequestDTO3);
+        postService.createPost(postCreateRequestDTO2, member.getEmail());
+        postService.createPost(postCreateRequestDTO3, member.getEmail());
+    }
+
+    @AfterAll
+    void clean(){
+        System.out.println(memberRepository.findAll().size());
     }
 
     @Test
@@ -91,12 +92,11 @@ class PostServiceTest {
         // given
         PostCreateRequestDto postCreateRequestDTO = new PostCreateRequestDto(
                 "새로운 게시글입니다.",
-                "새로운 게시글입니다. 매번 뭘 써야할 지 고민이네요",
-                member.getId()
+                "새로운 게시글입니다. 매번 뭘 써야할 지 고민이네요"
         );
 
         // when
-        PostDetailResponseDto createdPostDTO = postService.createPost(postCreateRequestDTO);
+        PostDetailResponseDto createdPostDTO = postService.createPost(postCreateRequestDTO, member.getEmail());
 
         // then
         PostDetailResponseDto findPostDTO = postService.getOne(
@@ -116,12 +116,12 @@ class PostServiceTest {
 
         PostCreateRequestDto beforeUpdatePostDTO = new PostCreateRequestDto(
                 changeTitle,
-                changeContent,
-                member.getId()
+                changeContent
         );
 
         // when
-        PostDetailResponseDto updatedPostDto = postService.update(postId, beforeUpdatePostDTO);
+        PostDetailResponseDto updatedPostDto = postService.update(
+                postId, beforeUpdatePostDTO, member.getEmail());
 
         // then
         assertThat(postId)

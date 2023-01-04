@@ -7,8 +7,12 @@ import com.spring.board.springboard.post.service.PostService;
 import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
 import com.spring.board.springboard.user.repository.MemberRepository;
+import jakarta.servlet.http.Cookie;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,6 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class PostControllerTest {
 
+    private static final String email = "user@naver.com";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -47,9 +53,11 @@ class PostControllerTest {
 
     private static Member member;
 
+    private static final Cookie cookie = new Cookie("user", email);
+
     @BeforeEach
     void setUp() {
-        member = new Member("user@naver.com", "password1234", "아무개", 49, Hobby.SLEEP);
+        member = new Member(email, "password1234", "아무개", 49, Hobby.SLEEP);
         memberRepository.save(member);
     }
 
@@ -59,12 +67,17 @@ class PostControllerTest {
         postService.createPost(
                 new PostCreateRequestDto(
                         "새로운 글의 제목,",
-                        "새로운 글의 내용",
-                        member.getId()
-                )
+                        "새로운 글의 내용"
+                ), member.getEmail()
+        );
+        postService.createPost(
+                new PostCreateRequestDto(
+                        "새로운 글의 제목2,",
+                        "새로운 글의 내용2"
+                ), member.getEmail()
         );
 
-        mockMvc.perform(get("/posts")
+        mockMvc.perform(get("/v1/posts")
                         .param("page",
                                 String.valueOf(0))
                         .param("size",
@@ -78,7 +91,7 @@ class PostControllerTest {
                                 fieldWithPath("[].postId").type(JsonFieldType.NUMBER).description("post id"),
                                 fieldWithPath("[].title").type(JsonFieldType.STRING).description("title"),
                                 fieldWithPath("[].memberName").type(JsonFieldType.STRING).description("writer name")
-                                ))
+                        ))
                 );
     }
 
@@ -88,20 +101,19 @@ class PostControllerTest {
         // given
         PostCreateRequestDto postCreateRequestDTO = new PostCreateRequestDto(
                 "저장하기",
-                "게시판에 새 글 저장하기",
-                member.getId());
+                "게시판에 새 글 저장하기");
 
         // when and then
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .cookie(cookie)
                         .content(objectMapper.writeValueAsString(postCreateRequestDTO)))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("post-save",
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("writer member id")
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("content")
                         ))
                 );
     }
@@ -113,13 +125,13 @@ class PostControllerTest {
         PostDetailResponseDto newPost = postService.createPost(
                 new PostCreateRequestDto(
                         "하나의 게시물 조회",
-                        "하나의 게시물을 조회할 수 있다.",
-                        member.getId()
-                )
+                        "하나의 게시물을 조회할 수 있다."
+                ), member.getEmail()
         );
 
-        mockMvc.perform(get("/posts/{postId}", newPost.postId())
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/posts/{postId}", newPost.postId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .cookie(cookie))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("get-one-post",
@@ -144,27 +156,25 @@ class PostControllerTest {
         PostDetailResponseDto newPost = postService.createPost(
                 new PostCreateRequestDto(
                         "hi hello",
-                        "hello world",
-                        member.getId()
-                )
+                        "hello world"
+                ), member.getEmail()
         );
 
         PostCreateRequestDto updatePostDTO = new PostCreateRequestDto(
                 "수정하기",
-                "게시판 새 글 저장하기 -> 수정된 내용임",
-                member.getId()
+                "게시판 새 글 저장하기 -> 수정된 내용임"
         );
 
-        mockMvc.perform(post("/posts/{postId}", newPost.postId())
+        mockMvc.perform(post("/v1/posts/{postId}", newPost.postId())
                         .contentType(MediaType.APPLICATION_JSON)
+                        .cookie(cookie)
                         .content(objectMapper.writeValueAsString(updatePostDTO)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-update",
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("writer member id")
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("content")
                         ),
                         responseFields(
                                 fieldWithPath("postId").type(JsonFieldType.NUMBER).description("post id"),
