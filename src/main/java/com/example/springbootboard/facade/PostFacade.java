@@ -20,7 +20,7 @@ public class PostFacade {
         this.userService = userService;
     }
 
-    public Post postCreateFacade(PostCreateRequest request) throws Exception {
+    public Post createPost(PostCreateRequest request) throws Exception {
         return postService.createPost(
                 PostDto.builder()
                 .title(request.getTitle())

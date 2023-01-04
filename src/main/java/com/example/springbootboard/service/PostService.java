@@ -5,6 +5,8 @@ import com.example.springbootboard.dto.PostDto;
 import com.example.springbootboard.entity.Post;
 import com.example.springbootboard.exception.PostNotFoundException;
 import com.example.springbootboard.repository.PostRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,14 +35,6 @@ public class PostService {
                 .orElseThrow(PostNotFoundException::new);
     }
 
-    @Transactional(readOnly = true)
-    public List<PostDto> findAllPosts(){
-        return repository.findAll()
-                .stream()
-                .map(Converter::postToDto)
-                .toList();
-    }
-
     @Transactional
     public PostDto updatePost(PostDto dto) throws Exception{
         Optional<Post> retrievedPost = repository.findById(dto.getId());
@@ -49,5 +43,10 @@ public class PostService {
         retrievedPost.get().changeContent(dto.getContent());
         retrievedPost.get().changeTitle(dto.getTitle());
         return dto;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostDto> findAll(Pageable pageable){
+        return repository.findAll(pageable).map(Converter::postToDto);
     }
 }
