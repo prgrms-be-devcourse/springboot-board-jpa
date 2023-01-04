@@ -10,57 +10,57 @@ import org.junit.jupiter.api.Test;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class UserTest {
 
-    private Validator validator;
-
-    @BeforeEach
-    public void setUp() {
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
-    }
-
     @Test
-    @DisplayName("name은 null이면 안된다.")
+    @DisplayName("name은 null이나 공백이면 안된다.")
     public void NameNullTest() {
-        var user = new User(null, 28);
+        assertThatThrownBy(() ->
+                new User(null, 28))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("이름은 Null 이거나 공백일 수 없습니다.");
 
-        Set<ConstraintViolation<User>> validate = validator.validate(user);
-        assertThat(validate.size()).isEqualTo(1);
+        assertThatThrownBy(() ->
+                new User(" ", 28))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("이름은 Null 이거나 공백일 수 없습니다.");
     }
 
     @Test
     @DisplayName("age 값은 0보다 커야야한다.")
     public void ageZeroTest() {
-        var user1 = new User("영지", 0);
-        var user2 = new User("영지", -1);
 
-        Set<ConstraintViolation<User>> validate = validator.validate(user1);
-        assertThat(validate.size()).isEqualTo(1);
-        assertThat(validate.iterator().next().getMessage()).isEqualTo("나이는 0보다 커야합니다.");
+        assertThatThrownBy(() ->
+                new User("영지", 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("나이는 0보다 커야합니다.");
 
-        validate = validator.validate(user2);
-        assertThat(validate.size()).isEqualTo(1);
-        assertThat(validate.iterator().next().getMessage()).isEqualTo("나이는 0보다 커야합니다.");
+        assertThatThrownBy(() ->
+                new User("영지", -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("나이는 0보다 커야합니다.");
+
     }
 
     @Test
     @DisplayName("age는 null이면 안된다.")
     public void ageNullTest() {
-        var user = new User("영지", null);
-
-        Set<ConstraintViolation<User>> validate = validator.validate(user);
-        assertThat(validate.size()).isEqualTo(1);
+        assertThatThrownBy(() ->
+                new User("영지", null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("나이 Null 일 수 없습니다.");
     }
 
     @Test
     @DisplayName("hobby는 50자를 초과하면 안된다.")
     public void UserNullTest() {
-        var user = new User("영지", 28, "012345678901234567890123456789012345678901234567891");
 
-        Set<ConstraintViolation<User>> validate = validator.validate(user);
-        assertThat(validate.size()).isEqualTo(1);
-        assertThat(validate.iterator().next().getMessage()).isEqualTo("유효 글자 수를 초과하였습니다.");
+        assertThatThrownBy(() ->
+                new User("영지", 28, "012345678901234567890123456789012345678901234567891"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("취미의 유효 글자 수 50을 초과하였습니다.");
     }
 
 }

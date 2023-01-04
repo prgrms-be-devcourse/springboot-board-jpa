@@ -1,38 +1,30 @@
 package com.example.springbootboardjpa.service;
 
 import com.example.springbootboardjpa.dto.PostDTO;
-import com.example.springbootboardjpa.dto.UserDto;
 import com.example.springbootboardjpa.exception.NotFoundException;
 import com.example.springbootboardjpa.model.Post;
 import com.example.springbootboardjpa.model.User;
 import com.example.springbootboardjpa.repoistory.PostJpaRepository;
 import com.example.springbootboardjpa.repoistory.UserJpaRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.PersistenceContext;
-import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.annotation.After;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 //@ActiveProfiles("test")
 @SpringBootTest
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Slf4j
 @Transactional
 class DefaultPostServiceTest {
@@ -47,7 +39,6 @@ class DefaultPostServiceTest {
     private PostJpaRepository postRepository;
 
     private User user;
-    private String ERROR_MSG = "Error occurred: ";
 
     @BeforeEach
     public void setUp() {
@@ -71,18 +62,6 @@ class DefaultPostServiceTest {
         assertThat(postRepository.findById(saveId).isPresent()).isTrue();
         assertThat(postRepository.findById(saveId).get().getTitle()).isEqualTo("test_title");
 
-    }
-
-    @Test
-    @DisplayName("post title이 50자 이상일 경우 저장되지않는다.")
-    public void saveFailTest() {
-        // Given
-        var postDto = new PostDTO.Save("012345678901234567890123456789012345678901234567891", "content", user.getId());
-
-        // When// Then
-        var exception = assertThrows(ConstraintViolationException.class, () -> postService.save(postDto));
-        assertThat(exception.getMessage()).isEqualTo(ERROR_MSG + "title 유효 글자 수를 초과하였습니다.");
-        assertThat(postRepository.findAll().size()).isEqualTo(0);
     }
 
     @Test
@@ -144,21 +123,22 @@ class DefaultPostServiceTest {
         assertThat(postRepository.findById(save.getId()).get().getContent()).isEqualTo("update_content");
     }
 
-    @Transactional(propagation = Propagation.NESTED)
     @Test
-    @DisplayName("post title이 50자 이상인 경우 변경에 실패한다.") // modified logic
+    @DisplayName("post title이 50자 이상인 경우 변경에 실패한다.")
     public void updateFailTest() {
         // Given
         var post = new Post("test_title", "content", user);
         var save = postRepository.saveAndFlush(post);
 
         // When// Then
-        assertThrows(ConstraintViolationException.class,
-                () -> postService.update(save.getId(), "012345678901234567890123456789012345678901234567891", "update_content"));
+        assertThatThrownBy(() ->
+                postService.update(save.getId(), "012345678901234567890123456789012345678901234567891", "update_content"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("제목은 50자 이하여야합니다.");
 
         Post findPost = postRepository.findById(save.getId()).get();
-//        assertThat(findPost.getTitle()).isEqualTo("test_title");
-//        assertThat(findPost.getContent()).isEqualTo("content");
+        assertThat(findPost.getTitle()).isEqualTo("test_title");
+        assertThat(findPost.getContent()).isEqualTo("content");
     }
 
     @Test

@@ -23,11 +23,6 @@ public class PostExceptionHandler {
         return ApiResponse.fail(400, e.getBindingResult().toString());
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ApiResponse<String> ServiceValidationErrorHandler(ConstraintViolationException e) {
-        log.warning("ConstraintViolationException 발생 : "+e.getMessage());
-        return ApiResponse.fail(400, e.toString());
-    }
 
     @ExceptionHandler(Exception.class)
     public ApiResponse<String> internalServerErrorHandler(Exception e) {

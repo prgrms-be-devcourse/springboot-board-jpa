@@ -1,10 +1,13 @@
 package com.example.springbootboardjpa.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.hibernate.validator.constraints.Length;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Getter
 @ToString(exclude = "user")
@@ -17,24 +20,25 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
-    @Length(max = 50, message = "title 유효 글자 수를 초과하였습니다.")
-    @Column(length = 50)
+    @Column(nullable = false, length = 50)
     private String title;
 
     @Lob
-    @NotNull
+    @Column(nullable = false)
     private String content;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Valid
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User user;
 
     public Post(String title, String content, User user) {
+        checkNotNull(title, "제목은 Null 일 수 없습니다");
+        checkNotNull(content, "내용은 Null 일 수 없습니다.");
+        checkNotNull(user, "user는 Null 일 수 없습니다.");
+        checkArgument(title.length() < 50, "제목은 50자 이하여야합니다.");
+
         this.title = checkBlankTitle(title);
         this.content = content;
-        this.user = user != null ? setUser(user) : null;
+        this.user = setUser(user);
     }
 
     private User setUser(User user) {
@@ -48,7 +52,11 @@ public class Post extends BaseEntity {
         return title;
     }
 
-    public void changePost(String title ,String content) {
+    public void changePost(String title, String content) {
+        checkNotNull(title, "제목은 Null 일 수 없습니다");
+        checkNotNull(content, "내용은 Null 일 수 없습니다.");
+        checkArgument(title.length() < 50, "제목은 50자 이하여야합니다.");
+
         this.title = checkBlankTitle(title);
         this.content = content;
     }
