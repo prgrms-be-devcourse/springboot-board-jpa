@@ -6,46 +6,90 @@
 
 = 게시판 API
 
+== 사용자 인증
+
+=== 로그인
+
+==== 성공 - v1
+
+operation::member-login-v1[snippets='http-request,request-fields,http-response']
+
+==== 성공 - v2
+
+operation::member-login-v2[snippets='http-request,request-fields,http-response']
+
+==== 실패 - 유효하지 않은 이메일 - v2
+
+operation::member-login-fail-invalid-email-v2[snippets='http-request,request-fields,http-response,response-fields']
+
+==== 실패 - 유효하지 않은 비밀번호 - v2
+
+operation::member-login-fail-invalid-password-v2[snippets='http-request,request-fields,http-response,response-fields']
+
+=== 로그아웃
+
+==== 성공 - v1
+
+operation::member-logout-v1[snippets='http-request,http-response']
+
+==== 성공 - v2
+
+operation::member-logout-v2[snippets='http-request,http-response']
+
 == 회원
 
 === 회원 생성
 
-operation::member-join[snippets='http-request,request-fields,http-response']
+==== 성공 - v1
 
-=== 회원 조회
+operation::member-join-v1[snippets='http-request,request-fields,http-response']
 
-==== 단건 조회
+==== 성공 - v2
 
-operation::member-get-one[snippets='http-request,http-response,response-fields']
+operation::member-join-v2[snippets='http-request,request-fields,http-response']
 
-== 사용자 인증
+=== 회원 마이페이지
 
-=== 로그인/로그아웃
+==== 실패 - v1
 
-==== 로그인
+operation::member-my-page-v1[snippets='http-request,http-response,response-fields']
 
-operation::authentication-login[snippets='http-request,request-fields,http-response']
+==== 실패 - v2
 
-==== 로그아웃
-
-operation::authentication-logout[snippets='http-request,http-response']
+operation::member-my-page-v2[snippets='http-request,http-response,response-fields']
 
 == 게시글
 
 === 게시글 생성
 
-operation::post-create[snippets='http-request,http-response,response-fields']
+==== 성공 - v1
+
+operation::post-create-v1[snippets='http-request,http-response,response-fields']
+
+==== 성공 - v2
+
+operation::post-create-v1[snippets='http-request,http-response,response-fields']
+
+==== 실패 - v2
+
+operation::post-create-fail-v2[snippets='http-request,request-fields,http-response,response-fields']
 
 === 게시글 조회
 
 ==== 단건 조회
 
-operation::post-get-one[snippets='http-request,path-parameters,http-response,response-fields']
+operation::post-get-one-v1[snippets='http-request,path-parameters,http-response,response-fields']
 
 ==== 페이징 조회
 
-operation::post-get-all[snippets='http-request,request-parameters,http-response,response-fields']
+operation::post-get-all-v1[snippets='http-request,request-parameters,http-response,response-fields']
 
 === 게시글 수정
 
-operation::post-update[snippets='http-request,request-fields,path-parameters,http-response,response-fields']
+==== 성공
+
+operation::post-update-v1[snippets='http-request,request-fields,path-parameters,http-response,response-fields']
+
+==== 실패
+
+operation::post-update-fail-v2[snippets='http-request,request-fields,path-parameters,http-response,response-fields']
