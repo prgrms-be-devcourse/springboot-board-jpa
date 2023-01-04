@@ -1,0 +1,17 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 주문
+=== 주문 생성
+
+=== /orders/{uuid}
+
+.Request
+include::{snippets}/order-save/http-request.adoc[]
+include::{snippets}/order-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/order-save/http-request.adoc[]
+include::{snippets}/order-save/response-fields.adoc[]

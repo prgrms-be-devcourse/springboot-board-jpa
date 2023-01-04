@@ -6,11 +6,11 @@ import com.example.springbootboard.dto.PostDto;
 import com.example.springbootboard.entity.Post;
 import com.example.springbootboard.service.PostService;
 import com.example.springbootboard.service.UserService;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import static com.example.springbootboard.dto.Converter.dtoToUser;
 
-@Service
+@Component
 public class PostFacade {
     private final PostService postService;
     private final UserService userService;
