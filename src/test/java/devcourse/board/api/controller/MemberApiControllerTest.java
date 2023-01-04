@@ -1,7 +1,7 @@
 package devcourse.board.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import devcourse.board.api.authentication.CookieConst;
+import devcourse.board.api.authentication.AuthenticationUtil;
 import devcourse.board.domain.member.MemberRepository;
 import devcourse.board.domain.member.model.Member;
 import devcourse.board.domain.member.model.MemberJoinRequest;
@@ -71,7 +71,7 @@ class MemberApiControllerTest {
         Member member = Member.create("example@email.com", "0000", "member");
         memberRepository.save(member);
 
-        Cookie idCookie = new Cookie(CookieConst.MEMBER_ID, String.valueOf(member.getId()));
+        Cookie idCookie = new Cookie(AuthenticationUtil.MEMBER_ID, String.valueOf(member.getId()));
 
         // when & then
         mockMvc.perform(get("/members/{memberId}", member.getId())

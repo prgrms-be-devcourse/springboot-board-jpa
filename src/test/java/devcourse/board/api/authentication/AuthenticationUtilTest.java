@@ -43,7 +43,7 @@ class AuthenticationUtilTest {
         Member member = this.dummyMember;
         memberRepository.save(member);
 
-        Cookie memberIdCookie = new Cookie(CookieConst.MEMBER_ID, String.valueOf(member.getId()));
+        Cookie memberIdCookie = new Cookie(AuthenticationUtil.MEMBER_ID, String.valueOf(member.getId()));
         response.addCookie(memberIdCookie);
         request.setCookies(response.getCookies());
 

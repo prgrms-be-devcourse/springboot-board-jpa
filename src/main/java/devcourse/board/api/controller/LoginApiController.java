@@ -1,6 +1,6 @@
 package devcourse.board.api.controller;
 
-import devcourse.board.api.authentication.CookieConst;
+import devcourse.board.api.authentication.AuthenticationUtil;
 import devcourse.board.domain.login.LoginService;
 import devcourse.board.domain.login.model.LoginRequest;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ public class LoginApiController {
             HttpServletResponse response
     ) {
         Long memberId = loginService.login(loginRequest);
-        response.addCookie(new Cookie(CookieConst.MEMBER_ID, String.valueOf(memberId)));
+        response.addCookie(new Cookie(AuthenticationUtil.MEMBER_ID, String.valueOf(memberId)));
         return ResponseEntity.ok()
                 .build();
     }
@@ -36,7 +36,7 @@ public class LoginApiController {
     public ResponseEntity<Void> logout(
             HttpServletResponse response
     ) {
-        Cookie cookie = new Cookie(CookieConst.MEMBER_ID, null);
+        Cookie cookie = new Cookie(AuthenticationUtil.MEMBER_ID, null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
 
