@@ -5,21 +5,20 @@ import com.prgrms.exception.customException.AuthenticationFailedException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
-@Component
 public class CookieManager {
 
-    private final String COOKIE_NAME = "cookieId";
+    private static final String COOKIE_NAME = "cookieId";
 
-    public void createCookie(Long userId, HttpServletResponse response) {
+    public static void createCookie(Long userId, HttpServletResponse response) {
 
         Cookie cookie = new Cookie(COOKIE_NAME, String.valueOf(userId));
+
         response.addCookie(cookie);
     }
 
-    public void removeCookie(HttpServletRequest request, HttpServletResponse response) {
+    public static void removeCookie(HttpServletRequest request, HttpServletResponse response) {
 
         Cookie cookie = getCookie(request);
         cookie.setValue(null);
@@ -27,7 +26,7 @@ public class CookieManager {
         response.addCookie(cookie);
     }
 
-    public Cookie getCookie(HttpServletRequest request) {
+    public static Cookie getCookie(HttpServletRequest request) {
 
         Cookie cookie = WebUtils.getCookie(request, COOKIE_NAME);
 
