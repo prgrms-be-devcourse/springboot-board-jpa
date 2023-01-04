@@ -3,6 +3,7 @@ package devcourse.board.domain.post;
 import devcourse.board.domain.member.MemberService;
 import devcourse.board.domain.member.model.Member;
 import devcourse.board.domain.post.model.*;
+import devcourse.board.global.errors.exception.ForbiddenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class PostService {
                     loggedInMemberId,
                     postId
             );
-            throw new IllegalStateException(MessageFormat.format(
+            throw new ForbiddenException(MessageFormat.format(
                     "Member ''{0}'' has no authority to update post.", loggedInMemberId
             ));
         }

@@ -1,5 +1,7 @@
 package devcourse.board.global.errors;
 
+import devcourse.board.global.errors.exception.ForbiddenException;
+import devcourse.board.global.errors.exception.NoLoginMemberException;
 import devcourse.board.global.errors.model.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,5 +47,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.warn("handleIllegalStateException", e);
         return ResponseEntity.badRequest()
                 .body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    private ResponseEntity<ErrorResponse> handleForbiddenException(ForbiddenException e) {
+        log.warn("handleForbiddenException", e);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponse("No login info exists. Please login first."));
+    }
+
+    @ExceptionHandler(NoLoginMemberException.class)
+    private ResponseEntity<ErrorResponse> handleNoLoginMemberException(NoLoginMemberException e) {
+        log.warn("handleNoLoginMemberException", e);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResponse("No login info exists. Please login first."));
     }
 }

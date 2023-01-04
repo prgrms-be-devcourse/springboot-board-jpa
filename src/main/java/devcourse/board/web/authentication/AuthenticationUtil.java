@@ -1,5 +1,6 @@
 package devcourse.board.web.authentication;
 
+import devcourse.board.global.errors.exception.NoLoginMemberException;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
@@ -16,7 +17,7 @@ public class AuthenticationUtil {
         Cookie memberIdCookie = WebUtils.getCookie(request, COOKIE_NAME);
 
         if (memberIdCookie == null) {
-            throw new IllegalStateException("No member logged in.");
+            throw new NoLoginMemberException("No member logged in.");
         }
 
         return Long.valueOf(memberIdCookie.getValue());

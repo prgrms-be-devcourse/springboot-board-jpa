@@ -5,6 +5,7 @@ import devcourse.board.domain.member.model.Member;
 import devcourse.board.domain.post.model.Post;
 import devcourse.board.domain.post.model.PostCreationRequest;
 import devcourse.board.domain.post.model.PostUpdateRequest;
+import devcourse.board.global.errors.exception.ForbiddenException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,7 @@ class PostServiceTest {
         PostUpdateRequest updateRequest = new PostUpdateRequest("new-title", "new-content");
 
         // when & then
-        assertThrows(IllegalStateException.class, () -> {
+        assertThrows(ForbiddenException.class, () -> {
             postService.updatePost(unAuthorizedMemberId, post.getId(), updateRequest);
         });
     }
