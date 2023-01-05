@@ -1,10 +1,11 @@
-package com.spring.board.springboard.post.controller;
+package com.spring.board.springboard.post.controller.v2;
 
 import com.spring.board.springboard.post.domain.dto.PostCreateRequestDto;
-import com.spring.board.springboard.post.domain.dto.PostSummaryResponseDto;
 import com.spring.board.springboard.post.domain.dto.PostDetailResponseDto;
+import com.spring.board.springboard.post.domain.dto.PostSummaryResponseDto;
 import com.spring.board.springboard.post.service.PostService;
-import jakarta.servlet.http.Cookie;
+import com.spring.board.springboard.user.controller.authenticate.session.Session;
+import com.spring.board.springboard.user.controller.authenticate.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -15,16 +16,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.getUserCookie;
-
 @RestController
-@RequestMapping("/v1/posts")
-public class PostController {
+@RequestMapping("/v2/posts")
+public class PostControllerV2 {
 
     private final PostService postService;
+    private final SessionManager sessionManager;
 
-    public PostController(PostService postService) {
+    public PostControllerV2(PostService postService, SessionManager sessionManager) {
         this.postService = postService;
+        this.sessionManager = sessionManager;
     }
 
     @GetMapping
@@ -35,9 +36,9 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Void> createPost(@Valid @RequestBody PostCreateRequestDto postCreateRequestDto, HttpServletRequest request) {
-        Cookie cookie = getUserCookie(request);
+        final Session session = sessionManager.findSession(request);
 
-        final PostDetailResponseDto newPostDto = postService.createPost(postCreateRequestDto, cookie.getValue());
+        final PostDetailResponseDto newPostDto = postService.createPost(postCreateRequestDto, session.email());
 
         final URI uriComponents = UriComponentsBuilder.fromUriString("/posts/{postId}")
                 .buildAndExpand(
@@ -58,9 +59,18 @@ public class PostController {
     public ResponseEntity<PostDetailResponseDto> updatePost(@PathVariable Integer postId,
                                                             @Valid @RequestBody PostCreateRequestDto postCreateRequestDTO,
                                                             HttpServletRequest request) {
-        Cookie cookie = getUserCookie(request);
-        final PostDetailResponseDto updatedPostResponseDto = postService.update(
-                postId, postCreateRequestDTO, cookie.getValue());
+        final Session session = sessionManager.findSession(request);
+
+        final PostDetailResponseDto updatedPostResponseDto = postService.update(postId, postCreateRequestDTO, session.email());
         return ResponseEntity.ok(updatedPostResponseDto);
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Integer postId, HttpServletRequest request) {
+        final Session session = sessionManager.findSession(request);
+        postService.deleteOne(postId, session.email());
+
+        return ResponseEntity.noContent()
+                .build();
     }
 }

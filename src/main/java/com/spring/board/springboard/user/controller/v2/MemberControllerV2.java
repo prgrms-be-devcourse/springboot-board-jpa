@@ -1,7 +1,7 @@
-package com.spring.board.springboard.user.controller;
+package com.spring.board.springboard.user.controller.v2;
 
-import com.spring.board.springboard.user.controller.authenticate.Session;
-import com.spring.board.springboard.user.controller.authenticate.SessionManager;
+import com.spring.board.springboard.user.controller.authenticate.session.Session;
+import com.spring.board.springboard.user.controller.authenticate.session.SessionManager;
 import com.spring.board.springboard.user.domain.dto.MemberDetailResponseDto;
 import com.spring.board.springboard.user.domain.dto.MemberLoginDto;
 import com.spring.board.springboard.user.domain.dto.MemberRequestDto;
@@ -16,8 +16,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.createUserInfoCookie;
-import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.killCookie;
+import static com.spring.board.springboard.user.controller.authenticate.cookie.CookieUtils.createUserInfoCookie;
+import static com.spring.board.springboard.user.controller.authenticate.cookie.CookieUtils.killCookie;
 
 @RestController
 @RequestMapping("/v2")

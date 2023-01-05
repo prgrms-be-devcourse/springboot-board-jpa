@@ -1,4 +1,4 @@
-package com.spring.board.springboard.domain;
+package com.spring.board.springboard.common;
 
 import com.spring.board.springboard.post.exception.NoAuthorizedException;
 import com.spring.board.springboard.post.exception.NoPostException;

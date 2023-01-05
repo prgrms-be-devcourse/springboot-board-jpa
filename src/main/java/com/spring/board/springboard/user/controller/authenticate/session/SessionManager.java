@@ -1,4 +1,4 @@
-package com.spring.board.springboard.user.controller.authenticate;
+package com.spring.board.springboard.user.controller.authenticate.session;
 
 import com.spring.board.springboard.user.domain.dto.MemberDetailResponseDto;
 import com.spring.board.springboard.user.exception.SessionCreateException;
@@ -10,7 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.getUserCookie;
+import static com.spring.board.springboard.user.controller.authenticate.cookie.CookieUtils.getUserCookie;
 
 @Component
 public class SessionManager {

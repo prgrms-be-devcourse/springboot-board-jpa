@@ -1,4 +1,4 @@
-package com.spring.board.springboard.user.controller.authenticate;
+package com.spring.board.springboard.user.controller.authenticate.session;
 
 import com.spring.board.springboard.user.exception.AuthenticateException;
 import org.slf4j.Logger;

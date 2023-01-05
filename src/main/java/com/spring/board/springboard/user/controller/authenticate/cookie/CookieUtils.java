@@ -1,4 +1,4 @@
-package com.spring.board.springboard.user.controller.authenticate;
+package com.spring.board.springboard.user.controller.authenticate.cookie;
 
 import com.spring.board.springboard.user.exception.AuthenticateException;
 import jakarta.servlet.http.Cookie;

@@ -1,4 +1,4 @@
-package com.spring.board.springboard.user.controller;
+package com.spring.board.springboard.user.controller.v1;
 
 import com.spring.board.springboard.user.domain.dto.MemberDetailResponseDto;
 import com.spring.board.springboard.user.domain.dto.MemberLoginDto;
@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.*;
+import static com.spring.board.springboard.user.controller.authenticate.cookie.CookieUtils.*;
 
 @RestController
 @RequestMapping("/v1")
