@@ -54,11 +54,6 @@ class PostServiceTest {
         postService.createPost(postCreateRequestDTO3, member.getEmail());
     }
 
-    @AfterAll
-    void clean(){
-        System.out.println(memberRepository.findAll().size());
-    }
-
     @Test
     @DisplayName("모든 게시물을 페이지 단위로 가져올 수 있다.")
     void getAll() {

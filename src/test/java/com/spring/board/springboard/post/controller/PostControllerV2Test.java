@@ -96,15 +96,25 @@ class PostControllerV2Test {
                                 String.valueOf(0))
                         .param("size",
                                 String.valueOf(2))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                        .contentType(
+                                MediaType.APPLICATION_JSON))
+                .andExpect(
+                        status().isOk())
                 .andDo(print())
                 .andDo(document("get-all-post",
                         responseFields(
-                                fieldWithPath("[]").type(JsonFieldType.ARRAY).description("post array"),
-                                fieldWithPath("[].postId").type(JsonFieldType.NUMBER).description("post id"),
-                                fieldWithPath("[].title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("[].memberName").type(JsonFieldType.STRING).description("writer name")
+                                fieldWithPath("[]")
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("post array"),
+                                fieldWithPath("[].postId")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("post id"),
+                                fieldWithPath("[].title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("title"),
+                                fieldWithPath("[].memberName")
+                                        .type(JsonFieldType.STRING)
+                                        .description("writer name")
                         ))
                 );
     }
@@ -119,15 +129,22 @@ class PostControllerV2Test {
 
         // when and then
         mockMvc.perform(post("/v2/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(
+                                MediaType.APPLICATION_JSON)
                         .cookie(cookie)
-                        .content(objectMapper.writeValueAsString(postCreateRequestDTO)))
-                .andExpect(status().isCreated())
+                        .content(
+                                objectMapper.writeValueAsString(postCreateRequestDTO)))
+                .andExpect(
+                        status().isCreated())
                 .andDo(print())
                 .andDo(document("post-save",
                         requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("content")
+                                fieldWithPath("title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("title"),
+                                fieldWithPath("content")
+                                        .type(JsonFieldType.STRING)
+                                        .description("content")
                         ))
                 );
     }
@@ -142,9 +159,12 @@ class PostControllerV2Test {
 
         // when and then
         mockMvc.perform(post("/v2/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postCreateRequestDTO)))
-                .andExpect(status().isUnauthorized());
+                        .contentType(
+                                MediaType.APPLICATION_JSON)
+                        .content(
+                                objectMapper.writeValueAsString(postCreateRequestDTO)))
+                .andExpect(
+                        status().isUnauthorized());
     }
 
     @DisplayName("하나의 게시물을 조회할 수 있다.")
@@ -158,23 +178,41 @@ class PostControllerV2Test {
                 ), member.getEmail()
         );
 
-        mockMvc.perform(get("/v2/posts/{postId}", newPost.postId())
-                        .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(get("/v2/posts/{postId}",
+                        newPost.postId())
+                        .contentType(
+                                MediaType.APPLICATION_JSON)
                         .cookie(cookie))
-                .andExpect(status().isOk())
+                .andExpect(
+                        status().isOk())
                 .andDo(print())
                 .andDo(document("get-one-post",
                         pathParameters(
-                                parameterWithName("postId").description("post id")
+                                parameterWithName("postId")
+                                        .description("post id")
                         ),
                         responseFields(
-                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("post id"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("created at"),
-                                fieldWithPath("member").type(JsonFieldType.OBJECT).description("member"),
-                                fieldWithPath("member.email").type(JsonFieldType.STRING).description("member email"),
-                                fieldWithPath("member.name").type(JsonFieldType.STRING).description("member name")
+                                fieldWithPath("postId")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("post id"),
+                                fieldWithPath("title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("title"),
+                                fieldWithPath("content")
+                                        .type(JsonFieldType.STRING)
+                                        .description("content"),
+                                fieldWithPath("createdAt")
+                                        .type(JsonFieldType.STRING)
+                                        .description("created at"),
+                                fieldWithPath("member")
+                                        .type(JsonFieldType.OBJECT)
+                                        .description("member"),
+                                fieldWithPath("member.email")
+                                        .type(JsonFieldType.STRING)
+                                        .description("member email"),
+                                fieldWithPath("member.name")
+                                        .type(JsonFieldType.STRING)
+                                        .description("member name")
                         ))
                 );
     }
@@ -194,30 +232,52 @@ class PostControllerV2Test {
                 "게시판 새 글 저장하기 -> 수정된 내용임"
         );
 
-        mockMvc.perform(post("/v2/posts/{postId}", newPost.postId())
-                        .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/v2/posts/{postId}",
+                        newPost.postId())
+                        .contentType(
+                                MediaType.APPLICATION_JSON)
                         .cookie(cookie)
-                        .content(objectMapper.writeValueAsString(updatePostDTO)))
-                .andExpect(status().isOk())
+                        .content(
+                                objectMapper.writeValueAsString(updatePostDTO)))
+                .andExpect(
+                        status().isOk())
                 .andDo(print())
                 .andDo(document("post-update",
                         requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("content")
+                                fieldWithPath("title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("title"),
+                                fieldWithPath("content")
+                                        .type(JsonFieldType.STRING)
+                                        .description("content")
                         ),
                         responseFields(
-                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("post id"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("created at"),
-                                fieldWithPath("member").type(JsonFieldType.OBJECT).description("member"),
-                                fieldWithPath("member.email").type(JsonFieldType.STRING).description("member email"),
-                                fieldWithPath("member.name").type(JsonFieldType.STRING).description("member name")
+                                fieldWithPath("postId")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("post id"),
+                                fieldWithPath("title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("title"),
+                                fieldWithPath("content")
+                                        .type(JsonFieldType.STRING)
+                                        .description("content"),
+                                fieldWithPath("createdAt")
+                                        .type(JsonFieldType.STRING)
+                                        .description("created at"),
+                                fieldWithPath("member")
+                                        .type(JsonFieldType.OBJECT)
+                                        .description("member"),
+                                fieldWithPath("member.email")
+                                        .type(JsonFieldType.STRING)
+                                        .description("member email"),
+                                fieldWithPath("member.name")
+                                        .type(JsonFieldType.STRING)
+                                        .description("member name")
                         ))
                 );
     }
 
-    @DisplayName("작성하지 않은 사용자이거나, 인증되지 않은 사용자는 게시물의 제목과 내용을 수정할 수 있다.")
+    @DisplayName("인증되지 않은 사용자는 게시물의 제목과 내용을 수정할 수 없다.")
     @Test
     void updatePostFail() throws Exception {
         PostDetailResponseDto newPost = postService.createPost(
@@ -227,22 +287,30 @@ class PostControllerV2Test {
                 ), member.getEmail()
         );
 
-        Cookie notWriterCookie = new Cookie("user", "not-user@naver.com");
+        Cookie notAuthenticatedMemberCookie = new Cookie("user", "not-user@naver.com");
 
         PostCreateRequestDto updatePostDTO = new PostCreateRequestDto(
                 "수정하기",
                 "게시판 새 글 저장하기 -> 수정된 내용임"
         );
 
-        mockMvc.perform(post("/v2/posts/{postId}", newPost.postId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updatePostDTO)))
-                .andExpect(status().isUnauthorized());
+        mockMvc.perform(post("/v2/posts/{postId}",
+                        newPost.postId())
+                        .contentType(
+                                MediaType.APPLICATION_JSON)
+                        .content(
+                                objectMapper.writeValueAsString(updatePostDTO)))
+                .andExpect(
+                        status().isUnauthorized());
 
-        mockMvc.perform(post("/v2/posts/{postId}", newPost.postId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .cookie(notWriterCookie)
-                        .content(objectMapper.writeValueAsString(updatePostDTO)))
-                .andExpect(status().isUnauthorized());
+        mockMvc.perform(post("/v2/posts/{postId}",
+                        newPost.postId())
+                        .contentType(
+                                MediaType.APPLICATION_JSON)
+                        .cookie(notAuthenticatedMemberCookie)
+                        .content(
+                                objectMapper.writeValueAsString(updatePostDTO)))
+                .andExpect(
+                        status().isUnauthorized());
     }
 }

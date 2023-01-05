@@ -82,15 +82,25 @@ class PostControllerTest {
                                 String.valueOf(0))
                         .param("size",
                                 String.valueOf(2))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                        .contentType(
+                                MediaType.APPLICATION_JSON))
+                .andExpect(
+                        status().isOk())
                 .andDo(print())
                 .andDo(document("get-all-post",
                         responseFields(
-                                fieldWithPath("[]").type(JsonFieldType.ARRAY).description("post array"),
-                                fieldWithPath("[].postId").type(JsonFieldType.NUMBER).description("post id"),
-                                fieldWithPath("[].title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("[].memberName").type(JsonFieldType.STRING).description("writer name")
+                                fieldWithPath("[]")
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("post array"),
+                                fieldWithPath("[].postId")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("post id"),
+                                fieldWithPath("[].title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("title"),
+                                fieldWithPath("[].memberName")
+                                        .type(JsonFieldType.STRING)
+                                        .description("writer name")
                         ))
                 );
     }
@@ -105,15 +115,22 @@ class PostControllerTest {
 
         // when and then
         mockMvc.perform(post("/v1/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(
+                                MediaType.APPLICATION_JSON)
                         .cookie(cookie)
-                        .content(objectMapper.writeValueAsString(postCreateRequestDTO)))
-                .andExpect(status().isCreated())
+                        .content(
+                                objectMapper.writeValueAsString(postCreateRequestDTO)))
+                .andExpect(
+                        status().isCreated())
                 .andDo(print())
                 .andDo(document("post-save",
                         requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("content")
+                                fieldWithPath("title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("title"),
+                                fieldWithPath("content")
+                                        .type(JsonFieldType.STRING)
+                                        .description("content")
                         ))
                 );
     }
@@ -129,14 +146,18 @@ class PostControllerTest {
                 ), member.getEmail()
         );
 
-        mockMvc.perform(get("/v1/posts/{postId}", newPost.postId())
-                        .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(get("/v1/posts/{postId}",
+                        newPost.postId())
+                        .contentType(
+                                MediaType.APPLICATION_JSON)
                         .cookie(cookie))
-                .andExpect(status().isOk())
+                .andExpect(
+                        status().isOk())
                 .andDo(print())
                 .andDo(document("get-one-post",
                         pathParameters(
-                                parameterWithName("postId").description("post id")
+                                parameterWithName("postId")
+                                        .description("post id")
                         ),
                         responseFields(
                                 fieldWithPath("postId").type(JsonFieldType.NUMBER).description("post id"),
@@ -165,25 +186,45 @@ class PostControllerTest {
                 "게시판 새 글 저장하기 -> 수정된 내용임"
         );
 
-        mockMvc.perform(post("/v1/posts/{postId}", newPost.postId())
+        mockMvc.perform(post("/v1/posts/{postId}",
+                        newPost.postId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(cookie)
-                        .content(objectMapper.writeValueAsString(updatePostDTO)))
+                        .content(
+                                objectMapper.writeValueAsString(updatePostDTO)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-update",
                         requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("content")
+                                fieldWithPath("title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("title"),
+                                fieldWithPath("content")
+                                        .type(JsonFieldType.STRING)
+                                        .description("content")
                         ),
                         responseFields(
-                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("post id"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("created at"),
-                                fieldWithPath("member").type(JsonFieldType.OBJECT).description("member"),
-                                fieldWithPath("member.email").type(JsonFieldType.STRING).description("member email"),
-                                fieldWithPath("member.name").type(JsonFieldType.STRING).description("member name")
+                                fieldWithPath("postId")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("post id"),
+                                fieldWithPath("title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("title"),
+                                fieldWithPath("content")
+                                        .type(JsonFieldType.STRING)
+                                        .description("content"),
+                                fieldWithPath("createdAt")
+                                        .type(JsonFieldType.STRING)
+                                        .description("created at"),
+                                fieldWithPath("member")
+                                        .type(JsonFieldType.OBJECT)
+                                        .description("member"),
+                                fieldWithPath("member.email")
+                                        .type(JsonFieldType.STRING)
+                                        .description("member email"),
+                                fieldWithPath("member.name")
+                                        .type(JsonFieldType.STRING)
+                                        .description("member name")
                         ))
                 );
     }
