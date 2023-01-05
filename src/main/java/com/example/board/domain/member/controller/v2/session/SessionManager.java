@@ -1,30 +1,61 @@
 package com.example.board.domain.member.controller.v2.session;
 
+import com.example.board.common.exception.ForbiddenException;
 import com.example.board.common.exception.SessionNotFoundException;
+import com.example.board.common.util.CookieUtils;
 import java.util.Optional;
 import java.util.UUID;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SessionManager {
 
-  @Value("${session.duration}")
-  private int duration;
-
   private final SessionStorage sessionStorage;
 
-  public SessionManager(SessionStorage sessionStorage){
+  private final String cookieName;
+
+  private final int duration;
+
+  public SessionManager(SessionStorage sessionStorage,
+      @Value("${session.cookie.name}") String cookieName, @Value("${session.duration}") int duration){
     this.sessionStorage = sessionStorage;
+    this.cookieName = cookieName;
+    this.duration = duration;
   }
 
-  public UUID login(Long memberId, String email){
+  public Cookie login(Long memberId, String email){
     Optional<UUID> optionalSessionId = sessionStorage.getLoginedSessionId(memberId, email);
+    UUID sessionId;
     if(optionalSessionId.isPresent()){
-      return reissue(optionalSessionId.get(), memberId, email);
+      sessionId = reissue(optionalSessionId.get(), memberId, email);
     } else{
-      return createSession(memberId, email);
+      sessionId = createSession(memberId, email);
     }
+    return new CookieUtils.CookieBuilder(cookieName, String.valueOf(sessionId))
+        .httpOnly(Boolean.TRUE)
+        .maxAge(duration)
+        .path("/")
+        .build();
+  }
+
+  public void login(Long memberId, String email, HttpServletResponse response){
+    Optional<UUID> optionalSessionId = sessionStorage.getLoginedSessionId(memberId, email);
+    UUID sessionId;
+    if(optionalSessionId.isPresent()){
+      sessionId = reissue(optionalSessionId.get(), memberId, email);
+    } else{
+      sessionId = createSession(memberId, email);
+    }
+    Cookie loginCookie = new CookieUtils.CookieBuilder(cookieName, String.valueOf(sessionId))
+        .httpOnly(Boolean.TRUE)
+        .maxAge(duration)
+        .path("/")
+        .build();
+    response.addCookie(loginCookie);
   }
 
   private UUID createSession(Long memberId, String email) {
@@ -41,14 +72,59 @@ public class SessionManager {
     return sessionStorage.get(sessionId);
   }
 
-  public void removeSession(UUID sessionId) {
+  public AuthenticatedMember getSession(HttpServletRequest request) {
+    Cookie cookie = getCookie(request);
+
+    checkSession(cookie);
+    UUID sessionId = convertToSessionId(cookie);
+    return sessionStorage.get(sessionId);
+  }
+
+  private UUID convertToSessionId(Cookie cookie){
+    try{
+      return UUID.fromString(cookie.getValue());
+    } catch (IllegalArgumentException e){
+      throw new SessionNotFoundException(
+          String.format("Invalid session id. Session id %s is not format of UUID.", cookie.getValue()));
+
+    }
+  }
+
+  public void checkSession(Cookie cookie){
+    UUID sessionId = convertToSessionId(cookie);
+
+    checkSession(sessionId);
+  }
+
+  public void logout(UUID sessionId) {
     checkSession(sessionId);
     sessionStorage.remove(sessionId);
   }
 
+  public void logout(HttpServletRequest request, HttpServletResponse response){
+    Cookie cookie = getCookie(request);
+    checkSession(cookie);
+    UUID sessionId = convertToSessionId(cookie);
+    sessionStorage.remove(sessionId);
+    Cookie removeCookie = new CookieUtils.CookieBuilder(cookieName, null)
+        .maxAge(0)
+        .path("/")
+        .build();
+    response.addCookie(removeCookie);
+  }
+
+  private Cookie getCookie(HttpServletRequest request) {
+    try{
+      return CookieUtils.getCookie(request, cookieName);
+    } catch(IllegalArgumentException e){
+      throw new ForbiddenException("Invalid Authority. ");
+    }
+  }
+
   public void checkSession(UUID sessionId){
     if(!sessionStorage.containsKey(sessionId)){
-      throw new SessionNotFoundException(String.format("Invalid session id. Session id %s Not found", sessionId.toString()));
+      throw new SessionNotFoundException(
+          String.format("Invalid session id. Session id %s Not found", sessionId.toString()));
     }
   }
 }
