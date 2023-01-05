@@ -4,7 +4,7 @@ import com.example.board.common.exception.UnAuthorizedException;
 import com.example.board.common.util.CookieUtils;
 import com.example.board.domain.member.dto.MemberRequest;
 import com.example.board.domain.member.dto.MemberResponse;
-import com.example.board.domain.member.service.v1.CookieMemberService;
+import com.example.board.domain.member.service.MemberService;
 import java.net.URI;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/api/v1/members")
 public class MemberController {
 
-  private final CookieMemberService memberService;
+  private final MemberService memberService;
 
   @Value("${cookie.name}")
   private String cookieName;
@@ -33,18 +33,17 @@ public class MemberController {
   @Value("${cookie.max-age}")
   private int maxAge;
 
-  public MemberController(CookieMemberService memberService) {
+  public MemberController(MemberService memberService) {
     this.memberService = memberService;
   }
 
   @PostMapping
   public ResponseEntity<Void> signUp(@RequestBody MemberRequest.SignUp signUpRequest) {
-    Long savedId = memberService.save(signUpRequest);
+    memberService.save(signUpRequest);
 
     URI uri = UriComponentsBuilder.newInstance()
-        .path("/api/v1/member/login")
+        .path("/api/v1/members/login")
         .build()
-        .expand(savedId)
         .encode()
         .toUri();
 

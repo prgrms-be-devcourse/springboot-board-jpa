@@ -1,4 +1,4 @@
-package com.example.board.domain.member.controller;
+package com.example.board.domain.member.controller.v1;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.board.domain.member.dto.MemberRequest;
 import com.example.board.domain.member.repository.MemberRepository;
-import com.example.board.domain.member.service.v1.CookieMemberService;
+import com.example.board.domain.member.service.MemberService;
 import com.example.board.domain.post.dto.PostRequest;
 import com.example.board.domain.post.repository.PostRepository;
 import com.example.board.domain.post.service.PostService;
@@ -39,7 +39,7 @@ class MemberControllerTest {
   private PostRepository postRepository;
 
   @Autowired
-  private CookieMemberService memberService;
+  private MemberService memberService;
 
   @Autowired
   private PostService postService;
