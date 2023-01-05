@@ -313,4 +313,43 @@ class PostControllerV2Test {
                 .andExpect(
                         status().isUnauthorized());
     }
+
+    @DisplayName("작성자가 아닌 사용자는 게시물의 제목과 내용을 수정할 수 없다.")
+    @Test
+    void updatePostFailNotWriter() throws Exception {
+        PostDetailResponseDto newPost = postService.createPost(
+                new PostCreateRequestDto(
+                        "hi hello",
+                        "hello world"
+                ), member.getEmail()
+        );
+        Member notWriter = new Member(
+                "not-user@naver.com",
+                "password1234",
+                "not-writer",
+                33,
+                Hobby.READ_BOOK
+        );
+
+        Session notWriterSession = sessionManager.getSessionOrCreateIfNotExist(
+                new MemberDetailResponseDto(notWriter)
+        );
+
+        Cookie notWriterCookie = new Cookie("user", notWriterSession.sessionId());
+
+        PostCreateRequestDto updatePostDTO = new PostCreateRequestDto(
+                "수정하기",
+                "게시판 새 글 저장하기 -> 수정된 내용임"
+        );
+
+        mockMvc.perform(post("/v2/posts/{postId}",
+                        newPost.postId())
+                        .contentType(
+                                MediaType.APPLICATION_JSON)
+                        .cookie(notWriterCookie)
+                        .content(
+                                objectMapper.writeValueAsString(updatePostDTO)))
+                .andExpect(
+                        status().isForbidden());
+    }
 }
