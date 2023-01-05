@@ -1,14 +1,16 @@
-package com.prgrms.exception;
+package com.prgrms.global.error;
 
-import static com.prgrms.exception.ErrorCode.INTERNAL_SERVER_ERROR;
-import static com.prgrms.exception.ErrorCode.INVALID_PARAMETER;
+import static com.prgrms.global.error.ErrorCode.INTERNAL_SERVER_ERROR;
+import static com.prgrms.global.error.ErrorCode.INVALID_PARAMETER;
 
-import com.prgrms.exception.customException.CustomException;
+import com.prgrms.global.exception.CustomException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.nio.file.AccessDeniedException;
 import java.util.Iterator;
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -18,27 +20,32 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> handleException(CustomException e) {
+        log.warn("class: "+e.getClass(), e);
         ErrorResponse response = getErrorResponse(e);
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleException(AccessDeniedException e) {
+        log.warn("class: "+e.getClass(), e);
         ErrorResponse response = new ErrorResponse(HttpStatus.UNAUTHORIZED, e.getMessage());
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
+        log.warn("class: "+e.getClass(), e);
         ErrorResponse response = ErrorResponse.of(INTERNAL_SERVER_ERROR);
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handelException(Exception e){
+        log.warn("class: "+e.getClass(), e);
         ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
@@ -46,12 +53,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorResponse> handleException(
         MissingServletRequestParameterException e) {
+        log.warn("class: "+e.getClass(), e);
         ErrorResponse response = ErrorResponse.of(INVALID_PARAMETER);
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<ErrorResponse> handleException(ConstraintViolationException e) {
+        log.warn("class: "+e.getClass(), e);
         String resultMessage = getResultMessage(e.getConstraintViolations().iterator());
         ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST, resultMessage);
         return ResponseEntity.badRequest().body(response);
