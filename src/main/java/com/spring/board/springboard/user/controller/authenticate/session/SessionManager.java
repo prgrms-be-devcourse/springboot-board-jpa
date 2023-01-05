@@ -19,7 +19,6 @@ public class SessionManager {
     private static final Logger logger = LoggerFactory.getLogger(SessionManager.class);
 
     private static final Integer SEED_BYTE_NUM = 10;
-    private static final StringBuilder stringBuilder = new StringBuilder();
     private static final String ENCODE_MODE = "SHA-256";
 
     private final SessionStorage sessionStorage;
@@ -36,7 +35,7 @@ public class SessionManager {
     public Session getSessionOrCreateIfNotExist(MemberDetailResponseDto memberDetailResponseDto) {
         return sessionStorage.getSessionByEmail(memberDetailResponseDto.email())
                 .orElseGet(() -> {
-                    String newSessionId = createSessionId(memberDetailResponseDto.memberId());
+                    String newSessionId = createSessionId(memberDetailResponseDto.email());
                     Session session = Session.create(
                             newSessionId,
                             memberDetailResponseDto.email());
@@ -45,9 +44,11 @@ public class SessionManager {
                 });
     }
 
-    private String createSessionId(Integer memberId) {
-        stringBuilder.append(memberId);
-        stringBuilder.append(createSalt());
+    private String createSessionId(String email) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String salt = createSalt();
+        stringBuilder.append(email);
+        stringBuilder.append(salt);
 
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(ENCODE_MODE);
@@ -55,8 +56,6 @@ public class SessionManager {
                     .getBytes();
             messageDigest.update(sessionBytes);
             sessionBytes = messageDigest.digest();
-
-            resetStringBuilder();
 
             for (byte sessionByte : sessionBytes) {
                 stringBuilder.append(
@@ -70,6 +69,7 @@ public class SessionManager {
     }
 
     private String createSalt() {
+        StringBuilder stringBuilder = new StringBuilder();
         SecureRandom secureRandom = new SecureRandom();
 
         byte[] generatedSalts = new byte[SEED_BYTE_NUM];
@@ -81,13 +81,7 @@ public class SessionManager {
                     String.format("%01x", salt));
         }
 
-        String salt = stringBuilder.toString();
-        resetStringBuilder();
-        return salt;
-    }
-
-    private void resetStringBuilder() {
-        stringBuilder.setLength(0);
+        return stringBuilder.toString();
     }
 
     public void delete(Session session) {

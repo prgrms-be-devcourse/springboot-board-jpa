@@ -7,7 +7,7 @@ import java.util.Objects;
 public record Session(String sessionId, String email) {
 
     public Session {
-        if (sessionId.isEmpty() ||
+        if (Objects.isNull(sessionId) ||
                 sessionId.isBlank() ||
                 Objects.isNull(email) ||
                 email.isBlank()
