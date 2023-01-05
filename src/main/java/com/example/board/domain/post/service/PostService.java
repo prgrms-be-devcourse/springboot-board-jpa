@@ -59,7 +59,7 @@ public class PostService {
     Post post = postRepository.findByIdAndMemberId(postId, memberId)
         .orElseThrow(
             () -> new NotFoundException(
-                String.format("NotFoundException post id: %d", postId)));
+                String.format("NotFoundException post id: %d, memberId: %d", postId, memberId)));
 
     post.update(postRequest.title(), postRequest.content(), member.getName());
 
