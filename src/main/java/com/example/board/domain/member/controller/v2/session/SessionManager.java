@@ -9,9 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class SessionManager {
 
-  @Value("${session.cookie.name}")
-  private String sessionId;
-
   @Value("${session.duration}")
   private int duration;
 
@@ -35,6 +32,7 @@ public class SessionManager {
   }
 
   private UUID reissue(UUID sessionId, Long memberId, String email) {
+    sessionStorage.remove(sessionId);
     return sessionStorage.save(memberId, email, duration);
   }
 
