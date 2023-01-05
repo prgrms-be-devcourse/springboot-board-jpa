@@ -1,8 +1,10 @@
 package com.spring.board.springboard.post.controller;
 
-import com.spring.board.springboard.post.domain.dto.RequestPostDto;
-import com.spring.board.springboard.post.domain.dto.ResponsePostDto;
+import com.spring.board.springboard.post.domain.dto.PostCreateRequestDto;
+import com.spring.board.springboard.post.domain.dto.PostSummaryResponseDto;
+import com.spring.board.springboard.post.domain.dto.PostDetailResponseDto;
 import com.spring.board.springboard.post.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,16 +24,16 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ResponsePostDto>> getAllPosts(Pageable pageable) {
-        List<ResponsePostDto> postList = postService.getAll(pageable);
+    public ResponseEntity<List<PostSummaryResponseDto>> getAllPosts(Pageable pageable) {
+        final List<PostSummaryResponseDto> postList = postService.getAll(pageable);
         return ResponseEntity.ok(postList);
     }
 
     @PostMapping
-    public ResponseEntity<Void> createPost(@RequestBody RequestPostDto requestPostDTO) {
-        ResponsePostDto newPostDto = postService.createPost(requestPostDTO);
+    public ResponseEntity<Void> createPost(@Valid @RequestBody PostCreateRequestDto postCreateRequestDto) {
+        final PostDetailResponseDto newPostDto = postService.createPost(postCreateRequestDto);
 
-        URI uriComponents = UriComponentsBuilder.fromUriString("/posts/{postId}")
+        final URI uriComponents = UriComponentsBuilder.fromUriString("/posts/{postId}")
                 .buildAndExpand(
                         newPostDto.postId())
                 .toUri();
@@ -40,14 +42,15 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<ResponsePostDto> getPost(@PathVariable Integer postId) {
-        ResponsePostDto postResponseDTO = postService.getOne(postId);
+    public ResponseEntity<PostDetailResponseDto> getPost(@PathVariable Integer postId) {
+        final PostDetailResponseDto postResponseDTO = postService.getOne(postId);
         return ResponseEntity.ok(postResponseDTO);
     }
 
     @PostMapping("/{postId}")
-    public ResponseEntity<ResponsePostDto> updatePost(@PathVariable Integer postId, @RequestBody RequestPostDto requestPostDTO) {
-        ResponsePostDto updatedPostResponseDto = postService.update(postId, requestPostDTO);
+    public ResponseEntity<PostDetailResponseDto> updatePost(@PathVariable Integer postId,
+                                                            @Valid @RequestBody PostCreateRequestDto postCreateRequestDTO) {
+        final PostDetailResponseDto updatedPostResponseDto = postService.update(postId, postCreateRequestDTO);
         return ResponseEntity.ok(updatedPostResponseDto);
     }
 }

@@ -6,10 +6,7 @@ import com.spring.board.springboard.user.domain.Hobby;
 import com.spring.board.springboard.user.domain.Member;
 import com.spring.board.springboard.user.repository.MemberRepository;
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Sort;
@@ -33,15 +30,20 @@ class PostRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @BeforeAll
-    void setUser(){
-        member = new Member("이수린", 24, Hobby.SLEEP);
+    @BeforeEach
+    void setUser() {
+        member = new Member("user@naver.com", "password1234", "이수린", 24, Hobby.SLEEP);
         memberRepository.save(member);
+    }
+
+    @AfterAll
+    void after() {
+        System.out.println(memberRepository.findAll().size());
     }
 
     @Test
     @DisplayName("게시물을 생성할 수 있다.")
-    void create_post_test(){
+    void create_post_test() {
         // given
         String title = "새 게시물 제목입니다.";
         String content = "새 게시물 내용입니다.";
@@ -60,7 +62,7 @@ class PostRepositoryTest {
 
     @Test
     @DisplayName("게시물을 삭제할 수 있다.")
-    void delete_post_test(){
+    void delete_post_test() {
         // given
         String title = "삭제할 게시물";
         String content = "곧 삭제됩니다.";
@@ -79,7 +81,7 @@ class PostRepositoryTest {
 
     @Test
     @DisplayName("게시물의 제목을 수정할 수 있다.")
-    void update_title_test(){
+    void update_title_test() {
         // given
         String beforeTitle = "수정 전 제목입니다.";
         String afterTitle = "수정 후 제목입니다.";
@@ -105,7 +107,7 @@ class PostRepositoryTest {
 
     @Test
     @DisplayName("게시물의 내용을 수정할 수 있다.")
-    void update_content_test(){
+    void update_content_test() {
         // given
         String beforeContent = "수정 전 제목입니다.";
         String afterContent = "수정 후 제목입니다.";
@@ -131,7 +133,7 @@ class PostRepositoryTest {
 
     @Test
     @DisplayName("모든 게시물을 조회할 수 있다.")
-    void find_all_test(){
+    void find_all_test() {
         // given
         String title1 = "첫번째 게시물입니다.";
         String title2 = "두번째 게시물입니다.";
@@ -162,7 +164,7 @@ class PostRepositoryTest {
 
     @Test
     @DisplayName("모든 게시물을 삭제할 수 있다.")
-    void find_all_delete_test(){
+    void find_all_delete_test() {
         // given
         String title1 = "첫번째 게시물입니다.";
         String title2 = "두번째 게시물입니다.";
