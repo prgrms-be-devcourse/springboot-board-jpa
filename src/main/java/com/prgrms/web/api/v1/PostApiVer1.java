@@ -1,9 +1,15 @@
-package com.prgrms.domain.post;
+package com.prgrms.web.api.v1;
 
-import com.prgrms.dto.PostDto;
+import static com.prgrms.dto.PostDto.*;
+import static com.prgrms.web.auth.CookieUtil.getCookie;
+
+import com.prgrms.domain.post.PostService;
 import com.prgrms.dto.PostDto.Response;
 import com.prgrms.dto.PostDto.ResponsePostDtos;
 import com.prgrms.dto.PostDto.Update;
+import com.prgrms.global.error.ErrorCode;
+import com.prgrms.global.exception.AuthenticationFailedException;
+import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/posts")
-public class PostController {
+@RequestMapping("api/v1/posts")
+public class PostApiVer1 {
 
     private final PostService service;
 
-    public PostController(@Validated PostService service) {
+    public PostApiVer1(@Validated PostService service) {
         this.service = service;
     }
 
@@ -33,10 +39,12 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> registerPost(@RequestBody PostDto.Request postDto) {
+    public ResponseEntity<Void> registerPost(@RequestBody Request postDto, HttpServletRequest request) {
 
-        Response responsePostDto = service.insertPost(postDto);
-        URI redirectPath = URI.create("api/posts/" + responsePostDto.getPostId());
+        long userId = Long.parseLong(getCookie(request).getValue());
+
+        Response responsePostDto = service.insertPost(userId, postDto);
+        URI redirectPath = URI.create("api/v1/posts/" + responsePostDto.getPostId());
 
         return ResponseEntity.created(redirectPath)
             .build();
@@ -44,7 +52,10 @@ public class PostController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Response> modifyPost(@PathVariable Long id,
-        @RequestBody Update postDto) {
+        @RequestBody Update postDto,
+        HttpServletRequest request) {
+
+        checkOwnPost(request, id);
         Response response = service.updatePost(id, postDto);
 
         return ResponseEntity.ok(response);
@@ -54,6 +65,17 @@ public class PostController {
     public ResponseEntity<ResponsePostDtos> getPostsByPage(Pageable pageable) {
 
         return ResponseEntity.ok(service.getPostsByPage(pageable));
+    }
+
+    private void checkOwnPost(HttpServletRequest request, Long postId) {
+
+        long loginUserid = Long.parseLong(getCookie(request).getValue());
+        Response post = service.findPostById(postId);
+
+        if (loginUserid != post.userId()) {
+            throw new AuthenticationFailedException("본인 게시글만 수정, 삭제할 수 있습니다",
+                ErrorCode.AUTHENCTICATION_FAILED);
+        }
     }
 
 }
