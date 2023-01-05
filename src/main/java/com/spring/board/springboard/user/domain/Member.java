@@ -86,7 +86,7 @@ public class Member {
 
     public void login(String requestPassword) {
         if (!Objects.equals(requestPassword, this.password)) {
-            throw new AuthenticateException("password가 올바르지 않습니다.");
+            throw new AuthenticateException("회원 정보가 잘못되었습니다.");
         }
     }
 
