@@ -3,15 +3,38 @@ ifndef::snippets[]
 :snippets: ../../../target/generated-snippets
 endif::[]
 
-== 주문
-=== 주문 생성
+== 게시물
 
-=== /orders/{uuid}
+=== 게시물 조회
+=== /posts
 
 .Request
-include::{snippets}/order-save/http-request.adoc[]
-include::{snippets}/order-save/request-fields.adoc[]
+include::{snippets}/post-view/http-request.adoc[]
+include::{snippets}/post-view/request-fields.adoc[]
 
 .Response
-include::{snippets}/order-save/http-request.adoc[]
-include::{snippets}/order-save/response-fields.adoc[]
+include::{snippets}/post-view/http-request.adoc[]
+include::{snippets}/post-view/response-fields.adoc[]
+
+
+=== 게시물 생성
+=== /posts
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+=== 게시물 수정
+=== /posts/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]

@@ -4,7 +4,7 @@ import com.example.springbootboard.entity.Post;
 import com.example.springbootboard.entity.User;
 
 public class Converter {
-    public static User dtoToUser(UserDto dto){
+    public static User dtoToUser(com.example.springbootboard.dto.UserDto dto){
         return User.builder()
                 .id(dto.getId())
                 .name(dto.getName())
@@ -13,8 +13,8 @@ public class Converter {
                 .build();
     }
 
-    public static UserDto userToDto(User user){
-        return UserDto.builder()
+    public static com.example.springbootboard.dto.UserDto userToDto(User user){
+        return com.example.springbootboard.dto.UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .age(user.getAge())

@@ -3,8 +3,6 @@ package com.example.springbootboard.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @NoArgsConstructor
@@ -21,8 +19,8 @@ public class Post extends BaseEntity{
     @Column(name = "content")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private User user;
 
     public void changeTitle(String title){
         this.title = title;
@@ -32,19 +30,19 @@ public class Post extends BaseEntity{
     }
 
     @Builder
-    public Post(Long id, String title, String content, User user){
+    public Post(Long id, String title, String content){
         this.id = id;
         this.title = title;
         this.content = content;
-        setUser(user);
+        // setUser(user);
     }
 
-    public void setUser(User user){
-        if(this.user != user){
-            this.user.getPostList().remove(this);
-        }
-        this.user = user;
-        user.getPostList().add(this);
-        setCreatedBy(user.getId());
-    }
+//    public void setUser(User user){
+//        if(this.user != user){
+//            this.user.getPostList().remove(this);
+//        }
+//        this.user = user;
+//        user.getPostList().add(this);
+//        setCreatedBy(user.getId());
+//    }
 }

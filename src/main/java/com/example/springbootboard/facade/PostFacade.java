@@ -25,7 +25,7 @@ public class PostFacade {
                 PostDto.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
-                .user(dtoToUser(userService.findUserById(request.getUserId())))
+                .userDto(userService.findUserById(request.getUserId()))
                 .build()
         );
     }

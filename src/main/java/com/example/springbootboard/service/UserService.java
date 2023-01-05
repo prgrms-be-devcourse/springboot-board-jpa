@@ -2,7 +2,6 @@ package com.example.springbootboard.service;
 
 import com.example.springbootboard.dto.Converter;
 import com.example.springbootboard.dto.UserCreateRequest;
-import com.example.springbootboard.dto.UserDto;
 import com.example.springbootboard.entity.User;
 import com.example.springbootboard.exception.UserNotFoundException;
 import com.example.springbootboard.repository.UserRepository;
@@ -26,7 +25,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserDto findUserById(Long id) throws Exception{
+    public com.example.springbootboard.dto.UserDto findUserById(Long id) throws Exception{
         return repository.findById(id)
                 .map(Converter::userToDto)
                 .orElseThrow(UserNotFoundException::new);

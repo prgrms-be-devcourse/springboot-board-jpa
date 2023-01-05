@@ -9,13 +9,13 @@ public class PostDto {
     private Long id;
     private String title;
     private String content;
-    private User user;
+    private UserDto userDto;
 
     @Builder
-    public PostDto(Long id, String title, String content, User user){
+    public PostDto(Long id, String title, String content, UserDto userDto){
         this.id = id;
         this.title = title;
         this.content = content;
-        this.user = user;
+        this.userDto = userDto;
     }
 }

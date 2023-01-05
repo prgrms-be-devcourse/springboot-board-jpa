@@ -3,7 +3,6 @@ package com.example.springbootboard.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +25,12 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Hobby hobby;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    // @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Post> postList = new ArrayList<>();
 
     @Builder
-    public User(Long id,String name, int age, Hobby hobby){
+    public User(Long id, String name, int age, Hobby hobby){
         this.id = id;
         this.name = name;
         this.age = age;
