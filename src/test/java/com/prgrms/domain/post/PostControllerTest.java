@@ -14,8 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.domain.user.UserService;
 import com.prgrms.dto.PostDto;
 import com.prgrms.dto.PostDto.Update;
-import com.prgrms.dto.UserDto;
-import com.prgrms.dto.UserDto.Request;
+import com.prgrms.dto.UserDto.UserCreateRequest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,8 +55,10 @@ class PostControllerTest {
         String userName = "홍길동";
         String hobby = "독서";
         int age = 15;
+        String email = "guildong@gmail.com";
+        String password = "hong1234!";
 
-        UserDto.Request userDto = new Request(userName, hobby, age);
+        UserCreateRequest userDto = new UserCreateRequest(userName, hobby, age, email, password);
         userService.insertUser(userDto);
 
         String title = "타이틀 테스트1";

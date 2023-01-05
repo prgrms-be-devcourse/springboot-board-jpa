@@ -1,12 +1,15 @@
 package com.prgrms.domain.user;
 
-import static com.prgrms.dto.UserDto.*;
-
+import com.prgrms.dto.UserDto.UserCreateRequest;
+import com.prgrms.dto.UserDto.LoginRequest;
 import com.prgrms.dto.UserDto.Response;
 import com.prgrms.exception.ErrorCode;
+import com.prgrms.exception.customException.EmailDuplicateException;
+import com.prgrms.exception.customException.LoginFailException;
 import com.prgrms.exception.customException.UserNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
@@ -19,17 +22,36 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Response insertUser(@Valid Request userDto) {
+    @Transactional
+    public Response insertUser(@Valid UserCreateRequest userDto) {
 
-        User savedUser = userRepository.save(userDto.toUser());
-        return new Response(savedUser);
+        checkEmailDuplicate(userDto.email());
+
+        User save = userRepository.save(userDto.toUser());
+        return new Response(save);
     }
 
+    private void checkEmailDuplicate(String email) {
+
+        if (userRepository.existsByEmail(email)) {
+            throw new EmailDuplicateException("이메일이 중복되었습니다", ErrorCode.INVALID_PARAMETER);
+        }
+    }
+
+    @Transactional(readOnly = true)
     public Response findUserById(Long id) {
 
         return userRepository.findById(id)
             .map(Response::new)
             .orElseThrow(() -> new UserNotFoundException("id: " + id, ErrorCode.USER_NOT_FOUND));
+    }
+
+    @Transactional(readOnly = true)
+    public Response login(@Valid LoginRequest loginDto) {
+
+        return userRepository.findUser(loginDto.email(), loginDto.password())
+            .map(Response::new)
+            .orElseThrow(() -> new LoginFailException(ErrorCode.LOGIN_FAILED));
     }
 
 }

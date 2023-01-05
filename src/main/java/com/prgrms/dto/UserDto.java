@@ -6,22 +6,25 @@ import jakarta.validation.constraints.NotNull;
 
 public class UserDto {
 
-    public record Request(@NotBlank String name, @NotBlank String hobby, @NotNull int age) {
+    public record UserCreateRequest(@NotBlank String name, @NotBlank String hobby, @NotNull int age, @NotBlank String email, @NotBlank String password) {
 
         public User toUser() {
-            return new User(name, hobby, age);
+            return new User(name, hobby, age, email, password);
         }
     }
 
     public record Response(User user) {
 
         public User toUser() {
-            return new User(user.getId(), user.getName(), user.getHobby(), user.getAge());
+            return new User(user.getId(), user.getName(), user.getHobby(), user.getAge(), user.getEmail(), user.getPassword());
         }
 
         public long getUserId() {
             return user().getId();
         }
+    }
+
+    public record LoginRequest(@NotBlank String email, @NotBlank String password) {
     }
 
 }

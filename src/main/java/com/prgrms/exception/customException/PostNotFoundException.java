@@ -2,16 +2,16 @@ package com.prgrms.exception.customException;
 
 import com.prgrms.exception.ErrorCode;
 
-public class PostNotFoundException extends RuntimeException{
-
-    private final ErrorCode errorCode;
+public class PostNotFoundException extends CustomException {
 
     public PostNotFoundException(String message, ErrorCode errorCode) {
-        super(message);
-        this.errorCode = errorCode;
+
+        super(message, errorCode);
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
+    public PostNotFoundException(ErrorCode errorCode) {
+
+        super(errorCode);
     }
+
 }
