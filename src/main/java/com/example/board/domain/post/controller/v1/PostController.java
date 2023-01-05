@@ -1,4 +1,4 @@
-package com.example.board.domain.post.controller;
+package com.example.board.domain.post.controller.v1;
 
 import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostRequest;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/posts/v1")
 public class PostController {
 
   private final PostService postService;
@@ -45,7 +45,7 @@ public class PostController {
     Long savedId = postService.save(postRequest);
 
     URI uri = UriComponentsBuilder.newInstance()
-        .path("/posts/{postId}")
+        .path("/posts/v1/{postId}")
         .build()
         .expand(savedId)
         .encode()
@@ -60,7 +60,7 @@ public class PostController {
     Long updatedId = postService.update(postId, postRequest);
 
     URI uri = UriComponentsBuilder.newInstance()
-        .path("/posts/{postId}")
+        .path("/posts/v1/{postId}")
         .build()
         .expand(updatedId)
         .encode()

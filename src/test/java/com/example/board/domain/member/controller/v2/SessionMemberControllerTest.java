@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.example.board.domain.member.controller.v2.session.SessionManager;
 import com.example.board.domain.member.dto.MemberRequest;
 import com.example.board.domain.member.repository.MemberRepository;
 import com.example.board.domain.member.service.MemberService;
@@ -16,6 +17,7 @@ import com.example.board.domain.post.dto.PostRequest;
 import com.example.board.domain.post.repository.PostRepository;
 import com.example.board.domain.post.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.UUID;
 import javax.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,6 +40,9 @@ class SessionMemberControllerTest {
 
   @Autowired
   private PostRepository postRepository;
+
+  @Autowired
+  private SessionManager sessionManager;
 
   @Autowired
   private MemberService memberService;
@@ -64,7 +69,7 @@ class SessionMemberControllerTest {
     MemberRequest.SignUp signUpRequest = new MemberRequest.SignUp("김환", "email123@naver.com", "password123!", 25, "게임");
 
     //when & then
-    mockMvc.perform(post("/api/v2/members")
+    mockMvc.perform(post("/members/v2")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(signUpRequest)))
         .andExpect(status().isCreated())
@@ -84,12 +89,12 @@ class SessionMemberControllerTest {
   void loginSuccess() throws Exception {
     //given
     MemberRequest.SignUp signUpRequest = new MemberRequest.SignUp("김환", "email123@naver.com", "password123!", 25, "게임");
-    memberService.save(signUpRequest);
+    Long savedMemberId = memberService.save(signUpRequest);
 
     MemberRequest.Login loginMember = new MemberRequest.Login("email123@naver.com", "password123!");
 
     //when & then
-    mockMvc.perform(post("/api/v2/members/login")
+    mockMvc.perform(post("/members/v2/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(loginMember)))
         .andExpect(status().isOk())
@@ -110,8 +115,9 @@ class SessionMemberControllerTest {
     postService.save(new PostRequest("게시글", "내용내용", savedMemberId));
 
     //when & then
-    mockMvc.perform(get("/api/v2/members/mypage")
-            .cookie(new Cookie("sessionId", savedMemberId.toString())))
+    UUID sessionId = testLogin(savedMemberId, "email123@naver.com");
+    mockMvc.perform(get("/members/v2/mypage")
+            .cookie(new Cookie("sessionId", sessionId.toString())))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("member-find-by-id",
@@ -128,5 +134,10 @@ class SessionMemberControllerTest {
                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("title of post"),
                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("title of post")
             )));
+  }
+
+  private UUID testLogin(Long savedMemberId, String email) {
+
+    return sessionManager.login(savedMemberId, email);
   }
 }

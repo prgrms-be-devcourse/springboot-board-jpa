@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/api/v1/members")
+@RequestMapping("/members/v1")
 public class MemberController {
 
   private final MemberService memberService;
@@ -42,7 +42,7 @@ public class MemberController {
     memberService.save(signUpRequest);
 
     URI uri = UriComponentsBuilder.newInstance()
-        .path("/api/v1/members/login")
+        .path("/members/v1/login")
         .build()
         .encode()
         .toUri();
