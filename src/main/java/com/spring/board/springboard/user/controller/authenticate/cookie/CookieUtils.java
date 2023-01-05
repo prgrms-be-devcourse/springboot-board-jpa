@@ -15,6 +15,9 @@ public class CookieUtils {
     private static final Integer DEAD_COOKIE_AGE = 0;
     private static final String KILL_COOKIE_VALUE = null;
 
+    private CookieUtils() {
+    }
+
     public static Cookie getUserCookie(HttpServletRequest request) {
         Cookie cookie = WebUtils.getCookie(request, USER_INFO_COOKIE_NAME);
 
