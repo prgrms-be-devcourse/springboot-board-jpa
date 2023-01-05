@@ -56,7 +56,7 @@ public class PostService {
     Long memberId = postRequest.memberId();
     Member member = findMemberById(memberId);
 
-    Post post = postRepository.findById(postId)
+    Post post = postRepository.findByIdAndMemberId(postId, memberId)
         .orElseThrow(
             () -> new NotFoundException(
                 String.format("NotFoundException post id: %d", postId)));
