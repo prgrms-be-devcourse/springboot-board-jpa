@@ -27,14 +27,15 @@ public class MemberController {
 
   private final MemberService memberService;
 
-  @Value("${cookie.name}")
-  private String cookieName;
+  private final String cookieName;
 
-  @Value("${cookie.max-age}")
-  private int maxAge;
+  private final int maxAge;
 
-  public MemberController(MemberService memberService) {
+  public MemberController(MemberService memberService,
+      @Value("${cookie.name}") String cookieName, @Value("${cookie.maxAge}") int maxAge) {
     this.memberService = memberService;
+    this.cookieName = cookieName;
+    this.maxAge = maxAge;
   }
 
   @PostMapping
