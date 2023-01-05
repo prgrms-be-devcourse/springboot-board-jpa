@@ -5,6 +5,8 @@ import com.prgrms.board.domain.Post;
 import com.prgrms.board.dto.request.PostCreateDto;
 import com.prgrms.board.dto.request.PostUpdateDto;
 import com.prgrms.board.dto.response.PostResponseDto;
+import com.prgrms.board.exception.EntityNotFoundException;
+import com.prgrms.board.exception.IllegalModifyException;
 import com.prgrms.board.repository.MemberRepository;
 import com.prgrms.board.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,7 +75,7 @@ class PostServiceTest {
                 .build();
 
         //when & then
-        assertThrows(RuntimeException.class, () -> postService.register(createDto));
+        assertThrows(EntityNotFoundException.class, () -> postService.register(createDto));
     }
 
     @Test
@@ -96,7 +98,7 @@ class PostServiceTest {
         Long unknownId = 100L;
 
         //when & then
-        assertThrows(RuntimeException.class, () -> postService.findById(unknownId));
+        assertThrows(EntityNotFoundException.class, () -> postService.findById(unknownId));
     }
 
 
@@ -140,7 +142,7 @@ class PostServiceTest {
                 .build();
 
         //when & then
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalModifyException.class,
                 () -> postService.update(postId, updateDto));
 
     }

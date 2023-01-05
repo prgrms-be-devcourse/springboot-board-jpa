@@ -2,6 +2,8 @@ package com.prgrms.board.service;
 
 import com.prgrms.board.dto.request.MemberCreateDto;
 import com.prgrms.board.dto.response.MemberResponseDto;
+import com.prgrms.board.exception.DuplicateNameException;
+import com.prgrms.board.exception.EntityNotFoundException;
 import com.prgrms.board.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -61,7 +63,7 @@ class MemberServiceTest {
                 .hobby("축구")
                 .build();
 
-        assertThrows(RuntimeException.class, () -> memberService.join(sameNameDto));
+        assertThrows(DuplicateNameException.class, () -> memberService.join(sameNameDto));
     }
 
     @Test
@@ -86,6 +88,6 @@ class MemberServiceTest {
         Long unknownId = 1L;
 
         //when, then
-        assertThrows(RuntimeException.class, () -> memberService.findById(unknownId));
+        assertThrows(EntityNotFoundException.class, () -> memberService.findById(unknownId));
     }
 }

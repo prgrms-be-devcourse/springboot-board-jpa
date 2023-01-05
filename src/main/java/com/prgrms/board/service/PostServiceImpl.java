@@ -7,6 +7,7 @@ import com.prgrms.board.dto.CursorResult;
 import com.prgrms.board.dto.request.PostCreateDto;
 import com.prgrms.board.dto.request.PostUpdateDto;
 import com.prgrms.board.dto.response.PostResponseDto;
+import com.prgrms.board.exception.EntityNotFoundException;
 import com.prgrms.board.repository.MemberRepository;
 import com.prgrms.board.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Long register(PostCreateDto postCreateDto) {
         Member member = memberRepository.findById(postCreateDto.getWriterId())
-                .orElseThrow(() -> new IllegalArgumentException("exception.member.id.null"));
+                .orElseThrow(() -> new EntityNotFoundException("exception.member.id.null"));
 
         httpSession.setAttribute(SESSION_MEMBER, member);
 
@@ -47,7 +48,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDto findById(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("exception.post.id.null"));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("exception.post.id.null"));
         return converter.postEntityToDto(post);
     }
 
@@ -55,10 +56,10 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public Long update(Long postId, PostUpdateDto updateDto) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("exception.post.id.null"));
+                .orElseThrow(() -> new EntityNotFoundException("exception.post.id.null"));
 
         Member postUpdateMember = memberRepository.findById(updateDto.getWriterId())
-                .orElseThrow(() -> new IllegalArgumentException("exception.member.id.null"));
+                .orElseThrow(() -> new EntityNotFoundException("exception.member.id.null"));
 
         Member registeredMember = post.getWriter();
 

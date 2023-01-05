@@ -4,6 +4,8 @@ import com.prgrms.board.converter.EntityConverter;
 import com.prgrms.board.domain.Member;
 import com.prgrms.board.dto.request.MemberCreateDto;
 import com.prgrms.board.dto.response.MemberResponseDto;
+import com.prgrms.board.exception.DuplicateNameException;
+import com.prgrms.board.exception.EntityNotFoundException;
 import com.prgrms.board.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberResponseDto findById(Long memberId) {
         Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("exception.member.id.null"));
+                .orElseThrow(() -> new EntityNotFoundException("exception.member.id.null"));
 
         return converter.memberEntityToDto(findMember);
     }
@@ -53,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
     private void validateDuplicateName(String name) {
         Optional<Member> duplicateMember = memberRepository.findByName(name);
         if (duplicateMember.isPresent()) {
-            throw new IllegalArgumentException("exception.member.name.duplicate");
+            throw new DuplicateNameException("exception.member.name.duplicate");
         }
     }
 }

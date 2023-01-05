@@ -2,6 +2,9 @@ package com.prgrms.board.global;
 
 import com.prgrms.board.dto.response.ApiBindErrorResponse;
 import com.prgrms.board.dto.response.ApiErrorResponse;
+import com.prgrms.board.exception.DuplicateNameException;
+import com.prgrms.board.exception.EntityNotFoundException;
+import com.prgrms.board.exception.IllegalModifyException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -31,15 +34,44 @@ public class ApiControllerAdvice {
         return ApiErrorResponse.fail(message, 400);
     }
 
-
     @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ApiErrorResponse entityNotFoundExceptionHandler(EntityNotFoundException e) {
+        String message = getMessage(e.getMessage());
+
+        log.warn("EntityNotFoundException 발생-> {}", message);
+
+        return ApiErrorResponse.fail(message, 404);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DuplicateNameException.class)
+    public ApiErrorResponse duplicateNameExceptionHandler(DuplicateNameException e) {
+        String message = getMessage(e.getMessage());
+
+        log.warn("DuplicateNameException 발생-> {}", message);
+
+        return ApiErrorResponse.fail(message, 400);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalModifyException.class)
+    public ApiErrorResponse illegalModifyExceptionHandler(IllegalModifyException e) {
+        String message = getMessage(e.getMessage());
+
+        log.warn("IllegalModifyException 발생-> {}", message);
+
+        return ApiErrorResponse.fail(message, 400);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RuntimeException.class)
     public ApiErrorResponse runTimeExceptionHandler(RuntimeException e) {
         String message = getMessage(e.getMessage());
 
         log.warn("RuntimeException 발생-> {}", message);
 
-        return ApiErrorResponse.fail(message, 404);
+        return ApiErrorResponse.fail(message, 400);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
