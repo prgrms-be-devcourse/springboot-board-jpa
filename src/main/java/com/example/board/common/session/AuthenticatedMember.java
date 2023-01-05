@@ -35,14 +35,6 @@ public class AuthenticatedMember {
     return email;
   }
 
-  public LocalDateTime getExpiresAt() {
-    return expiresAt;
-  }
-
-  public boolean isExpired(){
-    return expiresAt.isAfter(LocalDateTime.now());
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {

@@ -29,12 +29,14 @@ public class SessionManager {
 
   public Cookie login(Long memberId, String email){
     Optional<UUID> optionalSessionId = sessionStorage.getLoginedSessionId(memberId, email);
+
     UUID sessionId;
     if(optionalSessionId.isPresent()){
       sessionId = reissue(optionalSessionId.get(), memberId, email);
     } else{
       sessionId = createSession(memberId, email);
     }
+
     return new CookieUtils.CookieBuilder(cookieName, String.valueOf(sessionId))
         .httpOnly(Boolean.TRUE)
         .maxAge(duration)
@@ -44,12 +46,14 @@ public class SessionManager {
 
   public void login(Long memberId, String email, HttpServletResponse response){
     Optional<UUID> optionalSessionId = sessionStorage.getLoginedSessionId(memberId, email);
+
     UUID sessionId;
     if(optionalSessionId.isPresent()){
       sessionId = reissue(optionalSessionId.get(), memberId, email);
     } else{
       sessionId = createSession(memberId, email);
     }
+
     Cookie loginCookie = new CookieUtils.CookieBuilder(cookieName, String.valueOf(sessionId))
         .httpOnly(Boolean.TRUE)
         .maxAge(duration)
@@ -74,26 +78,9 @@ public class SessionManager {
 
   public AuthenticatedMember getSession(HttpServletRequest request) {
     Cookie cookie = getCookie(request);
-
     checkSession(cookie);
     UUID sessionId = convertToSessionId(cookie);
     return sessionStorage.get(sessionId);
-  }
-
-  private UUID convertToSessionId(Cookie cookie){
-    try{
-      return UUID.fromString(cookie.getValue());
-    } catch (IllegalArgumentException e){
-      throw new SessionNotFoundException(
-          String.format("Invalid session id. Session id %s is not format of UUID.", cookie.getValue()));
-
-    }
-  }
-
-  public void checkSession(Cookie cookie){
-    UUID sessionId = convertToSessionId(cookie);
-
-    checkSession(sessionId);
   }
 
   public void logout(UUID sessionId) {
@@ -121,7 +108,21 @@ public class SessionManager {
     }
   }
 
-  public void checkSession(UUID sessionId){
+  private UUID convertToSessionId(Cookie cookie){
+    try{
+      return UUID.fromString(cookie.getValue());
+    } catch (IllegalArgumentException e){
+      throw new SessionNotFoundException(
+          String.format("Invalid session id. Session id %s is not format of UUID.", cookie.getValue()));
+    }
+  }
+
+  private void checkSession(Cookie cookie){
+    UUID sessionId = convertToSessionId(cookie);
+    checkSession(sessionId);
+  }
+
+  private void checkSession(UUID sessionId){
     if(!sessionStorage.containsKey(sessionId)){
       throw new SessionNotFoundException(
           String.format("Invalid session id. Session id %s Not found", sessionId.toString()));

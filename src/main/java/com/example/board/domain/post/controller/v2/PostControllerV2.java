@@ -26,7 +26,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class PostControllerV2 {
 
   private final PostService postService;
-
   private final SessionManager sessionManager;
 
   public PostControllerV2(PostService postService, SessionManager sessionManager){

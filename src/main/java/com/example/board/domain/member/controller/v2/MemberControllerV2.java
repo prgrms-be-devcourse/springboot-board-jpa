@@ -19,13 +19,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/members/v2")
-public class SessionMemberController {
+public class MemberControllerV2 {
 
   private final MemberService memberService;
-
   private final SessionManager sessionManager;
 
-  public SessionMemberController(MemberService memberService, SessionManager sessionManager) {
+  public MemberControllerV2(MemberService memberService, SessionManager sessionManager) {
     this.memberService = memberService;
     this.sessionManager = sessionManager;
   }
@@ -33,7 +32,6 @@ public class SessionMemberController {
   @PostMapping
   public ResponseEntity<Void> signUp(@RequestBody MemberRequest.SignUp signUpRequest) {
     memberService.save(signUpRequest);
-
     URI uri = UriComponentsBuilder.newInstance()
         .path("/members/v2/login")
         .build()
@@ -48,14 +46,12 @@ public class SessionMemberController {
   public ResponseEntity<Void> login(@RequestBody MemberRequest.Login loginRequest, HttpServletResponse response) {
     Long loginId = memberService.login(loginRequest);
     sessionManager.login(loginId, loginRequest.email(), response);
-
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 
   @GetMapping("/mypage")
   public ResponseEntity<MemberResponse.Detail> mypage(HttpServletRequest request) {
     AuthenticatedMember authenticatedMember = sessionManager.getSession(request);
-
     MemberResponse.Detail detail = memberService.findById(
         authenticatedMember.getId());
 
@@ -65,7 +61,6 @@ public class SessionMemberController {
   @PostMapping("/logout")
   public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
     sessionManager.logout(request, response);
-
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

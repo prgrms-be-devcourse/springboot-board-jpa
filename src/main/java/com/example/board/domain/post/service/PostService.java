@@ -25,7 +25,6 @@ public class PostService {
     this.memberRepository = memberRepository;
   }
 
-
   @Transactional(readOnly = true)
   public PostResponse.Detail findById(Long postId) {
     Post post = postRepository.findById(postId)

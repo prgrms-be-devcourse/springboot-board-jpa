@@ -40,7 +40,6 @@ public class MemberController {
   @PostMapping
   public ResponseEntity<Void> signUp(@RequestBody MemberRequest.SignUp signUpRequest) {
     memberService.save(signUpRequest);
-
     URI uri = UriComponentsBuilder.newInstance()
         .path("/members/v1/login")
         .build()
@@ -70,10 +69,9 @@ public class MemberController {
 
     try{
       Long memberId = Long.valueOf(loginIdCookie.getValue());
-
       MemberResponse.Detail detail = memberService.findById(memberId);
-
       return ResponseEntity.ok(detail);
+
     } catch(NumberFormatException e){
       throw new UnAuthorizedException(
           String.format("UnAuthorized cookie value: \"%s\"", loginIdCookie.getValue()));
@@ -86,7 +84,6 @@ public class MemberController {
     Cookie cookie = new Cookie(cookieName, null);
     cookie.setMaxAge(0);
     response.addCookie(cookie);
-
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

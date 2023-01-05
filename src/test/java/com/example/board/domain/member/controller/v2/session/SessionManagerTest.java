@@ -86,14 +86,4 @@ class SessionManagerTest {
     //then
     assertThrows(SessionNotFoundException.class, () -> sessionManager.getSession(sessionId));
   }
-
-  @Test
-  @DisplayName("유효하지 않은 session id로 권한 확인을 요청하면 권한 확인에 실패한다.")
-  void checkAuthentication(){
-    //given & when
-    saveSingleAuthenticatedMember();
-
-    //then
-    assertThrows(SessionNotFoundException.class, () -> sessionManager.checkSession(UUID.randomUUID()));
-  }
 }

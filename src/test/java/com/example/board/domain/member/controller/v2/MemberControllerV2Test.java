@@ -33,7 +33,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest
-class SessionMemberControllerTest {
+class MemberControllerV2Test {
 
   @Autowired
   private MemberRepository memberRepository;
