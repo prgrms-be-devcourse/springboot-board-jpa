@@ -27,7 +27,12 @@ public class SessionManager {
     this.duration = duration;
   }
 
-  public Cookie login(Long memberId, String email){
+  public void login(Long memberId, String email, HttpServletResponse response){
+    Cookie loginCookie = doLogin(memberId, email);
+    response.addCookie(loginCookie);
+  }
+
+  private Cookie doLogin(Long memberId, String email){
     Optional<UUID> optionalSessionId = sessionStorage.getLoginedSessionId(memberId, email);
 
     UUID sessionId;
@@ -42,24 +47,6 @@ public class SessionManager {
         .maxAge(duration)
         .path("/")
         .build();
-  }
-
-  public void login(Long memberId, String email, HttpServletResponse response){
-    Optional<UUID> optionalSessionId = sessionStorage.getLoginedSessionId(memberId, email);
-
-    UUID sessionId;
-    if(optionalSessionId.isPresent()){
-      sessionId = reissue(optionalSessionId.get(), memberId, email);
-    } else{
-      sessionId = createSession(memberId, email);
-    }
-
-    Cookie loginCookie = new CookieUtils.CookieBuilder(cookieName, String.valueOf(sessionId))
-        .httpOnly(Boolean.TRUE)
-        .maxAge(duration)
-        .path("/")
-        .build();
-    response.addCookie(loginCookie);
   }
 
   private UUID createSession(Long memberId, String email) {
