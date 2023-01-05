@@ -1,5 +1,6 @@
 package com.spring.board.springboard.domain;
 
+import com.spring.board.springboard.post.exception.NoAuthorizedException;
 import com.spring.board.springboard.post.exception.NoPostException;
 import com.spring.board.springboard.user.exception.AuthenticateException;
 import com.spring.board.springboard.user.exception.NoMemberException;
@@ -66,6 +67,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleSessionCreateException(SessionCreateException sessionCreateException) {
         ErrorResponse errorResponse = new ErrorResponse(sessionCreateException.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(NoAuthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleNoAuthorizedException(NoAuthorizedException noAuthorizedException) {
+        ErrorResponse errorResponse = new ErrorResponse(noAuthorizedException.getMessage());
+
+        return ResponseEntity.status(
+                        HttpStatus.FORBIDDEN)
                 .body(errorResponse);
     }
 }

@@ -1,7 +1,7 @@
 package com.spring.board.springboard.post.domain;
 
+import com.spring.board.springboard.post.exception.NoAuthorizedException;
 import com.spring.board.springboard.user.domain.Member;
-import com.spring.board.springboard.user.exception.AuthenticateException;
 import jakarta.persistence.*;
 import org.springframework.util.Assert;
 
@@ -78,7 +78,7 @@ public class Post {
 
     public void validateWriter(String requestEmail) {
         if (!Objects.equals(this.member.getEmail(), requestEmail)) {
-            throw new AuthenticateException("접근 권한이 없습니다.");
+            throw new NoAuthorizedException("접근 권한이 없습니다.");
         }
     }
 
