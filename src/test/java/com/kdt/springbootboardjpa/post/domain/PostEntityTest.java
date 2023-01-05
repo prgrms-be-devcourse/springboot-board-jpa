@@ -1,39 +1,35 @@
-package com.kdt.springbootboardjpa.domain.post;
+package com.kdt.springbootboardjpa.post.domain;
 
-import com.kdt.springbootboardjpa.domain.member.Hobby;
-import com.kdt.springbootboardjpa.domain.member.Member;
-import com.kdt.springbootboardjpa.repository.member.MemberJpaRepository;
-import com.kdt.springbootboardjpa.repository.post.PostJpaRepository;
+import com.kdt.springbootboardjpa.member.domain.Hobby;
+import com.kdt.springbootboardjpa.member.domain.Member;
+import com.kdt.springbootboardjpa.member.repository.MemberRepository;
+import com.kdt.springbootboardjpa.post.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @DataJpaTest
-@TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
-class PostTest {
+class PostEntityTest {
 
     @Autowired
-    MemberJpaRepository memberJpaRepository;
+    MemberRepository memberJpaRepository;
 
     @Autowired
-    PostJpaRepository postJpaRepository;
+    PostRepository postJpaRepository;
 
     Member member;
 
     Post basicPost;
 
-    @BeforeAll
+    @BeforeEach
     void setData() {
         member = Member.builder()
                 .name("최은비")
