@@ -1,12 +1,12 @@
 package com.prgrms.domain.user;
 
-import com.prgrms.dto.UserDto.UserCreateRequest;
 import com.prgrms.dto.UserDto.LoginRequest;
 import com.prgrms.dto.UserDto.Response;
-import com.prgrms.exception.ErrorCode;
-import com.prgrms.exception.customException.EmailDuplicateException;
-import com.prgrms.exception.customException.LoginFailException;
-import com.prgrms.exception.customException.UserNotFoundException;
+import com.prgrms.dto.UserDto.UserCreateRequest;
+import com.prgrms.global.error.ErrorCode;
+import com.prgrms.global.exception.EmailDuplicateException;
+import com.prgrms.global.exception.LoginFailException;
+import com.prgrms.global.exception.UserNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

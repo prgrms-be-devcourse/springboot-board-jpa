@@ -1,7 +1,7 @@
 package com.prgrms.web.auth;
 
-import com.prgrms.exception.ErrorCode;
-import com.prgrms.exception.customException.AuthenticationFailedException;
+import com.prgrms.global.error.ErrorCode;
+import com.prgrms.global.exception.AuthenticationFailedException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

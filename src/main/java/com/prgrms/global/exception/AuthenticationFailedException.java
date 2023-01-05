@@ -1,6 +1,6 @@
-package com.prgrms.exception.customException;
+package com.prgrms.global.exception;
 
-import com.prgrms.exception.ErrorCode;
+import com.prgrms.global.error.ErrorCode;
 
 public class AuthenticationFailedException extends CustomException{
 

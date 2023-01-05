@@ -1,4 +1,4 @@
-package com.prgrms.exception;
+package com.prgrms.global.error;
 
 import org.springframework.http.HttpStatus;
 
