@@ -12,14 +12,17 @@ import java.util.Objects;
 @Setter
 public class PostResponse {
     private long postId;
-    private Member createdBy;
+    private long createdBy;
     private String title;
     private String content;
     private LocalDateTime createdAt;
 
+    public PostResponse() {
+    }
+
     public PostResponse(Post post) {
         this.postId = post.getPostId();
-        this.createdBy = post.getCreatedBy();
+        this.createdBy = post.getCreatedBy().getMemberId();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
@@ -30,7 +33,7 @@ public class PostResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PostResponse that = (PostResponse) o;
-        return getPostId() == that.getPostId() && Objects.equals(getCreatedBy(), that.getCreatedBy()) && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getContent(), that.getContent()) && Objects.equals(getCreatedAt(), that.getCreatedAt());
+        return getPostId() == that.getPostId() && getCreatedBy() == that.getCreatedBy() && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getContent(), that.getContent()) && Objects.equals(getCreatedAt(), that.getCreatedAt());
     }
 
     @Override

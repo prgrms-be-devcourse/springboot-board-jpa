@@ -9,7 +9,11 @@ import java.util.List;
 @Setter
 public class PostAllResponse {
 
-    private final List<PostResponse> postResponses;
+    private List<PostResponse> postResponses;
+
+    public PostAllResponse() {
+
+    }
 
     public PostAllResponse(List<PostResponse> postResponses) {
         this.postResponses = postResponses;

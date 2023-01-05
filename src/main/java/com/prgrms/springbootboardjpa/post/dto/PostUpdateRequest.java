@@ -10,6 +10,9 @@ public class PostUpdateRequest {
     private String title;
     private String content;
 
+    public PostUpdateRequest() {
+    }
+
     public PostUpdateRequest(long postId, String title, String content) {
         this.postId = postId;
         this.title = title;

@@ -36,14 +36,14 @@ public class PostRestController {
         return ResponseEntity.created(URI.create("/posts/" + postResponse.getPostId())).body(postResponse);
     }
 
-    @GetMapping("/posts/{pageNumber}")
+    @GetMapping("/{pageNumber}")
     public ResponseEntity<PostOnePage> findOnePage(@PathVariable("pageNumber") int pageNumber) {
         PostOnePage onePagePost = postService.findOnePagePost(pageNumber);
         return ResponseEntity.ok(onePagePost);
     }
 
-    @PatchMapping("/posts/{postId}")
-    public ResponseEntity<PostResponse> updatePost(@PathVariable("postId") long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
+    @PatchMapping("/posts")
+    public ResponseEntity<PostResponse> updatePost(@RequestBody PostUpdateRequest postUpdateRequest) {
         PostResponse postResponse = postService.update(postUpdateRequest);
         return ResponseEntity.ok(postResponse);
     }
