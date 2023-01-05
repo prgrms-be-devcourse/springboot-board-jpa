@@ -1,4 +1,4 @@
-package com.kdt.springbootboardjpa.dto;
+package com.kdt.springbootboardjpa.member.service.dto;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
