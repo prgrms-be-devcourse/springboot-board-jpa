@@ -1,9 +1,10 @@
 package com.spring.board.springboard.user.controller.authenticate.session;
 
 import com.spring.board.springboard.user.domain.dto.MemberDetailResponseDto;
-import com.spring.board.springboard.user.exception.SessionCreateException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
@@ -14,6 +15,8 @@ import static com.spring.board.springboard.user.controller.authenticate.cookie.C
 
 @Component
 public class SessionManager {
+
+    private static final Logger logger = LoggerFactory.getLogger(SessionManager.class);
 
     private static final Integer SEED_BYTE_NUM = 10;
     private static final StringBuilder stringBuilder = new StringBuilder();
@@ -59,8 +62,8 @@ public class SessionManager {
                 stringBuilder.append(
                         String.format("%01x", sessionByte));
             }
-        } catch (NoSuchAlgorithmException e) {
-            throw new SessionCreateException("세션을 생성할 수 없습니다.");
+        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+            logger.error("세션을 생성할 수 없습니다.", noSuchAlgorithmException);
         }
 
         return stringBuilder.toString();
