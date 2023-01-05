@@ -1,4 +1,4 @@
-package com.prgrms.web.api;
+package com.prgrms.web.api.v1;
 
 import static com.prgrms.dto.UserDto.UserCreateRequest;
 import static com.prgrms.web.auth.CookieUtil.createCookie;
@@ -20,12 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/v1/users")
-public class UserController {
+public class UserApiVer1 {
 
     private final UserService service;
 
-
-    public UserController(UserService service) {
+    public UserApiVer1(UserService service) {
         this.service = service;
     }
 
