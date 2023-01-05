@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.board.common.exception.SessionNotFoundException;
+import com.example.board.common.session.AuthenticatedMember;
+import com.example.board.common.session.SessionManager;
+import com.example.board.common.session.SessionStorage;
 import java.util.UUID;
 import javax.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;

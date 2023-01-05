@@ -1,4 +1,4 @@
-package com.example.board.domain.member.controller.v2.session;
+package com.example.board.common.session;
 
 import com.example.board.common.exception.ForbiddenException;
 import com.example.board.common.exception.SessionNotFoundException;

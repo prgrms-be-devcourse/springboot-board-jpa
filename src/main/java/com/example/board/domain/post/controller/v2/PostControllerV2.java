@@ -1,7 +1,7 @@
 package com.example.board.domain.post.controller.v2;
 
-import com.example.board.domain.member.controller.v2.session.AuthenticatedMember;
-import com.example.board.domain.member.controller.v2.session.SessionManager;
+import com.example.board.common.session.AuthenticatedMember;
+import com.example.board.common.session.SessionManager;
 import com.example.board.domain.post.dto.PostRequest;
 import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostResponse.Detail;
