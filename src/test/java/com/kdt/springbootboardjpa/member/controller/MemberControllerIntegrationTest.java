@@ -2,8 +2,8 @@ package com.kdt.springbootboardjpa.member.controller;
 
 import com.kdt.springbootboardjpa.member.domain.Member;
 import com.kdt.springbootboardjpa.member.repository.MemberRepository;
-import com.kdt.springbootboardjpa.member.service.dto.MemberRequestDto;
-import com.kdt.springbootboardjpa.member.service.dto.MemberResponseDto;
+import com.kdt.springbootboardjpa.member.service.dto.MemberRequest;
+import com.kdt.springbootboardjpa.member.service.dto.MemberResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,13 +47,13 @@ class MemberControllerIntegrationTest {
     @Test
     @DisplayName("회원(Member) 저장 - 성공")
     void createMember() {
-        MemberRequestDto expect = MemberRequestDto.builder()
+        MemberRequest expect = MemberRequest.builder()
                 .name("save Name")
                 .age(10)
                 .hobby(MOVIE)
                 .build();
 
-        ResponseEntity<MemberResponseDto> actual = memberController.save(expect);
+        ResponseEntity<MemberResponse> actual = memberController.save(expect);
 
         assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(actual.getBody().getId()).isNotNull();
@@ -66,14 +66,14 @@ class MemberControllerIntegrationTest {
     @DisplayName("회원(Member) 수정 - 성공")
     void updateMember() {
         // given
-        MemberRequestDto expect = MemberRequestDto.builder()
+        MemberRequest expect = MemberRequest.builder()
                 .name("변경된 이름")
                 .age(100)
                 .hobby(EXERCISE)
                 .build();
 
         // when
-        ResponseEntity<MemberResponseDto> actual = memberController.update(memberId, expect);
+        ResponseEntity<MemberResponse> actual = memberController.update(memberId, expect);
 
         // then
         assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.OK);

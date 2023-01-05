@@ -1,8 +1,8 @@
 package com.kdt.springbootboardjpa.member.controller;
 
 import com.kdt.springbootboardjpa.member.service.MemberService;
-import com.kdt.springbootboardjpa.member.service.dto.MemberRequestDto;
-import com.kdt.springbootboardjpa.member.service.dto.MemberResponseDto;
+import com.kdt.springbootboardjpa.member.service.dto.MemberRequest;
+import com.kdt.springbootboardjpa.member.service.dto.MemberResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,13 +32,13 @@ class MemberControllerUnitTest {
     @DisplayName("회원(Member) 저장할 수 있다.")
     void save() {
         // given
-        MemberRequestDto memberRequest = createdMemberRequestDto();
-        MemberResponseDto memberResponse = createdMemberResponseDto();
+        MemberRequest memberRequest = createdMemberRequestDto();
+        MemberResponse memberResponse = createdMemberResponseDto();
 
         given(memberService.save(memberRequest)).willReturn(memberResponse);
 
         // when
-        ResponseEntity<MemberResponseDto> actual = memberController.save(memberRequest);
+        ResponseEntity<MemberResponse> actual = memberController.save(memberRequest);
 
         // then
         assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -53,13 +53,13 @@ class MemberControllerUnitTest {
     void update() {
         // given
         Long memberId = 1L;
-        MemberRequestDto memberRequest = createdMemberRequestDto();
-        MemberResponseDto memberResponse = createdMemberResponseDto();
+        MemberRequest memberRequest = createdMemberRequestDto();
+        MemberResponse memberResponse = createdMemberResponseDto();
 
         given(memberService.update(memberId, memberRequest)).willReturn(memberResponse);
 
         // when
-        ResponseEntity<MemberResponseDto> actual = memberController.update(memberId, memberRequest);
+        ResponseEntity<MemberResponse> actual = memberController.update(memberId, memberRequest);
 
         // then
         assertThat(actual.getBody().getId()).isEqualTo(memberId);
@@ -82,8 +82,8 @@ class MemberControllerUnitTest {
         then(memberService).should().delete(memberId);
     }
 
-    public MemberResponseDto createdMemberResponseDto() {
-        return MemberResponseDto.builder()
+    public MemberResponse createdMemberResponseDto() {
+        return MemberResponse.builder()
                 .id(1L)
                 .name("최은비")
                 .age(25)
@@ -91,8 +91,8 @@ class MemberControllerUnitTest {
                 .build();
     }
 
-    public MemberRequestDto createdMemberRequestDto() {
-        return MemberRequestDto.builder()
+    public MemberRequest createdMemberRequestDto() {
+        return MemberRequest.builder()
                 .name("최은비")
                 .age(25)
                 .hobby(GAME)

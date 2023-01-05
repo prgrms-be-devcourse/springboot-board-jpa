@@ -5,8 +5,8 @@ import com.kdt.springbootboardjpa.member.domain.Hobby;
 import com.kdt.springbootboardjpa.member.domain.Member;
 import com.kdt.springbootboardjpa.member.repository.MemberRepository;
 import com.kdt.springbootboardjpa.member.service.converter.MemberConverter;
-import com.kdt.springbootboardjpa.member.service.dto.MemberRequestDto;
-import com.kdt.springbootboardjpa.member.service.dto.MemberResponseDto;
+import com.kdt.springbootboardjpa.member.service.dto.MemberRequest;
+import com.kdt.springbootboardjpa.member.service.dto.MemberResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +40,7 @@ class MemberServiceUnitTest {
 
         // given
         Long expectedId = 1L;
-        MemberRequestDto createMemberRequest = memberRequest();
+        MemberRequest createMemberRequest = memberRequest();
         Member member = createdMember();
 
         given(memberConverter.requestToMember(createMemberRequest)).willReturn(member);
@@ -48,7 +48,7 @@ class MemberServiceUnitTest {
         given(memberConverter.memberToResponse(member)).willReturn(createdMemberResponse());
 
         // when
-        MemberResponseDto actual = memberService.save(createMemberRequest);
+        MemberResponse actual = memberService.save(createMemberRequest);
 
         // then
         assertThat(actual.getId()).isEqualTo(expectedId);
@@ -60,13 +60,13 @@ class MemberServiceUnitTest {
         // given
         Long expectedId = 1L;
         Member member = createdMember();
-        MemberRequestDto updatedMember = updatedMemberRequest();
+        MemberRequest updatedMember = updatedMemberRequest();
 
         given(memberRepository.findById(expectedId)).willReturn(Optional.of(member));
         given(memberConverter.memberToResponse(member)).willReturn(updatedMemberResponse());
 
         // when
-        MemberResponseDto actual = memberService.update(expectedId, updatedMember);
+        MemberResponse actual = memberService.update(expectedId, updatedMember);
 
 
         // then
@@ -80,7 +80,7 @@ class MemberServiceUnitTest {
     @DisplayName("회원(Member) 수정 - NotFoundException 검증")
     void updatedMemberTest_fail() {
         // given
-        MemberRequestDto updatedMember = updatedMemberRequest();
+        MemberRequest updatedMember = updatedMemberRequest();
         // when then
         Assertions.assertThrows(NotFoundEntityException.class, () -> memberService.update(100L, updatedMember));
     }
@@ -101,8 +101,8 @@ class MemberServiceUnitTest {
         then(memberRepository).should().delete(member);
     }
 
-    public MemberResponseDto updatedMemberResponse() {
-        return MemberResponseDto.builder()
+    public MemberResponse updatedMemberResponse() {
+        return MemberResponse.builder()
                 .id(1L)
                 .name("변경된 이름")
                 .age(100)
@@ -110,16 +110,16 @@ class MemberServiceUnitTest {
                 .build();
     }
 
-    public MemberRequestDto updatedMemberRequest() {
-        return MemberRequestDto.builder()
+    public MemberRequest updatedMemberRequest() {
+        return MemberRequest.builder()
                 .name("변경된 이름")
                 .age(100)
                 .hobby(Hobby.GAME)
                 .build();
     }
 
-    public MemberResponseDto createdMemberResponse() {
-        return MemberResponseDto.builder()
+    public MemberResponse createdMemberResponse() {
+        return MemberResponse.builder()
                 .id(1L)
                 .name("최은비")
                 .age(24)
@@ -127,8 +127,8 @@ class MemberServiceUnitTest {
                 .build();
     }
 
-    public MemberRequestDto memberRequest() {
-        return MemberRequestDto.builder()
+    public MemberRequest memberRequest() {
+        return MemberRequest.builder()
                 .name("최은비")
                 .age(24)
                 .hobby(Hobby.MOVIE)
