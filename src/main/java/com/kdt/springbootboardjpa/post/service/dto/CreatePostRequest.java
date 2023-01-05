@@ -1,4 +1,4 @@
-package com.kdt.springbootboardjpa.dto;
+package com.kdt.springbootboardjpa.post.service.dto;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE) // 코드가 길어짐, 컴파일 에러 잡을 수 없음
 public class CreatePostRequest {
 
     @NotBlank(message = "제목은 필수 입력값입니다.")
@@ -19,9 +19,12 @@ public class CreatePostRequest {
     @NotBlank(message = "내용을 입력해주세요.")
     private String content;
 
+    private Long memberId;
+
     @Builder
-    public CreatePostRequest(String title, String content) {
+    public CreatePostRequest(String title, String content, Long memberId) {
         this.title = title;
         this.content = content;
+        this.memberId = memberId;
     }
 }

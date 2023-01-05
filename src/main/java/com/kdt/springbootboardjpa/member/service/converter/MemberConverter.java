@@ -1,14 +1,14 @@
 package com.kdt.springbootboardjpa.member.service.converter;
 
 import com.kdt.springbootboardjpa.member.domain.Member;
-import com.kdt.springbootboardjpa.member.service.dto.MemberRequestDto;
-import com.kdt.springbootboardjpa.member.service.dto.MemberResponseDto;
+import com.kdt.springbootboardjpa.member.service.dto.MemberRequest;
+import com.kdt.springbootboardjpa.member.service.dto.MemberResponse;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MemberConverter {
 
-    public Member requestToMember(MemberRequestDto request) {
+    public Member requestToMember(MemberRequest request) {
         return Member.builder()
                 .name(request.getName())
                 .age(request.getAge())
@@ -16,8 +16,8 @@ public class MemberConverter {
                 .build();
     }
 
-    public MemberResponseDto memberToResponse(Member member) {
-        return MemberResponseDto.builder()
+    public MemberResponse memberToResponse(Member member) {
+        return MemberResponse.builder()
                 .id(member.getId())
                 .name(member.getName())
                 .age(member.getAge())

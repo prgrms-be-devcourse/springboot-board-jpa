@@ -10,7 +10,7 @@ import javax.validation.constraints.*;
 
 @Getter
 @NoArgsConstructor  // 직렬화, 역직렬화 -> jackson(기본 생성자) 필요 -> public
-public class MemberRequestDto {
+public class MemberRequest {
 
     @NotBlank(message = "이름은 필수 입력값입니다.")
     @Size(min = 2, max = 10, message = "이름을 최소 {min}글자 이상 {max}글자 이하로 입력해주세요.")
@@ -24,7 +24,7 @@ public class MemberRequestDto {
     private Hobby hobby;
 
     @Builder
-    public MemberRequestDto(String name, int age, Hobby hobby) {
+    public MemberRequest(String name, int age, Hobby hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;

@@ -1,7 +1,7 @@
-package com.kdt.springbootboardjpa.domain.post;
+package com.kdt.springbootboardjpa.post.domain;
 
-import com.kdt.springbootboardjpa.domain.BaseEntity;
-import com.kdt.springbootboardjpa.domain.member.Member;
+import com.kdt.springbootboardjpa.global.common.BaseEntity;
+import com.kdt.springbootboardjpa.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
