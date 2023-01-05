@@ -23,3 +23,7 @@ spring:
         query.in_clause_parameter_padding: true # 성능 최적화에 관한 속성
         hbm2ddl:
           auto: create-drop # ddl 생성 전략. hibernate에서 제공해주는 properties를 같이 사용 가능
+
+cookie:
+  name: loginId
+  max-age: 3600

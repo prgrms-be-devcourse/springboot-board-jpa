@@ -33,7 +33,7 @@ public class PostService {
             () -> new NotFoundException(
                 String.format("NotFoundException post id: %d", postId)));
 
-    return PostResponse.Detail.from(post);
+    return new PostResponse.Detail(post);
   }
 
   @Transactional(readOnly = true)
@@ -41,14 +41,12 @@ public class PostService {
     Page<Post> page = postRepository.findAll(pageable);
 
     return page.map(
-        PostResponse.Shortcut::from);
+        PostResponse.Shortcut::new);
   }
 
   public Long save(PostRequest postRequest) {
-    Long memberId = postRequest.memberId();
-    Member member = findMemberById(memberId);
-
-    Post post = new Post(postRequest.title(), postRequest.content(), member);
+    Member member = findMemberById(postRequest.memberId());
+    Post post = postRequest.toEntity(member);
     postRepository.save(post);
 
     return post.getId();

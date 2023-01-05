@@ -13,10 +13,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(uniqueConstraints = {
-    @UniqueConstraint(name = "NAME_UNIQUE", columnNames = {"name"})})
+    @UniqueConstraint(name = "EMAIL_UNIQUE", columnNames = {"email"})})
 public class Member extends BaseTimeEntity {
 
   @Id
@@ -24,12 +30,29 @@ public class Member extends BaseTimeEntity {
   @Column(name = "member_id")
   private Long id;
 
+  @NotNull
+  @Length(min = 2, max = 10)
   @Column(name = "name")
   private String name;
 
+  @NotNull
+  @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
+      flags = Pattern.Flag.CASE_INSENSITIVE)
+  @Column(name = "email")
+  private String email;
+
+  @NotNull
+  @Length(min = 6, max = 20)
+  @Column(name = "password")
+  private String password;
+
+  @NotNull
+  @Min(value = 6)
+  @Max(value = 140)
   @Column(name = "age")
   private int age;
 
+  @Length(max = 20)
   @Column(name = "hobby")
   private String hobby;
 
@@ -38,10 +61,22 @@ public class Member extends BaseTimeEntity {
 
   protected Member(){}
 
-  public Member(String name, int age, String hobby) {
+  public Member(String name, String email, String password, int age, String hobby) {
     this.name = name;
+    this.email = email;
+    this.password = password;
     this.age = age;
     this.hobby = hobby;
+  }
+
+  public void login(String loginPassword) {
+    if(!password.equals(loginPassword)){
+      throw new IllegalArgumentException("login failed. wrong password");
+    }
+  }
+
+  public void addPost(Post post){
+    posts.add(post);
   }
 
   public void update(String newName, int newAge, String newHobby){
@@ -58,6 +93,14 @@ public class Member extends BaseTimeEntity {
     return name;
   }
 
+  public String getEmail() {
+    return email;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
   public int getAge(){
     return age;
   }
@@ -67,6 +110,6 @@ public class Member extends BaseTimeEntity {
   }
 
   public List<Post> getPosts(){
-    return posts;
+    return new ArrayList<>(posts);
   }
 }

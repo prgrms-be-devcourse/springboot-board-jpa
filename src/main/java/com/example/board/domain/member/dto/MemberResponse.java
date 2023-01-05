@@ -9,32 +9,32 @@ public class MemberResponse {
 
   private MemberResponse(){}
 
-  public record Detail(Long id, String name, int age, String hobby, List<PostResponse.Shortcut> posts,
-                              LocalDateTime createdAt, LocalDateTime updatedAt){
+  public record Detail(Long id, String name, String email, String password, int age, String hobby, List<PostResponse.Shortcut> posts,
+                       LocalDateTime createdAt, LocalDateTime updatedAt){
 
-    public static Detail from(Member member) {
-      return new Detail(
+    public Detail(Member member) {
+      this(
           member.getId(),
           member.getName(),
+          member.getEmail(),
+          member.getPassword(),
           member.getAge(),
           member.getHobby(),
           member.getPosts()
               .stream()
-              .map(PostResponse.Shortcut::from)
+              .map(PostResponse.Shortcut::new)
               .toList(),
           member.getCreatedAt(),
-          member.getUpdatedAt()
-      );
+          member.getUpdatedAt());
     }
   }
 
   public record OnlyAuthor(Long id, String name) {
 
-    public static OnlyAuthor from(Member member) {
-      return new OnlyAuthor(
+    public OnlyAuthor(Member member) {
+      this(
           member.getId(),
-          member.getName()
-      );
+          member.getName());
     }
   }
 }
