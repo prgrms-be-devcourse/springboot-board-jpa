@@ -86,4 +86,8 @@ public class SessionManager {
     private void resetStringBuilder() {
         stringBuilder.setLength(0);
     }
+
+    public void delete(Session session) {
+        sessionStorage.remove(session);
+    }
 }

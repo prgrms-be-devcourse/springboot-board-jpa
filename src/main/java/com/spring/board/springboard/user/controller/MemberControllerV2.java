@@ -17,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.createUserInfoCookie;
+import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.killCookie;
 
 @RestController
 @RequestMapping("/v2")
@@ -34,9 +35,9 @@ public class MemberControllerV2 {
     public ResponseEntity<Void> login(@Valid @RequestBody MemberLoginDto memberLoginDto, HttpServletResponse response) {
         final MemberDetailResponseDto authorizedMember = memberService.login(memberLoginDto);
 
-        Session session = sessionManager.getSessionOrCreateIfNotExist(authorizedMember);
+        final Session session = sessionManager.getSessionOrCreateIfNotExist(authorizedMember);
 
-        Cookie cookie = createUserInfoCookie(session.sessionId());
+        final Cookie cookie = createUserInfoCookie(session.sessionId());
 
         response.addCookie(cookie);
 
@@ -58,10 +59,23 @@ public class MemberControllerV2 {
 
     @GetMapping("/me")
     public ResponseEntity<MemberDetailResponseDto> getInfo(HttpServletRequest request) {
-        Session session = sessionManager.findSession(request);
+        final Session session = sessionManager.findSession(request);
 
-        MemberDetailResponseDto findMember = memberService.findByEmail(session.email());
+        final MemberDetailResponseDto findMember = memberService.findByEmail(session.email());
 
         return ResponseEntity.ok(findMember);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+        final Session session = sessionManager.findSession(request);
+
+        sessionManager.delete(session);
+
+        killCookie(request, response);
+
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 }

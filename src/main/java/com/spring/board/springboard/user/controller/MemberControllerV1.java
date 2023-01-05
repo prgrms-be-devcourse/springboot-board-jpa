@@ -14,8 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.createUserInfoCookie;
-import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.getUserCookie;
+import static com.spring.board.springboard.user.controller.authenticate.CookieUtils.*;
 
 @RestController
 @RequestMapping("/v1")
@@ -57,6 +56,15 @@ public class MemberControllerV1 {
         final MemberDetailResponseDto findMember = memberService.findByEmail(cookie.getValue());
 
         return ResponseEntity.ok(findMember);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+
+        killCookie(request, response);
+
+        return ResponseEntity.noContent()
+                .build();
     }
 
 }
