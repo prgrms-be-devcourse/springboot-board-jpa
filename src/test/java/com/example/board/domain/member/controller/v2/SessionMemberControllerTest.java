@@ -138,6 +138,7 @@ class SessionMemberControllerTest {
 
   private UUID testLogin(Long savedMemberId, String email) {
 
-    return sessionManager.login(savedMemberId, email);
+    Cookie cookie = sessionManager.login(savedMemberId, email);
+    return UUID.fromString(cookie.getValue());
   }
 }

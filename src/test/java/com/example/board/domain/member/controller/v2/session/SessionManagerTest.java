@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.board.common.exception.SessionNotFoundException;
-import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,8 @@ class SessionManagerTest {
   }
 
   private UUID saveSingleAuthenticatedMember(){
-    return sessionManager.login(1L, "email@naver.com");
+    Cookie cookie = sessionManager.login(1L, "email@naver.com");
+    return UUID.fromString(cookie.getValue());
   }
 
   @AfterEach
@@ -34,7 +35,8 @@ class SessionManagerTest {
   @DisplayName("로그인하여 세션 정보를 저장할 수 있습니다.")
   void saveSession(){
     //given & when
-    UUID sessionId = sessionManager.login(1L, "email@naver.com");
+    Cookie cookie = sessionManager.login(1L, "email@naver.com");
+    UUID sessionId = UUID.fromString(cookie.getValue());
 
     //then
     AuthenticatedMember member = sessionStorage.get(sessionId);
@@ -46,25 +48,22 @@ class SessionManagerTest {
   @DisplayName("이미 로그인한 사용자가 다시 로그인하면 새로운 세션 정보가 저장됩니다.")
   void reissue(){
     //given
-    UUID oldSessionId = sessionManager.login(1L, "email@naver.com");
-    AuthenticatedMember oldLoginedMember = sessionManager.getSession(oldSessionId);
-    LocalDateTime oldExpiresAt = oldLoginedMember.getExpiresAt();
+    Cookie oldCookie = sessionManager.login(1L, "email@naver.com");
+    UUID oldSessionId = UUID.fromString(oldCookie.getValue());
 
     //when
-    UUID newSessionId = sessionManager.login(1L, "email@naver.com");
-    AuthenticatedMember newLoginedMember = sessionManager.getSession(newSessionId);
-    LocalDateTime newExpiresAt = newLoginedMember.getExpiresAt();
+    Cookie newCookie = sessionManager.login(1L, "email@naver.com");
+    UUID newSessionId = UUID.fromString(newCookie.getValue());
 
     //then
     assertThat(newSessionId).isNotEqualTo(oldSessionId);
-    assertThat(newExpiresAt).isNotEqualTo(oldExpiresAt);
   }
 
   @Test
   @DisplayName("세션을 통해 사용자 인증 정보를 조회할 수 있습니다.")
   void getSession(){
     //given & when
-    UUID sessionId = sessionManager.login(1L, "email@naver.com");
+    UUID sessionId = saveSingleAuthenticatedMember();
 
     //when
     AuthenticatedMember member = sessionManager.getSession(sessionId);
@@ -79,7 +78,7 @@ class SessionManagerTest {
     UUID sessionId = saveSingleAuthenticatedMember();
 
     //when
-    sessionManager.removeSession(sessionId);
+    sessionManager.logout(sessionId);
 
     //then
     assertThrows(SessionNotFoundException.class, () -> sessionManager.getSession(sessionId));
