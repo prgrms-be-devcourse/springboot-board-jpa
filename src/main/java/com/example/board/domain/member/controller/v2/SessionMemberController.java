@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/api/v2/members")
+@RequestMapping("/members/v2")
 public class SessionMemberController {
 
   private final MemberService memberService;
@@ -48,7 +48,7 @@ public class SessionMemberController {
     memberService.save(signUpRequest);
 
     URI uri = UriComponentsBuilder.newInstance()
-        .path("/api/v2/members/login")
+        .path("/members/v2/login")
         .build()
         .encode()
         .toUri();
@@ -64,6 +64,7 @@ public class SessionMemberController {
     Cookie cookie = new CookieUtils.CookieBuilder(cookieName, String.valueOf(sessionId))
         .httpOnly(Boolean.TRUE)
         .maxAge(duration)
+        .path("/")
         .build();
 
     response.addCookie(cookie);
@@ -99,6 +100,7 @@ public class SessionMemberController {
 
       Cookie cookie = new CookieBuilder(cookieName, null)
           .maxAge(0)
+          .path("/")
           .build();
       response.addCookie(cookie);
 

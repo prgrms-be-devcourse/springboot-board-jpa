@@ -18,7 +18,7 @@ class SessionManagerTest {
 
   SessionManagerTest(){
     this.sessionStorage = new SessionStorage();
-    this.sessionManager = new SessionManager(this.sessionStorage);
+    this.sessionManager = new SessionManager(this.sessionStorage, "sessionId", 3600);
   }
 
   private UUID saveSingleAuthenticatedMember(){

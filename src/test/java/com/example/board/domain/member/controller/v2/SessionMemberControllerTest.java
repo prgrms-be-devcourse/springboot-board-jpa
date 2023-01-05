@@ -89,7 +89,7 @@ class SessionMemberControllerTest {
   void loginSuccess() throws Exception {
     //given
     MemberRequest.SignUp signUpRequest = new MemberRequest.SignUp("김환", "email123@naver.com", "password123!", 25, "게임");
-    Long savedMemberId = memberService.save(signUpRequest);
+    memberService.save(signUpRequest);
 
     MemberRequest.Login loginMember = new MemberRequest.Login("email123@naver.com", "password123!");
 
