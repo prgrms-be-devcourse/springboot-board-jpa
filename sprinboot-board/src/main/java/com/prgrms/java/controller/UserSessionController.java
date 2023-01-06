@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.prgrms.java.global.model.MySession.SESSION_ID;
 
 @RestController
-@RequestMapping("/users/v2")
+@RequestMapping("/v2/users")
 public class UserSessionController {
 
     private final UserService userService;

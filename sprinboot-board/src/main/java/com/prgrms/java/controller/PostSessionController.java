@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/posts/v2")
+@RequestMapping("/v2/posts")
 public class PostSessionController {
 
     private final PostService postService;
