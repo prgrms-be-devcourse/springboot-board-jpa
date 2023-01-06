@@ -144,25 +144,13 @@ class PostControllerTest {
                                 fieldWithPath("stock.content.[].title").description("게시글 제목"),
                                 fieldWithPath("stock.content.[].content").description("게시글 내용"),
                                 fieldWithPath("stock.content.[].user.name").description("회원 이름"),
-                                fieldWithPath("stock.pageable.sort.empty").description("게시글 페이징 정렬 데이터 상태"),
-                                fieldWithPath("stock.pageable.sort.unsorted").description("게시글 페이징 정렬 X"),
-                                fieldWithPath("stock.pageable.sort.sorted").description("게시글 페이징 정렬 O"),
-                                fieldWithPath("stock.pageable.offset").description("게시글 오프셋"),
-                                fieldWithPath("stock.pageable.pageNumber").description("게시글 페이지 번호"),
-                                fieldWithPath("stock.pageable.pageSize").description("게시글 페이징 사이즈"),
-                                fieldWithPath("stock.pageable.unpaged").description("게시글 페이징 상태 X"),
-                                fieldWithPath("stock.pageable.paged").description("게시글 페이징 상태 O"),
-                                fieldWithPath("stock.totalPages").description("게시글 전체 페이지"),
-                                fieldWithPath("stock.totalElements").description("게시글 전체 개수"),
-                                fieldWithPath("stock.last").description("게시글 페이징 마지막"),
-                                fieldWithPath("stock.size").description("게시글 페이징 사이즈"),
-                                fieldWithPath("stock.number").description("게시글 페이징 번호"),
-                                fieldWithPath("stock.sort.empty").description("게시글 페이징 정렬 데이터 상태"),
-                                fieldWithPath("stock.sort.unsorted").description("게시글 페이징 정렬 X"),
-                                fieldWithPath("stock.sort.sorted").description("게시글 페이징 정렬 O"),
-                                fieldWithPath("stock.numberOfElements").description("게시글 개수"),
-                                fieldWithPath("stock.first").description("게시글 첫번째"),
-                                fieldWithPath("stock.empty").description("게시글 빈")
+                                fieldWithPath("stock.pageInfo.first").description("게시글 첫 페이지 O"),
+                                fieldWithPath("stock.pageInfo.last").description("게시글 마지막 페이지 O"),
+                                fieldWithPath("stock.pageInfo.hasNext").description("게시글 다음 페이지 O"),
+                                fieldWithPath("stock.pageInfo.totalPages").description("게시글 총 페이지"),
+                                fieldWithPath("stock.pageInfo.totalElements").description("게시글 총 개수"),
+                                fieldWithPath("stock.pageInfo.page").description("게시글 페이지"),
+                                fieldWithPath("stock.pageInfo.size").description("게시글 사이즈")
                         )
                 ));
     }
