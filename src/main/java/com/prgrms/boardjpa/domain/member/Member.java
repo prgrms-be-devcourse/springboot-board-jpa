@@ -32,16 +32,6 @@ public class Member extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private Hobby hobby;
 
-
-    @Builder
-    private Member(Long id, String name, int age, Hobby hobby, LocalDateTime createdAt, String createdBy) {
-        super(createdAt, createdBy);
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.hobby = hobby;
-    }
-
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     @JsonIgnore
     @Builder.Default

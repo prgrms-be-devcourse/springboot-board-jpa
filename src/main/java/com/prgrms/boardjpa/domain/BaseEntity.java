@@ -1,22 +1,24 @@
 package com.prgrms.boardjpa.domain;
 
 import lombok.Getter;
-import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
+@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 @Getter
-@Setter
 public abstract class BaseEntity {
+    @CreatedDate
     @Column(name="created_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
-    @Column(name = "created_by")
-    private String createdBy;
 
-    public BaseEntity(){}
-    public BaseEntity(LocalDateTime createdAt, String createdBy) {
-    }
+    @LastModifiedDate
+    @Column(name = "created_by")
+    private LocalDateTime modifiedAt;
 }

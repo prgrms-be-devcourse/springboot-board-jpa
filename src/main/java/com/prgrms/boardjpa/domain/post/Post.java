@@ -2,19 +2,19 @@ package com.prgrms.boardjpa.domain.post;
 
 import com.prgrms.boardjpa.domain.BaseEntity;
 import com.prgrms.boardjpa.domain.member.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
+@ToString(exclude = "member")
+@Builder
 public class Post extends BaseEntity {
 
     @Id
@@ -28,20 +28,13 @@ public class Post extends BaseEntity {
     private Long id;
     @Column(length = 30)
     private String title;
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
-    @Builder
-    public Post(LocalDateTime createdAt, String createdBy, String title, String content, Member member) {
-        super(createdAt, createdBy);
-        this.title = title;
-        this.content = content;
-        this.member = member;
-    }
 
     public void changePostInfo(String title, String content) {
         this.title = title;
@@ -49,19 +42,12 @@ public class Post extends BaseEntity {
     }
 
     public void enrollWriter(Member member) {
-        if(Objects.nonNull(this.member)) {
-            this.member.getPosts().remove(this);
+        if (Objects.nonNull(this.member)) {
+            List<Post> posts = this.member.getPosts();
+            posts.remove(this);
         }
         this.member = member;
-        member.getPosts().add(this);
-    }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                '}';
+        List<Post> posts = member.getPosts();
+        posts.add(this);
     }
 }

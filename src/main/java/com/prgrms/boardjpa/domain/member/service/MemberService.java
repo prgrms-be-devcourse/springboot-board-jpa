@@ -18,8 +18,6 @@ public class MemberService {
 
     public MemberResponseDto createMember(MemberCreateRequestDto memberCreateRequestDto) {
         Member member = memberCreateRequestDto.toMember();
-        member.setCreatedBy(member.getName());
-        member.setCreatedAt(LocalDateTime.now());
         return MemberResponseDto.from(memberJPARepository.save(member));
     }
 }
