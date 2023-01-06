@@ -10,8 +10,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.ArrayList;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -55,8 +53,8 @@ class PostJPARepositoryTest {
         post.enrollWriter(member);
         postJPARepository.save(post);
 
-        assertThat(member.getPosts().size()).isEqualTo(2);
-        assertThat(postJPARepository.count()).isEqualTo(2);
+        assertThat(member.getPosts()).hasSize(2);
+        assertThat(postJPARepository.findAll()).hasSize(2);
     }
 
 }

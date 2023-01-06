@@ -2,9 +2,7 @@ package com.prgrms.boardjpa.domain.member.repository;
 
 import com.prgrms.boardjpa.domain.member.Hobby;
 import com.prgrms.boardjpa.domain.member.Member;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;

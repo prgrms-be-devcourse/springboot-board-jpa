@@ -6,7 +6,6 @@ import com.prgrms.boardjpa.domain.post.Post;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@ToString
 public class Member extends BaseEntity {
 
     @Id
@@ -39,16 +39,5 @@ public class Member extends BaseEntity {
 
     public void changeName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Member{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", hobby=" + hobby +
-                ", posts=" + posts +
-                '}';
     }
 }
