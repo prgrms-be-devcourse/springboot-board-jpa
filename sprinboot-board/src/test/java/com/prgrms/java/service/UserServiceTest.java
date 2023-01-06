@@ -2,9 +2,7 @@ package com.prgrms.java.service;
 
 import com.prgrms.java.domain.Email;
 import com.prgrms.java.domain.HobbyType;
-import com.prgrms.java.domain.LoginState;
 import com.prgrms.java.dto.user.*;
-import com.prgrms.java.exception.AuthenticationFailedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

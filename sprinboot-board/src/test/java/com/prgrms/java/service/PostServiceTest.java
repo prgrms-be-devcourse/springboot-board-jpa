@@ -28,17 +28,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class PostServiceTest {
 
-    @Mock
-    private UserRepository userRepository;
+    private final UserRepository userRepository = new FakeUserRepository();
 
-    @Mock
-    private PostRepository postRepository;
+    private final PostRepository postRepository = new FakePostRepository();
 
-    @InjectMocks
-    private PostService postService;
+    private final PostService postService = new PostService(postRepository, userRepository);
 
     @AfterEach
     void tearDown() {
@@ -50,16 +46,21 @@ class PostServiceTest {
     void getPostsTest() {
         // given
         User user = new User("이택승", "test@gmail.com", "test", 25, HobbyType.MOVIE);
+        Post post1 = new Post(1L, "데브코스 짱짱", "데브코스 짱짱입니다.", user);
+        postRepository.save(post1);
+
+        Post post2 = new Post(2L, "데브코스 짱짱2", "데브코스 짱짱2입니다.", user);
+        postRepository.save(post2);
+
         List<Post> posts = new ArrayList<>();
-        posts.add(new Post(1L, "데브코스 짱짱", "데브코스 짱짱입니다.", user));
-        posts.add(new Post(2L, "데브코스 짱짱2", "데브코스 짱짱2입니다.", user));
+        posts.add(post1);
+        posts.add(post2);
+
         GetPostsResponse expected = new GetPostsResponse(
                 posts.stream()
                         .map(GetPostDetailsResponse::from)
                         .toList()
         );
-        given(postRepository.findAll(any(PageRequest.class))).willReturn(new PageImpl<Post>(posts));
-
 
         // when
         GetPostsResponse actual = postService.getPosts(PageRequest.of(0, 10));
@@ -76,7 +77,7 @@ class PostServiceTest {
         User user = new User("이택승", "test@gmail.com", "test", 25, HobbyType.MOVIE);
         Post post = new Post(1L, "데브코스 짱짱2", "데브코스 짱짱2입니다.", user);
         GetPostDetailsResponse expected = GetPostDetailsResponse.from(post);
-        given(postRepository.findById(any())).willReturn(Optional.ofNullable(post));
+        postRepository.save(post);
 
         // when
         GetPostDetailsResponse actual = postService.getPostDetail(post.getId());
@@ -90,24 +91,22 @@ class PostServiceTest {
     @Test
     void createPostTest() {
         // given
-        ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
         User user = new User(1L, "이택승", "test@gmail.com", "test", 25, HobbyType.MOVIE);
+        userRepository.save(user);
+
         CreatePostRequest createPostRequest = new CreatePostRequest(
                 "데브코스 짱짱",
-                "데브코스 짱짱입니다.",
-                user.getId()
+                "데브코스 짱짱입니다."
         );
         Post post = new Post(1L, createPostRequest.title(), createPostRequest.content(), user);
 
-        given(userRepository.findById(any())).willReturn(Optional.of(user));
-
-        given(postRepository.save(any())).willReturn(post);
-
         // when
-        postService.createPost(createPostRequest);
+        postService.createPost(createPostRequest, user.getId());
 
         // then
-        verify(postRepository).save(postArgumentCaptor.capture());
+        long count = postRepository.count();
+        assertThat(count)
+                .isEqualTo(1L);
     }
 
     @DisplayName("게시글을 수정할 수 있다.")
@@ -116,10 +115,9 @@ class PostServiceTest {
         // given
         User user = new User(1L, "이택승", "test@gmail.com", "test", 25, HobbyType.MOVIE);
         Post post = new Post(1L, "데브코스 짱짱", "데브코스 짱짱입니다.", user);
+        postRepository.save(post);
 
         ModifyPostRequest request = new ModifyPostRequest("데브코스 좋아", "데브코스 좋아용!");
-
-        given(postRepository.findById(any())).willReturn(Optional.of(post));
 
         // when
         postService.modifyPost(post.getId(), request);

@@ -24,8 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -118,8 +117,7 @@ class PostControllerTest {
 
         CreatePostRequest createPostRequest = new CreatePostRequest(
                 "데브코스 짱짱",
-                "데브코스 짱짱입니다.",
-                user.getId()
+                "데브코스 짱짱입니다."
         );
 
         mockMvc.perform(post("/posts")
@@ -132,8 +130,7 @@ class PostControllerTest {
                         document("post-create",
                                 requestFields(
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("게시판 제목"),
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시판 내용"),
-                                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("게시판 저자")
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시판 내용")
                                 ),
                                 responseFields(
                                         fieldWithPath("createdId").type(JsonFieldType.NUMBER).description("생성된 게시판 아이디")
@@ -149,8 +146,7 @@ class PostControllerTest {
 
         CreatePostRequest createPostRequest = new CreatePostRequest(
                 "",
-                "데브코스 짱짱입니다.",
-                user.getId()
+                "데브코스 짱짱입니다."
         );
 
         mockMvc.perform(post("/posts")
@@ -163,8 +159,7 @@ class PostControllerTest {
                         document("post-create-title-fail",
                                 requestFields(
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("게시판 제목"),
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시판 내용"),
-                                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("게시판 저자")
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시판 내용")
                                 ),
                                 responseFields(
                                         fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
@@ -180,8 +175,7 @@ class PostControllerTest {
 
         CreatePostRequest createPostRequest = new CreatePostRequest(
                 "데브코스 짱짱",
-                "",
-                user.getId()
+                ""
         );
 
         mockMvc.perform(post("/posts")
@@ -194,8 +188,7 @@ class PostControllerTest {
                         document("post-create-content-fail",
                                 requestFields(
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("게시판 제목"),
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시판 내용"),
-                                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("게시판 저자")
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("게시판 내용")
                                 ),
                                 responseFields(
                                         fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
@@ -212,7 +205,7 @@ class PostControllerTest {
 
         ModifyPostRequest request = new ModifyPostRequest("데브코스 좋아", "데브코스 좋아용!");
 
-        mockMvc.perform(post("/posts/{id}", post.getId())
+        mockMvc.perform(put("/posts/{id}", post.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                         .cookie(getCookie()))
@@ -242,7 +235,7 @@ class PostControllerTest {
 
         ModifyPostRequest request = new ModifyPostRequest("", "데브코스 좋아용!");
 
-        mockMvc.perform(post("/posts/{id}", post.getId())
+        mockMvc.perform(put("/posts/{id}", post.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                         .cookie(getCookie()))
@@ -272,7 +265,7 @@ class PostControllerTest {
 
         ModifyPostRequest request = new ModifyPostRequest("데브코스 좋아", "");
 
-        mockMvc.perform(post("/posts/{id}", post.getId())
+        mockMvc.perform(put("/posts/{id}", post.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                         .cookie(getCookie()))

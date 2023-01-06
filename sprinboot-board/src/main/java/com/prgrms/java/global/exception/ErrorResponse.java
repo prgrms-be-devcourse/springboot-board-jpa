@@ -1,4 +1,4 @@
-package com.prgrms.java.exception;
+package com.prgrms.java.global.exception;
 
 public class ErrorResponse {
 

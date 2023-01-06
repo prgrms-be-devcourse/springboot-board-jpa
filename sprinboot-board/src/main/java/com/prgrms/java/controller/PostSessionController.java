@@ -1,7 +1,9 @@
 package com.prgrms.java.controller;
 
 import com.prgrms.java.domain.Email;
+import com.prgrms.java.global.model.MySession;
 import com.prgrms.java.dto.post.*;
+import com.prgrms.java.global.service.SessionHandler;
 import com.prgrms.java.service.PostService;
 import com.prgrms.java.service.UserService;
 import com.prgrms.java.global.util.CookieUtil;
@@ -12,35 +14,36 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/posts")
-public class PostController {
+@RequestMapping("/posts/v2")
+public class PostSessionController {
 
     private final PostService postService;
     private final UserService userService;
+    private final SessionHandler sessionHandler;
 
-    public PostController(PostService postService, UserService userService) {
+    public PostSessionController(PostService postService, UserService userService, SessionHandler sessionHandler) {
         this.postService = postService;
         this.userService = userService;
+        this.sessionHandler = sessionHandler;
     }
 
     @GetMapping
     public ResponseEntity<GetPostsResponse> getPosts(Pageable pageable) {
-        final GetPostsResponse posts = postService.getPosts(pageable);
+        GetPostsResponse posts = postService.getPosts(pageable);
         return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetPostDetailsResponse> getPostDetails(@PathVariable Long id) {
-        final GetPostDetailsResponse postDetail = postService.getPostDetail(id);
+    public ResponseEntity<GetPostDetailsResponse> getPostDetails(@PathVariable Long id, HttpServletRequest httpServletRequest) {
+        GetPostDetailsResponse postDetail = postService.getPostDetail(id);
         return ResponseEntity.ok(postDetail);
     }
 
     @PostMapping
     public ResponseEntity<CreatePostResponse> createPost(@Valid @RequestBody CreatePostRequest request, HttpServletRequest httpServletRequest) {
-        final Email authenticate = authenticate(httpServletRequest);
-        final long userId = userService.getUserId(authenticate);
+        final long userId = authenticate(httpServletRequest);
 
-        final long postId = postService.createPost(request, userId);
+        long postId = postService.createPost(request, userId);
         return ResponseEntity.ok(new CreatePostResponse(postId));
     }
 
@@ -52,8 +55,9 @@ public class PostController {
         return ResponseEntity.ok(new ModifyPostResponse(id));
     }
 
-    private Email authenticate(HttpServletRequest httpServletRequest) {
-        final String identifier = CookieUtil.getValue(httpServletRequest, CookieUtil.LOGIN_TOKEN);
-        return userService.validMember(new Email(identifier));
+    private long authenticate(HttpServletRequest httpServletRequest) {
+        MySession session = sessionHandler.find(httpServletRequest);
+        userService.validMember(session.email());
+        return session.userId();
     }
 }

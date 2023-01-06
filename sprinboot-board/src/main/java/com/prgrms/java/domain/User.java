@@ -1,8 +1,7 @@
 package com.prgrms.java.domain;
 
-import com.prgrms.java.exception.LoginFailedException;
+import com.prgrms.java.global.exception.LoginFailedException;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 

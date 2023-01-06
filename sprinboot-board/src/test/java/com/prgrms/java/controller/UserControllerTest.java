@@ -7,6 +7,7 @@ import com.prgrms.java.dto.user.LoginRequest;
 import com.prgrms.java.dto.user.CreateUserRequest;
 import com.prgrms.java.dto.user.UserLoginInfo;
 import com.prgrms.java.dto.user.UserSideInfo;
+import com.prgrms.java.global.util.CookieUtil;
 import com.prgrms.java.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
@@ -82,7 +83,7 @@ class UserControllerTest {
         userRepository.save(user);
 
         LoginRequest loginRequest = new LoginRequest("example@gmail.com", "1234");
-        String expectCookie = new StringBuilder().append("login-token=").append(loginRequest.email()).toString();
+        String expectCookie = CookieUtil.LOGIN_TOKEN + "=" + loginRequest.email();
 
         mockMvc.perform(post("/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -127,6 +128,6 @@ class UserControllerTest {
     }
 
     private Cookie getCookie() {
-        return new Cookie("login-token", "example@gmail.com");
+        return new Cookie(CookieUtil.LOGIN_TOKEN, "example@gmail.com");
     }
 }

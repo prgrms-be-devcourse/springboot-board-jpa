@@ -6,7 +6,7 @@ import com.prgrms.java.dto.post.CreatePostRequest;
 import com.prgrms.java.dto.post.GetPostDetailsResponse;
 import com.prgrms.java.dto.post.GetPostsResponse;
 import com.prgrms.java.dto.post.ModifyPostRequest;
-import com.prgrms.java.exception.ResourceNotFountException;
+import com.prgrms.java.global.exception.ResourceNotFountException;
 import com.prgrms.java.repository.PostRepository;
 import com.prgrms.java.repository.UserRepository;
 import org.springframework.data.domain.Page;
@@ -45,9 +45,9 @@ public class PostService {
     }
 
     @Transactional
-    public long createPost(CreatePostRequest createPostRequest) {
-        User user = userRepository.findById(createPostRequest.userId())
-                .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find User. Please check user id. [User ID]: {0}", createPostRequest.userId())));
+    public long createPost(CreatePostRequest createPostRequest, long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFountException(MessageFormat.format("Can not find User. Please check user id. [User ID]: {0}", userId)));
 
         Post post = postRepository.save(createPostRequest.toEntity(user));
         return post.getId();

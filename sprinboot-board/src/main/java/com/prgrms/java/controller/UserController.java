@@ -1,12 +1,11 @@
 package com.prgrms.java.controller;
 
 import com.prgrms.java.domain.Email;
-import com.prgrms.java.domain.LoginState;
 import com.prgrms.java.dto.user.GetUserDetailsResponse;
 import com.prgrms.java.dto.user.LoginRequest;
 import com.prgrms.java.dto.user.CreateUserRequest;
 import com.prgrms.java.service.UserService;
-import com.prgrms.java.util.CookieUtil;
+import com.prgrms.java.global.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +14,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.prgrms.java.util.CookieUtil.LOGIN_TOKEN;
+import static com.prgrms.java.global.util.CookieUtil.LOGIN_TOKEN;
 
 @RestController
 @RequestMapping("/users")
@@ -58,7 +57,8 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<GetUserDetailsResponse> getUserDetails(HttpServletRequest httpServletRequest) {
-        Email email = CookieUtil.getLoginToken(httpServletRequest);
+        final String identifier = CookieUtil.getValue(httpServletRequest, LOGIN_TOKEN);
+        final Email email = new Email(identifier);
 
         GetUserDetailsResponse userDetails = userService.getUserDetails(email);
         return ResponseEntity.ok(userDetails);
