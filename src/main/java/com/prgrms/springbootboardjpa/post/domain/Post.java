@@ -1,16 +1,17 @@
 package com.prgrms.springbootboardjpa.post.domain;
 
-import com.prgrms.springbootboardjpa.user.domain.Member;
+import com.prgrms.springbootboardjpa.common.BaseTimeEntity;
+import com.prgrms.springbootboardjpa.member.domain.Member;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Table(name = "post")
-public class Post {
-    @Id()
+public class Post extends BaseTimeEntity {
+
+    @Id
     @GeneratedValue
     @Column(name = "post_id")
     private long postId;
@@ -22,30 +23,25 @@ public class Post {
     private String title;
     private String content;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
     protected Post() {
     }
 
-    public Post(String title, String content, LocalDateTime createdAt) {
+    public Post(String title, String content) {
         this.title = title;
         this.content = content;
-        this.createdAt = createdAt;
     }
 
-    public Post(Member createdBy, String title, String content, LocalDateTime createdAt) {
+    public Post(Member createdBy, String title, String content) {
         this.createdBy = createdBy;
         this.title = title;
         this.content = content;
-        this.createdAt = createdAt;
     }
 
     public void writeByMember(Member member) {
         this.createdBy = member;
         member.getPosts().add(this);
     }
-    
+
     public void changePost(String title, String content) {
         this.title = title;
         this.content = content;
