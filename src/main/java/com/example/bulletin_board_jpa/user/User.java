@@ -72,3 +72,4 @@ public class User extends BaseEntity {
         this.posts = posts;
     }
 }
+

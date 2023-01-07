@@ -4,6 +4,7 @@ import com.example.bulletin_board_jpa.BaseEntity;
 import com.example.bulletin_board_jpa.user.User;
 import jakarta.persistence.*;
 
+
 @Entity
 public class Post extends BaseEntity {
     @Id
@@ -17,8 +18,8 @@ public class Post extends BaseEntity {
     @Column(name = "content", nullable = false, length = 512)
     private String content;
 
-    @ManyToOne
-//    @JoinColumn(name = "user_iddd")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
     public void setUser(User user) {
@@ -41,5 +42,21 @@ public class Post extends BaseEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public User getUser() {
+        return user;
     }
 }
