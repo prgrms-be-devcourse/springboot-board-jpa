@@ -1,6 +1,7 @@
 package com.example.bulletin_board_jpa.post.controller;
 
 import com.example.bulletin_board_jpa.post.dto.PostRequestDto;
+import com.example.bulletin_board_jpa.post.dto.PutRequestDto;
 import com.example.bulletin_board_jpa.post.service.PostService;
 import com.example.bulletin_board_jpa.user.dto.UserDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,8 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,13 +32,18 @@ class PostControllerTest {
     // 조회하기 위해서 미리 저장해둔다
     @BeforeEach
     void save() {
-
-        // given
-        UserDto userDto = new UserDto("이동준", 28, "기타 치기");
-        PostRequestDto postRequestDto = new PostRequestDto("오늘의 일기", "즐거웠다", userDto);
+        UserDto userDto1 = new UserDto("이동준", 28, "기타 치기");
+        PostRequestDto postRequestDto = new PostRequestDto("오늘의 일기", "즐거웠다", userDto1);
 
         postService.save(postRequestDto);
+
+        UserDto userDto2 = new UserDto("이유진", 26, "쉬기");
+        PostRequestDto postRequestDto2 = new PostRequestDto("오늘의 일기", "행복했다", userDto2);
+
+        postService.save(postRequestDto2);
     }
+
+
 
 
     @Test
@@ -71,6 +76,21 @@ class PostControllerTest {
                         .param("size", String.valueOf(10)))
                 .andExpect(status().isOk())
                 .andDo(print());
+    }
+
+    @Test
+    void update() throws Exception {
+        // given
+        // put 요청을 위한 새로운 게시글
+        PutRequestDto putRequestDto = new PutRequestDto("가족 외식의 날", "와인을 마심");
+
+        // when // then
+        mockMvc.perform(put("/posts/{id}", 2L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(putRequestDto)))
+                .andExpect(status().isOk())
+                .andDo(print());
+
     }
 
 }

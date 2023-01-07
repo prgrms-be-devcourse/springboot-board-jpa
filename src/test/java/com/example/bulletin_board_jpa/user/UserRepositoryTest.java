@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 class UserRepositoryTest {
@@ -28,8 +27,6 @@ class UserRepositoryTest {
         user2.setHobby("놀기");
 
         userRepository.save(user2);
-        Optional<User> userX = userRepository.findByAgeGreaterThan(26);
-        System.out.println(userX.get().getName());
 
         List<User> list = userRepository.findAll();
         for (User user : list) {
