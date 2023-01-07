@@ -7,7 +7,7 @@ spring:
 # h2 DB
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/dev
+    url: jdbc:h2:~/dev;
     username: sa
     password:
 
@@ -18,3 +18,6 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
