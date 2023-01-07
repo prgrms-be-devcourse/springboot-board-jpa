@@ -3,6 +3,7 @@ package com.example.bulletin_board_jpa.post.controller;
 import com.example.bulletin_board_jpa.post.dto.ApiResponse;
 import com.example.bulletin_board_jpa.post.dto.PostRequestDto;
 import com.example.bulletin_board_jpa.post.dto.PostResponseDto;
+import com.example.bulletin_board_jpa.post.dto.PutRequestDto;
 import com.example.bulletin_board_jpa.post.service.PostService;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
@@ -46,5 +47,12 @@ public class PostController {
     public ResponseEntity<Page<PostResponseDto>> getAll(Pageable pageable) {
         Page<PostResponseDto> all = postService.findAll(pageable);
         return new ResponseEntity(all, HttpStatus.OK);
+    }
+
+    @PutMapping("/posts/{id}")
+    public ResponseEntity<Long> update(@PathVariable Long id, @RequestBody PutRequestDto putRequestDto) throws ChangeSetPersister.NotFoundException {
+        Long update = postService.update(id, putRequestDto);
+        System.out.println(update);
+        return new ResponseEntity(update, HttpStatus.OK);
     }
 }
