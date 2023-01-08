@@ -6,11 +6,12 @@ import com.example.bulletin_board_jpa.post.dto.PostResponseDto;
 import com.example.bulletin_board_jpa.post.dto.PutRequestDto;
 import com.example.bulletin_board_jpa.post.service.PostService;
 import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class PostController {
@@ -32,27 +33,27 @@ public class PostController {
 
 
     @PostMapping("/posts")
-    public ResponseEntity<Long> postBoard(@RequestBody PostRequestDto postRequestDto) {
+    public ApiResponse<Long> postBoard(@RequestBody PostRequestDto postRequestDto) {
         Long save = postService.save(postRequestDto);
-        return new ResponseEntity(save, HttpStatus.CREATED);
+        return new ApiResponse<>(201, save);
     }
 
     @GetMapping("/posts/{id}")
     public ResponseEntity<PostResponseDto> getOne(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
         PostResponseDto one = postService.findOne(id);
-        return new ResponseEntity(one, HttpStatus.OK);
+        return new ResponseEntity<>(one, HttpStatus.OK);
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<Page<PostResponseDto>> getAll(Pageable pageable) {
-        Page<PostResponseDto> all = postService.findAll(pageable);
-        return new ResponseEntity(all, HttpStatus.OK);
+    public ResponseEntity<List<PostResponseDto>> getAll(Pageable pageable) {
+        List<PostResponseDto> all = postService.findAll(pageable);
+        return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
     @PutMapping("/posts/{id}")
-    public ResponseEntity<Long> update(@PathVariable Long id, @RequestBody PutRequestDto putRequestDto) throws ChangeSetPersister.NotFoundException {
+    public ApiResponse<Long> update(@PathVariable Long id, @RequestBody PutRequestDto putRequestDto) throws ChangeSetPersister.NotFoundException {
         Long update = postService.update(id, putRequestDto);
         System.out.println(update);
-        return new ResponseEntity(update, HttpStatus.OK);
+        return new ApiResponse<>(200, update);
     }
 }

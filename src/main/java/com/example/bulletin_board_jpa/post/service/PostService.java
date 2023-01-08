@@ -7,10 +7,11 @@ import com.example.bulletin_board_jpa.post.dto.PostRequestDto;
 import com.example.bulletin_board_jpa.post.dto.PostResponseDto;
 import com.example.bulletin_board_jpa.post.dto.PutRequestDto;
 import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
@@ -31,7 +32,6 @@ public class PostService {
         Post post = postConverter.convertToPost(postRequestDto);
         // 2. postRepository.save(entity) (영속)
         Post entity = postRepository.save(post);
-        System.out.println(entity.getId());
         // 3. 결과 반환
         return entity.getId();
     }
@@ -48,9 +48,9 @@ public class PostService {
     }
 
     @Transactional
-    public Page<PostResponseDto> findAll(Pageable pageable) {
+    public List<PostResponseDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(postConverter::convertToPostResponseDto);
+                .map(postConverter::convertToPostResponseDto).getContent();
     }
 
     @Transactional

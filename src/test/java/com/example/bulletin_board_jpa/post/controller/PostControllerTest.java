@@ -8,15 +8,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.FieldDescriptor;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest
 class PostControllerTest {
@@ -57,8 +65,23 @@ class PostControllerTest {
         mockMvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postRequestDto)))
-                .andExpect(status().isCreated())
-                .andDo(print());
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("post-save",
+                        requestFields(
+                            fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                            fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                            fieldWithPath("userDto").type(JsonFieldType.OBJECT).description("유저 dto"),
+                            fieldWithPath("userDto.name").type(JsonFieldType.STRING).description("유저 이름"),
+                            fieldWithPath("userDto.age").type(JsonFieldType.NUMBER).description("유저 나이"),
+                            fieldWithPath("userDto.hobby").type(JsonFieldType.STRING).description("유저 취미")
+                        ),
+                        responseFields(
+                            fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                            fieldWithPath("data").type(JsonFieldType.NUMBER).description("반환값"),
+                            fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답시간")
+                        )
+                ));
     }
 
     @Test
@@ -66,16 +89,30 @@ class PostControllerTest {
         mockMvc.perform(get("/posts/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("getOne",
+                        pathParameters(
+                            parameterWithName("id").description("유저 아이디")
+                        ),
+                        responseFields(
+                            fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                            fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
+                        )
+                ));
     }
 
     @Test
     void getAll() throws Exception {
+        FieldDescriptor[] posts = new FieldDescriptor[] {
+                fieldWithPath("[].title").type(JsonFieldType.STRING).description("제목"),
+                fieldWithPath("[].content").type(JsonFieldType.STRING).description("내용")};
+
         mockMvc.perform(get("/posts")
                         .param("page", String.valueOf(0))
                         .param("size", String.valueOf(10)))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("getAll", responseFields(posts)));
     }
 
     @Test
@@ -84,12 +121,28 @@ class PostControllerTest {
         // put 요청을 위한 새로운 게시글
         PutRequestDto putRequestDto = new PutRequestDto("가족 외식의 날", "와인을 마심");
 
+
+
         // when // then
         mockMvc.perform(put("/posts/{id}", 2L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(putRequestDto)))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("update",
+                        pathParameters(
+                                parameterWithName("id").description("유저 아이디")
+                        ),
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("반환값"),
+                                fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답시간")
+                        )
+                ));
 
     }
 

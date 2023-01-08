@@ -5,12 +5,16 @@ import com.example.bulletin_board_jpa.post.dto.PostRequestDto;
 import com.example.bulletin_board_jpa.post.dto.PostResponseDto;
 import com.example.bulletin_board_jpa.post.dto.PutRequestDto;
 import com.example.bulletin_board_jpa.user.dto.UserDto;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -70,10 +74,10 @@ class PostServiceTest {
         PageRequest page = PageRequest.of(0, 10);
 
         // when
-        Page<PostResponseDto> all = postService.findAll(page);
+        List<PostResponseDto> all = postService.findAll(page);
 
         // then
-        assertThat(all.getTotalElements()).isGreaterThanOrEqualTo(1L);
+        assertThat(all.size()).isGreaterThanOrEqualTo(1);
     }
 
     @Test
