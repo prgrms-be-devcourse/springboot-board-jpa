@@ -17,10 +17,6 @@
         </encoder>
     </appender>
 
-    <!--    <logger name="org.prgrms.kdt" level="warn">-->
-    <!--        <appender-ref ref="ROLLING_FILE_OUT" />-->
-    <!--    </logger>-->
-
     <root level="info">
         <appender-ref ref="ROLLING_FILE_OUT"/>
     </root>

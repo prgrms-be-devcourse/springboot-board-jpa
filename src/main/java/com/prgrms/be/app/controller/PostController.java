@@ -15,8 +15,7 @@ public class PostController {
 
     private final PostService postService;
 
-    //toDo : 생성
-    @PostMapping()
+    @PostMapping
     public ApiResponse<Long> save(@RequestBody @Valid PostCreateRequest postCreateRequest) {
         Long postId = postService.createPost(postCreateRequest);
         return ApiResponse.created(
@@ -24,7 +23,6 @@ public class PostController {
                 ResponseMessage.CREATED);
     }
 
-    //toDo : 단건 조회하는 메서드
     @GetMapping("/{id}")
     public ApiResponse<PostDetailResponse> getOne(@PathVariable Long id) {
         PostDetailResponse postDetailResponse = postService.findById(id);
@@ -33,8 +31,7 @@ public class PostController {
                 ResponseMessage.FINDED_ONE);
     }
 
-    //toDo : 페이징 조회하는 메서드
-    @GetMapping()
+    @GetMapping
     public ApiResponse<PostsResponse> getAll(@RequestBody PostPageRequest postPageRequest) {
         PostsResponse postPages = postService.findAll(postPageRequest.of());
         return ApiResponse.ok(
@@ -43,7 +40,6 @@ public class PostController {
         );
     }
 
-    //toDo : 수정
     @PatchMapping("/{id}")
     public ApiResponse<Long> update(
             @PathVariable Long id,
