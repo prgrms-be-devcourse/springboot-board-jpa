@@ -3,6 +3,7 @@ package com.prgrms.be.app.domain.dto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 @Getter
@@ -30,7 +31,7 @@ public class PostPageRequest {
         return size > 0 && size <= MAX_SIZE;
     }
 
-    public org.springframework.data.domain.PageRequest of() {
-        return org.springframework.data.domain.PageRequest.of(page - 1, size, direction, "createdAt");
+    public PageRequest of() {
+        return PageRequest.of(page - 1, size, direction, "createdAt");
     }
 }

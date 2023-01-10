@@ -21,7 +21,9 @@ public class PostConverter {
 
     public PostsResponse convertToPostsResponse(Page<Post> allPost) {
         return new PostsResponse(
-                allPost.getContent().stream().map(this::convertToPostDetailResponse).collect(Collectors.toList()),
+                allPost.getContent().stream()
+                        .map(this::convertToPostDetailResponse)
+                        .collect(Collectors.toList()),
                 allPost.getTotalPages(),
                 allPost.hasNext()
         );
