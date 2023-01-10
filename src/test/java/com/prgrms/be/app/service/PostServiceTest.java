@@ -2,7 +2,10 @@ package com.prgrms.be.app.service;
 
 import com.prgrms.be.app.domain.Post;
 import com.prgrms.be.app.domain.User;
-import com.prgrms.be.app.domain.dto.PostDTO;
+import com.prgrms.be.app.domain.dto.PostCreateRequest;
+import com.prgrms.be.app.domain.dto.PostDetailResponse;
+import com.prgrms.be.app.domain.dto.PostUpdateRequest;
+import com.prgrms.be.app.domain.dto.PostsResponse;
 import com.prgrms.be.app.repository.PostRepository;
 import com.prgrms.be.app.repository.UserRepository;
 import com.prgrms.be.app.util.PostConverter;
@@ -35,7 +38,7 @@ class PostServiceTest {
     @DisplayName("게시글 생성 시 존재하지 않는 유저 id가 들어올 경우 예외가 발생한다.")
     void wrongUserIdTest() {
         // given
-        PostDTO.CreateRequest postCreateDTO = new PostDTO.CreateRequest("title", "content", 1L);
+        PostCreateRequest postCreateDTO = new PostCreateRequest("title", "content", 1L);
         // when
         when(userRepository.findById(anyLong()))
                 .thenReturn(Optional.empty());
@@ -47,7 +50,7 @@ class PostServiceTest {
     @DisplayName("게시글을 생성할 수 있다.")
     void shouldCreatePost() {
         // given
-        PostDTO.CreateRequest postCreateDTO = new PostDTO.CreateRequest("title", "content", 1L);
+        PostCreateRequest postCreateDTO = new PostCreateRequest("title", "content", 1L);
         User user = new User("user", 25, "농구");
         Post post = new Post("title", "content", user);
 
@@ -82,7 +85,7 @@ class PostServiceTest {
 
         // when
         when(postRepository.findAll(pageable)).thenReturn(postPage);
-        PostDTO.PostsResponse postDtos = postService.findAll(pageable);
+        PostsResponse postDtos = postService.findAll(pageable);
 
         // then
         verify(postRepository).findAll(pageable);
@@ -103,18 +106,18 @@ class PostServiceTest {
     @DisplayName("게시글 id로 단건 조회 할 수 있다.")
     void shouldFindPostById() {
         // given
-        PostDTO.CreateRequest postCreateDTO = new PostDTO.CreateRequest("title", "content", 1L);
+        PostCreateRequest postCreateDTO = new PostCreateRequest("title", "content", 1L);
         User user = new User("user", 25, "농구");
         Post post = new Post("title", "content", user);
 
         when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.of(post));
         // when
-        PostDTO.PostDetailResponse postDetailResponse = postService.findById(1L);
+        PostDetailResponse postDetailResponse = postService.findById(1L);
         // then
         verify(postRepository).findById(anyLong());
         assertThat(postDetailResponse).isEqualTo(
-                new PostDTO.PostDetailResponse(
+                new PostDetailResponse(
                         post.getTitle(),
                         post.getContent(),
                         post.getId(),
@@ -129,7 +132,7 @@ class PostServiceTest {
     @DisplayName("잘못된 게시글 id로 수정 시 예외가 발생한다.")
     void wrongPostIdUpdateTest() {
         // given
-        PostDTO.UpdateRequest postUpdateRequest = new PostDTO.UpdateRequest("change title", "change content");
+        PostUpdateRequest postUpdateRequest = new PostUpdateRequest("change title", "change content");
         // when
         when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.empty());
@@ -144,13 +147,13 @@ class PostServiceTest {
         // given
         User user = new User("user", 25, "농구");
         Post post = new Post("title", "content", user);
-        PostDTO.UpdateRequest postUpdateRequest = new PostDTO.UpdateRequest("change title", "change content");
+        PostUpdateRequest postUpdateRequest = new PostUpdateRequest("change title", "change content");
         Post updatedPost = new Post(postUpdateRequest.getTitle(), postUpdateRequest.getContent(), user);
 
         when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.of(post));
 
-        PostDTO.PostDetailResponse beforePostDTO = postService.findById(anyLong());
+        PostDetailResponse beforePostDTO = postService.findById(anyLong());
 
         when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.of(updatedPost));
@@ -160,7 +163,7 @@ class PostServiceTest {
         // when
         when(postRepository.findById(updatedPostId))
                 .thenReturn(Optional.of(updatedPost));
-        PostDTO.PostDetailResponse updatedPostDto = postService.findById(updatedPostId);
+        PostDetailResponse updatedPostDto = postService.findById(updatedPostId);
 
         // then
         assertThat(beforePostDTO).isNotEqualTo(updatedPostDto);

@@ -1,7 +1,7 @@
 package com.prgrms.be.app.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prgrms.be.app.domain.dto.PostDTO;
+import com.prgrms.be.app.domain.dto.*;
 import com.prgrms.be.app.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -55,8 +55,8 @@ class PostControllerTest {
     @DisplayName("게시글 생성 성공 시 생성된 게시글 id가 반환된다.")
     void saveCallTest() throws Exception {
         // given
-        PostDTO.CreateRequest request = new PostDTO.CreateRequest("title", "content", 1L);
-        when(postService.createPost(any(PostDTO.CreateRequest.class)))
+        PostCreateRequest request = new PostCreateRequest("title", "content", 1L);
+        when(postService.createPost(any(PostCreateRequest.class)))
                 .thenReturn(1L);
 
         // when
@@ -90,7 +90,7 @@ class PostControllerTest {
                 );
 
         // then
-        verify(postService).createPost(any(PostDTO.CreateRequest.class));
+        verify(postService).createPost(any(PostCreateRequest.class));
     }
 
     @Test
@@ -98,7 +98,7 @@ class PostControllerTest {
     void getOneCallTest() throws Exception {
         // given
         Long id = 1L;
-        PostDTO.PostDetailResponse postDetailResponse = new PostDTO.PostDetailResponse("title", "content", 1L, LocalDateTime.now(), 100L, "userName");
+        PostDetailResponse postDetailResponse = new PostDetailResponse("title", "content", 1L, LocalDateTime.now(), 100L, "userName");
         when(postService.findById(anyLong()))
                 .thenReturn(postDetailResponse);
 
@@ -147,8 +147,8 @@ class PostControllerTest {
     void updateCallTest() throws Exception {
         // given
         Long id = 1L;
-        PostDTO.UpdateRequest request = new PostDTO.UpdateRequest("title", "content");
-        when(postService.updatePost(anyLong(), any(PostDTO.UpdateRequest.class)))
+        PostUpdateRequest request = new PostUpdateRequest("title", "content");
+        when(postService.updatePost(anyLong(), any(PostUpdateRequest.class)))
                 .thenReturn(id);
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.patch("/posts/{id}", id)
@@ -176,21 +176,21 @@ class PostControllerTest {
                         ))
                 );
         // then
-        verify(postService).updatePost(anyLong(), any(PostDTO.UpdateRequest.class));
+        verify(postService).updatePost(anyLong(), any(PostUpdateRequest.class));
     }
 
     @Test
     @DisplayName("현재 페이지 정보와 한 페이지 당 게시글 수를 입력 시 페이징된 게시글이 반환되며 게시글의 정보는 게시글 ID, 제목, 생성일자가 반환된다.")
     void getAllCallTest() throws Exception {
         // given
-        PostDTO.PostPageRequest postPageRequest = new PostDTO.PostPageRequest(0, 5, Sort.Direction.DESC);
+        PostPageRequest postPageRequest = new PostPageRequest(0, 5, Sort.Direction.DESC);
         Pageable request = PageRequest.of(0, 5);
-        List<PostDTO.PostDetailResponse> postDtos = List.of(
-                new PostDTO.PostDetailResponse("title1", "content1", 1L, LocalDateTime.now(), 1L, "user1"),
-                new PostDTO.PostDetailResponse("title2", "content2", 2L, LocalDateTime.now(), 2L, "user2"),
-                new PostDTO.PostDetailResponse("title3", "content3", 3L, LocalDateTime.now(), 3L, "user3")
+        List<PostDetailResponse> postDtos = List.of(
+                new PostDetailResponse("title1", "content1", 1L, LocalDateTime.now(), 1L, "user1"),
+                new PostDetailResponse("title2", "content2", 2L, LocalDateTime.now(), 2L, "user2"),
+                new PostDetailResponse("title3", "content3", 3L, LocalDateTime.now(), 3L, "user3")
         );
-        PostDTO.PostsResponse response = new PostDTO.PostsResponse(postDtos, 1, true);
+        PostsResponse response = new PostsResponse(postDtos, 1, true);
         when(postService.findAll(any(Pageable.class)))
                 .thenReturn(response);
 

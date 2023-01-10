@@ -1,7 +1,6 @@
 package com.prgrms.be.app.controller;
 
-import com.prgrms.be.app.domain.dto.ApiResponse;
-import com.prgrms.be.app.domain.dto.PostDTO;
+import com.prgrms.be.app.domain.dto.*;
 import com.prgrms.be.app.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +17,8 @@ public class PostController {
 
     //toDo : 생성
     @PostMapping()
-    public ApiResponse<Long> save(@RequestBody @Valid PostDTO.CreateRequest createRequest) {
-        Long postId = postService.createPost(createRequest);
+    public ApiResponse<Long> save(@RequestBody @Valid PostCreateRequest postCreateRequest) {
+        Long postId = postService.createPost(postCreateRequest);
         return ApiResponse.created(
                 postId,
                 ResponseMessage.CREATED);
@@ -27,8 +26,8 @@ public class PostController {
 
     //toDo : 단건 조회하는 메서드
     @GetMapping("/{id}")
-    public ApiResponse<PostDTO.PostDetailResponse> getOne(@PathVariable Long id) {
-        PostDTO.PostDetailResponse postDetailResponse = postService.findById(id);
+    public ApiResponse<PostDetailResponse> getOne(@PathVariable Long id) {
+        PostDetailResponse postDetailResponse = postService.findById(id);
         return ApiResponse.ok(
                 postDetailResponse,
                 ResponseMessage.FINDED_ONE);
@@ -36,8 +35,8 @@ public class PostController {
 
     //toDo : 페이징 조회하는 메서드
     @GetMapping()
-    public ApiResponse<PostDTO.PostsResponse> getAll(@RequestBody PostDTO.PostPageRequest postPageRequest) {
-        PostDTO.PostsResponse postPages = postService.findAll(postPageRequest.of());
+    public ApiResponse<PostsResponse> getAll(@RequestBody PostPageRequest postPageRequest) {
+        PostsResponse postPages = postService.findAll(postPageRequest.of());
         return ApiResponse.ok(
                 postPages,
                 ResponseMessage.FINDED_ALL
@@ -48,7 +47,7 @@ public class PostController {
     @PatchMapping("/{id}")
     public ApiResponse<Long> update(
             @PathVariable Long id,
-            @RequestBody @Valid PostDTO.UpdateRequest request) {
+            @RequestBody @Valid PostUpdateRequest request) {
         Long postId = postService.updatePost(id, request);
         return ApiResponse.ok(
                 postId,

@@ -24,9 +24,9 @@ class PostDTOTest {
     @DisplayName("CreateRequest을 정상 범위의 제목, 본문, 유저 id로 설정할 수 있다.")
     void successPostCreateDtoTest() {
         // given
-        PostDTO.CreateRequest request = new PostDTO.CreateRequest(TITLE, CONTENT, USER_ID);
+        PostCreateRequest request = new PostCreateRequest(TITLE, CONTENT, USER_ID);
         // when
-        Set<ConstraintViolation<PostDTO.CreateRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<PostCreateRequest>> violations = validator.validate(request);
         // then
         Assertions.assertThat(violations).isEmpty();
     }
@@ -36,9 +36,9 @@ class PostDTOTest {
     @DisplayName("CreateRequest에 빈 제목이나 공백만으로 제목을 설정할 수 없다.")
     void blankTitlePostCreateDtoTest(String title) {
         // given
-        PostDTO.CreateRequest request = new PostDTO.CreateRequest(title, CONTENT, USER_ID);
+        PostCreateRequest request = new PostCreateRequest(title, CONTENT, USER_ID);
         // when
-        Set<ConstraintViolation<PostDTO.CreateRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<PostCreateRequest>> violations = validator.validate(request);
         // then
         Assertions.assertThat(violations).isNotEmpty();
     }
@@ -48,9 +48,9 @@ class PostDTOTest {
     @DisplayName("CreateRequest에 1보다 짧거나 20보다 긴 제목을 설정할 수 없다.")
     void shortAndLongTitlePostCreateDtoTest(String title) {
         // given
-        PostDTO.CreateRequest request = new PostDTO.CreateRequest(title, CONTENT, USER_ID);
+        PostCreateRequest request = new PostCreateRequest(title, CONTENT, USER_ID);
         // when
-        Set<ConstraintViolation<PostDTO.CreateRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<PostCreateRequest>> violations = validator.validate(request);
         // then
         Assertions.assertThat(violations).isNotEmpty();
     }
@@ -60,9 +60,9 @@ class PostDTOTest {
     @DisplayName("CreateRequest에 빈 본문이나 공백만으로 본문을 설정할 수 없다.")
     void blankContentPostCreateDtoTest(String content) {
         // given
-        PostDTO.CreateRequest request = new PostDTO.CreateRequest(TITLE, content, USER_ID);
+        PostCreateRequest request = new PostCreateRequest(TITLE, content, USER_ID);
         // when
-        Set<ConstraintViolation<PostDTO.CreateRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<PostCreateRequest>> violations = validator.validate(request);
         // then
         Assertions.assertThat(violations).isNotEmpty();
     }
@@ -71,9 +71,9 @@ class PostDTOTest {
     @DisplayName("UpdateRequest을 정상 범위의 제목, 본문으로 설정할 수 있다.")
     void successPostUpdateDtoTest() {
         // given
-        PostDTO.UpdateRequest request = new PostDTO.UpdateRequest(TITLE, CONTENT);
+        PostUpdateRequest request = new PostUpdateRequest(TITLE, CONTENT);
         // when
-        Set<ConstraintViolation<PostDTO.UpdateRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<PostUpdateRequest>> violations = validator.validate(request);
         // then
         Assertions.assertThat(violations).isEmpty();
     }
@@ -83,9 +83,9 @@ class PostDTOTest {
     @DisplayName("UpdateRequest를 빈 제목이나 공백만으로 제목을 설정할 수 없다.")
     void blankTitlePostUpdateDtoTest(String title) {
         // given
-        PostDTO.UpdateRequest request = new PostDTO.UpdateRequest(title, CONTENT);
+        PostUpdateRequest request = new PostUpdateRequest(title, CONTENT);
         // when
-        Set<ConstraintViolation<PostDTO.UpdateRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<PostUpdateRequest>> violations = validator.validate(request);
         // then
         Assertions.assertThat(violations).isNotEmpty();
     }
@@ -95,9 +95,9 @@ class PostDTOTest {
     @DisplayName("UpdateRequest에 1보다 짧거나 20보다 긴 제목을 설정할 수 없다.")
     void shortAndLongTitlePostUpdateDtoTest(String title) {
         // given
-        PostDTO.UpdateRequest request = new PostDTO.UpdateRequest(title, CONTENT);
+        PostUpdateRequest request = new PostUpdateRequest(title, CONTENT);
         // when
-        Set<ConstraintViolation<PostDTO.UpdateRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<PostUpdateRequest>> violations = validator.validate(request);
         // then
         Assertions.assertThat(violations).isNotEmpty();
     }
@@ -107,9 +107,9 @@ class PostDTOTest {
     @DisplayName("UpdateRequest에 빈 본문이나 공백만으로 본문을 설정할 수 없다.")
     void blankContentPostUpdateDtoTest(String content) {
         // given
-        PostDTO.UpdateRequest request = new PostDTO.UpdateRequest(TITLE, content);
+        PostUpdateRequest request = new PostUpdateRequest(TITLE, content);
         // when
-        Set<ConstraintViolation<PostDTO.UpdateRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<PostUpdateRequest>> violations = validator.validate(request);
         // then
         Assertions.assertThat(violations).isNotEmpty();
     }
