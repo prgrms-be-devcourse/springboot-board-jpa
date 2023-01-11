@@ -24,7 +24,7 @@ public class Member extends BaseTimeEntity {
     @Column
     private String hobby;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
 
     public Member(String name, int age, String hobby) {
