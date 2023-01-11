@@ -1,0 +1,60 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시글(Post)
+
+=== 게시글(Post) 동록
+
+==== 'POST' /posts
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+=== 게시글(Post) 조회 - 단건 조회
+
+==== 'GET' /posts/{id}
+
+include::{snippets}/find-post-one/path-parameters.adoc[]
+.Request
+include::{snippets}/find-post-one/http-request.adoc[]
+
+.Response
+include::{snippets}/find-post-one/http-response.adoc[]
+include::{snippets}/find-post-one/response-fields.adoc[]
+
+=== 게시글(Post) 조회 - 모든 게시글 페이징 조회
+
+==== 'GET' /posts
+
+.Request
+include::{snippets}/find-post-all/http-request.adoc[]
+include::{snippets}/find-post-all/request-fields.adoc[]
+
+.Response
+include::{snippets}/find-post-all/http-response.adoc[]
+include::{snippets}/find-post-all/response-fields.adoc[]
+
+=== 게시글(Post) 수정
+
+==== 'PATCH' /posts/{id}
+
+include::{snippets}/post-update/path-parameters.adoc[]
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+
+
+

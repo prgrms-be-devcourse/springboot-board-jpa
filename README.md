@@ -1,15 +1,65 @@
 # [미션] Spring Boot JPA로 게시판 구현
 
 ## 미션 소개 😎
-Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수행해봅시다.
+Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수행해봅시다.  
+**UI는 존재하지 않고 Api만 설계한 프로젝트입니다.**
 
-## 이곳은 공개 Repo입니다.
-1. 여러분의 포트폴리오로 사용하셔도 됩니다.
-2. 때문에 이 repo를 fork한 뒤
-3. 여러분의 개인 Repo에 작업하며 
-4. 이 Repo에 PR을 보내어 멘토의 코드 리뷰와 피드백을 받으세요.
+---
 
-## Branch 명명 규칙
-1.  여러분 repo는 알아서 해주시고 😀(본인 레포니 main으로 하셔두 되져)
-2.  prgrms-be-devcourse/spring-board 레포로 PR시 branch는 본인 username을 적어주세요 :)  
-base repo : `여기repo` base : `username` ← head repo : `여러분repo` compare : `main`
+## 👩‍💻 요구 사항 및 구현 내용
+- [x]  **SpringDataJPA 를 설정한다.**
+    - [x]  datasource : h2 or mysql
+- [x]  **엔티티를 구성한다**
+    - [x]  회원(User)
+        - id (PK) (auto increment)
+        - name
+        - age
+        - hobby
+        - **created_at**
+        - **created_by** -> **modified_at** 으로 수정
+    - [x]  게시글(Post)
+        - id (PK) (auto increment)
+        - title
+        - content
+        - **created_at**
+        - **created_by** -> **modified_at** 으로 수정
+    - [x]  회원과 게시글에 대한 연관관계를 설정한다.
+        - 회원과 게시글은 1:N 관계이다.
+    - [x]  게시글 Repository를 구현한다. (PostRepository)
+- [x]  **API를 구현한다.**
+    - [x]  게시글 조회
+        - 페이징 조회 (GET "/posts")
+        - 단건 조회 (GET "/posts/{id}")
+    - [x]  게시글 작성 (POST "/posts")
+    - [x]  게시글 수정 (PATCH "/posts/{id}")
+- [x]  **REST-DOCS를 이용해서 문서화한다.**
+
+체크박스를 이용하여 주어진 요구사항 중 구현한 요구사항을 표시했습니다.
+
+### 🗺️ ER Diagram
+<img src="./images/erd.png">
+User와 Post(게시글)이 1:N 관계를 가지고 요구사항에 필요했던 필드들을 일부 수정하여 엔티티를 설계했습니다.
+
+### 📄 Api 문서
+REST-Docs를 통해 문서화했습니다.  
+
+1️⃣ **게시글(Post) 등록**  
+<img src="./images/post_create.png">  
+2️⃣ **게시글(Post) 단건 조회**  
+<img src="./images/post_find_one.png">  
+3️⃣ **게시글(Post) 전체 조회 (페이징)**  
+<img src="./images/post_find_all_1.png">
+<img src="./images/post_find_all_2.png">  
+4️⃣ **게시글(Post) 수정**  
+<img src="./images/post_update.png">
+
+---
+
+## ✅ 프로그램 실행 방법
+- 포트번호 : 8000
+- localhost:8000 접속 시 api 문서화 페이지가 출력됩니다.
+
+---
+
+## ❓프로젝트 중 직면한 문제점 및 생각, 느낀점
+- [JPA 게시판 프로젝트 회고글](https://gnuoyus.tistory.com/84)
