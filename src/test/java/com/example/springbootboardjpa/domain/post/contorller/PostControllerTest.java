@@ -5,7 +5,6 @@ import com.example.springbootboardjpa.domain.member.repository.MemberRepository;
 import com.example.springbootboardjpa.domain.post.dto.request.PostSaveRequestDto;
 import com.example.springbootboardjpa.domain.post.dto.request.PostUpdateRequestDto;
 import com.example.springbootboardjpa.domain.post.entity.Post;
-import com.example.springbootboardjpa.domain.post.repository.PostRepository;
 import com.example.springbootboardjpa.domain.post.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
@@ -41,8 +40,6 @@ class PostControllerTest {
     private ObjectMapper objectMapper;
     @Autowired
     private PostService postService;
-    @Autowired
-    private PostRepository postRepository;
 
     private static Member member;
     private static String title;
@@ -55,7 +52,7 @@ class PostControllerTest {
         member = new Member(
                 "장주영",
                 26,
-                "풋살"
+                "치킨먹기"
         );
 
         title = "제목";
@@ -69,11 +66,12 @@ class PostControllerTest {
 
         postService.save(title, content, memberId);
         postService.save(title, content, memberId);
+
         post = postService.save(title, content, memberId);
     }
 
     @Test
-    @DisplayName("게시글을 전부 조회하면 Http 200상태 코드가 반환된다.")
+    @DisplayName("게시글을 전부 조회하면 Http 200상태 코드가 반환")
     void findAll() throws Exception {
         mockMvc.perform(
                         get("/posts")
@@ -133,7 +131,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 생성에 성공하면 http 200 상태코드가 반환된다.")
+    @DisplayName("게시글 생성에 성공하면 http 200 상태코드가 반환")
     void save() throws Exception {
         PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto(
                 title,
@@ -176,7 +174,51 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("게시물을 업데이트를 성공적으로 완료하면 http status 200 code가 반환된다.")
+    @DisplayName("게시글 생성 시 없는 회원 아이디로 요청하면 http status 404 code가 반환 ")
+    void saveNotFoundMember() throws Exception {
+        memberRepository.deleteAll();
+
+        PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto(
+                title,
+                content,
+                member.getId()
+        );
+
+        String json = objectMapper.writeValueAsString(postSaveRequestDto);
+
+        mockMvc.perform(
+                        post("/posts")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .characterEncoding("UTF-8")
+                                .content(json)
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+
+                .andDo(
+                        document(
+                                "PostController/save",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                requestFields(
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("작성자 아이디")
+                                ),
+                                responseFields(
+                                        fieldWithPath("timestamp").type(JsonFieldType.STRING).description("에러 발생 시간"),
+                                        fieldWithPath("status").type(JsonFieldType.NUMBER).description("http status code"),
+                                        fieldWithPath("error").type(JsonFieldType.STRING).description("에러"),
+                                        fieldWithPath("code").type(JsonFieldType.STRING).description("에러 코드"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                                )
+                        )
+                );
+
+    }
+
+    @Test
+    @DisplayName("게시물을 업데이트를 성공적으로 완료하면 http status 200 code가 반환")
     void update() throws Exception {
         PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto(
                 post.getTitle(),
