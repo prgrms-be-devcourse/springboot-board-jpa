@@ -9,22 +9,23 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
-@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
-
+public record UserDto(
   @NotBlank
-  private Long userId;
+   Long userId,
 
   @NotBlank
   @Length(max = 20)
-  private String name;
+  String name,
 
   @Min(1)
   @Length(max = 3)
-  private int age;
+   int age,
 
-  private String hobby;
+  @Length(max = 10)
+  String hobby
+) {
+
 }
