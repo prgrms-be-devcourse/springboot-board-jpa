@@ -34,6 +34,8 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
     - [x]  게시글 수정 (PATCH "/posts/{id}")
 - [x]  **REST-DOCS를 이용해서 문서화한다.**
 
+체크박스를 이용하여 주어진 요구사항 중 구현한 요구사항을 표시했습니다.
+
 ### 🗺️ ER Diagram
 <img src="./images/erd.png">
 User와 Post(게시글)이 1:N 관계를 가지고 요구사항에 필요했던 필드들을 일부 수정하여 엔티티를 설계했습니다.
