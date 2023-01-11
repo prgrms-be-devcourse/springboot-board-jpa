@@ -1,4 +1,4 @@
-package com.prgrms.boardjpa.posts.exceptionhandler;
+package com.prgrms.boardjpa.utils.exceptionhandler;
 
 import com.prgrms.boardjpa.common.CommonResponse;
 import com.prgrms.boardjpa.common.ResponseMessage;
@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 
 @Slf4j
 @RestControllerAdvice
-public class PostAdvice {
+public class PostExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public CommonResponse<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
