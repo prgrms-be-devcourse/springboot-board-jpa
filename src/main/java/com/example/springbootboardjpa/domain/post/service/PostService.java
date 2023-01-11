@@ -53,7 +53,7 @@ public class PostService {
 
     private Member getMember(long memberId) {
         return memberRepository.findById(memberId).orElseThrow(() ->
-                new CustomException(ErrorCode.POST_NOT_FOUND));
+                new CustomException(ErrorCode.MEMBER_NOT_FOUND));
     }
 
     private void idMatching(long id1, long id2) {
