@@ -1,8 +1,8 @@
 package com.example.springbootboardjpa.domain.post.contorller;
 
+import com.example.springbootboardjpa.domain.post.dto.request.PostSaveRequestDto;
 import com.example.springbootboardjpa.domain.post.dto.request.PostUpdateRequestDto;
 import com.example.springbootboardjpa.domain.post.dto.response.PostFindAllResponseDto;
-import com.example.springbootboardjpa.domain.post.dto.request.PostSaveRequestDto;
 import com.example.springbootboardjpa.domain.post.dto.response.PostFindByIdResponseDto;
 import com.example.springbootboardjpa.domain.post.dto.response.PostSaveResponseDto;
 import com.example.springbootboardjpa.domain.post.dto.response.PostUpdateResponseDto;
