@@ -5,7 +5,7 @@
 
 ### **SpringDataJPA 를 설정한다.**
 
-- datasource : h2 or mysql
+- datasource : h2
 
 ### **엔티티를 구성한다**
 
@@ -35,4 +35,4 @@
 - 게시글 수정 (POST "/posts/{id}")
 
 ### **REST-DOCS를 이용해서 문서화한다.**
-
+/src/main/resources/static/docs/index.html
