@@ -38,22 +38,12 @@ public class PostService {
     return postToPostDto(post);
   }
 
-  private Post getPost(Long postId) {
-    return postRepository
-        .findById(postId)
-        .orElseThrow(
-            () -> new NoSuchElementException("존재하지 않는 post post id: " + postId)
-        );
-  }
-
-
   public PostDto createPost(PostRequest postRequest) {
     var post = postRepository.save(
         postRequestToPost(postRequest)
     );
     return postToPostDto(post);
   }
-
 
   @Transactional
   public PostDto updatePost(Long postId, PostRequest postRequest) {
@@ -65,5 +55,13 @@ public class PostService {
         postRequest.getUserDto())
     );
     return postToPostDto(post);
+  }
+
+  private Post getPost(Long postId) {
+    return postRepository
+        .findById(postId)
+        .orElseThrow(
+            () -> new NoSuchElementException("존재하지 않는 post post id: " + postId)
+        );
   }
 }
