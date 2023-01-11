@@ -1,6 +1,7 @@
 package com.example.springbootboardjpa.global.exception;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ErrorResponse {
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime timestamp = LocalDateTime.now();
     private final Integer status;
     private final String error;
