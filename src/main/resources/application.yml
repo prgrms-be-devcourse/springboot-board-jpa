@@ -1,0 +1,52 @@
+spring:
+  profiles:
+    active: dev
+    group:
+      development:
+        - dev
+      production:
+        - prod
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:~/springBoardJpa
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    database: h2
+    show-sql: true
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+
+logging:
+  file:
+    path: ./logs/app-dev
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+logging:
+  file:
+    path: ./logs/app-release
