@@ -3,7 +3,7 @@ package com.prgrms.boardjpa.posts.controller;
 import com.prgrms.boardjpa.common.CommonResponse;
 import com.prgrms.boardjpa.posts.dto.PostDto;
 import com.prgrms.boardjpa.posts.dto.PostRequest;
-import com.prgrms.boardjpa.posts.service.PostFacade;
+import com.prgrms.boardjpa.posts.facade.PostFacade;
 import com.prgrms.boardjpa.posts.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
