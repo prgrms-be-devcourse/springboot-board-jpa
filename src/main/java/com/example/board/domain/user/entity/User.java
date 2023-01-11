@@ -1,21 +1,23 @@
 package com.example.board.domain.user.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.board.domain.user.validator.UserValidator;
 import com.example.board.domain.userhobby.entity.UserHobby;
 import com.example.board.global.entity.BaseEntity;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.example.board.global.validator.UserValidator.validateAge;
-import static com.example.board.global.validator.UserValidator.validateName;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,34 +25,32 @@ import static com.example.board.global.validator.UserValidator.validateName;
 @Entity
 public class User extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "user_id")
-    private Long id;
+	private static final UserValidator validator = new UserValidator();
 
-    @Column(nullable = false)
-    @NotNull(message = "{exception.entity.user.name.null}")
-    @Length(min = 1, message = "{exception.entity.user.name.length}")
-    private String name;
+	@Id
+	@GeneratedValue
+	@Column(name = "user_id")
+	private Long id;
 
-    @Column(nullable = false)
-    @NotNull(message = "{exception.entity.user.age.null}")
-    @PositiveOrZero(message = "{exception.entity.user.age.length}")
-    private int age;
+	@Column(nullable = false)
+	private String name;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<UserHobby> userHobbies = new ArrayList<>();
+	@Column(nullable = false)
+	private int age;
 
-    @Builder
-    public User(String name, int age) {
-        validateName(name);
-        validateAge(age);
-        this.name = name;
-        this.age = age;
-    }
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
+	private List<UserHobby> userHobbies = new ArrayList<>();
 
-    public void addHobby(UserHobby userHobby) {
-        userHobbies.add(userHobby);
-        userHobby.targetUser(this);
-    }
+	@Builder
+	public User(String name, int age) {
+		validator.validateName(name);
+		validator.validateAge(age);
+		this.name = name;
+		this.age = age;
+	}
+
+	public void addHobby(UserHobby userHobby) {
+		userHobbies.add(userHobby);
+		userHobby.targetUser(this);
+	}
 }
