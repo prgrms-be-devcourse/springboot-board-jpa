@@ -28,7 +28,6 @@ public class User extends BaseEntity {
   @Column(name = "hobby", nullable = true)
   private String hobby;
 
-  @Builder.Default
   @OneToMany(mappedBy = "user")
   private List<Post> posts = new ArrayList<>();
 
