@@ -1,17 +1,18 @@
 package com.example.board.domain.user.api;
 
-import com.example.board.domain.user.service.UserService;
-import com.example.board.global.dto.BaseResponse;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import static com.example.board.domain.user.dto.UserDto.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.example.board.domain.user.dto.UserDto.CreateUserRequest;
-import static com.example.board.domain.user.dto.UserDto.SingleUserDetailResponse;
+import com.example.board.domain.user.service.UserService;
+import com.example.board.global.dto.BaseResponse;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RequestMapping("/users")

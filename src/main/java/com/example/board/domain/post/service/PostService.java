@@ -1,9 +1,9 @@
 package com.example.board.domain.post.service;
 
+import static com.example.board.domain.post.dto.PostDto.*;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import static com.example.board.domain.post.dto.PostDto.*;
 
 public interface PostService {
     SinglePostResponse post(CreatePostRequest createPostRequest);

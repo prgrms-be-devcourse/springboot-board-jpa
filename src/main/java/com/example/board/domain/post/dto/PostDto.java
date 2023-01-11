@@ -1,9 +1,11 @@
 package com.example.board.domain.post.dto;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.example.board.domain.post.entity.Post;
 import com.example.board.domain.user.dto.UserDto;
+
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Length;
 
 public class PostDto {
 

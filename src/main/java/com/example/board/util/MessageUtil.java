@@ -1,12 +1,13 @@
 package com.example.board.util;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
+import java.util.Locale;
+
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 
-import java.util.Locale;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 
 @Component
 public class MessageUtil {

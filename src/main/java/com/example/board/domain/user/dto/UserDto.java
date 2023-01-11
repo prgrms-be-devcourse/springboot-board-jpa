@@ -1,12 +1,14 @@
 package com.example.board.domain.user.dto;
 
-import com.example.board.domain.hobby.entity.HobbyType;
-import com.example.board.domain.user.entity.User;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
-import java.util.List;
+import com.example.board.domain.hobby.entity.HobbyType;
+import com.example.board.domain.user.entity.User;
+
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class UserDto {
 

@@ -1,9 +1,9 @@
 package com.example.board.global.dto;
 
+import java.util.List;
+
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 public record PageCustomResponse<T>(List<T> content,
                                     PageableCustom pageInfo) {

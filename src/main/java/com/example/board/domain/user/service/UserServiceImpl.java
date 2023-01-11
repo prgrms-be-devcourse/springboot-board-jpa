@@ -1,19 +1,20 @@
 package com.example.board.domain.user.service;
 
+import static com.example.board.domain.user.dto.UserDto.*;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.board.domain.hobby.entity.Hobby;
 import com.example.board.domain.hobby.entity.HobbyType;
 import com.example.board.domain.hobby.repository.HobbyRepository;
 import com.example.board.domain.user.entity.User;
 import com.example.board.domain.user.repository.UserRepository;
 import com.example.board.domain.userhobby.entity.UserHobby;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static com.example.board.domain.user.dto.UserDto.CreateUserRequest;
-import static com.example.board.domain.user.dto.UserDto.SingleUserDetailResponse;
 
 @RequiredArgsConstructor
 @Service

@@ -1,8 +1,8 @@
 package com.example.board.global.dto;
 
-import com.example.board.util.MessageUtil;
-
 import java.time.LocalDateTime;
+
+import com.example.board.util.MessageUtil;
 
 public record InnerErrorResponse(String status,
                                  String message,

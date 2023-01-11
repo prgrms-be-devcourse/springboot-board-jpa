@@ -1,10 +1,9 @@
 package com.example.board.global.exception;
 
-import com.example.board.global.dto.BindingErrorResponse;
-import com.example.board.global.dto.InnerErrorResponse;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import static org.springframework.http.HttpStatus.*;
+
+import java.util.Objects;
+
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -13,9 +12,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Objects;
+import com.example.board.global.dto.BindingErrorResponse;
+import com.example.board.global.dto.InnerErrorResponse;
 
-import static org.springframework.http.HttpStatus.*;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice

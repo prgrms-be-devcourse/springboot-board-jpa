@@ -1,11 +1,12 @@
 package com.example.board.global.dto;
 
-import com.example.board.util.MessageUtil;
-import org.springframework.validation.FieldError;
+import static java.time.LocalDateTime.*;
 
 import java.time.LocalDateTime;
 
-import static java.time.LocalDateTime.now;
+import org.springframework.validation.FieldError;
+
+import com.example.board.util.MessageUtil;
 
 public record BindingErrorResponse(String objectName,
                                    String field,

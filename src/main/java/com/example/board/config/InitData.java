@@ -1,13 +1,15 @@
 package com.example.board.config;
 
+import java.util.Arrays;
+
+import org.springframework.stereotype.Component;
+
 import com.example.board.domain.hobby.entity.Hobby;
 import com.example.board.domain.hobby.entity.HobbyType;
 import com.example.board.domain.hobby.repository.HobbyRepository;
+
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor

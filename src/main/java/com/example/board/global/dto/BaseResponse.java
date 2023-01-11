@@ -1,7 +1,8 @@
 package com.example.board.global.dto;
 
-import com.example.board.util.MessageUtil;
 import org.springframework.http.HttpStatus;
+
+import com.example.board.util.MessageUtil;
 
 public record BaseResponse<T>(HttpStatus status,
                               String title,
