@@ -520,16 +520,16 @@ Host: localhost:8080
 <h4 id="_response"><a class="link" href="#_response">response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
 Content-Type: application/json
-Content-Length: 123
+Content-Length: 166
 
 {
-  "postId" : 13,
-  "title" : "제목",
-  "content" : "내용",
-  "createdAt" : "2023-01-11 18:14:18",
-  "createdBy" : 1
+  "timestamp" : "2023-01-12 02:19:18",
+  "status" : 404,
+  "error" : "NOT_FOUND",
+  "code" : "MEMBER_NOT_FOUND",
+  "message" : "회원을 찾지 못했습니다."
 }</code></pre>
 </div>
 </div>
@@ -551,29 +551,29 @@ Content-Length: 123
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>postId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>timestamp</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">에러 발생 시간</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게시글 아이디</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">http status code</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>error</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게시글 제목</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">에러</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게시글 내용</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">에러 코드</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게시글 생성 시간</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdBy</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 아이디</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">에러 메시지</p></td>
 </tr>
 </tbody>
 </table>
@@ -625,19 +625,19 @@ Content-Type: application/json
 Content-Length: 302
 
 [ {
-  "postId" : 1,
+  "postId" : 3,
   "title" : "제목",
-  "createdAt" : "2023-01-11 18:14:17",
+  "createdAt" : "2023-01-12 02:19:17",
   "createdBy" : 1
 }, {
   "postId" : 2,
   "title" : "제목",
-  "createdAt" : "2023-01-11 18:14:17",
+  "createdAt" : "2023-01-12 02:19:17",
   "createdBy" : 1
 }, {
-  "postId" : 3,
+  "postId" : 1,
   "title" : "제목",
-  "createdAt" : "2023-01-11 18:14:17",
+  "createdAt" : "2023-01-12 02:19:17",
   "createdBy" : 1
 } ]</code></pre>
 </div>
@@ -730,7 +730,7 @@ Content-Length: 122
   "title" : "제목",
   "content" : "내용",
   "createdBy" : 1,
-  "createdAt" : "2023-01-11 18:14:18"
+  "createdAt" : "2023-01-12 02:19:18"
 }</code></pre>
 </div>
 </div>
@@ -868,7 +868,7 @@ Content-Length: 122
   "title" : "제목",
   "content" : "내용",
   "createdBy" : 1,
-  "createdAt" : "2023-01-11 18:14:18"
+  "createdAt" : "2023-01-12 02:19:18"
 }</code></pre>
 </div>
 </div>

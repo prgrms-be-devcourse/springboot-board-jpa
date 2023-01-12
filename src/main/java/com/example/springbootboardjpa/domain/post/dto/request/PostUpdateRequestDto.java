@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostUpdateRequestDto {
 
-    private String title;
-    private String content;
-    private long memberId;
+  private String title;
+  private String content;
+  private long memberId;
 }

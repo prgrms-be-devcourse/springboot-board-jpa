@@ -72,7 +72,7 @@ class PostControllerTest {
 
     @Test
     @DisplayName("게시글을 전부 조회하면 Http 200상태 코드가 반환")
-    void findAll() throws Exception {
+    void findAllTest() throws Exception {
         mockMvc.perform(
                         get("/posts")
                                 .param("page", String.valueOf(0))
@@ -104,7 +104,7 @@ class PostControllerTest {
 
     @Test
     @DisplayName("게시글 상세 조회 api 성공 시 http status 200 반환")
-    void findById() throws Exception {
+    void findByIdTest() throws Exception {
         mockMvc.perform(
                         get("/posts/{postId}", String.valueOf(post.getId()))
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -132,7 +132,7 @@ class PostControllerTest {
 
     @Test
     @DisplayName("게시글 생성에 성공하면 http 200 상태코드가 반환")
-    void save() throws Exception {
+    void saveTest() throws Exception {
         PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto(
                 title,
                 content,
@@ -175,7 +175,7 @@ class PostControllerTest {
 
     @Test
     @DisplayName("게시글 생성 시 없는 회원 아이디로 요청하면 http status 404 code가 반환 ")
-    void saveNotFoundMember() throws Exception {
+    void saveNotFoundMemberTest() throws Exception {
         memberRepository.deleteAll();
 
         PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto(
@@ -214,7 +214,6 @@ class PostControllerTest {
                                 )
                         )
                 );
-
     }
 
     @Test

@@ -23,78 +23,81 @@ import java.util.List;
 @RequestMapping("/posts")
 public class PostController {
 
-    private final PostService postService;
+  private final PostService postService;
 
-    @GetMapping()
-    public ResponseEntity<List<PostFindAllResponseDto>> findAll(@RequestParam int page, @RequestParam int size) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
-        List<PostFindAllResponseDto> postFindAllResponseDtos = new ArrayList<>();
-        Page<Post> posts = postService.findAll(pageRequest);
+  @GetMapping()
+  public ResponseEntity<List<PostFindAllResponseDto>> findAll(@RequestParam int page,
+      @RequestParam int size) {
+    PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+    List<PostFindAllResponseDto> postFindAllResponseDtos = new ArrayList<>();
+    Page<Post> posts = postService.findAll(pageRequest);
 
-        posts.forEach(post -> {
-            PostFindAllResponseDto postFindAllResponseDto = new PostFindAllResponseDto(
-                    post.getId(),
-                    post.getTitle(),
-                    post.getCreatedAt(),
-                    post.getCreatedBy()
-            );
+    posts.forEach(post -> {
+      PostFindAllResponseDto postFindAllResponseDto = new PostFindAllResponseDto(
+          post.getId(),
+          post.getTitle(),
+          post.getCreatedAt(),
+          post.getCreatedBy()
+      );
 
-            postFindAllResponseDtos.add(postFindAllResponseDto);
-        });
+      postFindAllResponseDtos.add(postFindAllResponseDto);
+    });
 
-        return ResponseEntity.ok(postFindAllResponseDtos);
-    }
+    return ResponseEntity.ok(postFindAllResponseDtos);
+  }
 
-    @GetMapping("/{postId}")
-    public ResponseEntity<PostFindByIdResponseDto> findById(@PathVariable long postId) {
-        Post post = postService.findById(postId);
-        PostFindByIdResponseDto postFindByIdResponseDto = new PostFindByIdResponseDto(
-                post.getId(),
-                post.getTitle(),
-                post.getContent(),
-                post.getCreatedBy(),
-                post.getCreatedAt()
-        );
+  @GetMapping("/{postId}")
+  public ResponseEntity<PostFindByIdResponseDto> findById(@PathVariable long postId) {
+    Post post = postService.findById(postId);
+    PostFindByIdResponseDto postFindByIdResponseDto = new PostFindByIdResponseDto(
+        post.getId(),
+        post.getTitle(),
+        post.getContent(),
+        post.getCreatedBy(),
+        post.getCreatedAt()
+    );
 
-        return ResponseEntity.ok(postFindByIdResponseDto);
-    }
+    return ResponseEntity.ok(postFindByIdResponseDto);
+  }
 
-    @PostMapping()
-    public ResponseEntity<PostSaveResponseDto> save(@RequestBody PostSaveRequestDto postSaveRequestDto) {
-        Post post = postService.save(
-                postSaveRequestDto.getTitle(),
-                postSaveRequestDto.getContent(),
-                postSaveRequestDto.getMemberId()
-        );
+  @PostMapping()
+  public ResponseEntity<PostSaveResponseDto> save(
+      @RequestBody PostSaveRequestDto postSaveRequestDto) {
+    Post post = postService.save(
+        postSaveRequestDto.getTitle(),
+        postSaveRequestDto.getContent(),
+        postSaveRequestDto.getMemberId()
+    );
 
-        PostSaveResponseDto postSaveResponseDto = new PostSaveResponseDto(
-                post.getId(),
-                post.getTitle(),
-                post.getContent(),
-                post.getCreatedAt(),
-                post.getCreatedBy()
-        );
+    PostSaveResponseDto postSaveResponseDto = new PostSaveResponseDto(
+        post.getId(),
+        post.getTitle(),
+        post.getContent(),
+        post.getCreatedAt(),
+        post.getCreatedBy()
+    );
 
-        return ResponseEntity.ok(postSaveResponseDto);
-    }
+    return ResponseEntity.ok(postSaveResponseDto);
+  }
 
-    @PostMapping("/{postId}")
-    public ResponseEntity<PostUpdateResponseDto> update(@PathVariable long postId, @RequestBody PostUpdateRequestDto postUpdateRequestDto) {
-        Post post = postService.update(
-                postId,
-                postUpdateRequestDto.getTitle(),
-                postUpdateRequestDto.getContent(),
-                postUpdateRequestDto.getMemberId()
-        );
+  @PostMapping("/{postId}")
+  public ResponseEntity<PostUpdateResponseDto> update(@PathVariable long postId,
+      @RequestBody PostUpdateRequestDto postUpdateRequestDto) {
+    Post post = postService.update(
+        postId,
+        postUpdateRequestDto.getTitle(),
+        postUpdateRequestDto.getContent(),
+        postUpdateRequestDto.getMemberId()
+    );
 
-        PostUpdateResponseDto postUpdateResponseDto = new PostUpdateResponseDto(
-                post.getId(),
-                post.getTitle(),
-                post.getContent(),
-                post.getCreatedBy(),
-                post.getCreatedAt()
-        );
+    PostUpdateResponseDto postUpdateResponseDto = new PostUpdateResponseDto(
+        post.getId(),
+        post.getTitle(),
+        post.getContent(),
+        post.getCreatedBy(),
+        post.getCreatedAt()
+    );
 
-        return ResponseEntity.ok(postUpdateResponseDto);
-    }
+    return ResponseEntity.ok(postUpdateResponseDto);
+  }
 }

@@ -13,14 +13,14 @@ import java.time.LocalDateTime;
 @Getter
 public abstract class BaseTimeEntity {
 
-    @CreatedDate
-    private LocalDateTime createdAt;
+  @CreatedDate
+  private LocalDateTime createdAt;
 
-    private long createdBy;
+  private long createdBy;
 
-    public void setCreatedBy(long createdBy) {
-        this.createdBy = createdBy;
-    }
+  public void setCreatedBy(long createdBy) {
+    this.createdBy = createdBy;
+  }
 
 
 }
