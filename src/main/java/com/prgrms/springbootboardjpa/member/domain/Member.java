@@ -31,5 +31,9 @@ public class Member extends BaseTimeEntity {
         this.age = age;
         this.hobby = hobby;
     }
+
+    public void addPost(Post post) {
+        this.posts.add(post);
+    }
 }
 
