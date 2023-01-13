@@ -61,7 +61,11 @@ class PostServiceTest {
         PostResponse postResponse2 = postService.save(postInsertRequest2);
 
         PostOnePage postOnePage = postService.findOnePagePost(0);
-        PostOnePage resultPage = new PostOnePage(2, 1, List.of(postResponse1, postResponse2));
+
+        int resultAllBookCount = 2;
+        int resultAllPageCount = 1;
+
+        PostOnePage resultPage = new PostOnePage(resultAllBookCount, resultAllPageCount, List.of(postResponse1, postResponse2));
 
         assertThat(postOnePage).usingRecursiveComparison().isEqualTo(resultPage);
     }
