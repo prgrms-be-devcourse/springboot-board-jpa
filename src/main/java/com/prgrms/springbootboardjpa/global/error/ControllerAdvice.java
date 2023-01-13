@@ -2,8 +2,7 @@ package com.prgrms.springbootboardjpa.global.error;
 
 import com.prgrms.springbootboardjpa.global.error.dto.ErrorReportRequest;
 import com.prgrms.springbootboardjpa.global.error.dto.ErrorResponse;
-import com.prgrms.springbootboardjpa.post.exception.PostException;
-import lombok.extern.slf4j.Slf4j;
+import com.prgrms.springbootboardjpa.post.exception.NotFoundByIdPostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -23,7 +21,7 @@ public class ControllerAdvice {
     private static final Logger log = LoggerFactory.getLogger(ControllerAdvice.class);
 
     @ExceptionHandler({
-            PostException.class,
+            NotFoundByIdPostException.class,
     })
     public ResponseEntity<ErrorResponse> handleInvalidData(RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
