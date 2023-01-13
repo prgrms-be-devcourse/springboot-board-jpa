@@ -1,17 +1,19 @@
 package com.prgrms.springbootboardjpa.post.presentation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.springbootboardjpa.post.application.PostService;
 import com.prgrms.springbootboardjpa.post.dto.PostInsertRequest;
 import com.prgrms.springbootboardjpa.post.dto.PostResponse;
 import com.prgrms.springbootboardjpa.post.dto.PostUpdateRequest;
-import com.prgrms.springbootboardjpa.member.domain.Member;
-import com.prgrms.springbootboardjpa.member.domain.MemberRepository;
+import com.prgrms.springbootboardjpa.user.domain.Member;
+import com.prgrms.springbootboardjpa.user.domain.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -20,7 +22,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -58,10 +63,10 @@ class PostRestControllerTest {
 
     @BeforeEach
     void beforeSetup() {
-        tmpMember = new Member("email1", "password1", "name1", 10, "hobby1");
+        tmpMember = new Member("kiwoong", 20, "reading", LocalDateTime.now());
         memberRepository.save(tmpMember);
-        postInsertRequest = new PostInsertRequest("title1", "content1");
-        postResponse = postService.save(postInsertRequest, tmpMember);
+        postInsertRequest = new PostInsertRequest(tmpMember, "title1", "content1", LocalDateTime.now());
+        postResponse = postService.save(postInsertRequest);
     }
 
     @Test
@@ -77,16 +82,31 @@ class PostRestControllerTest {
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
                                 requestFields(
-                                        fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("작성자 식별자"),
+                                        fieldWithPath("createdBy.memberId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
+                                        fieldWithPath("createdBy.name").type(JsonFieldType.STRING).description("작성자 이름"),
+                                        fieldWithPath("createdBy.age").type(JsonFieldType.NUMBER).description("작성자 나이"),
+                                        fieldWithPath("createdBy.hobby").type(JsonFieldType.STRING).description("작성자 취미"),
+                                        fieldWithPath("createdBy.posts").type(JsonFieldType.ARRAY).optional().description("작성자가 쓴 글 목록"),
+                                        fieldWithPath("createdBy.createdAt").type(JsonFieldType.STRING).description("작성자의 회원가입 날짜"),
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("글 제목"),
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("글 본문 내용")),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("글 본문 내용"),
+                                        fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성날짜")),
                                 responseFields(
                                         fieldWithPath("postId").type(JsonFieldType.NUMBER).description("글 식별자"),
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("글 제목"),
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("글 본문 내용"),
+                                        fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성날짜"),
                                         fieldWithPath("createdBy").type(JsonFieldType.NUMBER).description("작성자 식별자"))
 
                         )
+                        /*
+                        fieldWithPath("createdBy.memberId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
+                                        fieldWithPath("createdBy.name").type(JsonFieldType.STRING).description("작성자 이름"),
+                                        fieldWithPath("createdBy.age").type(JsonFieldType.NUMBER).description("작성자 나이"),
+                                        fieldWithPath("createdBy.hobby").type(JsonFieldType.STRING).description("작성자 취미"),
+                                        fieldWithPath("createdBy.posts").type(JsonFieldType.ARRAY).optional().description("작성자가 쓴 글 목록"),
+                                        fieldWithPath("createdBy.createdAt").type(JsonFieldType.STRING).description("작성자의 회원가입 날짜"))
+                         */
                 );
     }
 
@@ -138,7 +158,7 @@ class PostRestControllerTest {
 
     @Test
     void updatePostTest() throws Exception {
-        PostUpdateRequest postUpdateRequest = new PostUpdateRequest(postResponse.getPostId(), tmpMember.getMemberId(), "updateTitle", "updateContent");
+        PostUpdateRequest postUpdateRequest = new PostUpdateRequest(postResponse.getPostId(), "updateTitle", "updateContent");
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/posts")
                         .contentType(MediaType.APPLICATION_JSON)

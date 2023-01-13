@@ -7,16 +7,14 @@ import lombok.Setter;
 @Setter
 public class PostUpdateRequest {
     private long postId;
-    private long createdBy;
     private String title;
     private String content;
 
     public PostUpdateRequest() {
     }
 
-    public PostUpdateRequest(long postId, long createdBy, String title, String content) {
+    public PostUpdateRequest(long postId, String title, String content) {
         this.postId = postId;
-        this.createdBy = createdBy;
         this.title = title;
         this.content = content;
     }

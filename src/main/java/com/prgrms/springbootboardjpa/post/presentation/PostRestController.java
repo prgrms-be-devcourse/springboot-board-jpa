@@ -1,10 +1,7 @@
 package com.prgrms.springbootboardjpa.post.presentation;
 
-import com.prgrms.springbootboardjpa.common.SessionConst;
 import com.prgrms.springbootboardjpa.post.application.PostService;
 import com.prgrms.springbootboardjpa.post.dto.*;
-import com.prgrms.springbootboardjpa.post.exception.PostNotAuthorizationException;
-import com.prgrms.springbootboardjpa.member.domain.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +11,7 @@ import java.net.URI;
 @Slf4j
 @RestController
 public class PostRestController {
+
     private final PostService postService;
 
     public PostRestController(PostService postService) {
@@ -33,8 +31,8 @@ public class PostRestController {
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<PostResponse> savePost(@SessionAttribute(name = SessionConst.LONGIN_SESSION) Member loginMember, @RequestBody PostInsertRequest postInsertRequest) {
-        PostResponse postResponse = postService.save(postInsertRequest, loginMember);
+    public ResponseEntity<PostResponse> savePost(@RequestBody PostInsertRequest postInsertRequest) {
+        PostResponse postResponse = postService.save(postInsertRequest);
         return ResponseEntity.created(URI.create("/posts/" + postResponse.getPostId())).body(postResponse);
     }
 
@@ -45,16 +43,9 @@ public class PostRestController {
     }
 
     @PatchMapping("/posts")
-    public ResponseEntity<PostResponse> updatePost(@SessionAttribute(name = SessionConst.LONGIN_SESSION) Member loginMember, @RequestBody PostUpdateRequest postUpdateRequest) {
-        validateForUpdate(loginMember.getMemberId(), postUpdateRequest);
+    public ResponseEntity<PostResponse> updatePost(@RequestBody PostUpdateRequest postUpdateRequest) {
         PostResponse postResponse = postService.update(postUpdateRequest);
         return ResponseEntity.ok(postResponse);
-    }
-
-    private void validateForUpdate(long idFromSession, PostUpdateRequest postUpdateRequest) {
-        if (postUpdateRequest.getCreatedBy() != idFromSession) {
-            throw new PostNotAuthorizationException(idFromSession, postUpdateRequest.getPostId());
-        }
     }
 
 }
