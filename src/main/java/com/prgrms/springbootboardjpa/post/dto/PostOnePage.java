@@ -10,15 +10,6 @@ public class PostOnePage {
     private int allPage;
     private List<PostResponse> pagePosts;
 
-    /*
-    public class PostResponse {
-    private long postId;
-    private Member createdBy;
-    private String title;
-    private String content;
-    private LocalDateTime createdAt;
-     */
-
     public PostOnePage() {
     }
 

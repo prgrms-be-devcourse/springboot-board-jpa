@@ -1,4 +1,4 @@
-package com.prgrms.springbootboardjpa.user.domain;
+package com.prgrms.springbootboardjpa.member.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
