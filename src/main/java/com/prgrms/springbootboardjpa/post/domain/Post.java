@@ -38,11 +38,14 @@ public class Post extends BaseTimeEntity {
 
     public void writeByMember(Member member) {
         this.createdBy = member;
-        member.getPosts().add(this);
+        member.addPost(this);
     }
 
-    public void changePost(String title, String content) {
+    public void changeTitle(String title) {
         this.title = title;
+    }
+
+    public void changeContent(String content) {
         this.content = content;
     }
 
