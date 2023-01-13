@@ -127,8 +127,8 @@ class PostRestControllerTest {
                 .andDo(document("Post-FindOnePage",
                                 preprocessResponse(prettyPrint()),
                                 responseFields(
-                                        fieldWithPath("allContent").type(JsonFieldType.NUMBER).description("현재 페이지의 데이터 수"),
-                                        fieldWithPath("allPage").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
+                                        fieldWithPath("allBookCount").type(JsonFieldType.NUMBER).description("현재 페이지의 데이터 수"),
+                                        fieldWithPath("allPageCount").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
                                         fieldWithPath("pagePosts.[].postId").type(JsonFieldType.NUMBER).description("페이지내 각 글의 식별자"),
                                         fieldWithPath("pagePosts.[].title").type(JsonFieldType.STRING).description("페이지내 각 글의 제목"),
                                         fieldWithPath("pagePosts.[].content").type(JsonFieldType.STRING).description("페이지내 각 글의 내용"),

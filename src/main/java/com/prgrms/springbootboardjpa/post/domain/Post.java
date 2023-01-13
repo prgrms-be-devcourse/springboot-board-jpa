@@ -36,17 +36,13 @@ public class Post extends BaseTimeEntity {
         this.content = content;
     }
 
-    public void writeByMember(Member member) {
-        this.createdBy = member;
-        member.addPost(this);
+    public void changePost(Post post) {
+        this.title = post.getTitle();
+        this.content = post.getContent();
     }
 
-    public void changeTitle(String title) {
-        this.title = title;
-    }
-
-    public void changeContent(String content) {
-        this.content = content;
+    public Long getMemberId() {
+        return createdBy.getMemberId();
     }
 
 }

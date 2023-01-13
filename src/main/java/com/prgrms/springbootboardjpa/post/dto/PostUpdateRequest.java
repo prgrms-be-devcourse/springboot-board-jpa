@@ -1,5 +1,6 @@
 package com.prgrms.springbootboardjpa.post.dto;
 
+import com.prgrms.springbootboardjpa.post.domain.Post;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,5 +18,9 @@ public class PostUpdateRequest {
         this.postId = postId;
         this.title = title;
         this.content = content;
+    }
+
+    public Post toPost() {
+        return new Post(this.title, this.content);
     }
 }

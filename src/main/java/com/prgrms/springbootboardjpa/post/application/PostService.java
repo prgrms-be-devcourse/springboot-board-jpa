@@ -33,8 +33,7 @@ public class PostService {
     @Transactional
     public PostResponse update(PostUpdateRequest postUpdateRequest) {
         Post foundPost = postRepository.findById(postUpdateRequest.getPostId()).orElseThrow(() -> new NotFoundByIdPostException(postUpdateRequest.getPostId()));
-        foundPost.changeTitle(postUpdateRequest.getTitle());
-        foundPost.changeContent(postUpdateRequest.getContent());
+        foundPost.changePost(postUpdateRequest.toPost());
         return new PostResponse(foundPost);
     }
 

@@ -21,7 +21,7 @@ public class PostResponse {
 
     public PostResponse(Post post) {
         this.postId = post.getPostId();
-        this.createdBy = post.getCreatedBy().getMemberId();
+        this.createdBy = post.getMemberId();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
