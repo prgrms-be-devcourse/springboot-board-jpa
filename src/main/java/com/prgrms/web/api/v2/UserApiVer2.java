@@ -1,19 +1,22 @@
 package com.prgrms.web.api.v2;
 
-import com.prgrms.domain.user.UserService;
-import com.prgrms.dto.UserDto.LoginRequest;
-import com.prgrms.dto.UserDto.Response;
-import com.prgrms.dto.UserDto.UserCreateRequest;
-import com.prgrms.web.auth.SessionManager;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.prgrms.domain.user.UserService;
+import com.prgrms.dto.UserDto.LoginRequest;
+import com.prgrms.dto.UserDto.Response;
+import com.prgrms.dto.UserDto.UserCreateRequest;
+import com.prgrms.web.auth.SessionManager;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("api/v2/users")
@@ -52,7 +55,8 @@ public class UserApiVer2 {
         HttpServletRequest request) {
 
         Response loggedUser = service.login(loginDto);
-        sessionManager.checkDuplicateLoginAndRegisterSession(loggedUser.getUserId(), request, response);
+        sessionManager.createSession(loggedUser.getUserId(), request,
+            response);
 
         return ResponseEntity.ok()
             .build();

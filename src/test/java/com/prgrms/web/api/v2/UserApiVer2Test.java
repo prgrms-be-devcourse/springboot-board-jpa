@@ -1,17 +1,8 @@
 package com.prgrms.web.api.v2;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prgrms.domain.user.UserRepository;
-import com.prgrms.domain.user.UserService;
-import com.prgrms.dto.UserDto.LoginRequest;
-import com.prgrms.dto.UserDto.Response;
-import com.prgrms.dto.UserDto.UserCreateRequest;
-import com.prgrms.web.auth.SessionManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -22,6 +13,15 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.prgrms.domain.user.UserRepository;
+import com.prgrms.domain.user.UserService;
+import com.prgrms.dto.UserDto.LoginRequest;
+import com.prgrms.dto.UserDto.Response;
+import com.prgrms.dto.UserDto.UserCreateRequest;
+import com.prgrms.web.auth.SessionManager;
 
 @DisplayName("sessionCookie 를 적용한 userController 테스트")
 @AutoConfigureMockMvc
@@ -104,7 +104,7 @@ class UserApiVer2Test {
 
         userService.insertUser(createSource);
         Response loginUser = userService.login(loginSource);
-        sessionManager.checkDuplicateLoginAndRegisterSession(loginUser.getUserId(), request,
+        sessionManager.createSession(loginUser.getUserId(), request,
             response);
 
         mockMvc.perform(get("/api/v2/users/me")

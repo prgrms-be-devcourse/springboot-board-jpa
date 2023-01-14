@@ -1,15 +1,18 @@
 package com.prgrms.web.auth;
 
-import com.prgrms.global.error.ErrorCode;
-import com.prgrms.global.exception.AuthenticationFailedException;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
+
+import com.prgrms.global.error.ErrorCode;
+import com.prgrms.global.exception.AuthenticationFailedException;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class SessionManager {
@@ -18,10 +21,11 @@ public class SessionManager {
 
     private final Map<String, Long> sessionStorage = new ConcurrentHashMap<>();
 
-    private Cookie createSession(Long userId) {
+    private Cookie createSessionCookie(Long userId) {
 
         String sessionStorageKey = String.valueOf(UUID.randomUUID());
         Cookie session = new Cookie(SESSION_NAME, sessionStorageKey);
+        session.setMaxAge(1800);
         session.setPath("/");
 
         sessionStorage.put(sessionStorageKey, userId);
@@ -59,15 +63,15 @@ public class SessionManager {
         return sessionStorage.get(session.getValue());
     }
 
-    public void checkDuplicateLoginAndRegisterSession(Long userId, HttpServletRequest request, HttpServletResponse response) {
+    public void createSession(Long userId, HttpServletRequest request, HttpServletResponse response) {
 
         Cookie session = WebUtils.getCookie(request, SESSION_NAME);
 
-        if(session!=null){
+        if (session != null) {
             removeSession(request, response);
         }
 
-        response.addCookie(createSession(userId));
+        response.addCookie(createSessionCookie(userId));
     }
 
 }
