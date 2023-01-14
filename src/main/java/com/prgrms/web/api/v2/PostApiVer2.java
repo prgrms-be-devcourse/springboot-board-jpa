@@ -1,17 +1,9 @@
 package com.prgrms.web.api.v2;
 
+import static com.prgrms.dto.PostDto.*;
 
-import static com.prgrms.dto.PostDto.Request;
-
-import com.prgrms.domain.post.PostService;
-import com.prgrms.dto.PostDto.Response;
-import com.prgrms.dto.PostDto.ResponsePostDtos;
-import com.prgrms.dto.PostDto.Update;
-import com.prgrms.global.error.ErrorCode;
-import com.prgrms.global.exception.AuthenticationFailedException;
-import com.prgrms.web.auth.SessionManager;
-import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,73 +15,66 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.prgrms.domain.post.PostService;
+import com.prgrms.web.auth.SessionManager;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("api/v2/posts")
 public class PostApiVer2 {
 
-    private final PostService service;
-    private final SessionManager sessionManager;
+	private final PostService service;
+	private final SessionManager sessionManager;
 
-    public PostApiVer2(PostService service, SessionManager sessionManager) {
-        this.service = service;
-        this.sessionManager = sessionManager;
-    }
+	public PostApiVer2(PostService service, SessionManager sessionManager) {
+		this.service = service;
+		this.sessionManager = sessionManager;
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Response> getPostById(@PathVariable Long id) {
+	@GetMapping("/{id}")
+	public ResponseEntity<Response> getPostById(@PathVariable Long id) {
 
-        return ResponseEntity.ok(service.findPostById(id));
-    }
+		return ResponseEntity.ok(service.findPostById(id));
+	}
 
-    @PostMapping
-    public ResponseEntity<Void> registerPost(@RequestBody Request postDto,
-        HttpServletRequest request) {
+	@PostMapping
+	public ResponseEntity<Void> registerPost(@RequestBody Request postDto,
+		HttpServletRequest request) {
 
-        long userId = sessionManager.getSession(request);
+		long userId = sessionManager.getSession(request);
+		Response savedPost = service.insertPost(userId, postDto);
+		URI getPostByIdPath = URI.create("api/v2/posts/" + savedPost.getPostId());
 
-        Response savedPost = service.insertPost(userId, postDto);
-        URI getPostByIdPath = URI.create("api/v2/posts/" + savedPost.getPostId());
+		return ResponseEntity.created(getPostByIdPath)
+			.build();
+	}
 
-        return ResponseEntity.created(getPostByIdPath)
-            .build();
-    }
+	@PatchMapping("/{postId}")
+	public ResponseEntity<Response> editPost(@PathVariable Long postId,
+		@RequestBody Update postDto,
+		HttpServletRequest request) {
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Response> editPost(@PathVariable Long id,
-        @RequestBody Update postDto,
-        HttpServletRequest request) {
+		long userId = sessionManager.getSession(request);
+		Response updatedPost = service.updatePost(postId, userId, postDto);
 
-        checkOwnPost(request, id);
-        Response updatedPost = service.updatePost(id, postDto);
+		return ResponseEntity.ok(updatedPost);
+	}
 
-        return ResponseEntity.ok(updatedPost);
-    }
+	@GetMapping
+	public ResponseEntity<ResponsePostDtos> getPostsByPage(Pageable pageable) {
 
-    @GetMapping
-    public ResponseEntity<ResponsePostDtos> getPostsByPage(Pageable pageable) {
+		return ResponseEntity.ok(service.getPostsByPage(pageable));
+	}
 
-        return ResponseEntity.ok(service.getPostsByPage(pageable));
-    }
+	@DeleteMapping("/{postId}")
+	public ResponseEntity<Void> deletePost(@PathVariable Long postId, HttpServletRequest request) {
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id, HttpServletRequest request) {
+		long userId = sessionManager.getSession(request);
+		service.deletePost(postId, userId);
 
-        checkOwnPost(request, id);
-        service.deletePost(id);
-
-        return ResponseEntity.noContent()
-            .build();
-    }
-
-    private void checkOwnPost(HttpServletRequest request, Long postId) {
-
-        long userId = sessionManager.getSession(request);
-        Response post = service.findPostById(postId);
-
-        if (userId != post.userId()) {
-            throw new AuthenticationFailedException("본인 게시글만 수정, 삭제할 수 있습니다",
-                ErrorCode.AUTHENCTICATION_FAILED);
-        }
-    }
+		return ResponseEntity.noContent()
+			.build();
+	}
 
 }
