@@ -1,21 +1,8 @@
 package com.prgrms.web.api.v2;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prgrms.domain.post.PostRepository;
-import com.prgrms.domain.post.PostService;
-import com.prgrms.domain.user.UserService;
-import com.prgrms.dto.PostDto.Request;
-import com.prgrms.dto.PostDto.Response;
-import com.prgrms.dto.PostDto.Update;
-import com.prgrms.dto.UserDto;
-import com.prgrms.dto.UserDto.UserCreateRequest;
-import com.prgrms.web.auth.SessionManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,148 +15,152 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.prgrms.domain.post.PostService;
+import com.prgrms.domain.user.UserService;
+import com.prgrms.dto.PostDto.Request;
+import com.prgrms.dto.PostDto.Response;
+import com.prgrms.dto.PostDto.Update;
+import com.prgrms.dto.UserDto;
+import com.prgrms.dto.UserDto.UserCreateRequest;
+import com.prgrms.web.auth.SessionManager;
+
 @DisplayName("sessionCookie 를 적용한 postController 테스트")
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
 class PostApiVer2Test {
 
-    @Autowired
-    MockMvc mockMvc;
+	private final ObjectMapper objectMapper = new ObjectMapper();
+	private final MockHttpServletResponse response = new MockHttpServletResponse();
+	private final MockHttpServletRequest request = new MockHttpServletRequest();
+	private final String SESSION_NAME = "userId";
+	@Autowired
+	private MockMvc mockMvc;
+	@Autowired
+	private PostService postService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private SessionManager sessionManager;
+	private UserDto.Response savedUser;
 
-    @Autowired
-    PostService postService;
+	private String toJsonString(final Object obj) throws JsonProcessingException {
+		return objectMapper.writeValueAsString(obj);
+	}
 
-    @Autowired
-    PostRepository postRepository;
+	@BeforeAll
+	void setUp() {
+		UserCreateRequest source = new UserCreateRequest(
+			"회원1",
+			"테스트 코드 짜기",
+			10,
+			"user1@gmail.com",
+			"1q1q1q1q!");
 
-    @Autowired
-    UserService userService;
+		savedUser = userService.insertUser(source);
+		sessionManager.createSession(
+			savedUser.getUserId(),
+			request,
+			response);
+	}
 
-    @Autowired
-    SessionManager sessionManager;
+	@DisplayName("게시글을 생성할 수 있다")
+	@Test
+	void createPost() throws Exception {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private final MockHttpServletResponse response = new MockHttpServletResponse();
-    private UserDto.Response savedUser;
-    private final MockHttpServletRequest request = new MockHttpServletRequest();
-    private final String SESSION_NAME = "userId";
+		Request source = new Request("제목", "내용");
 
-    private String toJsonString(final Object obj) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(obj);
-    }
+		mockMvc.perform(post("/api/v2/posts")
+				.content(toJsonString(source))
+				.contentType(MediaType.APPLICATION_JSON)
+				.cookie(response.getCookie(SESSION_NAME)))
+			.andExpect(status().isCreated());
+	}
 
-    @BeforeAll
-    void setUp() {
-        UserCreateRequest source = new UserCreateRequest(
-            "회원1",
-            "테스트 코드 짜기",
-            10,
-            "user1@gmail.com",
-            "1q1q1q1q!");
+	@DisplayName("로그인을 하지 않을 경우 게시글을 작성할 수 없다")
+	@Test
+	void createPostFail() throws Exception {
+		Request source = new Request("제목", "내용");
 
-        savedUser = userService.insertUser(source);
-        sessionManager.checkDuplicateLoginAndRegisterSession(
-            savedUser.getUserId(),
-            request,
-            response);
-    }
+		mockMvc.perform(post("/api/v2/posts")
+				.content(toJsonString(source))
+				.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isUnauthorized());
+	}
 
-    @DisplayName("게시글을 생성할 수 있다")
-    @Test
-    void createPost() throws Exception {
+	@DisplayName("본인의 게시글을 수정할 수 있다")
+	@Test
+	void editPost() throws Exception {
+		Request createSource = new Request("제목", "내용");
+		Update updateSource = new Update("수정한 제목", "수정한 내용");
 
-        Request source = new Request("제목", "내용");
+		Response createdPost = postService.insertPost(savedUser.getUserId(), createSource);
 
-        mockMvc.perform(post("/api/v2/posts")
-                .content(toJsonString(source))
-                .contentType(MediaType.APPLICATION_JSON)
-                .cookie(response.getCookie(SESSION_NAME)))
-            .andExpect(status().isCreated());
-    }
+		mockMvc.perform(patch("/api/v2/posts/" + createdPost.getPostId())
+				.content(toJsonString(updateSource))
+				.contentType(MediaType.APPLICATION_JSON)
+				.cookie(response.getCookie(SESSION_NAME)))
+			.andExpect(status().isOk());
+	}
 
-    @DisplayName("로그인을 하지 않을 경우 게시글을 작성할 수 없다")
-    @Test
-    void createPostFail() throws Exception {
-        Request source = new Request("제목", "내용");
+	@DisplayName("본인의 게시글이 아닌 게시글은 수정할 수 없다")
+	@Test
+	void editPostFail() throws Exception {
 
-        mockMvc.perform(post("/api/v2/posts")
-                .content(toJsonString(source))
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isUnauthorized());
-    }
+		UserCreateRequest userSource = new UserCreateRequest(
+			"회원2",
+			"노래듣기",
+			10,
+			"user2@gmail.com",
+			"2q2q2q2q!");
 
-    @DisplayName("본인의 게시글을 수정할 수 있다")
-    @Test
-    void editPost() throws Exception {
-        Request createSource = new Request("제목", "내용");
-        Update updateSource = new Update("수정한 제목", "수정한 내용");
+		UserDto.Response savedUser2 = userService.insertUser(userSource);
 
-        Response createdPost = postService.insertPost(savedUser.getUserId(), createSource);
+		Request createSource = new Request("제목", "내용");
+		Update updateSource = new Update("수정한 제목", "수정한 내용");
 
-        mockMvc.perform(patch("/api/v2/posts/" + createdPost.getPostId())
-            .content(toJsonString(updateSource))
-            .contentType(MediaType.APPLICATION_JSON)
-            .cookie(response.getCookie(SESSION_NAME)))
-            .andExpect(status().isOk());
-    }
+		Response createdPost = postService.insertPost(savedUser2.getUserId(), createSource);
 
-    @DisplayName("본인의 게시글이 아닌 게시글은 수정할 수 없다")
-    @Test
-    void editPostFail() throws Exception {
+		mockMvc.perform(patch("/api/v2/posts/" + createdPost.getPostId())
+				.content(toJsonString(updateSource))
+				.contentType(MediaType.APPLICATION_JSON)
+				.cookie(response.getCookie(SESSION_NAME)))
+			.andExpect(status().isUnauthorized());
+	}
 
-        UserCreateRequest userSource = new UserCreateRequest(
-            "회원2",
-            "노래듣기",
-            10,
-            "user2@gmail.com",
-            "2q2q2q2q!");
+	@DisplayName("본인의 게시글을 삭제할 수 있다")
+	@Test
+	void deletePost() throws Exception {
 
-        UserDto.Response savedUser2 = userService.insertUser(userSource);
+		Request createSource = new Request("제목", "내용");
+		Response createdPost = postService.insertPost(savedUser.getUserId(), createSource);
 
-        Request createSource = new Request("제목", "내용");
-        Update updateSource = new Update("수정한 제목", "수정한 내용");
+		mockMvc.perform(delete("/api/v2/posts/" + createdPost.getPostId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.cookie(response.getCookie(SESSION_NAME)))
+			.andExpect(status().isNoContent());
+	}
 
-        Response createdPost = postService.insertPost(savedUser2.getUserId(), createSource);
+	@DisplayName("본인의 게시글이 아니면 삭제할 수 없다")
+	@Test
+	void deletePostFail() throws Exception {
+		UserCreateRequest userSource = new UserCreateRequest(
+			"회원3",
+			"영화보기",
+			10,
+			"user3@gmail.com",
+			"3q3q3q3q!");
 
-        mockMvc.perform(patch("/api/v2/posts/" + createdPost.getPostId())
-                .content(toJsonString(updateSource))
-                .contentType(MediaType.APPLICATION_JSON)
-                .cookie(response.getCookie(SESSION_NAME)))
-            .andExpect(status().isUnauthorized());
-    }
+		UserDto.Response savedUser3 = userService.insertUser(userSource);
+		Request createSource = new Request("제목", "내용");
+		Response createdPost = postService.insertPost(savedUser3.getUserId(), createSource);
 
-    @DisplayName("본인의 게시글을 삭제할 수 있다")
-    @Test
-    void deletePost() throws Exception{
-
-        Request createSource = new Request("제목", "내용");
-        Response createdPost = postService.insertPost(savedUser.getUserId(), createSource);
-
-        mockMvc.perform(delete("/api/v2/posts/" + createdPost.getPostId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .cookie(response.getCookie(SESSION_NAME)))
-            .andExpect(status().isNoContent());
-    }
-
-    @DisplayName("본인의 게시글이 아니면 삭제할 수 없다")
-    @Test
-    void deletePostFail() throws Exception{
-        UserCreateRequest userSource = new UserCreateRequest(
-            "회원3",
-            "영화보기",
-            10,
-            "user3@gmail.com",
-            "3q3q3q3q!");
-
-        UserDto.Response savedUser3 = userService.insertUser(userSource);
-        Request createSource = new Request("제목", "내용");
-        Response createdPost = postService.insertPost(savedUser3.getUserId(), createSource);
-
-        mockMvc.perform(delete("/api/v2/posts/" + createdPost.getPostId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .cookie(response.getCookie(SESSION_NAME)))
-            .andExpect(status().isUnauthorized());
-    }
+		mockMvc.perform(delete("/api/v2/posts/" + createdPost.getPostId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.cookie(response.getCookie(SESSION_NAME)))
+			.andExpect(status().isUnauthorized());
+	}
 
 }
