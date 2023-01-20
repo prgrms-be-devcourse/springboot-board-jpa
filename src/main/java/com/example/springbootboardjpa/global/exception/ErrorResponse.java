@@ -25,8 +25,6 @@ public class ErrorResponse {
         .status(errorCode.getHttpStatus())
         .body(
             ErrorResponse.builder()
-                .status(errorCode.getHttpStatus().value())
-                .error(errorCode.getHttpStatus().name())
                 .code(errorCode.name())
                 .message(errorCode.getMessage())
                 .build());
@@ -39,8 +37,6 @@ public class ErrorResponse {
         .status(errorCode.getHttpStatus())
         .body(
             ErrorResponse.builder()
-                .status(errorCode.getHttpStatus().value())
-                .error(errorCode.getHttpStatus().name())
                 .code(errorCode.name())
                 .message(customException.getMessage())
                 .build());

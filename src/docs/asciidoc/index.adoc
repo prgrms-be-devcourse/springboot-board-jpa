@@ -47,6 +47,6 @@ include::{snippets}/PostController/update/path-parameters.adoc[]
 ==== request fields
 include::{snippets}/PostController/update/request-fields.adoc[]
 ==== response
-include::{snippets}/PostController/findById/http-response.adoc[]
+include::{snippets}/PostController/update/http-response.adoc[]
 ==== response fields
-include::{snippets}/PostController/findById/response-fields.adoc[]
+include::{snippets}/PostController/update/response-fields.adoc[]

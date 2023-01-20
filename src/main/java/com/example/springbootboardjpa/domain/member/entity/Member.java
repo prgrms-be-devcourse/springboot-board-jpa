@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,9 +47,9 @@ public class Member extends BaseTimeEntity {
     this.hobby = hobby;
   }
 
-  public void idMatching(Long id) {
-    if (this.id != id) {
-      throw new CustomException(ErrorCode.NOT_HAVA_PERMISSION);
+  public void isId(Long id) {
+    if (!Objects.equals(this.id, id)) {
+      throw new CustomException(ErrorCode.NOT_PERMISSION);
     }
   }
 }

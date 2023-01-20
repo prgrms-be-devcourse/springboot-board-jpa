@@ -1,6 +1,8 @@
 package com.example.springbootboardjpa.domain.post.service;
 
 import com.example.springbootboardjpa.domain.member.repository.MemberRepository;
+import com.example.springbootboardjpa.domain.post.dto.request.PostSaveRequestDto;
+import com.example.springbootboardjpa.domain.post.dto.request.PostUpdateRequestDto;
 import com.example.springbootboardjpa.domain.post.entity.Post;
 import com.example.springbootboardjpa.domain.post.repository.PostRepository;
 import com.example.springbootboardjpa.global.exception.CustomException;
@@ -23,14 +25,10 @@ public class PostService {
   private final MemberRepository memberRepository;
 
   @Transactional
-  public Post save(String title, String content, long memberId) {
-    Member member = getMember(memberId);
+  public Post save(PostSaveRequestDto postSaveRequestDto) {
+    Member member = getMember(postSaveRequestDto.getMemberId());
 
-    Post post = Post.builder()
-        .title(title)
-        .content(content)
-        .member(member)
-        .build();
+    Post post = PostSaveRequestDto.toPost(postSaveRequestDto, member);
 
     return postRepository.save(post);
   }
@@ -44,14 +42,12 @@ public class PostService {
   }
 
   @Transactional
-  public Post update(long id, String title, String content, long memberId) {
-    Post post = getPost(id);
+  public Post update(Long postId,PostUpdateRequestDto postUpdateRequestDto) {
+    Post post = getPost(postId);
+    post.isOwner(postUpdateRequestDto.getMemberId());
 
-    Member member = getMember(memberId);
-    member.idMatching(post.getMember().getId());
-
-    post.changeTitle(title);
-    post.changeContent(content);
+    Post updatePost = postUpdateRequestDto.toPost(postUpdateRequestDto);
+    post.update(updatePost);
 
     return post;
   }

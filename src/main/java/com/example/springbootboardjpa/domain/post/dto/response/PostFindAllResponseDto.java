@@ -1,21 +1,25 @@
 package com.example.springbootboardjpa.domain.post.dto.response;
 
+import com.example.springbootboardjpa.domain.post.entity.Post;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
+import lombok.Getter;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
 public class PostFindAllResponseDto {
 
     private long postId;
     private String title;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
-    private long createdBy;
+
+    protected PostFindAllResponseDto() {
+
+    }
+
+    public PostFindAllResponseDto(Post post) {
+        this.postId = post.getId();
+        this.title = post.getTitle();
+        this.createdAt = post.getCreatedAt();
+    }
 }

@@ -24,8 +24,6 @@ ext {
     snippetsDir = file('build/generated-snippets')
 }
 
-
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -60,7 +58,6 @@ asciidoctor {
 asciidoctor.doFirst {
     delete file('src/main/resources/static/docs')
 }
-
 
 task copyDocument(type: Copy) {
     dependsOn asciidoctor

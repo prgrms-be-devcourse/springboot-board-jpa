@@ -1,17 +1,13 @@
 spring:
   profiles:
-    active: dev
+    active: local
     group:
       development:
         - dev
       production:
         - prod
-
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:test
-    username: sa
-    password:
+      local:
+        - local
 
   h2:
     console:
@@ -33,12 +29,34 @@ spring:
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: local
 
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:local
+    username: sa
+    password:
 
 logging:
   file:
-    path: ./logs/app-dev
+    path: ./logs/local
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:~/springBoardJpaDev
+    username: sa
+    password:
+
+logging:
+  file:
+    path: ./logs/dev
 
 ---
 
@@ -47,6 +65,12 @@ spring:
     activate:
       on-profile: prod
 
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:~/springBoardJpaDev
+    username: sa
+    password:
+
 logging:
   file:
-    path: ./logs/app-release
+    path: ./logs/prod

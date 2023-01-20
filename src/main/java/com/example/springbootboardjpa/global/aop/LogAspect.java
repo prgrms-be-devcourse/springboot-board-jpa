@@ -17,7 +17,7 @@ public class LogAspect {
   public Object logging(ProceedingJoinPoint pjp) throws Throwable {
     long beforeTimeMillis = System.nanoTime();
 
-    log.info("실행 시작 : "
+    log.debug("실행 시작 : "
         + pjp.getSignature().getDeclaringTypeName() + "."
         + pjp.getSignature().getName());
 
@@ -25,7 +25,7 @@ public class LogAspect {
 
     long afterTimeMillis = System.nanoTime() - beforeTimeMillis;
 
-    log.info("실행 완료 : "
+    log.debug("실행 완료 : "
         + afterTimeMillis + "ns 소요 : "
         + pjp.getSignature().getDeclaringTypeName()
         + " : "

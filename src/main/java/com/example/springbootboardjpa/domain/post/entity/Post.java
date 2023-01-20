@@ -2,6 +2,8 @@ package com.example.springbootboardjpa.domain.post.entity;
 
 import com.example.springbootboardjpa.domain.member.entity.Member;
 import com.example.springbootboardjpa.global.entity.BaseTimeEntity;
+import com.example.springbootboardjpa.global.exception.CustomException;
+import com.example.springbootboardjpa.global.exception.ErrorCode;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -34,14 +36,14 @@ public class Post extends BaseTimeEntity {
     }
     this.member = member;
     member.getPosts().add(this);
-    this.setCreatedBy(member.getId());
   }
 
-  public void changeTitle(String title) {
-    this.title = title;
+  public void update(Post updatePost) {
+    this.title = updatePost.getTitle();
+    this.content = updatePost.getContent();
   }
 
-  public void changeContent(String content) {
-    this.content = content;
+  public void isOwner(long memberId) {
+    this.member.isId(memberId);
   }
 }
