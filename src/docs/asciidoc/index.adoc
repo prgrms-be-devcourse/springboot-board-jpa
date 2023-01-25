@@ -1,0 +1,52 @@
+= Spring REST Docs
+backtony.github.io(Rest Docs)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs // 문서에 표기되는 코드들의 하이라이팅을 highlightjs를 사용
+:toc: left // toc (Table Of Contents)를 문서의 좌측에 두기
+:toclevels: 2
+:sectlinks:
+
+== 게시글 API
+
+=== 게시글 작성 (PostController/save)
+==== request
+include::{snippets}/PostController/save/http-request.adoc[]
+==== request fields
+include::{snippets}/PostController/save/request-fields.adoc[]
+==== response
+include::{snippets}/PostController/save/http-response.adoc[]
+==== response fields
+include::{snippets}/PostController/save/response-fields.adoc[]
+
+=== 게시글 전체 조회 (PostController/findAll)
+==== request
+include::{snippets}/PostController/findAll/http-request.adoc[]
+==== request query parameters
+include::{snippets}/PostController/findAll/query-parameters.adoc[]
+==== response
+include::{snippets}/PostController/findAll/http-response.adoc[]
+==== response fields
+include::{snippets}/PostController/findAll/response-fields.adoc[]
+
+=== 게시글 상세 조회 (PostController/findById)
+==== request
+include::{snippets}/PostController/findById/http-request.adoc[]
+==== request path parameters
+include::{snippets}/PostController/findById/path-parameters.adoc[]
+==== response
+include::{snippets}/PostController/findById/http-response.adoc[]
+==== response fields
+include::{snippets}/PostController/findById/response-fields.adoc[]
+
+=== 게시글 수정 (PostController/update)
+==== request
+include::{snippets}/PostController/update/http-request.adoc[]
+==== request path parameters
+include::{snippets}/PostController/update/path-parameters.adoc[]
+==== request fields
+include::{snippets}/PostController/update/request-fields.adoc[]
+==== response
+include::{snippets}/PostController/update/http-response.adoc[]
+==== response fields
+include::{snippets}/PostController/update/response-fields.adoc[]
