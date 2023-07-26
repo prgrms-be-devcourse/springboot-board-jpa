@@ -10,8 +10,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,17 +41,24 @@ public class User extends BaseEntity {
 
     private String hobby;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
     @Builder
-    public User(String name, int age, String hobby, List<Post> posts) {
+    public User(String name, int age, String hobby) {
         validateAge(age);
         validateName(name);
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        this.posts = posts;
+    }
+
+    public void addPost(Post post) {
+        posts.add(post);
+    }
+
+    public void removePost(Post post) {
+        posts.remove(post);
     }
 
     private void validateName(String name) {
