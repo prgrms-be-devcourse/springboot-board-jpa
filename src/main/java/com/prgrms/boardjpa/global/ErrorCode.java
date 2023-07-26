@@ -11,6 +11,9 @@ public enum ErrorCode {
     INVALID_NAME(HttpStatus.BAD_REQUEST, "올바른 이름을 입력해주세요."),
     DUPLICATED_NAME(HttpStatus.BAD_REQUEST, "이미 존재하는 이름입니다."),
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
+
+    //게시물
+    NOT_FOUND_POST(HttpStatus.NOT_FOUND, "존재하지 않는 게시물입니다."),
     ;
 
     private final HttpStatus status;
