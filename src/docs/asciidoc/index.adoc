@@ -1,0 +1,23 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+= REST Docs 게시판 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[User-API]]
+== User API
+=== 유저 등록
+==== /api/v1/users
+.Request
+include::{snippets}/user-join/http-request.adoc[]
+include::{snippets}/user-join/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-join/http-response.adoc[]
+include::{snippets}/user-join/response-fields.adoc[]
