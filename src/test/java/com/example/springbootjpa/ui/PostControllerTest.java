@@ -43,7 +43,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureMockMvc
 @WebMvcTest(PostController.class)
-@MockBean(JpaMetamodelMappingContext.class)
 class PostControllerTest {
 
     @Autowired
