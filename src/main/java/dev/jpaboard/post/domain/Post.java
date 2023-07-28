@@ -1,5 +1,6 @@
 package dev.jpaboard.post.domain;
 
+import dev.jpaboard.BaseEntity;
 import dev.jpaboard.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Post extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +25,6 @@ public class Post {
 
   @Column(length = 5000, nullable = false)
   private String content;
-
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
 
   @Builder
   private Post(String title, String content) {

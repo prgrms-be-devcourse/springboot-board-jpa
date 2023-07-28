@@ -1,5 +1,6 @@
 package dev.jpaboard.user.domain;
 
+import dev.jpaboard.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +23,6 @@ public class User {
 
   @Column(length = 20)
   private String hobby;
-
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
 
   @Builder
   private User(String name, int age, String hobby) {
