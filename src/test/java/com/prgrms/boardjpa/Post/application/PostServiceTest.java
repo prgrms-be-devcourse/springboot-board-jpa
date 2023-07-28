@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -114,9 +115,10 @@ class PostServiceTest {
 
         //given
         PostResponse postResponse = postService.create(postRequest);
+        PageRequest pageRequest = PageRequest.of(0, 5);
 
         //when
-        PostListResponse postListResponse = postService.findAll();
+        PostListResponse postListResponse = postService.findAll(pageRequest);
 
         //then
         assertThat(postListResponse.postResponseList()).isNotNull();

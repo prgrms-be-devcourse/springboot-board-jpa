@@ -11,6 +11,8 @@ import com.prgrms.boardjpa.User.domain.UserRepository;
 import com.prgrms.boardjpa.global.ErrorCode;
 import com.prgrms.boardjpa.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,8 +47,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostListResponse findAll() {
-        List<Post> postList = postRepository.findAll();
+    public PostListResponse findAll(Pageable pageable) {
+        Page<Post> postList = postRepository.findAll(pageable);
         List<PostResponse> postResponseList = postList
                 .stream()
                 .map(PostResponse::create)
