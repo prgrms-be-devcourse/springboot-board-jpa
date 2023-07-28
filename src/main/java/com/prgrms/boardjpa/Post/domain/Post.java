@@ -32,7 +32,7 @@ public class Post extends BaseEntity {
     private String title;
 
     @Lob
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,7 +51,12 @@ public class Post extends BaseEntity {
     }
 
     public void update(PostUpdateRequest updateRequest) {
-        this.title = updateRequest.title();
-        this.content = updateRequest.content();
+        if (updateRequest.title() != null) {
+            this.title = updateRequest.title();
+        }
+
+        if (updateRequest.content() != null) {
+            this.content = updateRequest.content();
+        }
     }
 }
