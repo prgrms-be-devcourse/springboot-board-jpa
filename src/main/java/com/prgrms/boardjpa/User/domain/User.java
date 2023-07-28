@@ -21,12 +21,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 @Entity
 public class User extends BaseEntity {
+
+    private static final Pattern STRING_REGEX_PATTERN = Pattern.compile("^[가-힣a-zA-Z0-9]+$");
     private static final int MINIMUM_AGE = 0;
 
     @Id
@@ -62,7 +65,8 @@ public class User extends BaseEntity {
     }
 
     private void validateName(String name) {
-        if (!StringUtils.hasText(name)) {
+        if (!StringUtils.hasText(name)
+                || !STRING_REGEX_PATTERN.matcher(name).matches()) {
             throw new InvalidDomainConditionException(ErrorCode.INVALID_NAME);
         }
     }
