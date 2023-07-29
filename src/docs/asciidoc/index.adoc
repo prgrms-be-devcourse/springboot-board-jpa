@@ -12,8 +12,10 @@ endif::[]
 
 [[User-API]]
 == User API
+
 === 유저 등록
 ==== /api/v1/users
+
 .Request
 include::{snippets}/user-join/http-request.adoc[]
 include::{snippets}/user-join/request-fields.adoc[]
@@ -21,3 +23,40 @@ include::{snippets}/user-join/request-fields.adoc[]
 .Response
 include::{snippets}/user-join/http-response.adoc[]
 include::{snippets}/user-join/response-fields.adoc[]
+
+[[Post-API]]
+== Post API
+
+=== 게시물 등록
+==== /api/v1/posts
+.Request
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+.Response
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+=== 게시물 전체 조회
+==== /api/v1/posts
+.Response
+include::{snippets}/post-get-all/http-response.adoc[]
+include::{snippets}/post-get-all/response-fields.adoc[]
+
+=== 게시물 단건 조회
+==== /api/v1/posts/{id}
+.Request
+include::{snippets}/post-get-one/http-request.adoc[]
+include::{snippets}/post-get-one/path-parameters.adoc[]
+.Response
+include::{snippets}/post-get-one/http-response.adoc[]
+include::{snippets}/post-get-one/response-fields.adoc[]
+
+=== 게시물 수정 조회
+==== /api/v1/posts/{id}
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/path-parameters.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
