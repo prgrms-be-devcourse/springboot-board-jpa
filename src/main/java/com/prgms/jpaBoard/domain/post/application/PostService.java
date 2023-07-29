@@ -3,13 +3,16 @@ package com.prgms.jpaBoard.domain.post.application;
 import com.prgms.jpaBoard.domain.post.Post;
 import com.prgms.jpaBoard.domain.post.PostRepository;
 import com.prgms.jpaBoard.domain.post.application.dto.PostResponse;
+import com.prgms.jpaBoard.domain.post.application.dto.PostResponses;
 import com.prgms.jpaBoard.domain.post.presentation.dto.PostSaveRequest;
 import com.prgms.jpaBoard.domain.post.presentation.dto.PostUpdateRequest;
 import com.prgms.jpaBoard.domain.user.User;
 import com.prgms.jpaBoard.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -43,6 +46,15 @@ public class PostService {
                 .orElseThrow(() -> new NoSuchElementException(POST_NOT_FOUND_MSG));
 
         return new PostResponse(post);
+    }
+
+    public PostResponses readAllPost(Pageable pageable) {
+        List<PostResponse> postResponses = postRepository.findAll(pageable)
+                .stream()
+                .map(PostResponse::new)
+                .toList();
+
+        return new PostResponses(postResponses);
     }
 
     @Transactional

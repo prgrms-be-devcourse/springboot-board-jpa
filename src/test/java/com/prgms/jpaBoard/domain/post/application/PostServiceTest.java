@@ -1,6 +1,7 @@
 package com.prgms.jpaBoard.domain.post.application;
 
 import com.prgms.jpaBoard.domain.post.application.dto.PostResponse;
+import com.prgms.jpaBoard.domain.post.application.dto.PostResponses;
 import com.prgms.jpaBoard.domain.post.presentation.dto.PostSaveRequest;
 import com.prgms.jpaBoard.domain.post.presentation.dto.PostUpdateRequest;
 import com.prgms.jpaBoard.domain.user.HobbyType;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -55,6 +58,27 @@ class PostServiceTest {
         assertThat(postResponse.id()).isEqualTo(savedPostId);
         assertThat(postResponse.title()).isEqualTo(postSaveRequest.title());
         assertThat(postResponse.content()).isEqualTo(postSaveRequest.content());
+    }
+    
+    @Test
+    @DisplayName("전체 게시글을 페이징을 적용하여 조회 할 수 있다.")
+    void readAll() {
+        // Given
+        User user = new User("재웅", 28, HobbyType.CLIMBING);
+        User savedUser = userRepository.save(user);
+
+        PostSaveRequest postSaveRequestA = new PostSaveRequest("aaa", "금요일 밤에 미션하는중.", savedUser.getId());
+        PostSaveRequest postSaveRequestB = new PostSaveRequest("bbb", "곧 토요일", savedUser.getId());
+        postService.post(postSaveRequestA);
+        postService.post(postSaveRequestB);
+
+        PageRequest pageRequest = PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "id"));
+
+        // When
+        PostResponses postResponses = postService.readAllPost(pageRequest);
+
+        // Then
+        assertThat(postResponses.postResponses()).hasSize(2);
     }
 
     @Test
