@@ -15,6 +15,12 @@ public enum Error {
     VALIDATION_REQUEST_MISSING_EXCEPTION(HttpStatus.BAD_REQUEST, "요청값이 입력되지 않았습니다."),
     VALIDATION_REQUEST_HEADER_MISSING_EXCEPTION(HttpStatus.BAD_REQUEST, "요청 헤더값이 입력되지 않았습니다."),
     VALIDATION_REQUEST_PARAMETER_MISSING_EXCEPTION(HttpStatus.BAD_REQUEST, "요청 파라미터값이 입력되지 않았습니다."),
+    PAGE_REQUEST_VALIDATION_EXCEPTION(HttpStatus.BAD_REQUEST, "페이지 넘버가 유효하지 않습니다."),
+
+    /**
+     * 401 UNAUTHORIZED
+     */
+    UPDATE_POST_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "게시글 수정 요청 권한이 없습니다."),
 
     /**
      * 404 NOT FOUND

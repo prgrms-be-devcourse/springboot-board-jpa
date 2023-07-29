@@ -10,7 +10,9 @@ import com.board.server.domain.post.entity.PostRepository;
 import com.board.server.domain.user.entity.User;
 import com.board.server.domain.user.entity.UserRepository;
 import com.board.server.global.exception.Error;
+import com.board.server.global.exception.model.BadRequestException;
 import com.board.server.global.exception.model.NotFoundException;
+import com.board.server.global.exception.model.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +38,7 @@ public class PostService {
         Post post = Post.builder()
                 .title(request.title())
                 .content(request.content())
+                .user(user)
                 .build();
         post.setCreatedBy(user.getName());
         postRepository.save(post);
@@ -84,9 +87,13 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponse updatePost(UpdatePostRequest request, Long postId) {
+    public PostResponse updatePost(UpdatePostRequest request, Long postId, Long userId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Error.NOT_FOUND_POST_EXCEPTION, Error.NOT_FOUND_POST_EXCEPTION.getMessage()));
+
+        if (post.getUser().getUserId() != userId) {
+            throw new UnauthorizedException(Error.UPDATE_POST_UNAUTHORIZED, Error.UPDATE_POST_UNAUTHORIZED.getMessage());
+        }
 
         if (request.title() != null) {
             post.updateTitle(request.title());
