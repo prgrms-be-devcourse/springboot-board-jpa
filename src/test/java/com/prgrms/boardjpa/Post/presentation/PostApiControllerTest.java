@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.operation.preprocess.Preprocessors;
+import org.springframework.restdocs.snippet.Attributes;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,10 +27,12 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
+import static org.springframework.restdocs.payload.JsonFieldType.OBJECT;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -101,6 +104,71 @@ class PostApiControllerTest {
     }
 
     @Test
+    @DisplayName("게시물 등록 실패 - 존재하지 않는 유저")
+    void createPostFailTest_notFoundUser() throws Exception {
+
+        //given
+        PostCreateRequest postCreateRequest = PostCreateRequest.builder()
+                .userId(30L)
+                .title("제목")
+                .content("내용")
+                .build();
+
+        //when -> then
+        mockMvc.perform(post("/api/v1/posts")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postCreateRequest)))
+                .andExpect(status().isNotFound())
+                .andDo(print())
+                .andDo(document("post-create-fail-not-found-user",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("userId").type(NUMBER).description("User Id"),
+                                fieldWithPath("title").type(STRING).description("Title"),
+                                fieldWithPath("content").type(STRING).description("Content")),
+                        responseFields(
+                                fieldWithPath("httpStatus").type(STRING).description("상태 코드"),
+                                fieldWithPath("message").type(STRING).description("응답 메세지"),
+                                fieldWithPath("valid").type(OBJECT).description("상세 정보")
+                        )));
+    }
+
+    @Test
+    @DisplayName("게시물 등록 실패 - 잘못된 데이터 입력")
+    void createPostFailTest_invalidData() throws Exception {
+
+        //given
+        PostCreateRequest postCreateRequest = PostCreateRequest.builder()
+                .userId(30L)
+                .title(" ")
+                .content("내용")
+                .build();
+
+        //when -> then
+        mockMvc.perform(post("/api/v1/posts")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postCreateRequest)))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andDo(document("post-create-fail-invalid-data",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("userId").type(NUMBER).description("User Id"),
+                                fieldWithPath("title").type(STRING).description("Title"),
+                                fieldWithPath("content").type(STRING).description("Content")),
+                        responseFields(
+                                fieldWithPath("httpStatus").type(STRING).description("상태 코드"),
+                                fieldWithPath("message").type(STRING).description("응답 메세지"),
+                                subsectionWithPath("valid").description("상세 정보")
+                                        .attributes(
+                                                Attributes.key("title").value("상세 에러 메세지 - 제목을 입력해 주세요.")
+                                        )
+                        )));
+    }
+
+    @Test
     @DisplayName("게시물 전체 조회 성공")
     void findAllSuccessTest() throws Exception {
 
@@ -164,6 +232,26 @@ class PostApiControllerTest {
     }
 
     @Test
+    @DisplayName("게시물 단건 조회 실패 - 존재하지 않는 게시물")
+    void findOneFailTest_notFoundPost() throws Exception {
+
+        //when -> then
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", 100L)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print())
+                .andDo(document("post-get-one-fail-not-found-post",
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("Post Id")),
+                        responseFields(
+                                fieldWithPath("httpStatus").type(STRING).description("상태 코드"),
+                                fieldWithPath("message").type(STRING).description("응답 메세지"),
+                                fieldWithPath("valid").type(OBJECT).description("상세 정보")
+                        )));
+    }
+
+    @Test
     @DisplayName("게시물 수정 성공")
     void updatePostSuccessTest() throws Exception {
 
@@ -198,6 +286,42 @@ class PostApiControllerTest {
                                 fieldWithPath("content").type(STRING).description("수정된 내용"),
                                 fieldWithPath("authorId").type(NUMBER).description("작성자 ID")
                         )));
-
     }
+
+    @Test
+    @DisplayName("게시물 수정 실패 - 존재하지 않는 게시물")
+    void updatePostFailTest_notFoundPost() throws Exception {
+
+        //given
+        Post post = Post.builder()
+                .title("제목1")
+                .content("내용1")
+                .build();
+        post.updateUser(user);
+        postRepository.save(post);
+
+        PostUpdateRequest postUpdateRequest = new PostUpdateRequest("제목변경", "내용변경");
+
+        //when -> then
+        mockMvc.perform(patch("/api/v1/posts/{id}", 100L)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postUpdateRequest)))
+                .andExpect(status().isNotFound())
+                .andDo(print())
+                .andDo(document("post-update-fail-not-found-post",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("Post Id")),
+                        requestFields(
+                                fieldWithPath("title").type(STRING).description("Update Title"),
+                                fieldWithPath("content").type(STRING).description("Update Content")
+                        ),
+                        responseFields(
+                                fieldWithPath("httpStatus").type(STRING).description("상태 코드"),
+                                fieldWithPath("message").type(STRING).description("응답 메세지"),
+                                fieldWithPath("valid").type(OBJECT).description("상세 정보")
+                        )));
+    }
+
 }
