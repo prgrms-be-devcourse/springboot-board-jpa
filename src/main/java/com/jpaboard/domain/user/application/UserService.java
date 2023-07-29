@@ -1,15 +1,17 @@
 package com.jpaboard.domain.user.application;
 
-import com.jpaboard.domain.user.dto.UserCreationRequest;
-import com.jpaboard.domain.user.dto.UserResponse;
-import com.jpaboard.domain.user.dto.UserUpdateRequest;
+import com.jpaboard.domain.user.dto.request.UserCreationRequest;
+import com.jpaboard.domain.user.dto.response.UserResponse;
+import com.jpaboard.domain.user.dto.request.UserUpdateRequest;
+import jakarta.transaction.Transactional;
 
 public interface UserService {
-    Long save(UserCreationRequest request);
 
-    UserResponse findById(Long id);
+    Long createUser(UserCreationRequest request);
 
-    void updateById(Long id, UserUpdateRequest request);
+    UserResponse findCustomerById(Long id);
 
-    void deleteById(Long id);
+    void updateCustomer(Long id, UserUpdateRequest request);
+
+    void deleteCustomer(Long id);
 }

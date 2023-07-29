@@ -2,41 +2,45 @@ package com.jpaboard.domain.user.application;
 
 import com.jpaboard.domain.user.User;
 import com.jpaboard.domain.user.UserConverter;
-import com.jpaboard.domain.user.dto.UserCreationRequest;
-import com.jpaboard.domain.user.dto.UserUpdateRequest;
+import com.jpaboard.domain.user.dto.request.UserCreationRequest;
+import com.jpaboard.domain.user.dto.request.UserUpdateRequest;
+import com.jpaboard.domain.user.dto.response.UserResponse;
 import com.jpaboard.domain.user.infrastructure.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
+    @Transactional
     @Override
-    public Long save(UserCreationRequest request) {
-        User savedUser = UserConverter.convertRequestToEntity(request);
-        userRepository.save()
+    public Long createUser(UserCreationRequest request) {
+        User user = UserConverter.convertRequestToEntity(request);
+        return userRepository.save(user).getId();
     }
 
     @Override
-    public User findById(Long id) {
+    public UserResponse findCustomerById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        return UserConverter.convertEntityToResponse(user);
+    }
 
-        return;
+    @Transactional
+    @Override
+    public void updateCustomer(Long id, UserUpdateRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        User forUpdate = UserConverter.convertRequestToEntity(request);
+        user.update(forUpdate);
     }
 
     @Override
-    public void updateById(Long id, UserUpdateRequest request) {
-
+    public void deleteCustomer(Long id) {
+        userRepository.deleteById(id);
     }
-
-    @Override
-    public void deleteById(Long id) {
-
-    }
-//    void update(Long id, UserUpdateRequest request) {
-//        User found = findbyId(id)
-//        requestUser 생성 시점부터 id값을 증가시켜버려서 (mysql에 키를 생성)
-//        found.update(request);
-////        or
-////        found.update(requestUser);// controller -> service -> domain
-//    }
 }

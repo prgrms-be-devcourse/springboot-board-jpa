@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -30,6 +31,24 @@ public class User {
     public User(String name, int age, String hobby) {
         this.name = name;
         this.age = age;
+        this.hobby = hobby;
+    }
+
+    public void update(User user) {
+        changeName(user.getName());
+        changeAge(user.getAge());
+        changeHobby(user.getHobby());
+    }
+
+    private void changeName(String name) {
+        this.name = name;
+    }
+
+    private void changeAge(int age) {
+        this.age = age;
+    }
+
+    private void changeHobby(String hobby) {
         this.hobby = hobby;
     }
 }

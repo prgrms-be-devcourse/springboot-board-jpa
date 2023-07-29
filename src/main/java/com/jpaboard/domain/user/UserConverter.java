@@ -1,7 +1,8 @@
 package com.jpaboard.domain.user;
 
-import com.jpaboard.domain.user.dto.UserCreationRequest;
-import com.jpaboard.domain.user.dto.UserResponse;
+import com.jpaboard.domain.user.dto.request.UserCreationRequest;
+import com.jpaboard.domain.user.dto.request.UserUpdateRequest;
+import com.jpaboard.domain.user.dto.response.UserResponse;
 
 public final class UserConverter {
     private UserConverter() {
@@ -18,6 +19,13 @@ public final class UserConverter {
     }
 
     public static User convertRequestToEntity(UserCreationRequest request) {
+        return User.builder()
+                .name(request.name())
+                .age(request.age())
+                .hobby(request.hobby())
+                .build();
+    }
+    public static User convertRequestToEntity(UserUpdateRequest request) {
         return User.builder()
                 .name(request.name())
                 .age(request.age())
