@@ -25,11 +25,11 @@
 
 ### **API를 구현한다.**
 
-- [ ] 게시글 조회
+- [X] 게시글 조회
     - 페이징 조회 (GET "/posts")
     - 단건 조회 (GET "/posts/{id}")
-- [ ] 게시글 작성 (POST "/posts")
-- [ ] 게시글 수정 (POST "/posts/{id}")
+- [X] 게시글 작성 (POST "/posts")
+- [X] 게시글 수정 (POST "/posts/{id}")
 
 ### **REST-DOCS를 이용해서 문서화한다.**
 - [ ] 게시글 조회
