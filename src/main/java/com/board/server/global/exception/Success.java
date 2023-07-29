@@ -13,6 +13,7 @@ public enum Success {
      */
     GET_POST_LIST_SUCCESS(HttpStatus.OK, "게시글 전체 조회 성공"),
     GET_POST_SUCCESS(HttpStatus.OK, "게시글 단일 조회 성공"),
+    UPDATE_POST_SUCCESS(HttpStatus.OK, "게시글 수정 성공"),
 
     /**
      * 201 CREATED
