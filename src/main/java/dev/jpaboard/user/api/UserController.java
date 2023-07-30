@@ -20,26 +20,26 @@ public class UserController {
 
   @PostMapping("/users")
   @ResponseStatus(HttpStatus.CREATED)
-  public UserResponse signUp(UserCreateRequest request) {
+  public UserResponse signUp(@RequestBody UserCreateRequest request) {
     return userService.signUp(request);
   }
 
   @PostMapping("/users/login")
   @ResponseStatus(HttpStatus.OK)
-  public String login(HttpServletRequest httpRequest, UserLoginRequest request) {
+  public Long login(@RequestBody UserLoginRequest request, HttpServletRequest httpRequest) {
     httpRequest.getSession().invalidate();
     HttpSession session = httpRequest.getSession(true);
 
     Long userId = userService.login(request);
     session.setAttribute("userId", userId);
     session.setMaxInactiveInterval(3600);
-
-    return "redirect:api/users";
+    return userId;
   }
 
   @GetMapping("/user/logout")
-  public String logout(HttpServletRequest request) {
-    HttpSession session = request.getSession(false);
+  @ResponseStatus(HttpStatus.OK)
+  public String logout(HttpServletRequest httpRequest) {
+    HttpSession session = httpRequest.getSession(false);
     if (session != null) {
       session.invalidate();
     }
