@@ -6,7 +6,12 @@ import dev.jpaboard.post.dto.PostUpdateRequest;
 import dev.jpaboard.post.exception.PostNotFoundException;
 import dev.jpaboard.post.repository.PostRepository;
 import dev.jpaboard.post.dto.PostResponse;
+import dev.jpaboard.user.domain.User;
+import dev.jpaboard.user.exception.UserNotFoundException;
+import dev.jpaboard.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,14 +43,20 @@ public class PostService {
     return PostResponse.toDto(post);
   }
 
+  public Page<PostResponse> findAll(Pageable pageable) {
+    Page<Post> postPage = postRepository.findAll(pageable);
+    return postPage.map(PostResponse::toDto);
+  }
+
+  public Page<PostResponse> findPostByUser(Long userId, Pageable pageable) {
+    Page<Post> postPage = postRepository.findPostByUserId(userId, pageable);
+    return postPage.map(PostResponse::toDto);
+  }
+
   @Transactional
   public void delete(Long id) {
     postRepository.deleteById(id);
   }
 
-  @Transactional
-  public void deleteAll() {
-    postRepository.deleteAll();
-  }
 
 }
