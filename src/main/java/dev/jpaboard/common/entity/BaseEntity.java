@@ -1,4 +1,4 @@
-package dev.jpaboard;
+package dev.jpaboard.common.entity;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

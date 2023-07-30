@@ -1,7 +1,8 @@
 package dev.jpaboard.user.domain;
 
-import dev.jpaboard.BaseEntity;
+import dev.jpaboard.common.entity.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
@@ -11,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
-  private static final String EMAIL_REGEX = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\\\w+\\\\.)+\\\\w+$";
+  private static final String EMAIL_REGEX = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
   private static final String PASSWORD_REGEX = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$";
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +36,7 @@ public class User extends BaseEntity {
   private String hobby;
 
   @Builder
-  private User(String email, String password, String name, int age, String hobby) {
+  private User(@Valid String email, @Valid String password, String name, int age, String hobby) {
     this.email = email;
     this.password = password;
     this.name = name;
