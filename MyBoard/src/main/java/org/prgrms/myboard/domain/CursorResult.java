@@ -1,34 +1,32 @@
 package org.prgrms.myboard.domain;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
 @Getter
 public class CursorResult<T> {
     @NotNull(message = "다음페이지 유무가 등록되어야 합니다.")
-    private Boolean hasNext;
+    private final Boolean hasNext;
 
     @NotNull(message = "이전페이지 유무가 등록되어야 합니다.")
-    private Boolean hasPrevious;
+    private final Boolean hasPrevious;
 
     @Min(value = 0, message = "게시물 개수가 0개 이상이어야 합니다.")
-    private int postCount;
+    private final int postCount;
 
     @Nullable
-    private List<T> values;
+    private final List<T> values;
 
     @NotNull(message = "다음 커서 Id가 등록되어야 합니다.")
-    private Long nextCursorId;
+    private final Long nextCursorId;
 
     @NotNull(message = "이전 커서 Id가 등록되어야 합니다.")
-    private Long previousCursorId;
+    private final Long previousCursorId;
 
     @Builder
     public CursorResult(Boolean hasNext, Boolean hasPrevious, int postCount, List<T> values, Long nextCursorId, Long previousCursorId) {
