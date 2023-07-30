@@ -1,25 +1,29 @@
 package org.prgrms.myboard.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.prgrms.myboard.domain.CursorResult;
+import org.prgrms.myboard.domain.OffsetResult;
 import org.prgrms.myboard.domain.Post;
 import org.prgrms.myboard.domain.User;
 import org.prgrms.myboard.dto.PostCreateRequestDto;
+import org.prgrms.myboard.dto.PostCursorRequestDto;
 import org.prgrms.myboard.dto.PostResponseDto;
 import org.prgrms.myboard.dto.PostUpdateRequestDto;
 import org.prgrms.myboard.repository.PostRepository;
 import org.prgrms.myboard.repository.UserRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostService {
+    private static final int PAGE_BASE_OFFSET = 1;
+    private static final int DEFAULT_PAGE_SIZE = 10;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
@@ -35,22 +39,22 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PostResponseDto findById(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() ->
-            new RuntimeException("존재하지 않는 id입니다."));
+        Post post = postRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("존재하지 않는 id입니다."));
         return post.toPostResponseDto();
     }
 
     @Transactional
     public void deleteById(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() ->
-            new RuntimeException("존재하지 않는 id입니다."));
+        Post post = postRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("존재하지 않는 id입니다."));
         postRepository.delete(post);
     }
 
     @Transactional
     public PostResponseDto updateById(Long id, PostUpdateRequestDto postUpdateRequestDto) {
-        Post post = postRepository.findById(id).orElseThrow(() ->
-            new RuntimeException("존재하지 않는 id입니다."));
+        Post post = postRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("존재하지 않는 id입니다."));
         post.update(postUpdateRequestDto);
         return post.toPostResponseDto();
     }
@@ -80,24 +84,43 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostResponseDto> getPosts(Long cursorId, Pageable pageable) {
-        return postRepository.findByIdLessThanOrderByIdDesc(cursorId, pageable)
-            .stream()
-            .map(Post::toPostResponseDto)
-            .toList();
+    public Slice<PostResponseDto> callCursorPagination(Long cursorId, int pageSize) {
+        return postRepository.findByIdLessThanOrderByIdDescLimitByPageSize(cursorId, pageSize)
+            .map(Post::toPostResponseDto);
     }
 
     @Transactional(readOnly = true)
-    public CursorResult<PostResponseDto> findAllByCursorId(Long cursorId, Pageable pageable) {
-        List<PostResponseDto> posts = getPosts(cursorId, pageable);
-        Long lastIdOfList = posts.isEmpty() ?
-            null : posts.get(posts.size() - 1).id();
-        log.info("{}", posts.get(0).content());
-        return new CursorResult<>(posts, hasNext(lastIdOfList));
+    public CursorResult<PostResponseDto> findPostsByCursorPagination(PostCursorRequestDto postCursorRequestDto) {
+        int pageSize = postCursorRequestDto.pageSize() == null ? DEFAULT_PAGE_SIZE : postCursorRequestDto.pageSize();
+        Long cursorId = postCursorRequestDto.cursorId() == null ? (long)pageSize : postCursorRequestDto.cursorId();
+
+        Slice<PostResponseDto> posts = callCursorPagination(cursorId, pageSize);
+
+        return CursorResult.<PostResponseDto>builder()
+            .hasNext(posts.hasNext())
+            .hasPrevious(posts.hasPrevious())
+            .nextCursorId(posts.hasNext() ? cursorId + 1L : -1)
+            .previousCursorId(posts.hasPrevious() ? cursorId - pageSize : -1)
+            .values(posts.getContent())
+            .postCount(posts.getContent().size())
+            .build();
     }
 
-    private Boolean hasNext(Long id) {
-        return id == null ? false : postRepository.existsByIdLessThan(id);
+    // 오프셋 기반
+    @Transactional(readOnly = true)
+    public OffsetResult<PostResponseDto> findPostsByOffsetPagination(Pageable pageable) {
+        Page<PostResponseDto> posts = postRepository.findAll(pageable).map(Post::toPostResponseDto);
+        int currentPage = pageable.getPageNumber() + PAGE_BASE_OFFSET;
+        int lastPageIndex = posts.getTotalPages();
+        List<PostResponseDto> values = posts.getContent();
+        int postCount = values.size();
+
+        return OffsetResult.<PostResponseDto>builder()
+            .currentPage(currentPage)
+            .postCount(postCount)
+            .lastPageIndex(lastPageIndex)
+            .values(values)
+            .build();
     }
 }
 
