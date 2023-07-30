@@ -4,10 +4,8 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.prgrms.myboard.dto.UserResponseDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +34,14 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Nullable
-    private List<Post> posts;
+    private List<Post> posts = new ArrayList<>();
 
     @Builder
     public User(String name, int age, String hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        this.posts = new ArrayList<>();
+//        this.posts = new ArrayList<>();
     }
 
     public void changeName(String name) {
@@ -56,5 +54,9 @@ public class User extends BaseEntity {
 
     public void changeHobby(String hobby) {
         this.hobby = hobby;
+    }
+
+    public UserResponseDto toUserResponseDto() {
+        return new UserResponseDto(id, name, age, hobby, posts, getCreatedAt(), getUpdatedAt());
     }
 }
