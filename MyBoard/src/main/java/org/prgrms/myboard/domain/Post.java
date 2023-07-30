@@ -6,10 +6,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.prgrms.myboard.dto.PostResponseDto;
+import org.prgrms.myboard.dto.PostUpdateRequestDto;
 
 import java.util.Objects;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,19 +24,18 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private Long id;
 
-    @NotBlank(message = "제목이 비어있습니다.")
+//    @NotBlank(message = "제목이 비어있습니다.")
     private String title;
 
-    @NotBlank(message = "내용이 비어있습니다.")
+//    @NotBlank(message = "내용이 비어있습니다.")
     private String content;
 
     @Column(name = "created_by")
-    @NotBlank(message = "작성자가 비어있으면 안됩니다.")
+//    @NotBlank(message = "작성자가 비어있으면 안됩니다.")
     private String createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @NotNull
     private User user;
 
     public Post(String title, String content) {
@@ -55,5 +58,18 @@ public class Post extends BaseEntity {
 
     public void changeContent(String content) {
         this.content = content;
+    }
+
+    public void update(PostUpdateRequestDto postUpdateRequestDto) {
+        if(postUpdateRequestDto.title() != null) {
+            this.title = postUpdateRequestDto.title();
+        }
+        if(postUpdateRequestDto.content() != null) {
+            this.content = postUpdateRequestDto.content();
+        }
+    }
+
+    public PostResponseDto toPostResponseDto() {
+        return new PostResponseDto(id, title, content, createdBy, getCreatedAt(), getUpdatedAt());
     }
 }
