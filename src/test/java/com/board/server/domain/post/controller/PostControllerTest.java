@@ -74,7 +74,7 @@ class PostControllerTest {
     void saveTest() throws Exception {
         CreatePostRequest createPostRequest = new CreatePostRequest("제목test", "내용test");
 
-        mockMvc.perform(post("/post")
+        mockMvc.perform(post("/posts")
                         .header("userId", user1.getUserId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createPostRequest)))
@@ -100,7 +100,7 @@ class PostControllerTest {
 
     @Test
     void getAllPostTest() throws Exception {
-        mockMvc.perform(get("/post")
+        mockMvc.perform(get("/posts")
                         .param("page", String.valueOf(1)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -125,7 +125,7 @@ class PostControllerTest {
 
     @Test
     void getOnePostTest() throws Exception {
-        mockMvc.perform(get("/post/{postId}", post1.getPostId()))
+        mockMvc.perform(get("/posts/{postId}", post1.getPostId()))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("get-one-post",
@@ -147,7 +147,7 @@ class PostControllerTest {
     void updatePostTest() throws Exception {
         UpdatePostRequest updatePostRequest = new UpdatePostRequest("바뀐 제목", null);
 
-        mockMvc.perform(patch("/post/{postId}", post1.getPostId())
+        mockMvc.perform(patch("/posts/{postId}", post1.getPostId())
                         .header("userId", post1.getUser().getUserId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatePostRequest)))
