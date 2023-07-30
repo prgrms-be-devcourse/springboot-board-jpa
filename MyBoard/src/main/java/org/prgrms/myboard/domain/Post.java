@@ -1,19 +1,15 @@
 package org.prgrms.myboard.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.prgrms.myboard.dto.PostResponseDto;
 import org.prgrms.myboard.dto.PostUpdateRequestDto;
 
 import java.util.Objects;
 
 @Getter
-@Setter
 @Entity
 @Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,7 +17,7 @@ public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @NotNull(message = "id는 null이면 안됩니다.")
-    @Column(nullable = false)
+    @Column(name = "post_id", nullable = false)
     private Long id;
 
 //    @NotBlank(message = "제목이 비어있습니다.")
