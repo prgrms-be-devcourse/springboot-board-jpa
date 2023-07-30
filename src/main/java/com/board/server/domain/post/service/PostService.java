@@ -10,7 +10,6 @@ import com.board.server.domain.post.entity.PostRepository;
 import com.board.server.domain.user.entity.User;
 import com.board.server.domain.user.entity.UserRepository;
 import com.board.server.global.exception.Error;
-import com.board.server.global.exception.model.BadRequestException;
 import com.board.server.global.exception.model.NotFoundException;
 import com.board.server.global.exception.model.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
