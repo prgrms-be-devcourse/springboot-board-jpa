@@ -43,12 +43,12 @@ public class PostService {
 
     public Page<PostDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(post -> postConverter.convertPostDto(post));
+                .map(postConverter::convertPostDto);
     }
 
     @Transactional
-    public PostDto updatePost(PostUpdateDto postUpdateDto) {
-        Post post = postRepository.findById(postUpdateDto.postId())
+    public PostDto updatePost(PostUpdateDto postUpdateDto, Long postId) {
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException(POST_NOT_FOUND));
         post.changeTitle(postUpdateDto.title());
         post.changeContent(postUpdateDto.content());
