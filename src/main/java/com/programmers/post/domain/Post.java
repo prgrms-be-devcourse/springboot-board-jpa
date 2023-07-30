@@ -1,5 +1,6 @@
 package com.programmers.post.domain;
 
+import com.programmers.base.domain.BaseEntity;
 import com.programmers.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "posts")
 @Getter
-public class Post {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
