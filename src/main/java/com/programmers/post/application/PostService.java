@@ -1,10 +1,10 @@
 package com.programmers.post.application;
 
-import com.programmers.post.converter.PostConverter;
+import com.programmers.post.application.converter.PostConverter;
 import com.programmers.post.domain.Post;
-import com.programmers.post.dto.PostDto;
-import com.programmers.post.dto.PostUpdateDto;
 import com.programmers.post.infra.PostRepository;
+import com.programmers.post.ui.dto.PostDto;
+import com.programmers.post.ui.dto.PostUpdateDto;
 import com.programmers.user.domain.User;
 import com.programmers.user.infra.UserRepository;
 import lombok.RequiredArgsConstructor;

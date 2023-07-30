@@ -1,7 +1,7 @@
-package com.programmers.post.converter;
+package com.programmers.post.application.converter;
 
 import com.programmers.post.domain.Post;
-import com.programmers.post.dto.PostDto;
+import com.programmers.post.ui.dto.PostDto;
 import com.programmers.user.domain.User;
 import org.springframework.stereotype.Component;
 
