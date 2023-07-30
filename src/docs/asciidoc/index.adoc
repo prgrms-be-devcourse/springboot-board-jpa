@@ -28,6 +28,20 @@ include::{snippets}/user-join/http-response.adoc[]
 
 include::{snippets}/user-join/response-fields.adoc[]
 
+.Request Fail - 중복된 유저 이름
+include::{snippets}/user-join-fail-duplicated-name/http-response.adoc[]
+
+include::{snippets}/user-join-fail-duplicated-name/response-fields.adoc[]
+
+.Request Fail - 잘못된 데이터 입력
+include::{snippets}/user-join-fail-invalid-data/http-request.adoc[]
+
+include::{snippets}/user-join-fail-invalid-data/request-fields.adoc[]
+
+include::{snippets}/user-join-fail-invalid-data/http-response.adoc[]
+
+include::{snippets}/user-join-fail-invalid-data/response-fields.adoc[]
+
 [[Post-API]]
 == Post API
 
