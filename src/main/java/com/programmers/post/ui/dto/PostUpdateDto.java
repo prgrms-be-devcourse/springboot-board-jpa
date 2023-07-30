@@ -1,4 +1,4 @@
 package com.programmers.post.ui.dto;
 
-public record PostUpdateDto(Long postId, String title, String content) {
+public record PostUpdateDto(String title, String content) {
 }
