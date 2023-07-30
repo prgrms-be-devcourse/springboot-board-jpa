@@ -23,7 +23,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping("/new")
+    @PostMapping("/new")
     public ResponseEntity<Long> postCreate(@RequestBody PostCreateRequest request) {
         Long postId = postService.createPost(request);
         return new ResponseEntity<>(postId, HttpStatus.CREATED);
