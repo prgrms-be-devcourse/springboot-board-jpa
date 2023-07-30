@@ -3,25 +3,29 @@ package com.example.yiseul.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Builder;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @MappedSuperclass
-//@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(AuditingEntityListener.class)
 public class BaseTimeEntity {
 
-    @Builder.Default
     @CreatedDate
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime createdAt;
+    private String createdAt;
 
-    @Builder.Default
     @CreatedBy
     private String createdBy;
+
+    @PrePersist
+    public void onPrePersist(){
+        this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    }
+
 }
