@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse findCustomerById(Long id) {
+    public UserResponse findUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
         return UserConverter.convertEntityToResponse(user);
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateCustomer(Long id, UserUpdateRequest request) {
+    public void updateUser(Long id, UserUpdateRequest request) {
         User user = userRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
         User forUpdate = UserConverter.convertRequestToEntity(request);
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteCustomer(Long id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 }
