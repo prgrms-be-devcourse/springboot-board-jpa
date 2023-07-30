@@ -12,11 +12,11 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 ![img_1.png](docs/v1/img_1.png)
 
 ### 구조도
-![img_2.png](docs/v1/img_2.png)
+![img.png](docs/v1/img_2.png)
 
 ## ✅ 작업 목록
-- [ ] 🎉 프로젝트 생성
-- [ ] 📝 그림그리기 및 작업 목록 작성
+- [x] 🎉 프로젝트 생성
+- [x] 📝 그림그리기 및 작업 목록 작성
 - [ ] 🔧 H2 DB 설정 추가
 - [ ] ✨ User 엔티티 구현
 - [ ] ✨ Post 엔티티 구현
@@ -32,7 +32,5 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 - [ ] ✅ Post 특정 사용자 게시글 조회 기능 테스트 코드 구현
 - [ ] ✨ Post 수정 기능 구현
 - [ ] ✅ Post 수정 기능 테스트 코드 구현
-- [ ] ✨ Post Id로 삭제 기능 구현
-- [ ] ✅ Post Id로 삭제 기능 테스트 코드 구현
 - [ ] 🔧 REST-DOCS 설정 추가
 - [ ] 📝 REST-DOCS 문서 작업
