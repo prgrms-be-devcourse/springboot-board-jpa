@@ -5,11 +5,11 @@ import dev.jpaboard.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
@@ -28,6 +28,11 @@ public class Post extends BaseEntity {
 
   @Builder
   private Post(String title, String content) {
+    this.title = title;
+    this.content = content;
+  }
+
+  public void update(String title, String content) {
     this.title = title;
     this.content = content;
   }
