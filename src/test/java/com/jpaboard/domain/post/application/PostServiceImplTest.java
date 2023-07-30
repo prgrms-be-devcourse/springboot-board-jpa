@@ -7,16 +7,24 @@ import com.jpaboard.domain.user.application.UserService;
 import com.jpaboard.domain.user.dto.request.UserCreationRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 
 import static org.assertj.core.api.Assertions.*;
 
-@SpringBootTest
+@DataJpaTest
 class PostServiceImplTest {
+
+    @TestConfiguration
+    @ComponentScan(basePackages = {"com.jpaboard.domain"})
+    static class Config{
+    }
 
     @Autowired
     private PostService postService;
