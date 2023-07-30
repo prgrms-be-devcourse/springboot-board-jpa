@@ -48,4 +48,14 @@ public class Post {
             throw new IllegalArgumentException("제목이 비어있습니다.");
         }
     }
+
+    public void changeTitle(String title) {
+        validateTitle(title);
+        this.title = title;
+    }
+
+    public void changeContent(String content) {
+        validateTitle(content);
+        this.content = content;
+    }
 }
