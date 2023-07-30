@@ -54,7 +54,7 @@ public class PostServiceImpl implements PostService {
     }
 
     public Page<PostResponse> findByKeyword(String keyword, Pageable pageable) {
-        return postRepository.findAllByTitleContainingOrContentContaining(keyword, pageable)
+        return postRepository.findAllByTitleContainingOrContentContaining(keyword, keyword, pageable)
                 .map(PostConverter::convertEntityToResponse);
     }
 
