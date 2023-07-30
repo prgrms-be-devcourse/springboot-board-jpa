@@ -44,17 +44,17 @@ public class PostServiceImpl implements PostService {
     }
 
     public Page<PostResponse> findPostByTitle(String title, Pageable pageable) {
-        return postRepository.findAllByTitleOrderByCreateAt(title, pageable)
+        return postRepository.findAllByTitleContaining(title, pageable)
                 .map(PostConverter::convertEntityToResponse);
     }
 
     public Page<PostResponse> findPostByContent(String content, Pageable pageable) {
-        return postRepository.findAllByTitleOrderByCreateAt(content, pageable)
+        return postRepository.findAllByContentContaining(content, pageable)
                 .map(PostConverter::convertEntityToResponse);
     }
 
     public Page<PostResponse> findByKeyword(String keyword, Pageable pageable) {
-        return postRepository.findAllByTitleContainingOrContentContainingOrderByCreateAt(keyword, pageable)
+        return postRepository.findAllByTitleContainingOrContentContaining(keyword, pageable)
                 .map(PostConverter::convertEntityToResponse);
     }
 
