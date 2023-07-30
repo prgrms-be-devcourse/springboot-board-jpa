@@ -1,4 +1,4 @@
-package com.programmers.post.ui.dto;
+package com.programmers.domain.post.ui.dto;
 
 public record PostDto(String title, String content, Long userId) {
 }

@@ -1,8 +1,8 @@
-package com.programmers.post.ui;
+package com.programmers.domain.post.ui;
 
-import com.programmers.post.application.PostService;
-import com.programmers.post.ui.dto.PostDto;
-import com.programmers.post.ui.dto.PostUpdateDto;
+import com.programmers.domain.post.application.PostService;
+import com.programmers.domain.post.ui.dto.PostDto;
+import com.programmers.domain.post.ui.dto.PostUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

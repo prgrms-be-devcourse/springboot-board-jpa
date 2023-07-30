@@ -1,12 +1,12 @@
-package com.programmers.post.application;
+package com.programmers.domain.post.application;
 
-import com.programmers.post.application.converter.PostConverter;
-import com.programmers.post.domain.Post;
-import com.programmers.post.infra.PostRepository;
-import com.programmers.post.ui.dto.PostDto;
-import com.programmers.post.ui.dto.PostUpdateDto;
-import com.programmers.user.domain.User;
-import com.programmers.user.infra.UserRepository;
+import com.programmers.domain.post.application.converter.PostConverter;
+import com.programmers.domain.post.entity.Post;
+import com.programmers.domain.post.infra.PostRepository;
+import com.programmers.domain.post.ui.dto.PostDto;
+import com.programmers.domain.post.ui.dto.PostUpdateDto;
+import com.programmers.domain.user.entity.User;
+import com.programmers.domain.user.infra.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

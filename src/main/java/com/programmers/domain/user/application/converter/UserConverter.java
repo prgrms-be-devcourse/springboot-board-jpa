@@ -1,7 +1,7 @@
-package com.programmers.user.application.converter;
+package com.programmers.domain.user.application.converter;
 
-import com.programmers.user.domain.User;
-import com.programmers.user.ui.dto.UserDto;
+import com.programmers.domain.user.entity.User;
+import com.programmers.domain.user.ui.dto.UserDto;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,7 +1,7 @@
-package com.programmers.post.domain;
+package com.programmers.domain.post.entity;
 
-import com.programmers.base.domain.BaseEntity;
-import com.programmers.user.domain.User;
+import com.programmers.domain.base.BaseEntity;
+import com.programmers.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 

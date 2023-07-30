@@ -1,9 +1,9 @@
-package com.programmers.user.application;
+package com.programmers.domain.user.application;
 
-import com.programmers.user.application.converter.UserConverter;
-import com.programmers.user.domain.User;
-import com.programmers.user.infra.UserRepository;
-import com.programmers.user.ui.dto.UserDto;
+import com.programmers.domain.user.application.converter.UserConverter;
+import com.programmers.domain.user.entity.User;
+import com.programmers.domain.user.infra.UserRepository;
+import com.programmers.domain.user.ui.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
