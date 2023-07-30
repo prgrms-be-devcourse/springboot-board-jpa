@@ -65,8 +65,6 @@ public class ContextPersistenceTest {
                 .content("good")
                 .build();
 
-        entityManager.persist(post);
-
         User user = User.builder()
                 .name("yejin")
                 .age(25)
@@ -109,7 +107,7 @@ public class ContextPersistenceTest {
         log.info("post-id: {}", findUser.getPostList().get(0).getId());
 
         Post findPost = entityManager.find(Post.class, findUser.getPostList().get(0).getId());
-        log.info("user-name: {}", findPost.getUser().getName());
+        log.info("user-name: {}", findPost.getCreated_by().getName());
     }
 }
 

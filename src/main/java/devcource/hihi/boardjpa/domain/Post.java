@@ -1,5 +1,6 @@
 package devcource.hihi.boardjpa.domain;
 
+import devcource.hihi.boardjpa.dto.CreatePostDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -22,7 +23,7 @@ public class Post extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_user_id")
+    @JoinColumn(name = "user_id")
     private User created_by;
 
     @Builder
@@ -45,5 +46,9 @@ public class Post extends BaseEntity {
         }
         created_by = user;
         user.getPostList().add(this);
+    }
+
+    public static CreatePostDto toDto(Post post) {
+        return new CreatePostDto(post.title, post.content);
     }
 }
