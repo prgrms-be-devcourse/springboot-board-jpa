@@ -64,7 +64,7 @@ include::{snippets}/user-update/http-request.adoc[]
 include::{snippets}/user-update/path-parameters.adoc[]
 include::{snippets}/user-update/request-fields.adoc[]
 
-=== Post 삭제
+=== User 삭제
 ==== HTTP request
 include::{snippets}/user-delete/http-request.adoc[]
 include::{snippets}/user-delete/path-parameters.adoc[]
