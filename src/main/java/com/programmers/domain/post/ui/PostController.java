@@ -1,5 +1,6 @@
 package com.programmers.domain.post.ui;
 
+import com.programmers.common.dto.ApiResponse;
 import com.programmers.domain.post.application.PostServiceImpl;
 import com.programmers.domain.post.ui.dto.PostDto;
 import com.programmers.domain.post.ui.dto.PostUpdateDto;
@@ -20,8 +21,8 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/posts")
-    public Long createPost(@RequestBody PostDto postDto) {
-        return postServiceImpl.createPost(postDto);
+    public ApiResponse createPost(@RequestBody PostDto postDto) {
+        return new ApiResponse(postServiceImpl.createPost(postDto));
     }
 
     @GetMapping("/posts")
