@@ -8,11 +8,29 @@
 
 [[resources-post-create]]
 === Post 생성
-
 ==== HTTP request
-
 include::{snippets}/post-create/http-request.adoc[]
 include::{snippets}/post-create/request-fields.adoc[]
-==== HTTP response
 
+==== HTTP response
 include::{snippets}/post-create/http-response.adoc[]
+
+=== Post 조회
+==== HTTP request
+include::{snippets}/post-find/http-request.adoc[]
+include::{snippets}/post-find/path-parameters.adoc[]
+
+==== HTTP response
+include::{snippets}/post-find/http-response.adoc[]
+include::{snippets}/post-find/response-fields.adoc[]
+
+=== Post 수정
+==== HTTP request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/path-parameters.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+=== Post 삭제
+==== HTTP request
+include::{snippets}/post-delete/httpie-request.adoc[]
+include::{snippets}/post-delete/path-parameters.adoc[]
