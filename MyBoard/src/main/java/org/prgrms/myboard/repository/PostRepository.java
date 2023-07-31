@@ -13,8 +13,7 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    String CURSOR_SQL = "SELECT * FROM posts WHERE post_id <= :postId AND post_id >= :postId - :pageSize" +
-        " ORDER BY post_id LIMIT :pageSize";
+    String CURSOR_SQL = "SELECT * FROM posts WHERE post_id <= :postId ORDER BY post_id LIMIT :pageSize";
 
     List<Post> findAllByCreatedBy(String userName);
     List<Post> findAllByUserId(Long userId);

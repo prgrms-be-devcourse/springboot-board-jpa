@@ -55,7 +55,7 @@ public class PostService {
     public PostResponseDto updateById(Long id, PostUpdateRequestDto postUpdateRequestDto) {
         Post post = postRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("존재하지 않는 id입니다."));
-        post.update(postUpdateRequestDto);
+        post.update(postUpdateRequestDto.title(), postUpdateRequestDto.content());
         return post.toPostResponseDto();
     }
 
@@ -83,23 +83,22 @@ public class PostService {
             .toList();
     }
 
-    @Transactional(readOnly = true)
     public Slice<PostResponseDto> callCursorPagination(Long cursorId, int pageSize) {
         return postRepository.findByIdLessThanOrderByIdDescLimitByPageSize(cursorId, pageSize)
             .map(Post::toPostResponseDto);
     }
 
     @Transactional(readOnly = true)
-    public CursorResult<PostResponseDto> findPostsByCursorPagination(PostCursorRequestDto postCursorRequestDto) {
-        int pageSize = postCursorRequestDto.pageSize() == null ? DEFAULT_PAGE_SIZE : postCursorRequestDto.pageSize();
-        Long cursorId = postCursorRequestDto.cursorId() == null ? (long)pageSize : postCursorRequestDto.cursorId();
+    public CursorResult<PostResponseDto> findPostsByCursorPagination(Long cursorIdCandidate, Integer pageSizeCandidate) {
+        int pageSize = pageSizeCandidate == null ? DEFAULT_PAGE_SIZE : pageSizeCandidate;
+        long cursorId = cursorIdCandidate == null ? (long)pageSize : cursorIdCandidate;
 
         Slice<PostResponseDto> posts = callCursorPagination(cursorId, pageSize);
 
         return CursorResult.<PostResponseDto>builder()
             .hasNext(posts.hasNext())
             .hasPrevious(posts.hasPrevious())
-            .nextCursorId(posts.hasNext() ? cursorId + 1L : -1)
+            .nextCursorId(posts.hasNext() ? cursorId + pageSize : -1)
             .previousCursorId(posts.hasPrevious() ? cursorId - pageSize : -1)
             .values(posts.getContent())
             .postCount(posts.getContent().size())
