@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
@@ -31,7 +32,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> userDelete(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
