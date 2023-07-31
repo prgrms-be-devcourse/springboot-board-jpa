@@ -62,8 +62,6 @@ class PostServiceTest {
         assertThat(postResponse.content()).isEqualTo(postRequest.getContent());
         assertThat(postResponse.authorId()).isEqualTo(postRequest.getUserId());
 
-        User user = userRepository.findById(postResponse.authorId()).get();
-        assertThat(user.getPosts().get(0).getTitle()).isEqualTo(postRequest.getTitle());
     }
 
     @Test
@@ -142,9 +140,6 @@ class PostServiceTest {
         //then
         assertThat(updatedPost.title()).isEqualTo(postUpdateRequest.title());
         assertThat(updatedPost.content()).isEqualTo(postUpdateRequest.content());
-
-        User user = userRepository.findById(updatedPost.authorId()).get();
-        assertThat(user.getPosts().get(0).getTitle()).isEqualTo(postUpdateRequest.title());
     }
 
     @Test

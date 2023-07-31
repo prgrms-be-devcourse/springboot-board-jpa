@@ -64,7 +64,6 @@ public class PostService {
 
         User user = userRepository.findById(post.getUser().getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER));
-        user.removePost(post);
 
         post.update(updateRequest);
         post.updateUser(user);
