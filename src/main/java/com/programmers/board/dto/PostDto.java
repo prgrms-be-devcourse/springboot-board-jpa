@@ -8,13 +8,13 @@ public class PostDto {
     private Long postId;
     private String title;
     private String content;
-    private UserDto userDto;
+    private UserDto user;
 
-    PostDto(Long postId, String title, String content, UserDto userDto) {
+    PostDto(Long postId, String title, String content, UserDto user) {
         this.postId = postId;
         this.title = title;
         this.content = content;
-        this.userDto = userDto;
+        this.user = user;
     }
 
     public static PostDto from(Post post) {

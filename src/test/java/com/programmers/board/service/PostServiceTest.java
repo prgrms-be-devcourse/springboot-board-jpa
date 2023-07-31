@@ -114,7 +114,7 @@ class PostServiceTest {
             PostDto findPost = postService.findPost(1L);
 
             //then
-            UserDto findUser = findPost.getUserDto();
+            UserDto findUser = findPost.getUser();
             assertThat(findPost.getTitle()).isEqualTo(givenPost.getTitle());
             assertThat(findPost.getContent()).isEqualTo(givenPost.getContent());
             assertThat(findUser.getName()).isEqualTo(givenUser.getName());
