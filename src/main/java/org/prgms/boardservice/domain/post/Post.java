@@ -9,6 +9,9 @@ import lombok.NonNull;
 import org.prgms.boardservice.domain.BaseTime;
 import org.prgms.boardservice.domain.user.User;
 
+import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_CONTENT_LENGTH;
+import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_TITLE_LENGTH;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -41,13 +44,13 @@ public class Post extends BaseTime {
 
     private void validateTitleLength(String title) {
         if (title.length() > 20) {
-            throw new IllegalArgumentException("제목은 20자 이내여야 합니다.");
+            throw new IllegalArgumentException(INVALID_POST_TITLE_LENGTH.getMessage());
         }
     }
 
     private void validateContentLength(String content) {
         if (content.length() > 500) {
-            throw new IllegalArgumentException("내용은 500자 이내여야 합니다.");
+            throw new IllegalArgumentException(INVALID_POST_CONTENT_LENGTH.getMessage());
         }
     }
 
