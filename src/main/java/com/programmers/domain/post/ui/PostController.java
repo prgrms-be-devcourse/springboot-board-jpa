@@ -5,12 +5,13 @@ import com.programmers.domain.post.application.PostServiceImpl;
 import com.programmers.domain.post.ui.dto.PostDto;
 import com.programmers.domain.post.ui.dto.PostUpdateDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,12 +22,12 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/posts")
-    public ApiResponse createPost(@RequestBody PostDto postDto) {
-        return new ApiResponse(postServiceImpl.createPost(postDto));
+    public ApiResponse<Long> createPost(@RequestBody PostDto postDto) {
+        return new ApiResponse<>(postServiceImpl.createPost(postDto));
     }
 
     @GetMapping("/posts")
-    public Page<PostDto> findPostList(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public List<PostDto> findPostList(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return postServiceImpl.findAll(pageable);
     }
 

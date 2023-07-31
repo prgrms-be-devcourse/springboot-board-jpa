@@ -8,11 +8,11 @@ import com.programmers.domain.post.ui.dto.PostUpdateDto;
 import com.programmers.domain.user.entity.User;
 import com.programmers.domain.user.infra.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -44,9 +44,11 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public Page<PostDto> findAll(Pageable pageable) {
+    public List<PostDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(postConverter::convertPostDto);
+                .stream()
+                .map(postConverter::convertPostDto)
+                .toList();
     }
 
     @Override
