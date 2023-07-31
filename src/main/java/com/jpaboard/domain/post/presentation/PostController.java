@@ -4,6 +4,7 @@ import com.jpaboard.domain.post.application.PostService;
 import com.jpaboard.domain.post.dto.PostCreateRequest;
 import com.jpaboard.domain.post.dto.PostResponse;
 import com.jpaboard.domain.post.dto.PostUpdateRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/new")
-    public ResponseEntity<Long> postCreate(@RequestBody PostCreateRequest request) {
+    public ResponseEntity<Long> postCreate(@RequestBody @Valid PostCreateRequest request) {
         Long postId = postService.createPost(request);
         return new ResponseEntity<>(postId, HttpStatus.CREATED);
     }
@@ -58,7 +59,7 @@ public class PostController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> postUpdate(@PathVariable Long id, @RequestBody PostUpdateRequest request) {
+    public ResponseEntity<Void> postUpdate(@PathVariable Long id, @RequestBody @Valid PostUpdateRequest request) {
         postService.updatePost(id, request);
         return ResponseEntity.ok().build();
     }
