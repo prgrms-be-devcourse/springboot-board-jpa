@@ -24,14 +24,13 @@ public class PostRestController {
         this.postService = postService;
     }
     @GetMapping
-    public CursorResult<Post> getPost(Long cursorId, Integer size) {
-        if (size == null) size = DEFAULT_SIZE;
-        return this.postService.get(cursorId, PageRequest.of(0, size));
+    public List<Post> getPost(@RequestParam Long cursorId, @RequestParam int limit) {
+        return postService.getPosts(cursorId, limit);
     }
 
     @PostMapping
     public ResponseEntity<ResponsePostDto> createPost(@Valid @RequestBody CreatePostDto postDto) {
-        return ResponseEntity.ok(postService.creteDto(postDto));
+        return ResponseEntity.ok(postService.createDto(postDto));
     }
 
     @GetMapping("/{id}")

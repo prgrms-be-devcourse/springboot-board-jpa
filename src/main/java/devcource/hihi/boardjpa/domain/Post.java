@@ -25,7 +25,7 @@ public class Post extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User created_by;
+    private User user;
 
     @Builder
     public Post(String title, String content) {
@@ -42,14 +42,18 @@ public class Post extends BaseEntity {
     }
 
     public void allocateUser(User user) {
-        if(Objects.nonNull(created_by)) {
+        if(Objects.nonNull(this.user)) {
             user.getPostList().remove(this);
         }
-        created_by = user;
+        this.user = user;
         user.getPostList().add(this);
     }
 
     public static ResponsePostDto toResponseDto(Post post) {
-        return new ResponsePostDto(post.getId(),post.title, post.content, post.getCreated_by());
+        return new ResponsePostDto(post.getId(),post.title, post.content, post.user,post.getCreated_at(),post.getUpdated_at());
     }
+    public static CreatePostDto toCreateDto(Post post) {
+        return new CreatePostDto(post.title, post.content, post.user.getId());
+    }
+
 }

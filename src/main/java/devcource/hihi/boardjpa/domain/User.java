@@ -28,7 +28,7 @@ public class User extends BaseEntity{
 
     private String hobby;
 
-    @OneToMany(mappedBy = "created_by",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Post> postList = new ArrayList<>();
 
     @Builder

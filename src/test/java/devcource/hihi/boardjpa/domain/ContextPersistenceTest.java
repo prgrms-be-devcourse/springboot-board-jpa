@@ -107,7 +107,7 @@ public class ContextPersistenceTest {
         log.info("post-id: {}", findUser.getPostList().get(0).getId());
 
         Post findPost = entityManager.find(Post.class, findUser.getPostList().get(0).getId());
-        log.info("user-name: {}", findPost.getCreated_by().getName());
+        log.info("user-name: {}", findPost.getUser().getName());
     }
 }
 
