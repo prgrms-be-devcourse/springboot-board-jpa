@@ -8,24 +8,22 @@ import com.jpaboard.domain.post.dto.PostUpdateRequest;
 import com.jpaboard.domain.post.infrastructure.PostRepository;
 import com.jpaboard.domain.user.User;
 import com.jpaboard.domain.user.infrastructure.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
+@Transactional(readOnly = true)
 @Service
+@RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     // Repository를 주입 받는 게 좋은지, Service를 주입 받는게 좋은지
     private final UserRepository userRepository;
 
-    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-    }
-
+    @Transactional
     public Long createPost(PostCreateRequest request) {
         User user = userRepository.findById(request.userId()).orElseThrow(IllegalArgumentException::new);
         Post post = PostConverter.convertRequestToEntity(request, user);
@@ -58,11 +56,13 @@ public class PostServiceImpl implements PostService {
                 .map(PostConverter::convertEntityToResponse);
     }
 
+    @Transactional
     public void updatePost(Long id, PostUpdateRequest request) {
         Post post = postRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         post.update(request);
     }
 
+    @Transactional
     public void deletePostById(Long id) {
         postRepository.deleteById(id);
     }
