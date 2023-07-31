@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.prgms.boardservice.domain.BaseTime;
 import org.prgms.boardservice.domain.post.Post;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ public class User extends BaseTime {
         validateNicknameLength(nickname);
 
         this.email = email;
-        this.password = password;
+        this.password = encodePassword(password);
         this.nickname = nickname;
     }
 
@@ -75,5 +77,10 @@ public class User extends BaseTime {
 
         posts.add(post);
         post.setUser(this);
+    }
+
+    private String encodePassword(String password) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(password);
     }
 }
