@@ -9,6 +9,7 @@ import org.prgms.boardservice.domain.post.Post;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 @Entity
@@ -65,5 +66,14 @@ public class User extends BaseTime {
         if (nickname.length() < 2 || nickname.length() > 10) {
             throw new IllegalArgumentException("닉네임 길이는 2이상 10이하여야 합니다.");
         }
+    }
+
+    private void addPost(Post post) {
+        if (Objects.nonNull(post.getUser())) {
+            throw new RuntimeException("게시글의 작성자는 바꿀 수 없습니다.");
+        }
+
+        posts.add(post);
+        post.setUser(this);
     }
 }

@@ -3,11 +3,13 @@ package org.prgms.boardservice.domain.post;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.prgms.boardservice.domain.BaseTime;
 import org.prgms.boardservice.domain.user.User;
 
+@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseTime {
@@ -47,5 +49,9 @@ public class Post extends BaseTime {
         if (content.length() > 500) {
             throw new IllegalArgumentException("내용은 500자 이내여야 합니다.");
         }
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
