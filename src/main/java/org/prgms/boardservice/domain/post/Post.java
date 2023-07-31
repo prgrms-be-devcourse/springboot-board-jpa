@@ -2,11 +2,13 @@ package org.prgms.boardservice.domain.post;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.prgms.boardservice.domain.BaseTime;
 import org.prgms.boardservice.domain.user.User;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseTime {
 
     @Id

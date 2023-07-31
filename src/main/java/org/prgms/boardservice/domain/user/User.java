@@ -2,6 +2,7 @@ package org.prgms.boardservice.domain.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.NoArgsConstructor;
 import org.prgms.boardservice.domain.BaseTime;
 import org.prgms.boardservice.domain.post.Post;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTime {
 
     @Id
