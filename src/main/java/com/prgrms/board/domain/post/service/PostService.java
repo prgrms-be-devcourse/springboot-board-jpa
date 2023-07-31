@@ -56,5 +56,4 @@ public class PostService {
         return postRepository.findById(postId)
             .orElseThrow(() -> new PostNotFoundException(NO_POST));
     }
-
 }
