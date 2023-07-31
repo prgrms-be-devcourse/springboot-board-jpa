@@ -13,12 +13,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Table(name = "post")
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
@@ -36,4 +38,8 @@ public class Post extends BaseEntity {
 
 	@Column(name = "content", nullable = false, columnDefinition = "text")
 	private String content;
+
+	public static Post create(User user, String title, String content) {
+		return new Post(null, user, title, content);
+	}
 }

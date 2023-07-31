@@ -26,4 +26,8 @@ public class BaseResponse<T> {
 	public static <T> BaseResponse<T> ok(SuccessMessage message, T data) {
 		return new BaseResponse<>(OK.value(), message.getValue(), data);
 	}
+
+	public static <T> BaseResponse<T> created(SuccessMessage message, T data) {
+		return new BaseResponse<>(CREATED.value(), message.getValue(), data);
+	}
 }
