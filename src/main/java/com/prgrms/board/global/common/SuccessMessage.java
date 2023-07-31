@@ -7,9 +7,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum SuccessMessage {
-	GET_POSTS_SUCCESS("게시물 조회 성공"),
-	CREATE_POST_SUCCESS("게시물 생성 성공"),
-	;
+    GET_POSTS_SUCCESS("게시물 전체 조회 성공"),
+    GET_POST_SUCCESS("게시물 조회 성공"),
+    CREATE_POST_SUCCESS("게시물 생성 성공"),
+    UPDATE_POST_SUCCESS("게시물 수정 성공"),
+    ;
 
-	private final String value;
+    private final String value;
 }

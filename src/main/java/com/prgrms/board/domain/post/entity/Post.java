@@ -24,22 +24,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "post_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "post_id")
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-	@Column(name = "title", length = 30, nullable = false)
-	private String title;
+    @Column(name = "title", length = 30, nullable = false)
+    private String title;
 
-	@Column(name = "content", nullable = false, columnDefinition = "text")
-	private String content;
+    @Column(name = "content", nullable = false, columnDefinition = "text")
+    private String content;
 
-	public static Post create(User user, String title, String content) {
-		return new Post(null, user, title, content);
-	}
+    public static Post create(User user, String title, String content) {
+        return new Post(null, user, title, content);
+    }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

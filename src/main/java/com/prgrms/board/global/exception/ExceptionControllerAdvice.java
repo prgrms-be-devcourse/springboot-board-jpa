@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.prgrms.board.domain.post.exception.PostNotFoundException;
 import com.prgrms.board.domain.user.exception.UserNotFoundException;
 import com.prgrms.board.global.common.BaseResponse;
 
@@ -20,7 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 public class ExceptionControllerAdvice {
 
     @ResponseStatus(BAD_REQUEST)
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler({
+        UserNotFoundException.class,
+        PostNotFoundException.class,
+    })
     public BaseResponse<Object> handleBadRequest(CustomException exception) {
         log.error("[BadRequest] => ", exception);
         return BaseResponse.error(exception.getError());
