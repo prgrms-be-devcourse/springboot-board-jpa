@@ -17,7 +17,7 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
     - age
     - hobby
     - **created_at**
-    - **created_by**
+  
 - 게시글(Post)
     - id (PK) (auto increment)
     - title
