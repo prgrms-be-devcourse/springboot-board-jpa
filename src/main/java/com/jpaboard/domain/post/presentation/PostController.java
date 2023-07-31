@@ -4,6 +4,7 @@ import com.jpaboard.domain.post.application.PostService;
 import com.jpaboard.domain.post.dto.PostCreateRequest;
 import com.jpaboard.domain.post.dto.PostResponse;
 import com.jpaboard.domain.post.dto.PostUpdateRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,13 +16,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/posts")
+@RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
-
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
 
     @PostMapping("/new")
     public ResponseEntity<Long> postCreate(@RequestBody PostCreateRequest request) {
