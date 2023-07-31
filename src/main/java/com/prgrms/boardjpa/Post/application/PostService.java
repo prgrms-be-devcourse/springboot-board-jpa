@@ -31,9 +31,8 @@ public class PostService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER));
 
         Post post = createRequest.toEntity();
+        post.updateUser(user);
         Post savedPost = postRepository.save(post);
-
-        savedPost.updateUser(user);
 
         return PostResponse.create(savedPost);
     }
