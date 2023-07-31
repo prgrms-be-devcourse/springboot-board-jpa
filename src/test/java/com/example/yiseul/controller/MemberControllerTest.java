@@ -9,12 +9,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.restdocs.RestDocsAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -26,10 +30,14 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureRestDocs
+@Import(RestDocsAutoConfiguration.class)
 @WebMvcTest(MemberController.class)
 class MemberControllerTest {
 
@@ -60,7 +68,23 @@ class MemberControllerTest {
                 .contentType(APPLICATION_JSON)
                 .content(asJsonString(createRequestDto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(responseDto)));
+                .andExpect(content().string(asJsonString(responseDto)))
+
+                .andDo(document("member-signup",
+                        requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("멤버 아이디"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성시각"),
+                                fieldWithPath("createdBy").type(JsonFieldType.STRING).description("생성자")
+                        )
+                ));
     }
 
     @Test
