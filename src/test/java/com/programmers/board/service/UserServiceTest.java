@@ -39,7 +39,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        givenUser = new User("name", 20, "hobby", "creator");
+        givenUser = new User("name", 20, "hobby");
     }
 
     @Nested

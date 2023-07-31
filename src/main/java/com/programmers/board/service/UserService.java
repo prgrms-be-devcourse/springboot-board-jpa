@@ -20,7 +20,7 @@ public class UserService {
 
     @Transactional
     public Long createUser(String name, int age, String hobby) {
-        User user = new User(name, age, hobby, "hseong3243");
+        User user = new User(name, age, hobby);
         userRepository.save(user);
         return user.getId();
     }

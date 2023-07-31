@@ -31,8 +31,7 @@ public class Post extends BaseEntity {
     protected Post() {
     }
 
-    public Post(String title, String content, String createdBy, User user) {
-        super(createdBy);
+    public Post(String title, String content, User user) {
         nullCheck(title, content, user);
         validateTitle(title);
         this.title = title;

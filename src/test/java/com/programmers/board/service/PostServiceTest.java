@@ -6,7 +6,6 @@ import com.programmers.board.dto.PostDto;
 import com.programmers.board.dto.UserDto;
 import com.programmers.board.repository.PostRepository;
 import com.programmers.board.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -25,7 +24,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -44,8 +42,8 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        givenUser = new User("name", 20, "hobby", "hseong3243");
-        givenPost = new Post("title", "content", "hseong3243", givenUser);
+        givenUser = new User("name", 20, "hobby");
+        givenPost = new Post("title", "content", givenUser);
     }
 
     @Nested

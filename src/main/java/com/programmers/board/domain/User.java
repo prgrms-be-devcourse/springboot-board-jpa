@@ -29,8 +29,7 @@ public class User extends BaseEntity {
     protected User() {
     }
 
-    public User(String name, int age, String hobby, String createdBy) {
-        super(createdBy);
+    public User(String name, int age, String hobby) {
         validateName(name);
         validateHobby(hobby);
         this.name = name;

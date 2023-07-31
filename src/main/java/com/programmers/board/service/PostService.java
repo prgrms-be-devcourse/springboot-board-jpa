@@ -26,7 +26,7 @@ public class PostService {
     public Long createPost(Long userId, String title, String content) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저입니다"));
-        Post post = new Post(title, content, "hseong3243", user);
+        Post post = new Post(title, content, user);
         postRepository.save(post);
         return post.getId();
     }

@@ -1,26 +1,22 @@
 package com.programmers.board.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
+import lombok.Getter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+@EntityListeners(AuditingEntityListener.class)
+@Getter
 @MappedSuperclass
 public abstract class BaseEntity {
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @CreatedBy
+    @Column(updatable = false)
     private String createdBy;
-
-    protected BaseEntity() {
-    }
-
-    protected BaseEntity(String createdBy) {
-        this.createdAt = LocalDateTime.now();
-        this.createdBy = createdBy;
-    }
 }
