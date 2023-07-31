@@ -1,5 +1,7 @@
 package kr.co.boardmission.board.domain;
 
+import kr.co.boardmission.member.domain.Member;
+import kr.co.boardmission.member.domain.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +13,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DataJpaTest
 class BoardTest {
     @Autowired
+    MemberRepository memberRepository;
+
+    @Autowired
     TestEntityManager entityManager;
 
     @DisplayName("게시글 제목이 비었을 때 예외 던지는지 확인 - ConstraintViolationException")
     @Test
     void board_title_null_ConstraintViolationException() {
         // given
-        Board board = BoardFactory.createBoard(null, "content");
+        Member member = memberRepository.save(new Member("member"));
+        Board board = BoardFactory.createBoard(null, "content", member);
 
         // when // then
         assertThatThrownBy(() -> entityManager.persistAndFlush(board))

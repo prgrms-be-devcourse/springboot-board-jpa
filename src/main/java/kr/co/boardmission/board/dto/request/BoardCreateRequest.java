@@ -13,15 +13,15 @@ public class BoardCreateRequest {
 
     private String content;
 
-    private String createdBy;
+    private Long memberId;
 
     public BoardCreateRequest(
             String title,
             String content,
-            String createdBy
+            Long memberId
     ) {
         this.title = title;
         this.content = content;
-        this.createdBy = createdBy;
+        this.memberId = memberId;
     }
 }
