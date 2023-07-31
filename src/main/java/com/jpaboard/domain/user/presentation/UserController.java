@@ -6,9 +6,9 @@ import com.jpaboard.domain.user.dto.request.UserUpdateRequest;
 import com.jpaboard.domain.user.dto.response.UserResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,8 +17,9 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<Long> userCreate(@RequestBody @Valid UserCreationRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
+    public ResponseEntity<Void> userCreate(@RequestBody @Valid UserCreationRequest request) {
+        Long userId = userService.createUser(request);
+        return ResponseEntity.created(URI.create("/api/users/" + userId)).build();
     }
 
     @GetMapping("/{id}")

@@ -7,11 +7,12 @@ import com.jpaboard.domain.user.dto.request.UserUpdateRequest;
 import com.jpaboard.domain.user.dto.response.UserResponse;
 import com.jpaboard.domain.user.infrastructure.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -39,6 +40,7 @@ public class UserServiceImpl implements UserService {
         user.update(forUpdate);
     }
 
+    @Transactional
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
