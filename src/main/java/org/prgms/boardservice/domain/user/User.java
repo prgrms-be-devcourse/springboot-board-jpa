@@ -3,10 +3,6 @@ package org.prgms.boardservice.domain.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.prgms.boardservice.domain.BaseTime;
-import org.prgms.boardservice.domain.post.Post;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class User extends BaseTime {
@@ -27,7 +23,4 @@ public class User extends BaseTime {
     @Column(length = 10, unique = true)
     @NotBlank
     private String nickname;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
-    private List<Post> posts = new ArrayList<>();
 }
