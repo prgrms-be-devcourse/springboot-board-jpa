@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,5 +35,14 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(columnDefinition = "user_id", referencedColumnName = "id")
     private User user;
+
+    public void setUser(User user) {
+        if (Objects.nonNull(this.user)) {
+            this.user.getPosts().remove(this);
+        }
+
+        this.user = user;
+        user.getPosts().add(this);
+    }
 
 }
