@@ -1,0 +1,14 @@
+= MyApp REST API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+
+// include::{docdir}/Feature_1_Api.adoc[]
+//
+// include::{docdir}/Feature_2_Api.adoc[]
+//
+// include::{docdir}/Feature_3_Api.adoc[]
