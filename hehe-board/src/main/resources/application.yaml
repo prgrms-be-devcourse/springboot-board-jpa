@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/board
+    username: root
+    password: root1234!
+
+  jpa:
+    database: mysql
+    show-sql: true
+    open-in-view: false
+
+    properties:
+      hibernate:
+        format_sql: true
+        hbm2ddl.auto: update
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
