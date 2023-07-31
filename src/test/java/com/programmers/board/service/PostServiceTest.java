@@ -92,7 +92,7 @@ class PostServiceTest {
         PageRequest pageRequest = PageRequest.of(page, size);
         PageImpl<Post> posts = new PageImpl<>(List.of(givenPost), pageRequest, 1);
 
-        given(postRepository.findAll(pageRequest)).willReturn(posts);
+        given(postRepository.findAllWithUser(pageRequest)).willReturn(posts);
 
         //when
         Page<PostDto> postPage = postService.findPosts(page, size);
@@ -108,7 +108,7 @@ class PostServiceTest {
         @DisplayName("성공")
         void findPost() {
             //given
-            given(postRepository.findById(any())).willReturn(Optional.ofNullable(givenPost));
+            given(postRepository.findByIdWithUser(any())).willReturn(Optional.ofNullable(givenPost));
 
             //when
             PostDto findPost = postService.findPost(1L);
@@ -126,7 +126,7 @@ class PostServiceTest {
         @DisplayName("예외: 존재하지 않는 게시글")
         void findPost_ButEmpty() {
             //given
-            given(postRepository.findById(any())).willThrow(NoSuchElementException.class);
+            given(postRepository.findByIdWithUser(any())).willThrow(NoSuchElementException.class);
 
             //when
             //then

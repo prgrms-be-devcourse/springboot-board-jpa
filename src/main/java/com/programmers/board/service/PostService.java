@@ -34,13 +34,14 @@ public class PostService {
     @Transactional(readOnly = true)
     public Page<PostDto> findPosts(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Post> posts = postRepository.findAll(pageRequest);
+        Page<Post> posts = postRepository.findAllWithUser(pageRequest);
         return posts.map(PostDto::from);
     }
 
     @Transactional(readOnly = true)
     public PostDto findPost(Long postId) {
-        Post post = findPostOrElseThrow(postId);
+        Post post = postRepository.findByIdWithUser(postId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 게시글입니다"));
         return PostDto.from(post);
     }
 
