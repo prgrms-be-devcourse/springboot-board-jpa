@@ -2,7 +2,6 @@ package org.prgms.boardservice.domain.post;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.NonNull;
 import org.prgms.boardservice.domain.BaseTime;
 import org.prgms.boardservice.domain.user.User;
 
@@ -10,7 +9,6 @@ import org.prgms.boardservice.domain.user.User;
 public class Post extends BaseTime {
 
     @Id
-    @NonNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
