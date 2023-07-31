@@ -1,6 +1,7 @@
 package kr.co.boardmission.board.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ public class BoardCreateRequest {
 
     private String content;
 
+    @NotNull
     private Long memberId;
 
     public BoardCreateRequest(

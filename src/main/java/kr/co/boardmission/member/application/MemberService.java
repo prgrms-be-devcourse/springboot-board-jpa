@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-    public void createMember(String name) {
-        memberRepository.save(new Member(name));
+    public Member createMember(String name) {
+        return memberRepository.save(new Member(name));
     }
 
     public Member getMember(Long id) {
