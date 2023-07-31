@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface PostService {
 
-    public Long createPost(PostDto postDto);
+    Long createPost(PostDto postDto);
 
-    public PostDto findPost(Long postId);
+    PostDto findPost(Long postId);
 
-    public List<PostDto> findAll(Pageable pageable);
+    List<PostDto> findAll(Pageable pageable);
 
-    public PostDto updatePost(PostUpdateDto postUpdateDto, Long postId);
+    PostDto updatePost(PostUpdateDto postUpdateDto, Long postId);
 }

@@ -4,7 +4,7 @@ import com.programmers.domain.user.ui.dto.UserDto;
 
 public interface UserService {
 
-    public Long createUser(UserDto userDto);
+    Long createUser(UserDto userDto);
 
-    public UserDto findUser(Long userId);
+    UserDto findUser(Long userId);
 }
