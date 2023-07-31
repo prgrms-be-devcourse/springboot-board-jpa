@@ -1,6 +1,7 @@
 package devcource.hihi.boardjpa.domain;
 
 import devcource.hihi.boardjpa.dto.post.CreatePostDto;
+import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -48,7 +49,7 @@ public class Post extends BaseEntity {
         user.getPostList().add(this);
     }
 
-    public static CreatePostDto toDto(Post post) {
-        return new CreatePostDto(post.title, post.content);
+    public static ResponsePostDto toResponseDto(Post post) {
+        return new ResponsePostDto(post.getId(),post.title, post.content, post.getCreated_by());
     }
 }

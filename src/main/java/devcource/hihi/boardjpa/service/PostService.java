@@ -2,9 +2,12 @@ package devcource.hihi.boardjpa.service;
 
 import devcource.hihi.boardjpa.controller.CursorResult;
 import devcource.hihi.boardjpa.domain.Post;
+import devcource.hihi.boardjpa.domain.User;
 import devcource.hihi.boardjpa.dto.post.CreatePostDto;
-import devcource.hihi.boardjpa.dto.post.RequestPostDto;
+import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
+import devcource.hihi.boardjpa.dto.post.UpdatePostDto;
 import devcource.hihi.boardjpa.repository.PostRepository;
+import devcource.hihi.boardjpa.repository.UserRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,39 +19,44 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public PostService(PostRepository boardRepository) {
+    public PostService(PostRepository boardRepository, UserRepository userRepository) {
         this.postRepository = boardRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
-    public CreatePostDto saveDto(CreatePostDto postDto) {
+    public ResponsePostDto creteDto(CreatePostDto postDto) {
         Post post = postDto.toEntity();
+        User user = userRepository.findById(post.getCreated_by().getId())
+                .orElseThrow(() -> new RuntimeException("작성자의 id가 존재하지 않습니다"));
+        post.allocateUser(user);
         Post savedPost = postRepository.save(post);
-        return Post.toDto(savedPost);
+        return Post.toResponseDto(savedPost);
     }
 
-    public CreatePostDto findById(Long id) {
+    public ResponsePostDto findById(Long id) {
         Post post = postRepository.findById(id).get();
-        return Post.toDto(post);
+        return Post.toResponseDto(post);
     }
 
-    public List<CreatePostDto> findByUserId(Long id){
-        List<CreatePostDto> postDtoList = getPostDtoList(postRepository.findByUserId(id));
+    public List<ResponsePostDto> findByUserId(Long id){
+        List<ResponsePostDto> postDtoList = getPostDtoList(postRepository.findByUserId(id));
         return postDtoList;
     }
 
-    public List<CreatePostDto> findByTitle(String title) {
-        List<CreatePostDto> postDtoList = getPostDtoList(postRepository.findByTitle(title));
+    public List<ResponsePostDto> findByTitle(String title) {
+        List<ResponsePostDto> postDtoList = getPostDtoList(postRepository.findByTitle(title));
         return postDtoList;
     }
 
     @Transactional
-    public CreatePostDto updatePost(Long id,RequestPostDto dto) {
+    public ResponsePostDto updatePost(Long id, UpdatePostDto dto) {
         Post post = postRepository.findById(id).get();
         post.changeTitle(dto.title());
         post.changeContent(dto.content());
-        return Post.toDto(post);
+        return Post.toResponseDto(post);
     }
 
     @Transactional
@@ -56,11 +64,11 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
-    private List<CreatePostDto> getPostDtoList(List<Post> postRepository) {
-        List<CreatePostDto> postDtoList = new ArrayList<>();
+    private List<ResponsePostDto> getPostDtoList(List<Post> postRepository) {
+        List<ResponsePostDto> postDtoList = new ArrayList<>();
         List<Post> postList = postRepository;
         for (Post post : postList) {
-            CreatePostDto postDto = Post.toDto(post);
+            ResponsePostDto postDto = Post.toResponseDto(post);
             postDtoList.add(postDto);
         }
         return postDtoList;
