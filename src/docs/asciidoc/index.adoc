@@ -33,5 +33,38 @@ include::{snippets}/post-update/request-fields.adoc[]
 
 === Post 삭제
 ==== HTTP request
-include::{snippets}/post-delete/httpie-request.adoc[]
+include::{snippets}/post-delete/http-request.adoc[]
 include::{snippets}/post-delete/path-parameters.adoc[]
+
+[[resources-user]]
+== User
+
+[[resources-user-create]]
+=== User 생성
+==== HTTP request
+include::{snippets}/user-create/http-request.adoc[]
+include::{snippets}/user-create/request-fields.adoc[]
+
+==== HTTP response
+include::{snippets}/user-create/http-response.adoc[]
+include::{snippets}/user-create/response-headers.adoc[]
+
+=== User 조회
+==== HTTP request
+include::{snippets}/user-find/http-request.adoc[]
+include::{snippets}/user-find/path-parameters.adoc[]
+
+==== HTTP response
+include::{snippets}/user-find/http-response.adoc[]
+include::{snippets}/user-find/response-fields.adoc[]
+
+=== User 수정
+==== HTTP request
+include::{snippets}/user-update/http-request.adoc[]
+include::{snippets}/user-update/path-parameters.adoc[]
+include::{snippets}/user-update/request-fields.adoc[]
+
+=== Post 삭제
+==== HTTP request
+include::{snippets}/user-delete/http-request.adoc[]
+include::{snippets}/user-delete/path-parameters.adoc[]
