@@ -1,0 +1,67 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 게시글(Post)
+Post 에 대한 등록 기능을 제공합니다.
+
+=== 유저 등록
+유저를 새롭게 등록합다.
+
+|====
+|속성 |설명
+
+|`name` |사용자 이름(문자열 입력)
+|`age` |사용자 나이(최소: 1, 최대: 120)
+|`hobby` |사용자 취미(문자열 입력)
+
+|====
+
+=== 생성
+
+[discrete]
+==== 요청
+include::{snippets}/post-save/curl-request.adoc[]
+include::{snippets}/post-save/httpie-request.adoc[]
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+=== 단일 조회
+==== 요청
+include::{snippets}/post-find/curl-request.adoc[]
+include::{snippets}/post-find/httpie-request.adoc[]
+include::{snippets}/post-find/http-request.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/post-find/http-response.adoc[]
+include::{snippets}/post-find/response-fields.adoc[]
+
+=== 리스트 조회
+==== 요청
+include::{snippets}/post-get/curl-request.adoc[]
+include::{snippets}/post-get/httpie-request.adoc[]
+include::{snippets}/post-get/http-request.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/post-get/http-response.adoc[]
+include::{snippets}/post-get/response-fields.adoc[]
+
+=== 수정
+==== 요청
+include::{snippets}/post-update/curl-request.adoc[]
+include::{snippets}/post-update/httpie-request.adoc[]
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+
+[discrete]
+==== 응답
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
