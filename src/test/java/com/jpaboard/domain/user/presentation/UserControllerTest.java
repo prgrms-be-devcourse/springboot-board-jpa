@@ -61,7 +61,9 @@ class UserControllerTest {
                                 fieldWithPath("age").type(JsonFieldType.NUMBER).description("나이"),
                                 fieldWithPath("hobby").type(JsonFieldType.STRING).description("취미")
                         ),
-                        responseBody(Collections.singletonMap("postId", "게시글 Id"))
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("아이디")
+                        )
                 ));
     }
 
@@ -74,7 +76,6 @@ class UserControllerTest {
                 .andDo(print())
                 .andDo(document(
                         "user-find",
-                        requestBody(),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("아이디"),
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
@@ -96,7 +97,7 @@ class UserControllerTest {
                 .andDo(print())
                 .andDo(
                         document(
-                                "get-find",
+                                "user-update",
                                 requestFields(
                                         fieldWithPath("name").type(JsonFieldType.STRING).description("수정할 이름"),
                                         fieldWithPath("age").type(JsonFieldType.NUMBER).description("수정할 나이"),
@@ -113,9 +114,6 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("user-delete"
-                        , requestBody()
-                        , responseBody()
-                ));
+                .andDo(document("user-delete"));
     }
 }
