@@ -10,7 +10,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
 class BoardTest {
-
     @Autowired
     TestEntityManager entityManager;
 
@@ -18,7 +17,7 @@ class BoardTest {
     @Test
     void board_title_null_ConstraintViolationException() {
         // given
-        Board board = Board.create(null, "content");
+        Board board = BoardFactory.createBoard(null, "content");
 
         // when // then
         assertThatThrownBy(() -> entityManager.persistAndFlush(board))

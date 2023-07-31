@@ -7,13 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
 @Table(name = "tbl_boards")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Board {
-
+public class Board extends BaseBoardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "board_id")
@@ -25,20 +26,21 @@ public class Board {
     @Column(name = "content", length = 65335, nullable = false)
     private String content;
 
-    //TODO : final을 명시하는 부분에 대해 어떻게 생각하나요? -> 현업에서는 final을 강제하나요? 근거가 있을까요?
-    //TODO : 코틀린 컨벤션에 대해 어떻게 생각하나요?
     private Board(
             final String title,
-            final String content
+            final String content,
+            final String createdBy
     ) {
+        super(createdBy, null);
         this.title = title;
         this.content = content;
     }
 
     public static Board create(
             final String title,
-            final String content
+            final String content,
+            final String createdBy
     ) {
-        return new Board(title, content);
+        return new Board(title, content, createdBy);
     }
 }
