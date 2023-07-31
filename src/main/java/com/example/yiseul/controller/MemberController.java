@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -19,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
-
-    private static final int DEFAULT_SIZE = 10;
 
     @PostMapping
     public MemberResponseDto signUp(@RequestBody MemberCreateRequestDto createRequestDto){
@@ -52,5 +52,12 @@ public class MemberController {
     public void deleteMember(@PathVariable Long memberId) {
 
         memberService.deleteMember(memberId);
+    }
+
+    private static final int DEFAULT_SIZE = 2;
+
+    @GetMapping("/curs/{cursor}")
+    public List<MemberResponseDto> getMembersByCursor(@PathVariable Long cursor){
+        return memberService.findMembersByCursor(cursor, DEFAULT_SIZE);
     }
 }

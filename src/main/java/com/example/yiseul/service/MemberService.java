@@ -1,6 +1,5 @@
 package com.example.yiseul.service;
 
-import com.example.yiseul.controller.CursorResult;
 import com.example.yiseul.converter.MemberConverter;
 import com.example.yiseul.domain.Member;
 import com.example.yiseul.dto.member.MemberCreateRequestDto;
@@ -14,12 +13,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Service @Slf4j
+@Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true) // 질문
 public class MemberService {
@@ -64,4 +66,25 @@ public class MemberService {
         memberRepository.deleteById(memberId);
     }
 
+    public List<MemberResponseDto> findMembersByCursor(Long cursor, int size) {
+        Pageable pageable = buildCursorPageable(cursor, size);
+        List<Member> members = getMemberList(cursor, pageable);
+
+        return members.stream()
+                .map(member -> MemberConverter.convertMemberDto(member))
+                .collect(Collectors.toList());
+    }
+
+    private Pageable buildCursorPageable(Long cursor, int size) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "age").and(Sort.by(Sort.Direction.ASC, "id"));
+
+        return cursor.equals(0L) ? PageRequest.of(0, size, sort) : CursorPageRequest.of(cursor, size, sort);
+    }
+
+    public List<Member> getMemberList(Long id, Pageable page) {
+
+        return id.equals(0L)
+                ? memberRepository.findByOrderByAgeDescIdAscWithList(page)  // 기준이 없는 첫 조회라면 일반 조회
+                : memberRepository.findByIdLessThanOrderByIdDesc(id, page); // 이후의 조회라면 커서 조회
+    }
 }
