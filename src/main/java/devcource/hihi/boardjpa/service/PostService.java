@@ -2,10 +2,12 @@ package devcource.hihi.boardjpa.service;
 
 import devcource.hihi.boardjpa.controller.CursorResult;
 import devcource.hihi.boardjpa.domain.Post;
-import devcource.hihi.boardjpa.dto.CreatePostDto;
+import devcource.hihi.boardjpa.dto.post.CreatePostDto;
+import devcource.hihi.boardjpa.dto.post.RequestPostDto;
 import devcource.hihi.boardjpa.repository.PostRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ public class PostService {
         this.postRepository = boardRepository;
     }
 
+    @Transactional
     public CreatePostDto saveDto(CreatePostDto postDto) {
         Post post = postDto.toEntity();
         Post savedPost = postRepository.save(post);
@@ -38,6 +41,19 @@ public class PostService {
     public List<CreatePostDto> findByTitle(String title) {
         List<CreatePostDto> postDtoList = getPostDtoList(postRepository.findByTitle(title));
         return postDtoList;
+    }
+
+    @Transactional
+    public CreatePostDto updatePost(Long id,RequestPostDto dto) {
+        Post post = postRepository.findById(id).get();
+        post.changeTitle(dto.title());
+        post.changeContent(dto.content());
+        return Post.toDto(post);
+    }
+
+    @Transactional
+    public void deletePost(Long id) {
+        postRepository.deleteById(id);
     }
 
     private List<CreatePostDto> getPostDtoList(List<Post> postRepository) {

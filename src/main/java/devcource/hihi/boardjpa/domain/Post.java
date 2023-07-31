@@ -1,6 +1,6 @@
 package devcource.hihi.boardjpa.domain;
 
-import devcource.hihi.boardjpa.dto.CreatePostDto;
+import devcource.hihi.boardjpa.dto.post.CreatePostDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

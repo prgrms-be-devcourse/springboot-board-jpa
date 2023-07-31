@@ -3,7 +3,9 @@ package devcource.hihi.boardjpa.controller;
 import devcource.hihi.boardjpa.domain.Post;
 import devcource.hihi.boardjpa.service.PostService;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,11 +20,13 @@ public class PostController {
     public PostController(PostService postService) {
         this.postService = postService;
     }
-
     @GetMapping
     public CursorResult<Post> getPost(Long cursorId, Integer size) {
         if (size == null) size = DEFAULT_SIZE;
         return this.postService.get(cursorId, PageRequest.of(0, size));
     }
+
+    @PostMapping
+    public ResponseEntity
 
 }

@@ -1,4 +1,4 @@
-package devcource.hihi.boardjpa.dto;
+package devcource.hihi.boardjpa.dto.post;
 
 import devcource.hihi.boardjpa.domain.Post;
 
