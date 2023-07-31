@@ -11,16 +11,25 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 
+import java.util.Collections;
+
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest
 class PostControllerTest {
@@ -57,7 +66,14 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-create",
+                        requestFields(
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 Id"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("본문")
+                        ),
+                        responseBody(Collections.singletonMap("postId", "게시글 Id"))));
     }
 
     @ParameterizedTest
@@ -68,10 +84,18 @@ class PostControllerTest {
         paramMap.add("content", content);
         paramMap.add("keyword", keyword);
 
-        mockMvc.perform(get("/api/posts")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts")
                         .params(paramMap))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-find", pathParameters(
+                                parameterWithName("title").description("제목"),
+                                parameterWithName("content").description("본문"),
+                                parameterWithName("keyword").description("제목 + 본문")
+                        ),
+                        responseFields(
+                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("게시글 Id")
+                        )));
     }
 
     @Test
@@ -82,14 +106,22 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-update",
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("본문")
+                        )));
     }
 
     @Test
     void post_delete_test() throws Exception {
-        mockMvc.perform(delete("/api/posts/{id}", postId))
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/posts/{id}", postId))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-delete", pathParameters(
+                        parameterWithName("id").description("게시글 Id")
+                )));
     }
 
 }

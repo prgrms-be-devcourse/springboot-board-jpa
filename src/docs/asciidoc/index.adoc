@@ -1,0 +1,18 @@
+= Spring REST Docs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[resources-post]]
+== Post
+
+[[resources-post-create]]
+=== Post 생성
+
+==== HTTP request
+
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+==== HTTP response
+
+include::{snippets}/post-create/http-response.adoc[]
