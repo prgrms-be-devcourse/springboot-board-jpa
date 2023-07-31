@@ -14,6 +14,7 @@ include::{snippets}/post-create/request-fields.adoc[]
 
 ==== HTTP response
 include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-headers.adoc[]
 
 === Post 조회
 ==== HTTP request

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -22,6 +23,8 @@ import org.springframework.util.LinkedMultiValueMap;
 
 import java.util.Collections;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -68,17 +71,15 @@ class PostControllerTest {
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("post-create",
+
                         requestFields(
                                 fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 Id"),
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("본문")
-                        )
-//                        반환 타입이 한 개인경우 아래 주석과 같이 입력하면 에러가 발생하는데 이유를 모르겠습니다.
-//                        responseFields(
-//                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("아이디")
-//                        )
-                        ,
-                        responseBody(Collections.singletonMap("postId", "게시글 Id"))));
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.LOCATION).description("리다이렉션 URI")
+                        )));
     }
 
     @ParameterizedTest

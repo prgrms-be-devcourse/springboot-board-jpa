@@ -9,10 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -23,9 +23,9 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/new")
-    public ResponseEntity<Long> postCreate(@RequestBody @Valid PostCreateRequest request) {
+    public ResponseEntity<Void> postCreate(@RequestBody @Valid PostCreateRequest request) {
         Long postId = postService.createPost(request);
-        return new ResponseEntity<>(postId, HttpStatus.CREATED);
+        return ResponseEntity.created(URI.create("/api/posts/" + postId)).build();
     }
 
     @GetMapping("/{id}")
