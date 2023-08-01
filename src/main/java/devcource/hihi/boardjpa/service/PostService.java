@@ -26,9 +26,6 @@ public class PostService {
     @Transactional
     public ResponsePostDto createDto(CreatePostDto postDto) {
         Post post = postDto.toEntity();
-//        User user = userRepository.findById(postDto.userId())
-//                .orElseThrow(() -> new RuntimeException("작성자의 id가 존재하지 않습니다"));
-//        post.allocateUser(user);
         Post savedPost = postRepository.save(post);
         return Post.toResponseDto(savedPost);
     }
