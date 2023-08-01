@@ -1,4 +1,4 @@
-package com.juwoong.springbootboardjpa.user.domain.repository;
+package com.juwoong.springbootboardjpa.post.domain;
 
 import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
@@ -7,18 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import com.juwoong.springbootboardjpa.config.JpaConfig;
+import com.juwoong.springbootboardjpa.post.domain.repository.PostRepository;
 import com.juwoong.springbootboardjpa.user.domain.User;
 
 @DataJpaTest
 @Import(JpaConfig.class)
-class UserRepositoryTest {
+class PostRepositoryTest {
 
     @Autowired
-    UserRepository userRepository;
+    PostRepository postRepository;
 
     @Test
-    @DisplayName("USER 엔티티 저장에 성공한다.")
-    void user_save_success() {
+    @DisplayName("Post 엔티티 저장에 성공한다.")
+    void post_save_success() {
         // given
         User user = User.builder()
             .name("JUWOONG")
@@ -26,11 +27,17 @@ class UserRepositoryTest {
             .hobby("TRAVEL")
             .build();
 
+        Post post = Post.builder()
+            .user(user)
+            .title("test Titles")
+            .content("sdfdkf  dlka flkdjflkasjfnl fdlfkjf lkljlkjgflk")
+            .build();
+
         // when
-        User savedUser = userRepository.save(user);
+        Post savedPost = postRepository.save(post);
 
         // then
-        assertThat(user).usingRecursiveComparison().isEqualTo(savedUser);
+        assertThat(post).usingRecursiveComparison().isEqualTo(savedPost);
+        assertThat(user).usingRecursiveComparison().isEqualTo(savedPost.getUser());
     }
-
 }

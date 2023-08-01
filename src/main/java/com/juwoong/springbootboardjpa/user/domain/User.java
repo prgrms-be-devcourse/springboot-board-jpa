@@ -1,8 +1,11 @@
 package com.juwoong.springbootboardjpa.user.domain;
 
+import java.util.List;
 import com.juwoong.springbootboardjpa.common.BaseEntity;
+import com.juwoong.springbootboardjpa.post.domain.Post;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,5 +29,8 @@ public class User extends BaseEntity {
 
     @Column(nullable = false, length = 30)
     private String hobby;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
 
 }
