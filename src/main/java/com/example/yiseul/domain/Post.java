@@ -38,7 +38,6 @@ public class Post extends BaseTimeEntity {
         return post;
     }
 
-    // 연관관계 편의 메서드 // 핀 : 1급 컬렉션으로 변경해보기?
     public void changeMember(Member member){
         if(Objects.nonNull(this.member)) {
             this.member.getPosts().remove(this);
@@ -49,8 +48,8 @@ public class Post extends BaseTimeEntity {
     }
 
     public void updatePost(String updateTitle, String updateContent) {
-        this.title = validateUpdateString(updateTitle, this.title);
-        this.content = validateUpdateString(updateContent, this.content);
+        changeTitle(updateTitle);
+        changeContent(updateContent);
     }
 
     private String validateUpdateString(String update, String origin) {

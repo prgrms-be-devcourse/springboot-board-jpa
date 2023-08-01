@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
@@ -18,8 +19,6 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor
 public class Member extends BaseTimeEntity {
 
-    public static final int MIN_AGE = 0;
-
     @Id
     @GeneratedValue
     private Long id;
@@ -28,18 +27,18 @@ public class Member extends BaseTimeEntity {
     private String name;
 
     @Column(nullable = false)
-    private int age;
+    @Embedded
+    private Age age;
 
     @Column(length = 20)
     private String hobby;
 
     @OneToMany(mappedBy = "member")
-    private List<Post> posts = new ArrayList<>(); // 밖에서 add 할 수 있지 않나
+    private List<Post> posts = new ArrayList<>();
 
     public Member(String name, int age, String hobby) {
-        validationPositiveAge(age);
         this.name = name;
-        this.age = age;
+        this.age = Age.from(age);
         this.hobby = hobby;
     }
 
@@ -47,22 +46,16 @@ public class Member extends BaseTimeEntity {
         posts.add(post);
     }
 
-    public void updateInfo(String updateName, int updateAge, String updateHobby) {
-        this.name = validateUpdateString(updateName, this.name);
-
-        int updatedAge = validateUpdateInteger(updateAge, this.age); // 질문 : origin값이면 결국 검증이 두번되고있다. (생성때 업데이트때) 개선방법??
-        validationPositiveAge(updatedAge);
-        this.age = updatedAge;
-
-        this.hobby = validateUpdateString(updateHobby, this.hobby);
+    public void updateInfo(String updateName, Integer updateAge, String updateHobby) {
+        changeName(updateName);
+        this.age.changeAge(updateAge);
+        changeHobby(updateHobby);
     }
 
-    private String validateUpdateString(String update, String origin) {
-        if (update == null) {
-
-            return origin;
+    private void changeName(String updateName) {
+        if (updateName != null) {
+            this.name =  updateName;
         }
-        return update;
     }
 
     private int validateUpdateInteger(Integer update, Integer origin) {
