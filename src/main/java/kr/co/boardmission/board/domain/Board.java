@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tbl_boards")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Board extends BaseBoardEntity {
+public class Board extends BaseBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "board_id")
