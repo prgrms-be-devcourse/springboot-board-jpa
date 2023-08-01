@@ -1,5 +1,9 @@
 package devcource.hihi.boardjpa.domain;
 
+import devcource.hihi.boardjpa.dto.post.CreatePostDto;
+import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
+import devcource.hihi.boardjpa.dto.user.CreateUserDto;
+import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -48,6 +52,13 @@ public class User extends BaseEntity{
 
     public void changeHobby(String hobby) {
         this.hobby = hobby;
+    }
+
+    public static ResponseUserDto toResponseDto(User user) {
+        return new ResponseUserDto(user.id, user.name, user.age, user.hobby);
+    }
+    public static CreateUserDto toCreateDto(User user) {
+        return new CreateUserDto(user.name, user.age, user.hobby);
     }
 
 }

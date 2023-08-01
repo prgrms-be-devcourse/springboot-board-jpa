@@ -1,11 +1,13 @@
 package devcource.hihi.boardjpa.controller;
 
-import devcource.hihi.boardjpa.domain.Post;
-import devcource.hihi.boardjpa.dto.post.CreatePostDto;
+import devcource.hihi.boardjpa.domain.User;
 import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
-import devcource.hihi.boardjpa.dto.post.UpdatePostDto;
+import devcource.hihi.boardjpa.dto.user.CreateUserDto;
+import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
+import devcource.hihi.boardjpa.dto.user.UpdateUserDto;
 import devcource.hihi.boardjpa.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,26 +25,28 @@ public class UserRestController {
 
 
     @GetMapping
-    public ResponseEntity<List<Post>> getPost(@RequestParam Long cursorId, @RequestParam int limit) {
-        return ResponseEntity.ok(userService.getUsers(cursorId, limit));
+    public ResponseEntity<Page<User>> getUsers(@RequestParam int pageNumber, @RequestParam int pageSize) {
+        return ResponseEntity.ok(userService.getUsersWithPagination(pageNumber, pageSize));
     }
 
     @PostMapping
-    public ResponseEntity<ResponsePostDto> createPost(@Valid @RequestBody CreatePostDto postDto) {
-        return ResponseEntity.ok(userService.createDto(postDto));
+    public ResponseEntity<ResponseUserDto> createUser(@Valid @RequestBody CreateUserDto userDto) {
+        return ResponseEntity.ok(userService.createDto(userDto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponsePostDto> findByPostId(@PathVariable Long id) {
+    public ResponseEntity<ResponseUserDto> findByUserId(@PathVariable Long id) {
         return ResponseEntity.ok(userService.findById(id));
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<ResponsePostDto> updatePost(@PathVariable Long id, UpdatePostDto postDto) {
-        return ResponseEntity.ok(userService.updatePost(id, postDto));
+    public ResponseEntity<ResponseUserDto> updatePost(@PathVariable Long id, UpdateUserDto userDto) {
+        return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id) {
-        userService.deletePost(id);
+        userService.deleteUser(id);
+    }
+
     }
