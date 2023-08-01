@@ -25,24 +25,27 @@ import lombok.NoArgsConstructor;
 public class User extends BaseEntity {
 
   private static final Pattern NAME_PATTERN = Pattern.compile("^[a-zA-Z가-힣]+$");
+  private static final int NAME_MAX = 30;
+  private static final int AGE_MIN = 1;
+  private static final int HOBBY_MAX = 100;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @NotBlank
-  @Size(max = 30)
-  @Column(nullable = false, length = 30)
+  @Size(max = NAME_MAX)
+  @Column(nullable = false, length = NAME_MAX)
   private String name;
 
   @NotNull
-  @Size(min = 1)
+  @Size(min = AGE_MIN)
   @Column(nullable = false)
   private int age;
 
   @NotBlank
-  @Size(max = 100)
-  @Column(nullable = false, length = 100)
+  @Size(max = HOBBY_MAX)
+  @Column(nullable = false, length = HOBBY_MAX)
   private String hobby;
 
   public void updateName(String name) {
