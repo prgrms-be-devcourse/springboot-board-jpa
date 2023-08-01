@@ -3,8 +3,9 @@ package com.programmers.jpaboard.service;
 import com.programmers.jpaboard.domain.Post;
 import com.programmers.jpaboard.domain.User;
 import com.programmers.jpaboard.dto.request.PostCreateRequest;
-import com.programmers.jpaboard.dto.response.PostCreateResponse;
-import com.programmers.jpaboard.dto.response.PostFindResponse;
+import com.programmers.jpaboard.dto.request.PostUpdateRequest;
+import com.programmers.jpaboard.dto.response.PostDetailResponse;
+import com.programmers.jpaboard.dto.response.PostIdResponse;
 import com.programmers.jpaboard.exception.BusinessException;
 import com.programmers.jpaboard.repository.PostRepository;
 import com.programmers.jpaboard.repository.UserRepository;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +22,8 @@ public class PostService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
 
-    public PostCreateResponse createPost(PostCreateRequest request) {
+    @Transactional
+    public PostIdResponse createPost(PostCreateRequest request) {
         Long userId = request.getUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException("게시물을 생성하는 사용자의 ID가 올바르지 않습니다.", Map.of("userId", userId)));
@@ -30,19 +33,30 @@ public class PostService {
 
         Post savedPost = postRepository.save(post);
 
-        return PostCreateResponse.of(savedPost.getId());
+        return PostIdResponse.of(savedPost.getId());
     }
 
-    public List<PostFindResponse> findAllPosts() {
+    public List<PostDetailResponse> findAllPosts() {
         return postRepository.findAll().stream()
-                .map(PostFindResponse::fromEntity)
+                .map(PostDetailResponse::fromEntity)
                 .toList();
     }
 
-    public PostFindResponse findPostById(Long id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("해당 ID의 게시물이 존재하지 않습니다.", Map.of("postId", id)));
+    public PostDetailResponse findPostById(Long id) {
+        return PostDetailResponse.fromEntity(getPostById(id));
+    }
 
-        return PostFindResponse.fromEntity(post);
+    @Transactional
+    public PostIdResponse updatePost(Long id, PostUpdateRequest request) {
+        Post post = getPostById(id);
+        post.updateTitle(request.getTitle());
+        post.updateContent(request.getContent());
+
+        return PostIdResponse.of(post.getId());
+    }
+
+    private Post getPostById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("해당 ID의 게시물이 존재하지 않습니다.", Map.of("postId", id)));
     }
 }

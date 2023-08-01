@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostFindResponse {
+public class PostDetailResponse {
 
     private Long postId;
     private String title;
@@ -20,8 +20,8 @@ public class PostFindResponse {
     private String createdBy;
     private Long userId;
 
-    public static PostFindResponse fromEntity(Post post) {
-        return PostFindResponse.builder()
+    public static PostDetailResponse fromEntity(Post post) {
+        return PostDetailResponse.builder()
                 .postId(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())

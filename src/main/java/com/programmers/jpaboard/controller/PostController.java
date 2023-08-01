@@ -1,14 +1,16 @@
 package com.programmers.jpaboard.controller;
 
 import com.programmers.jpaboard.dto.request.PostCreateRequest;
+import com.programmers.jpaboard.dto.request.PostUpdateRequest;
 import com.programmers.jpaboard.dto.response.ApiResponse;
-import com.programmers.jpaboard.dto.response.PostCreateResponse;
-import com.programmers.jpaboard.dto.response.PostFindResponse;
+import com.programmers.jpaboard.dto.response.PostDetailResponse;
+import com.programmers.jpaboard.dto.response.PostIdResponse;
 import com.programmers.jpaboard.service.PostService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,22 +27,29 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<PostCreateResponse> createPost(@RequestBody PostCreateRequest request) {
-        PostCreateResponse response = postService.createPost(request);
+    public ApiResponse<PostIdResponse> createPost(@RequestBody PostCreateRequest request) {
+        PostIdResponse response = postService.createPost(request);
 
         return ApiResponse.success(response);
     }
 
     @GetMapping
-    public ApiResponse<List<PostFindResponse>> findAllPosts() {
-        List<PostFindResponse> response = postService.findAllPosts();
+    public ApiResponse<List<PostDetailResponse>> findAllPosts() {
+        List<PostDetailResponse> response = postService.findAllPosts();
 
         return ApiResponse.success(response);
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<PostFindResponse> findPostById(@PathVariable Long id) {
-        PostFindResponse response = postService.findPostById(id);
+    public ApiResponse<PostDetailResponse> findPostById(@PathVariable Long id) {
+        PostDetailResponse response = postService.findPostById(id);
+
+        return ApiResponse.success(response);
+    }
+
+    @PatchMapping("/{id}")
+    public ApiResponse<PostIdResponse> updatePost(@PathVariable Long id, @RequestBody PostUpdateRequest request) {
+        PostIdResponse response = postService.updatePost(id, request);
 
         return ApiResponse.success(response);
     }
