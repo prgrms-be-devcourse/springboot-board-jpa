@@ -1,0 +1,13 @@
+= Board REST API
+
+== 게시판 생성 하기
+
+=== REQUEST
+
+include::{snippets}/posts/createPost/http-request.adoc[]
+
+=== RESPONSE
+
+include::{snippets}/posts/createPost/http-response.adoc[]
+
+
