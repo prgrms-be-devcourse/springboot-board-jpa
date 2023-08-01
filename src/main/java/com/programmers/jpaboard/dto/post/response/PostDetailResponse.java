@@ -1,4 +1,4 @@
-package com.programmers.jpaboard.dto.response;
+package com.programmers.jpaboard.dto.post.response;
 
 import com.programmers.jpaboard.domain.Post;
 import java.time.LocalDateTime;

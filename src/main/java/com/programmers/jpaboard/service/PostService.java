@@ -2,10 +2,10 @@ package com.programmers.jpaboard.service;
 
 import com.programmers.jpaboard.domain.Post;
 import com.programmers.jpaboard.domain.User;
-import com.programmers.jpaboard.dto.request.PostCreateRequest;
-import com.programmers.jpaboard.dto.request.PostUpdateRequest;
-import com.programmers.jpaboard.dto.response.PostDetailResponse;
-import com.programmers.jpaboard.dto.response.PostIdResponse;
+import com.programmers.jpaboard.dto.post.request.PostCreateRequest;
+import com.programmers.jpaboard.dto.post.request.PostUpdateRequest;
+import com.programmers.jpaboard.dto.post.response.PostDetailResponse;
+import com.programmers.jpaboard.dto.post.response.PostIdResponse;
 import com.programmers.jpaboard.exception.BusinessException;
 import com.programmers.jpaboard.repository.PostRepository;
 import com.programmers.jpaboard.repository.UserRepository;

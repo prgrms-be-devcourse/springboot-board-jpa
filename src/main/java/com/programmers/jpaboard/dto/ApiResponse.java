@@ -1,4 +1,4 @@
-package com.programmers.jpaboard.dto.response;
+package com.programmers.jpaboard.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
 package com.programmers.jpaboard.service;
 
 import com.programmers.jpaboard.domain.User;
-import com.programmers.jpaboard.dto.request.UserCreateRequest;
-import com.programmers.jpaboard.dto.response.UserCreateResponse;
+import com.programmers.jpaboard.dto.user.request.UserCreateRequest;
+import com.programmers.jpaboard.dto.user.response.UserCreateResponse;
 import com.programmers.jpaboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.programmers.jpaboard.dto.request;
+package com.programmers.jpaboard.dto.user.request;
 
 import com.programmers.jpaboard.domain.User;
 import lombok.Getter;

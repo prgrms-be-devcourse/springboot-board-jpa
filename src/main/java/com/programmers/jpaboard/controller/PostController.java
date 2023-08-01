@@ -1,10 +1,10 @@
 package com.programmers.jpaboard.controller;
 
-import com.programmers.jpaboard.dto.request.PostCreateRequest;
-import com.programmers.jpaboard.dto.request.PostUpdateRequest;
-import com.programmers.jpaboard.dto.response.ApiResponse;
-import com.programmers.jpaboard.dto.response.PostDetailResponse;
-import com.programmers.jpaboard.dto.response.PostIdResponse;
+import com.programmers.jpaboard.dto.post.request.PostCreateRequest;
+import com.programmers.jpaboard.dto.post.request.PostUpdateRequest;
+import com.programmers.jpaboard.dto.ApiResponse;
+import com.programmers.jpaboard.dto.post.response.PostDetailResponse;
+import com.programmers.jpaboard.dto.post.response.PostIdResponse;
 import com.programmers.jpaboard.service.PostService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.programmers.jpaboard.dto.request;
+package com.programmers.jpaboard.dto.post.request;
 
 import com.programmers.jpaboard.domain.Post;
 import lombok.Getter;

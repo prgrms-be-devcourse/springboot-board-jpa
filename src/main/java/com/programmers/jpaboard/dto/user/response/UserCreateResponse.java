@@ -1,4 +1,4 @@
-package com.programmers.jpaboard.dto.response;
+package com.programmers.jpaboard.dto.user.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
