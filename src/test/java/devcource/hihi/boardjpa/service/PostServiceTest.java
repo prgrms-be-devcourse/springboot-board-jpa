@@ -8,9 +8,7 @@ import devcource.hihi.boardjpa.domain.Post;
 import devcource.hihi.boardjpa.domain.User;
 import devcource.hihi.boardjpa.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -24,6 +22,7 @@ import java.util.List;
 
 @Slf4j
 @SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PostServiceTest {
 
 
@@ -31,36 +30,31 @@ public class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
-    private List<Post> posts = new ArrayList<>();
-
     @InjectMocks
     @Autowired
     private PostService postService;
 
-    @BeforeEach
+    @BeforeAll
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 10; i++) {
             Post post = Post.builder()
-                    .title("Title " )
-                    .content("Content ")
+                    .title("Title " + i )
+                    .content("Content " + i)
                     .build();
-            posts.add(post);
+            postRepository.save(post);
         }
     }
 
-    @AfterEach
-    public void clear() {
-        postRepository.deleteAll();
-    }
 
 
     @Test
     public void testGetPostsFirstPage() {
         // Given
         int limit = 5;
-        log.info("posts.size():{}", posts.size());
-        when(postRepository.findTopByOrderByIdDesc(limit)).thenReturn(posts);
+        List<Post> all = postRepository.findAll();
+        log.info("posts.size():{}", all.size());
+        when(postRepository.findTopByOrderByIdDesc(limit)).thenReturn(all);
 
         // When
         List<Post> result = postService.getPosts(null, limit);
@@ -68,7 +62,7 @@ public class PostServiceTest {
 
         for (int i = 0; i < limit; i++) {
             log.info("result : {}",result.get(i));
-            log.info("post : {}", posts.get(i));
+            log.info("post : {}", all.get(i));
         }
         // Then
         assertEquals(limit, result.size());
@@ -80,7 +74,10 @@ public class PostServiceTest {
         // Given
         int limit = 5;
         Long cursor = 10L;
-        when(postRepository.findByIdLessThanOrderByIdDesc(cursor, limit)).thenReturn(posts);
+
+        List<Post> all = postRepository.findAll();
+
+        when(postRepository.findByIdLessThanOrderByIdDesc(cursor, limit)).thenReturn(all);
 
         // When
         List<Post> result = postService.getPosts(cursor, limit);
