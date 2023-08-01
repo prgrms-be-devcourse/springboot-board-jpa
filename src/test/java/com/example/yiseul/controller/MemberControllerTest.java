@@ -77,7 +77,7 @@ class MemberControllerTest {
                                 fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
                         ),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("멤버 아이디"),
+                                fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
                                 fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
                                 fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby"),
@@ -107,7 +107,36 @@ class MemberControllerTest {
                 .param("page", String.valueOf(pageable.getPageNumber()))
                 .param("size", String.valueOf(pageable.getPageSize())))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(membersPage)));
+                .andExpect(content().string(asJsonString(membersPage)))
+
+                .andDo(document("member-getMembersByPage",
+                        responseFields(
+                                fieldWithPath("content.[].memberId").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("content.[].name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("content.[].age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("content.[].hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("content.[].createdAt").type(JsonFieldType.STRING).description("createdAt"),
+                                fieldWithPath("content.[].createdBy").type(JsonFieldType.STRING).description("createdBy"),
+                                fieldWithPath("pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("sort.empty"),
+                                fieldWithPath("pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("sort.sorted"),
+                                fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("sort.unsorted"),
+                                fieldWithPath("pageable.offset").type(JsonFieldType.NUMBER).description("offset"),
+                                fieldWithPath("pageable.pageNumber").type(JsonFieldType.NUMBER).description("pageNumber"),
+                                fieldWithPath("pageable.pageSize").type(JsonFieldType.NUMBER).description("pageSize"),
+                                fieldWithPath("pageable.paged").type(JsonFieldType.BOOLEAN).description("paged"),
+                                fieldWithPath("pageable.unpaged").type(JsonFieldType.BOOLEAN).description("unpaged"),
+                                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("last"),
+                                fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("totalPages"),
+                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
+                                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("first"),
+                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("size"),
+                                fieldWithPath("number").type(JsonFieldType.NUMBER).description("number"),
+                                fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements"),
+                                fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("empty"),
+                                fieldWithPath("sort.empty").type(JsonFieldType.BOOLEAN).description("empty"),
+                                fieldWithPath("sort.unsorted").type(JsonFieldType.BOOLEAN).description("sort.unsorted"),
+                                fieldWithPath("sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted")
+                )));
     }
 
     @Test
@@ -120,7 +149,18 @@ class MemberControllerTest {
         //when & then
         mvc.perform(get("/api/members/{memberId}", 1))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(responseDto)));
+                .andExpect(content().string(asJsonString(responseDto)))
+
+                .andDo(document("member-getMember",
+                        responseFields(
+                                fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성시각"),
+                                fieldWithPath("createdBy").type(JsonFieldType.STRING).description("생성자")
+                        )
+                ));
     }
 
     @Test
@@ -136,7 +176,16 @@ class MemberControllerTest {
         mvc.perform(patch("/api/members/{memberId}", 1)
                         .contentType(APPLICATION_JSON)
                         .content(asJsonString(updateRequestDto)))
-                        .andExpect(status().isOk());
+                        .andExpect(status().isOk())
+
+                        .andDo(document("member-update",
+                                requestFields(
+                                        fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
+                                        fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
+                                        fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
+                                )));
+
+
     }
 
     @Test
@@ -148,7 +197,9 @@ class MemberControllerTest {
 
         // when & then
         mvc.perform(delete("/api/members/{memberId}",1))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+
+                .andDo(document("member-delete"));
     }
 
     private String asJsonString(Object obj) throws Exception {
