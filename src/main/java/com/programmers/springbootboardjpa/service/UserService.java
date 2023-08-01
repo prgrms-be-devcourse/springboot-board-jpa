@@ -1,9 +1,9 @@
 package com.programmers.springbootboardjpa.service;
 
 import com.programmers.springbootboardjpa.domain.user.User;
-import com.programmers.springbootboardjpa.dto.UserCreateRequest;
-import com.programmers.springbootboardjpa.dto.UserResponse;
-import com.programmers.springbootboardjpa.dto.UserUpdateRequest;
+import com.programmers.springbootboardjpa.dto.user.UserCreateRequest;
+import com.programmers.springbootboardjpa.dto.user.UserResponse;
+import com.programmers.springbootboardjpa.dto.user.UserUpdateRequest;
 import com.programmers.springbootboardjpa.mapper.user.UserMapper;
 import com.programmers.springbootboardjpa.repository.UserRepository;
 import java.util.List;
@@ -52,8 +52,8 @@ public class UserService {
     public void updateById(Long id, UserUpdateRequest userUpdateRequest) {
         User user = findById(id, "업데이트하려는 아이디가 없습니다.");
 
-        user.changeName(userUpdateRequest.getName());
-        user.changeHobby(userUpdateRequest.getHobby());
+        user.updateName(userUpdateRequest.getName());
+        user.updateHobby(userUpdateRequest.getHobby());
     }
 
     private User findById(Long id, String exceptionMessage) {

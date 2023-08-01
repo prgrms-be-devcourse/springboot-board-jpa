@@ -1,8 +1,8 @@
 package com.programmers.springbootboardjpa.controller;
 
-import com.programmers.springbootboardjpa.dto.UserCreateRequest;
-import com.programmers.springbootboardjpa.dto.UserResponse;
-import com.programmers.springbootboardjpa.dto.UserUpdateRequest;
+import com.programmers.springbootboardjpa.dto.user.UserCreateRequest;
+import com.programmers.springbootboardjpa.dto.user.UserResponse;
+import com.programmers.springbootboardjpa.dto.user.UserUpdateRequest;
 import com.programmers.springbootboardjpa.global.ApiResponse;
 import com.programmers.springbootboardjpa.service.UserService;
 import java.util.List;

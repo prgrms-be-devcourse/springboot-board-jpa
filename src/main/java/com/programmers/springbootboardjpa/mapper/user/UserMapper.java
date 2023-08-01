@@ -1,8 +1,8 @@
 package com.programmers.springbootboardjpa.mapper.user;
 
 import com.programmers.springbootboardjpa.domain.user.User;
-import com.programmers.springbootboardjpa.dto.UserCreateRequest;
-import com.programmers.springbootboardjpa.dto.UserResponse;
+import com.programmers.springbootboardjpa.dto.user.UserCreateRequest;
+import com.programmers.springbootboardjpa.dto.user.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
