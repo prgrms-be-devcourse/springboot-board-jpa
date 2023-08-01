@@ -2,7 +2,6 @@ package com.programmers.board.docs;
 
 import com.programmers.board.controller.PageResult;
 import com.programmers.board.controller.Result;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;

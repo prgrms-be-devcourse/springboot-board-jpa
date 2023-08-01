@@ -142,8 +142,6 @@ class UserServiceTest {
         }
     }
 
-
-
     @Test
     @DisplayName("성공: 회원 수정")
     void updateUser() {
