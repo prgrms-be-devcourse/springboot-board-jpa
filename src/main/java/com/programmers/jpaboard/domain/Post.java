@@ -13,10 +13,12 @@ import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "post")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
@@ -38,10 +40,6 @@ public class Post extends BaseEntity {
     protected Post(String title, String content) {
         this.title = title;
         this.content = content;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public void updateUser(User user) {
