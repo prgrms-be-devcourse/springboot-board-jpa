@@ -1,13 +1,17 @@
 package com.programmers.jpa_board.user.domain;
 
 import com.programmers.jpa_board.global.BaseEntity;
+import com.programmers.jpa_board.post.domain.Post;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +32,9 @@ public class User extends BaseEntity {
 
     @Column(name = "hobby", nullable = false, length = 100)
     private String hobby;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
 
     protected User() {
     }
@@ -55,6 +62,10 @@ public class User extends BaseEntity {
 
     public String getHobby() {
         return hobby;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
     }
 
     private void validateName(String name) {
