@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import kr.co.boardmission.board.dto.request.BoardRequest;
 import kr.co.boardmission.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -50,5 +51,11 @@ public class Board extends BaseBoard {
             final Member member
     ) {
         return new Board(title, content, member);
+    }
+
+    public void updateBoard(BoardRequest request, String modifiedBy) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.modifiedBy = modifiedBy;
     }
 }

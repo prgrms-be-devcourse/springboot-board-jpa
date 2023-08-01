@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class BoardCreateRequest {
+public class BoardRequest {
     @NotBlank
     private String title;
 
@@ -17,7 +17,7 @@ public class BoardCreateRequest {
     @NotNull
     private Long memberId;
 
-    public BoardCreateRequest(
+    public BoardRequest(
             String title,
             String content,
             Long memberId

@@ -3,7 +3,7 @@ package kr.co.boardmission.board.application;
 import kr.co.boardmission.board.domain.Board;
 import kr.co.boardmission.board.domain.BoardFactory;
 import kr.co.boardmission.board.domain.BoardRepository;
-import kr.co.boardmission.board.dto.request.BoardCreateRequest;
+import kr.co.boardmission.board.dto.request.BoardRequest;
 import kr.co.boardmission.board.dto.response.BoardResponse;
 import kr.co.boardmission.board.dto.response.BoardSummary;
 import kr.co.boardmission.member.application.MemberService;
@@ -54,7 +54,7 @@ class BoardServiceTest {
     @Test
     void create_board_success() {
         // Given
-        BoardCreateRequest createRequest = BoardFactory.createBoardCreateRequest();
+        BoardRequest createRequest = BoardFactory.createBoardCreateRequest(1L);
         Board board = boardMapper.toBoard(createRequest, member);
 
         given(memberService.getMember(any(Long.class))).willReturn(member);
@@ -101,5 +101,22 @@ class BoardServiceTest {
 
         // Then
         assertThat(actual).hasSize(2);
+    }
+
+    @DisplayName("게시판 페이지 단위 수정 - 성공")
+    @Test
+    void update_board_success() {
+        // Given
+        Board board = BoardFactory.createBoard("t1", "c1", member);
+        BoardRequest request = BoardFactory.createBoardCreateRequest(1L);
+
+        given(memberService.getMember(any(Long.class))).willReturn(member);
+        given(boardRepository.findById(any(Long.class))).willReturn(Optional.of(board));
+
+        // When
+        String actual = boardService.updateBoard(1L, request);
+
+        // Then
+        assertThat(actual).isEqualTo(member.getName());
     }
 }

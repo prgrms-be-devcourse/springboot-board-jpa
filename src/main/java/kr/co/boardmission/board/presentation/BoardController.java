@@ -2,7 +2,7 @@ package kr.co.boardmission.board.presentation;
 
 import jakarta.validation.Valid;
 import kr.co.boardmission.board.application.BoardService;
-import kr.co.boardmission.board.dto.request.BoardCreateRequest;
+import kr.co.boardmission.board.dto.request.BoardRequest;
 import kr.co.boardmission.board.dto.response.BoardResponse;
 import kr.co.boardmission.board.dto.response.BoardSummary;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<String> createBoard(@RequestBody @Valid BoardCreateRequest request) {
+    public ResponseEntity<String> createBoard(@RequestBody @Valid BoardRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(boardService.createBoard(request));
@@ -47,5 +48,15 @@ public class BoardController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(boardService.findAll(pageable));
+    }
+
+    @PutMapping("/{board_id}")
+    public ResponseEntity<String> getBoardsPage(
+            @PathVariable(name = "board_id") Long boardId,
+            @RequestBody @Valid BoardRequest request
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(boardService.updateBoard(boardId, request));
     }
 }

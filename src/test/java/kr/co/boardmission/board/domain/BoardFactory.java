@@ -1,6 +1,6 @@
 package kr.co.boardmission.board.domain;
 
-import kr.co.boardmission.board.dto.request.BoardCreateRequest;
+import kr.co.boardmission.board.dto.request.BoardRequest;
 import kr.co.boardmission.member.domain.Member;
 
 public class BoardFactory {
@@ -8,7 +8,7 @@ public class BoardFactory {
         return Board.create(title, content, member);
     }
 
-    public static BoardCreateRequest createBoardCreateRequest() {
-        return new BoardCreateRequest("title", "content", 1L);
+    public static BoardRequest createBoardCreateRequest(Long memberId) {
+        return new BoardRequest("title", "content", memberId);
     }
 }

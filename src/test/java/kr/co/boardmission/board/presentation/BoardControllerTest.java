@@ -5,7 +5,7 @@ import kr.co.boardmission.BoardMissionApplication;
 import kr.co.boardmission.board.domain.Board;
 import kr.co.boardmission.board.domain.BoardFactory;
 import kr.co.boardmission.board.domain.BoardRepository;
-import kr.co.boardmission.board.dto.request.BoardCreateRequest;
+import kr.co.boardmission.board.dto.request.BoardRequest;
 import kr.co.boardmission.member.application.MemberService;
 import kr.co.boardmission.member.domain.Member;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +25,8 @@ import java.util.List;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,18 +47,18 @@ class BoardControllerTest {
     @Autowired
     private BoardRepository boardRepository;
 
-    private BoardCreateRequest request;
+    private BoardRequest request;
     private Member member;
     private Board board;
 
     @BeforeEach
     void beforeEach() {
-        request = BoardFactory.createBoardCreateRequest();
         member = memberService.createMember("testMemberName");
+        request = BoardFactory.createBoardCreateRequest(member.getMemberId());
         board = boardRepository.save(BoardFactory.createBoard("title", "content", member));
     }
 
-    @DisplayName("/api/v1/boards - 게시판 등록 API 테스트")
+    @DisplayName("/api/v1/boards - 게시판 등록 API 테스트 with 성공")
     @Test
     void create_board_api_success() throws Exception {
         // When // Then
@@ -66,7 +68,7 @@ class BoardControllerTest {
                 .andExpect(status().is(HttpStatus.CREATED.value()));
     }
 
-    @DisplayName("/api/v1/boards/{board_id} - 게시판 단건 조회 API 테스트")
+    @DisplayName("/api/v1/boards/{board_id} - 게시판 단건 조회 API 테스트 with 성공")
     @Test
     void get_board_api_success() throws Exception {
         // When // Then
@@ -78,7 +80,7 @@ class BoardControllerTest {
                 .andExpect(jsonPath("$.createdBy").exists());
     }
 
-    @DisplayName("/api/v1/boards - 게시판 페이징 조회 API 테스트")
+    @DisplayName("/api/v1/boards - 게시판 페이징 조회 API 테스트 with 성공")
     @Test
     void get_boards_paging_success() throws Exception {
         // Given
@@ -96,5 +98,16 @@ class BoardControllerTest {
                         .param("size", "2"))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.*", hasSize(2)));
+    }
+
+    @DisplayName("/api/v1/boards/{board_id} - 게시글 수정 API 테스트 with 성공")
+    @Test
+    void update_member_success() throws Exception {
+
+        // When // Then
+        mockMvc.perform(put("/api/v1/boards/" + board.getBoardId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(content().string(member.getName()));
     }
 }
