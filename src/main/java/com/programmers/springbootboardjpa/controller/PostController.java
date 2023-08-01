@@ -4,7 +4,7 @@ import com.programmers.springbootboardjpa.dto.post.PostCreateRequest;
 import com.programmers.springbootboardjpa.dto.post.PostResponse;
 import com.programmers.springbootboardjpa.dto.post.PostUpdateRequest;
 import com.programmers.springbootboardjpa.global.ApiResponse;
-import com.programmers.springbootboardjpa.service.PostService;
+import com.programmers.springbootboardjpa.servi현ce.PostService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
