@@ -1,6 +1,5 @@
 package com.example.springbootboardjpa.entity;
 
-import com.example.springbootboardjpa.enums.Category;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,9 +17,6 @@ public class Post extends BaseEntity {
 
     @Column(name = "content",nullable = false)
     private String content;
-
-    @Enumerated(EnumType.STRING)
-    private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(columnDefinition = "user_id",referencedColumnName = "id")
