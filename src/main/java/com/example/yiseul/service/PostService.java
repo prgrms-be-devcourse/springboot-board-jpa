@@ -7,7 +7,6 @@ import com.example.yiseul.dto.post.PostCreateRequestDto;
 import com.example.yiseul.dto.post.PostResponseDto;
 import com.example.yiseul.dto.post.PostUpdateRequestDto;
 import com.example.yiseul.global.exception.ErrorCode;
-import com.example.yiseul.global.exception.MemberException;
 import com.example.yiseul.global.exception.PostException;
 import com.example.yiseul.repository.MemberRepository;
 import com.example.yiseul.repository.PostRepository;
@@ -31,20 +30,20 @@ public class PostService {
         Post post = PostConverter.convertPost(member, createRequestDto);
         postRepository.save(post);
 
-        return PostConverter.convertPostDto(post);
+        return PostConverter.convertPostResponseDto(post);
     }
 
     public Page<PostResponseDto> getPosts(Pageable pageable) {
 
         return postRepository.findAll(pageable)
-                .map(post -> PostConverter.convertPostDto(post));
+                .map(post -> PostConverter.convertPostResponseDto(post));
     }
 
     public PostResponseDto getPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostException(ErrorCode.POST_NOT_FOUND));
 
-        return PostConverter.convertPostDto(post);
+        return PostConverter.convertPostResponseDto(post);
     }
 
     @Transactional

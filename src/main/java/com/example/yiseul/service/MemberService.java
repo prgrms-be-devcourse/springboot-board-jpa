@@ -33,20 +33,20 @@ public class MemberService {
         Member member = MemberConverter.convertMember(createRequestDto);
         Member savedMember = memberRepository.save(member);
 
-        return MemberConverter.convertMemberDto(savedMember);
+        return MemberConverter.convertMemberResponseDto(savedMember);
     }
 
     public Page<MemberResponseDto> getMembers(Pageable pageable) {
 
         return memberRepository.findAll(pageable)
-                .map(member -> MemberConverter.convertMemberDto(member));
+                .map(member -> MemberConverter.convertMemberResponseDto(member));
     }
 
     public MemberResponseDto getMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
 
-        return MemberConverter.convertMemberDto(member);
+        return MemberConverter.convertMemberResponseDto(member);
     }
 
     @Transactional
@@ -69,14 +69,16 @@ public class MemberService {
     public List<MemberResponseDto> findMembersByCursor(Long cursor, int size) {
         Pageable pageable = buildCursorPageable(cursor, size);
         List<Member> members = getMemberList(cursor, pageable);
+        // 수정 가져온 정보에 대해서 id값을 반환 : 정보를 두번준다..
+        // Long lastMemberId = members.get(members.size() - 1).getId();
 
         return members.stream()
-                .map(member -> MemberConverter.convertMemberDto(member))
+                .map(member -> MemberConverter.convertMemberResponseDto(member))
                 .collect(Collectors.toList());
     }
 
     private Pageable buildCursorPageable(Long cursor, int size) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "age").and(Sort.by(Sort.Direction.ASC, "id"));
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
 
         return cursor.equals(0L) ? PageRequest.of(0, size, sort) : CursorPageRequest.of(cursor, size, sort);
     }

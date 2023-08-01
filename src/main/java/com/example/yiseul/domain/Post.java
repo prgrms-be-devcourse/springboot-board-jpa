@@ -26,16 +26,11 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
-    private Post(String title, String content) {
+    public Post(Member member, String title, String content) {
         this.title = title;
         this.content = content;
-    }
-
-    public static Post createPost(Member member, String title, String content){
-        Post post = new Post(title, content);
-        post.changeMember(member);
-
-        return post;
+        changeMember(member);
+        setCreatedBy(member.getName());
     }
 
     public void changeMember(Member member){

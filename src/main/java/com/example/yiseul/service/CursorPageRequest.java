@@ -16,7 +16,4 @@ public class CursorPageRequest extends PageRequest {
         return new CursorPageRequest(cursor, size, sort);
     }
 
-    public long getCursor() {
-        return cursor;
-    }
 }
