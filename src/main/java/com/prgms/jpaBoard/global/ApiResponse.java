@@ -11,7 +11,7 @@ public record ApiResponse<T>(
         LocalDateTime serverDateTime
 ) {
 
-    public ApiResponse(int statusCode, T data) {
+    private ApiResponse(int statusCode, T data) {
         this(statusCode, data, LocalDateTime.now());
     }
 
