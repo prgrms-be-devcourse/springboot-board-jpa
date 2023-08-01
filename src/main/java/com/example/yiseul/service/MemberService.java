@@ -81,10 +81,10 @@ public class MemberService {
         return cursor.equals(0L) ? PageRequest.of(0, size, sort) : CursorPageRequest.of(cursor, size, sort);
     }
 
-    public List<Member> getMemberList(Long id, Pageable page) {
+    private List<Member> getMemberList(Long id, Pageable page) {
 
         return id.equals(0L)
-                ? memberRepository.findByOrderByAgeDescIdAscWithList(page)  // 기준이 없는 첫 조회라면 일반 조회
-                : memberRepository.findByIdLessThanOrderByIdDesc(id, page); // 이후의 조회라면 커서 조회
+                ? memberRepository.findByOrderByIdAsc(page)  // 기준이 없는 첫 조회라면 일반 조회
+                : memberRepository.findByIdGreaterThanOrderByIdAsc(id, page); // 이후의 조회라면 커서 조회
     }
 }

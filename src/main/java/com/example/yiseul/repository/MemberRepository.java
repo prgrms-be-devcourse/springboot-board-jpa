@@ -14,9 +14,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("SELECT m FROM Member m WHERE m.id > :id and m.createdAt > :createdAt ORDER BY m.createdAt DESC")
     List<Member> findMemberAfterIdAndCreatedAt(Long id, String createdAt, Pageable pageable);
 
-    @Query("SELECT m FROM Member m ORDER BY m.age desc, m.id asc")
-    List<Member> findByOrderByAgeDescIdAscWithList(Pageable pageable);
+    List<Member> findByOrderByIdAsc(Pageable pageable);
 
-    List<Member> findByIdLessThanOrderByIdDesc(Long id, Pageable pageable);
+    List<Member> findByIdGreaterThanOrderByIdAsc(Long id, Pageable pageable);
 
 }
