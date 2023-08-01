@@ -4,7 +4,6 @@ import java.util.List;
 import com.juwoong.springbootboardjpa.common.BaseEntity;
 import com.juwoong.springbootboardjpa.post.domain.Post;
 import com.juwoong.springbootboardjpa.user.domain.constant.Hobby;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
