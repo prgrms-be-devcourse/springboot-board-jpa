@@ -7,7 +7,7 @@ import com.prgrms.boardjpa.Post.dto.response.PostListResponse;
 import com.prgrms.boardjpa.Post.dto.response.PostResponse;
 import com.prgrms.boardjpa.User.domain.User;
 import com.prgrms.boardjpa.User.domain.UserRepository;
-import com.prgrms.boardjpa.global.exception.BusinessException;
+import com.prgrms.boardjpa.global.exception.BusinessServiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,7 +76,7 @@ class PostServiceTest {
                 .build();
 
         //when -> then
-        assertThrows(BusinessException.class,
+        assertThrows(BusinessServiceException.class,
                 () -> postService.create(invalidRequest));
     }
 
@@ -103,7 +103,7 @@ class PostServiceTest {
         Long invalidId = 10L;
 
         //when -> then
-        assertThrows(BusinessException.class,
+        assertThrows(BusinessServiceException.class,
                 () -> postService.findOne(invalidId));
     }
 
@@ -151,7 +151,7 @@ class PostServiceTest {
         PostUpdateRequest postUpdateRequest = new PostUpdateRequest("제목변경", "내용변경");
 
         //when -> then
-        assertThrows(BusinessException.class,
+        assertThrows(BusinessServiceException.class,
                 () -> postService.update(invalidPostId, postUpdateRequest));
     }
 }

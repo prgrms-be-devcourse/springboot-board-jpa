@@ -16,8 +16,8 @@ public class GlobalExceptionHandler {
         return ExceptionResponse.toResponseEntity(e.getErrorCode());
     }
 
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ExceptionResponse> businessException(BusinessException e) {
+    @ExceptionHandler(BusinessServiceException.class)
+    public ResponseEntity<ExceptionResponse> businessException(BusinessServiceException e) {
         return ExceptionResponse.toResponseEntity(e.getErrorCode());
     }
 

@@ -4,11 +4,11 @@ import com.prgrms.boardjpa.global.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class BusinessException extends RuntimeException {
+public class BusinessServiceException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    public BusinessException(ErrorCode errorCode) {
+    public BusinessServiceException(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 }

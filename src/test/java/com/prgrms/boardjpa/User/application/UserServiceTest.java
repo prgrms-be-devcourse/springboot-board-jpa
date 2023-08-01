@@ -3,7 +3,7 @@ package com.prgrms.boardjpa.User.application;
 import com.prgrms.boardjpa.User.domain.UserRepository;
 import com.prgrms.boardjpa.User.dto.UserRequest;
 import com.prgrms.boardjpa.User.dto.UserResponse;
-import com.prgrms.boardjpa.global.exception.BusinessException;
+import com.prgrms.boardjpa.global.exception.BusinessServiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,6 +59,6 @@ class UserServiceTest {
         UserResponse userResponse1 = userService.join(userRequest);
 
         //when -> //then
-        assertThrows(BusinessException.class, () -> userService.join(userRequest2));
+        assertThrows(BusinessServiceException.class, () -> userService.join(userRequest2));
     }
 }

@@ -5,7 +5,7 @@ import com.prgrms.boardjpa.User.domain.UserRepository;
 import com.prgrms.boardjpa.User.dto.UserRequest;
 import com.prgrms.boardjpa.User.dto.UserResponse;
 import com.prgrms.boardjpa.global.ErrorCode;
-import com.prgrms.boardjpa.global.exception.BusinessException;
+import com.prgrms.boardjpa.global.exception.BusinessServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +29,7 @@ public class UserService {
 
     private void validateDuplicateName(String name) {
         if (userRepository.existsByName(name)) {
-            throw new BusinessException(ErrorCode.DUPLICATED_NAME);
+            throw new BusinessServiceException(ErrorCode.DUPLICATED_NAME);
         }
     }
 }

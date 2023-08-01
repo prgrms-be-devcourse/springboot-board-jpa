@@ -9,7 +9,7 @@ import com.prgrms.boardjpa.Post.dto.response.PostResponse;
 import com.prgrms.boardjpa.User.domain.User;
 import com.prgrms.boardjpa.User.domain.UserRepository;
 import com.prgrms.boardjpa.global.ErrorCode;
-import com.prgrms.boardjpa.global.exception.BusinessException;
+import com.prgrms.boardjpa.global.exception.BusinessServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +28,7 @@ public class PostService {
     @Transactional
     public PostResponse create(PostCreateRequest createRequest) {
         User user = userRepository.findById(createRequest.getUserId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER));
+                .orElseThrow(() -> new BusinessServiceException(ErrorCode.NOT_FOUND_USER));
 
         Post post = createRequest.toEntity();
         post.updateUser(user);
@@ -40,7 +40,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponse findOne(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_POST));
+                .orElseThrow(() -> new BusinessServiceException(ErrorCode.NOT_FOUND_POST));
 
         return PostResponse.create(post);
     }
@@ -59,10 +59,10 @@ public class PostService {
     @Transactional
     public PostResponse update(Long postId, PostUpdateRequest updateRequest) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_POST));
+                .orElseThrow(() -> new BusinessServiceException(ErrorCode.NOT_FOUND_POST));
 
         User user = userRepository.findById(post.getUser().getId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER));
+                .orElseThrow(() -> new BusinessServiceException(ErrorCode.NOT_FOUND_USER));
 
         post.update(updateRequest);
         post.updateUser(user);
