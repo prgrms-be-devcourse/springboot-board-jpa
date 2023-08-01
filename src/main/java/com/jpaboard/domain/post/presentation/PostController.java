@@ -22,7 +22,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/new")
+    @PostMapping
     public ResponseEntity<Void> postCreate(@RequestBody @Valid PostCreateRequest request) {
         Long postId = postService.createPost(request);
         return ResponseEntity.created(URI.create("/api/posts/" + postId)).build();
