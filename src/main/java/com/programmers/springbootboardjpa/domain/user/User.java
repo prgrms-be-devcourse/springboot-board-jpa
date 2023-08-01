@@ -2,6 +2,7 @@ package com.programmers.springbootboardjpa.domain.user;
 
 import com.programmers.springbootboardjpa.domain.BaseEntity;
 import com.programmers.springbootboardjpa.domain.post.Post;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,8 +14,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -40,15 +43,20 @@ public class User extends BaseEntity {
     @Column(name = "hobby")
     private Hobby hobby;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<Post> posts = new ArrayList<>();
 
-    public void changeName(String name) {
+    public List<Post> getPosts() {
+        return Collections.unmodifiableList(posts);
+    }
+
+    public void updateName(String name) {
         this.name = name;
     }
 
-    public void changeHobby(Hobby hobby) {
+    public void updateHobby(Hobby hobby) {
         this.hobby = hobby;
     }
-    
+
 }
