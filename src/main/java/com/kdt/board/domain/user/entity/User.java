@@ -28,6 +28,6 @@ public class User extends BaseEntity {
     @Column(name = "hobby")
     private String hobby;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 }
