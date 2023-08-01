@@ -35,7 +35,3 @@ public enum Hobby {
     }
 
 }
-
-
-
-
