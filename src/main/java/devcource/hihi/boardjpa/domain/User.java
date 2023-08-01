@@ -1,7 +1,5 @@
 package devcource.hihi.boardjpa.domain;
 
-import devcource.hihi.boardjpa.dto.post.CreatePostDto;
-import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import devcource.hihi.boardjpa.dto.user.CreateUserDto;
 import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
 import jakarta.persistence.*;

@@ -1,11 +1,9 @@
 package devcource.hihi.boardjpa.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import devcource.hihi.boardjpa.domain.Post;
-import devcource.hihi.boardjpa.domain.User;
 import devcource.hihi.boardjpa.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -15,10 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
-import java.util.ArrayList;
 import java.util.List;
-
 
 @Slf4j
 @SpringBootTest
