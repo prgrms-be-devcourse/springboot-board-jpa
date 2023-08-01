@@ -20,7 +20,6 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -29,11 +28,11 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -77,13 +76,13 @@ public class PostControllerRestDocsTest {
         // When
 
         // Then
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/posts")
+        mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postSaveRequest))
                         .characterEncoding("UTF-8"))
                 .andDo(print())
-                .andDo(document("create-post",
+                .andDo(document("create-post", resource("Create a Post"),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
@@ -118,7 +117,7 @@ public class PostControllerRestDocsTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8"))
                 .andDo(print())
-                .andDo(document("read-post",
+                .andDo(document("read-post", resource("read a post"),
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("게시글 ID"),
@@ -179,7 +178,7 @@ public class PostControllerRestDocsTest {
                         .param("size", "20")
                         .param("sort", "id,desc"))
                 .andDo(print())
-                .andDo(document("read-posts",
+                .andDo(document("read-posts", resource("read All Posts"),
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER)
                                         .description("상태코드"),
@@ -223,7 +222,7 @@ public class PostControllerRestDocsTest {
                         .content(objectMapper.writeValueAsString(postUpdateRequest))
                         .characterEncoding("UTF-8"))
                 .andDo(print())
-                .andDo(document("update-post",
+                .andDo(document("update-post", resource("update Post"),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용")

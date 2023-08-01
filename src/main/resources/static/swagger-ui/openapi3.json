@@ -1,0 +1,163 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "My API",
+    "description" : "My API description",
+    "version" : "0.1.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080"
+  } ],
+  "tags" : [ ],
+  "paths" : {
+    "/api/v1/posts" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "summary" : "read All Posts",
+        "description" : "read All Posts",
+        "operationId" : "read-posts",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-posts486549215"
+                },
+                "examples" : {
+                  "read-posts" : {
+                    "value" : "{\n  \"statusCode\" : 200,\n  \"data\" : {\n    \"postResponses\" : [ {\n      \"id\" : 1,\n      \"title\" : \"titleA\",\n      \"content\" : \"contentA\",\n      \"createdAt\" : \"2023-08-01T20:29:59.16186+09:00\",\n      \"createdBy\" : \"Writer\"\n    }, {\n      \"id\" : 2,\n      \"title\" : \"titleB\",\n      \"content\" : \"contentB\",\n      \"createdAt\" : \"2023-08-01T20:29:59.161872+09:00\",\n      \"createdBy\" : \"Writer\"\n    }, {\n      \"id\" : 3,\n      \"title\" : \"titleC\",\n      \"content\" : \"contentC\",\n      \"createdAt\" : \"2023-08-01T20:29:59.161877+09:00\",\n      \"createdBy\" : \"Writer\"\n    }, {\n      \"id\" : 4,\n      \"title\" : \"titleD\",\n      \"content\" : \"contentD\",\n      \"createdAt\" : \"2023-08-01T20:29:59.161884+09:00\",\n      \"createdBy\" : \"Writer\"\n    } ]\n  },\n  \"serverDateTime\" : \"2023-08-01T20:29:59\"\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "api" ],
+        "summary" : "Create a Post",
+        "description" : "Create a Post",
+        "operationId" : "create-post",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-posts486549215"
+              },
+              "examples" : {
+                "create-post" : {
+                  "value" : "{\n  \"title\" : \"제목\",\n  \"content\" : \"내용\",\n  \"userId\" : 1\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "201",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-posts486549215"
+                },
+                "examples" : {
+                  "create-post" : {
+                    "value" : "{\n  \"statusCode\" : 201,\n  \"data\" : {\n    \"id\" : 1\n  },\n  \"serverDateTime\" : \"2023-08-01T20:29:59\"\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{id}" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "summary" : "read a post",
+        "description" : "read a post",
+        "operationId" : "read-post",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-posts486549215"
+                },
+                "examples" : {
+                  "read-post" : {
+                    "value" : "{\n  \"statusCode\" : 200,\n  \"data\" : {\n    \"id\" : 1,\n    \"title\" : \"title\",\n    \"content\" : \"content\",\n    \"createdAt\" : \"2023-08-01T20:29:59.613131+09:00\",\n    \"createdBy\" : \"Writer\"\n  },\n  \"serverDateTime\" : \"2023-08-01T20:29:59\"\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "api" ],
+        "summary" : "update Post",
+        "description" : "update Post",
+        "operationId" : "update-post",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-posts486549215"
+              },
+              "examples" : {
+                "update-post" : {
+                  "value" : "{\n  \"title\" : \"ModifiedTitle\",\n  \"content\" : \"ModifiedContent\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-posts486549215"
+                },
+                "examples" : {
+                  "update-post" : {
+                    "value" : "{\n  \"statusCode\" : 200,\n  \"data\" : {\n    \"id\" : 1,\n    \"title\" : \"ModifiedTitle\",\n    \"content\" : \"ModifiedContent\",\n    \"createdAt\" : \"2023-08-01T20:29:59.636052+09:00\",\n    \"createdBy\" : \"Writer\"\n  },\n  \"serverDateTime\" : \"2023-08-01T20:29:59\"\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "api-v1-posts486549215" : {
+        "type" : "object"
+      }
+    }
+  }
+}
