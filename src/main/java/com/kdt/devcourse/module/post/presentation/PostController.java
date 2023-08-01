@@ -6,6 +6,8 @@ import com.kdt.devcourse.module.post.application.dto.PostResponse;
 import com.kdt.devcourse.module.post.presentation.dto.PostRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,13 @@ public class PostController {
     private static final String BASE_URI = "/posts";
 
     private final PostService postService;
+
+    @GetMapping
+    @ResponseStatus(OK)
+    public ApiResponse<Page<PostResponse>> findAll(Pageable pageable) {
+        Page<PostResponse> responses = postService.findAll(pageable);
+        return new ApiResponse<>(responses);
+    }
 
     @GetMapping("/{id}")
     @ResponseStatus(OK)

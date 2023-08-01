@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,8 +18,10 @@ import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.anyString;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.times;
+import static org.mockito.BDDMockito.willReturn;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -27,6 +30,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureRestDocs
@@ -88,7 +92,7 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(document("post-update",
                         pathParameters(
-                            parameterWithName("postId").description("게시글 번호")
+                                parameterWithName("postId").description("게시글 번호")
                         ),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
@@ -101,5 +105,25 @@ class PostControllerTest {
 
         // then
         then(postService).should(times(1)).update(any(), any(), any());
+    }
+
+    @Test
+    @DisplayName("페이지 요청을 하면 200 응답과 호출이 잘 이루어져야 한다.")
+    void findAll_Test() throws Exception {
+        // given
+        willReturn(Page.empty()).given(postService).findAll(any());
+
+        // when
+        mockMvc.perform(get(BASE_URL)
+                        .param("page", String.valueOf(0))
+                        .param("size", String.valueOf(10))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.payload").isNotEmpty())
+                .andDo(print());
+
+        // then
+        then(postService).should(times(1)).findAll(any());
     }
 }

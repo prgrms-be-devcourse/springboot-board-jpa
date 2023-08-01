@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Optional;
 
@@ -40,5 +42,19 @@ class PostRepositoryTest {
         Optional<Post> optionalPost = postRepository.findById(post.getId());
         assertThat(optionalPost).isPresent();
         assertThat(optionalPost.get()).usingRecursiveComparison().isEqualTo(post);
+    }
+
+    @Test
+    @DisplayName("pageRequest를 통해서 page 객체를 생성할 수 있어야 한다.")
+    void findAllTest() {
+        // given
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        // when
+        Page<Post> posts = postRepository.findAll(pageRequest);
+
+        // then
+        assertThat(posts.getTotalPages()).isEqualTo(1);
+        assertThat(posts.getTotalElements()).isEqualTo(1);
     }
 }
