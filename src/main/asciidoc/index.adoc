@@ -1,0 +1,119 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+== 게시판 API
+
+== 게시글 기능
+
+=== 게시글 등록
+
+=== /api/v1/posts
+
+.Request
+
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+=== 게시글 전체 조회
+
+=== /api/v1/posts
+
+.Request
+
+include::{snippets}/post-get-all/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-get-all/http-response.adoc[]
+include::{snippets}/post-get-all/response-fields.adoc[]
+
+=== 게시글 단건 조회
+
+=== /api/v1/posts/{id}
+
+.Request
+
+include::{snippets}/post-get-one/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-get-one/http-response.adoc[]
+include::{snippets}/post-get-one/response-fields.adoc[]
+
+=== 게시글 수정
+
+=== /api/v1/posts/{id}
+
+.Request
+
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+
+== 회원 기능
+
+=== 회원 등록
+
+=== /api/v1/users
+
+.Request
+
+include::{snippets}/user-create/http-request.adoc[]
+include::{snippets}/user-create/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/user-create/http-response.adoc[]
+include::{snippets}/user-create/response-fields.adoc[]
+
+=== 회원 전체 조회
+
+=== /api/v1/users
+
+.Request
+
+include::{snippets}/user-get-all/http-request.adoc[]
+
+.Response
+
+include::{snippets}/user-get-all/http-response.adoc[]
+include::{snippets}/user-get-all/response-fields.adoc[]
+
+=== 회원 단건 조회
+
+=== /api/v1/users/{id}
+
+.Request
+
+include::{snippets}/user-get-one/http-request.adoc[]
+
+.Response
+
+include::{snippets}/user-get-one/http-response.adoc[]
+include::{snippets}/user-get-one/response-fields.adoc[]
+
+=== 회원 수정
+
+=== /api/v1/users/{id}
+
+.Request
+
+include::{snippets}/user-update/http-request.adoc[]
+include::{snippets}/user-update/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/user-update/http-response.adoc[]
+include::{snippets}/user-update/response-fields.adoc[]
