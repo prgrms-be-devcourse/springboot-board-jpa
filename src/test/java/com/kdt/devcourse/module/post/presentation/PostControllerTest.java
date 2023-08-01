@@ -28,13 +28,14 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureRestDocs
 @WebMvcTest(PostController.class)
+@AutoConfigureRestDocs
 @MockBean(JpaMetamodelMappingContext.class)
 class PostControllerTest {
     private static final String BASE_URL = "/posts";
@@ -62,6 +63,8 @@ class PostControllerTest {
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postRequest)))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.payload").exists())
                 .andDo(print())
                 .andDo(document("post-create",
                         requestFields(
@@ -70,7 +73,7 @@ class PostControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
-                                fieldWithPath("payload").type(JsonFieldType.VARIES).description("페이로드")
+                                fieldWithPath("payload").type(JsonFieldType.VARIES).description("생성된 게시글 URI")
                         )
                 ));
 
@@ -82,17 +85,17 @@ class PostControllerTest {
     @DisplayName("수정 요청을 하면 200응답과 함께 서비스가 한번만 호출되어야 한다.")
     void updatePost_Test() throws Exception {
         // given
-        Long postId = 1L;
+        Long id = 1L;
 
         // when
-        mockMvc.perform(put(BASE_URL + "/{id}", postId)
+        mockMvc.perform(put(BASE_URL + "/{id}", id)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-update",
                         pathParameters(
-                                parameterWithName("postId").description("게시글 번호")
+                                parameterWithName("id").description("게시글 번호")
                         ),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
@@ -121,7 +124,30 @@ class PostControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").exists())
                 .andExpect(jsonPath("$.payload").isNotEmpty())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-pagination",
+                        queryParameters(
+                                parameterWithName("page").description("페이지 번호"),
+                                parameterWithName("size").description("페이지당 게시글 수")
+                        ),
+                        responseFields(
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                fieldWithPath("payload").type(JsonFieldType.VARIES).description("응답 데이터"),
+                                fieldWithPath("payload.content").type(JsonFieldType.ARRAY).description("조회된 게시글"),
+                                fieldWithPath("payload.last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부"),
+                                fieldWithPath("payload.totalElements").type(JsonFieldType.NUMBER).description("전체 게시글 수"),
+                                fieldWithPath("payload.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
+                                fieldWithPath("payload.first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
+                                fieldWithPath("payload.size").type(JsonFieldType.NUMBER).description("페이지 내 게시글 개수"),
+                                fieldWithPath("payload.numberOfElements").type(JsonFieldType.NUMBER).description("현재 페이지에서 조회된 아이템 수"),
+                                fieldWithPath("payload.sort.empty").type(JsonFieldType.BOOLEAN).description("비어있는지 여부"),
+                                fieldWithPath("payload.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬 여부"),
+                                fieldWithPath("payload.sort.unsorted").ignored(),
+                                fieldWithPath("payload.pageable").ignored(),
+                                fieldWithPath("payload.number").ignored(),
+                                fieldWithPath("payload.empty").ignored()
+                        )
+                ));
 
         // then
         then(postService).should(times(1)).findAll(any());
