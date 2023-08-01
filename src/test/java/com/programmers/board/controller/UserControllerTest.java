@@ -8,7 +8,11 @@ import com.programmers.board.dto.request.UserUpdateRequest;
 import com.programmers.board.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -33,6 +37,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
@@ -55,74 +60,152 @@ class UserControllerTest {
         ReflectionTestUtils.setField(givenUserDto, "userId", 1L);
     }
 
-    @Test
-    @DisplayName("성공: user 목록 반환 호출")
-    void findUsers() throws Exception {
-        //given
-        int page = 0;
-        int size = 1;
-        PageRequest pageRequest = PageRequest.of(page, size);
-        PageImpl<UserDto> userDtos = new PageImpl<>(List.of(givenUserDto), pageRequest, 1);
+    @Nested
+    @DisplayName("중첩: user 목록 반환 호출")
+    class FindUsersTest {
+        @Test
+        @DisplayName("성공(200)")
+        void findUsers() throws Exception {
+            //given
+            int page = 0;
+            int size = 1;
+            PageRequest pageRequest = PageRequest.of(page, size);
+            PageImpl<UserDto> userDtos = new PageImpl<>(List.of(givenUserDto), pageRequest, 1);
 
-        given(userService.findUsers(anyInt(), anyInt())).willReturn(userDtos);
+            given(userService.findUsers(anyInt(), anyInt())).willReturn(userDtos);
 
-        //when
-        ResultActions resultActions = mvc.perform(get("/api/v1/users")
-                .param("page", String.valueOf(page))
-                .param("size", String.valueOf(size))
-                .accept(MediaType.APPLICATION_JSON));
+            //when
+            ResultActions resultActions = mvc.perform(get("/api/v1/users")
+                    .param("page", String.valueOf(page))
+                    .param("size", String.valueOf(size))
+                    .accept(MediaType.APPLICATION_JSON));
 
-        //then
-        resultActions.andExpect(status().isOk())
-                .andDo(print())
-                .andDo(document("users-get",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        queryParameters(
-                                parameterWithName("page").description("페이지"),
-                                parameterWithName("size").description("사이즈")
-                        ),
-                        responseFields(
-                                beneathPath("data").withSubsectionId("data"),
-                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("회원 ID"),
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
-                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("회원 나이"),
-                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("회원 취미")
-                        )));
+            //then
+            resultActions.andExpect(status().isOk())
+                    .andDo(print())
+                    .andDo(document("users-get",
+                            preprocessRequest(prettyPrint()),
+                            preprocessResponse(prettyPrint()),
+                            queryParameters(
+                                    parameterWithName("page").description("페이지"),
+                                    parameterWithName("size").description("사이즈")
+                            ),
+                            responseFields(
+                                    beneathPath("data").withSubsectionId("data"),
+                                    fieldWithPath("userId").type(JsonFieldType.NUMBER).description("회원 ID"),
+                                    fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
+                                    fieldWithPath("age").type(JsonFieldType.NUMBER).description("회원 나이"),
+                                    fieldWithPath("hobby").type(JsonFieldType.STRING).description("회원 취미")
+                            )));
+        }
+
+        @Test
+        @DisplayName("실패(400): 잘못된 범위의 페이지 번호")
+        void findUsers_ButInvalidPage() throws Exception {
+            ResultActions resultActions = mvc.perform(get("/api/v1/users")
+                            .param("page", "-1")
+                            .param("size", "0"))
+                    .andDo(print());
+
+            resultActions.andExpect(status().isBadRequest());
+        }
     }
 
-    @Test
-    @DisplayName("성공: user 생성 호출")
-    void createUser() throws Exception {
-        //given
-        String name = "name";
-        int age = 20;
-        String hobby = "hobby";
-        UserCreateRequest request = new UserCreateRequest(name, age, hobby);
+    @Nested
+    @DisplayName("중첩: user 생성 호출")
+    class CreateUserTest {
+        @Test
+        @DisplayName("성공(201)")
+        void createUser() throws Exception {
+            //given
+            String name = "name";
+            int age = 20;
+            String hobby = "hobby";
+            UserCreateRequest request = new UserCreateRequest(name, age, hobby);
 
-        given(userService.createUser(any(), anyInt(), any())).willReturn(1L);
+            given(userService.createUser(any(), anyInt(), any())).willReturn(1L);
 
-        //when
-        ResultActions resultActions = mvc.perform(post("/api/v1/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON));
+            //when
+            ResultActions resultActions = mvc.perform(post("/api/v1/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(mapper.writeValueAsString(request))
+                    .accept(MediaType.APPLICATION_JSON));
 
-        //then
-        resultActions.andExpect(status().isCreated())
-                .andDo(print())
-                .andDo(document("user-create",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
-                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("회원 나이"),
-                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("회원 취미")
-                        ),
-                        responseFields(
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("회원 ID")
-                        )));
+            //then
+            resultActions.andExpect(status().isCreated())
+                    .andDo(print())
+                    .andDo(document("user-create",
+                            preprocessRequest(prettyPrint()),
+                            preprocessResponse(prettyPrint()),
+                            requestFields(
+                                    fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
+                                    fieldWithPath("age").type(JsonFieldType.NUMBER).description("회원 나이"),
+                                    fieldWithPath("hobby").type(JsonFieldType.STRING).description("회원 취미")
+                            ),
+                            responseFields(
+                                    fieldWithPath("data").type(JsonFieldType.NUMBER).description("회원 ID")
+                            )));
+        }
+
+        @Test
+        @DisplayName("실패(400): 필수값 null")
+        void createUser_ButValueIsNull() throws Exception {
+            //given
+            String nullName = null;
+            String nullHobby = null;
+            UserCreateRequest request = new UserCreateRequest(nullName, 20, nullHobby);
+
+            //when
+            ResultActions resultActions = mvc.perform(post("/api/v1/users")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(request)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
+
+        @Test
+        @DisplayName("실패(400): 잘못된 형식의 이름")
+        void createUser_ButInvalidName() throws Exception {
+            //given
+            String invalidName = "a".repeat(31);
+            UserCreateRequest request = new UserCreateRequest(invalidName, 20, "hobby");
+
+            //when
+            ResultActions resultActions = mvc.perform(post("/api/v1/users")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(request)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
+
+        @Test
+        @DisplayName("실패(400): 잘못된 형식의 취미")
+        void createUser_ButInvalidHobby() throws Exception {
+            //given
+            String invalidHobby = "a".repeat(51);
+            UserCreateRequest request = new UserCreateRequest("name", 20, invalidHobby);
+
+            //when
+            ResultActions resultActions = mvc.perform(post("/api/v1/users")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(request)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
     }
+
 
     @Test
     @DisplayName("성공: user 단건 조회 호출")
@@ -154,36 +237,121 @@ class UserControllerTest {
                         )));
     }
 
-    @Test
-    @DisplayName("성공: user 수정 호출")
-    void updateUser() throws Exception {
-        //given
-        Long userId = 1L;
-        String name = "updateName";
-        int age = 22;
-        String hobby = "updateHobby";
-        UserUpdateRequest request = new UserUpdateRequest(name, age, hobby);
+    @Nested
+    @DisplayName("중첩: user 수정 호출")
+    class UpdateUserTest {
+        @Test
+        @DisplayName("성공: user 수정 호출")
+        void updateUser() throws Exception {
+            //given
+            Long userId = 1L;
+            String name = "updateName";
+            int age = 22;
+            String hobby = "updateHobby";
+            UserUpdateRequest request = new UserUpdateRequest(name, age, hobby);
 
-        //when
-        ResultActions resultActions = mvc.perform(patch("/api/v1/users/{userId}", userId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON));
+            //when
+            ResultActions resultActions = mvc.perform(patch("/api/v1/users/{userId}", userId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(mapper.writeValueAsString(request))
+                    .accept(MediaType.APPLICATION_JSON));
 
-        //then
-        resultActions.andExpect(status().isNoContent())
-                .andDo(print())
-                .andDo(document("user-update",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("userId").description("회원 ID")
-                        ),
-                        requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
-                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("회원 나이"),
-                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("회원 취미")
-                        )));
+            //then
+            resultActions.andExpect(status().isNoContent())
+                    .andDo(print())
+                    .andDo(document("user-update",
+                            preprocessRequest(prettyPrint()),
+                            preprocessResponse(prettyPrint()),
+                            pathParameters(
+                                    parameterWithName("userId").description("회원 ID")
+                            ),
+                            requestFields(
+                                    fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
+                                    fieldWithPath("age").type(JsonFieldType.NUMBER).description("회원 나이"),
+                                    fieldWithPath("hobby").type(JsonFieldType.STRING).description("회원 취미")
+                            )));
+        }
+
+        @Test
+        @DisplayName("실패(400): 잘못된 길이의 이름")
+        void createUser_ButNameOutOfRange() throws Exception {
+            //given
+            String nameOutOfRange = "a".repeat(31);
+            UserUpdateRequest request = new UserUpdateRequest(nameOutOfRange, 22, "updateHobby");
+
+            //when
+            ResultActions resultActions = mvc.perform(patch("/api/v1/users/{userId}", 1)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(request)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
+
+        @ParameterizedTest
+        @CsvSource(value = {
+                "한글", "invalid!!!"
+        })
+        @DisplayName("실패(400): 잘못된 형식의 이름")
+        void createUser_ButInvalidName(String invalidName) throws Exception {
+            //given
+            UserUpdateRequest request = new UserUpdateRequest(invalidName, 22, "updateHobby");
+
+            //when
+            ResultActions resultActions = mvc.perform(patch("/api/v1/users/{userId}", 1)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(request)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
+
+        @Test
+        @DisplayName("실패(400): 잘못된 길이의 취미")
+        void createUser_ButHobbyOutOfRange() throws Exception {
+            //given
+            String invalidHobby = "a".repeat(51);
+            UserCreateRequest request = new UserCreateRequest("name", 20, invalidHobby);
+
+            //when
+            ResultActions resultActions = mvc.perform(patch("/api/v1/users/{userId}", 1)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(request)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
+
+        @ParameterizedTest
+        @CsvSource(value = {
+                "invalid!!!", "hobby123"
+        })
+        @DisplayName("실패(400): 잘못된 형식의 취미")
+        void createUser_ButInvalidHobby() throws Exception {
+            //given
+            String invalidHobby = "a".repeat(51);
+            UserCreateRequest request = new UserCreateRequest("name", 20, invalidHobby);
+
+            //when
+            ResultActions resultActions = mvc.perform(patch("/api/v1/users/{userId}", 1)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(request)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
     }
 
     @Test

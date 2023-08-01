@@ -1,5 +1,8 @@
 package com.programmers.board.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.NoSuchElementException;
@@ -31,6 +35,9 @@ class GlobalControllerAdviceTest {
     @Autowired
     MockMvc mvc;
 
+    @Autowired
+    ObjectMapper mapper;
+
     @RestController
     static class ExceptionController {
         @GetMapping("/no-such")
@@ -38,9 +45,27 @@ class GlobalControllerAdviceTest {
             throw new NoSuchElementException("no such element ex");
         }
 
+        @GetMapping("/method-argument-not-valid")
+        public void notValid(@ModelAttribute @Valid TestRequest request) {
+
+        }
+
         @GetMapping("/ex")
         public void ex() {
             throw new RuntimeException("unexpected ex");
+        }
+    }
+
+    static class TestRequest {
+        @PositiveOrZero
+        private final int age;
+
+        public TestRequest(int age) {
+            this.age = age;
+        }
+
+        public int getAge() {
+            return age;
         }
     }
 
@@ -55,6 +80,26 @@ class GlobalControllerAdviceTest {
         resultActions.andExpect(status().isBadRequest())
                 .andDo(print())
                 .andDo(document("ex-no-such-element",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                        )));
+    }
+
+    @Test
+    @DisplayName("성공: MethodArgumentNotValidException 예외 처리")
+    void methodArgumentNotValidExHandle() throws Exception {
+        //given
+        //when
+        ResultActions resultActions = mvc.perform(get("/method-argument-not-valid")
+                .param("age", "-1"));
+
+        //then
+        resultActions.andExpect(status().isBadRequest())
+                .andDo(print())
+                .andDo(document("ex-method-argument-not-valid",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(

@@ -5,6 +5,7 @@ import com.programmers.board.dto.request.UserCreateRequest;
 import com.programmers.board.dto.request.UserUpdateRequest;
 import com.programmers.board.dto.request.UsersGetRequest;
 import com.programmers.board.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users")
-    public PageResult<UserDto> findUsers(@ModelAttribute UsersGetRequest request) {
+    public PageResult<UserDto> findUsers(@ModelAttribute @Valid UsersGetRequest request) {
         Page<UserDto> users = userService.findUsers(
                 request.getPage(),
                 request.getSize());
@@ -29,7 +30,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/users")
-    public Result<Long> createUser(@RequestBody UserCreateRequest request) {
+    public Result<Long> createUser(@RequestBody @Valid UserCreateRequest request) {
         Long userId = userService.createUser(
                 request.getName(),
                 request.getAge(),
@@ -47,7 +48,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/users/{userId}")
     public void updateUser(@PathVariable("userId") Long userId,
-                           @RequestBody UserUpdateRequest request) {
+                           @RequestBody @Valid UserUpdateRequest request) {
         userService.updateUser(
                 userId,
                 request.getName(),
