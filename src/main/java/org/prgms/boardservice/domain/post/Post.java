@@ -16,7 +16,7 @@ public class Post extends BaseTime {
     @NotBlank
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Lob
     @NotBlank
     private String content;
 
