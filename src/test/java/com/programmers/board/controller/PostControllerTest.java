@@ -6,9 +6,11 @@ import com.programmers.board.domain.User;
 import com.programmers.board.dto.PostDto;
 import com.programmers.board.dto.request.PostCreateRequest;
 import com.programmers.board.dto.request.PostUpdateRequest;
+import com.programmers.board.dto.request.PostsGetRequest;
 import com.programmers.board.service.PostService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -34,6 +36,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PostController.class)
@@ -59,78 +62,164 @@ class PostControllerTest {
         givenPost = PostDto.from(post);
     }
 
-    @Test
-    @DisplayName("성공: post 목록 조회 호출")
-    void findPosts() throws Exception {
-        //given
-        int page = 0;
-        int size = 1;
-        PageRequest pageRequest = PageRequest.of(page, size);
-        PageImpl<PostDto> postDtos = new PageImpl<>(List.of(givenPost), pageRequest, 1);
+    @Nested
+    @DisplayName("중첩: post 목록 조회 호출")
+    class FindPostsTest {
+        @Test
+        @DisplayName("성공(201)")
+        void findPosts() throws Exception {
+            //given
+            int page = 0;
+            int size = 1;
+            PageRequest pageRequest = PageRequest.of(page, size);
+            PageImpl<PostDto> postDtos = new PageImpl<>(List.of(givenPost), pageRequest, 1);
 
-        given(postService.findPosts(anyInt(), anyInt())).willReturn(postDtos);
+            given(postService.findPosts(anyInt(), anyInt())).willReturn(postDtos);
 
-        //when
-        ResultActions resultActions = mvc.perform(get("/api/v1/posts")
-                .param("page", String.valueOf(page))
-                .param("size", String.valueOf(size))
-                .accept(MediaType.APPLICATION_JSON));
+            //when
+            ResultActions resultActions = mvc.perform(get("/api/v1/posts")
+                    .param("page", String.valueOf(page))
+                    .param("size", String.valueOf(size))
+                    .accept(MediaType.APPLICATION_JSON));
 
-        //then
-        resultActions.andExpect(status().isOk())
-                .andDo(print())
-                .andDo(document("posts-get",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        queryParameters(
-                                parameterWithName("page").description("페이지"),
-                                parameterWithName("size").description("사이즈")
-                        ),
-                        responseFields(
-                                beneathPath("data").withSubsectionId("data"),
-                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 ID"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문"),
-                                fieldWithPath("user").type(JsonFieldType.OBJECT).description("게시글 작성자"),
-                                fieldWithPath("user.userId").type(JsonFieldType.NUMBER).description("작성자 ID"),
-                                fieldWithPath("user.name").type(JsonFieldType.STRING).description("작성자 이름"),
-                                fieldWithPath("user.age").type(JsonFieldType.NUMBER).description("작성자 나이"),
-                                fieldWithPath("user.hobby").type(JsonFieldType.STRING).description("작성자 취미")
-                        )));
+            //then
+            resultActions.andExpect(status().isOk())
+                    .andDo(print())
+                    .andDo(document("posts-get",
+                            preprocessRequest(prettyPrint()),
+                            preprocessResponse(prettyPrint()),
+                            queryParameters(
+                                    parameterWithName("page").description("페이지"),
+                                    parameterWithName("size").description("사이즈")
+                            ),
+                            responseFields(
+                                    beneathPath("data").withSubsectionId("data"),
+                                    fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 ID"),
+                                    fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                    fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문"),
+                                    fieldWithPath("user").type(JsonFieldType.OBJECT).description("게시글 작성자"),
+                                    fieldWithPath("user.userId").type(JsonFieldType.NUMBER).description("작성자 ID"),
+                                    fieldWithPath("user.name").type(JsonFieldType.STRING).description("작성자 이름"),
+                                    fieldWithPath("user.age").type(JsonFieldType.NUMBER).description("작성자 나이"),
+                                    fieldWithPath("user.hobby").type(JsonFieldType.STRING).description("작성자 취미")
+                            )));
+        }
+
+        @Test
+        @DisplayName("실패(400): 잘못된 범위의 페이지 번호")
+        void findPosts_ButPageOutOfRange() throws Exception {
+            //given
+            int pageOutOfRange = -1;
+            int sizeOutOfRange = 0;
+
+            //when
+            ResultActions resultActions = mvc.perform(get("/api/v1/posts")
+                            .param("page", String.valueOf(pageOutOfRange))
+                            .param("size", String.valueOf(sizeOutOfRange)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
     }
 
-    @Test
-    @DisplayName("성공: post 생성 호출")
-    void createPost() throws Exception {
-        //given
-        Long userId = 1L;
-        String title = "title";
-        String content = "content";
-        PostCreateRequest request = new PostCreateRequest(userId, title, content);
+    @Nested
+    @DisplayName("중첩: post 생성 호출")
+    class CreatePostTest {
+        @Test
+        @DisplayName("성공(201)")
+        void createPost() throws Exception {
+            //given
+            Long userId = 1L;
+            String title = "title";
+            String content = "content";
+            PostCreateRequest request = new PostCreateRequest(userId, title, content);
 
-        given(postService.createPost(any(), any(), any())).willReturn(1L);
+            given(postService.createPost(any(), any(), any())).willReturn(1L);
 
-        //when
-        ResultActions resultActions = mvc.perform(post("/api/v1/posts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON));
+            //when
+            ResultActions resultActions = mvc.perform(post("/api/v1/posts")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(mapper.writeValueAsString(request))
+                    .accept(MediaType.APPLICATION_JSON));
 
-        //then
-        resultActions.andExpect(status().isCreated())
-                .andDo(print())
-                .andDo(document("post-create",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        requestFields(
-                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 ID"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문")
-                        ),
-                        responseFields(
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("게시글 ID")
-                        )));
+            //then
+            resultActions.andExpect(status().isCreated())
+                    .andDo(print())
+                    .andDo(document("post-create",
+                            preprocessRequest(prettyPrint()),
+                            preprocessResponse(prettyPrint()),
+                            requestFields(
+                                    fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 ID"),
+                                    fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                    fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문")
+                            ),
+                            responseFields(
+                                    fieldWithPath("data").type(JsonFieldType.NUMBER).description("게시글 ID")
+                            )));
+        }
+
+        @Test
+        @DisplayName("실패(400): 사용자 아이디 null")
+        void createPost_ButUserIdNull() throws Exception {
+            //given
+            Long nullUserId = null;
+            PostCreateRequest request = new PostCreateRequest(nullUserId, "title", "content");
+
+            //when
+            ResultActions resultActions = mvc.perform(post("/api/v1/posts")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(request)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
+
+        @Test
+        @DisplayName("실패(400): 필수값 공백")
+        void createPost_ButValueIsBlank() throws Exception {
+            //given
+            String blankTitle = " ";
+            String blankContent = " ";
+            PostCreateRequest request = new PostCreateRequest(1L, blankTitle, blankContent);
+
+            //when
+            ResultActions resultActions = mvc.perform(post("/api/v1/posts")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(request)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
+
+        @Test
+        @DisplayName("실패(400): 잘못된 길이의 게시글 제목")
+        void createPost_ButTitleOutOfRange() throws Exception {
+            //given
+            String titleOutOfRange = "a".repeat(101);
+            PostCreateRequest request = new PostCreateRequest(1L, titleOutOfRange, "content");
+
+            //when
+            ResultActions resultActions = mvc.perform(post("/api/v1/posts")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(request)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
     }
+
 
     @Test
     @DisplayName("성공: post 단건 조회 호출")
@@ -166,34 +255,76 @@ class PostControllerTest {
                         )));
     }
 
-    @Test
-    @DisplayName("성공: post 업데이트 호출")
-    void updatePost() throws Exception {
-        //given
-        Long postId = 1L;
-        String title = "updateTitle";
-        String content = "updateContent";
-        PostUpdateRequest request = new PostUpdateRequest(title, content);
+    @Nested
+    @DisplayName("중첩: post 업데이트 호출")
+    class UpdatePostTest {
+        @Test
+        @DisplayName("성공: post 업데이트 호출")
+        void updatePost() throws Exception {
+            //given
+            Long postId = 1L;
+            String title = "updateTitle";
+            String content = "updateContent";
+            PostUpdateRequest request = new PostUpdateRequest(title, content);
 
-        //when
-        ResultActions resultActions = mvc.perform(patch("/api/v1/posts/{postId}", postId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON));
+            //when
+            ResultActions resultActions = mvc.perform(patch("/api/v1/posts/{postId}", postId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(mapper.writeValueAsString(request))
+                    .accept(MediaType.APPLICATION_JSON));
 
-        //then
-        resultActions.andExpect(status().isNoContent())
-                .andDo(print())
-                .andDo(document("post-update",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("postId").description("게시글 ID")
-                        ),
-                        requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문")
-                        )));
+            //then
+            resultActions.andExpect(status().isNoContent())
+                    .andDo(print())
+                    .andDo(document("post-update",
+                            preprocessRequest(prettyPrint()),
+                            preprocessResponse(prettyPrint()),
+                            pathParameters(
+                                    parameterWithName("postId").description("게시글 ID")
+                            ),
+                            requestFields(
+                                    fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                    fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문")
+                            )));
+        }
+
+        @Test
+        @DisplayName("실패(400): 잘못된 길이의 게시글 제목")
+        void updatePost_ButTitleOutOfRange() throws Exception {
+            //given
+            String titleOutOfRage = "a".repeat(101);
+            PostUpdateRequest request = new PostUpdateRequest(titleOutOfRage, "content");
+
+            //when
+            ResultActions resultActions = mvc.perform(patch("/api/v1/posts/{postId}", 1)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(request)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
+
+        @Test
+        @DisplayName("실패(400): 잘못된 길이의 게시글 본문")
+        void updatePost_ButContentOutOfRange() throws Exception {
+            //given
+            String contentOutOfRange = "";
+            PostUpdateRequest request = new PostUpdateRequest("title", contentOutOfRange);
+
+            //when
+            ResultActions resultActions = mvc.perform(patch("/api/v1/posts/{postId}", 1)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(request)))
+                    .andDo(print());
+
+            //then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").isNumber())
+                    .andExpect(jsonPath("$.message").isString());
+        }
     }
 
     @Test

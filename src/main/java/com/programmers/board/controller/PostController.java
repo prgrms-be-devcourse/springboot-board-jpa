@@ -5,6 +5,7 @@ import com.programmers.board.dto.request.PostCreateRequest;
 import com.programmers.board.dto.request.PostUpdateRequest;
 import com.programmers.board.dto.request.PostsGetRequest;
 import com.programmers.board.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/posts")
-    public PageResult<PostDto> findPosts(@ModelAttribute PostsGetRequest request) {
+    public PageResult<PostDto> findPosts(@ModelAttribute @Valid PostsGetRequest request) {
         Page<PostDto> posts = postService.findPosts(
                 request.getPage(),
                 request.getSize());
@@ -29,7 +30,7 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/posts")
-    public Result<Long> createPost(@RequestBody PostCreateRequest request) {
+    public Result<Long> createPost(@RequestBody @Valid PostCreateRequest request) {
         Long postId = postService.createPost(
                 request.getUserId(),
                 request.getTitle(),
@@ -47,7 +48,7 @@ public class PostController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/posts/{postId}")
     public void updatePost(@PathVariable("postId") Long postId,
-                           @RequestBody PostUpdateRequest request) {
+                           @RequestBody @Valid PostUpdateRequest request) {
         postService.updatePost(
                 postId,
                 request.getTitle(),
