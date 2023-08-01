@@ -1,6 +1,7 @@
 package com.programmers.board.controller;
 
 import com.programmers.board.dto.PostDto;
+import com.programmers.board.dto.request.PostCreateRequest;
 import com.programmers.board.dto.request.PostUpdateRequest;
 import com.programmers.board.dto.request.PostsGetRequest;
 import com.programmers.board.service.PostService;
