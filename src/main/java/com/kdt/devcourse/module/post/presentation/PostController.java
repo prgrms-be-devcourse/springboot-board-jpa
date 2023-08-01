@@ -2,9 +2,11 @@ package com.kdt.devcourse.module.post.presentation;
 
 import com.kdt.devcourse.global.ApiResponse;
 import com.kdt.devcourse.module.post.application.PostService;
+import com.kdt.devcourse.module.post.application.dto.PostResponse;
 import com.kdt.devcourse.module.post.presentation.dto.PostRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,11 +28,18 @@ public class PostController {
 
     private final PostService postService;
 
+    @GetMapping("/{id}")
+    @ResponseStatus(OK)
+    public ApiResponse<PostResponse> findOneById(@PathVariable Long id) {
+        PostResponse postResponse = postService.getPostResponse(id);
+        return new ApiResponse<>(postResponse);
+    }
+
     @PostMapping
     @ResponseStatus(CREATED)
     public ApiResponse<URI> create(@RequestBody @Valid PostRequest request) {
         Long postId = postService.create(request.title(), request.content());
-        URI uri = URI.create(BASE_URI + postId);
+        URI uri = URI.create(BASE_URI + "/" + postId);
         return new ApiResponse<>(uri);
     }
 
