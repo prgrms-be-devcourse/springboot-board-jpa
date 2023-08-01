@@ -4,9 +4,10 @@ import com.programmers.jpaboard.domain.Post;
 import com.programmers.jpaboard.domain.User;
 import com.programmers.jpaboard.dto.request.PostCreateRequest;
 import com.programmers.jpaboard.dto.response.PostCreateResponse;
+import com.programmers.jpaboard.exception.BusinessException;
 import com.programmers.jpaboard.repository.PostRepository;
 import com.programmers.jpaboard.repository.UserRepository;
-import java.util.NoSuchElementException;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,9 @@ public class PostService {
     private final PostRepository postRepository;
 
     public PostCreateResponse createPost(PostCreateRequest request) {
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new NoSuchElementException("올바르지 않은 사용자의 ID입니다."));
+        Long userId = request.getUserId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException("게시물을 생성하는 사용자의 ID가 올바르지 않습니다.", Map.of("userId", userId)));
 
         Post post = request.toEntity();
         post.updateUser(user);
