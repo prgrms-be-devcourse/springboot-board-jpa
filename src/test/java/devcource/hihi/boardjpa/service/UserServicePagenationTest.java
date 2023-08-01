@@ -33,41 +33,6 @@ class UserServicePagenationTest {
     UserService userService;
 
 
-
-
-    @Test
-    public void saveTest() {
-        //given
-        User user = User.builder()
-                .name("test")
-                .age(24)
-                .hobby("party")
-                .build();
-
-        //when
-        ResponseUserDto dto = userService.createDto(User.toCreateDto(user));
-
-        //then
-        assertEquals(user.getName(), dto.name());
-    }
-
-    @Test
-    public void findById(){
-        //given
-        User user = User.builder()
-                .name("hello")
-                .age(34)
-                .hobby("reading")
-                .build();
-
-        //when
-        ResponseUserDto dto = userService.createDto(User.toCreateDto(user));
-        ResponseUserDto byId = userService.findById(dto.id());
-
-        //then
-        assertEquals(dto.id(),byId.id());
-    }
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);

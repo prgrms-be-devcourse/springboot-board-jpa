@@ -1,7 +1,6 @@
 package devcource.hihi.boardjpa.controller;
 
 import devcource.hihi.boardjpa.domain.User;
-import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import devcource.hihi.boardjpa.dto.user.CreateUserDto;
 import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
 import devcource.hihi.boardjpa.dto.user.UpdateUserDto;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
