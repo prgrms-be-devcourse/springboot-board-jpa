@@ -9,8 +9,8 @@ import lombok.NonNull;
 import org.prgms.boardservice.domain.BaseTime;
 import org.prgms.boardservice.domain.user.User;
 
-import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_CONTENT_LENGTH;
-import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_TITLE_LENGTH;
+import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_CONTENT;
+import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_TITLE;
 
 @Getter
 @Entity
@@ -43,14 +43,14 @@ public class Post extends BaseTime {
     }
 
     private void validateTitleLength(String title) {
-        if (title.length() > 20) {
-            throw new IllegalArgumentException(INVALID_POST_TITLE_LENGTH.getMessage());
+        if (title == null || title.trim().length() == 0 || title.length() > 20) {
+            throw new IllegalArgumentException(INVALID_POST_TITLE.getMessage());
         }
     }
 
     private void validateContentLength(String content) {
-        if (content.length() > 500) {
-            throw new IllegalArgumentException(INVALID_POST_CONTENT_LENGTH.getMessage());
+        if (content == null || content.trim().length() == 0 || content.length() > 500) {
+            throw new IllegalArgumentException(INVALID_POST_CONTENT.getMessage());
         }
     }
 
