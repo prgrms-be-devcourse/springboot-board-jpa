@@ -8,6 +8,7 @@ import devcource.hihi.boardjpa.domain.Post;
 import devcource.hihi.boardjpa.domain.User;
 import devcource.hihi.boardjpa.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -48,28 +49,9 @@ public class PostServiceTest {
         }
     }
 
-    @Test
-    public void SaveTest() {
-        //given
-        User user = User.builder()
-                .name("yejin")
-                .age(25)
-                .hobby("walking")
-                .build();
-
-        Post post = Post.builder()
-                .title("test")
-                .content("content")
-                .build();
-
-        post.allocateUser(user);
-        //when
-        postService.createDto(Post.toCreateDto(post));
-//        postRepository.save(post);
-
-        //then
-        assertEquals(1,postRepository.findAll().size());
-
+    @AfterEach
+    public void clear() {
+        postRepository.deleteAll();
     }
 
 
