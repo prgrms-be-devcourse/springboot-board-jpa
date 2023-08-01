@@ -21,11 +21,11 @@ class BoardTest {
     @DisplayName("게시글 제목이 비었을 때 예외 던지는지 확인 - ConstraintViolationException")
     @Test
     void board_title_null_ConstraintViolationException() {
-        // given
+        // Given
         Member member = memberRepository.save(new Member("member"));
         Board board = BoardFactory.createBoard(null, "content", member);
 
-        // when // then
+        // When // Then
         assertThatThrownBy(() -> entityManager.persistAndFlush(board))
                 .isInstanceOf(org.hibernate.exception.ConstraintViolationException.class);
     }

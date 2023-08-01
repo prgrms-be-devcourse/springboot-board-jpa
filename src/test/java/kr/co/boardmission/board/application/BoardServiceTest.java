@@ -5,6 +5,7 @@ import kr.co.boardmission.board.domain.BoardFactory;
 import kr.co.boardmission.board.domain.BoardRepository;
 import kr.co.boardmission.board.dto.request.BoardCreateRequest;
 import kr.co.boardmission.board.dto.response.BoardResponse;
+import kr.co.boardmission.board.dto.response.BoardSummary;
 import kr.co.boardmission.member.application.MemberService;
 import kr.co.boardmission.member.domain.Member;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +16,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,36 +53,53 @@ class BoardServiceTest {
     @DisplayName("게시글 생성 - 성공")
     @Test
     void create_board_success() {
-        // given
+        // Given
         BoardCreateRequest createRequest = BoardFactory.createBoardCreateRequest();
         Board board = boardMapper.toBoard(createRequest, member);
 
         given(memberService.getMember(any(Long.class))).willReturn(member);
         given(boardRepository.save(any(Board.class))).willReturn(board);
 
-        // when
+        // When
         String actual = boardService.createBoard(createRequest);
 
-        // then
+        // Then
         assertThat(actual).isEqualTo(board.getCreatedBy());
     }
 
     @DisplayName("게시글 단건 조회 - 성공")
     @Test
     void get_boards_detail_success() {
-        // given
+        // Given
         Board board = BoardFactory.createBoard("title", "content", member);
         given(boardRepository.findById(1L)).willReturn(Optional.of(board));
 
-        // when
+        // When
         BoardResponse actual = boardService.getBoard(1L);
 
-        // then
+        // Then
         assertThat(actual.title()).isEqualTo(board.getTitle());
         assertThat(actual.content()).isEqualTo(board.getContent());
         assertThat(actual.createdAt()).isEqualTo(board.getCreatedAt());
         assertThat(actual.modifiedAt()).isEqualTo(board.getModifiedAt());
         assertThat(actual.createdBy()).isEqualTo(board.getCreatedBy());
         assertThat(actual.modifiedBy()).isEqualTo(board.getModifiedBy());
+    }
+
+    @DisplayName("게시글 페이지 단위 조회 - 성공")
+    @Test
+    void get_boards_paging_success() {
+        // Given
+        Board board1 = BoardFactory.createBoard("t1", "c1", member);
+        Board board2 = BoardFactory.createBoard("t2", "c2", member);
+        Page<Board> boards = new PageImpl<>(List.of(board1, board2));
+
+        given(boardRepository.findAll(any(Pageable.class))).willReturn(boards);
+
+        // When
+        List<BoardSummary> actual = boardService.findAll(PageRequest.of(0, 2));
+
+        // Then
+        assertThat(actual).hasSize(2);
     }
 }

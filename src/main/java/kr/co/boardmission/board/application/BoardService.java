@@ -4,10 +4,14 @@ import kr.co.boardmission.board.domain.Board;
 import kr.co.boardmission.board.domain.BoardRepository;
 import kr.co.boardmission.board.dto.request.BoardCreateRequest;
 import kr.co.boardmission.board.dto.response.BoardResponse;
+import kr.co.boardmission.board.dto.response.BoardSummary;
 import kr.co.boardmission.member.application.MemberService;
 import kr.co.boardmission.member.domain.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,5 +33,11 @@ public class BoardService {
                 .orElseThrow(() -> new RuntimeException("Not Found Board"));
 
         return boardMapper.toDto(board);
+    }
+
+    public List<BoardSummary> findAll(Pageable pageable) {
+        return boardRepository.findAll(pageable)
+                .map(BoardMapper::toSummaryDto)
+                .getContent();
     }
 }

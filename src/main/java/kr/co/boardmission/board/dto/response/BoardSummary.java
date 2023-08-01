@@ -5,12 +5,9 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record BoardResponse(
+public record BoardSummary(
         String title,
-        String content,
         LocalDateTime createdAt,
-        LocalDateTime modifiedAt,
-        String createdBy,
-        String modifiedBy
+        String createdBy
 ) {
 }

@@ -19,6 +19,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -65,7 +69,6 @@ class BoardControllerTest {
     @DisplayName("/api/v1/boards/{board_id} - 게시판 단건 조회 API 테스트")
     @Test
     void get_board_api_success() throws Exception {
-        
         // When // Then
         mockMvc.perform(get("/api/v1/boards/" + board.getBoardId()))
                 .andExpect(status().is(HttpStatus.OK.value()))
@@ -73,5 +76,25 @@ class BoardControllerTest {
                 .andExpect(jsonPath("$.content").exists())
                 .andExpect(jsonPath("$.createdAt").exists())
                 .andExpect(jsonPath("$.createdBy").exists());
+    }
+
+    @DisplayName("/api/v1/boards - 게시판 페이징 조회 API 테스트")
+    @Test
+    void get_boards_paging_success() throws Exception {
+        // Given
+        Board board1 = BoardFactory.createBoard("t1", "c1", member);
+        Board board2 = BoardFactory.createBoard("t2", "c2", member);
+        Board board3 = BoardFactory.createBoard("t3", "c3", member);
+        Board board4 = BoardFactory.createBoard("t4", "c4", member);
+        List<Board> boards = new ArrayList<>(List.of(board, board1, board2, board3, board4));
+
+        boardRepository.saveAll(boards);
+
+        // When // Then
+        mockMvc.perform(get("/api/v1/boards")
+                        .param("page", "1")
+                        .param("size", "2"))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(jsonPath("$.*", hasSize(2)));
     }
 }
