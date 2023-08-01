@@ -1,0 +1,9 @@
+[[Post-Create]]
+== 신규 게시판 등록
+==== Http Request
+include::{snippets}/post-create/http-request.adoc[]
+
+include::{snippets}/post-create/request-fields.adoc[]
+
+==== Http Response
+include::{snippets}/post-create/http-response.adoc[]

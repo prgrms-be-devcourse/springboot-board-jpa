@@ -1,0 +1,11 @@
+[[Post-Find-One]]
+== 아이디로 게시판 조회
+==== Http Request
+include::{snippets}/post-find-one/http-request.adoc[]
+
+include::{snippets}/post-find-one/path-parameters.adoc[]
+
+==== Http Response
+include::{snippets}/post-find-one/http-response.adoc[]
+
+include::{snippets}/post-find-one/response-fields.adoc[]
