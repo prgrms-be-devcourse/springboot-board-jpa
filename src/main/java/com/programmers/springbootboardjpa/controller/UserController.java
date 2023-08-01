@@ -4,11 +4,13 @@ import com.programmers.springbootboardjpa.dto.user.UserCreateRequest;
 import com.programmers.springbootboardjpa.dto.user.UserResponse;
 import com.programmers.springbootboardjpa.dto.user.UserUpdateRequest;
 import com.programmers.springbootboardjpa.global.ApiResponse;
+import com.programmers.springbootboardjpa.global.validate.ValidationSequence;
 import com.programmers.springbootboardjpa.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,7 +30,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@RequestBody UserCreateRequest userCreateRequest) {
+    public void save(@Validated(ValidationSequence.class) @RequestBody UserCreateRequest userCreateRequest) {
         userService.save(userCreateRequest);
     }
 
@@ -54,7 +56,7 @@ public class UserController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateById(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
+    public void updateById(@PathVariable Long id, @Validated(ValidationSequence.class) @RequestBody UserUpdateRequest userUpdateRequest) {
         userService.updateById(id, userUpdateRequest);
     }
 

@@ -4,11 +4,13 @@ import com.programmers.springbootboardjpa.dto.post.PostCreateRequest;
 import com.programmers.springbootboardjpa.dto.post.PostResponse;
 import com.programmers.springbootboardjpa.dto.post.PostUpdateRequest;
 import com.programmers.springbootboardjpa.global.ApiResponse;
-import com.programmers.springbootboardjpa.servi현ce.PostService;
+import com.programmers.springbootboardjpa.global.validate.ValidationSequence;
+import com.programmers.springbootboardjpa.service.PostService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,7 +30,7 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@RequestBody PostCreateRequest postCreateRequest) {
+    public void save(@Validated(ValidationSequence.class) @RequestBody PostCreateRequest postCreateRequest) {
         postService.save(postCreateRequest);
     }
 
@@ -54,7 +56,7 @@ public class PostController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateById(@PathVariable Long id, @RequestBody PostUpdateRequest postUpdateRequest) {
+    public void updateById(@PathVariable Long id, @Validated(ValidationSequence.class) @RequestBody PostUpdateRequest postUpdateRequest) {
         postService.updateById(id, postUpdateRequest);
     }
 

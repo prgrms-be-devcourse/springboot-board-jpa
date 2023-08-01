@@ -1,16 +1,25 @@
 package com.programmers.springbootboardjpa.dto.post;
 
+import com.programmers.springbootboardjpa.global.validate.ValidationGroups.NotBlankGroup;
+import com.programmers.springbootboardjpa.global.validate.ValidationGroups.SizeCheckGroup;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
 public class PostUpdateRequest {
 
-    private String title;
-    private String content;
+    @NotBlank(message = "제목은 Null이거나 공백이거나 값이 없을 수 없습니다.", groups = NotBlankGroup.class)
+    @Size(min = 3, max = 100, message = "제목은 3글자 이상, 100글자 이하여야합니다.", groups = SizeCheckGroup.class)
+    private final String title;
+
+    @NotBlank(message = "내용은 Null이거나 공백이거나 값이 없을 수 없습니다.", groups = NotBlankGroup.class)
+    @Size(min = 3, message = "내용은 3글자 이상이어야합니다.", groups = SizeCheckGroup.class)
+    private final String content;
 
     public PostUpdateRequest(String title, String content) {
         this.title = title;
         this.content = content;
     }
-    
+
 }
