@@ -18,7 +18,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping // 질문 : memberID를 requestparam로 사용해야 할 지 createrequestdto에 넣어서 사용하는 것이 좋을지
+    @PostMapping
     public PostResponseDto createPost(@RequestBody PostCreateRequestDto createRequestDto) {
 
         return postService.createPost(createRequestDto);
@@ -36,7 +36,7 @@ public class PostController {
         return postService.getPost(postId);
     }
 
-    @PatchMapping("/{postId}") // 질문 : memberId로 작성자 확인을 해줘야할 지?
+    @PatchMapping("/{postId}")
     public void updatePost(
             @PathVariable Long postId,
             @RequestBody PostUpdateRequestDto updateRequestDto) {

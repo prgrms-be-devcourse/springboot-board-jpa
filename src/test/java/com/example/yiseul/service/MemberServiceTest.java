@@ -1,6 +1,5 @@
 package com.example.yiseul.service;
 
-import com.example.yiseul.converter.MemberConverter;
 import com.example.yiseul.domain.Member;
 import com.example.yiseul.dto.member.MemberCreateRequestDto;
 import com.example.yiseul.dto.member.MemberResponseDto;
@@ -14,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -109,7 +109,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("멤버 삭제에 성공한다.") // 질문 :  삭제 시 어떻게 하냐
+    @DisplayName("멤버 삭제에 성공한다.")
     void deleteMember() {
         // given
         Long id = 1L;
@@ -117,11 +117,9 @@ class MemberServiceTest {
         given(memberRepository.existsById(anyLong()))
                 .willReturn(true);
 
-        doNothing().when(memberRepository)
-                .deleteById(anyLong());
-
-        // when
-        memberService.deleteMember(id);
+        // when & then
+        assertThatCode(() -> memberService.deleteMember(id))
+                .doesNotThrowAnyException();
 
         // verify
         verify(memberRepository).deleteById(anyLong());

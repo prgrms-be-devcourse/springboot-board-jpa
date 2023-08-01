@@ -37,7 +37,7 @@ public class PostServiceTest {
     
     @Mock
     private MemberRepository memberRepository;
-    
+
     @InjectMocks
     private PostService postService;
 
@@ -70,7 +70,7 @@ public class PostServiceTest {
         PostResponseDto postResponseDto = postService.createPost(createRequestDto);
 
         // then
-        Assertions.assertThat(postResponseDto).isNotNull();
+        assertThat(postResponseDto).isNotNull();
     }
 
     @Test
@@ -111,7 +111,7 @@ public class PostServiceTest {
         // given
         Long id = 1L;
 
-        PostUpdateRequestDto updateRequestDto = new PostUpdateRequestDto("title1", "contents");
+        PostUpdateRequestDto updateRequestDto = new PostUpdateRequestDto("jaws", "swim");
 
         given(postRepository.findById(anyLong()))
                 .willReturn(Optional.ofNullable(post));
@@ -124,17 +124,15 @@ public class PostServiceTest {
         assertThat(post.getContent()).isEqualTo(updateRequestDto.content());
     }
 
-    @Test // 질문 : 삭제 시 어떻게 하냐
-    @DisplayName("게시글 삭제에 성공한다.")
+    @Test
+    @DisplayName("게시글 삭제에 성공한다.") // 질문 : 실패하는 요인..?
     void deletePost() {
         // given
         Long id = 1L;
 
-        given(postRepository.existsById(anyLong()))
-                .willReturn(true);
+        given(postRepository.existsById(anyLong())).willReturn(true);
 
-        doNothing().when(postRepository)
-                .deleteById(anyLong());
+        doNothing().when(postRepository).deleteById(anyLong());
 
         // when
         postService.deletePost(id);

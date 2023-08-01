@@ -7,18 +7,19 @@ import com.example.yiseul.dto.post.PostCreateRequestDto;
 import com.example.yiseul.dto.post.PostResponseDto;
 import com.example.yiseul.dto.post.PostUpdateRequestDto;
 import com.example.yiseul.global.exception.ErrorCode;
+import com.example.yiseul.global.exception.MemberException;
 import com.example.yiseul.global.exception.PostException;
 import com.example.yiseul.repository.MemberRepository;
 import com.example.yiseul.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class PostService {
 
     private final PostRepository postRepository;
@@ -46,7 +47,7 @@ public class PostService {
         return PostConverter.convertPostDto(post);
     }
 
-    @Transactional // 멤버 정보 수정
+    @Transactional
     public void updatePost(Long postId, PostUpdateRequestDto updateRequestDto) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostException(ErrorCode.POST_NOT_FOUND));
@@ -62,4 +63,5 @@ public class PostService {
 
         memberRepository.deleteById(postId);
     }
+
 }

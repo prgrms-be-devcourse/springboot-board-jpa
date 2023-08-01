@@ -5,10 +5,14 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.restdocs.RestDocsAutoConfiguration;
+import org.springframework.context.annotation.Import;
 
 import static org.assertj.core.api.Assertions.*;
 
-
+@AutoConfigureRestDocs
+@Import(RestDocsAutoConfiguration.class)
 class MemberTest {
 
     @Nested
@@ -20,7 +24,7 @@ class MemberTest {
 
         @ParameterizedTest
         @ValueSource(ints = {0, 100})
-        @DisplayName("나이는 0세 이상이면 멤버 생성을 성공한다.") // 질문
+        @DisplayName("나이는 0세 이상이면 멤버 생성을 성공한다.")
         void positiveAgeSuccess(int age) {
             // when & then
             assertThatCode(() -> new Member(name, age, hobby)).doesNotThrowAnyException();
