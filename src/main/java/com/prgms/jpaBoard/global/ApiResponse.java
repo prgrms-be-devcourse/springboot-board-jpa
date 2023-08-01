@@ -24,5 +24,6 @@ public record ApiResponse<T>(
     }
 
     public static <T> ApiResponse<T> success(int statusCode, T data){
-        return new ApiResponse<>(statusCode, data);}
+        return new ApiResponse<>(statusCode, data);
+    }
 }
