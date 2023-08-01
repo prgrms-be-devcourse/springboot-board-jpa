@@ -2,6 +2,7 @@ package com.programmers.springbootboardjpa.global;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.programmers.springbootboardjpa.global.exception.ErrorResponse;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
@@ -23,8 +24,8 @@ public class ApiResponse<T> {
         return new ApiResponse<>(200, data);
     }
 
-    public static <T> ApiResponse<T> fail(int statusCode, T data) {
-        return new ApiResponse<>(statusCode, data);
+    public static ApiResponse<ErrorResponse> fail(ErrorResponse errorResponse) {
+        return new ApiResponse<>(errorResponse.getStatusCode(), errorResponse);
     }
 
 }
