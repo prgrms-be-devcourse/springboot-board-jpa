@@ -27,9 +27,9 @@ public class PostController {
 
     @GetMapping
     public ApiResponse<Page<PostResponseDto>> findAll(Pageable pageable) {
-        Page<PostResponseDto> all = postService.findAll(pageable);
+        Page<PostResponseDto> postResponseDtos = postService.findAll(pageable);
 
-        return ApiResponse.ok(all);
+        return ApiResponse.ok(postResponseDtos);
     }
 
     @GetMapping("/{id}")

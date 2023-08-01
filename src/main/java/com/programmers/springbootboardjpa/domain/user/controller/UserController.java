@@ -26,9 +26,9 @@ public class UserController {
 
     @GetMapping
     public ApiResponse<Page<UserResponseDto>> findAll(Pageable pageable) {
-        Page<UserResponseDto> all = userService.findAll(pageable);
+        Page<UserResponseDto> userResponseDtos = userService.findAll(pageable);
 
-        return ApiResponse.ok(all);
+        return ApiResponse.ok(userResponseDtos);
     }
 
     @GetMapping("/{id}")
