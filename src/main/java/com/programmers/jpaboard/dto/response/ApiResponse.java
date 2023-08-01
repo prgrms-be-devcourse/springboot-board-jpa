@@ -17,6 +17,10 @@ public class ApiResponse<T> {
     private String message;
     private T data;
 
+    private ApiResponse(String status) {
+        this.status = status;
+    }
+
     private ApiResponse(String status, T data) {
         this.status = status;
         this.data = data;
@@ -27,15 +31,19 @@ public class ApiResponse<T> {
         this.message = message;
     }
 
+    public static ApiResponse<Void> success() {
+        return new ApiResponse<>(SUCCESS_STATUS);
+    }
+
     public static <T> ApiResponse<T> success(T data) {
         return new ApiResponse<>(SUCCESS_STATUS, data);
     }
 
-    public static <T> ApiResponse<T> fail(String message, T data) {
-        return new ApiResponse<>(FAIL_STATUS, message, data);
-    }
-
     public static ApiResponse<Void> fail(String message) {
         return new ApiResponse<>(FAIL_STATUS, message);
+    }
+
+    public static <T> ApiResponse<T> fail(String message, T data) {
+        return new ApiResponse<>(FAIL_STATUS, message, data);
     }
 }

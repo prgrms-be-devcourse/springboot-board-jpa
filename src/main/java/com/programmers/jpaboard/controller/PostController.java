@@ -9,6 +9,7 @@ import com.programmers.jpaboard.service.PostService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,5 +53,12 @@ public class PostController {
         PostIdResponse response = postService.updatePost(id, request);
 
         return ApiResponse.success(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> updatePost(@PathVariable Long id) {
+        postService.deletePostById(id);
+
+        return ApiResponse.success();
     }
 }

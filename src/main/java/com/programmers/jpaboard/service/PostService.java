@@ -55,6 +55,10 @@ public class PostService {
         return PostIdResponse.of(post.getId());
     }
 
+    public void deletePostById(Long id) {
+        postRepository.delete(getPostById(id));
+    }
+
     private Post getPostById(Long id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("해당 ID의 게시물이 존재하지 않습니다.", Map.of("postId", id)));
