@@ -25,15 +25,15 @@ public enum Hobby {
     }
 
     @JsonCreator
-    public static Hobby from(String description) {
-        return hobbyNames.get(description);
+    public static Hobby from(String hobbyName) {
+        return hobbyNames.get(hobbyName);
     }
 
     @JsonValue
     public String getHobbyName() {
         return hobbyName;
     }
-    
+
 }
 
 
