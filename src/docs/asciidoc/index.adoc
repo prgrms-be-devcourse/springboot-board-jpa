@@ -76,3 +76,7 @@ operation::post-update[snippets='http-request,path-parameters,request-fields,htt
 === `DELETE /api/v1/posts/{postId}` - 게시글 삭제
 
 operation::post-delete[snippets='http-request,path-parameters,http-response']
+
+== 예외 응답
+
+operation::ex[snippets='http-response,response-fields']
