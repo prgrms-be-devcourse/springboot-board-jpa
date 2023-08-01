@@ -35,7 +35,7 @@ public class PostService {
         User user = userRepository.findById(postSaveRequest.userId())
                 .orElseThrow(() -> new NoSuchElementException(USER_NOT_FOUND_MSG));
 
-        Post post = PostMapper.of(postSaveRequest, user);
+        Post post = PostMapper.from(postSaveRequest, user);
         Post savedPost = postRepository.save(post);
 
         return savedPost.getId();

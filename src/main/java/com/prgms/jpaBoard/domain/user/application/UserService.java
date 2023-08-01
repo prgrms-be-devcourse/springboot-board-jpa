@@ -21,7 +21,7 @@ public class UserService {
 
     @Transactional
     public Long save(UserSaveRequest userSaveRequest) {
-        User user = UserMapper.of(userSaveRequest);
+        User user = UserMapper.from(userSaveRequest);
         User savedUser = userRepository.save(user);
 
         return savedUser.getId();

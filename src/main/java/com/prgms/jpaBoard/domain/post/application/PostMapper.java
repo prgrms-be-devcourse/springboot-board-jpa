@@ -10,7 +10,7 @@ public final class PostMapper {
 
     }
 
-    public static Post of(PostSaveRequest postSaveRequest, User user) {
+    public static Post from(PostSaveRequest postSaveRequest, User user) {
         return new Post(postSaveRequest.title(), postSaveRequest.content(), user);
     }
 }

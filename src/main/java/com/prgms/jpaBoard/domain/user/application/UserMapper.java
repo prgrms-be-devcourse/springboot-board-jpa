@@ -9,7 +9,7 @@ public final class UserMapper {
 
     }
 
-    public static User of(UserSaveRequest userSaveRequest) {
+    public static User from(UserSaveRequest userSaveRequest) {
 
         return new User(
                 userSaveRequest.name(),
