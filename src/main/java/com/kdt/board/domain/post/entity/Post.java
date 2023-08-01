@@ -1,5 +1,6 @@
 package com.kdt.board.domain.post.entity;
 
+import com.kdt.board.domain.user.entity.User;
 import com.kdt.board.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -18,10 +19,14 @@ public class Post extends BaseEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Lob
     @Column(name = "content")
     private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

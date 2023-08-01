@@ -1,8 +1,12 @@
 package com.kdt.board.domain.user.entity;
 
+import com.kdt.board.domain.post.entity.Post;
 import com.kdt.board.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -15,7 +19,7 @@ public class User extends BaseEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "age")
@@ -23,4 +27,7 @@ public class User extends BaseEntity {
 
     @Column(name = "hobby")
     private String hobby;
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
+    private List<Post> posts = new ArrayList<>();
 }
