@@ -12,7 +12,7 @@ import javax.validation.constraints.Pattern;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public final class UserRequest {
+public class UserRequest {
 
     @NotBlank(message = "유저 이름을 입력해주세요.")
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "이름은 영어만 입력가능합니다.")
