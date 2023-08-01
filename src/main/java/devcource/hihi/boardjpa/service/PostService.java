@@ -1,14 +1,11 @@
 package devcource.hihi.boardjpa.service;
 
-import devcource.hihi.boardjpa.controller.CursorResult;
 import devcource.hihi.boardjpa.domain.Post;
-import devcource.hihi.boardjpa.domain.User;
 import devcource.hihi.boardjpa.dto.post.CreatePostDto;
 import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import devcource.hihi.boardjpa.dto.post.UpdatePostDto;
 import devcource.hihi.boardjpa.repository.PostRepository;
 import devcource.hihi.boardjpa.repository.UserRepository;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

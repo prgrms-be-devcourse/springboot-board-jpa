@@ -7,6 +7,7 @@ import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import devcource.hihi.boardjpa.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +24,9 @@ public class PostRestController {
     public PostRestController(PostService postService) {
         this.postService = postService;
     }
-    @GetMapping
-    public List<Post> getPost(@RequestParam Long cursorId, @RequestParam int limit) {
-        return postService.getPosts(cursorId, limit);
+    @GetMapping("/posts")
+    public ResponseEntity<List<Post>> getPost(@RequestParam Long cursorId, @RequestParam int limit) {
+        return ResponseEntity.ok(postService.getPosts(cursorId, limit));
     }
 
     @PostMapping
@@ -47,5 +48,6 @@ public class PostRestController {
     public void deletePost(@PathVariable Long id) {
         postService.deletePost(id);
     }
+
 
 }
