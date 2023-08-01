@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import com.juwoong.springbootboardjpa.config.JpaConfig;
 import com.juwoong.springbootboardjpa.user.domain.User;
+import com.juwoong.springbootboardjpa.user.domain.constant.Hobby;
 
 @DataJpaTest
 @Import(JpaConfig.class)
@@ -23,7 +24,7 @@ class UserRepositoryTest {
         User user = User.builder()
             .name("JUWOONG")
             .age(29)
-            .hobby("TRAVEL")
+            .hobby(Hobby.SHOPPING)
             .build();
 
         // when

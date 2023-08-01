@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Import;
 import com.juwoong.springbootboardjpa.config.JpaConfig;
 import com.juwoong.springbootboardjpa.post.domain.repository.PostRepository;
 import com.juwoong.springbootboardjpa.user.domain.User;
+import com.juwoong.springbootboardjpa.user.domain.constant.Hobby;
 
 @DataJpaTest
 @Import(JpaConfig.class)
@@ -24,7 +25,7 @@ class PostRepositoryTest {
         User user = User.builder()
             .name("JUWOONG")
             .age(29)
-            .hobby("TRAVEL")
+            .hobby(Hobby.SHOPPING)
             .build();
 
         Post post = Post.builder()

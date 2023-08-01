@@ -3,8 +3,12 @@ package com.juwoong.springbootboardjpa.user.domain;
 import java.util.List;
 import com.juwoong.springbootboardjpa.common.BaseEntity;
 import com.juwoong.springbootboardjpa.post.domain.Post;
+import com.juwoong.springbootboardjpa.user.domain.constant.Hobby;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -27,8 +31,9 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private Integer age;
 
-    @Column(nullable = false, length = 30)
-    private String hobby;
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private Hobby hobby;
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
