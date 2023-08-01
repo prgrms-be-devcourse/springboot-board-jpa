@@ -45,6 +45,10 @@ public class User extends BaseEntity {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void addPost(Post post) {
         posts.add(post);
     }

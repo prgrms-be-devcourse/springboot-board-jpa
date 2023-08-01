@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -33,6 +34,16 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @Builder
+    protected Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public void updateUser(User user) {
         if (Objects.nonNull(this.user)) {
             this.user.removePost(this);
@@ -40,5 +51,10 @@ public class Post extends BaseEntity {
 
         this.user = user;
         user.addPost(this);
+        setCreatedBy(user.getName());
+    }
+
+    private void setCreatedBy(String name) {
+        this.createdBy = name;
     }
 }
