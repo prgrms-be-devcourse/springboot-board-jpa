@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.1.2'
     id 'io.spring.dependency-management' version '1.1.2'
-    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2' // asciidoctor에 대한 플러그인을 추가
 }
 
 group = 'com.programmers'
@@ -16,6 +16,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt // asciidoctorExt을 Configuration에 지정
 }
 
 repositories {
@@ -23,16 +24,21 @@ repositories {
 }
 
 ext {
-    set('snippetsDir', file("build/generated-snippets"))
+    set('snippetsDir', file("build/generated-snippets")) // snippets 파일이 저장될 경로를 설정
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
+
     runtimeOnly 'com.h2database:h2'
+
+    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor' // adoc 파일에서 사용할 snippets 속성이 자동으로 build/generated-snippets를 가리키도록 해줌
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
@@ -41,7 +47,23 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-tasks.named('asciidoctor') {
-    inputs.dir snippetsDir
-    dependsOn test
+asciidoctor {
+    configurations 'asciidoctorExt' // asciidoctor에서 asciidoctorExt를 configuration으로 사용하도록 설정
+    baseDirFollowsSourceFile() // adoc 파일에서는 다른 .adoc 파일을 include하여 사용할 수 있는데, 그럴 경우 경로를 동일하게 baseDir로 설정 (Gradle 7부터 명시)
+    inputs.dir snippetsDir // input 디렉토리를 설정
+    dependsOn test // build 시, test 후 asciidoctor를 진행하도록 설정
+}
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')  // 중복을 막기 위해 새로운 문서 생성 시, 이전 문서를 먼저 삭제
+}
+
+tasks.register('copyDocument', Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc") // 해당 경로로 부터
+    into file("src/main/resources/static") // 해당 경로로 html 문서들을 복사
+}
+
+bootJar {
+    dependsOn copyDocument // build 지정
 }
