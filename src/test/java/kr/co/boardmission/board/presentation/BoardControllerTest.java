@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -23,15 +24,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 @SpringBootTest(classes = BoardMissionApplication.class)
+@AutoConfigureRestDocs
 @AutoConfigureMockMvc
 class BoardControllerTest {
 
@@ -65,6 +72,10 @@ class BoardControllerTest {
         mockMvc.perform(post("/api/v1/boards")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andDo(document("boards/createBoard",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
                 .andExpect(status().is(HttpStatus.CREATED.value()));
     }
 
@@ -73,6 +84,10 @@ class BoardControllerTest {
     void get_board_api_success() throws Exception {
         // When // Then
         mockMvc.perform(get("/api/v1/boards/" + board.getBoardId()))
+                .andDo(print())
+                .andDo(document("boards/getBoard",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.title").exists())
                 .andExpect(jsonPath("$.content").exists())
@@ -96,6 +111,10 @@ class BoardControllerTest {
         mockMvc.perform(get("/api/v1/boards")
                         .param("page", "1")
                         .param("size", "2"))
+                .andDo(print())
+                .andDo(document("boards/getBoards",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.*", hasSize(2)));
     }
@@ -103,11 +122,13 @@ class BoardControllerTest {
     @DisplayName("/api/v1/boards/{board_id} - 게시글 수정 API 테스트 with 성공")
     @Test
     void update_member_success() throws Exception {
-
-        // When // Then
         mockMvc.perform(put("/api/v1/boards/" + board.getBoardId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andDo(document("boards/updateBoard",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
                 .andExpect(content().string(member.getName()));
     }
 }
