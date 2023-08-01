@@ -1,4 +1,4 @@
-package com.juwoong.springbootboardjpa.user.application;
+package com.juwoong.springbootboardjpa.user.application.model;
 
 import java.time.LocalDateTime;
 import java.util.List;

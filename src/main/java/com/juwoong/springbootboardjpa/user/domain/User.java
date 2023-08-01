@@ -1,6 +1,7 @@
 package com.juwoong.springbootboardjpa.user.domain;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.juwoong.springbootboardjpa.common.BaseEntity;
 import com.juwoong.springbootboardjpa.post.domain.Post;
 import com.juwoong.springbootboardjpa.user.domain.constant.Hobby;
@@ -35,6 +36,7 @@ public class User extends BaseEntity {
     private Hobby hobby;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Post> posts;
 
 }

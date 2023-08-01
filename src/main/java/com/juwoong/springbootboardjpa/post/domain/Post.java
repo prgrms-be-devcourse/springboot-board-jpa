@@ -1,5 +1,6 @@
 package com.juwoong.springbootboardjpa.post.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.juwoong.springbootboardjpa.common.BaseEntity;
 import com.juwoong.springbootboardjpa.user.domain.User;
 import jakarta.persistence.Column;
@@ -24,6 +25,7 @@ import lombok.NoArgsConstructor;
 public class Post extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "member_id")
     private User user;
 
@@ -32,5 +34,10 @@ public class Post extends BaseEntity {
 
     @Lob
     private String content;
+
+    public void update (String title, String content){
+        this.title =title;
+        this.content =content;
+    }
 
 }

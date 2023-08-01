@@ -2,6 +2,7 @@ package com.juwoong.springbootboardjpa.user.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.juwoong.springbootboardjpa.user.application.model.UserDto;
 import com.juwoong.springbootboardjpa.user.domain.User;
 import com.juwoong.springbootboardjpa.user.domain.constant.Hobby;
 import com.juwoong.springbootboardjpa.user.domain.repository.UserRepository;
@@ -26,10 +27,14 @@ public class UserService {
         return toDto(craetedUser);
     }
 
-    public UserDto searchById(Long id) {
-        User searchedUser = userRepository.findById(id).get();
+    public User searchByIdForPost(Long id) {
+        return userRepository.findById(id).get();
+    }
 
-        return toDto(searchedUser);
+    public UserDto searchById(Long id) {
+        User user = userRepository.findById(id).get();
+
+        return toDto(user);
     }
 
     private UserDto toDto(User user) {
