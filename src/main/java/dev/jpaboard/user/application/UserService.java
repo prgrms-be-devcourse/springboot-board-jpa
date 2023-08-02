@@ -1,10 +1,10 @@
 package dev.jpaboard.user.application;
 
-import dev.jpaboard.user.dto.request.UserCreateRequest;
 import dev.jpaboard.user.domain.User;
+import dev.jpaboard.user.dto.request.UserCreateRequest;
 import dev.jpaboard.user.dto.request.UserLoginRequest;
-import dev.jpaboard.user.dto.response.UserResponse;
 import dev.jpaboard.user.dto.request.UserUpdateRequest;
+import dev.jpaboard.user.dto.response.UserResponse;
 import dev.jpaboard.user.exception.UserNotFoundException;
 import dev.jpaboard.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,19 +25,17 @@ public class UserService {
         return UserResponse.toDto(savedUser);
     }
 
-  public Long login(UserLoginRequest request) {
-    User user = userRepository.findByEmailAndPassword(request.email(), request.password())
-            .orElseThrow(UserNotFoundException::new);
-    return user.getId();
-  }
+    public Long login(UserLoginRequest request) {
+        User user = findByEmailAndPassword(request.email(), request.password());
+        return user.getId();
+    }
 
-  @Transactional
-  public UserResponse update(UserUpdateRequest request, Long userId) {
-    User user = userRepository.findById(userId)
-            .orElseThrow(UserNotFoundException::new);
-    user.update(request.name(), request.hobby());
-    return UserResponse.toDto(user);
-  }
+    @Transactional
+    public UserResponse update(UserUpdateRequest request, Long userId) {
+        User user = findUserById(userId);
+        user.update(request.name(), request.hobby());
+        return UserResponse.toDto(user);
+    }
 
   public UserResponse findUser(Long id) {
     User user = userRepository.findById(id)
