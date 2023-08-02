@@ -5,4 +5,6 @@ import com.programmers.jpa_board.post.domain.dto.response.PostResponse;
 
 public interface PostService {
     PostResponse create(CreatePostRequest request);
+
+    PostResponse findById(Long postId);
 }

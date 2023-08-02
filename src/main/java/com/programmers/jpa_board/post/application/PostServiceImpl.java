@@ -4,6 +4,7 @@ import com.programmers.jpa_board.global.converter.BoardConverter;
 import com.programmers.jpa_board.post.domain.Post;
 import com.programmers.jpa_board.post.domain.dto.request.CreatePostRequest;
 import com.programmers.jpa_board.post.domain.dto.response.PostResponse;
+import com.programmers.jpa_board.post.exception.NotFoundPostException;
 import com.programmers.jpa_board.post.infra.PostRepository;
 import com.programmers.jpa_board.user.application.UserProviderService;
 import org.springframework.stereotype.Service;
@@ -31,4 +32,13 @@ public class PostServiceImpl implements PostService{
 
         return converter.postToDto(saved);
     }
+
+    @Transactional
+    @Override
+    public PostResponse findById(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundPostException("게시글이 존재하지 않습니다."));
+        return converter.postToDto(post);
+    }
+
 }

@@ -4,6 +4,8 @@ import com.programmers.jpa_board.global.ApiResponse;
 import com.programmers.jpa_board.post.application.PostService;
 import com.programmers.jpa_board.post.domain.dto.request.CreatePostRequest;
 import com.programmers.jpa_board.post.domain.dto.response.PostResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,5 +25,11 @@ public class PostController {
         PostResponse response = postService.create(request);
 
         return ApiResponse.created(response);
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<PostResponse> findById(@PathVariable("id") Long postId) {
+        PostResponse response = postService.findById(postId);
+        return ApiResponse.ok(response);
     }
 }
