@@ -47,12 +47,6 @@ public class Post extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private User user;
 
-  public void updateUser(User user) {
-    if (nonNull(user)) {
-      this.user = user;
-    }
-  }
-
   public void updateTitle(String title) {
     if (nonNull(title) || !title.isBlank()) {
       this.title = title;
