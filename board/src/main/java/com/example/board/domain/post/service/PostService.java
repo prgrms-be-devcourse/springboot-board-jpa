@@ -10,7 +10,7 @@ import com.example.board.domain.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +23,7 @@ public class PostService {
 
   @Transactional
   public PostResponse createPost(PostCreateRequest postCreateRequest) {
+
     User foundUser = userRepository.findById(postCreateRequest.userId()).orElseThrow(
         EntityNotFoundException::new);
 
@@ -34,21 +35,22 @@ public class PostService {
 
   @Transactional(readOnly = true)
   public PostResponse getPost(Long postId) {
+
     Post foundPost = postRepository.findById(postId).orElseThrow(EntityNotFoundException::new);
 
     return PostResponse.from(foundPost);
   }
 
   @Transactional(readOnly = true)
-  public Page<PostResponse> getPosts(int page, int size) {
-    PageRequest pageRequest = PageRequest.of(page, size);
+  public Page<PostResponse> getPosts(Pageable pageable) {
 
-    return postRepository.findAll(pageRequest)
+    return postRepository.findAll(pageable)
         .map(PostResponse::from);
   }
 
   @Transactional
   public void updatePost(Long postId, PostUpdateRequest postUpdateRequest) {
+
     Post foundPost = postRepository.findById(postId).orElseThrow(EntityNotFoundException::new);
 
     foundPost.updateTitle(postUpdateRequest.title());
@@ -57,6 +59,7 @@ public class PostService {
 
   @Transactional
   public void deletePost(Long postId) {
+    
     Post foundPost = postRepository.findById(postId).orElseThrow(EntityNotFoundException::new);
 
     postRepository.delete(foundPost);

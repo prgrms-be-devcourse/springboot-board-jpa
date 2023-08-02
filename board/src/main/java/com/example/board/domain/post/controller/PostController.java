@@ -7,6 +7,7 @@ import com.example.board.domain.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,10 +38,10 @@ public class PostController {
     return postService.getPost(postId);
   }
 
-  @GetMapping("/list")
+  @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public Page<PostResponse> getPosts(int page, int size) {
-    return postService.getPosts(page, size);
+  public Page<PostResponse> getPosts(Pageable pageable) {
+    return postService.getPosts(pageable);
   }
 
   @PutMapping("/{postId}")
