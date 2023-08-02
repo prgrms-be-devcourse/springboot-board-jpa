@@ -115,17 +115,11 @@ class UserControllerTest {
                                 headerWithName(CONTENT_TYPE).description("content type")
                         ),
                         responseFields(
-                                getFieldDescriptors()
+                                fieldWithPath("[].id").description("id"),
+                                fieldWithPath("[].name").description("name"),
+                                fieldWithPath("[].age").description("age"),
+                                fieldWithPath("[].hobby").description("hobby")
                         )
                 ));
-    }
-
-    private static FieldDescriptor[] getFieldDescriptors() {
-        return new FieldDescriptor[]{
-                fieldWithPath("[].id").description("id"),
-                fieldWithPath("[].name").description("name"),
-                fieldWithPath("[].age").description("age"),
-                fieldWithPath("[].hobby").description("hobby")
-        };
     }
 }

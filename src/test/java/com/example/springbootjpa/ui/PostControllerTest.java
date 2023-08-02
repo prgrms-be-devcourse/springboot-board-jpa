@@ -132,7 +132,6 @@ class PostControllerTest {
                                 fieldWithPath("title").description("title of post"),
                                 fieldWithPath("content").description("content of post")
                         ),
-
                         responseHeaders(
                                 headerWithName(LOCATION).description("created url"),
                                 headerWithName(CONTENT_TYPE).description("content type")
