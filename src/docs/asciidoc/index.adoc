@@ -1,1 +1,18 @@
-= REST
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../build/generated-snippetss
+endif::[]
+
+== User
+
+=== User 생성
+
+=== /users
+
+.Request
+include::{snippets}/user-service/http-request.adoc[]
+include::{snippets}/user-service/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-service/http-response.adoc[]
+include::{snippets}/user-service/response-fields.adoc[]

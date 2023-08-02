@@ -2,6 +2,9 @@ package devcource.hihi.boardjpa.dto.user;
 
 import devcource.hihi.boardjpa.domain.User;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+
+@Builder
 public record CreateUserDto(@NotNull String name, @NotNull Integer age, String hobby) {
 
     public User toEntity() {
