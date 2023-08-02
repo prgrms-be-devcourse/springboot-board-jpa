@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class CreateUserResponse {
+public class UserResponse {
     private Long id;
     private String name;
     private int age;
@@ -15,7 +15,7 @@ public class CreateUserResponse {
     private LocalDateTime createAt;
 
     @Builder
-    public CreateUserResponse(Long id, String name, int age, String hobby, List<Post> posts, LocalDateTime createAt) {
+    public UserResponse(Long id, String name, int age, String hobby, List<Post> posts, LocalDateTime createAt) {
         this.id = id;
         this.name = name;
         this.age = age;
