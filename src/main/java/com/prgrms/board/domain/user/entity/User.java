@@ -1,6 +1,7 @@
 package com.prgrms.board.domain.user.entity;
 
 import com.prgrms.board.global.common.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,17 +20,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "user_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
+    private Long id;
 
-	@Column(name = "name", length = 30, nullable = false)
-	private String name;
+    @Column(name = "name", length = 30, nullable = false)
+    private String name;
 
-	@Column(name = "age", nullable = false)
-	private int age;
+    @Column(name = "age", nullable = false)
+    private int age;
 
-	@Column(name = "hobby", length = 50)
-	private String hobby;
+    @Column(name = "hobby", length = 50)
+    private String hobby;
+
+    public static User create(String name, int age, String hobby) {
+        return new User(null, name, age, hobby);
+    }
+
 }
