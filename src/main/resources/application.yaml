@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:h2:mem:board
     username: sa
-    password: sa
+    password:
     driverClassName: org.h2.Driver
   jpa:
     hibernate:

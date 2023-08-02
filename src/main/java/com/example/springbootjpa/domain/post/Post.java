@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
-@Table(name = "POST_TBL")
+@Table(name = "POSTS_TBL")
 @Getter
 public class Post extends BaseEntity {
 
@@ -17,7 +17,8 @@ public class Post extends BaseEntity {
     @Column(name = "title", nullable = false, length = 20)
     private String title;
 
-    @Column(name = "content", nullable = false, length = 1000)
+    @Lob
+    @Column(name = "content", nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

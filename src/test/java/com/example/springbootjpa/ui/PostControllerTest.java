@@ -1,22 +1,18 @@
 package com.example.springbootjpa.ui;
 
 import com.example.springbootjpa.application.PostService;
-import com.example.springbootjpa.ui.dto.post.PostDto;
-import com.example.springbootjpa.ui.dto.post.PostSaveRequestDto;
-import com.example.springbootjpa.ui.dto.post.PostUpdateRequestDto;
+import com.example.springbootjpa.ui.dto.post.PostFindResponse;
+import com.example.springbootjpa.ui.dto.post.PostSaveRequest;
+import com.example.springbootjpa.ui.dto.post.PostUpdateRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -41,7 +37,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @ExtendWith(RestDocumentationExtension.class)
-@AutoConfigureMockMvc
 @WebMvcTest(PostController.class)
 class PostControllerTest {
 
@@ -72,22 +67,14 @@ class PostControllerTest {
     @DisplayName("모든 게시글 조회")
     void findAllPosts() throws Exception {
         //given
-        PostDto postDto1 = new PostDto(1, "titleA", "contentA", 1);
-        PostDto postDto2 = new PostDto(2, "titleB", "contentB", 2);
-        PostDto postDto3 = new PostDto(3, "titleC", "contentC", 3);
-
-        FieldDescriptor[] post =
-                new FieldDescriptor[]{
-                        fieldWithPath("[].postId").description("postId"),
-                        fieldWithPath("[].title").description("title"),
-                        fieldWithPath("[].content").description("content"),
-                        fieldWithPath("[].userId").description("userId")
-                };
+        PostFindResponse postFindResponse1 = new PostFindResponse(1, "titleA", "contentA", 1);
+        PostFindResponse postFindResponse2 = new PostFindResponse(2, "titleB", "contentB", 2);
+        PostFindResponse postFindResponse3 = new PostFindResponse(3, "titleC", "contentC", 3);
 
         Pageable pageable = PageRequest.of(0, 3, Sort.by(
                 Sort.Order.desc("id")));
 
-        given(postService.findAllPosts(pageable)).willReturn(List.of(postDto1, postDto2, postDto3));
+        given(postService.findAllPosts(pageable)).willReturn(List.of(postFindResponse1, postFindResponse2, postFindResponse3));
 
         // when && then
         mockMvc.perform(get("/api/v1/posts"))
@@ -97,17 +84,17 @@ class PostControllerTest {
                                 headerWithName(CONTENT_TYPE).description("content type")
                         ),
                         responseFields(
-                                post
+                                getFieldDescriptors()
                         )
                 ));
     }
-    
+
     @Test
     @DisplayName("특정 게시글 조회")
     void findById() throws Exception {
         //given
-        PostDto postDto1 = new PostDto(1, "titleA", "contentA", 1);
-        given(postService.findPost(1L)).willReturn(postDto1);
+        PostFindResponse postFindResponse1 = new PostFindResponse(1, "titleA", "contentA", 1);
+        given(postService.findPost(1L)).willReturn(postFindResponse1);
 
         // when && then
         mockMvc.perform(get("/api/v1/posts/{postId}", 1))
@@ -117,10 +104,7 @@ class PostControllerTest {
                                 headerWithName(CONTENT_TYPE).description("content type")
                         ),
                         responseFields(
-                                fieldWithPath("postId").description("postId"),
-                                fieldWithPath("title").description("title"),
-                                fieldWithPath("content").description("content"),
-                                fieldWithPath("userId").description("userId")
+                                getFieldDescriptors()
                         )
                 ));
     }
@@ -129,14 +113,14 @@ class PostControllerTest {
     @DisplayName("게시글 생성")
     void createPost() throws Exception {
         //given
-        PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto(1, "titleA", "contentA");
+        PostSaveRequest postSaveRequest = new PostSaveRequest(1, "titleA", "contentA");
 
         given(postService.createPost(1, "titleA", "contentA")).willReturn(1L);
 
         // when && then
         mockMvc.perform(post("/api/v1/posts")
                         .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(postSaveRequestDto)))
+                        .content(objectMapper.writeValueAsString(postSaveRequest)))
                 .andDo(print())
                 .andDo(document("create-post",
                         requestHeaders(
@@ -158,19 +142,18 @@ class PostControllerTest {
                         )
                 ));
     }
-
-
+    
     @Test
     @DisplayName("특정 게시글 수정")
     void updatePost() throws Exception {
         // given
         given(postService.updatePost(1L, "updateTitle", "updatedContent")).willReturn(1L);
 
-        PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto("updateTitle", "updateContent");
+        PostUpdateRequest postUpdateRequest = new PostUpdateRequest("updateTitle", "updateContent");
 
         // when && then
         mockMvc.perform(patch("/api/v1/posts/{postId}", 1)
-                .content(objectMapper.writeValueAsString(postUpdateRequestDto))
+                .content(objectMapper.writeValueAsString(postUpdateRequest))
                 .contentType("application/json"))
                 .andDo(print())
                 .andDo(document("update-post",
@@ -189,5 +172,14 @@ class PostControllerTest {
                                 fieldWithPath("id").description("id of created post")
                         )
                 ));
+    }
+
+    private static FieldDescriptor[] getFieldDescriptors() {
+        return new FieldDescriptor[]{
+                fieldWithPath("[].postId").description("postId"),
+                fieldWithPath("[].title").description("title"),
+                fieldWithPath("[].content").description("content"),
+                fieldWithPath("[].userId").description("userId")
+        };
     }
 }

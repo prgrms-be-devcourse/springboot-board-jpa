@@ -1,6 +1,7 @@
 package com.example.springbootjpa.ui.dto.post;
 
-public record PostUpdateRequestDto(
+public record PostSaveRequest(
+        long userId,
         String title,
         String content
 ) {

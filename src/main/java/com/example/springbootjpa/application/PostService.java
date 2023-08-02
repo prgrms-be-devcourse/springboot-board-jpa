@@ -5,7 +5,7 @@ import com.example.springbootjpa.domain.post.Post;
 import com.example.springbootjpa.domain.post.PostRepository;
 import com.example.springbootjpa.domain.user.User;
 import com.example.springbootjpa.domain.user.UserRepository;
-import com.example.springbootjpa.ui.dto.post.PostDto;
+import com.example.springbootjpa.ui.dto.post.PostFindResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -23,20 +23,28 @@ public class PostService {
 
     private final UserRepository userRepository;
 
-    public List<PostDto> findAllPosts(Pageable pageable) {
+    public List<PostFindResponse> findAllPosts(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(PostDto::from)
+                .map(PostFindResponse::from)
                 .stream()
                 .toList();
     }
 
-    public PostDto findPost(Long postId) {
-        Post post = findById(postId);
+    public PostFindResponse findPost(Long postId) {
+        Post post = findByPostId(postId);
 
-        return PostDto.from(post);
+        return PostFindResponse.from(post);
     }
 
-    private Post findById(Long postId) {
+    @Transactional
+    public long updatePost(long postId, String title, String content) {
+        Post post = findByPostId(postId);
+        post.update(title, content);
+
+        return post.getId();
+    }
+
+    private Post findByPostId(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(
                         () -> new EntityNotFoundException("post doesn't exist")
@@ -52,14 +60,6 @@ public class PostService {
 
         Post post = new Post(title, content, user);
         postRepository.save(post);
-
-        return post.getId();
-    }
-
-    @Transactional
-    public long updatePost(long postId, String title, String content) {
-        Post post = findById(postId);
-        post.update(title, content);
 
         return post.getId();
     }

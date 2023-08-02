@@ -4,7 +4,7 @@ package com.example.springbootjpa.application;
 import com.example.springbootjpa.domain.user.Hobby;
 import com.example.springbootjpa.domain.user.User;
 import com.example.springbootjpa.domain.user.UserRepository;
-import com.example.springbootjpa.ui.dto.user.UserDto;
+import com.example.springbootjpa.ui.dto.user.UserFindResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,18 +27,18 @@ public class UserService {
         return user.getId();
     }
 
-    public List<UserDto> findAllUsers() {
+    public List<UserFindResponse> findAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(UserDto::from)
+                .map(UserFindResponse::from)
                 .toList();
     }
 
-    public UserDto findById(Long id) {
+    public UserFindResponse findById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("member doesn't exist")
         );
 
-        return UserDto.from(user);
+        return UserFindResponse.from(user);
     }
 }

@@ -3,7 +3,7 @@ package com.example.springbootjpa.ui;
 import com.example.springbootjpa.domain.user.Hobby;
 import com.example.springbootjpa.domain.user.User;
 import com.example.springbootjpa.domain.user.UserRepository;
-import com.example.springbootjpa.ui.dto.user.UserSaveRequestDto;
+import com.example.springbootjpa.ui.dto.user.UserSaveRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,12 +66,12 @@ class UserControllerTest {
     @DisplayName("회원 가입")
     void createUser() throws Exception {
         // given
-        UserSaveRequestDto userSaveRequestDto = new UserSaveRequestDto("kim", 20, Hobby.EXERCISE);
+        UserSaveRequest userSaveRequest = new UserSaveRequest("kim", 20, Hobby.EXERCISE);
 
         // when && then
         this.mockMvc.perform(
                         post("/api/v1/users")
-                                .content(objectMapper.writeValueAsString(userSaveRequestDto))
+                                .content(objectMapper.writeValueAsString(userSaveRequest))
                                 .contentType("application/json")
                 ).andExpect(status().isCreated())
                 .andDo(print())
@@ -104,13 +104,6 @@ class UserControllerTest {
         userRepository.save(user1);
         userRepository.save(user2);
 
-        FieldDescriptor[] user =
-                new FieldDescriptor[]{
-                        fieldWithPath("[].id").description("id"),
-                        fieldWithPath("[].name").description("name"),
-                        fieldWithPath("[].age").description("age"),
-                        fieldWithPath("[].hobby").description("hobby")
-                };
 
         // when && then
         this.mockMvc.perform(
@@ -121,7 +114,18 @@ class UserControllerTest {
                         responseHeaders(
                                 headerWithName(CONTENT_TYPE).description("content type")
                         ),
-                        responseFields(user)
+                        responseFields(
+                                getFieldDescriptors()
+                        )
                 ));
+    }
+
+    private static FieldDescriptor[] getFieldDescriptors() {
+        return new FieldDescriptor[]{
+                fieldWithPath("[].id").description("id"),
+                fieldWithPath("[].name").description("name"),
+                fieldWithPath("[].age").description("age"),
+                fieldWithPath("[].hobby").description("hobby")
+        };
     }
 }
