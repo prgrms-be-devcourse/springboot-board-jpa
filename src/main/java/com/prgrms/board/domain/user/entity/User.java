@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Table(name = "user")
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
@@ -37,5 +37,4 @@ public class User extends BaseEntity {
     public static User create(String name, int age, String hobby) {
         return new User(null, name, age, hobby);
     }
-
 }
