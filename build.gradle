@@ -7,7 +7,9 @@ buildscript {
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.1.2'
-    id 'io.spring.dependency-management' version '1.1.2'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
+    id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'dev'
@@ -49,8 +51,34 @@ dependencies {
 
     // database
     runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.withType(GenerateSwaggerUI) {
+    dependsOn 'openapi3'
+
+    delete file('src/main/resources/static/docs/')
+    copy {
+        from "build/resources/main/static/docs"
+        into "src/main/resources/static/docs/"
+    }
+}
+
+openapi3 {
+    server = "http://localhost:8080"
+    title = "JPA Board"
+    description = "Spring REST Docs with SwaggerUI."
+    version = "0.0.1"
+    outputFileNamePrefix = 'jpa-board'
+    format = 'json'
+
+    outputDirectory = 'build/resources/main/static/docs'
+}
+
+bootJar {
+    dependsOn(':openapi3')
 }
