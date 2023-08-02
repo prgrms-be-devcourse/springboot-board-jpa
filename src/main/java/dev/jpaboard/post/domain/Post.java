@@ -1,7 +1,7 @@
 package dev.jpaboard.post.domain;
 
 import dev.jpaboard.common.entity.BaseEntity;
-import dev.jpaboard.common.exception.UnauthorizedAccessException;
+import dev.jpaboard.common.exception.ForbiddenException;
 import dev.jpaboard.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -38,7 +38,7 @@ public class Post extends BaseEntity {
 
     public void checkAuthorize(User user) {
         if (!this.user.equals(user)) {
-            throw new UnauthorizedAccessException();
+            throw new ForbiddenException();
         }
     }
 

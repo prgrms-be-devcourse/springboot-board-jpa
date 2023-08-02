@@ -1,5 +1,6 @@
 package dev.jpaboard.post.api;
 
+import dev.jpaboard.common.exception.AuthorizedException;
 import dev.jpaboard.post.application.PostService;
 import dev.jpaboard.post.dto.PostCreateRequest;
 import dev.jpaboard.post.dto.PostResponse;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -25,6 +28,7 @@ public class PostController {
     @ResponseStatus(CREATED)
     public PostResponse create(@RequestBody PostCreateRequest request,
                                @SessionAttribute(name = "userId", required = false) Long userId) {
+        validateUserId(userId);
         return postService.create(request, userId);
     }
 
@@ -43,13 +47,21 @@ public class PostController {
     public void update(@PathVariable("id") Long postId,
                        @RequestBody PostUpdateRequest request,
                        @SessionAttribute(name = "userId", required = false) Long userId) {
+        validateUserId(userId);
         postService.update(postId, request, userId);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long postId,
                        @SessionAttribute(name = "userId", required = false) Long userId) {
+        validateUserId(userId);
         postService.delete(postId, userId);
+    }
+
+    private void validateUserId(Long userId) {
+        if (Objects.isNull(userId)) {
+            throw new AuthorizedException();
+        }
     }
 
 }

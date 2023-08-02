@@ -1,5 +1,6 @@
 package dev.jpaboard.user.api;
 
+import dev.jpaboard.common.exception.AuthorizedException;
 import dev.jpaboard.user.application.UserService;
 import dev.jpaboard.user.dto.request.UserCreateRequest;
 import dev.jpaboard.user.dto.request.UserLoginRequest;
@@ -44,9 +45,10 @@ public class UserController {
     @ResponseStatus(NO_CONTENT)
     public void logout(HttpServletRequest httpRequest) {
         HttpSession session = httpRequest.getSession(false);
-        if (Objects.nonNull(session)) {
-            session.invalidate();
+        if (Objects.isNull(session)) {
+            throw new AuthorizedException();
         }
+        session.invalidate();
     }
 
     @PatchMapping("/update")
@@ -58,13 +60,20 @@ public class UserController {
 
     @GetMapping("/me")
     public UserResponse findUser(@SessionAttribute(name = "userId", required = false) Long userId) {
-
+        validateUserId(userId);
         return userService.findUser(userId);
     }
+
 
     @DeleteMapping("/me")
     public void delete(@SessionAttribute(name = "userId", required = false) Long userId) {
         userService.delete(userId);
+    }
+
+    private void validateUserId(Long userId) {
+        if (Objects.isNull(userId)) {
+            throw new AuthorizedException();
+        }
     }
 
 }
