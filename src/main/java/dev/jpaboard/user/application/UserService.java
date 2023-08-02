@@ -16,14 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-  @Transactional
-  public UserResponse signUp(UserCreateRequest request) {
-    User user = UserCreateRequest.toUser(request);
-    User savedUser = userRepository.save(user);
-    return UserResponse.toDto(savedUser);
-  }
+    @Transactional
+    public UserResponse signUp(UserCreateRequest request) {
+        User user = UserCreateRequest.toUser(request);
+        User savedUser = userRepository.save(user);
+        return UserResponse.toDto(savedUser);
+    }
 
   public Long login(UserLoginRequest request) {
     User user = userRepository.findByEmailAndPassword(request.email(), request.password())
@@ -45,9 +45,9 @@ public class UserService {
     return UserResponse.toDto(user);
   }
 
-  @Transactional
-  public void delete(Long id) {
-    userRepository.deleteById(id);
-  }
+    @Transactional
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
 
 }
