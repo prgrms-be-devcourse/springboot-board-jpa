@@ -49,14 +49,14 @@ public class User extends BaseEntity {
   private String hobby;
 
   public void updateName(String name) {
-    if (nonNull(name)) {
+    if (nonNull(name) || !name.isBlank()) {
       validateName(name);
       this.name = name;
     }
   }
 
   public void updateHobby(String hobby) {
-    if (nonNull(hobby)) {
+    if (nonNull(hobby) || !hobby.isBlank()) {
       this.hobby = hobby;
     }
   }
