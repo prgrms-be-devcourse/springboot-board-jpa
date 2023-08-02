@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class PostController {
     }
 
     @GetMapping
-    public ApiResponse<Page<PostResponseDto>> findAll(Pageable pageable) {
+    public ApiResponse<Page<PostResponseDto>> findAll(@PageableDefault(sort = "id", size = 10, direction = Sort.Direction.DESC) Pageable pageable) {
         Page<PostResponseDto> postResponseDtos = postService.findAll(pageable);
 
         return ApiResponse.ok(postResponseDtos);

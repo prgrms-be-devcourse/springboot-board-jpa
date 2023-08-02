@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ApiResponse<Page<UserResponseDto>> findAll(Pageable pageable) {
+    public ApiResponse<Page<UserResponseDto>> findAll(@PageableDefault(sort = "id", size = 10, direction = Sort.Direction.DESC) Pageable pageable) {
         Page<UserResponseDto> userResponseDtos = userService.findAll(pageable);
 
         return ApiResponse.ok(userResponseDtos);
