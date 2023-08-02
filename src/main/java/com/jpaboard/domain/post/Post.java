@@ -18,9 +18,10 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String title;
 
+    @Lob
     @Column(nullable = false)
     private String content;
 
@@ -35,8 +36,8 @@ public class Post extends BaseEntity {
         this.user = user;
     }
 
-    public void update(PostUpdateRequest request) {
-        this.title = request.title();
-        this.content = request.content();
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 }
