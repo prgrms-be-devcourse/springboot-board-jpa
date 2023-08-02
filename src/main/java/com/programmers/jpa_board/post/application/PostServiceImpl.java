@@ -7,6 +7,8 @@ import com.programmers.jpa_board.post.domain.dto.response.PostResponse;
 import com.programmers.jpa_board.post.exception.NotFoundPostException;
 import com.programmers.jpa_board.post.infra.PostRepository;
 import com.programmers.jpa_board.user.application.UserProviderService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +35,7 @@ public class PostServiceImpl implements PostService{
         return converter.postToDto(saved);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public PostResponse findById(Long postId) {
         Post post = postRepository.findById(postId)
@@ -41,4 +43,10 @@ public class PostServiceImpl implements PostService{
         return converter.postToDto(post);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Page<PostResponse> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable)
+                .map(converter::postToDto);
+    }
 }
