@@ -5,7 +5,9 @@ import com.example.springbootjpa.ui.dto.post.PostFindResponse;
 import com.example.springbootjpa.ui.dto.post.PostSaveRequest;
 import com.example.springbootjpa.ui.dto.post.PostUpdateRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -15,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -84,7 +85,10 @@ class PostControllerTest {
                                 headerWithName(CONTENT_TYPE).description("content type")
                         ),
                         responseFields(
-                                getFieldDescriptors()
+                                fieldWithPath("[].postId").description("postId"),
+                                fieldWithPath("[].title").description("title"),
+                                fieldWithPath("[].content").description("content"),
+                                fieldWithPath("[].userId").description("userId")
                         )
                 ));
     }
@@ -104,7 +108,10 @@ class PostControllerTest {
                                 headerWithName(CONTENT_TYPE).description("content type")
                         ),
                         responseFields(
-                                getFieldDescriptors()
+                                fieldWithPath("postId").description("postId"),
+                                fieldWithPath("title").description("title"),
+                                fieldWithPath("content").description("content"),
+                                fieldWithPath("userId").description("userId")
                         )
                 ));
     }
@@ -141,7 +148,7 @@ class PostControllerTest {
                         )
                 ));
     }
-    
+
     @Test
     @DisplayName("특정 게시글 수정")
     void updatePost() throws Exception {
@@ -171,14 +178,5 @@ class PostControllerTest {
                                 fieldWithPath("id").description("id of created post")
                         )
                 ));
-    }
-
-    private static FieldDescriptor[] getFieldDescriptors() {
-        return new FieldDescriptor[]{
-                fieldWithPath("[].postId").description("postId"),
-                fieldWithPath("[].title").description("title"),
-                fieldWithPath("[].content").description("content"),
-                fieldWithPath("[].userId").description("userId")
-        };
     }
 }
