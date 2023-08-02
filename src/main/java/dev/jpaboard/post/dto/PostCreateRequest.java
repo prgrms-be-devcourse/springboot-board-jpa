@@ -1,6 +1,7 @@
 package dev.jpaboard.post.dto;
 
 import dev.jpaboard.post.domain.Post;
+import dev.jpaboard.user.domain.User;
 
 public record PostCreateRequest(String title, String content) {
 

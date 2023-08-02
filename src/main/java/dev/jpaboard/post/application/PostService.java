@@ -4,6 +4,7 @@ import dev.jpaboard.post.domain.Post;
 import dev.jpaboard.post.dto.PostCreateRequest;
 import dev.jpaboard.post.dto.PostResponse;
 import dev.jpaboard.post.dto.PostUpdateRequest;
+import dev.jpaboard.post.dto.PostsResponse;
 import dev.jpaboard.post.exception.PostNotFoundException;
 import dev.jpaboard.post.repository.PostRepository;
 import dev.jpaboard.user.domain.User;
@@ -15,19 +16,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostService {
 
-  private final PostRepository postRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-  @Transactional
-  public PostResponse create(PostCreateRequest request) {
-    Post post = PostCreateRequest.toPost(request);
-    Post savedPost = postRepository.save(post);
-    return PostResponse.toDto(savedPost);
-  }
+    @Transactional
+    public PostResponse create(PostCreateRequest request, Long userId) {
+        User user = findUserById(userId);
+
+        Post post = PostCreateRequest.toPost(request, user);
+        Post savedPost = postRepository.save(post);
+        return PostResponse.from(savedPost);
+    }
 
     @Transactional
     public void update(Long postId, PostUpdateRequest request, Long userId) {
@@ -59,5 +64,14 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
+    private Post findPostById(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+    }
+
+    private User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
 
 }
