@@ -3,13 +3,11 @@ package org.prgrms.myboard.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.prgrms.myboard.domain.CursorResult;
 import org.prgrms.myboard.domain.OffsetResult;
 import org.prgrms.myboard.dto.PostCreateRequestDto;
 import org.prgrms.myboard.dto.PostResponseDto;
 import org.prgrms.myboard.dto.PostUpdateRequestDto;
-import org.prgrms.myboard.service.FacadeService;
 import org.prgrms.myboard.service.PostService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 public class PostRestController {
     private static final int PAGE_BASE_OFFSET = 1;
     private final PostService postService;
-    private final FacadeService facadeService;
 
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(@Valid @RequestBody PostCreateRequestDto postCreateRequestDto) {
