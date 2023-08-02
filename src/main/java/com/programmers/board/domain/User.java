@@ -3,8 +3,10 @@ package com.programmers.board.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Getter
@@ -30,11 +32,21 @@ public class User extends BaseEntity {
     }
 
     public User(String name, int age, String hobby) {
+        nullCheck(name, hobby);
         validateName(name);
         validateHobby(hobby);
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+    }
+
+    private void nullCheck(String name, String hobby) {
+        if (isNull(name)) {
+            throw new IllegalArgumentException("사용자 이름은 필수입니다");
+        }
+        if (isNull(hobby)) {
+            throw new IllegalArgumentException("사용자 취미는 필수입니다");
+        }
     }
 
     public void update(String name, Integer age, String hobby) {
