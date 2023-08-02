@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Builder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class User extends BaseEntity {
     protected User() {
     }
 
+    @Builder
     public User(String name, int age, String hobby) {
         validateName(name);
         validateAgeRange(age);
