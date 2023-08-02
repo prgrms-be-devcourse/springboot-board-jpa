@@ -20,6 +20,8 @@ import java.util.regex.Pattern;
 @Table(name = "users")
 public class User extends BaseEntity {
     private static final Pattern NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z]+$");
+    private static final String INVALID_NAME = "이름 형식이 잘못 되었습니다.";
+    private static final String INVALID_AGE = "나이가 잘못 입력 되었습니다.";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,19 +80,19 @@ public class User extends BaseEntity {
     private void validateNamePattern(String name) {
         Matcher matcher = NAME_PATTERN.matcher(name);
         if (!matcher.find()) {
-            throw new IllegalArgumentException("이름 형식이 잘못 되었습니다.");
+            throw new IllegalArgumentException(INVALID_NAME);
         }
     }
 
     private void validateNameRange(String name) {
         if (name.isEmpty() || name.length() > 30) {
-            throw new IllegalArgumentException("이름 형식이 잘못 되었습니다.");
+            throw new IllegalArgumentException(INVALID_NAME);
         }
     }
 
     private void validateAgeRange(int age) {
         if (age < 1 || age > 100) {
-            throw new IllegalArgumentException("나이가 잘못 입력 되었습니다.");
+            throw new IllegalArgumentException(INVALID_AGE);
         }
     }
 }

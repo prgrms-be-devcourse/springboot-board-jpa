@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserProviderService {
+    private static final String NOT_FOUND_USER = "회원이 존재하지 않습니다.";
+
     private final UserRepository userRepository;
     private final BoardConverter converter;
 
@@ -27,11 +29,10 @@ public class UserServiceImpl implements UserProviderService {
         return converter.userToDto(saved);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User getUser(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundUserException("회원이 존재하지 않습니다."));
-
-        return user;
+        return userRepository.findById(id)
+                        .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_USER));
     }
 }

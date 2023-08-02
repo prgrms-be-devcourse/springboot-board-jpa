@@ -19,13 +19,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundUserException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiResponse<String> invalidHandle(NotFoundUserException exception) {
+    public ApiResponse<String> notFoundUserHandle(NotFoundUserException exception) {
         return ApiResponse.fail(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
     @ExceptionHandler(NotFoundPostException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiResponse<String> invalidHandle(NotFoundPostException exception) {
+    public ApiResponse<String> notFoundPostHandle(NotFoundPostException exception) {
         return ApiResponse.fail(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 }

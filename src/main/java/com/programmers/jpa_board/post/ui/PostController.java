@@ -32,20 +32,22 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<PostResponse> findById(@PathVariable("id") Long postId) {
-        PostResponse response = postService.findById(postId);
+    public ApiResponse<PostResponse> findById(@PathVariable("id") Long id) {
+        PostResponse response = postService.findById(id);
+
         return ApiResponse.ok(response);
     }
 
     @GetMapping
-    public ApiResponse<Page<PostResponse>> findAll(Pageable pageable) {
-        Page<PostResponse> responses = postService.findAll(pageable);
+    public ApiResponse<Page<PostResponse>> findPage(Pageable pageable) {
+        Page<PostResponse> responses = postService.findPage(pageable);
+
         return ApiResponse.ok(responses);
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<PostResponse> update(@PathVariable("id") Long postId, @RequestBody UpdatePostRequest request) {
-        PostResponse response = postService.update(postId, request);
+    public ApiResponse<PostResponse> update(@PathVariable("id") Long id, @RequestBody UpdatePostRequest request) {
+        PostResponse response = postService.update(id, request);
 
         return ApiResponse.ok(response);
     }

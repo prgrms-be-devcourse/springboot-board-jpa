@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PostServiceImpl implements PostService{
+    private static final String NOT_FOUND_POST = "게시글이 존재하지 않습니다.";
+
     private final PostRepository postRepository;
     private final UserProviderService userService;
     private final BoardConverter converter;
@@ -40,13 +42,14 @@ public class PostServiceImpl implements PostService{
     @Override
     public PostResponse findById(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundPostException("게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST));
+
         return converter.postToDto(post);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<PostResponse> findAll(Pageable pageable) {
+    public Page<PostResponse> findPage(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(converter::postToDto);
     }
@@ -55,7 +58,7 @@ public class PostServiceImpl implements PostService{
     @Override
     public PostResponse update(Long postId, UpdatePostRequest request) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundPostException("게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST));
         post.update(request.getTitle(), request.getContent());
 
         return converter.postToDto(post);

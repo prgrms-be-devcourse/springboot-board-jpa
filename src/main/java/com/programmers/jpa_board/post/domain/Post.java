@@ -10,6 +10,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "posts")
 public class Post extends BaseEntity {
+    private static final String INVALID_TITLE = "제목 형식이 잘못 되었습니다.";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -62,7 +64,7 @@ public class Post extends BaseEntity {
 
     private void validateTitleRange(String title) {
         if (title.isEmpty() || title.length() > 100) {
-            throw new IllegalArgumentException("제목 형식이 잘못 되었습니다.");
+            throw new IllegalArgumentException(INVALID_TITLE);
         }
     }
 

@@ -11,7 +11,7 @@ public interface PostService {
 
     PostResponse findById(Long postId);
 
-    Page<PostResponse> findAll(Pageable pageable);
+    Page<PostResponse> findPage(Pageable pageable);
 
     PostResponse update(Long postId, UpdatePostRequest request);
 }
