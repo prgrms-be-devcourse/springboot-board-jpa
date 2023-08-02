@@ -1,6 +1,5 @@
 package com.prgrms.boardjpa.Post.domain;
 
-import com.prgrms.boardjpa.Post.dto.request.PostUpdateRequest;
 import com.prgrms.boardjpa.User.domain.User;
 import com.prgrms.boardjpa.global.domain.BaseEntity;
 import lombok.AccessLevel;
@@ -41,13 +40,13 @@ public class Post extends BaseEntity {
         this.user = author;
     }
 
-    public void update(PostUpdateRequest updateRequest) {
-        if (updateRequest.title() != null) {
-            this.title = updateRequest.title();
+    public void update(String updateTitle, String updateContent) {
+        if (updateTitle != null) {
+            this.title = updateTitle;
         }
 
-        if (updateRequest.content() != null) {
-            this.content = updateRequest.content();
+        if (updateContent != null) {
+            this.content = updateContent;
         }
     }
 }

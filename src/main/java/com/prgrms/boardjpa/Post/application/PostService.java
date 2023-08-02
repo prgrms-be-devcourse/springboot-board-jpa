@@ -64,7 +64,7 @@ public class PostService {
         User user = userRepository.findById(post.getUser().getId())
                 .orElseThrow(() -> new BusinessServiceException(ErrorCode.NOT_FOUND_USER));
 
-        post.update(updateRequest);
+        post.update(updateRequest.title(), updateRequest.content());
         post.updateUser(user);
 
         return PostResponse.create(post);
