@@ -4,10 +4,8 @@ import dev.jpaboard.post.application.PostService;
 import dev.jpaboard.post.dto.PostCreateRequest;
 import dev.jpaboard.post.dto.PostResponse;
 import dev.jpaboard.post.dto.PostUpdateRequest;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import dev.jpaboard.post.dto.PostsResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -18,43 +16,38 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PostController {
 
-  private final PostService postService;
+    private final PostService postService;
 
-  @PostMapping("/posts")
-  @ResponseStatus(HttpStatus.CREATED)
-  public PostResponse create(PostCreateRequest request) {
-    return postService.create(request);
-  }
+    @PostMapping("/posts")
+    @ResponseStatus(CREATED)
+    public PostResponse create(@RequestBody PostCreateRequest request,
+                               @SessionAttribute(name = "userId", required = false) Long userId) {
+        return postService.create(request, userId);
+    }
 
-  @PatchMapping("/posts/{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public PostResponse update(@PathVariable Long id, PostUpdateRequest request) {
-    return postService.update(request, id);
-  }
+    @GetMapping("/posts/{id}")
+    public PostResponse findPost(@PathVariable Long id) {
+        return postService.findPost(id);
+    }
 
-  @GetMapping("/posts/{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public PostResponse findPost(@PathVariable Long id) {
-    return postService.findPost(id);
-  }
+    @GetMapping("/posts")
+    public PostsResponse findSlicePosts(@PageableDefault(sort = "createdAt", direction = DESC) Pageable pageable) {
+        return postService.findAll(pageable);
+    }
 
-  @GetMapping("/posts/{userId}")
-  @ResponseStatus(HttpStatus.OK)
-  public Page<PostResponse> findPostByUser(@PathVariable Long userId, @PageableDefault(sort = "createdAt", direction = DESC) Pageable pageable) {
-    return postService.findPostByUser(userId, pageable);
-  }
+    @PatchMapping("/posts/{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void update(@PathVariable("id") Long postId,
+                       @RequestBody PostUpdateRequest request,
+                       @SessionAttribute(name = "userId", required = false) Long userId) {
+        postService.update(postId, request, userId);
+    }
 
-  @GetMapping("/posts")
-  @ResponseStatus(HttpStatus.OK)
-  public Page<PostResponse> findSlicePost(@PageableDefault(sort = "createdAt", direction = DESC) Pageable pageable) {
-    return postService.findAll(pageable);
-  }
-
-  @DeleteMapping("/posts/{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public void delete(@PathVariable Long id) {
-    postService.delete(id);
-  }
+    @DeleteMapping("/posts/{id}")
+    public void delete(@PathVariable("id") Long postId,
+                       @SessionAttribute(name = "userId", required = false) Long userId) {
+        postService.delete(postId, userId);
+    }
 
   @DeleteMapping("/posts")
   @ResponseStatus(HttpStatus.OK)

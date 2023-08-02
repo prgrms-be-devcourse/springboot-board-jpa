@@ -2,10 +2,10 @@ package dev.jpaboard.post.application;
 
 import dev.jpaboard.post.domain.Post;
 import dev.jpaboard.post.dto.PostCreateRequest;
+import dev.jpaboard.post.dto.PostResponse;
 import dev.jpaboard.post.dto.PostUpdateRequest;
 import dev.jpaboard.post.exception.PostNotFoundException;
 import dev.jpaboard.post.repository.PostRepository;
-import dev.jpaboard.post.dto.PostResponse;
 import dev.jpaboard.user.domain.User;
 import dev.jpaboard.user.exception.UserNotFoundException;
 import dev.jpaboard.user.repository.UserRepository;
@@ -29,34 +29,35 @@ public class PostService {
     return PostResponse.toDto(savedPost);
   }
 
-  @Transactional
-  public PostResponse update(PostUpdateRequest request, Long postId) {
-    Post post = postRepository.findById(postId)
-            .orElseThrow(PostNotFoundException::new);
-    post.update(request.title(), request.content());
-    return PostResponse.toDto(post);
-  }
+    @Transactional
+    public void update(Long postId, PostUpdateRequest request, Long userId) {
+        Post post = findPostById(postId);
+        User user = findUserById(userId);
 
-  public PostResponse findPost(Long id) {
-    Post post = postRepository.findById(id)
-            .orElseThrow(PostNotFoundException::new);
-    return PostResponse.toDto(post);
-  }
+        post.checkAuthorize(user);
+        post.update(request.title(), request.content());
+    }
 
-  public Page<PostResponse> findAll(Pageable pageable) {
-    Page<Post> postPage = postRepository.findAll(pageable);
-    return postPage.map(PostResponse::toDto);
-  }
+    public PostResponse findPost(Long id) {
+        Post post = findPostById(id);
 
-  public Page<PostResponse> findPostByUser(Long userId, Pageable pageable) {
-    Page<Post> postPage = postRepository.findPostByUserId(userId, pageable);
-    return postPage.map(PostResponse::toDto);
-  }
+        return PostResponse.from(post);
+    }
 
-  @Transactional
-  public void delete(Long id) {
-    postRepository.deleteById(id);
-  }
+    public PostsResponse findAll(Pageable pageable) {
+        Page<Post> postPage = postRepository.findAll(pageable);
+
+        return PostsResponse.from(postPage);
+    }
+
+    @Transactional
+    public void delete(Long postId, Long userId) {
+        Post post = findPostById(postId);
+        User user = findUserById(userId);
+
+        post.checkAuthorize(user);
+        postRepository.deleteById(postId);
+    }
 
 
 }
