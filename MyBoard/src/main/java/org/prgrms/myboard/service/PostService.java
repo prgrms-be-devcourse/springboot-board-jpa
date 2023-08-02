@@ -6,12 +6,12 @@ import org.prgrms.myboard.domain.OffsetResult;
 import org.prgrms.myboard.domain.Post;
 import org.prgrms.myboard.domain.User;
 import org.prgrms.myboard.dto.PostCreateRequestDto;
-import org.prgrms.myboard.dto.PostCursorRequestDto;
 import org.prgrms.myboard.dto.PostResponseDto;
 import org.prgrms.myboard.dto.PostUpdateRequestDto;
 import org.prgrms.myboard.repository.PostRepository;
 import org.prgrms.myboard.repository.UserRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -29,10 +29,9 @@ public class PostService {
 
     @Transactional
     public PostResponseDto createPost(PostCreateRequestDto postCreateRequestDto) {
-        Post post = postCreateRequestDto.toPost();
         User user = userRepository.findById(postCreateRequestDto.userId())
             .orElseThrow(() -> new RuntimeException("존재하지 않는 Id입니다."));
-        post.allocateUser(user);
+        Post post = new Post(postCreateRequestDto.title(), postCreateRequestDto.content(), user);
         postRepository.save(post);
         return post.toPostResponseDto();
     }
@@ -60,14 +59,6 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostResponseDto> findAll() {
-        return postRepository.findAll()
-            .stream()
-            .map(Post::toPostResponseDto)
-            .toList();
-    }
-
-    @Transactional(readOnly = true)
     public List<PostResponseDto> findAllByUserName(String userName) {
         return postRepository.findAllByCreatedBy(userName)
             .stream()
@@ -83,9 +74,11 @@ public class PostService {
             .toList();
     }
 
-    public Slice<PostResponseDto> callCursorPagination(Long cursorId, int pageSize) {
-        return postRepository.findByIdLessThanOrderByIdDescLimitByPageSize(cursorId, pageSize)
-            .map(Post::toPostResponseDto);
+    public List<PostResponseDto> callCursorPagination(Long cursorId, int pageSize) {
+        return postRepository.findByIdLessThanOrderByIdLimitByPageSize(cursorId, pageSize)
+            .stream()
+            .map(Post::toPostResponseDto)
+            .toList();
     }
 
     @Transactional(readOnly = true)
@@ -93,19 +86,20 @@ public class PostService {
         int pageSize = pageSizeCandidate == null ? DEFAULT_PAGE_SIZE : pageSizeCandidate;
         long cursorId = cursorIdCandidate == null ? (long)pageSize : cursorIdCandidate;
 
-        Slice<PostResponseDto> posts = callCursorPagination(cursorId, pageSize);
+        List<PostResponseDto> posts = callCursorPagination(cursorId, pageSize);
+        boolean hasNext = postRepository.existsByIdAfter(cursorId);
+        boolean hasPrevious = postRepository.existsByIdBefore(cursorId - pageSize);
 
         return CursorResult.<PostResponseDto>builder()
-            .hasNext(posts.hasNext())
-            .hasPrevious(posts.hasPrevious())
-            .nextCursorId(posts.hasNext() ? cursorId + pageSize : -1)
-            .previousCursorId(posts.hasPrevious() ? cursorId - pageSize : -1)
-            .values(posts.getContent())
-            .postCount(posts.getContent().size())
+            .hasNext(hasNext)
+            .hasPrevious(hasPrevious)
+            .nextCursorId(hasNext ? cursorId + pageSize : -1)
+            .previousCursorId(hasPrevious ? cursorId - pageSize : -1)
+            .values(posts)
+            .postCount(posts.size())
             .build();
     }
 
-    // 오프셋 기반
     @Transactional(readOnly = true)
     public OffsetResult<PostResponseDto> findPostsByOffsetPagination(Pageable pageable) {
         Page<PostResponseDto> posts = postRepository.findAll(pageable).map(Post::toPostResponseDto);
