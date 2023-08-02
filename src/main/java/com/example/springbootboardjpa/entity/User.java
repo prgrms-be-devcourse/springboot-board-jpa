@@ -24,6 +24,14 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Hobby hobby;
 
-    @OneToMany(mappedBy = "user",orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     List<Post> posts = new ArrayList<>();
+
+    public void addPost(Post post){
+        posts.add(post);
+    }
+
+    public void removePost(Post post){
+        posts.remove(post);
+    }
 }
