@@ -33,17 +33,10 @@ public class Member extends BaseTimeEntity {
     @Column(length = 20)
     private String hobby;
 
-    @OneToMany(mappedBy = "member")
-    private List<Post> posts = new ArrayList<>();
-
     public Member(String name, int age, String hobby) {
         this.name = name;
         this.age = Age.from(age);
         this.hobby = hobby;
-    }
-
-    public void addPost(Post post) {
-        posts.add(post);
     }
 
     public void updateInfo(String updateName, Integer updateAge, String updateHobby) {
