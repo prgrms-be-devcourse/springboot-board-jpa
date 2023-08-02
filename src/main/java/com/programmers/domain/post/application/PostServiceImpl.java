@@ -56,8 +56,7 @@ public class PostServiceImpl implements PostService{
     public PostDto updatePost(PostUpdateDto postUpdateDto, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException(POST_NOT_FOUND));
-        post.changeTitle(postUpdateDto.title());
-        post.changeContent(postUpdateDto.content());
+        post.changeTitleAndContent(postUpdateDto.title(), postUpdateDto.content());
         return postConverter.convertPostDto(post);
     }
 }

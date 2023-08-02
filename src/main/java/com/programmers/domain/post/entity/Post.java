@@ -50,13 +50,10 @@ public class Post extends BaseEntity {
         }
     }
 
-    public void changeTitle(String title) {
+    public void changeTitleAndContent(String title, String content) {
         validateTitle(title);
-        this.title = title;
-    }
-
-    public void changeContent(String content) {
         validateTitle(content);
+        this.title = title;
         this.content = content;
     }
 }
