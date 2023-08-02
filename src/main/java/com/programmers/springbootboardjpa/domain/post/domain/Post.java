@@ -23,6 +23,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String title;
 
+    @Lob
     @Column(nullable = false)
     private String content;
 
