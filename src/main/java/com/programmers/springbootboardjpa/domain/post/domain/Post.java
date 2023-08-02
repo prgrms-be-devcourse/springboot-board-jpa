@@ -1,6 +1,7 @@
 package com.programmers.springbootboardjpa.domain.post.domain;
 
 import com.programmers.springbootboardjpa.domain.BaseEntity;
+import com.programmers.springbootboardjpa.domain.post.dto.PostUpdateRequestDto;
 import com.programmers.springbootboardjpa.domain.user.domain.User;
 import com.programmers.springbootboardjpa.global.error.exception.InvalidEntityValueException;
 import jakarta.persistence.*;
@@ -59,9 +60,9 @@ public class Post extends BaseEntity {
         }
     }
 
-    public void update(String title, String content) {
-        updateTitle(title);
-        updateContent(content);
+    public void update(PostUpdateRequestDto postUpdateRequestDto) {
+        updateTitle(postUpdateRequestDto.title());
+        updateContent(postUpdateRequestDto.content());
     }
 
     public void updateTitle(String title) {

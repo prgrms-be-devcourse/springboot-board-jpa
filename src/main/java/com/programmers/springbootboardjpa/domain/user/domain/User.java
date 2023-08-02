@@ -1,6 +1,7 @@
 package com.programmers.springbootboardjpa.domain.user.domain;
 
 import com.programmers.springbootboardjpa.domain.BaseEntity;
+import com.programmers.springbootboardjpa.domain.user.dto.UserRequestDto;
 import com.programmers.springbootboardjpa.global.error.exception.InvalidEntityValueException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -71,10 +72,10 @@ public class User extends BaseEntity {
         }
     }
 
-    public void update(String name, int age, String hobby) {
-        updateName(name);
-        updateAge(age);
-        updateName(hobby);
+    public void update(UserRequestDto userRequestDto) {
+        updateName(userRequestDto.name());
+        updateAge(userRequestDto.age());
+        updateHobby(userRequestDto.hobby());
     }
 
     public void updateName(String name) {

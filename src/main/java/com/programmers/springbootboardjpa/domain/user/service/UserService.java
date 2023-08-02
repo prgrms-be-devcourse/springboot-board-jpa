@@ -30,7 +30,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
 
-        user.update(userRequestDto.name(), userRequestDto.age(), userRequestDto.hobby());
+        user.update(userRequestDto);
 
         return UserResponseDto.from(user);
     }
