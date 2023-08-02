@@ -17,6 +17,8 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,7 +49,7 @@ class UserControllerTest {
                 .build();
     }
 
-    @DisplayName("회원을 저장한다")
+    @DisplayName("회원 등록 성공")
     @Test
     void create() throws Exception {
         //given
@@ -58,6 +60,8 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("user-create",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
                                 fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
@@ -74,7 +78,37 @@ class UserControllerTest {
                 ));
     }
 
-    @DisplayName("저장된 회원들을 페이징 조회한다")
+    @DisplayName("회원 등록 실패")
+    @Test
+    void createFail() throws Exception {
+        //given
+        userRequestDto = UserRequestDto.builder()
+                .name("1111")
+                .age(26)
+                .hobby("산책")
+                .build();
+
+        //when
+        //then
+        mockMvc.perform(post("/api/v1/users")
+                        .content(objectMapper.writeValueAsString(userRequestDto))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("user-create-fail",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
+                        ), responseFields(
+                                fieldWithPath("httpStatus").type(JsonFieldType.STRING).description("httpStatus"),
+                                fieldWithPath("data").type(JsonFieldType.STRING).description("data")
+                        )
+                ));
+    }
+
+    @DisplayName("회원 페이징 조회 성공")
     @Test
     void findAll() throws Exception {
         //given
@@ -88,6 +122,8 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("user-get-all",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("httpStatus").type(JsonFieldType.STRING).description("httpStatus"),
                                 fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("id"),
@@ -119,7 +155,7 @@ class UserControllerTest {
                 ));
     }
 
-    @DisplayName("id로 회원을 단건 조회한다")
+    @DisplayName("회원 단건 조회 성공")
     @Test
     void findById() throws Exception {
         //given
@@ -132,6 +168,8 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("user-get-one",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("httpStatus").type(JsonFieldType.STRING).description("httpStatus"),
                                 fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
@@ -144,7 +182,26 @@ class UserControllerTest {
                 ));
     }
 
-    @DisplayName("회원을 수정한다")
+    @DisplayName("회원 단건 조회 실패")
+    @Test
+    void findByIdFail() throws Exception {
+        //given
+        //when
+        //then
+        mockMvc.perform(get("/api/v1/users/{id}", 11111L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("user-get-one-fail",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("httpStatus").type(JsonFieldType.STRING).description("httpStatus"),
+                                fieldWithPath("data").type(JsonFieldType.STRING).description("data")
+                        )
+                ));
+    }
+
+    @DisplayName("회원 수정 성공")
     @Test
     void update() throws Exception {
         //given
@@ -164,6 +221,8 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("user-update",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
                                 fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
@@ -177,6 +236,40 @@ class UserControllerTest {
                                 fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("hobby"),
                                 fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("createdBy"),
                                 fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("createdAt")
+                        )
+                ));
+    }
+
+    @DisplayName("회원 수정 실패")
+    @Test
+    void updateFail() throws Exception {
+        //given
+        UserResponseDto userResponseDto = userService.create(userRequestDto);
+        Long savedUserId = userResponseDto.id();
+
+        UserRequestDto userUpdateRequestDto = UserRequestDto.builder()
+                .name("123")
+                .age(28)
+                .hobby("영화 보기")
+                .build();
+
+        //when
+        //then
+        mockMvc.perform(put("/api/v1/users/{id}", savedUserId)
+                        .content(objectMapper.writeValueAsString(userUpdateRequestDto))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("user-update-fail",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
+                        ),
+                        responseFields(
+                                fieldWithPath("httpStatus").type(JsonFieldType.STRING).description("httpStatus"),
+                                fieldWithPath("data").type(JsonFieldType.STRING).description("data")
                         )
                 ));
     }

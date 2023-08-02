@@ -14,7 +14,7 @@ public record PostCreateRequestDto (
         @NotBlank(message = "내용을 입력해주세요.")
         String content,
 
-        @NotNull(message = "회원 id는 null일 수 없습니다.")
+        @NotNull(message = "회원 id가 포함되어야 합니다.")
         Long userId
 ) {
 }
