@@ -39,7 +39,7 @@ public class Post extends BaseEntity {
 
     public void setUser(User user) {
         if (Objects.nonNull(this.user)) {
-            this.user.getPosts().remove(this);
+            this.user.removePost(this);
         }
 
         this.user = user;

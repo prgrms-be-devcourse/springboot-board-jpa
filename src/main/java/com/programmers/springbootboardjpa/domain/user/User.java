@@ -55,6 +55,10 @@ public class User extends BaseEntity {
         this.posts.add(post);
     }
 
+    public void removePost(Post post) {
+        this.posts.remove(post);
+    }
+
     public void updateName(String name) {
         this.name = name;
     }
