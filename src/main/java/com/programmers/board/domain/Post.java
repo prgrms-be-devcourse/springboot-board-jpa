@@ -12,6 +12,7 @@ import static java.util.Objects.nonNull;
 @Entity
 public class Post extends BaseEntity {
     private static final Pattern TITLE_PATTERN = Pattern.compile("^.{1,100}$");
+    private static final Pattern CONTENT_PATTERN = Pattern.compile("^.+$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +35,7 @@ public class Post extends BaseEntity {
     public Post(String title, String content, User user) {
         nullCheck(title, content, user);
         validateTitle(title);
+        validateContent(content);
         this.title = title;
         this.content = content;
         this.user = user;
@@ -57,17 +59,28 @@ public class Post extends BaseEntity {
             this.title = title;
         }
         if (nonNull(content)) {
+            validateContent(content);
             this.content = content;
         }
     }
 
     private void validateTitle(String title) {
         if (invalidTitle(title)) {
-            throw new IllegalArgumentException("게시글 제목은 100자 이하여야 합니다");
+            throw new IllegalArgumentException("게시글 제목은 1자 이상, 100자 이하여야 합니다");
+        }
+    }
+
+    private void validateContent(String content) {
+        if (invalidContent(content)) {
+            throw new IllegalArgumentException("게시글 본문은 1자 이상이어야 합니다.");
         }
     }
 
     private boolean invalidTitle(String title) {
         return !TITLE_PATTERN.matcher(title).matches();
+    }
+
+    private boolean invalidContent(String content) {
+        return !CONTENT_PATTERN.matcher(content).matches();
     }
 }
