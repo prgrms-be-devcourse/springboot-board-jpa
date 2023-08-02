@@ -14,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.programmers.springbootboardjpa.domain.post.dto.PostResponseDto.convertPostResponseDto;
-
 @RequiredArgsConstructor
 @Service
 public class PostService {
@@ -31,7 +29,7 @@ public class PostService {
         Post post = new Post(postCreateRequestDto.title(), postCreateRequestDto.content(), user);
         Post savedPost = postRepository.save(post);
 
-        return convertPostResponseDto(savedPost);
+        return PostResponseDto.from(savedPost);
     }
 
     @Transactional
@@ -41,17 +39,17 @@ public class PostService {
         post.updateTitle(postUpdateRequestDto.title());
         post.updateContent(postUpdateRequestDto.content());
 
-        return convertPostResponseDto(post);
+        return PostResponseDto.from(post);
     }
 
     public PostResponseDto findById(Long id) {
         return postRepository.findById(id)
-                .map(PostResponseDto::convertPostResponseDto)
+                .map(PostResponseDto::from)
                 .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
     }
 
     public Page<PostResponseDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(PostResponseDto::convertPostResponseDto);
+                .map(PostResponseDto::from);
     }
 }

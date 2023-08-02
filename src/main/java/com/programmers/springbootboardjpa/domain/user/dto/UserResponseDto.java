@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Builder
 public record UserResponseDto(Long id, String name, int age, String hobby, String createdBy, LocalDateTime createdAt) {
 
-    public static UserResponseDto convertUserResponseDto(User user) {
+    public static UserResponseDto from(User user) {
         return UserResponseDto.builder()
                 .id(user.getId())
                 .name(user.getName())

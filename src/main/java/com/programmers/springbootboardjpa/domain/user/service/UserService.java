@@ -11,8 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.programmers.springbootboardjpa.domain.user.dto.UserResponseDto.convertUserResponseDto;
-
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -24,7 +22,7 @@ public class UserService {
         User user = new User(userRequestDto.name(), userRequestDto.age(), userRequestDto.hobby());
         User savedUser = userRepository.save(user);
 
-        return convertUserResponseDto(savedUser);
+        return UserResponseDto.from(savedUser);
     }
 
     @Transactional
@@ -36,17 +34,17 @@ public class UserService {
         user.updateAge(userRequestDto.age());
         user.updateHobby(userRequestDto.hobby());
 
-        return convertUserResponseDto(user);
+        return UserResponseDto.from(user);
     }
 
     public UserResponseDto findById(Long id) {
         return userRepository.findById(id)
-                .map(UserResponseDto::convertUserResponseDto)
+                .map(UserResponseDto::from)
                 .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
     }
 
     public Page<UserResponseDto> findAll(Pageable pageable) {
         return userRepository.findAll(pageable)
-                .map(UserResponseDto::convertUserResponseDto);
+                .map(UserResponseDto::from);
     }
 }
