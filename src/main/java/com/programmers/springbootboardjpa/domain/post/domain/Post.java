@@ -54,7 +54,7 @@ public class Post extends BaseEntity {
 
     public void checkUser(User user) {
         if (user == null) {
-            throw new InvalidEntityValueException("작성자는 공백일 수 없습니다.");
+            throw new InvalidEntityValueException("작성자가 포함되어 있어야 합니다.");
         }
     }
 
