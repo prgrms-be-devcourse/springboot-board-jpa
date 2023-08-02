@@ -71,6 +71,12 @@ public class User extends BaseEntity {
         }
     }
 
+    public void update(String name, int age, String hobby) {
+        updateName(name);
+        updateAge(age);
+        updateName(hobby);
+    }
+
     public void updateName(String name) {
         checkName(name);
 

@@ -34,10 +34,10 @@ public class PostService {
 
     @Transactional
     public PostResponseDto update(Long id, PostUpdateRequestDto postUpdateRequestDto) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
 
-        post.updateTitle(postUpdateRequestDto.title());
-        post.updateContent(postUpdateRequestDto.content());
+        post.update(postUpdateRequestDto.title(), postUpdateRequestDto.content());
 
         return PostResponseDto.from(post);
     }
