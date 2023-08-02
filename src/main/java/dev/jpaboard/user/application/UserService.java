@@ -22,7 +22,7 @@ public class UserService {
     public UserResponse signUp(UserCreateRequest request) {
         User user = UserCreateRequest.toUser(request);
         User savedUser = userRepository.save(user);
-        return UserResponse.toDto(savedUser);
+        return UserResponse.from(savedUser);
     }
 
     public Long login(UserLoginRequest request) {
@@ -34,18 +34,27 @@ public class UserService {
     public UserResponse update(UserUpdateRequest request, Long userId) {
         User user = findUserById(userId);
         user.update(request.name(), request.hobby());
-        return UserResponse.toDto(user);
+        return UserResponse.from(user);
     }
 
-  public UserResponse findUser(Long id) {
-    User user = userRepository.findById(id)
-            .orElseThrow(UserNotFoundException::new);
-    return UserResponse.toDto(user);
-  }
+    public UserResponse findUser(Long userId) {
+        User user = findUserById(userId);
+        return UserResponse.from(user);
+    }
 
     @Transactional
     public void delete(Long id) {
         userRepository.deleteById(id);
+    }
+
+    private User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    private User findByEmailAndPassword(String email, String password) {
+        return userRepository.findByEmailAndPassword(email, password)
+                .orElseThrow(UserNotFoundException::new);
     }
 
 }

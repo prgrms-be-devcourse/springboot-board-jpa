@@ -10,20 +10,25 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/users")
+    @PostMapping("/sing-up")
     @ResponseStatus(OK)
     public void signUp(@RequestBody UserCreateRequest request) {
         userService.signUp(request);
     }
 
-    @PostMapping("/users/login")
+    @PostMapping("/login")
     @ResponseStatus(OK)
     public Long login(@RequestBody UserLoginRequest request, HttpServletRequest httpRequest) {
         httpRequest.getSession().invalidate();
@@ -35,7 +40,7 @@ public class UserController {
         return userId;
     }
 
-    @GetMapping("/user/logout")
+    @GetMapping("/logout")
     @ResponseStatus(NO_CONTENT)
     public void logout(HttpServletRequest httpRequest) {
         HttpSession session = httpRequest.getSession(false);
@@ -44,23 +49,22 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/users/update")
+    @PatchMapping("/update")
     @ResponseStatus(NO_CONTENT)
     public void update(@RequestBody UserUpdateRequest request,
                        @SessionAttribute(name = "userId", required = false) Long userId) {
         userService.update(request, userId);
     }
 
-  @GetMapping("/users/me")
-  public UserResponse findUser(HttpServletRequest httpRequest) {
-    HttpSession session = httpRequest.getSession(false);
-    Long id = (Long) session.getAttribute("userId");
-    return userService.findUser(id);
-  }
+    @GetMapping("/me")
+    public UserResponse findUser(@SessionAttribute(name = "userId", required = false) Long userId) {
 
-  @DeleteMapping("/users/{id}")
-  public void delete(@PathVariable Long id) {
-    userService.delete(id);
-  }
+        return userService.findUser(userId);
+    }
+
+    @DeleteMapping("/me")
+    public void delete(@SessionAttribute(name = "userId", required = false) Long userId) {
+        userService.delete(userId);
+    }
 
 }

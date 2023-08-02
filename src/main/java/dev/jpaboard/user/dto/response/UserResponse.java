@@ -6,7 +6,7 @@ import lombok.Builder;
 @Builder
 public record UserResponse(Long id, String email, String name, int age, String hobby) {
 
-    public static UserResponse toDto(User user) {
+    public static UserResponse from(User user) {
         return UserResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
