@@ -74,11 +74,12 @@ public class User extends BaseEntity {
 
     public void update(String name, int age, String hobby) {
         checkName(name);
-        checkAge(age);
-        checkHobby(hobby);
-
         this.name = name;
+
+        checkAge(age);
         this.age = age;
+
+        checkHobby(hobby);
         this.hobby = hobby;
     }
 }
