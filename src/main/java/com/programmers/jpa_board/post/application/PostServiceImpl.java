@@ -3,6 +3,7 @@ package com.programmers.jpa_board.post.application;
 import com.programmers.jpa_board.global.converter.BoardConverter;
 import com.programmers.jpa_board.post.domain.Post;
 import com.programmers.jpa_board.post.domain.dto.request.CreatePostRequest;
+import com.programmers.jpa_board.post.domain.dto.request.UpdatePostRequest;
 import com.programmers.jpa_board.post.domain.dto.response.PostResponse;
 import com.programmers.jpa_board.post.exception.NotFoundPostException;
 import com.programmers.jpa_board.post.infra.PostRepository;
@@ -48,5 +49,15 @@ public class PostServiceImpl implements PostService{
     public Page<PostResponse> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(converter::postToDto);
+    }
+
+    @Transactional
+    @Override
+    public PostResponse update(Long postId, UpdatePostRequest request) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundPostException("게시글이 존재하지 않습니다."));
+        post.update(request.getTitle(), request.getContent());
+
+        return converter.postToDto(post);
     }
 }

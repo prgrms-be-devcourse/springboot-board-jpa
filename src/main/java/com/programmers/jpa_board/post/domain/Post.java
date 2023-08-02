@@ -65,4 +65,10 @@ public class Post extends BaseEntity {
             throw new IllegalArgumentException("제목 형식이 잘못 되었습니다.");
         }
     }
+
+    public void update(String title, String content) {
+        validateTitleRange(title);
+        this.title = title;
+        this.content = content;
+    }
 }

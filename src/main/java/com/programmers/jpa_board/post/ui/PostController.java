@@ -3,12 +3,14 @@ package com.programmers.jpa_board.post.ui;
 import com.programmers.jpa_board.global.ApiResponse;
 import com.programmers.jpa_board.post.application.PostService;
 import com.programmers.jpa_board.post.domain.dto.request.CreatePostRequest;
+import com.programmers.jpa_board.post.domain.dto.request.UpdatePostRequest;
 import com.programmers.jpa_board.post.domain.dto.response.PostResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,5 +41,12 @@ public class PostController {
     public ApiResponse<Page<PostResponse>> findAll(Pageable pageable) {
         Page<PostResponse> responses = postService.findAll(pageable);
         return ApiResponse.ok(responses);
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<PostResponse> update(@PathVariable("id") Long postId, @RequestBody UpdatePostRequest request) {
+        PostResponse response = postService.update(postId, request);
+
+        return ApiResponse.ok(response);
     }
 }
