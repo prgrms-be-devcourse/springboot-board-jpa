@@ -112,13 +112,11 @@ class MemberServiceTest {
     @DisplayName("멤버 삭제에 성공한다.")
     void deleteMember() {
         // given
-        Long id = 1L;
-
         given(memberRepository.existsById(anyLong()))
                 .willReturn(true);
 
         // when & then
-        assertThatCode(() -> memberService.deleteMember(id))
+        assertThatCode(() -> memberService.deleteMember(anyLong()))
                 .doesNotThrowAnyException();
 
         // verify

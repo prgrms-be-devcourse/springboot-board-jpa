@@ -15,4 +15,18 @@ public class MemberConverter {
 
         return new MemberResponseDto(member.getId(), member.getName(), member.getAge(), member.getHobby(), member.getCreatedAt(), member.getCreatedBy());
     }
+
+    public static MemberPageResponseDto convertMemberPageResponseDto(Page<Member> page) {
+        List<MemberResponseDto> memberResponseDtos = page.getContent().stream()
+                .map(member -> convertMemberResponseDto(member))
+                .collect(Collectors.toList());
+
+        return new MemberPageResponseDto(memberResponseDtos,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalPages(),
+                page.getTotalElements(),
+                page.isFirst(),
+                page.isLast());
+    }
 }

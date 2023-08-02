@@ -125,14 +125,10 @@ public class PostServiceTest {
     }
 
     @Test
-    @DisplayName("게시글 삭제에 성공한다.") // 질문 : 실패하는 요인..?
+    @DisplayName("게시글 삭제에 성공한다.")
     void deletePost() {
         // given
-        Long id = 1L;
-
         given(postRepository.existsById(anyLong())).willReturn(true);
-
-        doNothing().when(postRepository).deleteById(anyLong());
 
         // when
         postService.deletePost(id);

@@ -36,10 +36,10 @@ public class MemberService {
         return MemberConverter.convertMemberResponseDto(savedMember);
     }
 
-    public Page<MemberResponseDto> getMembers(Pageable pageable) {
+    public MemberPageResponseDto getMembers(Pageable pageable) {
+        Page<Member> page = memberRepository.findAll(pageable);
 
-        return memberRepository.findAll(pageable)
-                .map(member -> MemberConverter.convertMemberResponseDto(member));
+        return MemberConverter.convertMemberPageResponseDto(page);
     }
 
     public MemberResponseDto getMember(Long memberId) {
@@ -79,7 +79,7 @@ public class MemberService {
 
     private Pageable buildCursorPageable(Long cursor, int size) {
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
-
+        //일반 페이징 : 커서페이징
         return cursor.equals(0L) ? PageRequest.of(0, size, sort) : CursorPageRequest.of(cursor, size, sort);
     }
 

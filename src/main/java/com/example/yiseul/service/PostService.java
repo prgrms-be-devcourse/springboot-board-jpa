@@ -4,6 +4,7 @@ import com.example.yiseul.converter.PostConverter;
 import com.example.yiseul.domain.Member;
 import com.example.yiseul.domain.Post;
 import com.example.yiseul.dto.post.PostCreateRequestDto;
+import com.example.yiseul.dto.post.PostPageResponseDto;
 import com.example.yiseul.dto.post.PostResponseDto;
 import com.example.yiseul.dto.post.PostUpdateRequestDto;
 import com.example.yiseul.global.exception.ErrorCode;
@@ -60,7 +61,7 @@ public class PostService {
             throw new PostException(ErrorCode.POST_NOT_FOUND);
         }
 
-        memberRepository.deleteById(postId);
+        postRepository.deleteById(postId);
     }
 
 }

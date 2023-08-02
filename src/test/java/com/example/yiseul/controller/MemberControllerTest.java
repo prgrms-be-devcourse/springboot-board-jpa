@@ -1,6 +1,7 @@
 package com.example.yiseul.controller;
 
 import com.example.yiseul.dto.member.MemberCreateRequestDto;
+import com.example.yiseul.dto.member.MemberPageResponseDto;
 import com.example.yiseul.dto.member.MemberResponseDto;
 import com.example.yiseul.dto.member.MemberUpdateRequestDto;
 import com.example.yiseul.service.MemberService;
@@ -100,42 +101,30 @@ class MemberControllerTest {
         Pageable pageable = PageRequest.of(0, 2);
 
         given(memberService.getMembers(pageable))
-                .willReturn(membersPage);
+                .willReturn(responseDto);
 
         // when & then
         mvc.perform(MockMvcRequestBuilders.get("/api/members")
                 .param("page", String.valueOf(pageable.getPageNumber()))
                 .param("size", String.valueOf(pageable.getPageSize())))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(membersPage)))
+                .andExpect(content().string(asJsonString(responseDto)))
 
                 .andDo(document("member-getMembersByPage",
                         responseFields(
-                                fieldWithPath("content.[].memberId").type(JsonFieldType.NUMBER).description("id"),
-                                fieldWithPath("content.[].name").type(JsonFieldType.STRING).description("name"),
-                                fieldWithPath("content.[].age").type(JsonFieldType.NUMBER).description("age"),
-                                fieldWithPath("content.[].hobby").type(JsonFieldType.STRING).description("hobby"),
-                                fieldWithPath("content.[].createdAt").type(JsonFieldType.STRING).description("createdAt"),
-                                fieldWithPath("content.[].createdBy").type(JsonFieldType.STRING).description("createdBy"),
-                                fieldWithPath("pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("sort.empty"),
-                                fieldWithPath("pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("sort.sorted"),
-                                fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("sort.unsorted"),
-                                fieldWithPath("pageable.offset").type(JsonFieldType.NUMBER).description("offset"),
-                                fieldWithPath("pageable.pageNumber").type(JsonFieldType.NUMBER).description("pageNumber"),
-                                fieldWithPath("pageable.pageSize").type(JsonFieldType.NUMBER).description("pageSize"),
-                                fieldWithPath("pageable.paged").type(JsonFieldType.BOOLEAN).description("paged"),
-                                fieldWithPath("pageable.unpaged").type(JsonFieldType.BOOLEAN).description("unpaged"),
-                                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("last"),
+                                fieldWithPath("memberResponseDto.[].memberId").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("memberResponseDto.[].name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("memberResponseDto.[].age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("memberResponseDto.[].hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("memberResponseDto.[].createdAt").type(JsonFieldType.STRING).description("createdAt"),
+                                fieldWithPath("memberResponseDto.[].createdBy").type(JsonFieldType.STRING).description("createdBy"),
+
+                                fieldWithPath("pageNumber").type(JsonFieldType.NUMBER).description("pageNumber"),
+                                fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("pageSize"),
                                 fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("totalPages"),
                                 fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
-                                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("first"),
-                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("size"),
-                                fieldWithPath("number").type(JsonFieldType.NUMBER).description("number"),
-                                fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements"),
-                                fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("empty"),
-                                fieldWithPath("sort.empty").type(JsonFieldType.BOOLEAN).description("empty"),
-                                fieldWithPath("sort.unsorted").type(JsonFieldType.BOOLEAN).description("sort.unsorted"),
-                                fieldWithPath("sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted")
+                                fieldWithPath("isFirst").type(JsonFieldType.BOOLEAN).description("isFirst"),
+                                fieldWithPath("isLast").type(JsonFieldType.BOOLEAN).description("isLast")
                 )));
     }
 

@@ -109,32 +109,20 @@ class PostControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(asJsonString(postsPage)))
 
-                .andDo(document("member-getMembersByPage",
+                .andDo(document("post-getPostsByPage",
                         responseFields(
-                                fieldWithPath("content.[].postId").type(JsonFieldType.NUMBER).description("postId"),
-                                fieldWithPath("content.[].title").type(JsonFieldType.STRING).description("title"),
-                                fieldWithPath("content.[].content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("content.[].createdAt").type(JsonFieldType.STRING).description("createdAt"),
-                                fieldWithPath("content.[].createdBy").type(JsonFieldType.STRING).description("createdBy"),
-                                fieldWithPath("pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("sort.empty"),
-                                fieldWithPath("pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("sort.sorted"),
-                                fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("sort.unsorted"),
-                                fieldWithPath("pageable.offset").type(JsonFieldType.NUMBER).description("offset"),
-                                fieldWithPath("pageable.pageNumber").type(JsonFieldType.NUMBER).description("pageNumber"),
-                                fieldWithPath("pageable.pageSize").type(JsonFieldType.NUMBER).description("pageSize"),
-                                fieldWithPath("pageable.paged").type(JsonFieldType.BOOLEAN).description("paged"),
-                                fieldWithPath("pageable.unpaged").type(JsonFieldType.BOOLEAN).description("unpaged"),
-                                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("last"),
+                                fieldWithPath("postResponseDto.[].postId").type(JsonFieldType.NUMBER).description("postId"),
+                                fieldWithPath("postResponseDto.[].title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("postResponseDto.[].content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("postResponseDto.[].createdAt").type(JsonFieldType.STRING).description("createdAt"),
+                                fieldWithPath("postResponseDto.[].createdBy").type(JsonFieldType.STRING).description("createdBy"),
+
+                                fieldWithPath("pageNumber").type(JsonFieldType.NUMBER).description("pageNumber"),
+                                fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("pageSize"),
                                 fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("totalPages"),
                                 fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
-                                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("first"),
-                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("size"),
-                                fieldWithPath("number").type(JsonFieldType.NUMBER).description("number"),
-                                fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements"),
-                                fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("empty"),
-                                fieldWithPath("sort.empty").type(JsonFieldType.BOOLEAN).description("empty"),
-                                fieldWithPath("sort.unsorted").type(JsonFieldType.BOOLEAN).description("sort.unsorted"),
-                                fieldWithPath("sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted")
+                                fieldWithPath("isFirst").type(JsonFieldType.BOOLEAN).description("isFirst"),
+                                fieldWithPath("isLast").type(JsonFieldType.BOOLEAN).description("isLast")
                 )));
     }
 

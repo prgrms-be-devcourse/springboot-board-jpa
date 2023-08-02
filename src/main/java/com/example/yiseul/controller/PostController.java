@@ -1,12 +1,12 @@
 package com.example.yiseul.controller;
 
 import com.example.yiseul.dto.post.PostCreateRequestDto;
+import com.example.yiseul.dto.post.PostPageResponseDto;
 import com.example.yiseul.dto.post.PostResponseDto;
 import com.example.yiseul.dto.post.PostUpdateRequestDto;
 import com.example.yiseul.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +25,7 @@ public class PostController {
     }
 
     @GetMapping
-    public Page<PostResponseDto> getAllPosts(Pageable pageable){
+    public PostPageResponseDto getAllPosts(Pageable pageable){
 
         return postService.getPosts(pageable);
     }

@@ -1,6 +1,7 @@
 package com.example.yiseul.controller;
 
 import com.example.yiseul.dto.member.MemberCreateRequestDto;
+import com.example.yiseul.dto.member.MemberPageResponseDto;
 import com.example.yiseul.dto.member.MemberResponseDto;
 import com.example.yiseul.dto.member.MemberUpdateRequestDto;
 import com.example.yiseul.service.MemberService;
@@ -28,7 +29,7 @@ public class MemberController {
     }
 
     @GetMapping
-    public Page<MemberResponseDto> getMembers(Pageable pageable){
+    public MemberPageResponseDto getMembers(Pageable pageable){
 
         return memberService.getMembers(pageable);
     }
