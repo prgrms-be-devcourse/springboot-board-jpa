@@ -23,7 +23,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/sing-up")
+    @PostMapping("/sign-up")
     @ResponseStatus(OK)
     public void signUp(@RequestBody UserCreateRequest request) {
         userService.signUp(request);
