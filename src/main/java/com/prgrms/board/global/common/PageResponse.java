@@ -1,16 +1,23 @@
 package com.prgrms.board.global.common;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public record PageResponse<T>(
-	int total,
+	long totalCount,
+	int totalPage,
 	int page,
-	int rowsPerPage,
+	int size,
 	List<T> items
 ) {
 	public static <T> PageResponse<T> from(Page<T> page) {
-		return new PageResponse<>(page.getTotalPages(), page.getNumber(), page.getSize(), page.getContent());
+		return new PageResponse<>(
+			page.getTotalElements(),
+			page.getTotalPages(),
+			page.getNumber(),
+			page.getSize(),
+			page.getContent()
+		);
 	}
 }
