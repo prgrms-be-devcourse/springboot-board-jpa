@@ -4,7 +4,10 @@
 Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수행해봅시다.
 
 ## 프로젝트 설계도
-![JPA게시판](https://github.com/sujjangOvO/query-builder/assets/89267864/1efa5c80-bc33-4940-833d-ab4df20dc259)
+![JPA게시판](https://github.com/sujjangOvO/query-builder/assets/89267864/1efa5c80-bc33-4940-833d-ab4df20dc259) 
+
+## 수정 후 프로젝트 설계도
+![JPA게시판](https://github.com/sujjangOvO/query-builder/assets/89267864/a4e75c3b-2fef-4975-abc6-6775bf6ba96b)
 
 ## 수정 후 프로젝트 설계도
 ![JPA게시판](https://github.com/sujjangOvO/query-builder/assets/89267864/a4e75c3b-2fef-4975-abc6-6775bf6ba96b)
