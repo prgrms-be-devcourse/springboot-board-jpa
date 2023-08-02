@@ -6,3 +6,4 @@
 :sectlinks:
 
 include::user.adoc[]
+include::post.adoc[]

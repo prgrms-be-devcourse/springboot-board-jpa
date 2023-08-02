@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -33,6 +34,7 @@ class UserControllerTest extends AbstractRestDocsTest {
 
     @Test
     @DisplayName("[RestDocs] CREATE User")
+    @Transactional
     void createUserTest() throws Exception {
         UserCreateRequest request = new UserCreateRequest("kyle kim", 29, "basketball");
 
@@ -49,7 +51,7 @@ class UserControllerTest extends AbstractRestDocsTest {
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
                                 fieldWithPath("message").type(JsonFieldType.NULL).description("응답 메시지"),
-                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
                                 fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("사용자 ID")
                         )
                 ));

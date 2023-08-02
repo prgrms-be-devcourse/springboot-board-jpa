@@ -1,7 +1,7 @@
 package com.programmers.jpaboard.controller;
 
-import com.programmers.jpaboard.dto.user.request.UserCreateRequest;
 import com.programmers.jpaboard.dto.ApiResponse;
+import com.programmers.jpaboard.dto.user.request.UserCreateRequest;
 import com.programmers.jpaboard.dto.user.response.UserCreateResponse;
 import com.programmers.jpaboard.service.UserService;
 import lombok.RequiredArgsConstructor;
