@@ -6,11 +6,11 @@ import lombok.Builder;
 @Builder
 public record PostResponse(String title, String content) {
 
-  public static PostResponse toDto(Post post) {
-    return PostResponse.builder()
-            .title(post.getTitle())
-            .content(post.getContent())
-            .build();
-  }
+    public static PostResponse from(Post post) {
+        return PostResponse.builder()
+                .title(post.getTitle())
+                .content(post.getContent())
+                .build();
+    }
 
 }

@@ -13,18 +13,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-  @ManyToOne
-  private User user;
+    @ManyToOne
+    private User user;
 
-  @Column(length = 25, nullable = false)
-  private String title;
+    @Column(length = 25, nullable = false)
+    private String title;
 
-  @Column(length = 5000, nullable = false)
-  private String content;
+    @Column(length = 5000, nullable = false)
+    private String content;
 
   @Builder
   private Post(String title, String content) {
@@ -32,9 +32,9 @@ public class Post extends BaseEntity {
     this.content = content;
   }
 
-  public void update(String title, String content) {
-    this.title = title;
-    this.content = content;
-  }
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
 }
