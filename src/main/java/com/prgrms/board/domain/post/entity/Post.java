@@ -1,5 +1,6 @@
 package com.prgrms.board.domain.post.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.prgrms.board.domain.user.entity.User;
 import com.prgrms.board.global.common.BaseEntity;
 
@@ -29,6 +30,7 @@ public class Post extends BaseEntity {
     @Column(name = "post_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

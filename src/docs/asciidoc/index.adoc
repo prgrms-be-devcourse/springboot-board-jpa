@@ -1,6 +1,6 @@
 = Board REST API
 
-== 게시판 생성 하기
+== 게시물 생성
 
 === REQUEST
 
@@ -10,4 +10,32 @@ include::{snippets}/posts/createPost/http-request.adoc[]
 
 include::{snippets}/posts/createPost/http-response.adoc[]
 
+== 게시물 전체 조회
 
+=== REQUEST
+
+include::{snippets}/posts/getPosts/http-request.adoc[]
+
+=== RESPONSE
+
+include::{snippets}/posts/getPosts/http-response.adoc[]
+
+== 게시물 조회
+
+=== REQUEST
+
+include::{snippets}/posts/getPost/http-request.adoc[]
+
+=== RESPONSE
+
+include::{snippets}/posts/getPost/http-response.adoc[]
+
+== 게시물 수정
+
+=== REQUEST
+
+include::{snippets}/posts/updatePost/http-request.adoc[]
+
+=== RESPONSE
+
+include::{snippets}/posts/updatePost/http-response.adoc[]

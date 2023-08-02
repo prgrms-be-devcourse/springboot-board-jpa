@@ -1,6 +1,7 @@
 package com.prgrms.board.domain.post.controller;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -67,7 +68,10 @@ class ApiPostControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
             .andDo(print())
-            .andDo(document("posts/createPost"))
+            .andDo(document("posts/createPost",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()))
+            )
             .andExpect(status().isCreated());
     }
 
@@ -85,7 +89,10 @@ class ApiPostControllerTest {
                 .param("size", "2")
             )
             .andDo(print())
-            .andDo(document("posts/getPosts"))
+            .andDo(document("posts/getPosts",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()))
+            )
             .andExpect(status().isOk());
     }
 
@@ -97,12 +104,12 @@ class ApiPostControllerTest {
         postRepository.save(post);
 
         // when & then
-        mockMvc.perform(get("/api/v1/posts/" + post.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(post))
-            )
+        mockMvc.perform(get("/api/v1/posts/" + post.getId()))
             .andDo(print())
-            .andDo(document("posts/getPost"))
+            .andDo(document("posts/getPost",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()))
+            )
             .andExpect(status().isOk());
     }
 
@@ -120,7 +127,10 @@ class ApiPostControllerTest {
                 .content(objectMapper.writeValueAsString(request))
             )
             .andDo(print())
-            .andDo(document("posts/updatePost"))
+            .andDo(document("posts/updatePost",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()))
+            )
             .andExpect(status().isOk());
     }
 }
