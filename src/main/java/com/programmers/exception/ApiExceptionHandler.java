@@ -10,10 +10,12 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+    private static final String INTERNAL_SERVER_ERROR_MESSAGE = "서버 에러";
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    private ErrorResult handleException(Exception e) {
-        return new ErrorResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+    private ErrorResult handleException() {
+        return new ErrorResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), INTERNAL_SERVER_ERROR_MESSAGE);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
