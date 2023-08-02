@@ -15,28 +15,28 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/posts")
 public class PostController {
 
     private final PostServiceImpl postServiceImpl;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/posts")
+    @PostMapping
     public ApiResponse<Long> createPost(@RequestBody PostDto postDto) {
         return new ApiResponse<>(postServiceImpl.createPost(postDto));
     }
 
-    @GetMapping("/posts")
+    @GetMapping
     public List<PostDto> findPostList(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return postServiceImpl.findAll(pageable);
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public PostDto findPost(@PathVariable Long id) {
         return postServiceImpl.findPost(id);
     }
 
-    @PatchMapping("/posts/{id}")
+    @PatchMapping("/{id}")
     public PostDto updatePost(@PathVariable Long id, @RequestBody PostUpdateDto postUpdateDto) {
         return postServiceImpl.updatePost(postUpdateDto, id);
     }
