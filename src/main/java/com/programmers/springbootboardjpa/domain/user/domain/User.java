@@ -72,27 +72,13 @@ public class User extends BaseEntity {
         }
     }
 
-    public void update(UserRequestDto userRequestDto) {
-        updateName(userRequestDto.name());
-        updateAge(userRequestDto.age());
-        updateHobby(userRequestDto.hobby());
-    }
-
-    public void updateName(String name) {
+    public void update(String name, int age, String hobby) {
         checkName(name);
-
-        this.name = name;
-    }
-
-    public void updateAge(int age) {
         checkAge(age);
-
-        this.age = age;
-    }
-
-    public void updateHobby(String hobby) {
         checkHobby(hobby);
 
+        this.name = name;
+        this.age = age;
         this.hobby = hobby;
     }
 }

@@ -60,20 +60,11 @@ public class Post extends BaseEntity {
         }
     }
 
-    public void update(PostUpdateRequestDto postUpdateRequestDto) {
-        updateTitle(postUpdateRequestDto.title());
-        updateContent(postUpdateRequestDto.content());
-    }
-
-    public void updateTitle(String title) {
+    public void update(String title, String content) {
         checkTitle(title);
-
-        this.title = title;
-    }
-
-    public void updateContent(String content) {
         checkContent(content);
 
+        this.title = title;
         this.content = content;
     }
 }

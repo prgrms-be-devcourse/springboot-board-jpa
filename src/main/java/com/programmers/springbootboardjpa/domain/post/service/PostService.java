@@ -37,7 +37,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
 
-        post.update(postUpdateRequestDto);
+        post.update(postUpdateRequestDto.title(), postUpdateRequestDto.content());
 
         return PostResponseDto.from(post);
     }
