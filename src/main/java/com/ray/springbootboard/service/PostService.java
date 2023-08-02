@@ -9,10 +9,10 @@ public interface PostService {
 
     Long save(Post post, Long userId);
 
-    Post getPost(Long id);
+    Post getById(Long id);
 
-    Page<Post> findAllPosts(Pageable pageable);
+    Page<Post> findAllWithPage(Pageable pageable);
 
-    Long updatePost(PostUpdateInfo info);
+    Long update(PostUpdateInfo info);
 
 }
