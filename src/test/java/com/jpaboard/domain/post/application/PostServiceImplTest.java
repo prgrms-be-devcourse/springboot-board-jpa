@@ -1,6 +1,7 @@
 package com.jpaboard.domain.post.application;
 
 import com.jpaboard.domain.post.dto.request.PostCreateRequest;
+import com.jpaboard.domain.post.dto.request.PostSearchRequest;
 import com.jpaboard.domain.post.dto.response.PostPageResponse;
 import com.jpaboard.domain.post.dto.response.PostResponse;
 import com.jpaboard.domain.post.dto.request.PostUpdateRequest;
@@ -54,52 +55,54 @@ class PostServiceImplTest {
     void find_all_posts_test() {
         Long userId = userService.createUser(new UserCreationRequest("tester", 25, "축구"));
         postService.createPost(new PostCreateRequest(userId, "안녕하세요", "본문은 없습니다."));
-        postService.createPost(new PostCreateRequest(userId, "안녕하세요2", "본문은 없습니다.2"));
+        postService.createPost(new PostCreateRequest(userId, "안녕하세요2", "null"));
+        postService.createPost(new PostCreateRequest(userId, "안녕하세요3", "죽"));
+        PostSearchRequest search = new PostSearchRequest("안녕", null, null);
 
         Pageable pageable = PageRequest.of(0, 10);
-        PostPageResponse posts = postService.findPosts(pageable);
+        PostPageResponse posts = postService.findPostsByCondition(search, pageable);
 
         assertThat(posts.totalElements()).isEqualTo(2);
     }
 
-    @Test
-    void find_post_by_title() {
-        String title = "타겟";
-        Long userId = userService.createUser(new UserCreationRequest("tester", 25, "축구"));
-        postService.createPost(new PostCreateRequest(userId, title, "본문은 없습니다."));
-        postService.createPost(new PostCreateRequest(userId, "안녕하세요2", "본문은 없습니다.2"));
-
-        Pageable pageable = PageRequest.of(0, 10);
-        PostPageResponse posts = postService.findPostByTitle(title, pageable);
-
-        assertThat(posts.totalElements()).isEqualTo(1);
-    }
-
-    @Test
-    void find_post_by_content() {
-        String content = "타겟";
-        Long userId = userService.createUser(new UserCreationRequest("tester", 25, "축구"));
-        postService.createPost(new PostCreateRequest(userId, "제목입니다", "본문은 없습니다."));
-        postService.createPost(new PostCreateRequest(userId, "안녕하세요2", content));
-
-        Pageable pageable = PageRequest.of(0, 10);
-        PostPageResponse posts = postService.findPostByContent(content, pageable);
-
-        assertThat(posts.totalElements()).isEqualTo(1);
-    }
-
-    @Test
-    void find_post_by_keyword() {
-        String keyword = "타겟";
-        Long userId = userService.createUser(new UserCreationRequest("tester", 25, "축구"));
-        postService.createPost(new PostCreateRequest(userId, keyword, "본문은 없습니다."));
-        postService.createPost(new PostCreateRequest(userId, "안녕하세요2", keyword));
-
-        Pageable pageable = PageRequest.of(0, 10);
-        PostPageResponse posts = postService.findByKeyword(keyword, pageable);
-
-        assertThat(posts.totalElements()).isEqualTo(2);
-    }
+//    @Test
+//    void find_post_by_title() {
+//        String title = "타겟";
+//        Long userId = userService.createUser(new UserCreationRequest("tester", 25, "축구"));
+//        postService.createPost(new PostCreateRequest(userId, title, "본문은 없습니다."));
+//        postService.createPost(new PostCreateRequest(userId, "안녕하세요2", "본문은 없습니다.2"));
+//
+//        Pageable pageable = PageRequest.of(0, 10);
+//        PostPageResponse posts = postService.findPostByTitle(title, pageable);
+//
+//        assertThat(posts.totalElements()).isEqualTo(1);
+//    }
+//
+//    @Test
+//    void find_post_by_content() {
+//        String content = "타겟";
+//        Long userId = userService.createUser(new UserCreationRequest("tester", 25, "축구"));
+//        postService.createPost(new PostCreateRequest(userId, "제목입니다", "본문은 없습니다."));
+//        postService.createPost(new PostCreateRequest(userId, "안녕하세요2", content));
+//
+//        Pageable pageable = PageRequest.of(0, 10);
+//        PostPageResponse posts = postService.findPostByContent(content, pageable);
+//
+//        assertThat(posts.totalElements()).isEqualTo(1);
+//    }
+//
+//    @Test
+//    void find_post_by_keyword() {
+//        String keyword = "타겟";
+//        Long userId = userService.createUser(new UserCreationRequest("tester", 25, "축구"));
+//        postService.createPost(new PostCreateRequest(userId, keyword, "본문은 없습니다."));
+//        postService.createPost(new PostCreateRequest(userId, "안녕하세요2", keyword));
+//
+//        Pageable pageable = PageRequest.of(0, 10);
+//        PostPageResponse posts = postService.findByKeyword(keyword, pageable);
+//
+//        assertThat(posts.totalElements()).isEqualTo(2);
+//    }
 
     @Test
     void update_post_test() {

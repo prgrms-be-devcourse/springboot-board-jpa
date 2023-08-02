@@ -2,9 +2,10 @@ package com.jpaboard.domain.post.presentation;
 
 import com.jpaboard.domain.post.application.PostService;
 import com.jpaboard.domain.post.dto.request.PostCreateRequest;
+import com.jpaboard.domain.post.dto.request.PostSearchRequest;
+import com.jpaboard.domain.post.dto.request.PostUpdateRequest;
 import com.jpaboard.domain.post.dto.response.PostPageResponse;
 import com.jpaboard.domain.post.dto.response.PostResponse;
-import com.jpaboard.domain.post.dto.request.PostUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -35,26 +35,17 @@ public class PostController {
     }
 
     @GetMapping
+    public ResponseEntity<PostPageResponse> postFindAll(@PageableDefault Pageable pageable) {
+        PostPageResponse response = postService.findPosts(pageable);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/search")
     public ResponseEntity<PostPageResponse> findByCondition(
-            @RequestParam(name = "title", required = false) Optional<String> title,
-            @RequestParam(name = "content", required = false) Optional<String> content,
-            @RequestParam(name = "keyword", required = false) Optional<String> keyword,
+            @ModelAttribute PostSearchRequest request,
             @PageableDefault Pageable pageable
     ){
-        if (title.isPresent()) {
-            PostPageResponse response = postService.findPostByTitle(title.get(), pageable);
-            return ResponseEntity.ok(response);
-        }
-        if (content.isPresent()) {
-            PostPageResponse response = postService.findPostByContent(content.get(), pageable);
-            return ResponseEntity.ok(response);
-        }
-        if (keyword.isPresent()) {
-            PostPageResponse response = postService.findByKeyword(keyword.get(), pageable);
-            return ResponseEntity.ok(response);
-        }
-
-        PostPageResponse response = postService.findPosts(pageable);
+        PostPageResponse response = postService.findPostsByCondition(request, pageable);
         return ResponseEntity.ok(response);
     }
 

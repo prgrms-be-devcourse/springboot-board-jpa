@@ -3,9 +3,10 @@ package com.jpaboard.domain.post.application;
 import com.jpaboard.domain.post.Post;
 import com.jpaboard.domain.post.PostConverter;
 import com.jpaboard.domain.post.dto.request.PostCreateRequest;
+import com.jpaboard.domain.post.dto.request.PostSearchRequest;
+import com.jpaboard.domain.post.dto.request.PostUpdateRequest;
 import com.jpaboard.domain.post.dto.response.PostPageResponse;
 import com.jpaboard.domain.post.dto.response.PostResponse;
-import com.jpaboard.domain.post.dto.request.PostUpdateRequest;
 import com.jpaboard.domain.post.infrastructure.PostRepository;
 import com.jpaboard.domain.user.User;
 import com.jpaboard.domain.user.infrastructure.UserRepository;
@@ -43,20 +44,8 @@ public class PostServiceImpl implements PostService {
         return PostConverter.convertEntityToPageResponse(posts);
     }
 
-    public PostPageResponse findPostByTitle(String title, Pageable pageable) {
-        Page<PostResponse> posts = postRepository.findAllByTitleContaining(title, pageable)
-                .map(PostConverter::convertEntityToResponse);
-        return PostConverter.convertEntityToPageResponse(posts);
-    }
-
-    public PostPageResponse findPostByContent(String content, Pageable pageable) {
-        Page<PostResponse> posts = postRepository.findAllByContentContaining(content, pageable)
-                .map(PostConverter::convertEntityToResponse);
-        return PostConverter.convertEntityToPageResponse(posts);
-    }
-
-    public PostPageResponse findByKeyword(String keyword, Pageable pageable) {
-        Page<PostResponse> posts = postRepository.findAllByTitleContainingOrContentContaining(keyword, keyword, pageable)
+    public PostPageResponse findPostsByCondition(PostSearchRequest request, Pageable pageable) {
+        Page<PostResponse> posts = postRepository.findAllByCondition(request.title(), request.content(), request.keyword(), pageable)
                 .map(PostConverter::convertEntityToResponse);
         return PostConverter.convertEntityToPageResponse(posts);
     }
