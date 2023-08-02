@@ -51,6 +51,10 @@ public class User extends BaseEntity {
         return Collections.unmodifiableList(posts);
     }
 
+    public void addPost(Post post) {
+        this.posts.add(post);
+    }
+
     public void updateName(String name) {
         this.name = name;
     }
