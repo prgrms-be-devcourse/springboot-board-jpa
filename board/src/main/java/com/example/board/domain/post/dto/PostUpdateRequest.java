@@ -1,5 +1,7 @@
 package com.example.board.domain.post.dto;
 
-public record PostUpdateRequest(String title, String content) {
+import jakarta.validation.constraints.NotBlank;
+
+public record PostUpdateRequest(@NotBlank String title, @NotBlank String content) {
 
 }

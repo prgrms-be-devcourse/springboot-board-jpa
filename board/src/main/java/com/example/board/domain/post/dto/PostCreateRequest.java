@@ -1,5 +1,9 @@
 package com.example.board.domain.post.dto;
 
-public record PostCreateRequest(Long userId, String title, String content) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record PostCreateRequest(@NotNull Long userId, @NotBlank String title,
+                                @NotBlank String content) {
 
 }
