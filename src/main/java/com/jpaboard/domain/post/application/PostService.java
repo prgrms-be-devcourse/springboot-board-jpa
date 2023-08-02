@@ -1,9 +1,9 @@
 package com.jpaboard.domain.post.application;
 
-import com.jpaboard.domain.post.dto.PostCreateRequest;
-import com.jpaboard.domain.post.dto.PostResponse;
-import com.jpaboard.domain.post.dto.PostUpdateRequest;
-import org.springframework.data.domain.Page;
+import com.jpaboard.domain.post.dto.request.PostCreateRequest;
+import com.jpaboard.domain.post.dto.response.PostPageResponse;
+import com.jpaboard.domain.post.dto.response.PostResponse;
+import com.jpaboard.domain.post.dto.request.PostUpdateRequest;
 import org.springframework.data.domain.Pageable;
 
 public interface PostService {
@@ -12,13 +12,13 @@ public interface PostService {
 
     PostResponse findPostById(Long id);
 
-    Page<PostResponse> findPosts(Pageable pageable);
+    PostPageResponse findPosts(Pageable pageable);
 
-    Page<PostResponse> findPostByTitle(String title, Pageable pageable);
+    PostPageResponse findPostByTitle(String title, Pageable pageable);
 
-    Page<PostResponse> findPostByContent(String content, Pageable pageable);
+    PostPageResponse findPostByContent(String content, Pageable pageable);
 
-    Page<PostResponse> findByKeyword(String keyword, Pageable pageable);
+    PostPageResponse findByKeyword(String keyword, Pageable pageable);
 
     void updatePost(Long id, PostUpdateRequest request);
 

@@ -2,9 +2,10 @@ package com.jpaboard.domain.post.application;
 
 import com.jpaboard.domain.post.Post;
 import com.jpaboard.domain.post.PostConverter;
-import com.jpaboard.domain.post.dto.PostCreateRequest;
-import com.jpaboard.domain.post.dto.PostResponse;
-import com.jpaboard.domain.post.dto.PostUpdateRequest;
+import com.jpaboard.domain.post.dto.request.PostCreateRequest;
+import com.jpaboard.domain.post.dto.response.PostPageResponse;
+import com.jpaboard.domain.post.dto.response.PostResponse;
+import com.jpaboard.domain.post.dto.request.PostUpdateRequest;
 import com.jpaboard.domain.post.infrastructure.PostRepository;
 import com.jpaboard.domain.user.User;
 import com.jpaboard.domain.user.infrastructure.UserRepository;
@@ -36,30 +37,34 @@ public class PostServiceImpl implements PostService {
         return PostConverter.convertEntityToResponse(post);
     }
 
-    public Page<PostResponse> findPosts(Pageable pageable) {
-        return postRepository.findAll(pageable)
+    public PostPageResponse findPosts(Pageable pageable) {
+        Page<PostResponse> posts = postRepository.findAll(pageable)
                 .map(PostConverter::convertEntityToResponse);
+        return PostConverter.convertEntityToPageResponse(posts);
     }
 
-    public Page<PostResponse> findPostByTitle(String title, Pageable pageable) {
-        return postRepository.findAllByTitleContaining(title, pageable)
+    public PostPageResponse findPostByTitle(String title, Pageable pageable) {
+        Page<PostResponse> posts = postRepository.findAllByTitleContaining(title, pageable)
                 .map(PostConverter::convertEntityToResponse);
+        return PostConverter.convertEntityToPageResponse(posts);
     }
 
-    public Page<PostResponse> findPostByContent(String content, Pageable pageable) {
-        return postRepository.findAllByContentContaining(content, pageable)
+    public PostPageResponse findPostByContent(String content, Pageable pageable) {
+        Page<PostResponse> posts = postRepository.findAllByContentContaining(content, pageable)
                 .map(PostConverter::convertEntityToResponse);
+        return PostConverter.convertEntityToPageResponse(posts);
     }
 
-    public Page<PostResponse> findByKeyword(String keyword, Pageable pageable) {
-        return postRepository.findAllByTitleContainingOrContentContaining(keyword, keyword, pageable)
+    public PostPageResponse findByKeyword(String keyword, Pageable pageable) {
+        Page<PostResponse> posts = postRepository.findAllByTitleContainingOrContentContaining(keyword, keyword, pageable)
                 .map(PostConverter::convertEntityToResponse);
+        return PostConverter.convertEntityToPageResponse(posts);
     }
 
     @Transactional
     public void updatePost(Long id, PostUpdateRequest request) {
         Post post = postRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-        post.update(request);
+        post.update(request.title(), request.content());
     }
 
     @Transactional

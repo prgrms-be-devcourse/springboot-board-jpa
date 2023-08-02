@@ -1,4 +1,4 @@
-package com.jpaboard.domain.post.dto;
+package com.jpaboard.domain.post.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

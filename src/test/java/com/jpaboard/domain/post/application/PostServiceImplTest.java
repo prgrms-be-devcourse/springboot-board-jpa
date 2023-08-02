@@ -1,8 +1,9 @@
 package com.jpaboard.domain.post.application;
 
-import com.jpaboard.domain.post.dto.PostCreateRequest;
-import com.jpaboard.domain.post.dto.PostResponse;
-import com.jpaboard.domain.post.dto.PostUpdateRequest;
+import com.jpaboard.domain.post.dto.request.PostCreateRequest;
+import com.jpaboard.domain.post.dto.response.PostPageResponse;
+import com.jpaboard.domain.post.dto.response.PostResponse;
+import com.jpaboard.domain.post.dto.request.PostUpdateRequest;
 import com.jpaboard.domain.user.application.UserService;
 import com.jpaboard.domain.user.dto.request.UserCreationRequest;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -57,9 +57,9 @@ class PostServiceImplTest {
         postService.createPost(new PostCreateRequest(userId, "안녕하세요2", "본문은 없습니다.2"));
 
         Pageable pageable = PageRequest.of(0, 10);
-        Page<PostResponse> posts = postService.findPosts(pageable);
+        PostPageResponse posts = postService.findPosts(pageable);
 
-        assertThat(posts.getTotalElements()).isEqualTo(2);
+        assertThat(posts.totalElements()).isEqualTo(2);
     }
 
     @Test
@@ -70,9 +70,9 @@ class PostServiceImplTest {
         postService.createPost(new PostCreateRequest(userId, "안녕하세요2", "본문은 없습니다.2"));
 
         Pageable pageable = PageRequest.of(0, 10);
-        Page<PostResponse> posts = postService.findPostByTitle(title, pageable);
+        PostPageResponse posts = postService.findPostByTitle(title, pageable);
 
-        assertThat(posts.getTotalElements()).isEqualTo(1);
+        assertThat(posts.totalElements()).isEqualTo(1);
     }
 
     @Test
@@ -83,9 +83,9 @@ class PostServiceImplTest {
         postService.createPost(new PostCreateRequest(userId, "안녕하세요2", content));
 
         Pageable pageable = PageRequest.of(0, 10);
-        Page<PostResponse> posts = postService.findPostByContent(content, pageable);
+        PostPageResponse posts = postService.findPostByContent(content, pageable);
 
-        assertThat(posts.getTotalElements()).isEqualTo(1);
+        assertThat(posts.totalElements()).isEqualTo(1);
     }
 
     @Test
@@ -96,9 +96,9 @@ class PostServiceImplTest {
         postService.createPost(new PostCreateRequest(userId, "안녕하세요2", keyword));
 
         Pageable pageable = PageRequest.of(0, 10);
-        Page<PostResponse> posts = postService.findByKeyword(keyword, pageable);
+        PostPageResponse posts = postService.findByKeyword(keyword, pageable);
 
-        assertThat(posts.getTotalElements()).isEqualTo(2);
+        assertThat(posts.totalElements()).isEqualTo(2);
     }
 
     @Test

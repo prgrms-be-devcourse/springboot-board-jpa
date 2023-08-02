@@ -1,4 +1,4 @@
-package com.jpaboard.domain.post.dto;
+package com.jpaboard.domain.post.dto.response;
 
 import lombok.Builder;
 

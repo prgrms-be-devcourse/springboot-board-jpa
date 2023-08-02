@@ -1,7 +1,6 @@
 package com.jpaboard.domain.post;
 
 import com.jpaboard.common.BaseEntity;
-import com.jpaboard.domain.post.dto.PostUpdateRequest;
 import com.jpaboard.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
