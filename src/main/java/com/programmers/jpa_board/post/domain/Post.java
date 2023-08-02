@@ -3,6 +3,7 @@ package com.programmers.jpa_board.post.domain;
 import com.programmers.jpa_board.global.BaseEntity;
 import com.programmers.jpa_board.user.domain.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.util.Objects;
 
@@ -26,11 +27,11 @@ public class Post extends BaseEntity {
     protected Post() {
     }
 
+    @Builder
     public Post(String title, String content) {
         validateTitleRange(title);
         this.title = title;
         this.content = content;
-        this.setCreatedBy(user.getName());
     }
 
     public Long getId() {
@@ -43,6 +44,10 @@ public class Post extends BaseEntity {
 
     public String getContent() {
         return content;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public void setUser(User user) {

@@ -1,7 +1,7 @@
 package com.programmers.jpa_board.user.application;
 
-import com.programmers.jpa_board.user.domain.dto.response.UserResponse;
+import com.programmers.jpa_board.user.domain.User;
 
 public interface UserProviderService {
-    UserResponse getUser(Long id);
+    User getUser(Long id);
 }

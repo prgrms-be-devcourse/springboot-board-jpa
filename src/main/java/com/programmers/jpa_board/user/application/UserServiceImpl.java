@@ -28,10 +28,10 @@ public class UserServiceImpl implements UserProviderService {
     }
 
     @Override
-    public UserResponse getUser(Long id) {
+    public User getUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundUserException("회원이 존재하지 않습니다."));
 
-        return converter.userToDto(user);
+        return user;
     }
 }
