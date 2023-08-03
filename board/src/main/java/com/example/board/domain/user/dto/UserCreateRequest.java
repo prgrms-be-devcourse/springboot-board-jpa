@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record UserCreateRequest(@NotBlank @Size(max = 30) String name, @NotNull
-@Min(1) Integer age, @NotBlank @Size(max = 100) String hobby) {
+@Min(AGE_MIN) Integer age, @NotBlank @Size(max = 100) String hobby) {
 
+  private static final int AGE_MIN = 1;
 }
