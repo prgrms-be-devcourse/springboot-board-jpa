@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/posts")
+@RequestMapping("/posts")
 public class ApiPostController {
 
     private final PostService postService;

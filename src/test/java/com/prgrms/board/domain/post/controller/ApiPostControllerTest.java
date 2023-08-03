@@ -62,7 +62,7 @@ class ApiPostControllerTest {
         PostCreateRequest request = new PostCreateRequest(user.getId(), "제목", "내용");
 
         // when & then
-        mockMvc.perform(post("/api/v1/posts")
+        mockMvc.perform(post("/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
             .andDo(print())
@@ -93,7 +93,7 @@ class ApiPostControllerTest {
         int totalPage = (int)Math.ceil((double)posts.size() / size);
 
         // when & then
-        mockMvc.perform(get("/api/v1/posts")
+        mockMvc.perform(get("/posts")
                 .param("page", String.valueOf(page))
                 .param("size", String.valueOf(size))
             )
@@ -120,7 +120,7 @@ class ApiPostControllerTest {
         postRepository.save(post);
 
         // when & then
-        mockMvc.perform(get("/api/v1/posts/" + post.getId()))
+        mockMvc.perform(get("/posts/" + post.getId()))
             .andDo(print())
             .andDo(document("posts/getPost",
                 preprocessRequest(prettyPrint()),
@@ -146,7 +146,7 @@ class ApiPostControllerTest {
         PostUpdateRequest request = new PostUpdateRequest("수정한 제목", "수정한 내용");
 
         // when & then
-        mockMvc.perform(patch("/api/v1/posts/" + post.getId())
+        mockMvc.perform(patch("/posts/" + post.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
             )
