@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.myboard.domain.CursorResult;
 import org.prgrms.myboard.domain.OffsetResult;
+import org.prgrms.myboard.domain.Post;
+import org.prgrms.myboard.domain.User;
 import org.prgrms.myboard.dto.PostCreateRequestDto;
 import org.prgrms.myboard.dto.PostResponseDto;
 import org.prgrms.myboard.dto.PostUpdateRequestDto;
@@ -31,7 +33,7 @@ public class PostRestController {
     @GetMapping("/cursor")
     public ResponseEntity<CursorResult<PostResponseDto>> getPostsByCursorId(
         @RequestParam(value = "cursorId") Long cursorId,
-        @RequestParam(value = "size") Integer pageSize) {
+        @RequestParam(value = "pageSize") Integer pageSize) {
         return ResponseEntity.ok(postService.findPostsByCursorPagination(cursorId, pageSize));
     }
 
