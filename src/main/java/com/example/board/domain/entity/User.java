@@ -4,10 +4,7 @@ package com.example.board.domain.entity;
 import com.example.board.domain.BaseTime;
 import com.example.board.dto.user.UserResponseDto;
 import com.example.board.dto.user.UserUpdateRequestDto;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +12,8 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 @Table(name = "users")
 @Entity
 public class User extends BaseTime {
@@ -46,16 +45,6 @@ public class User extends BaseTime {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Like> likes = new ArrayList<>();
-
-    @Builder
-    public User(Long id, String name, String email, String password, int age, String hobby) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.age = age;
-        this.hobby = hobby;
-    }
 
     //업데이트 dirty checking
     public void update(UserUpdateRequestDto requestDto) {

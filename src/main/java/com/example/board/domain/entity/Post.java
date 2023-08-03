@@ -2,10 +2,7 @@ package com.example.board.domain.entity;
 
 
 import com.example.board.domain.BaseTime;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +10,8 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 @Table(name = "posts")
 @Entity
 public class Post extends BaseTime {
@@ -37,10 +36,4 @@ public class Post extends BaseTime {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     private List<PostLike> postLikes = new ArrayList<>();
 
-    @Builder
-    public Post(Long id, String title, String content) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-    }
 }

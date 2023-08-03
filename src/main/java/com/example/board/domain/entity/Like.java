@@ -2,9 +2,7 @@ package com.example.board.domain.entity;
 
 
 import com.example.board.contant.LikeStatus;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
