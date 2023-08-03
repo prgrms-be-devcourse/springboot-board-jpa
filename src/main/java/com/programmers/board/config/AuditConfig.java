@@ -1,17 +1,44 @@
 package com.programmers.board.config;
 
+import com.programmers.board.constant.AuthConst;
+import com.programmers.board.domain.User;
+import com.programmers.board.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.UUID;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @EnableJpaAuditing
 @Configuration
 public class AuditConfig {
     @Bean
-    public AuditorAware<String> auditorProvider() {
-        return () -> java.util.Optional.ofNullable(UUID.randomUUID().toString());
+    public AuditorAware<String> auditorProvider(UserRepository userRepository) {
+        return () -> {
+            HttpSession session = getSession();
+            if (Objects.isNull(session)) {
+                return java.util.Optional.empty();
+            }
+            User user = getUser(userRepository, session);
+            return java.util.Optional.of(user.getName());
+        };
+    }
+
+    private HttpSession getSession() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest();
+        return request.getSession(false);
+    }
+
+    private User getUser(UserRepository userRepository, HttpSession session) {
+        Long loginUserId = (Long) session.getAttribute(AuthConst.LOGIN_USER_ID);
+        return userRepository.findById(loginUserId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다"));
     }
 }
