@@ -1,6 +1,7 @@
 package com.programmers.domain.post.application;
 
 import com.programmers.domain.post.ui.dto.PostDto;
+import com.programmers.domain.post.ui.dto.PostResponseDto;
 import com.programmers.domain.post.ui.dto.PostUpdateDto;
 import org.springframework.data.domain.Pageable;
 
@@ -10,9 +11,9 @@ public interface PostService {
 
     Long createPost(PostDto postDto);
 
-    PostDto findPost(Long postId);
+    PostResponseDto findPost(Long postId);
 
-    List<PostDto> findAll(Pageable pageable);
+    List<PostResponseDto> findAll(Pageable pageable);
 
-    PostDto updatePost(PostUpdateDto postUpdateDto, Long postId);
+    PostResponseDto updatePost(PostUpdateDto postUpdateDto, Long postId);
 }

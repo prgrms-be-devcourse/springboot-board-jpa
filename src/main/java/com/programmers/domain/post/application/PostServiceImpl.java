@@ -4,6 +4,7 @@ import com.programmers.domain.post.application.converter.PostConverter;
 import com.programmers.domain.post.entity.Post;
 import com.programmers.domain.post.infra.PostRepository;
 import com.programmers.domain.post.ui.dto.PostDto;
+import com.programmers.domain.post.ui.dto.PostResponseDto;
 import com.programmers.domain.post.ui.dto.PostUpdateDto;
 import com.programmers.domain.user.entity.User;
 import com.programmers.domain.user.infra.UserRepository;
@@ -37,26 +38,26 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public PostDto findPost(Long postId) {
+    public PostResponseDto findPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException(POST_NOT_FOUND));
-        return postConverter.convertPostDto(post);
+        return postConverter.convertEntityToPostResponseDto(post);
     }
 
     @Override
-    public List<PostDto> findAll(Pageable pageable) {
+    public List<PostResponseDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .stream()
-                .map(postConverter::convertPostDto)
+                .map(postConverter::convertEntityToPostResponseDto)
                 .toList();
     }
 
     @Override
     @Transactional
-    public PostDto updatePost(PostUpdateDto postUpdateDto, Long postId) {
+    public PostResponseDto updatePost(PostUpdateDto postUpdateDto, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException(POST_NOT_FOUND));
         post.changeTitleAndContent(postUpdateDto.title(), postUpdateDto.content());
-        return postConverter.convertPostDto(post);
+        return postConverter.convertEntityToPostResponseDto(post);
     }
 }

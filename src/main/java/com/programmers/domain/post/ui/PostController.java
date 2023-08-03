@@ -3,6 +3,7 @@ package com.programmers.domain.post.ui;
 import com.programmers.common.dto.ApiResponse;
 import com.programmers.domain.post.application.PostService;
 import com.programmers.domain.post.ui.dto.PostDto;
+import com.programmers.domain.post.ui.dto.PostResponseDto;
 import com.programmers.domain.post.ui.dto.PostUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -34,17 +35,17 @@ public class PostController {
     }
 
     @GetMapping
-    public List<PostDto> findPostList(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public List<PostResponseDto> findPostList(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return postService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
-    public PostDto findPost(@PathVariable Long id) {
+    public PostResponseDto findPost(@PathVariable Long id) {
         return postService.findPost(id);
     }
 
     @PatchMapping("/{id}")
-    public PostDto updatePost(@PathVariable Long id, @RequestBody PostUpdateDto postUpdateDto) {
+    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostUpdateDto postUpdateDto) {
         return postService.updatePost(postUpdateDto, id);
     }
 }
