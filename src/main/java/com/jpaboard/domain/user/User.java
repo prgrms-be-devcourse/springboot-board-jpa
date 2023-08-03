@@ -37,20 +37,8 @@ public class User extends BaseEntity {
     }
 
     public void update(User user) {
-        changeName(user.getName());
-        changeAge(user.getAge());
-        changeHobby(user.getHobby());
-    }
-
-    private void changeName(String name) {
-        this.name = name;
-    }
-
-    private void changeAge(int age) {
-        this.age = age;
-    }
-
-    private void changeHobby(String hobby) {
-        this.hobby = hobby;
+        this.name = user.name;
+        this.age = user.age;
+        this.hobby = user.hobby;
     }
 }
