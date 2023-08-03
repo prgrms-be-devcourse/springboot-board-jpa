@@ -43,7 +43,7 @@ public class User extends BaseEntity {
     @Column(name = "hobby")
     private Hobby hobby;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
     private List<Post> posts = new ArrayList<>();
 

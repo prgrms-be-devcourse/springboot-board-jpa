@@ -2,7 +2,6 @@ package com.programmers.springbootboardjpa.domain.post;
 
 import com.programmers.springbootboardjpa.domain.BaseEntity;
 import com.programmers.springbootboardjpa.domain.user.User;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -33,7 +32,7 @@ public class Post extends BaseEntity {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(columnDefinition = "user_id", referencedColumnName = "id")
     private User user;
 
