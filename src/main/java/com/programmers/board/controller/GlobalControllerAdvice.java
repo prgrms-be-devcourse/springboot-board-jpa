@@ -1,5 +1,6 @@
 package com.programmers.board.controller;
 
+import com.programmers.board.controller.response.ErrorResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

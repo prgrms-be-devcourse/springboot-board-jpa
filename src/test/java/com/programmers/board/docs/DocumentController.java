@@ -1,7 +1,7 @@
 package com.programmers.board.docs;
 
-import com.programmers.board.controller.PageResult;
-import com.programmers.board.controller.Result;
+import com.programmers.board.controller.response.PageResult;
+import com.programmers.board.controller.response.Result;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;

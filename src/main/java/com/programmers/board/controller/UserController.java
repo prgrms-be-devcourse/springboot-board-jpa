@@ -1,5 +1,7 @@
 package com.programmers.board.controller;
 
+import com.programmers.board.controller.response.PageResult;
+import com.programmers.board.controller.response.Result;
 import com.programmers.board.dto.UserDto;
 import com.programmers.board.dto.request.UserCreateRequest;
 import com.programmers.board.dto.request.UserUpdateRequest;

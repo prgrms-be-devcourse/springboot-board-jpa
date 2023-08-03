@@ -1,4 +1,4 @@
-package com.programmers.board.controller;
+package com.programmers.board.controller.response;
 
 import lombok.Getter;
 
