@@ -6,10 +6,13 @@ import lombok.Getter;
 
 @Getter
 public abstract class PageRequest {
-    @PositiveOrZero(message = "페이지 번호는 0 이상이어야 합니다.")
+    private static final String PAGE_VALIDATE = "페이지 번호는 0 이상이어야 합니다";
+    private static final String SIZE_VALIDATE = "페이지 사이즈는 0 보다 커야합니다";
+
+    @PositiveOrZero(message = PAGE_VALIDATE)
     private final int page;
 
-    @Positive(message = "페이지 사이즈는 0보다 커야합니다.")
+    @Positive(message = SIZE_VALIDATE)
     private final int size;
 
     protected PageRequest(int page, int size) {
