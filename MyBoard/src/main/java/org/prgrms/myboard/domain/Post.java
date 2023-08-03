@@ -36,7 +36,7 @@ public class Post extends BaseEntity {
     private User user;
 
     public Post(String title, String content, User user) {
-        validateTitle();
+        validateTitle(title);
         this.title = title;
         this.content = content;
         allocateUser(user);
@@ -64,7 +64,7 @@ public class Post extends BaseEntity {
         return new PostResponseDto(id, title, content, createdBy, getCreatedAt(), getUpdatedAt());
     }
 
-    private void validateTitle() {
+    private void validateTitle(String title) {
         if(title.length() >= 30) {
             throw new IllegalArgumentException("제목의 길이는 30글자 이하입니다.");
         }
