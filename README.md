@@ -14,4 +14,4 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 2.  prgrms-be-devcourse/spring-board 레포로 PR시 branch는 본인 username을 적어주세요 :)  
 base repo : `여기repo` base : `username` ← head repo : `여러분repo` compare : `main`
 
-[RESTDocs 로 구현된 API 명세] (MyBoard/src/main/resources/static/index.html)
+[RESTDocs 로 구현된 API 명세] ([MyBoard/src/main/resources/static/index.html](https://github.com/BeommoKoo-dev/springboot-board-jpa/blob/main/MyBoard/src/main/resources/static/index.html)https://github.com/BeommoKoo-dev/springboot-board-jpa/blob/main/MyBoard/src/main/resources/static/index.html)
