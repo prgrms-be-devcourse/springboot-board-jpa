@@ -11,10 +11,6 @@ public record PostCreateRequestDto(
     @NotBlank(message = "내용이 비어있으면 안됩니다.")
     String content,
     @NotNull(message = "유저Id가 null이면 안됩니다.")
-    @Min(value = 1, message = "Id는 음수일 수 없습니다.")
     Long userId
 ) {
-    public Post toPost() {
-        return new Post(title, content);
-    }
 }
