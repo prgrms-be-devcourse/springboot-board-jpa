@@ -1,6 +1,7 @@
 package com.programmers.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.programmers.board.constant.SessionConst;
 import com.programmers.board.domain.Post;
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.PostDto;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -50,6 +52,7 @@ class PostControllerTest {
     PostService postService;
 
     PostDto givenPost;
+    MockHttpSession givenSession;
 
     @BeforeEach
     void setUp() {
@@ -58,6 +61,9 @@ class PostControllerTest {
         ReflectionTestUtils.setField(user, "id", 1L);
         ReflectionTestUtils.setField(post, "id", 1L);
         givenPost = PostDto.from(post);
+
+        givenSession = new MockHttpSession();
+        givenSession.setAttribute(SessionConst.LOGIN_USER_ID, 1L);
     }
 
     @Nested
@@ -138,6 +144,7 @@ class PostControllerTest {
 
             //when
             ResultActions resultActions = mvc.perform(post("/api/v1/posts")
+                    .session(givenSession)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(request))
                     .accept(MediaType.APPLICATION_JSON));
@@ -263,6 +270,7 @@ class PostControllerTest {
 
             //when
             ResultActions resultActions = mvc.perform(patch("/api/v1/posts/{postId}", postId)
+                    .session(givenSession)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(request))
                     .accept(MediaType.APPLICATION_JSON));
@@ -327,6 +335,7 @@ class PostControllerTest {
 
         //when
         ResultActions resultActions = mvc.perform(delete("/api/v1/posts/{postId}", postId)
+                .session(givenSession)
                 .accept(MediaType.APPLICATION_JSON));
 
         //then

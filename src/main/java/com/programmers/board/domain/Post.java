@@ -2,7 +2,9 @@ package com.programmers.board.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.Hibernate;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static java.util.Objects.isNull;
@@ -82,5 +84,9 @@ public class Post extends BaseEntity {
 
     private boolean invalidContent(String content) {
         return !CONTENT_PATTERN.matcher(content).matches();
+    }
+
+    public boolean isWriter(User loginUser) {
+        return Objects.equals(this.user.getId(), loginUser.getId());
     }
 }

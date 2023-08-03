@@ -4,6 +4,7 @@ import com.programmers.board.domain.Post;
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.PostDto;
 import com.programmers.board.dto.UserDto;
+import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.PostRepository;
 import com.programmers.board.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -135,33 +137,77 @@ class PostServiceTest {
         }
     }
 
-    @Test
-    @DisplayName("성공: 게시글 수정")
-    void updatePost() {
-        //given
-        String updateTitle = "updateTitle";
-        String updateContent = "updateContent";
+    @Nested
+    @DisplayName("중첩: 게시글 수정")
+    class UpdatePostTest {
+        @Test
+        @DisplayName("성공")
+        void updatePost() {
+            //given
+            String updateTitle = "updateTitle";
+            String updateContent = "updateContent";
 
-        given(postRepository.findById(any())).willReturn(Optional.ofNullable(givenPost));
+            given(postRepository.findById(any())).willReturn(Optional.ofNullable(givenPost));
+            given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
 
-        //when
-        postService.updatePost(1L, updateTitle, updateContent);
+            //when
+            postService.updatePost(1L, 1L, updateTitle, updateContent);
 
-        //then
-        assertThat(givenPost.getTitle()).isEqualTo(updateTitle);
-        assertThat(givenPost.getContent()).isEqualTo(updateContent);
+            //then
+            assertThat(givenPost.getTitle()).isEqualTo(updateTitle);
+            assertThat(givenPost.getContent()).isEqualTo(updateContent);
+        }
+
+        @Test
+        @DisplayName("예외: 게시글 작성자와 로그인 회원 불일치")
+        void updatePost_ButNotEqualUser() {
+            //given
+            User user = new User("newUser", 20, "newHobby");
+            ReflectionTestUtils.setField(givenUser, "id", 1L);
+            ReflectionTestUtils.setField(user, "id", 2L);
+
+            given(postRepository.findById(any())).willReturn(Optional.ofNullable(givenPost));
+            given(userRepository.findById(any())).willReturn(Optional.of(user));
+
+            //when
+            //then
+            assertThatThrownBy(() -> postService.updatePost(2L, 1L, "updateTitle", "updateContent"))
+                    .isInstanceOf(AuthorizationException.class);
+        }
     }
 
-    @Test
-    @DisplayName("성공: 게시글 삭제")
-    void deletePost() {
-        //given
-        given(postRepository.findById(any())).willReturn(Optional.ofNullable(givenPost));
+    @Nested
+    @DisplayName("중첩: 게시글 삭제")
+    class DeletePostTest {
+        @Test
+        @DisplayName("성공")
+        void deletePost() {
+            //given
+            given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
+            given(postRepository.findById(any())).willReturn(Optional.ofNullable(givenPost));
 
-        //when
-        postService.deletePost(1L);
+            //when
+            postService.deletePost(1L, 1L);
 
-        //then
-        then(postRepository).should().delete(any());
+            //then
+            then(postRepository).should().delete(any());
+        }
+
+        @Test
+        @DisplayName("예외: 게시글 작성자와 로그인 회원 불일치")
+        void deletePost_ButNotEqualUser() {
+            //given
+            User user = new User("newUser", 20, "newHobby");
+            ReflectionTestUtils.setField(givenUser, "id", 1L);
+            ReflectionTestUtils.setField(user, "id", 2L);
+
+            given(userRepository.findById(any())).willReturn(Optional.of(user));
+            given(postRepository.findById(any())).willReturn(Optional.ofNullable(givenPost));
+
+            //when
+            //then
+            assertThatThrownBy(() -> postService.deletePost(1L, 2L))
+                    .isInstanceOf(AuthorizationException.class);
+        }
     }
 }

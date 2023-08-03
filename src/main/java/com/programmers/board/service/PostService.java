@@ -3,6 +3,7 @@ package com.programmers.board.service;
 import com.programmers.board.domain.Post;
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.PostDto;
+import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.PostRepository;
 import com.programmers.board.repository.UserRepository;
 import org.springframework.data.domain.Page;
@@ -45,14 +46,18 @@ public class PostService {
     }
 
     @Transactional
-    public void updatePost(Long postId, String title, String content) {
+    public void updatePost(Long loginUserId, Long postId, String title, String content) {
+        User loginUser = findUserOrElseThrow(loginUserId);
         Post post = findPostOrElseThrow(postId);
+        checkAuthority(post, loginUser);
         post.update(title, content);
     }
 
     @Transactional
-    public void deletePost(Long postId) {
+    public void deletePost(Long postId, Long loginUserId) {
+        User loginUser = findUserOrElseThrow(loginUserId);
         Post post = findPostOrElseThrow(postId);
+        checkAuthority(post, loginUser);
         postRepository.delete(post);
     }
 
@@ -64,5 +69,11 @@ public class PostService {
     private User findUserOrElseThrow(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저입니다"));
+    }
+
+    private void checkAuthority(Post post, User loginUser) {
+        if (!post.isWriter(loginUser)) {
+            throw new AuthorizationException("권한이 없습니다");
+        }
     }
 }
