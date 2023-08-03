@@ -31,7 +31,7 @@ public class User extends BaseTime {
     @NotBlank
     private String email;
 
-    @Column(length = 20)
+    @Column(length = 100)
     @NotBlank
     private String password;
 
