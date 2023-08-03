@@ -1,6 +1,9 @@
 package prgms.boardmission.post.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,5 +30,11 @@ public class PostController {
     public ApiResponse<Long> save(@RequestBody PostDto postDto) {
         Long id = postService.save(postDto);
         return ApiResponse.ok(id);
+    }
+
+    @GetMapping("/posts")
+    public ApiResponse<Page<PostDto>> findAll(Pageable pageable) {
+        Page<PostDto> postDtoPage = postService.findAll(pageable);
+        return ApiResponse.ok(postDtoPage);
     }
 }

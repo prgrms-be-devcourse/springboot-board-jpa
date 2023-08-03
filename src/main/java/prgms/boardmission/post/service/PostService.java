@@ -1,5 +1,7 @@
 package prgms.boardmission.post.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import prgms.boardmission.domain.Post;
@@ -21,5 +23,10 @@ public class PostService {
         Post Post = postRepository.save(newPost);
 
         return newPost.getId();
+    }
+
+    public Page<PostDto> findAll(Pageable pageable){
+        return postRepository.findAll(pageable)
+                .map(PostConverter::convertToPostDto);
     }
 }
