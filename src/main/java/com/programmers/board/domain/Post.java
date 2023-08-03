@@ -87,6 +87,6 @@ public class Post extends BaseEntity {
     }
 
     public boolean isWriter(User loginUser) {
-        return Objects.equals(this.user.getId(), loginUser.getId());
+        return Objects.equals(this.user, loginUser);
     }
 }
