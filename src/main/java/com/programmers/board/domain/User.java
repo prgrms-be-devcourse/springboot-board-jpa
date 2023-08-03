@@ -1,7 +1,9 @@
 package com.programmers.board.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -10,6 +12,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
@@ -27,9 +30,6 @@ public class User extends BaseEntity {
 
     @Column(nullable = false, length = 50)
     private String hobby;
-
-    protected User() {
-    }
 
     public User(String name, int age, String hobby) {
         nullCheck(name, hobby);

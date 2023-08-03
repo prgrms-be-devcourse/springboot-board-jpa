@@ -3,9 +3,11 @@ package com.programmers.board.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class UserCreateRequest {
     private static final String NAME_PATTERN = "^(?=.*[A-Za-z])[A-Za-z\\d]{1,30}$";
     private static final String HOBBY_PATTERN = "^[A-Za-z가-힣]{1,50}$";
@@ -25,10 +27,4 @@ public class UserCreateRequest {
     @NotBlank(message = "사용자 취미는 필수입니다")
     @Pattern(regexp = HOBBY_PATTERN, message = HOBBY_VALIDATE)
     private final String hobby;
-
-    public UserCreateRequest(String name, int age, String hobby) {
-        this.name = name;
-        this.age = age;
-        this.hobby = hobby;
-    }
 }
