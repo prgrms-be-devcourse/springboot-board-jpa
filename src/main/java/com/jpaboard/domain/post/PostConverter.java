@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class PostConverter {
+public final class PostConverter {
 
     public static Post convertRequestToEntity(PostCreateRequest request, User user) {
         return Post.builder()
