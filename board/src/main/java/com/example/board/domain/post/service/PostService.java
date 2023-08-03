@@ -7,7 +7,7 @@ import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.repository.PostRepository;
 import com.example.board.domain.user.User;
 import com.example.board.domain.user.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +25,7 @@ public class PostService {
   public PostResponse createPost(PostCreateRequest postCreateRequest) {
 
     User foundUser = userRepository.findById(postCreateRequest.userId()).orElseThrow(
-        EntityNotFoundException::new);
+        NoSuchElementException::new);
 
     Post savedPost = postRepository.save(
         new Post(postCreateRequest.title(), postCreateRequest.content(), foundUser));
@@ -36,7 +36,7 @@ public class PostService {
   @Transactional(readOnly = true)
   public PostResponse getPost(Long postId) {
 
-    Post foundPost = postRepository.findById(postId).orElseThrow(EntityNotFoundException::new);
+    Post foundPost = postRepository.findById(postId).orElseThrow(NoSuchElementException::new);
 
     return PostResponse.from(foundPost);
   }
@@ -51,7 +51,7 @@ public class PostService {
   @Transactional
   public void updatePost(Long postId, PostUpdateRequest postUpdateRequest) {
 
-    Post foundPost = postRepository.findById(postId).orElseThrow(EntityNotFoundException::new);
+    Post foundPost = postRepository.findById(postId).orElseThrow(NoSuchElementException::new);
 
     foundPost.updateTitle(postUpdateRequest.title());
     foundPost.updateContent(postUpdateRequest.content());
