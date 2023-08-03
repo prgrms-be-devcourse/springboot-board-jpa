@@ -48,6 +48,7 @@ public class PostService {
     }
 
     //삭제
+    @Transactional
     public void deleteById(Long id) {
         if (!postRepository.existsById(id)) {
             throw new NoSuchElementException("삭제하려는 게시글을 찾지 못했습니다.");
