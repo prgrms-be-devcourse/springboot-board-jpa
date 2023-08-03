@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -19,21 +17,16 @@ import java.util.Objects;
 @Configuration
 public class AuditConfig {
     @Bean
-    public AuditorAware<String> auditorProvider(UserRepository userRepository) {
+    public AuditorAware<String> auditorProvider(HttpServletRequest httpServletRequest,
+                                                UserRepository userRepository) {
         return () -> {
-            HttpSession session = getSession();
+            HttpSession session = httpServletRequest.getSession(false);
             if (Objects.isNull(session)) {
                 return java.util.Optional.empty();
             }
             User user = getUser(userRepository, session);
             return java.util.Optional.of(user.getName());
         };
-    }
-
-    private HttpSession getSession() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-        return request.getSession(false);
     }
 
     private User getUser(UserRepository userRepository, HttpSession session) {
