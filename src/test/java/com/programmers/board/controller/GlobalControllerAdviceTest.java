@@ -1,6 +1,7 @@
 package com.programmers.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.programmers.board.exception.AuthenticationException;
 import com.programmers.board.exception.AuthorizationException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -57,6 +59,16 @@ class GlobalControllerAdviceTest {
         @GetMapping("/authorization")
         public void authorization() {
             throw new AuthorizationException("no auth");
+        }
+
+        @GetMapping("/authentication")
+        public void authentication() {
+            throw new AuthenticationException("no login");
+        }
+
+        @GetMapping("/duplicate")
+        public void duplicate() {
+            throw new DuplicateKeyException("duplicate");
         }
 
         @GetMapping("/ex")
@@ -144,6 +156,42 @@ class GlobalControllerAdviceTest {
         resultActions.andExpect(status().isBadRequest())
                 .andDo(print())
                 .andDo(document("ex-illegal-argument",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                        )));
+    }
+
+    @Test
+    @DisplayName("성공: AuthenticationException 예외 처리")
+    void authenticationExHandle() throws Exception {
+        //given
+        //when
+        ResultActions resultActions = mvc.perform(get("/authentication"));
+
+        //then
+        resultActions.andExpect(status().isUnauthorized())
+                .andDo(print())
+                .andDo(document("ex-authentication",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                        )));
+    }
+
+    @Test
+    @DisplayName("성공: DuplicateKeyException 예외 처리")
+    void duplicateKeyExHandle() throws Exception {
+        //given
+        //when
+        ResultActions resultActions = mvc.perform(get("/duplicate"));
+
+        //then
+        resultActions.andExpect(status().isConflict())
+                .andDo(print())
+                .andDo(document("ex-duplicate",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
