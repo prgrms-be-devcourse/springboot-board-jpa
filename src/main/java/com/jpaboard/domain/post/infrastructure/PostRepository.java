@@ -11,9 +11,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("select p from Post p where p.title like %:title% or p.content like %:content% or p.title like %:keyword% or p.content like %:keyword%")
     Page<Post> findAllByCondition(String title, String content, String keyword, Pageable pageable);
 
-//    Page<Post> findAllByTitleContaining(String title, Pageable pageable);
-//
-//    Page<Post> findAllByContentContaining(String content, Pageable pageable);
-//
-//    Page<Post> findAllByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
 }
