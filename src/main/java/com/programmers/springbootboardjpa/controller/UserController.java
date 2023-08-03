@@ -55,7 +55,6 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public void updateById(@PathVariable Long id, @Validated(ValidationSequence.class) @RequestBody UserUpdateRequest userUpdateRequest) {
         userService.updateById(id, userUpdateRequest);
     }

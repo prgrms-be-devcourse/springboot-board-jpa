@@ -55,7 +55,6 @@ public class PostController {
     }
 
     @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public void updateById(@PathVariable Long id, @Validated(ValidationSequence.class) @RequestBody PostUpdateRequest postUpdateRequest) {
         postService.updateById(id, postUpdateRequest);
     }
