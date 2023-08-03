@@ -68,7 +68,7 @@ class PostControllerTest {
                 ZonedDateTime.now(ZoneId.of("Asia/Seoul")),
                 "Writer");
 
-        given(postService.readPost(1L)).willReturn(postResponse);
+        given(postService.readOne(1L)).willReturn(postResponse);
 
         // When
 
@@ -116,7 +116,7 @@ class PostControllerTest {
 
         PageRequest pageRequest = PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "id"));
 
-        given(postService.readAllPost(pageRequest))
+        given(postService.readAll(pageRequest))
                 .willReturn(new PostResponses(List.of(postResponseA, postResponseB, postResponseC, postResponseD)));
 
         // When
@@ -147,7 +147,7 @@ class PostControllerTest {
                 "Writer"
         );
 
-        given(postService.updatePost(1L, postUpdateRequest)).willReturn(postResponse);
+        given(postService.update(1L, postUpdateRequest)).willReturn(postResponse);
 
         // When
 

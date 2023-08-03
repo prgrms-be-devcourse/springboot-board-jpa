@@ -54,7 +54,7 @@ class PostServiceTest {
         Long savedPostId = postService.post(postSaveRequest);
 
         // When
-        PostResponse postResponse = postService.readPost(savedPostId);
+        PostResponse postResponse = postService.readOne(savedPostId);
 
         // Then
         assertThat(postResponse.id()).isEqualTo(savedPostId);
@@ -77,7 +77,7 @@ class PostServiceTest {
         PageRequest pageRequest = PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "id"));
 
         // When
-        PostResponses postResponses = postService.readAllPost(pageRequest);
+        PostResponses postResponses = postService.readAll(pageRequest);
 
         // Then
         assertThat(postResponses.postResponses()).hasSize(2);
@@ -96,7 +96,7 @@ class PostServiceTest {
         PostUpdateRequest postUpdateRequest = new PostUpdateRequest("bbb", "곧 토요일");
 
         // When
-        PostResponse postResponse = postService.updatePost(savedPostId, postUpdateRequest);
+        PostResponse postResponse = postService.update(savedPostId, postUpdateRequest);
 
         // Then
         assertThat(postResponse.id()).isEqualTo(savedPostId);

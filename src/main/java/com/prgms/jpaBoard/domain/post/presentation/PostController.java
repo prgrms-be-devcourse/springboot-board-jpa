@@ -31,13 +31,13 @@ public class PostController {
     public ResponseEntity<ApiResponse<PostResponses>> readPosts(
             @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        PostResponses postResponses = postService.readAllPost(pageable);
+        PostResponses postResponses = postService.readAll(pageable);
         return ResponseEntity.ok(ApiResponse.ok(postResponses));
     }
 
     @GetMapping("/posts/{id}")
     public ResponseEntity<ApiResponse<PostResponse>> readPost(@PathVariable Long id) {
-        PostResponse postResponse = postService.readPost(id);
+        PostResponse postResponse = postService.readOne(id);
         return ResponseEntity.ok(ApiResponse.ok(postResponse));
     }
 
@@ -49,12 +49,13 @@ public class PostController {
                         .success(HttpStatus.CREATED.value(), Collections.singletonMap("id", postId)));
     }
 
+
     @PostMapping("/posts/{id}")
     public ResponseEntity<ApiResponse<PostResponse>> updatePost(
             @PathVariable Long id,
             @RequestBody PostUpdateRequest postUpdateRequest)
     {
-        PostResponse postResponse = postService.updatePost(id, postUpdateRequest);
+        PostResponse postResponse = postService.update(id, postUpdateRequest);
         return ResponseEntity.ok(ApiResponse.ok(postResponse));
     }
 

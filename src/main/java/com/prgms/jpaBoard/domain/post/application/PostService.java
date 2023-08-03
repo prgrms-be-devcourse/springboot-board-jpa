@@ -32,23 +32,23 @@ public class PostService {
 
     @Transactional
     public Long post(PostSaveRequest postSaveRequest) {
-        User user = userRepository.findById(postSaveRequest.userId())
+        User findUser = userRepository.findById(postSaveRequest.userId())
                 .orElseThrow(() -> new NoSuchElementException(USER_NOT_FOUND_MSG));
 
-        Post post = PostMapper.from(postSaveRequest, user);
+        Post post = PostMapper.from(postSaveRequest, findUser);
         Post savedPost = postRepository.save(post);
 
         return savedPost.getId();
     }
 
-    public PostResponse readPost(Long postId) {
-        Post post = postRepository.findById(postId)
+    public PostResponse readOne(Long postId) {
+        Post findPost = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException(POST_NOT_FOUND_MSG));
 
-        return new PostResponse(post);
+        return new PostResponse(findPost);
     }
 
-    public PostResponses readAllPost(Pageable pageable) {
+    public PostResponses readAll(Pageable pageable) {
         List<PostResponse> postResponses = postRepository.findAll(pageable)
                 .stream()
                 .map(PostResponse::new)
@@ -58,13 +58,12 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponse updatePost(Long postId, PostUpdateRequest postUpdateRequest) {
-        Post post = postRepository.findById(postId)
+    public PostResponse update(Long postId, PostUpdateRequest postUpdateRequest) {
+        Post findPost = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException(POST_NOT_FOUND_MSG));
 
-        post.changeContent(postUpdateRequest.content());
-        post.changeTitle(postUpdateRequest.title());
+        findPost.updatePost(postUpdateRequest.title(), postUpdateRequest.content());
 
-        return new PostResponse(post);
+        return new PostResponse(findPost);
     }
 }
