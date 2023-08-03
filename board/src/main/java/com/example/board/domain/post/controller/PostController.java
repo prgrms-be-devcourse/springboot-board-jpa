@@ -40,7 +40,7 @@ public class PostController {
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public Page<PostResponse> getPosts(Pageable pageable) {
+  public Page<PostResponse> getPosts(@Valid Pageable pageable) {
     return postService.getPosts(pageable);
   }
 
