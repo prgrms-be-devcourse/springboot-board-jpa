@@ -43,7 +43,9 @@ public class UserService {
         userRepository.delete(findUser);
     }
 
-    private User getUser(Long userId) {
+    //다른 서비스 계층에서 사용하기 위해 public , @Transactional 리팩토링
+    @Transactional
+    public User getUser(Long userId) {
         User findUser = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundUserException("아이디와 일치하는 유저를 찾을 수 없습니다"));
         return findUser;
