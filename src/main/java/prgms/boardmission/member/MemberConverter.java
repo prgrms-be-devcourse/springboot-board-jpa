@@ -1,4 +1,4 @@
-package prgms.boardmission.member.converter;
+package prgms.boardmission.member;
 
 import prgms.boardmission.domain.Member;
 import prgms.boardmission.member.dto.MemberDto;
