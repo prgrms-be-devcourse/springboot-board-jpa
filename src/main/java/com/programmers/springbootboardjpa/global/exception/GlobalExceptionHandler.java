@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<ErrorResponse>> handlerException(Exception exception) {
         ErrorResponse errorResponse = createTopLevelErrorResponse(exception);
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.fail(errorResponse));
     }
 
