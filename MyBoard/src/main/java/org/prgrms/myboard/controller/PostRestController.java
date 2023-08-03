@@ -5,8 +5,6 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.myboard.domain.CursorResult;
 import org.prgrms.myboard.domain.OffsetResult;
-import org.prgrms.myboard.domain.Post;
-import org.prgrms.myboard.domain.User;
 import org.prgrms.myboard.dto.PostCreateRequestDto;
 import org.prgrms.myboard.dto.PostResponseDto;
 import org.prgrms.myboard.dto.PostUpdateRequestDto;
@@ -16,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/posts")
 @RestController
@@ -48,13 +48,17 @@ public class PostRestController {
         return ResponseEntity.ok(postService.findById(postId));
     }
 
-    // page가 totalpage보다 더 크게 들어오면 어떡하지?
     @GetMapping
     public ResponseEntity<OffsetResult<PostResponseDto>> getPostsByOffsetPagination(
         @Min(value = 1, message = "page값은 최소 1입니다.") @RequestParam(value = "page") int page,
         @Min(value = 1, message = "pageSize값은 최소 1입니다.")@RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         return ResponseEntity.ok(postService.findPostsByOffsetPagination(
             PageRequest.of(page - PAGE_BASE_OFFSET, pageSize)));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<PostResponseDto>> getPostsByUserId(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(postService.findAllByUserId(userId));
     }
 
     @DeleteMapping("{postId}")
