@@ -13,6 +13,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     private static final String INTERNAL_ERROR_MESSAGE = "서버 내부 오류가 발생했습니다.";
 
     @ExceptionHandler(EntityNotFoundException.class)
