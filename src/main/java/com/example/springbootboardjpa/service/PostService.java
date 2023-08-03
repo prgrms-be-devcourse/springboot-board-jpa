@@ -47,7 +47,6 @@ public class PostService {
         return PostResponse.fromEntity(post);
     }
 
-    //삭제
     @Transactional
     public void deleteById(Long id) {
         if (!postRepository.existsById(id)) {
