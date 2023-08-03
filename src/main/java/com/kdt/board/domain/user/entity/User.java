@@ -29,6 +29,7 @@ public class User extends BaseEntity {
     @Column(name = "hobby")
     private String hobby;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 }
