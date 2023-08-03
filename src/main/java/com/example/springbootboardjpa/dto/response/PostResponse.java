@@ -16,7 +16,7 @@ public class PostResponse {
     private User userId;
 
     @Builder
-    public PostResponse(Long postId, String title, String content, User userId) {
+    private PostResponse(Long postId, String title, String content, User userId) {
         this.postId = postId;
         this.title = title;
         this.content = content;
