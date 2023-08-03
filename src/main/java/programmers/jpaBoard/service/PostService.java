@@ -1,6 +1,8 @@
 package programmers.jpaBoard.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import programmers.jpaBoard.dto.PostRequest;
 import programmers.jpaBoard.dto.PostResponse;
@@ -26,6 +28,11 @@ public class PostService {
         Post post = findPostById(id);
 
         return toDto(post);
+    }
+
+    public Page<PostResponse> getAllPost(Pageable pageable) {
+        return postRepository.findAll(pageable)
+                .map(this::toDto);
     }
 
     private Post findPostById(Long id) {

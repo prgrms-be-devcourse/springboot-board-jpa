@@ -1,6 +1,8 @@
 package programmers.jpaBoard.api;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,13 @@ public class PostController {
         PostResponse response = postService.getPost(id);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<PostResponse>> getAllPost(Pageable pageable) {
+        Page<PostResponse> responses = postService.getAllPost(pageable);
+
+        return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
