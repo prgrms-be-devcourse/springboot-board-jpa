@@ -2,7 +2,7 @@ package prgms.boardmission.post;
 
 import prgms.boardmission.domain.Member;
 import prgms.boardmission.domain.Post;
-import prgms.boardmission.member.converter.MemberConverter;
+import prgms.boardmission.member.MemberConverter;
 import prgms.boardmission.member.dto.MemberDto;
 import prgms.boardmission.post.dto.PostDto;
 
