@@ -91,14 +91,14 @@ class GlobalControllerAdviceTest {
     }
 
     @Test
-    @DisplayName("성공(400): NoSuchElementException 예외 처리")
+    @DisplayName("성공(404): NoSuchElementException 예외 처리")
     void noSuchElementExHandle() throws Exception {
         //given
         //when
         ResultActions resultActions = mvc.perform(get("/no-such"));
 
         //then
-        resultActions.andExpect(status().isBadRequest())
+        resultActions.andExpect(status().isNotFound())
                 .andDo(print())
                 .andDo(document("ex-no-such-element",
                         preprocessRequest(prettyPrint()),
