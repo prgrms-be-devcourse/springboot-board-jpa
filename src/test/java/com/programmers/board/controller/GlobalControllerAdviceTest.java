@@ -1,6 +1,7 @@
 package com.programmers.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.programmers.board.exception.AuthorizationException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.junit.jupiter.api.DisplayName;
@@ -53,6 +54,11 @@ class GlobalControllerAdviceTest {
             throw new IllegalArgumentException("input is invalid");
         }
 
+        @GetMapping("/authorization")
+        public void authorization() {
+            throw new AuthorizationException("no auth");
+        }
+
         @GetMapping("/ex")
         public void ex() {
             throw new RuntimeException("unexpected ex");
@@ -102,6 +108,24 @@ class GlobalControllerAdviceTest {
         resultActions.andExpect(status().isBadRequest())
                 .andDo(print())
                 .andDo(document("ex-method-argument-not-valid",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                        )));
+    }
+
+    @Test
+    @DisplayName("성공: AuthorizationException 예외 처리")
+    void authorizationException() throws Exception {
+        //given
+        //when
+        ResultActions resultActions = mvc.perform(get("/authorization"));
+
+        //then
+        resultActions.andExpect(status().isForbidden())
+                .andDo(print())
+                .andDo(document("ex-authorization",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(

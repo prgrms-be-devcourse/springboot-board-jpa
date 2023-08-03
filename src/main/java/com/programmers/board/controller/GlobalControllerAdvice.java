@@ -1,6 +1,8 @@
 package com.programmers.board.controller;
 
 import com.programmers.board.controller.response.ErrorResult;
+import com.programmers.board.exception.AuthorizationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.NoSuchElementException;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -37,6 +40,13 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResult illegalArgumentExHandle(IllegalArgumentException ex) {
+        return new ErrorResult(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AuthorizationException.class)
+    public ErrorResult authorizationExHandle(AuthorizationException ex) {
+        log.warn(ex.getMessage(), ex);
         return new ErrorResult(ex.getMessage());
     }
 
