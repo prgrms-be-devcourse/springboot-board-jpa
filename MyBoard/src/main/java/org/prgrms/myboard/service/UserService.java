@@ -19,4 +19,10 @@ public class UserService {
         userRepository.save(user);
         return user.toUserResponseDto();
     }
+
+    public UserResponseDto findUserById(Long userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("존재하지 않는 Id입니다."));
+        return user.toUserResponseDto();
+    }
 }
