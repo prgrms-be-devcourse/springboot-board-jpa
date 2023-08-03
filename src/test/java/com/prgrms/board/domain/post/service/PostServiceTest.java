@@ -48,17 +48,18 @@ class PostServiceTest {
 
     @BeforeEach
     void init() {
-        user = UserFixture.createByBuilder();
+        user = UserFixture.user().build();
     }
 
     @Test
     @DisplayName("게시물 생성에 성공한다.")
     void create_post_success() {
         // given
-        PostCreateRequest request = new PostCreateRequest(user.getId(), "제목", "내용");
-        Post post = PostFixture.createByBuilder(user, "제목", "내용");
+        Long userId = 1L;
+        Post post = PostFixture.post().build();
+        PostCreateRequest request = new PostCreateRequest(userId, "제목", "내용");
 
-        given(userService.findUserOrThrow(any(Long.class))).willReturn(user);
+        given(userService.findUserOrThrow(userId)).willReturn(user);
         given(postRepository.save(any(Post.class))).willReturn(post);
 
         // when
@@ -73,13 +74,14 @@ class PostServiceTest {
     @DisplayName("전체 게시물 조회에 성공한다.")
     void get_posts_success() {
         // given
-        Post post1 = PostFixture.create(user, "제목1", "내용1");
-        Post post2 = PostFixture.create(user, "제목2", "내용2");
-        Post post3 = PostFixture.create(user, "제목3", "내용3");
-        List<Post> posts = List.of(post1, post2, post3);
+        Post post1 = PostFixture.post().title("제목1").content("내용1").build();
+        Post post2 = PostFixture.post().title("제목2").content("내용2").build();
+        Post post3 = PostFixture.post().title("제목3").content("내용3").build();
 
+        List<Post> posts = List.of(post1, post2, post3);
         Pageable pageable = PageRequest.of(0, 2);
         Page<Post> page = new PageImpl<>(posts.subList(0, 2), pageable, posts.size());
+
         given(postRepository.findAll(any(Pageable.class))).willReturn(page);
 
         // when
@@ -95,28 +97,30 @@ class PostServiceTest {
     @DisplayName("특정 게시물 조회에 성공한다.")
     void get_post_success() {
         // given
-        Post post = PostFixture.createByBuilder(user, "제목1", "내용1");
-        given(postRepository.findById(any(Long.class))).willReturn(Optional.of(post));
+        Long postId = 1L;
+        Post post = PostFixture.post().id(postId).build();
+        given(postRepository.findById(postId)).willReturn(Optional.of(post));
 
         // when
-        PostDetailResponse postDetailResponse = postService.getPost(post.getId());
+        PostDetailResponse postDetailResponse = postService.getPost(postId);
 
         // then
-        assertThat(postDetailResponse.title()).isEqualTo("제목1");
-        assertThat(postDetailResponse.content()).isEqualTo("내용1");
+        assertThat(postDetailResponse.title()).isEqualTo(post.getTitle());
+        assertThat(postDetailResponse.content()).isEqualTo(post.getContent());
     }
 
     @Test
     @DisplayName("게시물 수정에 성공한다.")
     void update_post_success() {
         // given
+        Long postId = 1L;
+        Post post = PostFixture.post().id(postId).build();
         PostUpdateRequest request = new PostUpdateRequest("수정한 제목", "수정한 내용");
-        Post post = PostFixture.createByBuilder(user, "제목", "내용");
 
-        given(postRepository.findById(any(Long.class))).willReturn(Optional.of(post));
+        given(postRepository.findById(postId)).willReturn(Optional.of(post));
 
         // when
-        PostResponse result = postService.updatePost(post.getId(), request);
+        PostResponse result = postService.updatePost(postId, request);
 
         // then
         assertThat(result.title()).isEqualTo("수정한 제목");
@@ -127,11 +131,11 @@ class PostServiceTest {
     @DisplayName("존재하는 게시물이 없는 경우 예외가 발생한다.")
     void get_post_not_found() {
         // given
-        Post post = PostFixture.createByBuilder(user, "제목1", "내용1");
-        given(postRepository.findById(any(Long.class))).willReturn(Optional.empty());
+        Long postId = 1L;
+        given(postRepository.findById(postId)).willReturn(Optional.empty());
 
-        // when, then
-        assertThatThrownBy(() -> postService.getPost(post.getId()))
+        // when & then
+        assertThatThrownBy(() -> postService.getPost(postId))
             .isInstanceOf(PostNotFoundException.class)
             .hasMessage("존재하지 않는 게시물입니다.");
     }

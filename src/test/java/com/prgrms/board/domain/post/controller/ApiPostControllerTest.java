@@ -51,7 +51,7 @@ class ApiPostControllerTest {
 
     @BeforeEach
     void init() {
-        user = UserFixture.create();
+        user = UserFixture.user().build();
         userRepository.save(user);
     }
 
@@ -81,9 +81,9 @@ class ApiPostControllerTest {
     @DisplayName("게시물 전체 조회에 성공한다.")
     void get_posts_success() throws Exception {
         // given
-        Post post1 = PostFixture.create(user, "제목1", "내용1");
-        Post post2 = PostFixture.create(user, "제목2", "내용2");
-        Post post3 = PostFixture.create(user, "제목3", "내용3");
+        Post post1 = PostFixture.post().user(user).title("제목1").content("내용1").build();
+        Post post2 = PostFixture.post().user(user).title("제목2").content("내용2").build();
+        Post post3 = PostFixture.post().user(user).title("제목3").content("내용3").build();
         List<Post> posts = List.of(post1, post2, post3);
         postRepository.saveAll(posts);
 
@@ -116,7 +116,7 @@ class ApiPostControllerTest {
     @DisplayName("게시물 조회에 성공한다.")
     void get_post_success() throws Exception {
         // given
-        Post post = PostFixture.create(user, "제목", "내용");
+        Post post = PostFixture.post().user(user).build();
         postRepository.save(post);
 
         // when & then
@@ -141,7 +141,7 @@ class ApiPostControllerTest {
     @DisplayName("게시물 수정에 성공한다.")
     void update_post_success() throws Exception {
         // given
-        Post post = PostFixture.create(user, "제목", "내용");
+        Post post = PostFixture.post().user(user).build();
         postRepository.save(post);
         PostUpdateRequest request = new PostUpdateRequest("수정한 제목", "수정한 내용");
 

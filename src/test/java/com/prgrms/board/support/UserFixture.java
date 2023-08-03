@@ -4,16 +4,22 @@ import com.prgrms.board.domain.user.entity.User;
 
 public class UserFixture {
 
-    public static User create() {
-        return User.create("이름", 10, "취미");
+    private Long id;
+    private String name = "이름";
+    private int age = 10;
+
+    private UserFixture() {
     }
 
-    public static User createByBuilder() {
+    public static UserFixture user() {
+        return new UserFixture();
+    }
+    
+    public User build() {
         return User.builder()
-            .id(1L)
-            .name("이름")
-            .age(10)
-            .hobby("취미")
+            .id(id)
+            .name(name)
+            .age(age)
             .build();
     }
 }
