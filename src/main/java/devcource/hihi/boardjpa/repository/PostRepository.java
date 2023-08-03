@@ -8,8 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findByTitle(String title);
-    @Query("SELECT p FROM Post p WHERE p.id > :cursor ORDER BY p.id ASC LIMIT :limit")
-    List<Post> findByCursor(@Param("cursor") Long cursor, @Param("limit") int limit);
+    @Query(value = "SELECT * FROM post WHERE post_id > :cursor ORDER BY post_id ASC LIMIT :pageSize", nativeQuery = true)
+    List<Post> findByCursor(@Param("cursor") Long cursor, @Param("pageSize") int pageSize);
 
 }

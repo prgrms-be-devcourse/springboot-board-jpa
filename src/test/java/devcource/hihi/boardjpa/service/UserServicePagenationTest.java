@@ -40,21 +40,21 @@ class UserServicePagenationTest {
 
     @Test
     void testGetUsersWithPagination() {
-        // 가짜 데이터 생성
+
+        //given
         List<User> sampleUsers = UserRepositoryTestHelper.createSampleUsers(10);
 
-        // Mockito를 사용하여 userRepository.findAll() 호출 시 가짜 데이터 반환하도록 설정
-        Pageable pageable = PageRequest.of(0, 5); // 0번째 페이지, 페이지 당 5개 항목
+        Pageable pageable = PageRequest.of(0, 5);
         Page<User> samplePage = new PageImpl<>(sampleUsers.subList(0, 5), pageable, sampleUsers.size());
         when(userRepository.findAll(pageable)).thenReturn(samplePage);
 
-        // getUsersWithPagination 메서드 호출
+        // when
         Page<User> resultPage = userService.getUsersWithPagination(0, 5);
 
-        // 결과 검증
+        // then
         assertEquals(samplePage, resultPage);
-        assertEquals(5, resultPage.getNumberOfElements()); // 페이지당 5개 항목 반환
-        assertEquals(sampleUsers.size(), resultPage.getTotalElements()); // 총 항목 수 검증
+        assertEquals(5, resultPage.getNumberOfElements());
+        assertEquals(sampleUsers.size(), resultPage.getTotalElements());
     }
 
 }

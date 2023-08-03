@@ -37,8 +37,7 @@ public class PostServicePagenationTest {
 
     @Test
     public void testGetPostsByCursor() {
-        // 테스트용 데이터 생성
-        // 가짜 데이터 생성
+
         List<Post> samplePosts = PostRepositoryTestHelper.createSamplePosts(10);
 
         // Repository 메소드 호출 시 테스트용 데이터 반환하도록 설정
