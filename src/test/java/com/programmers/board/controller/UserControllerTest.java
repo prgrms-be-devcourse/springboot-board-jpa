@@ -1,7 +1,7 @@
 package com.programmers.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.programmers.board.constant.SessionConst;
+import com.programmers.board.constant.AuthConst;
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.UserDto;
 import com.programmers.board.dto.request.UserCreateRequest;
@@ -61,7 +61,7 @@ class UserControllerTest {
         ReflectionTestUtils.setField(givenUserDto, "userId", 1L);
 
         givenSession = new MockHttpSession();
-        givenSession.setAttribute(SessionConst.LOGIN_USER_ID, 1L);
+        givenSession.setAttribute(AuthConst.LOGIN_USER_ID, 1L);
     }
 
     @Nested

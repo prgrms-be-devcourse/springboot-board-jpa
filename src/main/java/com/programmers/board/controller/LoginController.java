@@ -1,5 +1,6 @@
 package com.programmers.board.controller;
 
+import com.programmers.board.constant.AuthConst;
 import com.programmers.board.dto.request.LoginRequest;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.service.LoginService;
@@ -8,7 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import static com.programmers.board.constant.SessionConst.LOGIN_USER_ID;
+import static com.programmers.board.constant.AuthConst.LOGIN_USER_ID;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -31,7 +32,7 @@ public class LoginController {
     public void logout(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession(false);
         if (session == null) {
-            throw new AuthorizationException("접근 권한이 없습니다");
+            throw new AuthorizationException(AuthConst.NO_AUTHORIZATION);
         }
         session.invalidate();
     }

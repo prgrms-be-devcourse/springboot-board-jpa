@@ -1,6 +1,6 @@
 package com.programmers.board.controller;
 
-import com.programmers.board.constant.SessionConst;
+import com.programmers.board.constant.AuthConst;
 import com.programmers.board.controller.response.PageResult;
 import com.programmers.board.controller.response.Result;
 import com.programmers.board.dto.PostDto;
@@ -36,7 +36,7 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/posts")
-    public Result<Long> createPost(@SessionAttribute(name = SessionConst.LOGIN_USER_ID, required = false) Long loginUserId,
+    public Result<Long> createPost(@SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId,
                                    @RequestBody @Valid PostCreateRequest request) {
         checkLogin(loginUserId);
         Long postId = postService.createPost(
@@ -56,7 +56,7 @@ public class PostController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/posts/{postId}")
     public void updatePost(@PathVariable("postId") Long postId,
-                           @SessionAttribute(name = SessionConst.LOGIN_USER_ID, required = false) Long loginUserId,
+                           @SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId,
                            @RequestBody @Valid PostUpdateRequest request) {
         checkLogin(loginUserId);
         postService.updatePost(
@@ -69,14 +69,14 @@ public class PostController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/posts/{postId}")
     public void deletePost(@PathVariable("postId") Long postId,
-                           @SessionAttribute(name = SessionConst.LOGIN_USER_ID, required = false) Long loginUserId) {
+                           @SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId) {
         checkLogin(loginUserId);
         postService.deletePost(postId, loginUserId);
     }
 
     private void checkLogin(Long loginUserId) {
         if (Objects.isNull(loginUserId)) {
-            throw new AuthenticationException(SessionConst.NO_LOGIN);
+            throw new AuthenticationException(AuthConst.NO_LOGIN);
         }
     }
 }

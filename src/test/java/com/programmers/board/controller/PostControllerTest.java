@@ -1,7 +1,7 @@
 package com.programmers.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.programmers.board.constant.SessionConst;
+import com.programmers.board.constant.AuthConst;
 import com.programmers.board.domain.Post;
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.PostDto;
@@ -63,7 +63,7 @@ class PostControllerTest {
         givenPost = PostDto.from(post);
 
         givenSession = new MockHttpSession();
-        givenSession.setAttribute(SessionConst.LOGIN_USER_ID, 1L);
+        givenSession.setAttribute(AuthConst.LOGIN_USER_ID, 1L);
     }
 
     @Nested

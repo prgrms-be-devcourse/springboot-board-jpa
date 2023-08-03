@@ -1,5 +1,6 @@
 package com.programmers.board.service;
 
+import com.programmers.board.constant.AuthConst;
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.UserDto;
 import com.programmers.board.exception.AuthorizationException;
@@ -16,6 +17,8 @@ import java.util.Objects;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private static final String USER_NAME_DUPLICATION = "중복된 회원 이름입니다";
+    private static final String NO_SUCH_USER = "존재하지 않는 회원입니다";
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -32,7 +35,7 @@ public class UserService {
     private void checkUserNameDuplication(String name) {
         userRepository.findByName(name)
                 .ifPresent(user -> {
-                    throw new DuplicateKeyException("중복된 회원 이름입니다");
+                    throw new DuplicateKeyException(USER_NAME_DUPLICATION);
                 });
     }
 
@@ -65,13 +68,13 @@ public class UserService {
 
     private User findUserOrElseThrow(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("일치하는 회원이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException(NO_SUCH_USER));
         return user;
     }
 
     private void checkAuthority(Long loginUserId, Long userId) {
         if (notEqualsUserId(loginUserId, userId)) {
-            throw new AuthorizationException("권한이 없습니다");
+            throw new AuthorizationException(AuthConst.NO_AUTHORIZATION);
         }
     }
 
