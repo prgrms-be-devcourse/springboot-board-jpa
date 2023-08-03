@@ -38,7 +38,6 @@ public class PostService {
 
         Post post = postMapper.toPost(postCreateRequest);
         post.setUser(user);
-        post.setCreatedBy(user.getName());
 
         postRepository.save(post);
     }
