@@ -2,8 +2,9 @@ package com.jpaboard.domain.post.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpaboard.domain.post.application.PostService;
-import com.jpaboard.domain.post.dto.PostCreateRequest;
-import com.jpaboard.domain.post.dto.PostUpdateRequest;
+import com.jpaboard.domain.post.dto.request.PostCreateRequest;
+import com.jpaboard.domain.post.dto.request.PostSearchRequest;
+import com.jpaboard.domain.post.dto.request.PostUpdateRequest;
 import com.jpaboard.domain.user.application.UserService;
 import com.jpaboard.domain.user.dto.request.UserCreationRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +21,6 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
-
-import java.util.Collections;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
@@ -65,7 +64,7 @@ class PostControllerTest {
     void post_create_test() throws Exception {
         PostCreateRequest request = new PostCreateRequest(userId, "게시글 생성 테스트", "테스트 본문");
 
-        mockMvc.perform(post("/api/posts/new")
+        mockMvc.perform(post("/api/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -90,14 +89,24 @@ class PostControllerTest {
         paramMap.add("content", content);
         paramMap.add("keyword", keyword);
 
+        PostSearchRequest request = new PostSearchRequest(title, content, keyword);
+
         mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts")
-                        .params(paramMap))
+                        .params(paramMap)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("post-find", pathParameters(
+                .andDo(document("post-find",
+                        pathParameters(
                                 parameterWithName("title").description("제목").optional(),
                                 parameterWithName("content").description("본문").optional(),
                                 parameterWithName("keyword").description("제목 + 본문").optional()
+                        ),
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목").optional(),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("본문").optional(),
+                                fieldWithPath("keyword").type(JsonFieldType.STRING).description("제목 + 본문").optional()
                         ),
                         responseFields(
                                 fieldWithPath("content.[].id").type(JsonFieldType.NUMBER).description("게시글 Id"),
@@ -106,28 +115,13 @@ class PostControllerTest {
                                 fieldWithPath("content.[].create_at").type(JsonFieldType.STRING).description("생성일"),
                                 fieldWithPath("content.[].update_at").type(JsonFieldType.STRING).description("수정일"),
 
-                                fieldWithPath("pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("정렬 데이터 비었는지 여부"),
-                                fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("비정렬 여부"),
-                                fieldWithPath("pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬 여부"),
-
-                                fieldWithPath("pageable.offset").type(JsonFieldType.NUMBER).description("몇 번째 데이터 인지 (0부터 시작)"),
-                                fieldWithPath("pageable.pageSize").type(JsonFieldType.NUMBER).description("한 페이지당 조회할 데이터 개수"),
-                                fieldWithPath("pageable.pageNumber").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
-                                fieldWithPath("pageable.unpaged").type(JsonFieldType.BOOLEAN).description("페이징 정보를 포함하지 않는지 여부"),
-                                fieldWithPath("pageable.paged").type(JsonFieldType.BOOLEAN).description("페이징 정보를 포함하는지 여부"),
-
-                                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("마지막 페이지인지 여부"),
-                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("전체 요소 개수"),
-                                fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 개수"),
-                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("한 페이지당 조회할 데이터 개수"),
-                                fieldWithPath("number").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
-
-                                fieldWithPath("sort.empty").type(JsonFieldType.BOOLEAN).description("정렬 데이터가 비었는지 여부"),
-                                fieldWithPath("sort.unsorted").type(JsonFieldType.BOOLEAN).description("비정렬 여부"),
-                                fieldWithPath("sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬 여부"),
-                                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("첫 번째 페이지인지 여부"),
                                 fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description("전체 데이터 개수"),
-                                fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("데이터가 비었는지 여부")
+                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("전체 요소 개수"),
+                                fieldWithPath("pageNumber").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
+                                fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("한 페이지당 조회할 데이터 개수"),
+                                fieldWithPath("isFirstPage").type(JsonFieldType.BOOLEAN).description("첫 번째 페이지인지 여부"),
+                                fieldWithPath("hasNextPage").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부"),
+                                fieldWithPath("isLastPage").type(JsonFieldType.BOOLEAN).description("마지막 페이지인지 여부")
                         )));
     }
 
