@@ -40,6 +40,14 @@ public class Post extends BaseTime {
 
         this.title = title;
         this.content = content;
+    public void changeTitle(String title) {
+        validateTitleLength(title);
+        this.title = title;
+    }
+
+    public void changeContent(String content) {
+        validateContentLength(content);
+        this.content = content;
     }
 
     private void validateTitleLength(String title) {
