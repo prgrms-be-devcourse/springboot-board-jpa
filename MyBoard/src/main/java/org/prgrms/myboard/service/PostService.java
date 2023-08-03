@@ -11,9 +11,7 @@ import org.prgrms.myboard.dto.PostUpdateRequestDto;
 import org.prgrms.myboard.repository.PostRepository;
 import org.prgrms.myboard.repository.UserRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,14 +54,6 @@ public class PostService {
             .orElseThrow(() -> new RuntimeException("존재하지 않는 id입니다."));
         post.update(postUpdateRequestDto.title(), postUpdateRequestDto.content());
         return post.toPostResponseDto();
-    }
-
-    @Transactional(readOnly = true)
-    public List<PostResponseDto> findAllByUserName(String userName) {
-        return postRepository.findAllByCreatedBy(userName)
-            .stream()
-            .map(Post::toPostResponseDto)
-            .toList();
     }
 
     @Transactional(readOnly = true)
