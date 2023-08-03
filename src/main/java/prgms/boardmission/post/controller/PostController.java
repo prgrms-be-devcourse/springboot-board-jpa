@@ -4,12 +4,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import prgms.boardmission.ApiResponse;
 import prgms.boardmission.post.dto.PostDto;
+import prgms.boardmission.post.dto.PostUpdateDto;
 import prgms.boardmission.post.service.PostService;
 
 import java.util.NoSuchElementException;
@@ -43,5 +45,11 @@ public class PostController {
     public ApiResponse<PostDto> findById(@PathVariable long postId) {
         PostDto postDto = postService.findById(postId);
         return ApiResponse.ok(postDto);
+    }
+
+    @PatchMapping("/posts/{postId}")
+    public ApiResponse<Long> update(@PathVariable long postId, PostUpdateDto postUpdateDto) {
+        Long updateId = postService.update(postId, postUpdateDto);
+        return ApiResponse.ok(updateId);
     }
 }

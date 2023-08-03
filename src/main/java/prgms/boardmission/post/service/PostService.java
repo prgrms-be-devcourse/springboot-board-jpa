@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import prgms.boardmission.domain.Post;
 import prgms.boardmission.post.PostConverter;
 import prgms.boardmission.post.dto.PostDto;
+import prgms.boardmission.post.dto.PostUpdateDto;
 import prgms.boardmission.post.repository.PostRepository;
 
 import java.util.NoSuchElementException;
@@ -36,5 +37,13 @@ public class PostService {
         return postRepository.findById(postId)
                 .map(PostConverter::convertToPostDto)
                 .orElseThrow(() -> new NoSuchElementException("해당 게시글을 찾을 수 없습니다."));
+    }
+
+    public Long update(Long postId, PostUpdateDto postUpdateDto){
+        Post post = postRepository.findById(postId).get();
+        String editContent = postUpdateDto.content();
+        post.setContent(editContent);
+
+        return post.getId();
     }
 }
