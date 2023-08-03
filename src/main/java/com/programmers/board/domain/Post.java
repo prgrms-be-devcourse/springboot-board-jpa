@@ -2,7 +2,6 @@ package com.programmers.board.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.hibernate.Hibernate;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
