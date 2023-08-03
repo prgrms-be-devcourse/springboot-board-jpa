@@ -61,14 +61,11 @@ class PostControllerTest {
 
   private PostResponse postResponse;
   private PostCreateRequest postCreateRequest;
-  private UserCreateRequest userCreateRequest;
-  private UserResponse userResponse;
-
 
   @BeforeEach
   public void setUp() {
-    userCreateRequest = new UserCreateRequest("배준일", 20, "배드민턴");
-    userResponse = userService.createUser(userCreateRequest);
+    UserCreateRequest userCreateRequest = new UserCreateRequest("배준일", 20, "배드민턴");
+    UserResponse userResponse = userService.createUser(userCreateRequest);
 
     postCreateRequest = new PostCreateRequest(userResponse.id(), "제목", "내용");
     postResponse = postService.createPost(postCreateRequest);
@@ -140,7 +137,7 @@ class PostControllerTest {
     Pageable pageable = PageRequest.of(0, 10);
 
     //when
-    
+
     //then
 
     mockMvc.perform(get("/api/posts")
