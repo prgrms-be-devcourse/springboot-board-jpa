@@ -1,0 +1,51 @@
+== 유저
+
+=== 유저 생성
+
+==== /api/users
+
+.Request
+operation::user-save[snippets='http-request,request-fields']
+
+.Response
+include::{snippets}/user-save/http-response.adoc[]
+
+=== 유저 단건 조회
+
+==== /api/users/{id}
+
+.Request
+operation::user-findById[snippets='http-request,path-parameters']
+
+.Response
+operation::user-findById[snippets='http-response,response-body']
+
+=== 유저 페이지 조회
+
+==== /api/users?page=0&size=10
+
+.Request
+operation::user-findAll[snippets='http-request,query-parameters']
+
+.Response
+operation::user-findAll[snippets='http-response,response-body']
+
+=== 유저 업데이트
+
+==== /api/users/{id}
+
+.Request
+operation::user-updateById[snippets='http-request,path-parameters,request-fields']
+
+.Response
+include::{snippets}/user-updateById/http-response.adoc[]
+
+=== 유저 삭제
+
+==== /api/users/{id}
+
+.Request
+operation::user-deleteById[snippets='http-request,path-parameters']
+
+.Response
+include::{snippets}/user-deleteById/http-response.adoc[]

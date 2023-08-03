@@ -1,0 +1,51 @@
+== 게시글
+
+=== 게시글 생성
+
+==== /api/posts
+
+.Request
+operation::post-save[snippets='http-request,request-fields']
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+
+=== 게시글 단건 조회
+
+==== /api/posts/{id}
+
+.Request
+operation::post-findById[snippets='http-request,path-parameters']
+
+.Response
+operation::post-findById[snippets='http-response,response-body']
+
+=== 게시글 페이지 조회
+
+==== /api/posts?page=0&size=10
+
+.Request
+operation::post-findAll[snippets='http-request,query-parameters']
+
+.Response
+operation::post-findAll[snippets='http-response,response-body']
+
+=== 게시글 업데이트
+
+==== /api/posts/{id}
+
+.Request
+operation::post-updateById[snippets='http-request,path-parameters,request-fields']
+
+.Response
+include::{snippets}/post-updateById/http-response.adoc[]
+
+=== 게시글 삭제
+
+==== /api/posts/{id}
+
+.Request
+operation::post-deleteById[snippets='http-request,path-parameters']
+
+.Response
+include::{snippets}/post-deleteById/http-response.adoc[]
