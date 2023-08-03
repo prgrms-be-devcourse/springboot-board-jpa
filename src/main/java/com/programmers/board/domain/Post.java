@@ -16,7 +16,7 @@ public class Post extends BaseEntity {
     private static final Pattern CONTENT_PATTERN = Pattern.compile("^.+$");
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "post_id")
     private Long id;
 

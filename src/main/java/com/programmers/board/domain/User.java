@@ -17,7 +17,7 @@ public class User extends BaseEntity {
     private static final Pattern HOBBY_PATTERN = Pattern.compile("^[A-Za-z가-힣]{1,50}$");
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "user_id")
     private Long id;
 
