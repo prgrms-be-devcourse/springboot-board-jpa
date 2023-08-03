@@ -1,10 +1,10 @@
-package com.example.jpaboard.user.domain;
+package com.example.jpaboard.member.domain;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-public class Users {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
