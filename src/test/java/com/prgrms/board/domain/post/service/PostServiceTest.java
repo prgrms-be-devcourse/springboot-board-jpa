@@ -28,7 +28,7 @@ import com.prgrms.board.domain.post.exception.PostNotFoundException;
 import com.prgrms.board.domain.post.repository.PostRepository;
 import com.prgrms.board.domain.user.entity.User;
 import com.prgrms.board.domain.user.service.UserService;
-import com.prgrms.board.global.common.PageResponse;
+import com.prgrms.board.global.common.dto.PageResponse;
 import com.prgrms.board.support.PostFixture;
 import com.prgrms.board.support.UserFixture;
 

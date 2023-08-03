@@ -37,6 +37,10 @@ public class User extends BaseEntity {
     private String hobby;
 
     public static User create(String name, int age, String hobby) {
-        return new User(null, name, age, hobby);
+        return User.builder()
+            .name(name)
+            .age(age)
+            .hobby(hobby)
+            .build();
     }
 }

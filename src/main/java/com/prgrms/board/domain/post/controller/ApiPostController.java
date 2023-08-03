@@ -21,8 +21,9 @@ import com.prgrms.board.domain.post.dto.response.PostDetailResponse;
 import com.prgrms.board.domain.post.dto.response.PostResponse;
 import com.prgrms.board.domain.post.entity.Post;
 import com.prgrms.board.domain.post.service.PostService;
-import com.prgrms.board.global.common.BaseResponse;
-import com.prgrms.board.global.common.PageResponse;
+import com.prgrms.board.global.common.dto.BaseResponse;
+import com.prgrms.board.global.common.dto.PageResponse;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -31,32 +32,32 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/posts")
 public class ApiPostController {
 
-	private final PostService postService;
+    private final PostService postService;
 
-	@GetMapping
-	public BaseResponse<PageResponse<Post>> getPosts(
-		@PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
-	) {
-		PageResponse<Post> data = postService.getPosts(pageable);
-		return BaseResponse.ok(GET_POSTS_SUCCESS, data);
-	}
+    @GetMapping
+    public BaseResponse<PageResponse<Post>> getPosts(
+        @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        PageResponse<Post> data = postService.getPosts(pageable);
+        return BaseResponse.ok(GET_POSTS_SUCCESS, data);
+    }
 
-	@GetMapping("/{postId}")
-	public BaseResponse<PostDetailResponse> getPost(@PathVariable Long postId) {
-		PostDetailResponse data = postService.getPost(postId);
-		return BaseResponse.ok(GET_POST_SUCCESS, data);
-	}
+    @GetMapping("/{postId}")
+    public BaseResponse<PostDetailResponse> getPost(@PathVariable Long postId) {
+        PostDetailResponse data = postService.getPost(postId);
+        return BaseResponse.ok(GET_POST_SUCCESS, data);
+    }
 
-	@PostMapping
-	@ResponseStatus(CREATED)
-	public BaseResponse<PostResponse> createPost(@Valid @RequestBody PostCreateRequest request) {
-		PostResponse data = postService.createPost(request);
-		return BaseResponse.created(CREATE_POST_SUCCESS, data);
-	}
+    @PostMapping
+    @ResponseStatus(CREATED)
+    public BaseResponse<PostResponse> createPost(@Valid @RequestBody PostCreateRequest request) {
+        PostResponse data = postService.createPost(request);
+        return BaseResponse.created(CREATE_POST_SUCCESS, data);
+    }
 
-	@PatchMapping("/{postId}")
-	public BaseResponse<PostResponse> updatePost(@PathVariable Long postId, @RequestBody PostUpdateRequest request) {
-		PostResponse data = postService.updatePost(postId, request);
-		return BaseResponse.ok(UPDATE_POST_SUCCESS, data);
-	}
+    @PatchMapping("/{postId}")
+    public BaseResponse<PostResponse> updatePost(@PathVariable Long postId, @RequestBody PostUpdateRequest request) {
+        PostResponse data = postService.updatePost(postId, request);
+        return BaseResponse.ok(UPDATE_POST_SUCCESS, data);
+    }
 }

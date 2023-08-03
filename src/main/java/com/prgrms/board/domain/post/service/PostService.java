@@ -16,7 +16,8 @@ import com.prgrms.board.domain.post.exception.PostNotFoundException;
 import com.prgrms.board.domain.post.repository.PostRepository;
 import com.prgrms.board.domain.user.entity.User;
 import com.prgrms.board.domain.user.service.UserService;
-import com.prgrms.board.global.common.PageResponse;
+import com.prgrms.board.global.common.dto.PageResponse;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -24,35 +25,35 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class PostService {
 
-	private final PostRepository postRepository;
-	private final UserService userService;
+    private final PostRepository postRepository;
+    private final UserService userService;
 
-	public PageResponse<Post> getPosts(Pageable pageable) {
-		Page<Post> posts = postRepository.findAll(pageable);
-		return PageResponse.from(posts);
-	}
+    public PageResponse<Post> getPosts(Pageable pageable) {
+        Page<Post> posts = postRepository.findAll(pageable);
+        return PageResponse.from(posts);
+    }
 
-	public PostDetailResponse getPost(Long postId) {
-		Post post = findPostOrThrow(postId);
-		return PostDetailResponse.from(post);
-	}
+    public PostDetailResponse getPost(Long postId) {
+        Post post = findPostOrThrow(postId);
+        return PostDetailResponse.from(post);
+    }
 
-	@Transactional
-	public PostResponse createPost(PostCreateRequest request) {
-		User user = userService.findUserOrThrow(request.userId());
-		Post post = postRepository.save(request.toEntity(user));
-		return PostResponse.from(post);
-	}
+    @Transactional
+    public PostResponse createPost(PostCreateRequest request) {
+        User user = userService.findUserOrThrow(request.userId());
+        Post post = postRepository.save(request.toEntity(user));
+        return PostResponse.from(post);
+    }
 
-	@Transactional
-	public PostResponse updatePost(Long postId, PostUpdateRequest request) {
-		Post post = findPostOrThrow(postId);
-		post.update(request.title(), request.content());
-		return PostResponse.from(post);
-	}
+    @Transactional
+    public PostResponse updatePost(Long postId, PostUpdateRequest request) {
+        Post post = findPostOrThrow(postId);
+        post.update(request.title(), request.content());
+        return PostResponse.from(post);
+    }
 
-	private Post findPostOrThrow(Long postId) {
-		return postRepository.findById(postId)
-			.orElseThrow(() -> new PostNotFoundException(NO_POST));
-	}
+    private Post findPostOrThrow(Long postId) {
+        return postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFoundException(NO_POST));
+    }
 }

@@ -44,7 +44,11 @@ public class Post extends BaseEntity {
     private String content;
 
     public static Post create(User user, String title, String content) {
-        return new Post(null, user, title, content);
+        return Post.builder()
+            .user(user)
+            .title(title)
+            .content(content)
+            .build();
     }
 
     public void update(String title, String content) {

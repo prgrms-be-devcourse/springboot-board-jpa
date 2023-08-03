@@ -1,4 +1,4 @@
-package com.prgrms.board.global.common;
+package com.prgrms.board.global.common.dto;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.*;
 import static org.springframework.http.HttpStatus.*;
@@ -6,6 +6,8 @@ import static org.springframework.http.HttpStatus.*;
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.prgrms.board.global.common.ErrorCode;
+import com.prgrms.board.global.common.SuccessMessage;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

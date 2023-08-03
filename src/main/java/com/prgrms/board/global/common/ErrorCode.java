@@ -11,6 +11,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ErrorCode {
+    
     NO_USER(NOT_FOUND, "존재하지 않는 유저입니다."),
     NO_POST(NOT_FOUND, "존재하지 않는 게시물입니다."),
     ;
