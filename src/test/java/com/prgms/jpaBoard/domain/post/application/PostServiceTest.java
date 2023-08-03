@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PostServiceTest {
 
     @Autowired
-    PostService postService;
+    private PostService postService;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("게시글을 작성할 수 있다.")
