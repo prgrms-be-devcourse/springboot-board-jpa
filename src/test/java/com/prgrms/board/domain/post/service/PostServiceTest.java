@@ -7,7 +7,6 @@ import static org.mockito.BDDMockito.*;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,22 +43,15 @@ class PostServiceTest {
     @Mock
     private UserService userService;
 
-    private User user;
-
-    @BeforeEach
-    void init() {
-        user = UserFixture.user().build();
-    }
-
     @Test
     @DisplayName("게시물 생성에 성공한다.")
     void create_post_success() {
         // given
-        Long userId = 1L;
+        User user = UserFixture.user().id(1L).build();
         Post post = PostFixture.post().build();
-        PostCreateRequest request = new PostCreateRequest(userId, "제목", "내용");
+        PostCreateRequest request = new PostCreateRequest(user.getId(), "제목", "내용");
 
-        given(userService.findUserOrThrow(userId)).willReturn(user);
+        given(userService.findUserOrThrow(user.getId())).willReturn(user);
         given(postRepository.save(any(Post.class))).willReturn(post);
 
         // when
@@ -77,8 +69,8 @@ class PostServiceTest {
         Post post1 = PostFixture.post().title("제목1").content("내용1").build();
         Post post2 = PostFixture.post().title("제목2").content("내용2").build();
         Post post3 = PostFixture.post().title("제목3").content("내용3").build();
-
         List<Post> posts = List.of(post1, post2, post3);
+
         Pageable pageable = PageRequest.of(0, 2);
         Page<Post> page = new PageImpl<>(posts.subList(0, 2), pageable, posts.size());
 
@@ -97,12 +89,11 @@ class PostServiceTest {
     @DisplayName("특정 게시물 조회에 성공한다.")
     void get_post_success() {
         // given
-        Long postId = 1L;
-        Post post = PostFixture.post().id(postId).build();
-        given(postRepository.findById(postId)).willReturn(Optional.of(post));
+        Post post = PostFixture.post().id(1L).build();
+        given(postRepository.findById(post.getId())).willReturn(Optional.of(post));
 
         // when
-        PostDetailResponse postDetailResponse = postService.getPost(postId);
+        PostDetailResponse postDetailResponse = postService.getPost(post.getId());
 
         // then
         assertThat(postDetailResponse.title()).isEqualTo(post.getTitle());
@@ -113,14 +104,13 @@ class PostServiceTest {
     @DisplayName("게시물 수정에 성공한다.")
     void update_post_success() {
         // given
-        Long postId = 1L;
-        Post post = PostFixture.post().id(postId).build();
+        Post post = PostFixture.post().id(1L).build();
         PostUpdateRequest request = new PostUpdateRequest("수정한 제목", "수정한 내용");
 
-        given(postRepository.findById(postId)).willReturn(Optional.of(post));
+        given(postRepository.findById(post.getId())).willReturn(Optional.of(post));
 
         // when
-        PostResponse result = postService.updatePost(postId, request);
+        PostResponse result = postService.updatePost(post.getId(), request);
 
         // then
         assertThat(result.title()).isEqualTo("수정한 제목");

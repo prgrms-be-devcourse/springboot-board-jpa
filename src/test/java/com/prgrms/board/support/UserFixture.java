@@ -14,7 +14,12 @@ public class UserFixture {
     public static UserFixture user() {
         return new UserFixture();
     }
-    
+
+    public UserFixture id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public User build() {
         return User.builder()
             .id(id)
