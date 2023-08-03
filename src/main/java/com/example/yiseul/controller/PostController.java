@@ -5,6 +5,7 @@ import com.example.yiseul.dto.post.PostPageResponseDto;
 import com.example.yiseul.dto.post.PostResponseDto;
 import com.example.yiseul.dto.post.PostUpdateRequestDto;
 import com.example.yiseul.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public PostResponseDto createPost(@RequestBody PostCreateRequestDto createRequestDto) {
+    public PostResponseDto createPost(@RequestBody @Valid PostCreateRequestDto createRequestDto) {
 
         return postService.createPost(createRequestDto);
     }
@@ -39,7 +40,7 @@ public class PostController {
     @PatchMapping("/{postId}")
     public void updatePost(
             @PathVariable Long postId,
-            @RequestBody PostUpdateRequestDto updateRequestDto) {
+            @RequestBody @Valid PostUpdateRequestDto updateRequestDto) {
 
         postService.updatePost(postId, updateRequestDto);
 

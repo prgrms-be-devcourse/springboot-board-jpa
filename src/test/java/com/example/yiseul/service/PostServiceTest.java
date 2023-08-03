@@ -10,7 +10,6 @@ import com.example.yiseul.dto.post.PostUpdateRequestDto;
 import com.example.yiseul.global.exception.PostException;
 import com.example.yiseul.repository.MemberRepository;
 import com.example.yiseul.repository.PostRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,12 +20,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,15 +38,13 @@ public class PostServiceTest {
     @InjectMocks
     private PostService postService;
 
-//    private PostConverter postConverter; // 질문
-
     private Member member1;
     private Post post;
 
     @BeforeEach
     void setUp(){
         member1 = new Member("hihi", 22, "basketball");
-        post = Post.createPost(member1, "jaws", "scary");
+        post = new Post(member1, "jaws", "scary");
     }
 
     @Test
@@ -88,7 +83,6 @@ public class PostServiceTest {
         // then
         assertThat(responseDto.title()).isEqualTo(post.getTitle());
         assertThat(responseDto.content()).isEqualTo(post.getContent());
-        assertThat(post.getMember().getName()).isEqualTo("hihi");
     }
 
     @Test
@@ -130,8 +124,9 @@ public class PostServiceTest {
         // given
         given(postRepository.existsById(anyLong())).willReturn(true);
 
-        // when
-        postService.deletePost(id);
+        // when & then
+        assertThatCode(() -> postService.deletePost(anyLong()))
+                .doesNotThrowAnyException();
 
         // verify
         verify(postRepository).deleteById(anyLong());

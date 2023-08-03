@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.restdocs.RestDocsAutoConfiguration;
@@ -26,10 +28,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -48,11 +50,15 @@ class MemberControllerTest {
     @MockBean
     private MemberService memberService;
 
-    private MemberResponseDto responseDto;
+    private MemberResponseDto responseDto1;
+    private MemberResponseDto responseDto2;
+    private List<MemberResponseDto> responseDtos;
 
     @BeforeEach
     void setUp(){
-        responseDto = new MemberResponseDto(1L,"hihi", 22, "swim", "2023-07-19 17:00", "hihi");
+        responseDto1 = new MemberResponseDto(1L,"hihi", 22, "swim", "2023-07-19 17:00", "hihi");
+        responseDto2 = new MemberResponseDto(2L,"ja", 24, "dance", "2023-07-30 18:00", "ja");
+        responseDtos = Arrays.asList(responseDto1,responseDto2);
     }
 
     @Test
@@ -62,14 +68,14 @@ class MemberControllerTest {
         MemberCreateRequestDto createRequestDto = new MemberCreateRequestDto("hihi", 22, "hobby");
 
         given(memberService.createMember(createRequestDto))
-                .willReturn(responseDto);
+                .willReturn(responseDto1);
 
         //when,then
         mvc.perform(post("/api/members")
                 .contentType(APPLICATION_JSON)
                 .content(asJsonString(createRequestDto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(responseDto)))
+                .andExpect(content().string(asJsonString(responseDto1)))
 
                 .andDo(document("member-signup",
                         requestFields(
@@ -92,10 +98,7 @@ class MemberControllerTest {
     @DisplayName("멤버 페이징 조회에 성공한다.")
     void getMembers() throws Exception {
         // given
-        List<MemberResponseDto> membersList = Arrays.asList(
-                responseDto,
-                new MemberResponseDto(2L,"ja", 24, "dance", "2023-07-30 18:00", "ja")
-        );
+        MemberPageResponseDto responseDto = new MemberPageResponseDto(responseDtos, 0, 2, 3, 4, true, false);
 
         Page<MemberResponseDto> membersPage = new PageImpl<>(membersList, PageRequest.of(0, 2), membersList.size());
         Pageable pageable = PageRequest.of(0, 2);
@@ -133,12 +136,12 @@ class MemberControllerTest {
     void getMember() throws Exception {
         // given
         given(memberService.getMember(anyLong()))
-                .willReturn(responseDto);
+                .willReturn(responseDto1);
 
         //when & then
         mvc.perform(get("/api/members/{memberId}", 1))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(responseDto)))
+                .andExpect(content().string(asJsonString(responseDto1)))
 
                 .andDo(document("member-getMember",
                         responseFields(
@@ -173,8 +176,6 @@ class MemberControllerTest {
                                         fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
                                         fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
                                 )));
-
-
     }
 
     @Test
@@ -191,9 +192,36 @@ class MemberControllerTest {
                 .andDo(document("member-delete"));
     }
 
+    @ParameterizedTest
+    @CsvSource({"null","1"})
+    @DisplayName("커서 방식 조회에 성공한다.")
+    void getMembersCursor(String cursorId) throws Exception{
+        //given
+        given(memberService.findMembersByCursor(anyLong(), anyInt())).willReturn(responseDtos);
+
+        //when,then 이슬확인
+        mvc.perform(get("/api/members/cursor")
+                .param("cursorId", cursorId != null ? cursorId : "0"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(asJsonString(responseDtos)))
+
+                .andDo(document("member-getMembersByCursor",
+                        responseFields(
+                                fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
+                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("[].age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("[].hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("생성시각"),
+                                fieldWithPath("[].createdBy").type(JsonFieldType.STRING).description("생성자")
+                        )
+                ));
+
+    }
+
     private String asJsonString(Object obj) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
 
         return mapper.writeValueAsString(obj);
     }
+
 }

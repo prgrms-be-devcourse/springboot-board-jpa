@@ -1,4 +1,14 @@
 package com.example.yiseul.dto.post;
 
-public record PostCreateRequestDto(Long memberId, String title, String content) {
+import jakarta.validation.constraints.NotBlank;
+
+public record PostCreateRequestDto(
+        @NotBlank
+        Long memberId,
+
+        @NotBlank
+        String title,
+
+        @NotBlank
+        String content) {
 }

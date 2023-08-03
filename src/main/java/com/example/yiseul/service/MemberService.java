@@ -69,8 +69,6 @@ public class MemberService {
     public List<MemberResponseDto> findMembersByCursor(Long cursor, int size) {
         Pageable pageable = buildCursorPageable(cursor, size);
         List<Member> members = getMemberList(cursor, pageable);
-        // 수정 가져온 정보에 대해서 id값을 반환 : 정보를 두번준다..
-        // Long lastMemberId = members.get(members.size() - 1).getId();
 
         return members.stream()
                 .map(member -> MemberConverter.convertMemberResponseDto(member))
