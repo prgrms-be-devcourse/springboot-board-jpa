@@ -1,11 +1,11 @@
 package com.prgms.jpaBoard.domain.user;
 
-import com.prgms.jpaBoard.global.BaseEntity;
+import com.prgms.jpaBoard.global.createdTime;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends createdTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -29,7 +29,6 @@ public class User extends BaseEntity {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        setCreatedBy(name);
     }
 
     public Long getId() {

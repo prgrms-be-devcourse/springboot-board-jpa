@@ -1,14 +1,12 @@
 package com.prgms.jpaBoard.domain.post;
 
 import com.prgms.jpaBoard.domain.user.User;
-import com.prgms.jpaBoard.global.BaseEntity;
+import com.prgms.jpaBoard.global.createdUser;
 import jakarta.persistence.*;
-
-import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "posts")
-public class Post extends BaseEntity {
+public class Post extends createdUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -33,6 +31,7 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
         this.user = user;
+        setCreatedBy(user.getName());
     }
     
     public void updatePost(String title, String content) {
