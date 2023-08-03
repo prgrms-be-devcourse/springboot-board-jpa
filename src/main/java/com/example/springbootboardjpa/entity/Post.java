@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,11 +34,26 @@ public class Post extends BaseEntity {
     @JoinColumn(columnDefinition = "user_id", referencedColumnName = "id")
     private User user;
 
+    @Builder
+    public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+
     public void updateUser(User user) {
         if (Objects.nonNull(this.user)) {
             this.user.removePost(this);
         }
         this.user = user;
         user.addPost(this);
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
     }
 }
