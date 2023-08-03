@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class ApiResponse<T> {
 
-    private final int statusCode;
+    private final Integer statusCode;
     private final T data;
     @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private final LocalDateTime serverDatetime;
