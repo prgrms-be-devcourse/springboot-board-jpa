@@ -2,8 +2,6 @@ package org.prgrms.myboard.domain;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.prgrms.myboard.dto.UserResponseDto;
 
@@ -17,15 +15,12 @@ import java.util.List;
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @NotNull(message = "id는 null이면 안됩니다.")
     @Column(nullable = false)
     private Long id;
 
-    @NotBlank(message = "이름이 비어있습니다.")
     @Column(nullable = false)
     private String name;
 
-    @Min(value = 1, message = "나이는 최소 한살입니다.")
     @Column(nullable = false)
     private int age;
 
@@ -38,25 +33,34 @@ public class User extends BaseEntity {
 
     @Builder
     public User(String name, int age, String hobby) {
+        validateName(name);
+        validateAge(age);
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-//        this.posts = new ArrayList<>();
     }
 
-    public void changeName(String name) {
-        this.name = name;
+    private void validateName(String name) {
+        if(name == null || name.isBlank() || name.length() >= 4) {
+            throw new IllegalArgumentException("잘못된 이름입니다.");
+        }
     }
 
-    public void changeAge(int age) {
-        this.age = age;
-    }
-
-    public void changeHobby(String hobby) {
-        this.hobby = hobby;
+    private void validateAge(int age) {
+        if(age <= 0 || age >= 30) {
+            throw new IllegalArgumentException("잘못된 나이입니다.");
+        }
     }
 
     public UserResponseDto toUserResponseDto() {
         return new UserResponseDto(id, name, age, hobby, posts, getCreatedAt(), getUpdatedAt());
+    }
+
+    public void writePost(Post post) {
+        posts.add(post);
+    }
+
+    public void removePost(Post post) {
+        posts.remove(post);
     }
 }

@@ -19,37 +19,36 @@ import java.util.Objects;
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @NotNull(message = "id는 null이면 안됩니다.")
     @Column(name = "post_id", nullable = false)
     private Long id;
 
-    @NotBlank(message = "제목이 비어있습니다.")
+    @Column(nullable = false)
     private String title;
 
-    @NotBlank(message = "내용이 비어있습니다.")
+    @Column(nullable = false)
     private String content;
 
-    @Column(name = "created_by")
-    @NotBlank(message = "작성자가 비어있으면 안됩니다.")
+    @Column(name = "created_by", nullable = false)
     private String createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @NotNull
     private User user;
 
-    public Post(String title, String content) {
+    public Post(String title, String content, User user) {
+        validateTitle();
         this.title = title;
         this.content = content;
+        allocateUser(user);
     }
 
     public void allocateUser(User user) {
         if(Objects.nonNull(this.user)) {
-            user.getPosts().remove(this);
+            user.removePost(this);
         }
         this.user = user;
         this.createdBy = user.getName();
-        user.getPosts().add(this);
+        user.writePost(this);
     }
 
     public void update(String title, String content) {
@@ -63,5 +62,11 @@ public class Post extends BaseEntity {
 
     public PostResponseDto toPostResponseDto() {
         return new PostResponseDto(id, title, content, createdBy, getCreatedAt(), getUpdatedAt());
+    }
+
+    private void validateTitle() {
+        if(title.length() >= 30) {
+            throw new IllegalArgumentException("제목의 길이는 30글자 이하입니다.");
+        }
     }
 }
