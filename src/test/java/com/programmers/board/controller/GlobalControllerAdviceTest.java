@@ -48,6 +48,11 @@ class GlobalControllerAdviceTest {
 
         }
 
+        @GetMapping("/illegal-argument")
+        public void illegalArgument() {
+            throw new IllegalArgumentException("input is invalid");
+        }
+
         @GetMapping("/ex")
         public void ex() {
             throw new RuntimeException("unexpected ex");
@@ -98,6 +103,25 @@ class GlobalControllerAdviceTest {
         resultActions.andExpect(status().isBadRequest())
                 .andDo(print())
                 .andDo(document("ex-method-argument-not-valid",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                        )));
+    }
+
+    @Test
+    @DisplayName("성공: IllegalArgumentException 예외 처리")
+    void illegalArgumentExHandle() throws Exception {
+        //given
+        //when
+        ResultActions resultActions = mvc.perform(get("/illegal-argument"));
+
+        //then
+        resultActions.andExpect(status().isBadRequest())
+                .andDo(print())
+                .andDo(document("ex-illegal-argument",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(

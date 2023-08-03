@@ -33,6 +33,12 @@ public class GlobalControllerAdvice {
         return sb.toString();
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ErrorResult illegalArgumentExHandle(IllegalArgumentException ex) {
+        return new ErrorResult(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    }
+
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ErrorResult exHandle(Exception ex) {
