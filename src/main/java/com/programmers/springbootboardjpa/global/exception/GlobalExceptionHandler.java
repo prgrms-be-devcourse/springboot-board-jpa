@@ -42,9 +42,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<ErrorResponse>> handlerException(Exception exception) {
         ErrorResponse errorResponse = createTopLevelErrorResponse(exception);
 
-        log.info(" : ", exception);
-
-        return ResponseEntity.status(500).body(ApiResponse.fail(errorResponse));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .body(ApiResponse.fail(errorResponse));
     }
 
     private ErrorResponse createErrorResponse(BusinessException businessException) {
