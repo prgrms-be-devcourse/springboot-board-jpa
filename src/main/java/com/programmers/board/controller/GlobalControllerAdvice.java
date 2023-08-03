@@ -14,14 +14,14 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NoSuchElementException.class)
     public ErrorResult noSuchElementExHandle(NoSuchElementException ex) {
-        return new ErrorResult(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ErrorResult(ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorResult methodArgumentNotValidExHandle(MethodArgumentNotValidException ex) {
         String errorMessages = createErrorMessages(ex);
-        return new ErrorResult(HttpStatus.BAD_REQUEST.value(), errorMessages);
+        return new ErrorResult(errorMessages);
     }
 
     private String createErrorMessages(MethodArgumentNotValidException ex) {
@@ -36,13 +36,13 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResult illegalArgumentExHandle(IllegalArgumentException ex) {
-        return new ErrorResult(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ErrorResult(ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ErrorResult exHandle(Exception ex) {
         String errorMessage = "Unexpected Error occurred";
-        return new ErrorResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMessage);
+        return new ErrorResult(errorMessage);
     }
 }

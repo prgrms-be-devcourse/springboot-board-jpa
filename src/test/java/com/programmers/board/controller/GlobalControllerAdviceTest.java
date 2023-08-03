@@ -86,7 +86,6 @@ class GlobalControllerAdviceTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
                         )));
     }
@@ -106,7 +105,6 @@ class GlobalControllerAdviceTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
                         )));
     }
@@ -125,7 +123,6 @@ class GlobalControllerAdviceTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
                         )));
     }
@@ -144,7 +141,6 @@ class GlobalControllerAdviceTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
                         )));
     }

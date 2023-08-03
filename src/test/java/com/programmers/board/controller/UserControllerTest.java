@@ -161,7 +161,6 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.code").isNumber())
                     .andExpect(jsonPath("$.message").isString());
         }
 
@@ -180,7 +179,6 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.code").isNumber())
                     .andExpect(jsonPath("$.message").isString());
         }
 
@@ -199,7 +197,6 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.code").isNumber())
                     .andExpect(jsonPath("$.message").isString());
         }
     }
@@ -285,7 +282,6 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.code").isNumber())
                     .andExpect(jsonPath("$.message").isString());
         }
 
@@ -306,7 +302,6 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.code").isNumber())
                     .andExpect(jsonPath("$.message").isString());
         }
 
@@ -325,7 +320,6 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.code").isNumber())
                     .andExpect(jsonPath("$.message").isString());
         }
 
@@ -347,7 +341,6 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.code").isNumber())
                     .andExpect(jsonPath("$.message").isString());
         }
     }
