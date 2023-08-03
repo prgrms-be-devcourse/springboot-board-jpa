@@ -56,12 +56,4 @@ public class PostService {
     foundPost.updateTitle(postUpdateRequest.title());
     foundPost.updateContent(postUpdateRequest.content());
   }
-
-  @Transactional
-  public void deletePost(Long postId) {
-    
-    Post foundPost = postRepository.findById(postId).orElseThrow(EntityNotFoundException::new);
-
-    postRepository.delete(foundPost);
-  }
 }
