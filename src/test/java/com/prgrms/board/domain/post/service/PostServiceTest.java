@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,8 +20,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.prgrms.board.domain.post.dto.request.PostCreateRequest;
+import com.prgrms.board.domain.post.dto.request.PostUpdateRequest;
+import com.prgrms.board.domain.post.dto.response.PostDetailResponse;
 import com.prgrms.board.domain.post.dto.response.PostResponse;
 import com.prgrms.board.domain.post.entity.Post;
+import com.prgrms.board.domain.post.exception.PostNotFoundException;
 import com.prgrms.board.domain.post.repository.PostRepository;
 import com.prgrms.board.domain.user.entity.User;
 import com.prgrms.board.domain.user.service.UserService;
@@ -44,7 +48,7 @@ class PostServiceTest {
 
     @BeforeEach
     void init() {
-        user = UserFixture.create();
+        user = UserFixture.createByBuilder();
     }
 
     @Test
@@ -52,7 +56,9 @@ class PostServiceTest {
     void create_post_success() {
         // given
         PostCreateRequest request = new PostCreateRequest(user.getId(), "제목", "내용");
-        Post post = PostFixture.create(user, "제목", "내용");
+        Post post = PostFixture.createByBuilder(user, "제목", "내용");
+
+        given(userService.findUserOrThrow(any(Long.class))).willReturn(user);
         given(postRepository.save(any(Post.class))).willReturn(post);
 
         // when
@@ -60,6 +66,7 @@ class PostServiceTest {
 
         // then
         assertThat(result.title()).isEqualTo("제목");
+        assertThat(result.content()).isEqualTo("내용");
     }
 
     @Test
@@ -80,6 +87,52 @@ class PostServiceTest {
 
         // then
         assertThat(result.totalCount()).isEqualTo(3);
+        assertThat(result.totalPage()).isEqualTo(2);
         assertThat(result.items()).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("특정 게시물 조회에 성공한다.")
+    void get_post_success() {
+        // given
+        Post post = PostFixture.createByBuilder(user, "제목1", "내용1");
+        given(postRepository.findById(any(Long.class))).willReturn(Optional.of(post));
+
+        // when
+        PostDetailResponse postDetailResponse = postService.getPost(post.getId());
+
+        // then
+        assertThat(postDetailResponse.title()).isEqualTo("제목1");
+        assertThat(postDetailResponse.content()).isEqualTo("내용1");
+    }
+
+    @Test
+    @DisplayName("게시물 수정에 성공한다.")
+    void update_post_success() {
+        // given
+        PostUpdateRequest request = new PostUpdateRequest("수정한 제목", "수정한 내용");
+        Post post = PostFixture.createByBuilder(user, "제목", "내용");
+
+        given(postRepository.findById(any(Long.class))).willReturn(Optional.of(post));
+
+        // when
+        PostResponse result = postService.updatePost(post.getId(), request);
+
+        // then
+        assertThat(result.title()).isEqualTo("수정한 제목");
+        assertThat(result.content()).isEqualTo("수정한 내용");
+    }
+
+    @Test
+    @DisplayName("존재하는 게시물이 없는 경우 예외가 발생한다.")
+    void get_post_not_found() {
+        // given
+        Post post = PostFixture.createByBuilder(user, "제목1", "내용1");
+        given(postRepository.findById(any(Long.class))).willReturn(Optional.empty());
+
+        // when, then
+        assertThatThrownBy(() -> postService.getPost(post.getId()))
+            .isInstanceOf(PostNotFoundException.class)
+            .hasMessage("존재하지 않는 게시물입니다.");
     }
 }
