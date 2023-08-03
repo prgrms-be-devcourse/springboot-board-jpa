@@ -1,0 +1,5 @@
+[source,bash]
+----
+$ echo '{"content":"edit content"}' | http PATCH 'http://localhost:8080/posts/1' \
+    'Content-Type:application/json;charset=UTF-8'
+----

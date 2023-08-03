@@ -1,0 +1,8 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 66
+
+{"statusCode":200,"data":1,"serverDatetime":"2023-08-03 14:37:12"}
+----

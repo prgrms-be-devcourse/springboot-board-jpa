@@ -1,0 +1,8 @@
+|===
+|Path|Type|Description
+
+|`+content+`
+|`+String+`
+|content
+
+|===
