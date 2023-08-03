@@ -36,18 +36,18 @@ import com.prgrms.board.support.UserFixture;
 class ApiPostControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    PostRepository postRepository;
+    private PostRepository postRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
-    User user;
+    private User user;
 
     @BeforeEach
     void init() {
