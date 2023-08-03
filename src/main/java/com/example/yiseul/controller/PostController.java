@@ -26,7 +26,7 @@ public class PostController {
     }
 
     @GetMapping
-    public PostPageResponseDto getAllPosts(Pageable pageable){
+    public PostPageResponseDto getPosts(Pageable pageable){
 
         return postService.getPosts(pageable);
     }
