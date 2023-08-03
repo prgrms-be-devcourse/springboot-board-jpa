@@ -27,10 +27,10 @@ import static org.mockito.Mockito.when;
 class UserServicePagenationTest {
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @InjectMocks
-    UserService userService;
+    private UserService userService;
 
 
     @BeforeEach

@@ -13,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class UserServiceBasicTest {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
 
     @Test

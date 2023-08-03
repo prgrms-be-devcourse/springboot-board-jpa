@@ -2,6 +2,7 @@ package devcource.hihi.boardjpa.controller;
 
 import devcource.hihi.boardjpa.domain.Post;
 import devcource.hihi.boardjpa.dto.post.CreatePostDto;
+import devcource.hihi.boardjpa.dto.post.PageDto;
 import devcource.hihi.boardjpa.dto.post.UpdatePostDto;
 import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import devcource.hihi.boardjpa.service.PostService;
@@ -21,8 +22,9 @@ public class PostRestController {
         this.postService = postService;
     }
     @GetMapping
-    public ResponseEntity<List<Post>> getPost(@RequestParam Long cursorId, @RequestParam int limit) {
-        return ResponseEntity.ok(postService.getPosts(cursorId, limit));
+    public PageDto<Post> getPostsByCursor(@RequestParam(value = "cursor", required = false) Long cursor,
+                                          @RequestParam(value = "limit", defaultValue = "10") int limit) {
+        return postService.getPostsByCursor(cursor, limit);
     }
 
     @PostMapping
