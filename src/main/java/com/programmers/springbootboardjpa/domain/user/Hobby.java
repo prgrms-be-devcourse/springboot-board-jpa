@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Collections;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,6 +27,10 @@ public enum Hobby {
 
     @JsonCreator
     public static Hobby from(String hobbyName) {
+        if (!hobbyNames.containsKey(hobbyName)) {
+            throw new NoSuchElementException("입력하신 취미는 존재하지않는 취미입니다.");
+        }
+
         return hobbyNames.get(hobbyName);
     }
 
