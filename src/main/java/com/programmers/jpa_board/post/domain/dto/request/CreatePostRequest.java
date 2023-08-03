@@ -8,6 +8,12 @@ public class CreatePostRequest {
     public CreatePostRequest() {
     }
 
+    public CreatePostRequest(String title, String content, Long userId) {
+        this.title = title;
+        this.content = content;
+        this.userId = userId;
+    }
+
     public String getTitle() {
         return title;
     }

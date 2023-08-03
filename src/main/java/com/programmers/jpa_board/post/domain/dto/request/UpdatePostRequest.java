@@ -7,6 +7,11 @@ public class UpdatePostRequest {
     public UpdatePostRequest() {
     }
 
+    public UpdatePostRequest(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     public String getTitle() {
         return title;
     }
