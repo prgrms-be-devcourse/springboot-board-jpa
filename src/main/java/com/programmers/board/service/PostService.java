@@ -24,8 +24,7 @@ public class PostService {
 
     @Transactional
     public Long createPost(Long userId, String title, String content) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저입니다"));
+        User user = findUserOrElseThrow(userId);
         Post post = new Post(title, content, user);
         postRepository.save(post);
         return post.getId();
@@ -58,8 +57,12 @@ public class PostService {
     }
 
     private Post findPostOrElseThrow(Long postId) {
-        Post post = postRepository.findById(postId)
+        return postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 게시글입니다"));
-        return post;
+    }
+
+    private User findUserOrElseThrow(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저입니다"));
     }
 }
