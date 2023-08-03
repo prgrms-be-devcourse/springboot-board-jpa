@@ -44,7 +44,7 @@ public class PostController {
   }
 
   @PutMapping("/{postId}")
-  @ResponseStatus(HttpStatus.OK)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void updatePost(@PathVariable("postId") Long postId,
       @RequestBody @Valid PostUpdateRequest postUpdateRequest) {
     postService.updatePost(postId, postUpdateRequest);

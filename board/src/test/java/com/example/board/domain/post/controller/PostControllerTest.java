@@ -19,8 +19,6 @@ import com.example.board.domain.user.dto.UserCreateRequest;
 import com.example.board.domain.user.dto.UserResponse;
 import com.example.board.domain.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,8 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -130,13 +126,6 @@ class PostControllerTest {
   @DisplayName("성공 - 게시글 페이징 조회")
   void getPosts() throws Exception {
     //given
-    List<PostResponse> postsList = Arrays.asList(
-        postResponse,
-        new PostResponse(postResponse.id() + 1L, "제목2", "내용2", "2023-08-03 18:00", "배준일")
-    );
-
-    Page<PostResponse> postsPage = new PageImpl<>(postsList, PageRequest.of(0, 10),
-        postsList.size());
     Pageable pageable = PageRequest.of(0, 10);
 
     //when
@@ -203,7 +192,7 @@ class PostControllerTest {
     mockMvc.perform(put("/api/posts/{postId}", savedPostId)
             .content(objectMapper.writeValueAsString(postUpdateRequest))
             .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
+        .andExpect(status().isNoContent())
         .andDo(print())
         .andDo(document("post-update",
             requestFields(
