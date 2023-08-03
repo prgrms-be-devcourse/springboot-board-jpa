@@ -2,6 +2,7 @@ package com.programmers.domain.post.application;
 
 import com.programmers.domain.post.application.converter.PostConverter;
 import com.programmers.domain.post.ui.dto.PostDto;
+import com.programmers.domain.post.ui.dto.PostResponseDto;
 import com.programmers.domain.post.ui.dto.PostUpdateDto;
 import com.programmers.domain.user.application.UserService;
 import com.programmers.domain.user.application.UserServiceImpl;
@@ -56,27 +57,27 @@ class PostServiceImplTest {
         Long postId = postService.createPost(postDto);
 
         // When
-        PostDto post = postService.findPost(postId);
+        PostResponseDto post = postService.findPost(postId);
 
         // Then
-        assertThat(post).isNotNull();
+        assertThat(postId).isEqualTo(post.postId());
     }
 
     @Test
     void findAll() {
         // given
         UserDto userDto = new UserDto("name", 25, "hobby");
-        userService.createUser(userDto);
+        Long userId = userService.createUser(userDto);
 
-        PostDto postDto = new PostDto("title", "content", 1L);
-        PostDto postDto2 = new PostDto("제목", "내용", 1L);
+        PostDto postDto = new PostDto("title", "content", userId);
+        PostDto postDto2 = new PostDto("제목", "내용", userId);
         postService.createPost(postDto);
         postService.createPost(postDto2);
 
         PageRequest pageRequest = PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "id"));
 
         // when
-        List<PostDto> posts = postService.findAll(pageRequest);
+        List<PostResponseDto> posts = postService.findAll(pageRequest);
 
         // then
         int expectedCount = 2;
@@ -95,7 +96,7 @@ class PostServiceImplTest {
         PostUpdateDto postUpdateDto = new PostUpdateDto("제목", "내용");
 
         // when
-        PostDto updatedPost = postService.updatePost(postUpdateDto, savedPostId);
+        PostResponseDto updatedPost = postService.updatePost(postUpdateDto, savedPostId);
 
         // then
         assertThat(updatedPost.title()).isEqualTo(postUpdateDto.title());
