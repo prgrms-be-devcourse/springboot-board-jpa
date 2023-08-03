@@ -4,6 +4,7 @@ import com.jpaboard.domain.user.dto.request.UserCreationRequest;
 import com.jpaboard.domain.user.dto.request.UserUpdateRequest;
 import com.jpaboard.domain.user.dto.response.UserResponse;
 import jakarta.persistence.EntityNotFoundException;
+import org.assertj.core.api.ObjectAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,9 @@ class UserServiceImplTest {
         userService.updateUser(userId, request);
         UserResponse userResponse = userService.findUserById(userId);
         // then
-        assertThat(userResponse).isNotNull();
+        assertThat(userResponse).isNotNull()
+                .extracting(UserResponse::name, UserResponse::age, UserResponse::hobby)
+                .containsExactly(request.name(), request.age(), request.hobby());
     }
 
     @Test
