@@ -7,18 +7,16 @@ import com.programmers.board.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import static com.programmers.board.constant.AuthConst.LOGIN_USER_ID;
 
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class LoginController {
     private final LoginService loginService;
-
-    public LoginController(LoginService loginService) {
-        this.loginService = loginService;
-    }
 
     @PostMapping("/login")
     public void login(@RequestBody @Valid LoginRequest request,

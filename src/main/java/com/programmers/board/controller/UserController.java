@@ -10,18 +10,16 @@ import com.programmers.board.dto.request.UsersGetRequest;
 import com.programmers.board.exception.AuthenticationException;
 import com.programmers.board.service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users")

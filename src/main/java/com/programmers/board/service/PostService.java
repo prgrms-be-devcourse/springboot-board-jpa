@@ -7,6 +7,7 @@ import com.programmers.board.dto.PostDto;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.PostRepository;
 import com.programmers.board.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -15,17 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
     private static final String NO_SUCH_USER = "존재하지 않는 회원입니다";
     private static final String NO_SUCH_POST = "존재하지 않은 게시글입니다";
-    
+
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-    }
 
     @Transactional
     public Long createPost(Long userId, String title, String content) {

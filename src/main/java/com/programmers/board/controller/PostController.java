@@ -10,6 +10,7 @@ import com.programmers.board.dto.request.PostsGetRequest;
 import com.programmers.board.exception.AuthenticationException;
 import com.programmers.board.service.PostService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,9 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/posts")

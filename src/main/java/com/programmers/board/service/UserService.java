@@ -5,6 +5,7 @@ import com.programmers.board.domain.User;
 import com.programmers.board.dto.UserDto;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,14 +16,12 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
     private static final String USER_NAME_DUPLICATION = "중복된 회원 이름입니다";
     private static final String NO_SUCH_USER = "존재하지 않는 회원입니다";
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     @Transactional
     public Long createUser(String name, int age, String hobby) {
