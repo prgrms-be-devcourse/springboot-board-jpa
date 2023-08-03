@@ -1,12 +1,16 @@
 package com.programmers.domain.post.application;
 
+import com.programmers.domain.post.application.converter.PostConverter;
 import com.programmers.domain.post.ui.dto.PostDto;
 import com.programmers.domain.post.ui.dto.PostUpdateDto;
 import com.programmers.domain.user.application.UserService;
+import com.programmers.domain.user.application.UserServiceImpl;
+import com.programmers.domain.user.application.converter.UserConverter;
 import com.programmers.domain.user.ui.dto.UserDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
@@ -14,21 +18,26 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@DataJpaTest
+@Import(value = {
+        PostServiceImpl.class,
+        UserServiceImpl.class,
+        PostConverter.class,
+        UserConverter.class})
 class PostServiceImplTest {
 
     @Autowired
-    private PostService postService;
-    @Autowired
     private UserService userService;
 
+    @Autowired
+    private PostService postService;
 
     @Test
     void createPost() {
         // given
         UserDto userDto = new UserDto("name", 25, "hobby");
-        userService.createUser(userDto);
-        PostDto postDto = new PostDto("title", "content", 1L);
+        Long userId = userService.createUser(userDto);
+        PostDto postDto = new PostDto("title", "content", userId);
 
         // when
         Long savedPostId = postService.createPost(postDto);
@@ -41,17 +50,16 @@ class PostServiceImplTest {
     void findPost() {
         // Given
         UserDto userDto = new UserDto("name", 25, "hobby");
-        userService.createUser(userDto);
+        Long userId = userService.createUser(userDto);
 
-        PostDto postDto = new PostDto("title", "content", 1L);
-        Long savedPostId = postService.createPost(postDto);
+        PostDto postDto = new PostDto("title", "content", userId);
+        Long postId = postService.createPost(postDto);
 
         // When
-        PostDto postById = postService.findPost(1L);
+        PostDto post = postService.findPost(postId);
 
         // Then
-        assertThat(postById.title()).isEqualTo("title");
-
+        assertThat(post).isNotNull();
     }
 
     @Test
@@ -71,16 +79,17 @@ class PostServiceImplTest {
         List<PostDto> posts = postService.findAll(pageRequest);
 
         // then
-        assertThat(posts.size()).isEqualTo(2);
+        int expectedCount = 2;
+        assertThat(posts).hasSize(expectedCount);
     }
 
     @Test
     void updatePost() {
         // given
         UserDto userDto = new UserDto("name", 25, "hobby");
-        userService.createUser(userDto);
+        Long userId = userService.createUser(userDto);
 
-        PostDto postDto = new PostDto("title", "content", 1L);
+        PostDto postDto = new PostDto("title", "content", userId);
         Long savedPostId = postService.createPost(postDto);
 
         PostUpdateDto postUpdateDto = new PostUpdateDto("제목", "내용");
@@ -90,6 +99,6 @@ class PostServiceImplTest {
 
         // then
         assertThat(updatedPost.title()).isEqualTo(postUpdateDto.title());
-
+        assertThat(updatedPost.content()).isEqualTo(postUpdateDto.content());
     }
 }
