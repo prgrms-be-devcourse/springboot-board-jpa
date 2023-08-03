@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -39,7 +40,7 @@ public class User extends BaseEntity {
   private String name;
 
   @NotNull
-  @Size(min = AGE_MIN)
+  @Min(AGE_MIN)
   @Column(nullable = false)
   private int age;
 
