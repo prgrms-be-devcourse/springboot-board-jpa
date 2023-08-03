@@ -5,9 +5,7 @@ public enum Hobby {
     GAME("게임"),
     READING("독서"),
     SINGING("노래"),
-
     COOKING("요리");
-
     private final String hobbyName;
 
     Hobby(String hobby) {
