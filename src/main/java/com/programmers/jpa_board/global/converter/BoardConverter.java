@@ -11,39 +11,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class BoardConverter {
     public User createUsertoUser(CreateUserRequest dto) {
-        return User.builder()
-                .name(dto.getName())
-                .age(dto.getAge())
-                .hobby(dto.getHobby())
-                .build();
+        return new User(dto.getName(), dto.getAge(), dto.getHobby());
     }
 
     public UserResponse userToDto(User user) {
-        return UserResponse.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .age(user.getAge())
-                .hobby(user.getHobby())
-                .posts(user.getPosts())
-                .createAt(user.getCreatedAt())
-                .build();
+        return new UserResponse(user.getId(), user.getName(), user.getAge(), user.getHobby(), user.getPosts(), user.getCreatedAt());
     }
 
     public Post createPostToPost(CreatePostRequest dto) {
-        return Post.builder()
-                .title(dto.getTitle())
-                .content(dto.getContent())
-                .build();
+        return new Post(dto.getTitle(), dto.getContent());
     }
 
     public PostResponse postToDto(Post post) {
-        return PostResponse.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .userId(post.getUser().getId())
-                .createdBy(post.getUser().getName())
-                .createAt(post.getCreatedAt())
-                .build();
+        return new PostResponse(post.getId(), post.getTitle(), post.getContent(), post.getUser().getId(), post.getUser().getName(), post.getCreatedAt());
     }
 }

@@ -52,11 +52,7 @@ class PostControllerTest {
 
     @BeforeEach
     void init() {
-        user = User.builder()
-                .name("신범철")
-                .age(26)
-                .hobby("헬스")
-                .build();
+        user = new User("신범철", 26, "헬스");
         userRepository.save(user);
     }
 

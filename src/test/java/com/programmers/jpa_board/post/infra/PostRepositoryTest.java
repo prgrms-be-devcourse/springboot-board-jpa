@@ -21,10 +21,7 @@ class PostRepositoryTest {
     @Test
     void 저장_성공() {
         //given
-        Post post = Post.builder()
-                .title("제목")
-                .content("sesada")
-                .build();
+        Post post = new Post("제목", "내용");
 
         //when
         Post saved = repository.save(post);

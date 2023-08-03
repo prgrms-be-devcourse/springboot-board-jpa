@@ -22,11 +22,7 @@ class UserRepositoryTest {
     @Test
     void 저장_성공() {
         //given
-        User user = User.builder()
-                .name("신범철")
-                .age(26)
-                .hobby("헬스")
-                .build();
+        User user = new User("신범철", 26, "헬스");
 
         //when
         User saved = repository.save(user);

@@ -1,7 +1,5 @@
 package com.programmers.jpa_board.post.domain.dto.response;
 
-import lombok.Builder;
-
 import java.time.LocalDateTime;
 
 public class PostResponse {
@@ -12,7 +10,6 @@ public class PostResponse {
     private String createdBy;
     private LocalDateTime createAt;
 
-    @Builder
     public PostResponse(Long id, String title, String content, Long userId, String createdBy, LocalDateTime createAt) {
         this.id = id;
         this.title = title;
