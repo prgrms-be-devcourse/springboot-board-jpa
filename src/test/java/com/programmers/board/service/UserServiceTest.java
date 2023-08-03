@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -59,6 +60,21 @@ class UserServiceTest {
 
             //then
             then(userRepository).should().save(any());
+        }
+
+        @Test
+        @DisplayName("예외: 중복된 회원 이름")
+        void createUser_ButNameDuplication() {
+            //given
+            String name = "name";
+            User user = new User(name, 20, "hobby");
+
+            given(userRepository.findByName(any())).willReturn(Optional.of(user));
+
+            //when
+            //then
+            assertThatThrownBy(() -> userService.createUser(name, 20, "hobby"))
+                    .isInstanceOf(DuplicateKeyException.class);
         }
 
         @ParameterizedTest

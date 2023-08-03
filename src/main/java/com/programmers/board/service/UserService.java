@@ -4,6 +4,7 @@ import com.programmers.board.domain.User;
 import com.programmers.board.dto.UserDto;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.UserRepository;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,17 @@ public class UserService {
 
     @Transactional
     public Long createUser(String name, int age, String hobby) {
+        checkUserNameDuplication(name);
         User user = new User(name, age, hobby);
         userRepository.save(user);
         return user.getId();
+    }
+
+    private void checkUserNameDuplication(String name) {
+        userRepository.findByName(name)
+                .ifPresent(user -> {
+                    throw new DuplicateKeyException("중복된 회원 이름입니다");
+                });
     }
 
     @Transactional(readOnly = true)
