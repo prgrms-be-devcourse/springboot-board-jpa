@@ -7,6 +7,8 @@ import programmers.jpaBoard.dto.PostResponse;
 import programmers.jpaBoard.entity.Post;
 import programmers.jpaBoard.repository.PostRepository;
 
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -18,6 +20,17 @@ public class PostService {
 
         Post savedPost = postRepository.save(post);
         return toDto(savedPost);
+    }
+
+    public PostResponse getPost(Long id) {
+        Post post = findPostById(id);
+
+        return toDto(post);
+    }
+
+    private Post findPostById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("해당 게시글이 없습니다"));
     }
 
     private PostResponse toDto(Post post) {
