@@ -7,6 +7,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.example.board.domain.post.dto.PostCreateRequest;
@@ -89,6 +90,7 @@ class PostControllerTest {
             .content(objectMapper.writeValueAsString(postCreateRequest))
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated())
+        .andDo(print())
         .andDo(document("post-create",
                 requestFields(
                     fieldWithPath("userId").type(JsonFieldType.NUMBER).description("userId"),
@@ -112,6 +114,7 @@ class PostControllerTest {
     mockMvc.perform(get("/api/posts/{postId}", savedPostId)
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
+        .andDo(print())
         .andDo(document("post-get",
             responseFields(
                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("id"),
@@ -144,6 +147,7 @@ class PostControllerTest {
             .param("page", String.valueOf(pageable.getPageNumber()))
             .param("size", String.valueOf(pageable.getPageSize())))
         .andExpect(status().isOk())
+        .andDo(print())
         .andDo(document("post-get-page",
             responseFields(
                 fieldWithPath("content.[].id").type(JsonFieldType.NUMBER).description("postId"),
@@ -200,6 +204,7 @@ class PostControllerTest {
             .content(objectMapper.writeValueAsString(postUpdateRequest))
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
+        .andDo(print())
         .andDo(document("post-update",
             requestFields(
                 fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
