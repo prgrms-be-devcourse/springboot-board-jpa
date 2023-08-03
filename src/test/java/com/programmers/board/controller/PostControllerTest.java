@@ -135,10 +135,9 @@ class PostControllerTest {
         @DisplayName("성공(201)")
         void createPost() throws Exception {
             //given
-            Long userId = 1L;
             String title = "title";
             String content = "content";
-            PostCreateRequest request = new PostCreateRequest(userId, title, content);
+            PostCreateRequest request = new PostCreateRequest(title, content);
 
             given(postService.createPost(any(), any(), any())).willReturn(1L);
 
@@ -156,7 +155,6 @@ class PostControllerTest {
                             preprocessRequest(prettyPrint()),
                             preprocessResponse(prettyPrint()),
                             requestFields(
-                                    fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 ID"),
                                     fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
                                     fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 본문")
                             ),
@@ -166,30 +164,12 @@ class PostControllerTest {
         }
 
         @Test
-        @DisplayName("실패(400): 사용자 아이디 null")
-        void createPost_ButUserIdNull() throws Exception {
-            //given
-            Long nullUserId = null;
-            PostCreateRequest request = new PostCreateRequest(nullUserId, "title", "content");
-
-            //when
-            ResultActions resultActions = mvc.perform(post("/api/v1/posts")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(mapper.writeValueAsString(request)))
-                    .andDo(print());
-
-            //then
-            resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").isString());
-        }
-
-        @Test
         @DisplayName("실패(400): 필수값 공백")
         void createPost_ButValueIsBlank() throws Exception {
             //given
             String blankTitle = " ";
             String blankContent = " ";
-            PostCreateRequest request = new PostCreateRequest(1L, blankTitle, blankContent);
+            PostCreateRequest request = new PostCreateRequest(blankTitle, blankContent);
 
             //when
             ResultActions resultActions = mvc.perform(post("/api/v1/posts")
@@ -207,7 +187,7 @@ class PostControllerTest {
         void createPost_ButTitleOutOfRange() throws Exception {
             //given
             String titleOutOfRange = "a".repeat(101);
-            PostCreateRequest request = new PostCreateRequest(1L, titleOutOfRange, "content");
+            PostCreateRequest request = new PostCreateRequest(titleOutOfRange, "content");
 
             //when
             ResultActions resultActions = mvc.perform(post("/api/v1/posts")
