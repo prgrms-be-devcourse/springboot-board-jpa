@@ -2,13 +2,16 @@ package com.programmers.domain.user.entity;
 
 import com.programmers.domain.base.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +25,6 @@ public class User extends BaseEntity {
 
     @Column(length = 100, nullable = false)
     private String hobby;
-
-    protected User() {
-    }
 
     public User(String name, int age, String hobby) {
         validateName(name);

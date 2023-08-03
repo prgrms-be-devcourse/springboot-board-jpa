@@ -3,13 +3,16 @@ package com.programmers.domain.post.entity;
 import com.programmers.domain.base.BaseEntity;
 import com.programmers.domain.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "posts")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
     @Id
@@ -26,9 +29,6 @@ public class Post extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "users_id")
     private User user;
-
-    protected Post() {
-    }
 
     public Post(String title, String content, User user) {
         validateTitle(title);
