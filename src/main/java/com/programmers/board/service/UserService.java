@@ -2,6 +2,7 @@ package com.programmers.board.service;
 
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.UserDto;
+import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -39,14 +41,16 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(Long userId, String name, Integer age, String hobby) {
+    public void updateUser(Long loginUserId, Long userId, String name, Integer age, String hobby) {
         User user = findUserOrElseThrow(userId);
+        checkAuthority(loginUserId, userId);
         user.update(name, age, hobby);
     }
 
     @Transactional
-    public void deleteUser(Long userId) {
+    public void deleteUser(Long userId, Long loginUserId) {
         User user = findUserOrElseThrow(userId);
+        checkAuthority(loginUserId, userId);
         userRepository.delete(user);
     }
 
@@ -54,5 +58,15 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("일치하는 회원이 존재하지 않습니다."));
         return user;
+    }
+
+    private void checkAuthority(Long loginUserId, Long userId) {
+        if (notEqualsUserId(loginUserId, userId)) {
+            throw new AuthorizationException("권한이 없습니다");
+        }
+    }
+
+    private boolean notEqualsUserId(Long loginUserId, Long userId) {
+        return !Objects.equals(loginUserId, userId);
     }
 }

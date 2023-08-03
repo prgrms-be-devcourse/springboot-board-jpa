@@ -1,6 +1,7 @@
 package com.programmers.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.programmers.board.constant.SessionConst;
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.UserDto;
 import com.programmers.board.dto.request.UserCreateRequest;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -50,12 +52,16 @@ class UserControllerTest {
     UserService userService;
 
     UserDto givenUserDto;
+    MockHttpSession givenSession;
 
     @BeforeEach
     void setUp() {
         User user = new User("name", 20, "hobby");
         givenUserDto = UserDto.from(user);
         ReflectionTestUtils.setField(givenUserDto, "userId", 1L);
+
+        givenSession = new MockHttpSession();
+        givenSession.setAttribute(SessionConst.LOGIN_USER_ID, 1L);
     }
 
     @Nested
@@ -247,6 +253,7 @@ class UserControllerTest {
 
             //when
             ResultActions resultActions = mvc.perform(patch("/api/v1/users/{userId}", userId)
+                    .session(givenSession)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(request))
                     .accept(MediaType.APPLICATION_JSON));
@@ -353,6 +360,7 @@ class UserControllerTest {
 
         //when
         ResultActions resultActions = mvc.perform(delete("/api/v1/users/{userId}", userId)
+                .session(givenSession)
                 .accept(MediaType.APPLICATION_JSON));
 
         //then

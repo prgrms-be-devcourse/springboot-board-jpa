@@ -2,6 +2,7 @@ package com.programmers.board.service;
 
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.UserDto;
+import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -142,35 +143,70 @@ class UserServiceTest {
         }
     }
 
-    @Test
-    @DisplayName("성공: 회원 수정")
-    void updateUser() {
-        //given
-        String updateName = "updateName";
-        Integer updateAge = 22;
-        String updateHobby = "updateHobby";
+    @Nested
+    @DisplayName("중첩: 회원 수정")
+    class UpdateUserTest {
+        @Test
+        @DisplayName("성공")
+        void updateUser() {
+            //given
+            String updateName = "updateName";
+            Integer updateAge = 22;
+            String updateHobby = "updateHobby";
 
-        given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
+            given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
 
-        //when
-        userService.updateUser(1L, updateName, updateAge, updateHobby);
+            //when
+            userService.updateUser(1L, 1L, updateName, updateAge, updateHobby);
 
-        //then
-        assertThat(givenUser.getName()).isEqualTo(updateName);
-        assertThat(givenUser.getAge()).isEqualTo(updateAge);
-        assertThat(givenUser.getHobby()).isEqualTo(updateHobby);
+            //then
+            assertThat(givenUser.getName()).isEqualTo(updateName);
+            assertThat(givenUser.getAge()).isEqualTo(updateAge);
+            assertThat(givenUser.getHobby()).isEqualTo(updateHobby);
+        }
+
+        @Test
+        @DisplayName("예외: 업데이트 대상 회원과 로그인 회원 불일치")
+        void updateUser_ButNotEqualUser() {
+            //given
+            Long userId = 1L;
+            Long loginUserId = 2L;
+
+            given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
+
+            //when
+            //then
+            assertThatThrownBy(() -> userService.updateUser(loginUserId, userId, null, null, null))
+                    .isInstanceOf(AuthorizationException.class);
+        }
     }
 
-    @Test
-    @DisplayName("성공: 회원 삭제")
-    void deleteUser() {
-        //given
-        given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
+    @Nested
+    @DisplayName("중첩: 회원 삭제")
+    class DeleteUserTest {
+        @Test
+        @DisplayName("성공")
+        void deleteUser() {
+            //given
+            given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
 
-        //when
-        userService.deleteUser(1L);
+            //when
+            userService.deleteUser(1L, 1L);
 
-        //then
-        then(userRepository).should().delete(any());
+            //then
+            then(userRepository).should().delete(any());
+        }
+
+        @Test
+        @DisplayName("예외: 업데이트 대상 회원과 로그인 회원 불일치")
+        void deleteUser_ButNotEqualUser() {
+            //given
+            given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
+
+            //when
+            //then
+            assertThatThrownBy(() -> userService.deleteUser(1L, 2L))
+                    .isInstanceOf(AuthorizationException.class);
+        }
     }
 }

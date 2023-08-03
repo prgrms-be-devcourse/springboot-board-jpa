@@ -1,11 +1,13 @@
 package com.programmers.board.controller;
 
+import com.programmers.board.constant.SessionConst;
 import com.programmers.board.controller.response.PageResult;
 import com.programmers.board.controller.response.Result;
 import com.programmers.board.dto.UserDto;
 import com.programmers.board.dto.request.UserCreateRequest;
 import com.programmers.board.dto.request.UserUpdateRequest;
 import com.programmers.board.dto.request.UsersGetRequest;
+import com.programmers.board.exception.AuthenticationException;
 import com.programmers.board.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -50,8 +52,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/users/{userId}")
     public void updateUser(@PathVariable("userId") Long userId,
+                           @SessionAttribute(name = SessionConst.LOGIN_USER_ID, required = false) Long loginUserId,
                            @RequestBody @Valid UserUpdateRequest request) {
+        checkLogin(loginUserId);
         userService.updateUser(
+                loginUserId,
                 userId,
                 request.getName(),
                 request.getAge(),
@@ -60,7 +65,15 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/users/{userId}")
-    public void deleteUser(@PathVariable("userId") Long userId) {
-        userService.deleteUser(userId);
+    public void deleteUser(@PathVariable("userId") Long userId,
+                           @SessionAttribute(name = SessionConst.LOGIN_USER_ID, required = false) Long loginUserId) {
+        checkLogin(loginUserId);
+        userService.deleteUser(userId, loginUserId);
+    }
+
+    private void checkLogin(Long loginUserId) {
+        if (loginUserId == null) {
+            throw new AuthenticationException(SessionConst.NO_LOGIN);
+        }
     }
 }
