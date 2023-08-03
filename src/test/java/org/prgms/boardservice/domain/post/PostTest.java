@@ -48,4 +48,28 @@ class PostTest {
 
         assertThat(post).isNotNull();
     }
+
+    @ParameterizedTest(name = "test with value [{0}]")
+    @NullAndEmptySource
+    @ValueSource(strings = {"    ", titleMoreThenTwentyLength})
+    @DisplayName("게시글을 유효하지 않은 제목으로 변경할 수 없다.")
+    void fail_Change_Post_With_Invalid_Title(String title) {
+        Post post = new Post("title", "content", userId);
+
+        assertThatThrownBy(() -> post.changeTitle(title))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(INVALID_POST_TITLE.getMessage());
+    }
+
+    @ParameterizedTest(name = "test with value [{0}]")
+    @NullAndEmptySource
+    @ValueSource(strings = {"    ", contentMoreThanFiveHundredLength})
+    @DisplayName("게시글을 유효하지 않은 내용으로 변경할 수 없다.")
+    void fail_Change_Post_With_Invalid_Content(String content) {
+        Post post = new Post("title", "content", userId);
+
+        assertThatThrownBy(() -> post.changeContent(content))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(INVALID_POST_CONTENT.getMessage());
+    }
 }
