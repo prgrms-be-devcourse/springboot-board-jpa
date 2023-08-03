@@ -1,0 +1,45 @@
+== 게시판
+
+=== 개시글 생성
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+
+
+=== 게시글 단건 조회
+
+.Request
+include::{snippets}/post-get/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get/http-response.adoc[]
+include::{snippets}/post-get/response-fields.adoc[]
+
+
+
+=== 게시글 페이징 조회
+
+.Request
+include::{snippets}/post-getPages/http-request.adoc[]
+
+.Response
+include::{snippets}/post-getPages/http-response.adoc[]
+include::{snippets}/post-getPages/response-fields.adoc[]
+
+
+
+=== 게시글 수정
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
