@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import static com.programmers.board.constant.AuthConst.LOGIN_USER_ID;
@@ -18,6 +19,7 @@ import static com.programmers.board.constant.AuthConst.LOGIN_USER_ID;
 public class LoginController {
     private final LoginService loginService;
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PostMapping("/login")
     public void login(@RequestBody @Valid LoginRequest request,
                       HttpServletRequest httpServletRequest) {
@@ -26,6 +28,7 @@ public class LoginController {
         session.setAttribute(LOGIN_USER_ID, userId);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @GetMapping("/logout")
     public void logout(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession(false);
