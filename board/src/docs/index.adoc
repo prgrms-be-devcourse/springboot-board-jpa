@@ -49,4 +49,3 @@ include::{snippets}/post-update/request-fields.adoc[]
 .Response
 include::{snippets}/post-update/http-response.adoc[]
 include::{snippets}/post-update/response-fields.adoc[]
-
