@@ -209,7 +209,7 @@ class UserControllerTest {
 
 
     @Test
-    @DisplayName("성공: user 단건 조회 호출")
+    @DisplayName("성공(200): user 단건 조회 호출")
     void findUser() throws Exception {
         //given
         Long userId = 1L;
@@ -353,7 +353,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("성공: user 삭제 호출")
+    @DisplayName("성공(204): user 삭제 호출")
     void deleteUser() throws Exception {
         //given
         Long userId = 1L;

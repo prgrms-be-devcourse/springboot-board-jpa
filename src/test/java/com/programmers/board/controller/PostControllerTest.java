@@ -70,7 +70,7 @@ class PostControllerTest {
     @DisplayName("중첩: post 목록 조회 호출")
     class FindPostsTest {
         @Test
-        @DisplayName("성공(201)")
+        @DisplayName("성공(200)")
         void findPosts() throws Exception {
             //given
             int page = 0;
@@ -223,7 +223,7 @@ class PostControllerTest {
 
 
     @Test
-    @DisplayName("성공: post 단건 조회 호출")
+    @DisplayName("성공(200): post 단건 조회 호출")
     void findPost() throws Exception {
         //given
         Long postId = 1L;
@@ -260,7 +260,7 @@ class PostControllerTest {
     @DisplayName("중첩: post 업데이트 호출")
     class UpdatePostTest {
         @Test
-        @DisplayName("성공: post 업데이트 호출")
+        @DisplayName("성공(200)")
         void updatePost() throws Exception {
             //given
             Long postId = 1L;
@@ -328,7 +328,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("성공: post 삭제 호출")
+    @DisplayName("성공(204): post 삭제 호출")
     void deletePost() throws Exception {
         //given
         Long postId = 1L;

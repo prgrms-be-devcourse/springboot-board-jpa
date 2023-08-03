@@ -91,7 +91,7 @@ class GlobalControllerAdviceTest {
     }
 
     @Test
-    @DisplayName("성공: NoSuchElementException 예외 처리")
+    @DisplayName("성공(400): NoSuchElementException 예외 처리")
     void noSuchElementExHandle() throws Exception {
         //given
         //when
@@ -109,7 +109,7 @@ class GlobalControllerAdviceTest {
     }
 
     @Test
-    @DisplayName("성공: MethodArgumentNotValidException 예외 처리")
+    @DisplayName("성공(400): MethodArgumentNotValidException 예외 처리")
     void methodArgumentNotValidExHandle() throws Exception {
         //given
         //when
@@ -128,7 +128,7 @@ class GlobalControllerAdviceTest {
     }
 
     @Test
-    @DisplayName("성공: AuthorizationException 예외 처리")
+    @DisplayName("성공(403): AuthorizationException 예외 처리")
     void authorizationException() throws Exception {
         //given
         //when
@@ -146,7 +146,7 @@ class GlobalControllerAdviceTest {
     }
 
     @Test
-    @DisplayName("성공: IllegalArgumentException 예외 처리")
+    @DisplayName("성공(400): IllegalArgumentException 예외 처리")
     void illegalArgumentExHandle() throws Exception {
         //given
         //when
@@ -164,7 +164,7 @@ class GlobalControllerAdviceTest {
     }
 
     @Test
-    @DisplayName("성공: AuthenticationException 예외 처리")
+    @DisplayName("성공(401): AuthenticationException 예외 처리")
     void authenticationExHandle() throws Exception {
         //given
         //when
@@ -182,7 +182,7 @@ class GlobalControllerAdviceTest {
     }
 
     @Test
-    @DisplayName("성공: DuplicateKeyException 예외 처리")
+    @DisplayName("성공(409): DuplicateKeyException 예외 처리")
     void duplicateKeyExHandle() throws Exception {
         //given
         //when
@@ -200,7 +200,7 @@ class GlobalControllerAdviceTest {
     }
 
     @Test
-    @DisplayName("성공: Exception 예외 처리")
+    @DisplayName("성공(500): Exception 예외 처리")
     void exHandle() throws Exception {
         //given
         //when
