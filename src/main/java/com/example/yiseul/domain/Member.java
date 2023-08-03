@@ -3,13 +3,8 @@ package com.example.yiseul.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -17,7 +12,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor
-public class Member extends BaseTimeEntity {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -51,18 +46,13 @@ public class Member extends BaseTimeEntity {
         }
     }
 
-    private int validateUpdateInteger(Integer update, Integer origin) {
-        if (update == null) {
-
-            return origin;
+    private void changeHobby(String updateHobby) {
+        if (updateHobby != null) {
+            this.hobby = updateHobby;
         }
-        return update;
     }
 
-
-    private void validationPositiveAge(int age) {
-        if (age < MIN_AGE) {
-            throw new IllegalArgumentException("나이는 0세 이상이어야 합니다.");
-        }
+    public int getAge() {
+        return age.getAge();
     }
 }

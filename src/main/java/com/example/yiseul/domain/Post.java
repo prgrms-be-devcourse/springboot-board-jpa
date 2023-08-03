@@ -4,14 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
-
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = PROTECTED)
-public class Post extends BaseTimeEntity {
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
