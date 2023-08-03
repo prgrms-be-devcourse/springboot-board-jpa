@@ -33,6 +33,13 @@ public class PostService {
                 .orElseThrow(() -> new NoSuchElementException("해당 게시글이 없습니다"));
     }
 
+    public PostResponse update(Long id, PostRequest request) {
+        Post post = findPostById(id);
+        post.updatePost(request.getTitle(), request.getContent());
+
+        return toDto(post);
+    }
+
     private PostResponse toDto(Post post) {
         return PostResponse.builder()
                 .id(post.getId())
