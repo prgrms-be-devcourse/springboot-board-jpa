@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -14,7 +13,6 @@ import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 
-@Getter
 @MappedSuperclass
 public abstract class BaseEntity {
     @Id
@@ -29,4 +27,8 @@ public abstract class BaseEntity {
     @Column(name = "created_at", updatable = false)
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "Asia/Seoul")
     private LocalDateTime createAt;
+
+    public Long getId() {
+        return id;
+    }
 }

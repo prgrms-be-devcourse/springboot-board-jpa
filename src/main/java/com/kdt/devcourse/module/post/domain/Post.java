@@ -7,15 +7,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 
-@Getter
 @Entity
 @Table(name = "posts")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
     private String title;
     @Column(columnDefinition = "TEXT")
@@ -24,6 +19,8 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    protected Post() { }
+
     public Post(String title, String content) {
         this.title = title;
         this.content = content;
@@ -31,5 +28,13 @@ public class Post extends BaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
     }
 }
