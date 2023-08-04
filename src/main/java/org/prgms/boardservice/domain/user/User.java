@@ -6,8 +6,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.prgms.boardservice.domain.BaseTime;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.regex.Pattern;
 
@@ -41,7 +39,7 @@ public class User extends BaseTime {
         validateNicknameLength(nickname);
 
         this.email = email;
-        this.password = encodePassword(password);
+        this.password = password;
         this.nickname = nickname;
     }
 
@@ -65,10 +63,5 @@ public class User extends BaseTime {
         if (nickname.length() < 2 || nickname.length() > 10) {
             throw new IllegalArgumentException(INVALID_USER_NICKNAME_LENGTH.getMessage());
         }
-    }
-
-    private String encodePassword(String password) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.encode(password);
     }
 }
