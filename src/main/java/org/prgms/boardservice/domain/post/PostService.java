@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static org.prgms.boardservice.util.ErrorMessage.NOT_FOUND_POST;
 
@@ -27,19 +26,13 @@ public class PostService {
 
     @Transactional
     public Long update(PostUpdateVo postUpdateVo) {
+        Post findPost = postRepository.findById(postUpdateVo.id())
+                .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_POST.getMessage()));
 
-        Optional<Post> findPost = postRepository.findById(postUpdateVo.id());
+        findPost.changeTitle(postUpdateVo.title());
+        findPost.changeContent(postUpdateVo.content());
 
-        if (findPost.isPresent()) {
-            Post p = findPost.get();
-
-            p.changeTitle(postUpdateVo.title());
-            p.changeContent(postUpdateVo.content());
-
-            return postRepository.save(p).getId();
-        } else {
-            throw new NoSuchElementException(NOT_FOUND_POST.getMessage());
-        }
+        return postRepository.save(findPost).getId();
     }
 
     public Post getById(Long id) {
