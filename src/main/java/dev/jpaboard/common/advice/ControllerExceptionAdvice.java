@@ -3,11 +3,15 @@ package dev.jpaboard.common.advice;
 import dev.jpaboard.common.exception.AuthorizedException;
 import dev.jpaboard.common.exception.ForbiddenException;
 import dev.jpaboard.common.exception.NotFoundException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestControllerAdvice
 public class ControllerExceptionAdvice {
@@ -20,9 +24,9 @@ public class ControllerExceptionAdvice {
         return new ErrorResponse(e.getMessage());
     }
 
-    @ExceptionHandler(AuthorizedException.class)
+    @ExceptionHandler({AuthorizedException.class, ServletRequestBindingException.class})
     @ResponseStatus(UNAUTHORIZED)
-    public ErrorResponse handleAuthorizedException(AuthorizedException e) {
+    public ErrorResponse handleAuthorizedException(Exception e) {
         return new ErrorResponse(e.getMessage());
     }
 

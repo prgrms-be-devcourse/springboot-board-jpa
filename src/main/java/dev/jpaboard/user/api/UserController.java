@@ -54,26 +54,19 @@ public class UserController {
     @PatchMapping("/update")
     @ResponseStatus(NO_CONTENT)
     public void update(@RequestBody UserUpdateRequest request,
-                       @SessionAttribute(name = "userId", required = false) Long userId) {
+                       @SessionAttribute(name = "userId") Long userId) {
         userService.update(request, userId);
     }
 
     @GetMapping("/me")
-    public UserResponse findUser(@SessionAttribute(name = "userId", required = false) Long userId) {
-        validateUserId(userId);
+    public UserResponse findUser(@SessionAttribute(name = "userId") Long userId) {
         return userService.findUser(userId);
     }
 
 
     @DeleteMapping("/me")
-    public void delete(@SessionAttribute(name = "userId", required = false) Long userId) {
+    public void delete(@SessionAttribute(name = "userId") Long userId) {
         userService.delete(userId);
-    }
-
-    private void validateUserId(Long userId) {
-        if (Objects.isNull(userId)) {
-            throw new AuthorizedException();
-        }
     }
 
 }

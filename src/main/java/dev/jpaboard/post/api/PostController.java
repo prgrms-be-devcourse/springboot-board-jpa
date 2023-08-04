@@ -1,6 +1,5 @@
 package dev.jpaboard.post.api;
 
-import dev.jpaboard.common.exception.AuthorizedException;
 import dev.jpaboard.post.application.PostService;
 import dev.jpaboard.post.dto.PostCreateRequest;
 import dev.jpaboard.post.dto.PostResponse;
@@ -9,9 +8,16 @@ import dev.jpaboard.post.dto.PostsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -46,22 +52,14 @@ public class PostController {
     @ResponseStatus(NO_CONTENT)
     public void update(@PathVariable("id") Long postId,
                        @RequestBody PostUpdateRequest request,
-                       @SessionAttribute(name = "userId", required = false) Long userId) {
-        validateUserId(userId);
+                       @SessionAttribute(name = "userId") Long userId) {
         postService.update(postId, request, userId);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long postId,
-                       @SessionAttribute(name = "userId", required = false) Long userId) {
-        validateUserId(userId);
+                       @SessionAttribute(name = "userId") Long userId) {
         postService.delete(postId, userId);
-    }
-
-    private void validateUserId(Long userId) {
-        if (Objects.isNull(userId)) {
-            throw new AuthorizedException();
-        }
     }
 
 }
