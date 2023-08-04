@@ -1,6 +1,5 @@
 package com.kdt.devcourse.global.exception;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,11 +15,11 @@ public class GlobalExceptionHandler {
 
     private static final String INTERNAL_ERROR_MESSAGE = "서버 내부 오류가 발생했습니다.";
 
-    @ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler(PostNotFoundException.class)
     @ResponseStatus(NOT_FOUND)
-    public ErrorResponse handleEntityNotFoundException(EntityNotFoundException e) {
-        log.warn("EntityNotFoundException Occurs : {}", e.getMessage());
-        return new ErrorResponse(e.getMessage());
+    public ErrorResponse handleEntityNotFoundException(PostNotFoundException e) {
+        log.warn("PostNotFoundException : {}", e.getMessage());
+        return new ErrorResponse(e.getErrorCode());
     }
 
     @ExceptionHandler(RuntimeException.class)

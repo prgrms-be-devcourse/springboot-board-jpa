@@ -1,4 +1,4 @@
 package com.kdt.devcourse.global.exception;
 
-record ErrorResponse(String message) {
+record ErrorResponse(String errorCode) {
 }

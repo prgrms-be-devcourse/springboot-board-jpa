@@ -1,5 +1,6 @@
 package com.kdt.devcourse.module.post.application;
 
+import com.kdt.devcourse.global.exception.PostNotFoundException;
 import com.kdt.devcourse.module.post.application.dto.PostResponse;
 import com.kdt.devcourse.module.post.domain.Post;
 import com.kdt.devcourse.module.post.domain.repository.PostRepository;
@@ -8,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.kdt.devcourse.global.exception.ErrorCode.POST_NOT_FOUND;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,7 +45,7 @@ public class PostService {
 
     private Post findById(Long id) {
         return postRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+                .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND, id));
     }
 
     private PostResponse toResponse(Post post) {
