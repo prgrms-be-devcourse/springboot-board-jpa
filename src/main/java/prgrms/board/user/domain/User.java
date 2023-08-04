@@ -45,11 +45,7 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String createdBy;
 
-    @OneToMany(
-            mappedBy = "user",
-            fetch = FetchType.LAZY,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     List<Post> posts = new ArrayList<>();
 
     public User(String name, Integer age) {

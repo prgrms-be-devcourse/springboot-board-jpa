@@ -24,7 +24,7 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
-
+    private static final String className = Post.class.getName();
     private static final int MAXIMUM_LENGTH = 50;
 
     @Id
@@ -50,6 +50,16 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
+    public void updateTitle(String title) {
+        validateTitle(title);
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        validateContent(content);
+        this.content = content;
+    }
+
     public void updateUser(User user) {
         if (Objects.nonNull(this.user)) {
             this.user.getPosts().remove(this);
@@ -64,20 +74,20 @@ public class Post extends BaseEntity {
     private void validateTitle(String title) {
         if (!StringUtils.hasText(title) ||
                 title.length() > MAXIMUM_LENGTH) {
-            throw new IllegalPostDataException(ErrorCode.EMPTY_POST_TITLE);
+            throw new IllegalPostDataException(ErrorCode.EMPTY_POST_TITLE, className);
         }
     }
 
     private void validateContent(String content) {
         if (!StringUtils.hasText(content)) {
-            throw new IllegalPostDataException(ErrorCode.EMPTY_POST_CONTENT);
+            throw new IllegalPostDataException(ErrorCode.EMPTY_POST_CONTENT, className);
         }
     }
 
     private void updateCreatedBy(String createdBy) {
         if (!StringUtils.hasText(createdBy) ||
                 createdBy.length() > MAXIMUM_LENGTH) {
-            throw new IllegalPostDataException(ErrorCode.INVALID_CREATED_BY_VALUE);
+            throw new IllegalPostDataException(ErrorCode.INVALID_CREATED_BY_VALUE, className);
         }
         this.createdBy = createdBy;
     }
