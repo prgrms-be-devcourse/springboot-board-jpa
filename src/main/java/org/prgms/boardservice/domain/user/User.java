@@ -6,13 +6,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.prgms.boardservice.domain.BaseTime;
-import org.prgms.boardservice.domain.post.Post;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static org.prgms.boardservice.util.ErrorMessage.*;
@@ -38,9 +34,6 @@ public class User extends BaseTime {
     @Column(length = 10, unique = true)
     @NotBlank
     private String nickname;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
-    private List<Post> posts = new ArrayList<>();
 
     public User(String email, String password, String nickname) {
         validateEmailPattern(email);

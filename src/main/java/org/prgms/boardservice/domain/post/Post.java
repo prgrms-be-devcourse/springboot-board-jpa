@@ -30,13 +30,15 @@ public class Post extends BaseTime {
 
     private Long userId;
 
-    public Post(String title, String content) {
+    public Post(String title, String content, Long userId) {
         validateTitleLength(title);
         validateContentLength(content);
 
         this.title = title;
         this.content = content;
-        
+        this.userId = userId;
+    }
+
     public void changeTitle(String title) {
         validateTitleLength(title);
         this.title = title;
