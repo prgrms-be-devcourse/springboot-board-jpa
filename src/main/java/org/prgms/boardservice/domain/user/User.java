@@ -74,15 +74,6 @@ public class User extends BaseTime {
         }
     }
 
-    private void addPost(Post post) {
-        if (Objects.nonNull(post.getUser())) {
-            throw new RuntimeException("게시글의 작성자는 바꿀 수 없습니다.");
-        }
-
-        posts.add(post);
-        post.setUser(this);
-    }
-
     private String encodePassword(String password) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode(password);
