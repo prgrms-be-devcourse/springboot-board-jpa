@@ -1,6 +1,6 @@
 package com.example.board.exception.post;
 
-import com.example.board.controller.UserController;
+import com.example.board.controller.PostController;
 import com.example.board.exception.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestControllerAdvice(basePackageClasses = UserController.class)
+@RestControllerAdvice(basePackageClasses = PostController.class)
 public class PostExceptionHandler {
     private static final HttpStatus errorStatus = HttpStatus.BAD_REQUEST;
 

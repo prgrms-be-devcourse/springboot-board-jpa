@@ -75,7 +75,7 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    private Post getPost(Long postId) {
+    public Post getPost(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundPostException("아이디와 일치하는 게시글을 찾을 수 없습니다"));
     }
