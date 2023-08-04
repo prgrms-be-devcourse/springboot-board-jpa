@@ -2,9 +2,7 @@ package com.example.jpaboard.post.domain;
 
 import com.example.jpaboard.member.domain.Member;
 import jakarta.persistence.*;
-import lombok.Getter;
 
-@Getter
 @Entity
 @Table(name = "posts")
 public class Post {
@@ -22,13 +20,28 @@ public class Post {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Member member;
 
-    public Post() {
-    }
+    protected Post() { }
 
     public Post(String title, String content, Member member) {
         this.title = title;
         this.content = content;
         this.member = member;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Member getMember() {
+        return member;
     }
 
     public void setTitle(String title) {
