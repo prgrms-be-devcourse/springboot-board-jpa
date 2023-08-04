@@ -2,6 +2,9 @@ package com.example.board.domain.entity;
 
 
 import com.example.board.domain.BaseTime;
+import com.example.board.dto.post.PostRequestDto;
+import com.example.board.dto.post.PostResponseDto;
+import com.example.board.dto.post.PostWithCommentResponseDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,10 +33,36 @@ public class Post extends BaseTime {
     @JoinColumn(name = "usr_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    //게시글을 지울때 댓글도 같이 삭제하기 위해 cascade 옵션 사용
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     private List<PostLike> postLikes = new ArrayList<>();
 
+    public void update(PostRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+    }
+
+    //dto 변환 로직
+    public PostResponseDto from() {
+        return PostResponseDto.builder()
+                .title(title)
+                .content(content)
+                .name(user.getName())
+                .createdAt(this.getCreatedAt())
+                .build();
+    }
+
+    //dto 변환 로직(+ 댓글)
+    public PostWithCommentResponseDto fromWithComment() {
+        return PostWithCommentResponseDto.builder()
+                .title(title)
+                .content(content)
+                .name(user.getName())
+                .createdAt(this.getCreatedAt())
+                .comments(getComments())
+                .build();
+    }
 }
