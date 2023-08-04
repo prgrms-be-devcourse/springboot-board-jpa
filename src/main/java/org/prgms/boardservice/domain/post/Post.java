@@ -2,18 +2,17 @@ package org.prgms.boardservice.domain.post;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.prgms.boardservice.domain.BaseTime;
 
 import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_CONTENT;
 import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_TITLE;
 
+@Builder
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Post extends BaseTime {
 
     @Id
