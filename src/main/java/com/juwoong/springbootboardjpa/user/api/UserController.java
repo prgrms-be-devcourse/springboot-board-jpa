@@ -22,9 +22,9 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<UserDto> createUser(@RequestBody UserRequest request) {
-        UserDto user = userService.createUser(request.getName(), request.getAge(), request.getHobby());
+        UserDto user = userService.createUser(request.name(), request.age(), request.hobby());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -32,9 +32,9 @@ public class UserController {
         return new ResponseEntity<>(user, headers, HttpStatus.OK);
     }
 
-    @GetMapping("/search/{id}")
-    public ResponseEntity<UserDto> searchById(@PathVariable("id") Long id) {
-        UserDto user = userService.searchById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
+        UserDto user = userService.getUserById(id);
 
         return ResponseEntity.ok(user);
     }

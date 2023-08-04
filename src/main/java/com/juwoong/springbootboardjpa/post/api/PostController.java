@@ -20,15 +20,16 @@ import com.juwoong.springbootboardjpa.post.application.model.PostDto;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/post")
+@RequestMapping("/api/posts")
 @RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/create")
-    public ResponseEntity<PostDto> createPost(@RequestBody PostRequest request) {
-        PostDto post = postService.createPost(request.getUserId(), request.getPostTitle(), request.getPostContent());
+    @PostMapping()
+    public ResponseEntity<PostDto> createPost(@RequestParam Long userId,
+        @RequestBody PostRequest request) {
+        PostDto post = postService.createPost(userId, request.title(), request.content());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -36,24 +37,25 @@ public class PostController {
         return new ResponseEntity<>(post, headers, HttpStatus.OK);
     }
 
-    @GetMapping("/search/{id}")
-    public ResponseEntity<PostDto> searchById(@PathVariable("id") Long id) {
-        PostDto post = postService.searchById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDto> getPostById(@PathVariable Long id) {
+        PostDto post = postService.getPostById(id);
 
         return ResponseEntity.ok(post);
     }
 
-    @GetMapping("/search")
-    public Page<PostDto> getAllUsers(@RequestParam(defaultValue = "0") int page,
+    @GetMapping()
+    public Page<PostDto> getAllPosts(@RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "2") int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        return postService.searchAll(pageRequest);
+        return postService.getAllPosts(pageRequest);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<PostDto> editPost(@RequestBody PostRequest request) {
-        PostDto post = postService.editPost(request.getPostId(), request.getPostTitle(), request.getPostContent());
+    @PutMapping("/{id}")
+    public ResponseEntity<PostDto> updatePost(@PathVariable Long id,
+        @RequestBody PostRequest request) {
+        PostDto post = postService.updatePost(id, request.title(), request.content());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

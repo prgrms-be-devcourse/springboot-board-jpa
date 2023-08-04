@@ -4,11 +4,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.juwoong.springbootboardjpa.post.application.model.PostDto;
 import com.juwoong.springbootboardjpa.post.domain.Post;
 import com.juwoong.springbootboardjpa.post.domain.repository.PostRepository;
 import com.juwoong.springbootboardjpa.user.application.UserService;
 import com.juwoong.springbootboardjpa.user.domain.User;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -33,23 +35,24 @@ public class PostService {
         return toDto(createdPost);
     }
 
-    public PostDto editPost(Long postId, String postTitle, String postContent) {
-        Post searchedPost = postRepository.findById(postId).get();
+    public PostDto updatePost(Long id, String title, String content) {
+        Post post = postRepository.findById(id).get();
 
-        searchedPost.update(postTitle, postContent);
+        post.update(title, content);
 
-        Post updatedPost = postRepository.save(searchedPost);
+        post = postRepository.save(post);
 
-        return toDto(updatedPost);
+        return toDto(post);
+
     }
 
-    public PostDto searchById(Long id) {
+    public PostDto getPostById(Long id) {
         Post searchedPost = postRepository.findById(id).get();
 
         return toDto(searchedPost);
     }
 
-    public Page<PostDto> searchAll(Pageable pageable) {
+    public Page<PostDto> getAllPosts(Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
 
         return posts.map(this::toDto);
