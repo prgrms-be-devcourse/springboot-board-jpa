@@ -37,9 +37,8 @@ public class PostService {
     @Transactional
     public void update(Long postId, PostUpdateRequest request, Long userId) {
         Post post = findPostById(postId);
-        User user = findUserById(userId);
 
-        post.checkAuthorize(user);
+        post.checkAuthorize(userId);
         post.update(request.title(), request.content());
     }
 
@@ -58,9 +57,8 @@ public class PostService {
     @Transactional
     public void delete(Long postId, Long userId) {
         Post post = findPostById(postId);
-        User user = findUserById(userId);
 
-        post.checkAuthorize(user);
+        post.checkAuthorize(userId);
         postRepository.deleteById(postId);
     }
 

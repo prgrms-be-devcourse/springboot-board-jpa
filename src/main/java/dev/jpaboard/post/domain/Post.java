@@ -3,7 +3,12 @@ package dev.jpaboard.post.domain;
 import dev.jpaboard.common.entity.BaseEntity;
 import dev.jpaboard.common.exception.ForbiddenException;
 import dev.jpaboard.user.domain.User;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,8 +41,8 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public void checkAuthorize(User user) {
-        if (!this.user.equals(user)) {
+    public void checkAuthorize(Long userId) {
+        if (!Objects.equals(user.getId(), userId)) {
             throw new ForbiddenException();
         }
     }
