@@ -7,18 +7,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Member extends BaseEntity{
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
 
-    @Column(nullable = false,length = 30)
+    @Column(nullable = false, length = 30)
     private String name;
 
     @Column(nullable = false)
     private int age;
 
-    @Column(name = "hobby",nullable = true)
+    @Column(name = "hobby", nullable = true)
     private String hobby;
 
     public Long getUserId() {

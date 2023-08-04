@@ -27,19 +27,19 @@ class PostServiceTest {
     private PageRequest pageable = PageRequest.of(0, 10);
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         long id = 1L;
         String name = "sehan";
         int age = 20;
         String hobby = "hobby";
 
-        memberDto = new MemberDto(id,name,age,hobby);
+        memberDto = new MemberDto(id, name, age, hobby);
 
         Long postId = 1L;
         String title = "title";
         String content = "content";
 
-        postDto = new PostDto(postId,title,content,memberDto);
+        postDto = new PostDto(postId, title, content, memberDto);
 
         postService.save(postDto);
     }
@@ -51,30 +51,30 @@ class PostServiceTest {
         String title = "another title";
         String content = "another content";
 
-        PostDto newPostDto = new PostDto(postId,title,content,memberDto);
+        PostDto newPostDto = new PostDto(postId, title, content, memberDto);
         postService.save(newPostDto);
 
         //When
         Page<PostDto> allPosts = postService.findAll(pageable);
 
         //Then
-        Assertions.assertEquals(2,allPosts.getTotalElements());
+        Assertions.assertEquals(2, allPosts.getTotalElements());
     }
 
     @Nested
-    class findById{
+    class findById {
         @Test
         void findById_success() {
             //When
             PostDto post = postService.findById(1L);
 
             //Then
-            Assertions.assertEquals("title",post.title());
+            Assertions.assertEquals("title", post.title());
         }
 
         @Test
         void findById_fail() {
-            Assertions.assertThrows(NoSuchElementException.class,() -> postService.findById(2L));
+            Assertions.assertThrows(NoSuchElementException.class, () -> postService.findById(2L));
         }
     }
 
@@ -84,7 +84,7 @@ class PostServiceTest {
         Page<PostDto> allPosts = postService.findAll(pageable);
 
         //Then
-        Assertions.assertEquals(1,allPosts.getTotalPages());
+        Assertions.assertEquals(1, allPosts.getTotalPages());
     }
 
     @Test
@@ -94,10 +94,10 @@ class PostServiceTest {
 
         PostUpdateDto postUpdateDto = new PostUpdateDto(editContent);
         //When
-        postService.update(1L,postUpdateDto);
+        postService.update(1L, postUpdateDto);
         PostDto editPost = postService.findById(1L);
 
         //Then
-        Assertions.assertEquals(editContent,editPost.content());
+        Assertions.assertEquals(editContent, editPost.content());
     }
 }

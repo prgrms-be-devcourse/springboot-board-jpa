@@ -1,6 +1,6 @@
 package prgms.boardmission.post.exception;
 
-public class NoFoundPostException extends RuntimeException{
+public class NoFoundPostException extends RuntimeException {
 
     public NoFoundPostException() {
         super();

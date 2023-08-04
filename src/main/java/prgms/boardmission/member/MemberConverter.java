@@ -6,7 +6,7 @@ import prgms.boardmission.member.dto.MemberDto;
 import java.time.LocalDateTime;
 
 public final class MemberConverter {
-    public static Member convertToMember(MemberDto memberDto){
+    public static Member convertToMember(MemberDto memberDto) {
         Member member = new Member();
         member.setUserId(memberDto.userId());
         member.setName(memberDto.name());
@@ -17,12 +17,12 @@ public final class MemberConverter {
         return member;
     }
 
-    public static MemberDto convertToMemberDto(Member member){
+    public static MemberDto convertToMemberDto(Member member) {
         Long userId = member.getUserId();
         String name = member.getName();
         int age = member.getAge();
         String hobby = member.getHobby();
 
-        return new MemberDto(userId,name,age,hobby);
+        return new MemberDto(userId, name, age, hobby);
     }
 }

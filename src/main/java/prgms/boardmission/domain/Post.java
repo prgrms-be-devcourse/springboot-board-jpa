@@ -10,11 +10,11 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Post extends BaseEntity{
+public class Post extends BaseEntity {
     @Id
     private long id;
 
-    @Column(nullable = false,length = 30)
+    @Column(nullable = false, length = 30)
     private String title;
 
     @Lob
@@ -52,7 +52,7 @@ public class Post extends BaseEntity{
         this.content = content;
     }
 
-    public void setMember(Member postMember){
+    public void setMember(Member postMember) {
         member = postMember;
         this.setCreatedBy(postMember.getName());
     }

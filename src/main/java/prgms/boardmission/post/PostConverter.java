@@ -9,19 +9,19 @@ import prgms.boardmission.post.dto.PostDto;
 import java.time.LocalDateTime;
 
 public final class PostConverter {
-    public static Post convertToPost(PostDto postDto){
-            Post post = new Post();
-            post.setId(postDto.postId());
-            post.setTitle(postDto.title());
-            post.setContent(postDto.content());
-            post.setCratedAt(LocalDateTime.now());
-            post.setCreatedBy(postDto.memberDto().name());
-            post.setMember(MemberConverter.convertToMember(postDto.memberDto()));
+    public static Post convertToPost(PostDto postDto) {
+        Post post = new Post();
+        post.setId(postDto.postId());
+        post.setTitle(postDto.title());
+        post.setContent(postDto.content());
+        post.setCratedAt(LocalDateTime.now());
+        post.setCreatedBy(postDto.memberDto().name());
+        post.setMember(MemberConverter.convertToMember(postDto.memberDto()));
 
-            return post;
+        return post;
     }
 
-    public static PostDto convertToPostDto(Post post){
+    public static PostDto convertToPostDto(Post post) {
         Member member = post.getMember();
         MemberDto memberDto = MemberConverter.convertToMemberDto(member);
 

@@ -28,18 +28,18 @@ public class PostService {
         return newPost.getId();
     }
 
-    public Page<PostDto> findAll(Pageable pageable){
+    public Page<PostDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(PostConverter::convertToPostDto);
     }
 
-    public PostDto findById(long postId){
+    public PostDto findById(long postId) {
         return postRepository.findById(postId)
                 .map(PostConverter::convertToPostDto)
                 .orElseThrow(() -> new NoSuchElementException("해당 게시글을 찾을 수 없습니다."));
     }
 
-    public Long update(Long postId, PostUpdateDto postUpdateDto){
+    public Long update(Long postId, PostUpdateDto postUpdateDto) {
         Post post = postRepository.findById(postId).get();
         String editContent = postUpdateDto.content();
         post.setContent(editContent);
