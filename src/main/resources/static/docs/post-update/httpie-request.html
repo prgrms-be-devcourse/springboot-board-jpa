@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>주문</title>
+<title>Untitled</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -440,33 +440,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_주문">주문</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_주문_생성">주문 생성</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_ordersuuid">/orders/{uuid}</h3>
-<div class="paragraph">
-<div class="title">Request</div>
-<p>Unresolved directive in index.adoc - include::../../../target/generated-snippets/order-save/http-request.adoc[]<br>
-Unresolved directive in index.adoc - include::../../../target/generated-snippets/order-save/request-fields.adoc[]</p>
-</div>
-<div class="paragraph">
-<div class="title">Response</div>
-<p>Unresolved directive in index.adoc - include::../../../target/generated-snippets/order-save/http-response.adoc[]<br>
-Unresolved directive in index.adoc - include::../../../target/generated-snippets/order-save/response-fields.adoc[]</p>
-</div>
-</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ echo '{"content":"edit content"}' | http PATCH 'http://localhost:8080/posts/1' \
+    'Content-Type:application/json;charset=UTF-8'</code></pre>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-08-01 17:54:34 +0900
+Last updated 2023-08-03 14:37:12 +0900
 </div>
 </div>
 </body>
