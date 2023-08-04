@@ -5,6 +5,7 @@ import dev.jpaboard.post.dto.PostCreateRequest;
 import dev.jpaboard.post.dto.PostResponse;
 import dev.jpaboard.post.dto.PostUpdateRequest;
 import dev.jpaboard.post.dto.PostsResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -51,7 +52,7 @@ public class PostController {
     @PatchMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
     public void update(@PathVariable("id") Long postId,
-                       @RequestBody PostUpdateRequest request,
+                       @Valid @RequestBody PostUpdateRequest request,
                        @SessionAttribute(name = "userId") Long userId) {
         postService.update(postId, request, userId);
     }

@@ -1,5 +1,8 @@
 package dev.jpaboard.user.dto.request;
 
-public record UserUpdateRequest(String name, String hobby) {
+import jakarta.validation.constraints.Size;
 
+public record UserUpdateRequest(
+        @Size(max = 5) String name,
+        @Size(min = 20) String hobby) {
 }

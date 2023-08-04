@@ -1,10 +1,13 @@
 package dev.jpaboard.user.domain;
 
 import dev.jpaboard.common.entity.BaseEntity;
-import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,19 +21,15 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
-    private static final String EMAIL_REGEX = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
-    private static final String PASSWORD_REGEX = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 25, nullable = false)
-    @Email(regexp = EMAIL_REGEX)
-    private String email;
+    @Embedded
+    private Email email;
 
-    @Column(length = 20, nullable = false)
-    @Pattern(regexp = PASSWORD_REGEX)
-    private String password;
+    @Embedded
+    private Password password;
 
     @Column(length = 5, nullable = false)
     private String name;
@@ -42,9 +41,9 @@ public class User extends BaseEntity {
     private String hobby;
 
     @Builder
-    private User(@Valid String email, @Valid String password, String name, int age, String hobby) {
-        this.email = email;
-        this.password = password;
+    private User(String email, String password, String name, int age, String hobby) {
+        this.email = new Email(email);
+        this.password = new Password(password);
         this.name = name;
         this.age = age;
         this.hobby = hobby;
@@ -66,4 +65,9 @@ public class User extends BaseEntity {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public String getEmail() {
+        return email.getEmail();
+    }
+
 }
