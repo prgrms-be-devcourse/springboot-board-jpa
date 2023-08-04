@@ -89,7 +89,7 @@ class UserControllerTest {
                                 headerWithName(CONTENT_TYPE).description("content type")
                         ),
                         responseFields(
-                                fieldWithPath("id").description("id of created user")
+                                fieldWithPath("userId").description("id of created user")
                         )
                 ));
     }

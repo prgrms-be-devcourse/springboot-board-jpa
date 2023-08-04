@@ -4,13 +4,12 @@ package com.example.springbootjpa.ui;
 import com.example.springbootjpa.application.UserService;
 import com.example.springbootjpa.ui.dto.user.UserFindResponse;
 import com.example.springbootjpa.ui.dto.user.UserSaveRequest;
+import com.example.springbootjpa.ui.dto.user.UserSaveResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -23,13 +22,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Long>> createUser(@RequestBody UserSaveRequest userSaveRequest) {
-        long saveId = userService.createUser(
+    public ResponseEntity<UserSaveResponse> createUser(@RequestBody UserSaveRequest userSaveRequest) {
+        long userId = userService.createUser(
                 userSaveRequest.name(),
                 userSaveRequest.age(),
                 userSaveRequest.hobby());
 
-        return ResponseEntity.created(URI.create("/api/v1/users/" + saveId)).body(Collections.singletonMap("id", saveId));
+        return ResponseEntity.created(URI.create("/api/v1/users/" + userId)).body(new UserSaveResponse(userId));
     }
 
     @GetMapping
@@ -41,6 +40,6 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<UserFindResponse> findById(@PathVariable Long userId) {
 
-        return ResponseEntity.ok(userService.findById(userId));
+        return ResponseEntity.ok(userService.find(userId));
     }
 }

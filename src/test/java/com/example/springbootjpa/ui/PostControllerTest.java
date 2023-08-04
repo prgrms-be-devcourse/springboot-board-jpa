@@ -98,7 +98,7 @@ class PostControllerTest {
     void findById() throws Exception {
         //given
         PostFindResponse postFindResponse1 = new PostFindResponse(1, "titleA", "contentA", 1);
-        given(postService.findPost(1L)).willReturn(postFindResponse1);
+        given(postService.find(1L)).willReturn(postFindResponse1);
 
         // when && then
         mockMvc.perform(get("/api/v1/posts/{postId}", 1))
@@ -144,7 +144,7 @@ class PostControllerTest {
                                 headerWithName(CONTENT_TYPE).description("content type")
                         ),
                         responseFields(
-                                fieldWithPath("id").description("id of post")
+                                fieldWithPath("postId").description("id of post")
                         )
                 ));
     }
@@ -175,7 +175,7 @@ class PostControllerTest {
                                 headerWithName(CONTENT_TYPE).description("content type")
                         ),
                         responseFields(
-                                fieldWithPath("id").description("id of created post")
+                                fieldWithPath("postId").description("id of created post")
                         )
                 ));
     }

@@ -3,11 +3,9 @@ package com.example.springbootjpa.domain.post;
 import com.example.springbootjpa.domain.BaseEntity;
 import com.example.springbootjpa.domain.user.User;
 import jakarta.persistence.*;
-import lombok.Getter;
 
 @Entity
 @Table(name = "POSTS_TBL")
-@Getter
 public class Post extends BaseEntity {
 
     @Id
