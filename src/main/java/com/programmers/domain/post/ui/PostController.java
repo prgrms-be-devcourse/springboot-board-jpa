@@ -1,6 +1,6 @@
 package com.programmers.domain.post.ui;
 
-import com.programmers.common.dto.ApiResponse;
+import com.programmers.common.dto.ApiIdResponse;
 import com.programmers.domain.post.application.PostService;
 import com.programmers.domain.post.ui.dto.PostDto;
 import com.programmers.domain.post.ui.dto.PostResponseDto;
@@ -30,8 +30,8 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ApiResponse<Long> createPost(@RequestBody PostDto postDto) {
-        return new ApiResponse<>(postService.createPost(postDto));
+    public ApiIdResponse createPost(@RequestBody PostDto postDto) {
+        return new ApiIdResponse(postService.createPost(postDto));
     }
 
     @GetMapping
