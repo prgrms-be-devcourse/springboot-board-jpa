@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 @Table(name = "posts")
 public class Post extends BaseEntity {
     private String title;
+
     @Column(columnDefinition = "TEXT")
     private String content;
 

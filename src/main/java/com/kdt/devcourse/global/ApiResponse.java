@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
     private static final String SUCCESS_MESSAGE = "요청을 완료하였습니다.";
+
     private final String message;
     private final T payload;
 

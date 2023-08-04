@@ -5,7 +5,6 @@ import com.kdt.devcourse.module.post.application.PostService;
 import com.kdt.devcourse.module.post.application.dto.PostResponse;
 import com.kdt.devcourse.module.post.presentation.dto.PostRequest;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +23,14 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/posts")
-@RequiredArgsConstructor
 public class PostController {
     private static final String BASE_URI = "/posts";
 
     private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     @GetMapping
     @ResponseStatus(OK)
