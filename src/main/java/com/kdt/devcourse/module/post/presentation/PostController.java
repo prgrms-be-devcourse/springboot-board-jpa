@@ -7,6 +7,7 @@ import com.kdt.devcourse.module.post.presentation.dto.PostRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +35,7 @@ public class PostController {
 
     @GetMapping
     @ResponseStatus(OK)
-    public ApiResponse<Page<PostResponse>> findAll(Pageable pageable) {
+    public ApiResponse<Page<PostResponse>> findAll(@PageableDefault(sort = "id") Pageable pageable) {
         Page<PostResponse> responses = postService.findAll(pageable);
         return new ApiResponse<>(responses);
     }
