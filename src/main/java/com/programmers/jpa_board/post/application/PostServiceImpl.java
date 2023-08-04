@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 @Service
 public class PostServiceImpl implements PostService {
     private static final String NOT_FOUND_POST = "게시글이 존재하지 않습니다.";
@@ -38,7 +39,6 @@ public class PostServiceImpl implements PostService {
         return converter.postToDto(saved);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public PostResponse findById(Long postId) {
         Post post = postRepository.findById(postId)
@@ -47,7 +47,6 @@ public class PostServiceImpl implements PostService {
         return converter.postToDto(post);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Page<PostResponse> findPage(Pageable pageable) {
         return postRepository.findAll(pageable)

@@ -9,6 +9,7 @@ import com.programmers.jpa_board.user.infra.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 @Service
 public class UserServiceImpl implements UserProviderService {
     private static final String NOT_FOUND_USER = "회원이 존재하지 않습니다.";
@@ -29,7 +30,6 @@ public class UserServiceImpl implements UserProviderService {
         return converter.userToDto(saved);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public User getUser(Long id) {
         return userRepository.findById(id)
