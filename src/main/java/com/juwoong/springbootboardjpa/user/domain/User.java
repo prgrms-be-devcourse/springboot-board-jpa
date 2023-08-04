@@ -43,7 +43,7 @@ public class User extends BaseEntity {
         return name;
     }
 
-    public Integer getAge() {
+    public int getAge() {
         return age;
     }
 
