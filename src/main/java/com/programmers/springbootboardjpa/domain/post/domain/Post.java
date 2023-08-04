@@ -21,7 +21,7 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = MAXIMUM_TITLE_LENGTH_LIMIT)
     private String title;
 
     @Lob

@@ -24,13 +24,13 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = MAXIMUM_NAME_LENGTH_LIMIT)
     private String name;
 
     @Column
     private int age;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = MAXIMUM_HOBBY_LENGTH_LIMIT)
     private String hobby;
 
     public User(String name, int age, String hobby) {
