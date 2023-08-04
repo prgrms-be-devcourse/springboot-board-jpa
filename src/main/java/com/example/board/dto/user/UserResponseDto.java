@@ -4,6 +4,8 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserResponseDto {
     private String name;
@@ -14,11 +16,4 @@ public class UserResponseDto {
 
     private String hobby;
 
-    @Builder
-    public UserResponseDto(String name, String email, int age, String hobby) {
-        this.name = name;
-        this.email = email;
-        this.age = age;
-        this.hobby = hobby;
-    }
 }
