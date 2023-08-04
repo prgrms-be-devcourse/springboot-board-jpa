@@ -11,6 +11,7 @@ import org.prgrms.myboard.dto.PostUpdateRequestDto;
 import org.prgrms.myboard.repository.PostRepository;
 import org.prgrms.myboard.repository.UserRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,7 +92,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public OffsetResult<PostResponseDto> findPostsByOffsetPagination(Pageable pageable) {
+    public OffsetResult<PostResponseDto> findPostsByOffsetPagination(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
         Page<PostResponseDto> posts = postRepository.findAll(pageable).map(Post::toPostResponseDto);
         int currentPage = pageable.getPageNumber() + PAGE_BASE_OFFSET;
         int lastPageIndex = posts.getTotalPages();

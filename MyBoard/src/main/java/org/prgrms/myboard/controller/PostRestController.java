@@ -53,7 +53,7 @@ public class PostRestController {
         @Min(value = 1, message = "page값은 최소 1입니다.") @RequestParam(value = "page") int page,
         @Min(value = 1, message = "pageSize값은 최소 1입니다.")@RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         return ResponseEntity.ok(postService.findPostsByOffsetPagination(
-            PageRequest.of(page - PAGE_BASE_OFFSET, pageSize)));
+            page - PAGE_BASE_OFFSET, pageSize));
     }
 
     @GetMapping("/user/{userId}")
