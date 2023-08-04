@@ -26,7 +26,7 @@ public class BaseEntity {
         return createdAt;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void addCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 }

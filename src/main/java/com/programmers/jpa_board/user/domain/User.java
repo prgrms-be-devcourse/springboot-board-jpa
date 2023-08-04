@@ -47,7 +47,7 @@ public class User extends BaseEntity {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        this.setCreatedBy(name);
+        this.addCreatedBy(name);
     }
 
     public Long getId() {
@@ -77,6 +77,7 @@ public class User extends BaseEntity {
 
     private void validateNamePattern(String name) {
         Matcher matcher = NAME_PATTERN.matcher(name);
+
         if (!matcher.find()) {
             throw new IllegalArgumentException(INVALID_NAME);
         }

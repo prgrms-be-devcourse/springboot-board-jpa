@@ -32,7 +32,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse create(CreatePostRequest request) {
         Post post = converter.createPostToPost(request);
-        post.setUser(userService.getUser(request.getUserId()));
+        post.addUser(userService.getUser(request.getUserId()));
 
         Post saved = postRepository.save(post);
 

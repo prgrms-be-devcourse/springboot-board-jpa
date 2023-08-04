@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-class UserTest {
+class UserValidateTest {
     @Test
     void 이름이_한글_또는_영어가_아닐시_예외() {
         //when & then
