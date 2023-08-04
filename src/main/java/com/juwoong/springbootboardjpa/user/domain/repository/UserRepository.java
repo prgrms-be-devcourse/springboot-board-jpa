@@ -7,7 +7,7 @@ import com.juwoong.springbootboardjpa.user.domain.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @EntityGraph(attributePaths = "posts")
+    //@EntityGraph(attributePaths = "posts")
     Optional<User> findById(Long id);
 
 }

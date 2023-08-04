@@ -17,14 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.juwoong.springbootboardjpa.post.api.model.PostRequest;
 import com.juwoong.springbootboardjpa.post.application.PostService;
 import com.juwoong.springbootboardjpa.post.application.model.PostDto;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/posts")
-@RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
+
+    private PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     @PostMapping()
     public ResponseEntity<PostDto> createPost(@RequestParam Long userId,

@@ -6,21 +6,19 @@ import com.juwoong.springbootboardjpa.user.application.model.UserDto;
 import com.juwoong.springbootboardjpa.user.domain.User;
 import com.juwoong.springbootboardjpa.user.domain.constant.Hobby;
 import com.juwoong.springbootboardjpa.user.domain.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class UserService {
 
     private final UserRepository userRepository;
 
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public UserDto createUser(String userName, int age, Hobby hobby) {
-        User user = User.builder()
-            .name(userName)
-            .age(age)
-            .hobby(hobby)
-            .build();
+        User user = new User(userName, age, hobby);
 
         User craetedUser = userRepository.save(user);
 

@@ -11,18 +11,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "USERS")
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
     @Column(nullable = false, length = 30)
@@ -38,5 +29,30 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<Post> posts;
+
+    protected User() {
+    }
+
+    public User(String name, Integer age, Hobby hobby) {
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public Hobby getHobby() {
+        return hobby;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
 
 }
