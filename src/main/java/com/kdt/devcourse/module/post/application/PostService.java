@@ -1,10 +1,9 @@
 package com.kdt.devcourse.module.post.application;
 
 import com.kdt.devcourse.global.exception.PostNotFoundException;
-import com.kdt.devcourse.module.post.application.dto.PostResponse;
 import com.kdt.devcourse.module.post.domain.Post;
 import com.kdt.devcourse.module.post.domain.repository.PostRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.kdt.devcourse.module.post.presentation.dto.PostDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,12 +20,12 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Page<PostResponse> findAll(Pageable pageable) {
+    public Page<PostDto.DefaultResponse> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(this::toResponse);
     }
 
-    public PostResponse getPostResponse(Long id) {
+    public PostDto.DefaultResponse getPostResponse(Long id) {
         Post post = findById(id);
         return toResponse(post);
     }
@@ -48,7 +47,7 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND, id));
     }
 
-    private PostResponse toResponse(Post post) {
-        return new PostResponse(post.getId(), post.getTitle(), post.getContent());
+    private PostDto.DefaultResponse toResponse(Post post) {
+        return new PostDto.DefaultResponse(post.getId(), post.getTitle(), post.getContent());
     }
 }

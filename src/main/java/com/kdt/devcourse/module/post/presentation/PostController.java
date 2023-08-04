@@ -2,8 +2,7 @@ package com.kdt.devcourse.module.post.presentation;
 
 import com.kdt.devcourse.global.ApiResponse;
 import com.kdt.devcourse.module.post.application.PostService;
-import com.kdt.devcourse.module.post.application.dto.PostResponse;
-import com.kdt.devcourse.module.post.presentation.dto.PostRequest;
+import com.kdt.devcourse.module.post.presentation.dto.PostDto;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,22 +34,22 @@ public class PostController {
 
     @GetMapping
     @ResponseStatus(OK)
-    public ApiResponse<Page<PostResponse>> findAll(@PageableDefault(sort = "id") Pageable pageable) {
-        Page<PostResponse> responses = postService.findAll(pageable);
+    public ApiResponse<Page<PostDto.DefaultResponse>> findAll(@PageableDefault(sort = "id") Pageable pageable) {
+        Page<PostDto.DefaultResponse> responses = postService.findAll(pageable);
         return new ApiResponse<>(responses);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(OK)
-    public ApiResponse<PostResponse> findOneById(@PathVariable Long id) {
-        PostResponse postResponse = postService.getPostResponse(id);
+    public ApiResponse<PostDto.DefaultResponse> findOneById(@PathVariable Long id) {
+        PostDto.DefaultResponse postResponse = postService.getPostResponse(id);
         return new ApiResponse<>(postResponse);
     }
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public ApiResponse<URI> create(@RequestBody @Valid PostRequest request) {
-        Long postId = postService.create(request.title(), request.content());
+    public ApiResponse<URI> create(@RequestBody @Valid PostDto.DefaultRequest request) {
+        Long postId = postService.create(request.getTitle(), request.getContent());
         URI uri = URI.create(BASE_URI + "/" + postId);
         return new ApiResponse<>(uri);
     }
@@ -58,8 +57,8 @@ public class PostController {
     @PutMapping("/{id}")
     @ResponseStatus(OK)
     public ApiResponse<Void> update(@PathVariable Long id,
-                                    @RequestBody @Valid PostRequest request) {
-        postService.update(id, request.title(), request.content());
+                                    @RequestBody @Valid PostDto.DefaultRequest request) {
+        postService.update(id, request.getTitle(), request.getContent());
         return new ApiResponse<>();
     }
 }

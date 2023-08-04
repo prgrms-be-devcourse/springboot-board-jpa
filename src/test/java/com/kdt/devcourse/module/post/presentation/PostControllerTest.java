@@ -2,7 +2,7 @@ package com.kdt.devcourse.module.post.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kdt.devcourse.module.post.application.PostService;
-import com.kdt.devcourse.module.post.presentation.dto.PostRequest;
+import com.kdt.devcourse.module.post.presentation.dto.PostDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ class PostControllerTest {
 
     private String title = "title";
     private String content = "content";
-    private PostRequest postRequest = new PostRequest(title, content);
+    private PostDto.DefaultRequest postRequest = new PostDto.DefaultRequest(title, content);
 
     @Test
     @DisplayName("생성 요청이 오면 201 응답과 함께 서비스를 한번만 호출해야 한다.")
