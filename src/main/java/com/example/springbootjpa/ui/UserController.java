@@ -46,13 +46,4 @@ public class UserController {
 
         return ResponseEntity.ok(userService.find(userId));
     }
-
-    @GetMapping("/test")
-    public User test() {
-        User user = userRepository.findAll().get(0);
-
-
-
-        return user;
-    }
 }
