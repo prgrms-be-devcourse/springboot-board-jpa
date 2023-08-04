@@ -50,9 +50,8 @@ public class PostService {
     }
 
     public Page<PostDto> getAllPosts(Pageable pageable) {
-        Page<Post> posts = postRepository.findAll(pageable);
 
-        return posts.map(this::toDto);
+        return postRepository.findAll(pageable).map(this::toDto);
     }
 
     private PostDto toDto(Post post) {
