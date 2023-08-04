@@ -33,6 +33,6 @@ public class UserServiceImpl implements UserProviderService {
     @Override
     public User getUser(Long id) {
         return userRepository.findById(id)
-                        .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_USER));
+                .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_USER));
     }
 }

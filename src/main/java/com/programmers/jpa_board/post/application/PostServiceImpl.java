@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
     private static final String NOT_FOUND_POST = "게시글이 존재하지 않습니다.";
 
     private final PostRepository postRepository;
@@ -59,6 +59,7 @@ public class PostServiceImpl implements PostService{
     public PostResponse update(Long postId, UpdatePostRequest request) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST));
+
         post.update(request.getTitle(), request.getContent());
 
         return converter.postToDto(post);

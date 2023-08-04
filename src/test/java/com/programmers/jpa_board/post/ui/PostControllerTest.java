@@ -63,8 +63,8 @@ class PostControllerTest {
 
         //when & then
         this.mockMvc.perform(post("/posts")
-                .content(objectMapper.writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("post-save",
                         requestFields(
@@ -94,7 +94,7 @@ class PostControllerTest {
 
         //when & then
         this.mockMvc.perform(get("/posts/{id}", response.getId())
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("post-get",
                         responseFields(
@@ -120,7 +120,7 @@ class PostControllerTest {
 
         //when & then
         this.mockMvc.perform(get("/posts")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("post-getPages",
                         responseFields(
@@ -168,8 +168,8 @@ class PostControllerTest {
 
         //when & then
         this.mockMvc.perform(put("/posts/{id}", response.getId())
-                .content(objectMapper.writeValueAsString(updateRequest))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsString(updateRequest))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("post-update",
                         requestFields(
