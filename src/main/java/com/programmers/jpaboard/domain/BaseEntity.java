@@ -17,5 +17,6 @@ public abstract class BaseEntity {
     @Column(updatable = false)
     protected LocalDateTime createdAt;
 
+    @Column(updatable = false)
     protected String createdBy;
 }
