@@ -1,8 +1,12 @@
 package com.programmers.springbootboardjpa.global.error.exception;
 
+import com.programmers.springbootboardjpa.global.error.ErrorCode;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public class NotFoundException extends RuntimeException {
 
-    public NotFoundException(String message) {
-        super(message);
-    }
+    private final ErrorCode errorCode;
 }

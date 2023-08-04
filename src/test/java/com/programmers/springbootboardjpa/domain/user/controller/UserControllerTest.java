@@ -67,13 +67,12 @@ class UserControllerTest {
                                 fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
                                 fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
                         ), responseFields(
-                                fieldWithPath("httpStatus").type(JsonFieldType.STRING).description("httpStatus"),
-                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
-                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("name"),
-                                fieldWithPath("data.age").type(JsonFieldType.NUMBER).description("age"),
-                                fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("hobby"),
-                                fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("createdBy"),
-                                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("createdAt")
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("createdBy").type(JsonFieldType.NULL).description("createdBy"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("createdAt")
                         )
                 ));
     }
@@ -102,8 +101,11 @@ class UserControllerTest {
                                 fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
                                 fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
                         ), responseFields(
-                                fieldWithPath("httpStatus").type(JsonFieldType.STRING).description("httpStatus"),
-                                fieldWithPath("data").type(JsonFieldType.STRING).description("data")
+                                fieldWithPath("timestamp").type(JsonFieldType.STRING).description("timestamp"),
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("status"),
+                                fieldWithPath("error").type(JsonFieldType.STRING).description("error"),
+                                fieldWithPath("code").type(JsonFieldType.STRING).description("code"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("message")
                         )
                 ));
     }
@@ -125,32 +127,31 @@ class UserControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("httpStatus").type(JsonFieldType.STRING).description("httpStatus"),
-                                fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("id"),
-                                fieldWithPath("data.content[].name").type(JsonFieldType.STRING).description("name"),
-                                fieldWithPath("data.content[].age").type(JsonFieldType.NUMBER).description("age"),
-                                fieldWithPath("data.content[].hobby").type(JsonFieldType.STRING).description("hobby"),
-                                fieldWithPath("data.content[].createdBy").type(JsonFieldType.NULL).description("createdBy"),
-                                fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("createdAt"),
-                                fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("data.pageable.sort.empty").ignored(),
-                                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("data.pageable.sort.sorted").ignored(),
-                                fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("data.pageable.sort.unsorted").ignored(),
-                                fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("data.pageable.offset").ignored(),
-                                fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER).description("data.pageable.pageSize"),
-                                fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER).description("data.pageable.pageNumber"),
-                                fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("data.pageable.paged").ignored(),
-                                fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("data.pageable.unpaged").ignored(),
-                                fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("data.last").ignored(),
-                                fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("data.totalElements"),
-                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("data.totalPages"),
-                                fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("data.size").ignored(),
-                                fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("data.number").ignored(),
-                                fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("data.sort.empty").ignored(),
-                                fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("data.sort.sorted").ignored(),
-                                fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("data.sort.unsorted").ignored(),
-                                fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("data.first").ignored(),
-                                fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("data.numberOfElements").ignored(),
-                                fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("data.empty").ignored()
+                                fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("content[].name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("content[].age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("content[].hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("content[].createdBy").type(JsonFieldType.NULL).description("createdBy"),
+                                fieldWithPath("content[].createdAt").type(JsonFieldType.STRING).description("createdAt"),
+                                fieldWithPath("pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("pageable.sort.empty").ignored(),
+                                fieldWithPath("pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("pageable.sort.sorted").ignored(),
+                                fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("pageable.sort.unsorted").ignored(),
+                                fieldWithPath("pageable.offset").type(JsonFieldType.NUMBER).description("pageable.offset").ignored(),
+                                fieldWithPath("pageable.pageSize").type(JsonFieldType.NUMBER).description("pageable.pageSize"),
+                                fieldWithPath("pageable.pageNumber").type(JsonFieldType.NUMBER).description("pageable.pageNumber"),
+                                fieldWithPath("pageable.paged").type(JsonFieldType.BOOLEAN).description("pageable.paged").ignored(),
+                                fieldWithPath("pageable.unpaged").type(JsonFieldType.BOOLEAN).description("pageable.unpaged").ignored(),
+                                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("last").ignored(),
+                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
+                                fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("totalPages"),
+                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("size").ignored(),
+                                fieldWithPath("number").type(JsonFieldType.NUMBER).description("number").ignored(),
+                                fieldWithPath("sort.empty").type(JsonFieldType.BOOLEAN).description("sort.empty").ignored(),
+                                fieldWithPath("sort.sorted").type(JsonFieldType.BOOLEAN).description("sort.sorted").ignored(),
+                                fieldWithPath("sort.unsorted").type(JsonFieldType.BOOLEAN).description("sort.unsorted").ignored(),
+                                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("first").ignored(),
+                                fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements").ignored(),
+                                fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("empty").ignored()
                         )
                 ));
     }
@@ -171,13 +172,12 @@ class UserControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("httpStatus").type(JsonFieldType.STRING).description("httpStatus"),
-                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
-                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("name"),
-                                fieldWithPath("data.age").type(JsonFieldType.NUMBER).description("age"),
-                                fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("hobby"),
-                                fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("createdBy"),
-                                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("createdAt")
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("createdBy").type(JsonFieldType.NULL).description("createdBy"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("createdAt")
                         )
                 ));
     }
@@ -195,8 +195,11 @@ class UserControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("httpStatus").type(JsonFieldType.STRING).description("httpStatus"),
-                                fieldWithPath("data").type(JsonFieldType.STRING).description("data")
+                                fieldWithPath("timestamp").type(JsonFieldType.STRING).description("timestamp"),
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("status"),
+                                fieldWithPath("error").type(JsonFieldType.STRING).description("error"),
+                                fieldWithPath("code").type(JsonFieldType.STRING).description("code"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("message")
                         )
                 ));
     }
@@ -229,13 +232,12 @@ class UserControllerTest {
                                 fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
                         ),
                         responseFields(
-                                fieldWithPath("httpStatus").type(JsonFieldType.STRING).description("httpStatus"),
-                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
-                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("name"),
-                                fieldWithPath("data.age").type(JsonFieldType.NUMBER).description("age"),
-                                fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("hobby"),
-                                fieldWithPath("data.createdBy").type(JsonFieldType.NULL).description("createdBy"),
-                                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("createdAt")
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("createdBy").type(JsonFieldType.NULL).description("createdBy"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("createdAt")
                         )
                 ));
     }
@@ -268,8 +270,11 @@ class UserControllerTest {
                                 fieldWithPath("hobby").type(JsonFieldType.STRING).description("hobby")
                         ),
                         responseFields(
-                                fieldWithPath("httpStatus").type(JsonFieldType.STRING).description("httpStatus"),
-                                fieldWithPath("data").type(JsonFieldType.STRING).description("data")
+                                fieldWithPath("timestamp").type(JsonFieldType.STRING).description("timestamp"),
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("status"),
+                                fieldWithPath("error").type(JsonFieldType.STRING).description("error"),
+                                fieldWithPath("code").type(JsonFieldType.STRING).description("code"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("message")
                         )
                 ));
     }

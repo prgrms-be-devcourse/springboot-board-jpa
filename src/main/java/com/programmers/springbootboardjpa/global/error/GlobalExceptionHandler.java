@@ -1,27 +1,33 @@
 package com.programmers.springbootboardjpa.global.error;
 
-import com.programmers.springbootboardjpa.global.common.ApiResponse;
 import com.programmers.springbootboardjpa.global.error.exception.InvalidEntityValueException;
 import com.programmers.springbootboardjpa.global.error.exception.NotFoundException;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidEntityValueException.class)
-    private ApiResponse<String> invalidEntityValueExceptionHandler(InvalidEntityValueException exception) {
-        return ApiResponse.fail(HttpStatus.BAD_REQUEST, exception.getMessage());
+    private ErrorResponse invalidEntityValueExceptionHandler(InvalidEntityValueException exception) {
+        log.error("handle invalidEntityValueException: {}", exception.getMessage());
+
+        return new ErrorResponse(exception.getErrorCode());
     }
 
     @ExceptionHandler(NotFoundException.class)
-    private ApiResponse<String> notFoundExceptionHandler(NotFoundException exception) {
-        return ApiResponse.fail(HttpStatus.NOT_FOUND, exception.getMessage());
+    private ErrorResponse notFoundExceptionHandler(NotFoundException exception) {
+        log.error("handle notFoundException: {}", exception.getMessage());
+
+        return new ErrorResponse(exception.getErrorCode());
     }
 
     @ExceptionHandler(Exception.class)
-    private ApiResponse<String> exceptionHandler(Exception exception) {
-        return ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+    private ErrorResponse exceptionHandler(Exception exception) {
+        log.error("handle exception: {}", exception.getMessage());
+
+        return new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR, exception.getMessage());
     }
 }

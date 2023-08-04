@@ -1,8 +1,8 @@
 package com.programmers.springbootboardjpa.domain.post.domain;
 
 import com.programmers.springbootboardjpa.domain.BaseEntity;
-import com.programmers.springbootboardjpa.domain.post.dto.PostUpdateRequestDto;
 import com.programmers.springbootboardjpa.domain.user.domain.User;
+import com.programmers.springbootboardjpa.global.error.ErrorCode;
 import com.programmers.springbootboardjpa.global.error.exception.InvalidEntityValueException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -44,19 +44,19 @@ public class Post extends BaseEntity {
 
     public void checkTitle(String title) {
         if (title == null || title.isEmpty() || title.length() > MAXIMUM_TITLE_LENGTH_LIMIT) {
-            throw new InvalidEntityValueException("1자 이상 50자 이하로 입력해주세요.");
+            throw new InvalidEntityValueException(ErrorCode.INVALID_POST_TITLE);
         }
     }
 
     public void checkContent(String content) {
         if (content == null || content.isEmpty()) {
-            throw new InvalidEntityValueException("내용은 공백일 수 없습니다.");
+            throw new InvalidEntityValueException(ErrorCode.INVALID_POST_CONTENT);
         }
     }
 
     public void checkUser(User user) {
         if (user == null) {
-            throw new InvalidEntityValueException("작성자가 포함되어 있어야 합니다.");
+            throw new InvalidEntityValueException(ErrorCode.INVALID_POST_WRITER);
         }
     }
 
