@@ -4,16 +4,16 @@ import com.kdt.board.domain.post.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = PROTECTED)
 @Builder
 public class PostUpdateRequestDto {
 
-    private String title;
-    private String content;
+    private final String title;
+    private final String content;
 
     public static Post from(PostUpdateRequestDto postRequestDto) {
         return Post.builder()

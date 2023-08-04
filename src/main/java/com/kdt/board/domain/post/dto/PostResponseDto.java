@@ -5,20 +5,20 @@ import com.kdt.board.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = PROTECTED)
 @Builder
 public class PostResponseDto {
-    private Long id;
-    private String title;
-    private String content;
-    private LocalDateTime createdAt;
-    private User createdBy;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final LocalDateTime createdAt;
+    private final User createdBy;
 
     public PostResponseDto(Post post) {
         this.id = post.getId();

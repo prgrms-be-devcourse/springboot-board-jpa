@@ -5,17 +5,17 @@ import com.kdt.board.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = PROTECTED)
 @Builder
 public class PostCreateRequestDto {
 
-    private String title;
-    private String content;
-    private Long userId;
+    private final String title;
+    private final String content;
+    private final Long userId;
 
     public static Post from(PostCreateRequestDto postRequestDto, User user) {
         return Post.builder()
