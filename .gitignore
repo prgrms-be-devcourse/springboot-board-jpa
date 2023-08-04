@@ -69,3 +69,6 @@ replay_pid*
 *.iml
 out
 gen
+
+# png.file
+*.png
