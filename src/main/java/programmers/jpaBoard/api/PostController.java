@@ -18,7 +18,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping("/new")
+    @PostMapping
     public ResponseEntity<PostDto.Response> createPost(@RequestBody PostDto.Request request) {
         PostDto.Response response = postService.create(request);
 
