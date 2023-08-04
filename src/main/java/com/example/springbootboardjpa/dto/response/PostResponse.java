@@ -1,7 +1,6 @@
 package com.example.springbootboardjpa.dto.response;
 
 import com.example.springbootboardjpa.entity.Post;
-import com.example.springbootboardjpa.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,10 +12,10 @@ public class PostResponse {
     private Long postId;
     private String title;
     private String content;
-    private User userId;
+    private Long userId;
 
     @Builder
-    private PostResponse(Long postId, String title, String content, User userId) {
+    private PostResponse(Long postId, String title, String content, Long userId) {
         this.postId = postId;
         this.title = title;
         this.content = content;
@@ -28,7 +27,7 @@ public class PostResponse {
                 .postId(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .userId(post.getUser())
+                .userId(post.getUser().getId())
                 .build();
     }
 }
