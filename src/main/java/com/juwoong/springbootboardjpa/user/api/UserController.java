@@ -15,7 +15,7 @@ import com.juwoong.springbootboardjpa.user.application.UserService;
 import com.juwoong.springbootboardjpa.user.application.model.UserDto;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;

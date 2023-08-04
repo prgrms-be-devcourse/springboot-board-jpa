@@ -47,11 +47,15 @@ public class PostController {
     }
 
     @GetMapping()
-    public Page<PostDto> getAllPosts(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Page<PostDto>> getAllPosts(@RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "2") int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        return postService.getAllPosts(pageRequest);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Page<PostDto> posts = postService.getAllPosts(pageRequest);
+
+        return new ResponseEntity<>(posts, headers, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
