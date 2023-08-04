@@ -12,4 +12,5 @@ public record PostsResponse(List<PostResponse> postResponse, int totalPages, int
                 .map(PostResponse::from)
                 .toList(), postPage.getTotalPages(), postPage.getNumber());
     }
+
 }

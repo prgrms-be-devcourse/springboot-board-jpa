@@ -63,7 +63,6 @@ public class UserController {
         return userService.findUser(userId);
     }
 
-
     @DeleteMapping("/me")
     public void delete(@SessionAttribute(name = "userId") Long userId) {
         userService.delete(userId);
