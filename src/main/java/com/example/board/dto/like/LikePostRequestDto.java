@@ -1,0 +1,36 @@
+package com.example.board.dto.like;
+
+import com.example.board.contant.LikeStatus;
+import com.example.board.domain.entity.Post;
+import com.example.board.domain.entity.PostLike;
+import com.example.board.domain.entity.User;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class LikePostRequestDto {
+    @NotNull
+    private Long postId;
+    @NotNull
+    private Long userId;
+    @NotNull
+    @Min(0)
+    @Max(1)
+    private Integer likeType;
+
+    public PostLike toEntity(User user, Post post) {
+        return PostLike.builder()
+                .post(post)
+                .user(user)
+                .likeStatus(LikeStatus.fromValue(likeType))
+                .build();
+    }
+}

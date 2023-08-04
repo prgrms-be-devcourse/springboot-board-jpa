@@ -26,4 +26,10 @@ public abstract class Like {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usr_id")
     private User user;
+
+    public Like(Long id, LikeStatus likeStatus, User user) {
+        this.id = id;
+        this.likeStatus = likeStatus;
+        this.user = user;
+    }
 }

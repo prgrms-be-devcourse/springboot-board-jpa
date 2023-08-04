@@ -9,9 +9,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public enum LikeStatus {
 
-    NEUTRAL(0, "중립"),
-    LIKE(1, "좋아요"),
-    DISLIKE(2, "싫어요");
+    LIKE(0, "좋아요"),
+    DISLIKE(1, "싫어요");
 
     private final Integer value;
 
