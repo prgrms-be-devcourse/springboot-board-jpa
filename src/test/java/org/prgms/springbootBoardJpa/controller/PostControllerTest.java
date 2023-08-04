@@ -23,7 +23,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -56,7 +55,6 @@ class PostControllerTest extends RestDocsSupport {
             .andDo(print())
             .andExpect(status().isCreated())
             .andDo(document("post-create",
-                preprocessRequest(prettyPrint()),
                 requestFields(
                     fieldWithPath("userInfo.name").type(JsonFieldType.STRING).description("작성자 이름"),
                     fieldWithPath("userInfo.age").type(JsonFieldType.NUMBER).description("작성자 나이"),
@@ -82,7 +80,6 @@ class PostControllerTest extends RestDocsSupport {
             .andDo(print())
             .andExpect(status().isOk())
             .andDo(document("post-update",
-                preprocessRequest(prettyPrint()),
                 pathParameters(parameterWithName("id").description("게시물 아이디")),
                 requestFields(
                     fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
@@ -113,7 +110,6 @@ class PostControllerTest extends RestDocsSupport {
             .andExpect(jsonPath("$[1].title", is("testTitle2")))
             .andExpect(jsonPath("$[1].content", is("testContent2")))
             .andDo(document("post-find-all",
-                preprocessResponse(prettyPrint()),
                 responseFields(
                     fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("게시물 아이디"),
                     fieldWithPath("[].title").type(JsonFieldType.STRING).description("제목"),
@@ -138,7 +134,6 @@ class PostControllerTest extends RestDocsSupport {
             .andExpect(jsonPath("$.title", is("testTitle")))
             .andExpect(jsonPath("$.content", is("testContent")))
             .andDo(document("post-find-one",
-                preprocessResponse(prettyPrint()),
                 pathParameters(parameterWithName("id").description("게시물 아이디")),
                 responseFields(
                     fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시물 아이디"),

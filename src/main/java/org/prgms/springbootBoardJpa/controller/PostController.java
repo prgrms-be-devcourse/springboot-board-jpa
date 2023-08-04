@@ -42,11 +42,13 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<PostResponse>> findAll(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return new ResponseEntity<>(postService.findAll(pageable), HttpStatus.OK);
+        var body = postService.findAll(pageable);
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PostResponse> findOne(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(postService.findOne(id), HttpStatus.OK);
+        var body = postService.findOne(id);
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 }

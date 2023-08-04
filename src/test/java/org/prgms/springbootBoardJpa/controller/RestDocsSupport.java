@@ -10,6 +10,9 @@ import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+
 @ExtendWith(RestDocumentationExtension.class)
 public abstract class RestDocsSupport {
 
@@ -19,7 +22,10 @@ public abstract class RestDocsSupport {
     @BeforeEach
     void setup(RestDocumentationContextProvider provider) {
         this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
-            .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
+            .apply(MockMvcRestDocumentation.documentationConfiguration(provider)
+                .operationPreprocessors()
+                .withRequestDefaults(prettyPrint())
+                .withResponseDefaults(prettyPrint()))
             .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
             .build();
     }
