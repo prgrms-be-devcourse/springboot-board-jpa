@@ -1,6 +1,5 @@
 package programmers.jpaBoard.api;
-
-import lombok.RequiredArgsConstructor;
+;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -12,10 +11,13 @@ import programmers.jpaBoard.service.PostService;
 
 @RestController
 @RequestMapping("/posts")
-@RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     @PostMapping("/new")
     public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest request) {

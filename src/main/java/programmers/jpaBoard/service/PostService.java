@@ -1,6 +1,5 @@
 package programmers.jpaBoard.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,10 +11,13 @@ import programmers.jpaBoard.repository.PostRepository;
 import java.util.NoSuchElementException;
 
 @Service
-@RequiredArgsConstructor
 public class PostService {
 
     private final PostRepository postRepository;
+
+    public PostService(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     public PostResponse create(PostRequest request) {
         Post post = new Post(request.getTitle(), request.getContent(), request.getUser());

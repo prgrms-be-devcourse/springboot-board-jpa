@@ -1,11 +1,8 @@
 package programmers.jpaBoard.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
     @Id
@@ -18,4 +15,7 @@ public class User extends BaseEntity {
     private int age;
 
     private String hobby;
+
+    protected User() {
+    }
 }
