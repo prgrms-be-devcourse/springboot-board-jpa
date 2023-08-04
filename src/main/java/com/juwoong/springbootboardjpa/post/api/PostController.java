@@ -2,6 +2,9 @@ package com.juwoong.springbootboardjpa.post.api;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.juwoong.springbootboardjpa.post.api.model.PostRequest;
 import com.juwoong.springbootboardjpa.post.application.PostService;
 import com.juwoong.springbootboardjpa.post.application.model.PostDto;
-
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,10 +27,13 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/create")
-    public ResponseEntity<PostDto> createPost(@RequestBody PostRequest request){
+    public ResponseEntity<PostDto> createPost(@RequestBody PostRequest request) {
         PostDto post = postService.createPost(request.getUserId(), request.getPostTitle(), request.getPostContent());
 
-        return ResponseEntity.ok(post);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return new ResponseEntity<>(post, headers, HttpStatus.OK);
     }
 
     @GetMapping("/search/{id}")
@@ -46,12 +51,14 @@ public class PostController {
         return postService.searchAll(pageRequest);
     }
 
-
     @PutMapping("/update")
-    public ResponseEntity<PostDto> editPost(@RequestBody PostRequest request){
+    public ResponseEntity<PostDto> editPost(@RequestBody PostRequest request) {
         PostDto post = postService.editPost(request.getPostId(), request.getPostTitle(), request.getPostContent());
 
-        return ResponseEntity.ok(post);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return new ResponseEntity<>(post, headers, HttpStatus.OK);
     }
 
 }
