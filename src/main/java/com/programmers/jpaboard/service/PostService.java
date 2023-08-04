@@ -55,6 +55,7 @@ public class PostService {
         return PostIdResponse.of(post.getId());
     }
 
+    @Transactional
     public void deletePostById(Long id) {
         postRepository.delete(getPostById(id));
     }
