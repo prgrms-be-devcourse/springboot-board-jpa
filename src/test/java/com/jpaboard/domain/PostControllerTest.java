@@ -6,6 +6,7 @@ import com.jpaboard.post.infra.JpaPostRepository;
 import com.jpaboard.post.ui.dto.PostDto;
 import com.jpaboard.post.ui.dto.PostUpdateDto;
 import com.jpaboard.user.ui.dto.UserDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +43,60 @@ class PostControllerTest {
     @Autowired
     private JpaPostRepository postRepository;
 
+    @BeforeEach
+    void setUp() {
+        postRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("모든 id를 조회하고 rest doc객체를 생성한다")
     void findPostAll_Test() throws Exception {
         // Given
         PageRequest page = PageRequest.of(0, 8);
         Page<PostDto> postDtoPage = postService.findPostAll(page);
+
+        Long postId = postService.createPost(
+                PostDto.builder()
+                        .title("제목11")
+                        .content("111111")
+                        .user(
+                                UserDto.builder()
+                                        .name("이름이름11")
+                                        .age(11)
+                                        .hobby("사진찍기11")
+                                        .build()
+                        )
+                        .build()
+        );
+
+        Long postId2 = postService.createPost(
+                PostDto.builder()
+                        .title("제목22")
+                        .content("222222")
+                        .user(
+                                UserDto.builder()
+                                        .name("이름이름22")
+                                        .age(22)
+                                        .hobby("사진찍기22")
+                                        .build()
+                        )
+                        .build()
+        );
+
+        Long postId3 = postService.createPost(
+                PostDto.builder()
+                        .title("제목33")
+                        .content("33333")
+                        .user(
+                                UserDto.builder()
+                                        .name("이름이름33")
+                                        .age(33)
+                                        .hobby("사진찍기33")
+                                        .build()
+                        )
+                        .build()
+        );
+
 
         // When, Them
         this.mockMvc.perform(get("/api/posts")
@@ -63,33 +112,39 @@ class PostControllerTest {
                                 fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("제목"),
                                 fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("data.pageable"),
 
-                                fieldWithPath("data.pageable.sort").type(JsonFieldType.STRING).description("게시글내용").ignored(),
-                                fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.STRING).description("게시글내용").ignored(),
-                                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.STRING).description("게시글내용").ignored(),
-                                fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.STRING).description("게시글내용").ignored(),
+                                fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("내용"),
 
-                                fieldWithPath("data.pageable.offset").type(JsonFieldType.STRING).description("게시글내용").ignored(),
-                                fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.STRING).description("게시글내용").ignored(),
-                                fieldWithPath("data.pageable.pageSize").type(JsonFieldType.STRING).description("게시글내용").ignored(),
-                                fieldWithPath("data.pageable.paged").type(JsonFieldType.STRING).description("게시글내용").ignored(),
-                                fieldWithPath("data.pageable.unpaged").type(JsonFieldType.STRING).description("게시글내용").ignored(),
+                                fieldWithPath("data.content[].user").type(JsonFieldType.OBJECT).description("작성자"),
+                                fieldWithPath("data.content[].user.name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("data.content[].user.age").type(JsonFieldType.NUMBER).description("나이"),
+                                fieldWithPath("data.content[].user.hobby").type(JsonFieldType.STRING).description("취미"),
 
+                                fieldWithPath("data.pageable.sort").type(JsonFieldType.STRING).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.STRING).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.STRING).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.STRING).description("Pageable 데이터").ignored(),
 
-                                fieldWithPath("data.totalPages").type(JsonFieldType.OBJECT).description("데이터").ignored(),
-                                fieldWithPath("data.totalElements").type(JsonFieldType.OBJECT).description("데이터").ignored(),
-                                fieldWithPath("data.last").type(JsonFieldType.OBJECT).description("데이터").ignored(),
-                                fieldWithPath("data.size").type(JsonFieldType.OBJECT).description("데이터").ignored(),
-                                fieldWithPath("data.number").type(JsonFieldType.OBJECT).description("데이터").ignored(),
+                                fieldWithPath("data.pageable.offset").type(JsonFieldType.STRING).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.STRING).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.pageable.pageSize").type(JsonFieldType.STRING).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.pageable.paged").type(JsonFieldType.STRING).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.pageable.unpaged").type(JsonFieldType.STRING).description("Pageable 데이터").ignored(),
 
-                                fieldWithPath("data.sort").type(JsonFieldType.OBJECT).description("데이터").ignored(),
-                                fieldWithPath("data.sort.empty").type(JsonFieldType.OBJECT).description("데이터").ignored(),
-                                fieldWithPath("data.sort.sorted").type(JsonFieldType.OBJECT).description("데이터").ignored(),
-                                fieldWithPath("data.sort.unsorted").type(JsonFieldType.OBJECT).description("데이터").ignored(),
+                                fieldWithPath("data.totalPages").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.totalElements").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.last").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.size").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.number").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
 
-                                fieldWithPath("data.numberOfElements").type(JsonFieldType.OBJECT).description("데이터").ignored(),
-                                fieldWithPath("data.first").type(JsonFieldType.OBJECT).description("데이터").ignored(),
-                                fieldWithPath("data.empty").type(JsonFieldType.OBJECT).description("데이터").ignored()
+                                fieldWithPath("data.sort").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.sort.empty").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.sort.sorted").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.sort.unsorted").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
 
+                                fieldWithPath("data.numberOfElements").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.first").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
+                                fieldWithPath("data.empty").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored()
 
                         )
                 ));
@@ -211,7 +266,6 @@ class PostControllerTest {
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
-
                         ),
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
@@ -220,7 +274,5 @@ class PostControllerTest {
                         )
 
                 ));
-
-
     }
 }
