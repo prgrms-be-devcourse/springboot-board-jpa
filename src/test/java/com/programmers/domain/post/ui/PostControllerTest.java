@@ -59,7 +59,7 @@ class PostControllerTest {
                                 PayloadDocumentation.fieldWithPath("userId").type(JsonFieldType.NUMBER).description("userId")
                         ),
                         PayloadDocumentation.responseFields(
-                                PayloadDocumentation.fieldWithPath("data").type(JsonFieldType.NUMBER).description("postId")
+                                PayloadDocumentation.fieldWithPath("id").type(JsonFieldType.NUMBER).description("id")
                         )
                 ))
                 .andReturn();
@@ -91,7 +91,8 @@ class PostControllerTest {
                         PayloadDocumentation.responseFields(
                                 PayloadDocumentation.fieldWithPath("[].title").type(JsonFieldType.STRING).description("title"),
                                 PayloadDocumentation.fieldWithPath("[].content").type(JsonFieldType.STRING).description("content"),
-                                PayloadDocumentation.fieldWithPath("[].userId").type(JsonFieldType.NUMBER).description("userId")
+                                PayloadDocumentation.fieldWithPath("[].userId").type(JsonFieldType.NUMBER).description("userId"),
+                                PayloadDocumentation.fieldWithPath("[].postId").type(JsonFieldType.NUMBER).description("postId")
                         )
                 ))
                 .andReturn();
@@ -113,7 +114,8 @@ class PostControllerTest {
                         PayloadDocumentation.responseFields(
                                 PayloadDocumentation.fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
                                 PayloadDocumentation.fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
-                                PayloadDocumentation.fieldWithPath("userId").type(JsonFieldType.NUMBER).description("userId")
+                                PayloadDocumentation.fieldWithPath("userId").type(JsonFieldType.NUMBER).description("userId"),
+                                PayloadDocumentation.fieldWithPath("postId").type(JsonFieldType.NUMBER).description("postId")
                         )
                 ))
                 .andReturn();
@@ -140,7 +142,8 @@ class PostControllerTest {
                         PayloadDocumentation.responseFields(
                                 PayloadDocumentation.fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
                                 PayloadDocumentation.fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
-                                PayloadDocumentation.fieldWithPath("userId").type(JsonFieldType.NUMBER).description("userId")
+                                PayloadDocumentation.fieldWithPath("userId").type(JsonFieldType.NUMBER).description("userId"),
+                                PayloadDocumentation.fieldWithPath("postId").type(JsonFieldType.NUMBER).description("postId")
                         )
                 ))
                 .andReturn();
