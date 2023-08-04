@@ -24,8 +24,8 @@ public class PostRestController {
     }
 
     @GetMapping("/posts/{id}")
-    public ApiResponse<PostDto> getMember(@PathVariable long id) {
-        PostDto postDto = postService.getMember(id);
+    public ApiResponse<PostDto> findPost(@PathVariable long id) {
+        PostDto postDto = postService.findPost(id);
         return ApiResponse.ok(postDto);
     }
 
@@ -35,7 +35,7 @@ public class PostRestController {
         return ApiResponse.ok(postId);
     }
 
-    @PostMapping("/posts/{id}")
+    @PatchMapping("/posts/{id}")
     public ApiResponse<Long> updatePost(@PathVariable long id,
                                         @RequestBody PostUpdateDto postUpdateDto) {
         Long postId = postService.updatePost(id, postUpdateDto);

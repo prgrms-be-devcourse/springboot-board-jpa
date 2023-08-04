@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class PostService {
 
-    private final static String notFoundPostMessage = "게시글 정보를 찾을 수 없습니다.";
+    private final static String NOT_FOUND_POST_MESSAGE = "게시글 정보를 찾을 수 없습니다.";
     private final JpaPostRepository postRepository;
 
     public PostService(JpaPostRepository postRepository) {
@@ -28,10 +28,10 @@ public class PostService {
                 .map(PostConverter::convertPostDto);
     }
 
-    public PostDto getMember(long id) {
+    public PostDto findPost(long id) {
         return postRepository.findById(id)
                 .map(PostConverter::convertPostDto)
-                .orElseThrow(() -> new NotFoundPostException(notFoundPostMessage));
+                .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
     }
 
     public Long createPost(PostDto postDto) {
@@ -41,7 +41,7 @@ public class PostService {
 
     public Long updatePost(long id, PostUpdateDto postUpdateDto) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new NotFoundPostException(notFoundPostMessage));
+                .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
         post.updatePost(postUpdateDto.title(), postUpdateDto.content());
 
         return post.getId();

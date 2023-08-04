@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class UserService {
-    private final static String notFoundUserMessage = "회원 정보를 찾을 수 없습니다.";
+    private static final String NOT_FOUND_USER_MESSAGE = "회원 정보를 찾을 수 없습니다.";
 
     private final JpaUserRepository userRepository;
 
@@ -27,7 +27,6 @@ public class UserService {
     public UserDto getUserById(long id) {
         return userRepository.findById(id)
                 .map(UserConverter::convertUserDto)
-                .orElseThrow(() -> new NotFoundUserException("notFoundUserMessage"));
-
+                .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_USER_MESSAGE));
     }
 }
