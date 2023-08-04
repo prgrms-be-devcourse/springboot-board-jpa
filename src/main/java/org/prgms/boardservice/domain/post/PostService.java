@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import static org.prgms.boardservice.util.ErrorMessage.NOT_FOUND_POST;
 
 @Service
+@Transactional
 public class PostService {
 
     private final PostRepository postRepository;
@@ -19,12 +20,10 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    @Transactional
     public Long create(Post post) {
         return postRepository.save(post).getId();
     }
-
-    @Transactional
+    
     public Long update(PostUpdateVo postUpdateVo) {
         Post findPost = postRepository.findById(postUpdateVo.id())
                 .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_POST.getMessage()));
@@ -35,20 +34,20 @@ public class PostService {
         return postRepository.save(findPost).getId();
     }
 
+    @Transactional(readOnly = true)
     public Post getById(Long id) {
         return postRepository.findById(id).orElseThrow(() -> new NoSuchElementException(NOT_FOUND_POST.getMessage()));
     }
 
+    @Transactional(readOnly = true)
     public Page<Post> getByPage(Pageable pageable) {
         return postRepository.findAll(pageable);
     }
 
-    @Transactional
     public void deleteById(Long id) {
         postRepository.deleteById(id);
     }
 
-    @Transactional
     public void deleteAll() {
         postRepository.deleteAll();
     }
