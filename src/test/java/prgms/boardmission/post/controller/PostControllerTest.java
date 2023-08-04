@@ -92,7 +92,49 @@ class PostControllerTest {
         mockMvc.perform(get("/posts")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-findAll",
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+                                fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답시간"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+                                fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("데이터"),
+                                fieldWithPath("data.content[].postId").type(JsonFieldType.NUMBER).description("데이터"),
+                                fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("postId"),
+                                fieldWithPath("data.content[].memberDto").type(JsonFieldType.OBJECT).description("memberDto"),
+                                fieldWithPath("data.content[].memberDto.userId").type(JsonFieldType.NUMBER).description("userId"),
+                                fieldWithPath("data.content[].memberDto.name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("data.content[].memberDto.age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("data.content[].memberDto.hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("title"),
+
+                                fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("pageable"),
+                                fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("sort"),
+                                fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("empty"),
+                                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted"),
+                                fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("unsorted"),
+                                fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("offset"),
+                                fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER).description("pageNumber"),
+                                fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER).description("pageSize"),
+                                fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("paged"),
+                                fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("unpaged"),
+
+                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("totalPages"),
+                                fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
+                                fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("last"),
+                                fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("size"),
+                                fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("number"),
+                                fieldWithPath("data.sort").type(JsonFieldType.OBJECT).description("sort"),
+                                fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("empty"),
+                                fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("unsorted"),
+                                fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("unsorted"),
+
+                                fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements"),
+                                fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("first"),
+                                fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("empty")
+                        )
+                ));
     }
 
     @Test
