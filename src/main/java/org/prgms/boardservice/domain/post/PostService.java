@@ -23,7 +23,7 @@ public class PostService {
     public Long create(Post post) {
         return postRepository.save(post).getId();
     }
-    
+
     public Long update(PostUpdateVo postUpdateVo) {
         Post findPost = postRepository.findById(postUpdateVo.id())
                 .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_POST.getMessage()));
@@ -36,7 +36,8 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Post getById(Long id) {
-        return postRepository.findById(id).orElseThrow(() -> new NoSuchElementException(NOT_FOUND_POST.getMessage()));
+        return postRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_POST.getMessage()));
     }
 
     @Transactional(readOnly = true)

@@ -34,7 +34,6 @@ class PostServiceTest {
     @Test
     @DisplayName("게시글이 성공적으로 생성된다.")
     void success_Create_Post() {
-
         Long id = postService.create(post);
 
         Post get = postService.getById(id);
