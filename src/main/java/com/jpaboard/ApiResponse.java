@@ -1,11 +1,9 @@
 package com.jpaboard;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Getter
 public class ApiResponse<T> {
 
     private int statusCode;
@@ -27,5 +25,17 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> fail(int statusCode, T errorData) {
         return new ApiResponse<>(statusCode, errorData);
+    }
+
+    public int getStatusCode() {
+        return this.statusCode;
+    }
+
+    public T getData() {
+        return this.data;
+    }
+
+    public LocalDateTime getServerDateTime() {
+        return this.serverDateTime;
     }
 }
