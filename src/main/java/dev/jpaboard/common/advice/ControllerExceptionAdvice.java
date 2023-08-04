@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
-public class ControllerAdvice {
+public class ControllerExceptionAdvice {
 
     private static final String SERVER_ERROR_MESSAGE = "알 수 없는 문제가 발생했습니다.";
 
