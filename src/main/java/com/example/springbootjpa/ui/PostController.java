@@ -5,7 +5,6 @@ import com.example.springbootjpa.application.PostService;
 import com.example.springbootjpa.ui.dto.post.PostFindResponse;
 import com.example.springbootjpa.ui.dto.post.PostSaveRequest;
 import com.example.springbootjpa.ui.dto.post.PostUpdateRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -18,11 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/posts")
 public class PostController {
 
     private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     @GetMapping
     public ResponseEntity<List<PostFindResponse>> findAll(@PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {

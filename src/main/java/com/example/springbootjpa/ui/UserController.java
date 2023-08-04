@@ -4,7 +4,6 @@ package com.example.springbootjpa.ui;
 import com.example.springbootjpa.application.UserService;
 import com.example.springbootjpa.ui.dto.user.UserFindResponse;
 import com.example.springbootjpa.ui.dto.user.UserSaveRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UserController {
 
     private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping
     public ResponseEntity<Map<String, Long>> createUser(@RequestBody UserSaveRequest userSaveRequest) {

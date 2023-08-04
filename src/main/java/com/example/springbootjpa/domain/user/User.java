@@ -1,12 +1,9 @@
 package com.example.springbootjpa.domain.user;
 
 import com.example.springbootjpa.domain.BaseEntity;
-import com.example.springbootjpa.domain.user.Hobby;
 import jakarta.persistence.*;
-import lombok.Getter;
 
 @Entity
-@Getter
 @Table(name = "USERS_TBL")
 public class User extends BaseEntity {
 
@@ -30,5 +27,21 @@ public class User extends BaseEntity {
         this.age = age;
         this.hobby = hobby;
         this.setCreatedBy(name);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public Hobby getHobby() {
+        return hobby;
     }
 }

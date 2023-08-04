@@ -38,4 +38,20 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public User getUser() {
+        return user;
+    }
 }
