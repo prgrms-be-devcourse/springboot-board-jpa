@@ -1,5 +1,6 @@
 package com.juwoong.springbootboardjpa.user.application;
 
+import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.juwoong.springbootboardjpa.user.application.model.UserDto;
@@ -20,19 +21,27 @@ public class UserService {
     public UserDto createUser(String userName, int age, Hobby hobby) {
         User user = new User(userName, age, hobby);
 
-        User craetedUser = userRepository.save(user);
-
-        return toDto(craetedUser);
-    }
-
-    public User searchByIdForPost(Long id) {
-        return userRepository.findById(id).get();
-    }
-
-    public UserDto getUserById(Long id) {
-        User user = userRepository.findById(id).get();
+        user = userRepository.save(user);
 
         return toDto(user);
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserByIdForPost(Long id) {
+        User user = findById(id);
+
+        return user;
+    }
+
+    @Transactional(readOnly = true)
+    public UserDto getUserById(Long id) {
+        User user = findById(id);
+
+        return toDto(user);
+    }
+
+    private User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다"));
     }
 
     private UserDto toDto(User user) {

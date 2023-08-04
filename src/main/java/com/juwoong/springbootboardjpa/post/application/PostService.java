@@ -1,5 +1,6 @@
 package com.juwoong.springbootboardjpa.post.application;
 
+import java.util.NoSuchElementException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,35 +24,39 @@ public class PostService {
     }
 
     public PostDto createPost(Long userId, String postTitle, String postContent) {
-        User searchedUser = userService.searchByIdForPost(userId);
+        User user = userService.getUserByIdForPost(userId);
 
-        Post post = new Post(searchedUser, postTitle, postContent);
+        Post post = new Post(user, postTitle, postContent);
 
-        Post createdPost = postRepository.save(post);
+        post = postRepository.save(post);
 
-        return toDto(createdPost);
+        return toDto(post);
     }
 
     public PostDto updatePost(Long id, String title, String content) {
-        Post post = postRepository.findById(id).get();
+        Post post = findById(id);
 
         post.update(title, content);
 
         post = postRepository.save(post);
 
         return toDto(post);
-
     }
 
+    @Transactional(readOnly = true)
     public PostDto getPostById(Long id) {
-        Post searchedPost = postRepository.findById(id).get();
+        Post post = findById(id);
 
-        return toDto(searchedPost);
+        return toDto(post);
     }
 
+    @Transactional(readOnly = true)
     public Page<PostDto> getAllPosts(Pageable pageable) {
-
         return postRepository.findAll(pageable).map(this::toDto);
+    }
+
+    private Post findById(Long id) {
+        return postRepository.findById(id).orElseThrow(() -> new NoSuchElementException("게시물이 존재하지 않습니다."));
     }
 
     private PostDto toDto(Post post) {
