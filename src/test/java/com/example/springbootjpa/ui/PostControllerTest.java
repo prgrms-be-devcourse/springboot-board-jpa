@@ -1,6 +1,7 @@
 package com.example.springbootjpa.ui;
 
 import com.example.springbootjpa.application.PostService;
+import com.example.springbootjpa.configuration.AuditingConfiguration;
 import com.example.springbootjpa.ui.dto.post.PostFindResponse;
 import com.example.springbootjpa.ui.dto.post.PostSaveRequest;
 import com.example.springbootjpa.ui.dto.post.PostUpdateRequest;
@@ -38,6 +39,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @ExtendWith(RestDocumentationExtension.class)
+@MockBean(AuditingConfiguration.class)
 @WebMvcTest(PostController.class)
 class PostControllerTest {
 

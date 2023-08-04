@@ -2,6 +2,8 @@ package com.example.springbootjpa.ui;
 
 
 import com.example.springbootjpa.application.UserService;
+import com.example.springbootjpa.domain.user.User;
+import com.example.springbootjpa.domain.user.UserRepository;
 import com.example.springbootjpa.ui.dto.user.UserFindResponse;
 import com.example.springbootjpa.ui.dto.user.UserSaveRequest;
 import com.example.springbootjpa.ui.dto.user.UserSaveResponse;
@@ -16,9 +18,11 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping
@@ -41,5 +45,14 @@ public class UserController {
     public ResponseEntity<UserFindResponse> findById(@PathVariable Long userId) {
 
         return ResponseEntity.ok(userService.find(userId));
+    }
+
+    @GetMapping("/test")
+    public User test() {
+        User user = userRepository.findAll().get(0);
+
+
+
+        return user;
     }
 }
