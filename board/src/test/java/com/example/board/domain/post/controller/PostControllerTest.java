@@ -117,7 +117,20 @@ class PostControllerTest {
                 fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
                 fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("createdAt"),
-                fieldWithPath("createdBy").type(JsonFieldType.STRING).description("createdBy")
+                fieldWithPath("createdBy").type(JsonFieldType.STRING).description("createdBy"),
+                fieldWithPath("userResponse").type(JsonFieldType.OBJECT)
+                    .description("userResponse"),
+                fieldWithPath("userResponse.id").type(JsonFieldType.NUMBER)
+                    .description("userId"),
+                fieldWithPath("userResponse.name").type(JsonFieldType.STRING)
+                    .description("userName"),
+                fieldWithPath("userResponse.age").type(JsonFieldType.NUMBER).description("userAge"),
+                fieldWithPath("userResponse.hobby").type(JsonFieldType.STRING)
+                    .description("userHobby"),
+                fieldWithPath("userResponse.createdAt").type(JsonFieldType.STRING)
+                    .description("userCreatedAt"),
+                fieldWithPath("userResponse.createdBy").type(JsonFieldType.NULL)
+                    .description("userCreatedBy")
             )
         ));
   }
@@ -147,6 +160,20 @@ class PostControllerTest {
                     .description("createdAt"),
                 fieldWithPath("content.[].createdBy").type(JsonFieldType.STRING)
                     .description("createdBy"),
+                fieldWithPath("content.[].userResponse").type(JsonFieldType.OBJECT)
+                    .description("userResponse"),
+                fieldWithPath("content.[].userResponse.id").type(JsonFieldType.NUMBER)
+                    .description("userId"),
+                fieldWithPath("content.[].userResponse.name").type(JsonFieldType.STRING)
+                    .description("userName"),
+                fieldWithPath("content.[].userResponse.age").type(JsonFieldType.NUMBER)
+                    .description("userAge"),
+                fieldWithPath("content.[].userResponse.hobby").type(JsonFieldType.STRING)
+                    .description("userHobby"),
+                fieldWithPath("content.[].userResponse.createdAt").type(JsonFieldType.STRING)
+                    .description("userCreatedAt"),
+                fieldWithPath("content.[].userResponse.createdBy").type(JsonFieldType.NULL)
+                    .description("userCreatedBy"),
                 fieldWithPath("pageable.sort.empty").type(JsonFieldType.BOOLEAN)
                     .description("sort.empty"),
                 fieldWithPath("pageable.sort.sorted").type(JsonFieldType.BOOLEAN)
