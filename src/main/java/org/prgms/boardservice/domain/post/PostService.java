@@ -52,6 +52,7 @@ public class PostService {
 
     @Transactional
     public void deleteById(Long id) {
+        postRepository.findById(id).orElseThrow(() -> new NoSuchElementException(NOT_FOUND_POST.getMessage()));
         postRepository.deleteById(id);
     }
 
