@@ -1,4 +1,4 @@
-package com.example.springbootboardjpa.dto.request;
+package com.example.springbootboardjpa.dto.post.request;
 
 import com.example.springbootboardjpa.entity.Post;
 import lombok.Getter;

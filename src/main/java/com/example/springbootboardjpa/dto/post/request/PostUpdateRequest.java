@@ -1,4 +1,4 @@
-package com.example.springbootboardjpa.dto.request;
+package com.example.springbootboardjpa.dto.post.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.springbootboardjpa.dto.response;
+package com.example.springbootboardjpa.dto.post.response;
 
 import com.example.springbootboardjpa.entity.Post;
 import lombok.Builder;

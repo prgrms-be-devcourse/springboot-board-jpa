@@ -1,15 +1,16 @@
 package com.example.springbootboardjpa.service;
 
-import com.example.springbootboardjpa.dto.request.PostCreateRequest;
-import com.example.springbootboardjpa.dto.request.PostUpdateRequest;
-import com.example.springbootboardjpa.dto.response.PostResponse;
+import com.example.springbootboardjpa.dto.post.request.PostCreateRequest;
+import com.example.springbootboardjpa.dto.post.request.PostUpdateRequest;
+import com.example.springbootboardjpa.dto.post.response.PostResponse;
 import com.example.springbootboardjpa.entity.Post;
 import com.example.springbootboardjpa.repository.PostRepository;
-import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
