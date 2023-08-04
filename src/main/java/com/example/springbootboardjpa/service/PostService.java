@@ -15,29 +15,29 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostService {
 
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
     @Transactional
-    public PostResponse create(PostCreateRequest postCreateRequest) {
+    public PostResponse createPost(PostCreateRequest postCreateRequest) {
         Post post = postRepository.save(postCreateRequest.toEntity());
         return PostResponse.fromEntity(post);
     }
 
-    public List<PostResponse> findByAll() {
+    public List<PostResponse> findAllPosts() {
         return postRepository.findAll()
                 .stream()
                 .map(PostResponse::fromEntity)
                 .toList();
     }
 
-    public PostResponse findById(Long id) {
+    public PostResponse findPostById(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
         return PostResponse.fromEntity(post);
     }
 
     @Transactional
-    public PostResponse update(Long id, PostUpdateRequest updateRequest) {
+    public PostResponse updatePost(Long id, PostUpdateRequest updateRequest) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("수정하려는 게시글이 존재하지 않습니다."));
 
@@ -48,7 +48,7 @@ public class PostService {
     }
 
     @Transactional
-    public void deleteById(Long id) {
+    public void deletePostById(Long id) {
         if (!postRepository.existsById(id)) {
             throw new NoSuchElementException("삭제하려는 게시글을 찾지 못했습니다.");
         }
