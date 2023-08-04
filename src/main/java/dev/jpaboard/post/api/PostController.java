@@ -24,7 +24,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(CREATED)
     public PostResponse create(@RequestBody PostCreateRequest request,
                                @SessionAttribute(name = "userId", required = false) Long userId) {
@@ -32,7 +32,7 @@ public class PostController {
         return postService.create(request, userId);
     }
 
-    @GetMapping()
+    @GetMapping
     public PostsResponse findSlicePosts(@PageableDefault(sort = "createdAt", direction = DESC) Pageable pageable) {
         return postService.findAll(pageable);
     }
