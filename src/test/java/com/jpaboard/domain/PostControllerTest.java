@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,9 +51,6 @@ class PostControllerTest {
     @DisplayName("모든 id를 조회하고 rest doc객체를 생성한다")
     void findPostAll_Test() throws Exception {
         // Given
-        PageRequest page = PageRequest.of(0, 8);
-        Page<PostDto> postDtoPage = postService.findPostAll(page);
-
         Long postId = postService.createPost(
                 PostDto.builder()
                         .title("제목11")
@@ -96,7 +92,6 @@ class PostControllerTest {
                         )
                         .build()
         );
-
 
         // When, Them
         this.mockMvc.perform(get("/api/posts")
@@ -145,7 +140,6 @@ class PostControllerTest {
                                 fieldWithPath("data.numberOfElements").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
                                 fieldWithPath("data.first").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored(),
                                 fieldWithPath("data.empty").type(JsonFieldType.OBJECT).description("Pageable 데이터").ignored()
-
                         )
                 ));
     }
@@ -168,7 +162,6 @@ class PostControllerTest {
                         .build()
         );
 
-
         // When, Then
         this.mockMvc.perform(get("/api/posts/{id}", postId)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -188,7 +181,6 @@ class PostControllerTest {
                                 fieldWithPath("data.user.hobby").type(JsonFieldType.STRING).description("취미")
                         )
                 ));
-
     }
 
     @Test
@@ -255,9 +247,8 @@ class PostControllerTest {
                 .content("수정한 내용들")
                 .build();
 
-
         // When, Then
-        this.mockMvc.perform(post("/api/posts/{id}", postId)
+        this.mockMvc.perform(patch("/api/posts/{id}", postId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postUpdateDto)))
                 .andExpect(status().isOk())
@@ -272,7 +263,6 @@ class PostControllerTest {
                                 fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
                                 fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
                         )
-
                 ));
     }
 }
