@@ -5,7 +5,7 @@ import com.example.springbootboardjpa.dto.request.PostUpdateRequest;
 import com.example.springbootboardjpa.dto.response.PostResponse;
 import com.example.springbootboardjpa.service.PostService;
 import java.util.List;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,35 +19,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/posts")
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class PostController {
 
-    private PostService postService;
+    private final PostService postService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PostResponse createPost(@RequestBody PostCreateRequest createRequest) {
-        return postService.create(createRequest);
+        return postService.createPost(createRequest);
     }
 
     @GetMapping
     public List<PostResponse> findPostAll() {
-        return postService.findByAll();
+        return postService.findAllPosts();
     }
 
     @GetMapping("/{id}")
     public PostResponse findPostById(@PathVariable Long id) {
-        return postService.findById(id);
+        return postService.findPostById(id);
     }
 
     @PatchMapping("/{id}")
     public PostResponse updatePost(@PathVariable Long id, @RequestBody PostUpdateRequest updateRequest) {
-        return postService.update(id, updateRequest);
+        return postService.updatePost(id, updateRequest);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePostById(@PathVariable Long id) {
-        postService.deleteById(id);
+        postService.deletePostById(id);
     }
 }
