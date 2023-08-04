@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostRequestDto {
+public class PostCreateRequestDto {
 
     private String title;
     private String content;
     private Long userId;
 
-    public static Post from(PostRequestDto postRequestDto, User user) {
+    public static Post from(PostCreateRequestDto postRequestDto, User user) {
         return Post.builder()
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
