@@ -62,7 +62,10 @@ public class Post extends BaseTime {
                 .content(content)
                 .name(user.getName())
                 .createdAt(this.getCreatedAt())
-                .comments(getComments())
+                .comments(getComments()
+                        .stream()
+                        .map(Comment::from)
+                        .toList())
                 .build();
     }
 }

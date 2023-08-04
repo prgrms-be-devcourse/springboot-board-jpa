@@ -17,7 +17,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping()
-    public ResponseEntity<Long> createComment(CommentRequestDto requestDto) {
+    public ResponseEntity<Long> createComment(@Valid @RequestBody CommentRequestDto requestDto) {
         Long comment = commentService.createComment(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(comment);
     }

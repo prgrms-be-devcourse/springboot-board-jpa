@@ -1,6 +1,6 @@
 package com.example.board.dto.post;
 
-import com.example.board.domain.entity.Comment;
+import com.example.board.dto.comment.CommentResponseDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -20,5 +20,5 @@ public class PostWithCommentResponseDto {
 
     private LocalDateTime createdAt;
 
-    private List<Comment> comments;
+    private List<CommentResponseDto> comments;
 }
