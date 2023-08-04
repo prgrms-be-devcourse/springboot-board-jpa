@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -19,33 +20,29 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.prgms.boardservice.util.ErrorMessage.NOT_FOUND_POST;
 
 @SpringBootTest
+@Transactional
 class PostServiceTest {
 
     @Autowired
     PostService postService;
 
-    Post post = new Post("title", "content", 1L);
+    private final Post post = new Post("title", "content", 1L);
 
-    @AfterEach
-    void tearDown() {
-        postService.deleteAll();
+    @BeforeEach
+    void setUp() {
+        postService.create(post);
     }
 
     @Test
     @DisplayName("게시글이 성공적으로 생성된다.")
     void success_Create_Post() {
-        Long id = postService.create(post);
+        Long id =  postService.create(new Post("title", "content", 1L));
 
         Post get = postService.getById(id);
 
         assertThat(get).usingRecursiveComparison()
                 .ignoringFields("createdAt", "updatedAt")
                 .isEqualTo(post);
-    }
-
-    @BeforeEach
-    void setUp() {
-        postService.create(post);
     }
 
     @Test
