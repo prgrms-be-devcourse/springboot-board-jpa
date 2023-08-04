@@ -15,7 +15,7 @@ public record UserCreateRequestDto(
     public User toUser() {
         return User.builder()
             .name(name)
-            .age(1)
+            .age(age)
             .hobby(hobby)
             .build();
     }
