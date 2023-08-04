@@ -23,7 +23,7 @@ public class User extends BaseEntity {
     @Column(name = "age", nullable = false)
     private int age;
 
-    @Column(name = "hobby", nullable = false)
+    @Column(name = "hobby", nullable = false, length = 10)
     private String hobby;
 
     @OneToMany(mappedBy = "user")
