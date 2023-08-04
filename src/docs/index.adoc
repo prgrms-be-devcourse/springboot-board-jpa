@@ -44,7 +44,7 @@ include::{snippets}/post-create/response-fields.adoc[]
 
 === 게시글 수정
 
-==== POST /api/posts/{id}
+==== PATCH /api/posts/{id}
 
 .Request
 include::{snippets}/post-update/http-request.adoc[]
