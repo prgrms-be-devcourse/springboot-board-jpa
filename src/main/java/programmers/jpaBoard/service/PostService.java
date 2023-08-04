@@ -3,8 +3,7 @@ package programmers.jpaBoard.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import programmers.jpaBoard.dto.PostRequest;
-import programmers.jpaBoard.dto.PostResponse;
+import programmers.jpaBoard.dto.PostDto;
 import programmers.jpaBoard.entity.Post;
 import programmers.jpaBoard.repository.PostRepository;
 
@@ -19,20 +18,20 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public PostResponse create(PostRequest request) {
-        Post post = new Post(request.getTitle(), request.getContent(), request.getUser());
+    public PostDto.Response create(PostDto.Request request) {
+        Post post = new Post(request.title(), request.content());
 
         Post savedPost = postRepository.save(post);
         return toDto(savedPost);
     }
 
-    public PostResponse getPost(Long id) {
+    public PostDto.Response getPost(Long id) {
         Post post = findPostById(id);
 
         return toDto(post);
     }
 
-    public Page<PostResponse> getAllPost(Pageable pageable) {
+    public Page<PostDto.Response> getAllPost(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(this::toDto);
     }
@@ -42,20 +41,19 @@ public class PostService {
                 .orElseThrow(() -> new NoSuchElementException("해당 게시글이 없습니다"));
     }
 
-    public PostResponse update(Long id, PostRequest request) {
+    public PostDto.Response update(Long id, PostDto.Request request) {
         Post post = findPostById(id);
-        post.updatePost(request.getTitle(), request.getContent());
+        post.updatePost(request.title(), request.content());
 
         return toDto(post);
     }
 
-    private PostResponse toDto(Post post) {
-        return PostResponse.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .user(post.getUser())
-                .createdAt(post.getCreatedAt())
-                .build();
+    private PostDto.Response toDto(Post post) {
+        return new PostDto.Response(
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                post.getCreatedAt()
+        );
     }
 }

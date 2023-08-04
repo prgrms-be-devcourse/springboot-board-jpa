@@ -5,8 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import programmers.jpaBoard.dto.PostRequest;
-import programmers.jpaBoard.dto.PostResponse;
+import programmers.jpaBoard.dto.PostDto;
 import programmers.jpaBoard.service.PostService;
 
 @RestController
@@ -20,29 +19,29 @@ public class PostController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest request) {
-        PostResponse response = postService.create(request);
+    public ResponseEntity<PostDto.Response> createPost(@RequestBody PostDto.Request request) {
+        PostDto.Response response = postService.create(request);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponse> getPost(@PathVariable Long id) {
-        PostResponse response = postService.getPost(id);
+    public ResponseEntity<PostDto.Response> getPost(@PathVariable Long id) {
+        PostDto.Response response = postService.getPost(id);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<Page<PostResponse>> getAllPost(Pageable pageable) {
-        Page<PostResponse> responses = postService.getAllPost(pageable);
+    public ResponseEntity<Page<PostDto.Response>> getAllPost(Pageable pageable) {
+        Page<PostDto.Response> responses = postService.getAllPost(pageable);
 
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostResponse> updatePost(@PathVariable Long id, @RequestBody PostRequest request) {
-        PostResponse response = postService.update(id, request);
+    public ResponseEntity<PostDto.Response> updatePost(@PathVariable Long id, @RequestBody PostDto.Request request) {
+        PostDto.Response response = postService.update(id, request);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
