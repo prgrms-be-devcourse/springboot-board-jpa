@@ -37,11 +37,12 @@ class UserServiceTest {
         //given
         //when
         UserResponseDto userResponseDto = userService.create(userRequestDto);
+        UserResponseDto result = userService.findById(userResponseDto.id());
 
         //then
-        assertThat(userResponseDto.name()).isEqualTo(userRequestDto.name());
-        assertThat(userResponseDto.age()).isEqualTo(userRequestDto.age());
-        assertThat(userResponseDto.hobby()).isEqualTo(userRequestDto.hobby());
+        assertThat(result.name()).isEqualTo(userRequestDto.name());
+        assertThat(result.age()).isEqualTo(userRequestDto.age());
+        assertThat(result.hobby()).isEqualTo(userRequestDto.hobby());
     }
 
     @DisplayName("회원을 수정한다")

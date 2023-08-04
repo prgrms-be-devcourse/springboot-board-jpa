@@ -62,11 +62,12 @@ class PostServiceTest {
         //given
         //when
         PostResponseDto postResponseDto = postService.create(postCreateRequestDto);
+        PostResponseDto result = postService.findById(postResponseDto.id());
 
         //then
-        assertThat(postResponseDto.title()).isEqualTo(postCreateRequestDto.title());
-        assertThat(postResponseDto.content()).isEqualTo(postCreateRequestDto.content());
-        assertThat(postResponseDto.userId()).isEqualTo(postCreateRequestDto.userId());
+        assertThat(result.title()).isEqualTo(postCreateRequestDto.title());
+        assertThat(result.content()).isEqualTo(postCreateRequestDto.content());
+        assertThat(result.userId()).isEqualTo(postCreateRequestDto.userId());
     }
 
     @DisplayName("게시글을 수정한다")
