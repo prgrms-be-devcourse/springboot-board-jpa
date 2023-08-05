@@ -48,6 +48,6 @@ public class User extends BaseEntity {
 	}
 
 	public void addPost(Post post) {
-		post.setUser(this);
+		post.attachUser(this);
 	}
 }

@@ -22,7 +22,7 @@ public class PostService {
 		User user = userRepository.findById(createPostRequestDto.userId())
 			.orElseThrow(() -> new RuntimeException("User Not Found!"));
 
-		post.setUser(user);
+		post.attachUser(user);
 
 		return PostResponseDto.toResponse(postRepository.save(post));
 	}
