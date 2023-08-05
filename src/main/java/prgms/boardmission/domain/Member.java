@@ -21,8 +21,7 @@ public class Member extends BaseEntity {
     @Column(name = "hobby", nullable = true,length = 15)
     private String hobby;
 
-    public Member(Long id, String name, int age, String hobby) {
-        this.id = id;
+    public Member(String name, int age, String hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;

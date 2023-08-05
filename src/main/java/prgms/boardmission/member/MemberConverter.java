@@ -5,12 +5,11 @@ import prgms.boardmission.member.dto.MemberDto;
 
 public final class MemberConverter {
     public static Member convertToMember(MemberDto memberDto) {
-        long id = memberDto.userId();
         String name = memberDto.name();
         int age = memberDto.age();
         String hobby = memberDto.hobby();
 
-        return new Member(id,name,age,hobby);
+        return new Member(name,age,hobby);
     }
 
     public static MemberDto convertToMemberDto(Member member) {
@@ -19,6 +18,6 @@ public final class MemberConverter {
         int age = member.getAge();
         String hobby = member.getHobby();
 
-        return new MemberDto(userId, name, age, hobby);
+        return new MemberDto(name, age, hobby);
     }
 }

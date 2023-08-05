@@ -33,13 +33,13 @@ class PostServiceTest {
         int age = 20;
         String hobby = "hobby";
 
-        memberDto = new MemberDto(id, name, age, hobby);
+        memberDto = new MemberDto(name, age, hobby);
 
         Long postId = 1L;
         String title = "title";
         String content = "content";
 
-        postDto = new PostDto(postId, title, content, memberDto);
+        postDto = new PostDto(title, content, memberDto);
 
         postService.save(postDto);
     }
@@ -51,7 +51,7 @@ class PostServiceTest {
         String title = "another title";
         String content = "another content";
 
-        PostDto newPostDto = new PostDto(postId, title, content, memberDto);
+        PostDto newPostDto = new PostDto(title, content, memberDto);
         postService.save(newPostDto);
 
         //When

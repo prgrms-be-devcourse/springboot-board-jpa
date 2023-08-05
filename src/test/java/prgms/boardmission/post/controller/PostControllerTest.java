@@ -45,18 +45,16 @@ class PostControllerTest {
 
     @BeforeEach
     void setUp() {
-        long id = 1L;
         String name = "sehan";
         int age = 20;
         String hobby = "hobby";
 
-        memberDto = new MemberDto(id, name, age, hobby);
+        memberDto = new MemberDto(name, age, hobby);
 
-        Long postId = 1L;
         String title = "title";
         String content = "content";
 
-        postDto = new PostDto(postId, title, content, memberDto);
+        postDto = new PostDto(title, content, memberDto);
 
         postService.save(postDto);
     }
@@ -70,11 +68,9 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(document("post-save",
                         requestFields(
-                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("postId"),
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("content"),
                                 fieldWithPath("memberDto").type(JsonFieldType.OBJECT).description("memberDto"),
-                                fieldWithPath("memberDto.userId").type(JsonFieldType.NUMBER).description("memberDto.userId"),
                                 fieldWithPath("memberDto.name").type(JsonFieldType.STRING).description("memberDto.name"),
                                 fieldWithPath("memberDto.age").type(JsonFieldType.NUMBER).description("memberDto.age"),
                                 fieldWithPath("memberDto.hobby").type(JsonFieldType.STRING).description("memberDto.hobby")
@@ -100,10 +96,8 @@ class PostControllerTest {
                                 fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답시간"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
                                 fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("데이터"),
-                                fieldWithPath("data.content[].postId").type(JsonFieldType.NUMBER).description("데이터"),
                                 fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("postId"),
                                 fieldWithPath("data.content[].memberDto").type(JsonFieldType.OBJECT).description("memberDto"),
-                                fieldWithPath("data.content[].memberDto.userId").type(JsonFieldType.NUMBER).description("userId"),
                                 fieldWithPath("data.content[].memberDto.name").type(JsonFieldType.STRING).description("name"),
                                 fieldWithPath("data.content[].memberDto.age").type(JsonFieldType.NUMBER).description("age"),
                                 fieldWithPath("data.content[].memberDto.hobby").type(JsonFieldType.STRING).description("hobby"),
@@ -147,11 +141,9 @@ class PostControllerTest {
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
-                                fieldWithPath("data.postId").type(JsonFieldType.NUMBER).description("postId"),
                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
                                 fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
                                 fieldWithPath("data.memberDto").type(JsonFieldType.OBJECT).description("memberDto"),
-                                fieldWithPath("data.memberDto.userId").type(JsonFieldType.NUMBER).description("memberDto.userId"),
                                 fieldWithPath("data.memberDto.name").type(JsonFieldType.STRING).description("memberDto.name"),
                                 fieldWithPath("data.memberDto.age").type(JsonFieldType.NUMBER).description("memberDto.age"),
                                 fieldWithPath("data.memberDto.hobby").type(JsonFieldType.STRING).description("memberDto.hobby"),
@@ -166,7 +158,7 @@ class PostControllerTest {
 
         PostUpdateDto postUpdateDto = new PostUpdateDto(editContent);
 
-        mockMvc.perform(MockMvcRequestBuilders.patch(("/posts/{postId}"), 1L)
+        mockMvc.perform(MockMvcRequestBuilders.patch(("/posts/{postId}"), 2L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postUpdateDto)))
                 .andExpect(status().isOk())

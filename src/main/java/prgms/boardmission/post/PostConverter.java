@@ -10,13 +10,12 @@ import java.time.LocalDateTime;
 
 public final class PostConverter {
     public static Post convertToPost(PostDto postDto) {
-        long id = postDto.postId();
         String title = postDto.title();
         String content = postDto.content();
         String memberName = postDto.memberDto().name();
         Member member = MemberConverter.convertToMember(postDto.memberDto());
 
-        Post post = new Post(id,title,content,memberName,member);
+        Post post = new Post(title,content,memberName,member);
 
         return post;
     }
@@ -25,7 +24,7 @@ public final class PostConverter {
         Member member = post.getMember();
         MemberDto memberDto = MemberConverter.convertToMemberDto(member);
 
-        return new PostDto(post.getId(), post.getTitle(), post.getContent(), memberDto);
+        return new PostDto(post.getTitle(), post.getContent(), memberDto);
 
     }
 }
