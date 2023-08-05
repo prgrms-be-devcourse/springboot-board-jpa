@@ -5,13 +5,13 @@ import com.jpaboard.user.domain.User;
 import com.jpaboard.user.infra.JpaUserRepository;
 import com.jpaboard.user.ui.UserConverter;
 import com.jpaboard.user.ui.dto.UserDto;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @Transactional
 public class UserService {
-    private static final String NOT_FOUND_USER_MESSAGE = "회원 정보를 찾을 수 없습니다.";
 
     private final JpaUserRepository userRepository;
 
@@ -24,9 +24,10 @@ public class UserService {
         return createdUser.getId();
     }
 
+    @Transactional(readOnly = true)
     public UserDto getUserById(long id) {
         return userRepository.findById(id)
                 .map(UserConverter::convertUserDto)
-                .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_USER_MESSAGE));
+                .orElseThrow(NotFoundUserException::new);
     }
 }

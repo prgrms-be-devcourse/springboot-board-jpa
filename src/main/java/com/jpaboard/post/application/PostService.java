@@ -6,32 +6,33 @@ import com.jpaboard.post.infra.JpaPostRepository;
 import com.jpaboard.post.ui.PostConverter;
 import com.jpaboard.post.ui.dto.PostDto;
 import com.jpaboard.post.ui.dto.PostUpdateDto;
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 @Transactional
 public class PostService {
 
-    private final static String NOT_FOUND_POST_MESSAGE = "게시글 정보를 찾을 수 없습니다.";
     private final JpaPostRepository postRepository;
 
     public PostService(JpaPostRepository postRepository) {
         this.postRepository = postRepository;
     }
 
+    @Transactional(readOnly = true)
     public Page<PostDto> findPostAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(PostConverter::convertPostDto);
     }
 
+    @Transactional(readOnly = true)
     public PostDto findPost(long id) {
         return postRepository.findById(id)
                 .map(PostConverter::convertPostDto)
-                .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
+                .orElseThrow(NotFoundPostException::new);
     }
 
     public Long createPost(PostDto postDto) {
@@ -41,7 +42,7 @@ public class PostService {
 
     public Long updatePost(long id, PostUpdateDto postUpdateDto) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
+                .orElseThrow(NotFoundPostException::new);
         post.updatePost(postUpdateDto.title(), postUpdateDto.content());
 
         return post.getId();
