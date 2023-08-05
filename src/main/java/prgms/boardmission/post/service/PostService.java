@@ -41,9 +41,10 @@ public class PostService {
     }
 
     public Long update(Long postId, PostUpdateDto postUpdateDto) {
-        Post post = postRepository.findById(postId).get();
-        String editContent = postUpdateDto.content();
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
 
+        String editContent = postUpdateDto.content();
         post.updatePost(editContent);
 
         return post.getId();
