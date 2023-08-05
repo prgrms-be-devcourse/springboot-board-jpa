@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private final UserRepository userRepository;
 
-	public UserResponseDTO createUser(CreateUserRequestDto createUserRequestDto) {
+	public UserResponseDto createUser(CreateUserRequestDto createUserRequestDto) {
 		User user = createUserRequestDto.toEntity();
 
-		return UserResponseDTO.toResponse(userRepository.save(user));
+		return UserResponseDto.toResponse(userRepository.save(user));
 	}
 }

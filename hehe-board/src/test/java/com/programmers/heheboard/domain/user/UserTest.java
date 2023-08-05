@@ -38,7 +38,7 @@ class UserTest {
 	@Test
 	public void create() throws Exception {
 		// given
-		UserResponseDTO response = UserResponseDTO.builder()
+		UserResponseDto response = UserResponseDto.builder()
 			.name("heehee")
 			.age(10)
 			.hobby("coding")

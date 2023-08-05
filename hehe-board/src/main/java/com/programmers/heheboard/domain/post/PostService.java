@@ -17,40 +17,40 @@ public class PostService {
 	private final PostRepository postRepository;
 
 	@Transactional
-	public PostResponseDTO createPost(CreatePostRequestDto createPostRequestDto) {
+	public PostResponseDto createPost(CreatePostRequestDto createPostRequestDto) {
 		Post post = createPostRequestDto.toEntity();
-		User user = userRepository.findById(createPostRequestDto.getUserId())
+		User user = userRepository.findById(createPostRequestDto.userId())
 			.orElseThrow(() -> new RuntimeException("User Not Found!"));
 
 		post.setUser(user);
 
-		return PostResponseDTO.toResponse(postRepository.save(post));
+		return PostResponseDto.toResponse(postRepository.save(post));
 	}
 
 	@Transactional
-	public PostResponseDTO findPost(Long postId) {
+	public PostResponseDto findPost(Long postId) {
 		Post retrievedPost = postRepository.findById(postId)
 			.orElseThrow(() -> new RuntimeException("Post Not Found!"));
 
-		return PostResponseDTO.toResponse(retrievedPost);
+		return PostResponseDto.toResponse(retrievedPost);
 	}
 
 	@Transactional
-	public Slice<PostResponseDTO> getPosts(int page, int size) {
+	public Slice<PostResponseDto> getPosts(int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size);
 
 		return postRepository.findSliceBy(pageRequest)
-			.map(PostResponseDTO::toResponse);
+			.map(PostResponseDto::toResponse);
 	}
 
 	@Transactional
-	public PostResponseDTO updatePost(Long postId, UpdatePostRequestDto updatePostRequestDto) {
+	public PostResponseDto updatePost(Long postId, UpdatePostRequestDto updatePostRequestDto) {
 		Post retrievedPost = postRepository.findById(postId)
 			.orElseThrow(() -> new RuntimeException("Post Not Found!"));
 
-		retrievedPost.changeTitle(updatePostRequestDto.getTitle());
-		retrievedPost.changeContents(updatePostRequestDto.getContent());
+		retrievedPost.changeTitle(updatePostRequestDto.title());
+		retrievedPost.changeContents(updatePostRequestDto.content());
 
-		return PostResponseDTO.toResponse(retrievedPost);
+		return PostResponseDto.toResponse(retrievedPost);
 	}
 }

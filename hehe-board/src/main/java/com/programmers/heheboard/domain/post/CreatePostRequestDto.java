@@ -1,14 +1,6 @@
 package com.programmers.heheboard.domain.post;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter
-@AllArgsConstructor
-public class CreatePostRequestDto {
-	private String title;
-	private String content;
-	private Long userId;
+public record CreatePostRequestDto(String title, String content, Long userId) {
 
 	public Post toEntity() {
 		return Post.builder()

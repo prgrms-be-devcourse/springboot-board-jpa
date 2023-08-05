@@ -28,27 +28,27 @@ public class PostController {
 	}
 
 	@PostMapping
-	public ApiResponse<PostResponseDTO> save(@RequestBody CreatePostRequestDto createPostRequestDto) {
-		PostResponseDTO postDto = postService.createPost(createPostRequestDto);
+	public ApiResponse<PostResponseDto> save(@RequestBody CreatePostRequestDto createPostRequestDto) {
+		PostResponseDto postDto = postService.createPost(createPostRequestDto);
 		return ApiResponse.ok(postDto);
 	}
 
 	@PutMapping("/{post-id}")
-	public ApiResponse<PostResponseDTO> updatePost(@RequestBody UpdatePostRequestDto updatePostRequestDto,
+	public ApiResponse<PostResponseDto> updatePost(@RequestBody UpdatePostRequestDto updatePostRequestDto,
 		@PathVariable("post-id") Long postId) {
-		PostResponseDTO postResponseDTO = postService.updatePost(postId, updatePostRequestDto);
+		PostResponseDto postResponseDTO = postService.updatePost(postId, updatePostRequestDto);
 		return ApiResponse.ok(postResponseDTO);
 	}
 
 	@GetMapping("/{post-id}")
-	public ApiResponse<PostResponseDTO> getOnePost(@PathVariable("post-id") Long postId) {
-		PostResponseDTO postDto = postService.findPost(postId);
+	public ApiResponse<PostResponseDto> getOnePost(@PathVariable("post-id") Long postId) {
+		PostResponseDto postDto = postService.findPost(postId);
 		return ApiResponse.ok(postDto);
 	}
 
 	@GetMapping
 	public ApiSliceResponse getPostBySlice(@RequestParam int page, @RequestParam int size) {
-		Slice<PostResponseDTO> postSliceResponseDtos = postService.getPosts(page, size);
+		Slice<PostResponseDto> postSliceResponseDtos = postService.getPosts(page, size);
 		return ApiSliceResponse.ok(postSliceResponseDtos);
 	}
 }

@@ -14,11 +14,11 @@ public class ApiSliceResponse {
 	private final int number;
 	private final boolean first;
 	private final boolean last;
-	private final List<PostResponseDTO> content;
+	private final List<PostResponseDto> content;
 
 	@Builder
 	public ApiSliceResponse(int statusCode, int size, int number, boolean first, boolean last,
-		List<PostResponseDTO> content) {
+		List<PostResponseDto> content) {
 		this.statusCode = statusCode;
 		this.size = size;
 		this.number = number;
@@ -27,7 +27,7 @@ public class ApiSliceResponse {
 		this.content = content;
 	}
 
-	public static ApiSliceResponse ok(Slice<PostResponseDTO> postSliceResponseDtos) {
+	public static ApiSliceResponse ok(Slice<PostResponseDto> postSliceResponseDtos) {
 		return ApiSliceResponse.builder()
 			.statusCode(200)
 			.size(postSliceResponseDtos.getSize())
@@ -38,7 +38,7 @@ public class ApiSliceResponse {
 			.build();
 	}
 
-	public static ApiSliceResponse fail(int statusCode, Slice<PostResponseDTO> postSliceResponseDtos) {
+	public static ApiSliceResponse fail(int statusCode, Slice<PostResponseDto> postSliceResponseDtos) {
 		return ApiSliceResponse.builder()
 			.statusCode(statusCode)
 			.size(postSliceResponseDtos.getSize())

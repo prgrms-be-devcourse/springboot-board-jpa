@@ -16,7 +16,7 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping
-	public ApiResponse<UserResponseDTO> createUser(@RequestBody CreateUserRequestDto createUserRequestDto) {
+	public ApiResponse<UserResponseDto> createUser(@RequestBody CreateUserRequestDto createUserRequestDto) {
 		return ApiResponse.ok(userService.createUser(createUserRequestDto));
 	}
 }

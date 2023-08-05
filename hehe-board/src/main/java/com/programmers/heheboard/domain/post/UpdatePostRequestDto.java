@@ -1,11 +1,4 @@
 package com.programmers.heheboard.domain.post;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter
-@AllArgsConstructor
-public class UpdatePostRequestDto {
-	private String title;
-	private String content;
+public record UpdatePostRequestDto(String title, String content) {
 }

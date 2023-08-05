@@ -42,7 +42,7 @@ class PostTest {
 	@Test
 	void create() throws Exception {
 		// given
-		PostResponseDTO responseDTO = PostResponseDTO.builder()
+		PostResponseDto responseDTO = PostResponseDto.builder()
 			.title("title")
 			.content("content")
 			.createdAt(LocalDateTime.of(2000, 1, 1, 1, 1))
@@ -84,7 +84,7 @@ class PostTest {
 	@Test
 	void findSinglePost() throws Exception {
 		// given
-		PostResponseDTO responseDTO = PostResponseDTO.builder()
+		PostResponseDto responseDTO = PostResponseDto.builder()
 			.title("title")
 			.content("content")
 			.createdAt(LocalDateTime.of(2000, 1, 1, 1, 1))
@@ -118,15 +118,15 @@ class PostTest {
 	@Test
 	void getPosts() throws Exception {
 		// given
-		List<PostResponseDTO> postList = Arrays.asList(
-			PostResponseDTO.builder()
+		List<PostResponseDto> postList = Arrays.asList(
+			PostResponseDto.builder()
 				.title("title3")
 				.content("content3")
 				.createdAt(LocalDateTime.of(2000, 1, 1, 1, 1))
 				.modifiedAt(LocalDateTime.of(2000, 1, 1, 1, 1))
 				.build(),
 
-			PostResponseDTO.builder()
+			PostResponseDto.builder()
 				.title("title4")
 				.content("content4")
 				.createdAt(LocalDateTime.of(2000, 1, 1, 1, 1))
@@ -134,7 +134,7 @@ class PostTest {
 				.build()
 		);
 
-		Slice<PostResponseDTO> responseSlice = new SliceImpl<>(postList);
+		Slice<PostResponseDto> responseSlice = new SliceImpl<>(postList);
 
 		int page = 1;
 		int size = 2;
@@ -172,7 +172,7 @@ class PostTest {
 	void update() throws Exception {
 		Long postId = 1L;
 
-		PostResponseDTO responseDTO = PostResponseDTO.builder()
+		PostResponseDto responseDTO = PostResponseDto.builder()
 			.title("updated title")
 			.content("updated content")
 			.createdAt(LocalDateTime.of(2000, 1, 1, 1, 1))
