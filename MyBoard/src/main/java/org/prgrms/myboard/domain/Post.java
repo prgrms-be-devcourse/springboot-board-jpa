@@ -42,7 +42,7 @@ public class Post extends BaseEntity {
         allocateUser(user);
     }
 
-    public void allocateUser(User user) {
+    private void allocateUser(User user) {
         if(Objects.nonNull(this.user)) {
             user.removePost(this);
         }
