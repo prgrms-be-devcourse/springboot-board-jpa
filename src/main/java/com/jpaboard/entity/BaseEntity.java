@@ -2,16 +2,14 @@ package com.jpaboard.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
 
-@Getter
 @MappedSuperclass
 public class BaseEntity {
 
-    @Column(name = "created_by")
+    @Column(name = "created_at")
     String createdAt;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    @Column(name = "created_by", columnDefinition = "TIMESTAMP")
     String createdBy;
 
     public void changeCreatedAt(String createdAt) {
@@ -20,5 +18,13 @@ public class BaseEntity {
 
     public void changeCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
     }
 }
