@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
+    private Long id;
 
     @Column(nullable = false, length = 30)
     private String name;
@@ -21,12 +21,12 @@ public class Member extends BaseEntity {
     @Column(name = "hobby", nullable = true)
     private String hobby;
 
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long userId) {
+        this.id = userId;
     }
 
     public String getName() {

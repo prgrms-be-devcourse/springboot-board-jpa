@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public final class MemberConverter {
     public static Member convertToMember(MemberDto memberDto) {
         Member member = new Member();
-        member.setUserId(memberDto.userId());
+        member.setId(memberDto.userId());
         member.setName(memberDto.name());
         member.setAge(memberDto.age());
         member.setHobby(memberDto.hobby());
@@ -18,7 +18,7 @@ public final class MemberConverter {
     }
 
     public static MemberDto convertToMemberDto(Member member) {
-        Long userId = member.getUserId();
+        Long userId = member.getId();
         String name = member.getName();
         int age = member.getAge();
         String hobby = member.getHobby();
