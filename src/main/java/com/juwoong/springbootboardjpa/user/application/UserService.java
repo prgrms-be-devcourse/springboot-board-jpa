@@ -20,7 +20,6 @@ public class UserService {
 
     public UserDto createUser(String userName, int age, Hobby hobby) {
         User user = new User(userName, age, hobby);
-
         user = userRepository.save(user);
 
         return toDto(user);

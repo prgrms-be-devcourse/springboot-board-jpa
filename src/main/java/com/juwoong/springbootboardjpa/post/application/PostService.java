@@ -27,7 +27,6 @@ public class PostService {
         User user = userService.getUserByIdForPost(userId);
 
         Post post = new Post(user, postTitle, postContent);
-
         post = postRepository.save(post);
 
         return toDto(post);
@@ -35,9 +34,7 @@ public class PostService {
 
     public PostDto updatePost(Long id, String title, String content) {
         Post post = findById(id);
-
         post.update(title, content);
-
         post = postRepository.save(post);
 
         return toDto(post);
