@@ -11,24 +11,24 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 
 ## 작업 목록
 주의: 커밋 메시지는 한 문장으로 표현 + 깃모지로 커밋 메시지 목적 표시
-- [x] 📝설계도 작성 및 작업 목록 구상
-- [x] :tada:프로젝트 init
-- [x] :white_check_mark:SpringDataJpa, mysql 설정
-- [x] :sparkles:BaseEntity 추가
-- [x] :sparkles:User Entity 구현
-- [x] :sparkles:Post Entity 구현
-- [x] :sparkles:User, Post 1:n 연관 관계 설정
-- [x] :sparkles:UserController 구현
-- [x] :sparkles:UserService 구현
-- [x] :sparkles:UserDto 구현
-- [x] :sparkles:JPAUserRepository 구현
-- [x] :sparkles:PostRestRepository 구현
+- [x] 설계도 작성 및 작업 목록 구상
+- [x] 프로젝트 init
+- [x] SpringDataJpa, mysql 설정
+- [x] BaseEntity 추가
+- [x] User Entity 구현
+- [x] Post Entity 구현
+- [x] User, Post 1:n 연관 관계 설정
+- [x] UserController 구현
+- [x] UserService 구현
+- [x] UserDto 구현
+- [x] JPAUserRepository 구현
+- [x] PostRestRepository 구현
   - 페이징 조회(GET /posts)
   - 단건 조회(GET post/{id})
   - 게시글 작성(POST /posts)
   - 게시글 수정(POST /posts/{id})
-- [x] :sparkles:PostService 구현
-- [x] :sparkles:PostDto 구현
-- [x] :sparkles:JPAPostRepository 구현
-- [x] :white_check_mark:REST-DOCS 의존성 추가
-- [x] 📝REST-DOCS을 이용한 API 명세 작성
+- [x] PostService 구현
+- [x] PostDto 구현
+- [x] JPAPostRepository 구현
+- [x] REST-DOCS 의존성 추가
+- [x] REST-DOCS을 이용한 API 명세 작성
