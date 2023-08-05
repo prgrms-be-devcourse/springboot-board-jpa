@@ -1,6 +1,7 @@
 package programmers.jpaBoard.api;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,8 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PostDto.Response>> getAllPost(Pageable pageable) {
+    public ResponseEntity<Page<PostDto.Response>> getAllPost(@RequestParam int page, @RequestParam int size) {
+        Pageable pageable = PageRequest.of(page, size);
         Page<PostDto.Response> responses = postService.getAllPost(pageable);
 
         return new ResponseEntity<>(responses, HttpStatus.OK);
