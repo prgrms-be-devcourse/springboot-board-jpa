@@ -1,0 +1,55 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+= Spring REST Docs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[resources-post]]
+== Post
+
+[[resources-find-all]]
+=== 모든 Post 조회하기
+
+==== HTTP request
+
+include::{snippets}/Post-find-all/http-request.adoc[]
+
+==== HTTP response
+
+include::{snippets}/Post-find-all/http-response.adoc[]
+
+[[resources-find-by-id]]
+=== Post ID로 조회하기
+
+==== HTTP request
+
+include::{snippets}/Post-find-by-id/http-request.adoc[]
+
+==== HTTP response
+
+include::{snippets}/Post-find-by-id/http-response.adoc[]
+
+[[resources-save]]
+=== Post 저장하기
+
+==== HTTP request
+
+include::{snippets}/Post-save/http-request.adoc[]
+
+==== HTTP response
+
+include::{snippets}/Post-save/http-response.adoc[]
+
+[[resources-update]]
+=== Post 업데이트하기
+
+==== HTTP request
+
+include::{snippets}/Post-update/http-request.adoc[]
+
+==== HTTP response
+
+include::{snippets}/Post-update/http-response.adoc[]
