@@ -9,10 +9,9 @@ import java.util.stream.Collectors;
 public record PostResponses(List<PostResponse> postResponse) {
 
     public static PostResponses of(Slice<Post> posts){
-        List<PostResponse> responses = posts.stream()
-                .map(PostResponse::new)
-                .collect(Collectors.toList());
-        return new PostResponses(responses);
+        return new PostResponses(posts.stream()
+                                .map(PostResponse::new)
+                                .collect(Collectors.toList()));
     }
 
 }

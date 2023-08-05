@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -42,8 +41,9 @@ public class PostService {
     @Transactional
     public PostResponse savePost(SaveRequest request){
         FindMemberResponse findMember = memberService.findById(request.memberId());
+        Post post = mapper.to(request, findMember);
 
-        return new PostResponse(postRepository.save(mapper.to(request, findMember)));
+        return new PostResponse(postRepository.save(post));
     }
 
     @Transactional

@@ -17,7 +17,7 @@ public class Post {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Member member;
 
     protected Post() { }

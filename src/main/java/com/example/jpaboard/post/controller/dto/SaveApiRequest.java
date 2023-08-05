@@ -1,4 +1,6 @@
 package com.example.jpaboard.post.controller.dto;
 
-public record SaveApiRequest(Long memberId, String title, String content) {
+import jakarta.validation.constraints.NotNull;
+
+public record SaveApiRequest(@NotNull Long memberId, @NotNull String title, @NotNull String content) {
 }
