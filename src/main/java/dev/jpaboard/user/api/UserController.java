@@ -2,7 +2,7 @@ package dev.jpaboard.user.api;
 
 import dev.jpaboard.user.application.UserService;
 import dev.jpaboard.user.dto.request.UserUpdateRequest;
-import dev.jpaboard.user.dto.response.UserResponse;
+import dev.jpaboard.user.dto.response.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,11 +22,9 @@ public class UserController {
 
     private final UserService userService;
 
-    @PatchMapping
-    @ResponseStatus(NO_CONTENT)
-    public void update(@RequestBody UserUpdateRequest request,
-                       @SessionAttribute(name = "userId") Long userId) {
-        userService.update(request, userId);
+    @GetMapping("/me")
+    public UserInfoResponse findUser(@SessionAttribute(name = "userId") Long userId) {
+        return userService.findUser(userId);
     }
 
     @GetMapping("/me")
@@ -35,7 +33,7 @@ public class UserController {
     }
 
     @DeleteMapping("/me")
-    public void delete(@SessionAttribute(name = "userId") Long userId) {
+    public void deleteUser(@SessionAttribute(name = "userId") Long userId) {
         userService.delete(userId);
     }
 

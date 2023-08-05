@@ -2,7 +2,7 @@ package dev.jpaboard.user.application;
 
 import dev.jpaboard.user.domain.User;
 import dev.jpaboard.user.dto.request.UserUpdateRequest;
-import dev.jpaboard.user.dto.response.UserResponse;
+import dev.jpaboard.user.dto.response.UserInfoResponse;
 import dev.jpaboard.user.exception.UserNotFoundException;
 import dev.jpaboard.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +17,14 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public UserResponse update(UserUpdateRequest request, Long userId) {
+    public void update(UserUpdateRequest request, Long userId) {
         User user = findUserById(userId);
         user.update(request.name(), request.hobby());
-        return UserResponse.from(user);
     }
 
-    public UserResponse findUser(Long userId) {
+    public UserInfoResponse findUser(Long userId) {
         User user = findUserById(userId);
-        return UserResponse.from(user);
+        return UserInfoResponse.from(user);
     }
 
     @Transactional
