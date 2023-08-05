@@ -1,6 +1,5 @@
 package com.example.jpaboard.global;
 
-import com.example.jpaboard.post.service.dto.PostResponse;
 import org.springframework.data.domain.Slice;
 
 public class SliceResponse<T> extends ApiResponse{

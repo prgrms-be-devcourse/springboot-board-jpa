@@ -22,4 +22,19 @@ public class FindMemberResponse {
         this(member.getId(), member.getName(), member.getAge(), member.getHobby());
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Age getAge() {
+        return age;
+    }
+
+    public String getHobby() {
+        return hobby;
+    }
 }

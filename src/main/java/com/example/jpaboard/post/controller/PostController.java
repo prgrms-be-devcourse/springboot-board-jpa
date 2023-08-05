@@ -9,6 +9,7 @@ import com.example.jpaboard.post.controller.dto.UpdateApiRequest;
 import com.example.jpaboard.post.controller.mapper.PostApiMapper;
 import com.example.jpaboard.post.service.PostService;
 import com.example.jpaboard.post.service.dto.*;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,7 @@ public class PostController {
     }
 
     @PostMapping
-    ResponseEntity<PostResponse> savePost (@RequestBody SaveApiRequest saveApiRequest ) {
+    ResponseEntity<PostResponse> savePost (@RequestBody @Valid SaveApiRequest saveApiRequest ) {
         SaveRequest saveRequest = postApiMapper.toSaveRequest(saveApiRequest);
         PostResponse saveResponse =postService.savePost(saveRequest);
 
