@@ -51,15 +51,15 @@ public class PostController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
-    public void update(@PathVariable("id") Long postId,
-                       @Valid @RequestBody PostUpdateRequest request,
-                       @SessionAttribute(name = "userId") Long userId) {
+    public void updatePost(@PathVariable("id") Long postId,
+                           @Valid @RequestBody PostUpdateRequest request,
+                           @SessionAttribute(name = "userId") Long userId) {
         postService.update(postId, request, userId);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long postId,
-                       @SessionAttribute(name = "userId") Long userId) {
+    public void deletePost(@PathVariable("id") Long postId,
+                           @SessionAttribute(name = "userId") Long userId) {
         postService.delete(postId, userId);
     }
 
