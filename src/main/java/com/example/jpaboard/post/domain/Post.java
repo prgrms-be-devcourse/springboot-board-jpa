@@ -18,7 +18,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Member member;
 
     protected Post() { }
