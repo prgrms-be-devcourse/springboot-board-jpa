@@ -16,6 +16,8 @@ import prgms.boardmission.post.repository.PostRepository;
 public class PostService {
     private final PostRepository postRepository;
 
+    private String NOT_FOUND_POST_MESSAGE = "해당 게시글을 찾을 수 없습니다.";
+
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
@@ -35,7 +37,7 @@ public class PostService {
     public PostDto findById(long postId) {
         return postRepository.findById(postId)
                 .map(PostConverter::convertToPostDto)
-                .orElseThrow(() -> new NotFoundPostException("해당 게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
     }
 
     public Long update(Long postId, PostUpdateDto postUpdateDto) {
