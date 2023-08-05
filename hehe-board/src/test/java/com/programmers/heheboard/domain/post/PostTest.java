@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -38,6 +39,27 @@ class PostTest {
 
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	private static List<PostResponseDto> postResponseDtos;
+
+	@BeforeAll
+	public static void setUP() {
+		postResponseDtos = Arrays.asList(
+			PostResponseDto.builder()
+				.title("title1")
+				.content("content1")
+				.createdAt(LocalDateTime.of(2000, 1, 1, 1, 1))
+				.modifiedAt(LocalDateTime.of(2000, 1, 1, 1, 1))
+				.build(),
+
+			PostResponseDto.builder()
+				.title("title2")
+				.content("content2")
+				.createdAt(LocalDateTime.of(2000, 1, 1, 1, 1))
+				.modifiedAt(LocalDateTime.of(2000, 1, 1, 1, 1))
+				.build()
+		);
+	}
 
 	@Test
 	void create() throws Exception {
@@ -84,14 +106,9 @@ class PostTest {
 	@Test
 	void findSinglePost() throws Exception {
 		// given
-		PostResponseDto responseDTO = PostResponseDto.builder()
-			.title("title")
-			.content("content")
-			.createdAt(LocalDateTime.of(2000, 1, 1, 1, 1))
-			.modifiedAt(LocalDateTime.of(2000, 1, 1, 1, 1))
-			.build();
-
 		Long postId = 1L;
+
+		PostResponseDto responseDTO = postResponseDtos.get(0);
 
 		when(postService.findPost(postId)).thenReturn(responseDTO);
 
@@ -118,23 +135,7 @@ class PostTest {
 	@Test
 	void getPosts() throws Exception {
 		// given
-		List<PostResponseDto> postList = Arrays.asList(
-			PostResponseDto.builder()
-				.title("title3")
-				.content("content3")
-				.createdAt(LocalDateTime.of(2000, 1, 1, 1, 1))
-				.modifiedAt(LocalDateTime.of(2000, 1, 1, 1, 1))
-				.build(),
-
-			PostResponseDto.builder()
-				.title("title4")
-				.content("content4")
-				.createdAt(LocalDateTime.of(2000, 1, 1, 1, 1))
-				.modifiedAt(LocalDateTime.of(2000, 1, 1, 1, 1))
-				.build()
-		);
-
-		Slice<PostResponseDto> responseSlice = new SliceImpl<>(postList);
+		Slice<PostResponseDto> responseSlice = new SliceImpl<>(postResponseDtos);
 
 		int page = 1;
 		int size = 2;
@@ -172,14 +173,9 @@ class PostTest {
 	void update() throws Exception {
 		Long postId = 1L;
 
-		PostResponseDto responseDTO = PostResponseDto.builder()
-			.title("updated title")
-			.content("updated content")
-			.createdAt(LocalDateTime.of(2000, 1, 1, 1, 1))
-			.modifiedAt(LocalDateTime.of(2000, 1, 1, 1, 1))
-			.build();
+		PostResponseDto responseDTO = postResponseDtos.get(0);
 
-		when(postService.updatePost(eq(1L), any(UpdatePostRequestDto.class))).thenReturn(responseDTO);
+		when(postService.updatePost(eq(postId), any(UpdatePostRequestDto.class))).thenReturn(responseDTO);
 
 		UpdatePostRequestDto updatePostRequestDto = new UpdatePostRequestDto("updated content", "updated content");
 
