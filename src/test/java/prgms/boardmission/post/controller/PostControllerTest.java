@@ -63,7 +63,7 @@ class PostControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postDto)))
-                .andExpect(status().isOk()) // 200
+                .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-save",
                         requestFields(
