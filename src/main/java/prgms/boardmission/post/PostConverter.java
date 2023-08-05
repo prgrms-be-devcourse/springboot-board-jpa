@@ -15,7 +15,7 @@ public final class PostConverter {
         String memberName = postDto.memberDto().name();
         Member member = MemberConverter.convertToMember(postDto.memberDto());
 
-        Post post = new Post(title,content,memberName,member);
+        Post post = new Post(title, content, memberName, member);
 
         return post;
     }

@@ -46,7 +46,7 @@ public class PostService {
 
         String editTitle = postUpdateDto.title();
         String editContent = postUpdateDto.content();
-        post.updatePost(editTitle,editContent);
+        post.updatePost(editTitle, editContent);
 
         return post.getId();
     }

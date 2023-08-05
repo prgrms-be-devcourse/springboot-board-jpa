@@ -156,7 +156,7 @@ class PostControllerTest {
         String editTitle = "edit title";
         String editContent = "edit content";
 
-        PostUpdateDto postUpdateDto = new PostUpdateDto(editTitle,editContent);
+        PostUpdateDto postUpdateDto = new PostUpdateDto(editTitle, editContent);
 
         mockMvc.perform(MockMvcRequestBuilders.patch(("/posts/{postId}"), 1L)
                         .contentType(MediaType.APPLICATION_JSON)

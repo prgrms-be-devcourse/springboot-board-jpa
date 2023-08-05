@@ -32,7 +32,7 @@ public class Post extends BaseEntity {
 
     }
 
-    public Post(String title, String content, String memberName,Member member) {
+    public Post(String title, String content, String memberName, Member member) {
         this.title = title;
         this.content = content;
         this.member = member;
@@ -40,7 +40,7 @@ public class Post extends BaseEntity {
         setCratedAt();
     }
 
-    public void updatePost(String editTitle,String editContent){
+    public void updatePost(String editTitle, String editContent) {
         this.title = editTitle;
         this.content = editContent;
     }

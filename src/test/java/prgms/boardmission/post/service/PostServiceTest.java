@@ -95,7 +95,7 @@ class PostServiceTest {
 
         PostUpdateDto postUpdateDto = new PostUpdateDto(editTitle,editContent);
         //When
-        postService.update(1L, postUpdateDto);
+        postService.updatePost(1L, postUpdateDto);
         PostDto editPost = postService.findById(1L);
 
         //Then

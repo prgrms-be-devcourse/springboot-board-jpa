@@ -49,7 +49,7 @@ public class PostController {
 
     @PatchMapping("/posts/{postId}")
     public ApiResponse<Long> update(@PathVariable long postId, PostUpdateDto postUpdateDto) {
-        Long updateId = postService.update(postId, postUpdateDto);
+        Long updateId = postService.updatePost(postId, postUpdateDto);
         return ApiResponse.ok(updateId);
     }
 }

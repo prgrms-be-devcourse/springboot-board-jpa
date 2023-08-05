@@ -9,7 +9,7 @@ public final class MemberConverter {
         int age = memberDto.age();
         String hobby = memberDto.hobby();
 
-        return new Member(name,age,hobby);
+        return new Member(name, age, hobby);
     }
 
     public static MemberDto convertToMemberDto(Member member) {
