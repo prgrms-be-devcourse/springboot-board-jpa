@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p " +
+            "JOIN FETCH p.member " + // Add the JOIN FETCH clause to fetch the associated member
             "WHERE (p.title LIKE %:title%) "+
             "AND (p.content LIKE %:content%)")
     Slice<Post> findPostAllByFilter(@Param("title") String title,
