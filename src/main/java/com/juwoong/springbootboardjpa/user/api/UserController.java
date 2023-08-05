@@ -1,8 +1,5 @@
 package com.juwoong.springbootboardjpa.user.api;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,10 +25,7 @@ public class UserController {
     public ResponseEntity<UserDto> createUser(@RequestBody UserRequest request) {
         UserDto user = userService.createUser(request.name(), request.age(), request.hobby());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        return new ResponseEntity<>(user, headers, HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{id}")

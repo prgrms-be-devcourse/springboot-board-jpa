@@ -2,9 +2,6 @@ package com.juwoong.springbootboardjpa.post.api;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,10 +30,7 @@ public class PostController {
         @RequestBody PostRequest request) {
         PostDto post = postService.createPost(id, request.title(), request.content());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        return new ResponseEntity<>(post, headers, HttpStatus.OK);
+        return ResponseEntity.ok(post);
     }
 
     @GetMapping("/{id}")
@@ -50,12 +44,9 @@ public class PostController {
     public ResponseEntity<Page<PostDto>> getAllPosts(@RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "2") int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
         Page<PostDto> posts = postService.getAllPosts(pageRequest);
 
-        return new ResponseEntity<>(posts, headers, HttpStatus.OK);
+        return ResponseEntity.ok(posts);
     }
 
     @PutMapping("/{id}")
@@ -63,10 +54,7 @@ public class PostController {
         @RequestBody PostRequest request) {
         PostDto post = postService.updatePost(id, request.title(), request.content());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        return new ResponseEntity<>(post, headers, HttpStatus.OK);
+        return ResponseEntity.ok(post);
     }
 
 }
