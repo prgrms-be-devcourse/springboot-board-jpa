@@ -10,7 +10,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
-/*
 
 @Getter
 @MappedSuperclass
@@ -23,10 +22,7 @@ public class BaseEntity {
     private LocalDateTime createdAt;
 
     @CreatedBy
-    @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss")
     @Column(name = "created_by")
-    private Long createdBy;
+    private String createdBy;
 
 }
-
- */

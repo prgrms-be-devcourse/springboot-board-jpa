@@ -39,8 +39,10 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'mysql:mysql-connector-java:8.0.28'
+
 }
 
 tasks.named('test') {
@@ -55,6 +57,7 @@ test {
 asciidoctor {
 	dependsOn test
 	inputs.dir snippetsDir
+	attributes 'snippets': snippetsDir
 }
 
 asciidoctor.doFirst {

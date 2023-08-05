@@ -1,11 +1,12 @@
 package com.example.jpaboard.post.domain;
 
+import com.example.jpaboard.global.BaseEntity;
 import com.example.jpaboard.member.domain.Member;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "posts")
-public class Post {
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +18,7 @@ public class Post {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Member member;
 
     protected Post() { }

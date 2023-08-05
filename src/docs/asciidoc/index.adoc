@@ -22,3 +22,45 @@ include::{snippets}/post-findAllBy/http-request.adoc[]
 include::{snippets}/post-findAllBy/http-response.adoc[]
 include::{snippets}/post-findAllBy/response-fields.adoc[]
 
+
+=== 게시판 업데이트
+
+=== /posts/{id}
+
+.Request
+
+include::{snippets}/post-update/curl-request.adoc[]
+include::{snippets}/post-update/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+=== 게시판 조회
+
+=== /posts/{id}
+
+.Request
+
+include::{snippets}/post-findById/curl-request.adoc[]
+include::{snippets}/post-findById/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-findById/http-response.adoc[]
+include::{snippets}/post-findById/response-fields.adoc[]
+
+=== 게시글 등록
+
+=== /posts
+
+.Request
+
+include::{snippets}/post-save/curl-request.adoc[]
+include::{snippets}/post-save/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
