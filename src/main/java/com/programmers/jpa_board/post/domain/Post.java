@@ -56,19 +56,19 @@ public class Post extends BaseEntity {
         }
 
         this.user = user;
-        addCreatedBy(user.getCreatedBy());
+        updateCreatedBy(user.getCreatedBy());
         user.getPosts().add(this);
-    }
-
-    private void validateTitleRange(String title) {
-        if (title.isEmpty() || title.length() > 100) {
-            throw new IllegalArgumentException(INVALID_TITLE);
-        }
     }
 
     public void update(String title, String content) {
         validateTitleRange(title);
         this.title = title;
         this.content = content;
+    }
+
+    private void validateTitleRange(String title) {
+        if (title.isEmpty() || title.length() > 100) {
+            throw new IllegalArgumentException(INVALID_TITLE);
+        }
     }
 }
