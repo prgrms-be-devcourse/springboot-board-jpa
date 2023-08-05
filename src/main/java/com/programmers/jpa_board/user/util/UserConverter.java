@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserConverter {
-    public User createUsertoUser(CreateUserRequest dto) {
+    public User toEntity(CreateUserRequest dto) {
         return new User(dto.name(), dto.age(), dto.hobby());
     }
 
-    public UserResponse userToDto(User user) {
+    public UserResponse toDto(User user) {
         return new UserResponse(user.getId(), user.getName(), user.getAge(), user.getHobby(), user.getPosts(), user.getCreatedAt());
     }
 }

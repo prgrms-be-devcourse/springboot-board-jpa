@@ -1,10 +1,10 @@
 package com.programmers.jpa_board.post.application;
 
-import com.programmers.jpa_board.global.exception.NotFoundException;
 import com.programmers.jpa_board.post.domain.Post;
 import com.programmers.jpa_board.post.domain.dto.request.CreatePostRequest;
 import com.programmers.jpa_board.post.domain.dto.request.UpdatePostRequest;
 import com.programmers.jpa_board.post.domain.dto.response.PostResponse;
+import com.programmers.jpa_board.global.exception.NotFoundException;
 import com.programmers.jpa_board.post.infra.PostRepository;
 import com.programmers.jpa_board.post.util.PostConverter;
 import com.programmers.jpa_board.user.application.UserProviderService;
@@ -32,13 +32,13 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public PostResponse create(CreatePostRequest request) {
-        Post post = converter.createPostToPost(request);
+        Post post = converter.toEntity(request);
         User user = userService.getUser(request.userId());
         post.addUser(user);
 
         Post saved = postRepository.save(post);
 
-        return converter.postToDto(saved);
+        return converter.toDto(saved);
     }
 
     @Override
@@ -46,13 +46,13 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_POST));
 
-        return converter.postToDto(post);
+        return converter.toDto(post);
     }
 
     @Override
     public Page<PostResponse> findPage(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(converter::postToDto);
+                .map(converter::toDto);
     }
 
     @Transactional
@@ -63,6 +63,6 @@ public class PostServiceImpl implements PostService {
 
         post.update(request.title(), request.content());
 
-        return converter.postToDto(post);
+        return converter.toDto(post);
     }
 }

@@ -24,10 +24,10 @@ public class UserServiceImpl implements UserProviderService {
 
     @Transactional
     public UserResponse create(CreateUserRequest request) {
-        User user = converter.createUsertoUser(request);
+        User user = converter.toEntity(request);
         User saved = userRepository.save(user);
 
-        return converter.userToDto(saved);
+        return converter.toDto(saved);
     }
 
     @Override

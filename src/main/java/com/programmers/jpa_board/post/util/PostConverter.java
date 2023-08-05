@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PostConverter {
-    public Post createPostToPost(CreatePostRequest dto) {
+    public Post toEntity(CreatePostRequest dto) {
         return new Post(dto.title(), dto.content());
     }
 
-    public PostResponse postToDto(Post post) {
+    public PostResponse toDto(Post post) {
         return new PostResponse(post.getId(), post.getTitle(), post.getContent(), post.getUser().getId(), post.getUser().getName(), post.getCreatedAt());
     }
 }
