@@ -55,7 +55,7 @@ public class UserService {
     public void updateUser(Long loginUserId, Long userId, String name, Integer age, String hobby) {
         User user = findUserOrElseThrow(userId);
         checkAuthority(loginUserId, userId);
-        user.update(name, age, hobby);
+        user.updateMember(name, age, hobby);
     }
 
     @Transactional

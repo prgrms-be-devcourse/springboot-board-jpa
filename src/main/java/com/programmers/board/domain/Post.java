@@ -54,7 +54,7 @@ public class Post extends BaseEntity {
         }
     }
 
-    public void update(String title, String content) {
+    public void updatePost(String title, String content) {
         if (nonNull(title)) {
             validateTitle(title);
             this.title = title;

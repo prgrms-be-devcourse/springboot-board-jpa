@@ -51,7 +51,7 @@ public class PostService {
         User loginUser = findUserOrElseThrow(loginUserId);
         Post post = findPostOrElseThrow(postId);
         checkAuthority(post, loginUser);
-        post.update(title, content);
+        post.updatePost(title, content);
     }
 
     @Transactional

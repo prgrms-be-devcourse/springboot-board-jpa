@@ -113,7 +113,7 @@ class PostTest {
             String updateContent = "updateContent";
 
             //when
-            givenPost.update(updateTitle, updateContent);
+            givenPost.updatePost(updateTitle, updateContent);
 
             //then
             assertThat(givenPost.getTitle()).isEqualTo(updateTitle);
@@ -128,7 +128,7 @@ class PostTest {
 
             //when
             //then
-            assertThatThrownBy(() -> givenPost.update(titleOutOfRange, null))
+            assertThatThrownBy(() -> givenPost.updatePost(titleOutOfRange, null))
                     .isInstanceOf(IllegalArgumentException.class);
         }
 
@@ -140,7 +140,7 @@ class PostTest {
 
             //when
             //then
-            assertThatThrownBy(() -> givenPost.update(null, contentOutOfRange))
+            assertThatThrownBy(() -> givenPost.updatePost(null, contentOutOfRange))
                     .isInstanceOf(IllegalArgumentException.class);
         }
     }

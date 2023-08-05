@@ -49,7 +49,7 @@ public class User extends BaseEntity {
         }
     }
 
-    public void update(String name, Integer age, String hobby) {
+    public void updateMember(String name, Integer age, String hobby) {
         if (nonNull(name)) {
             validateName(name);
             this.name = name;

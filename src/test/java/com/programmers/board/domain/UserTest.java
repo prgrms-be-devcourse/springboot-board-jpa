@@ -104,7 +104,7 @@ class UserTest {
         })
         @DisplayName("예외: 잘못된 형식의 사용자 이름")
         void updateUser_ButInvalidName(String invalidName) {
-            assertThatThrownBy(() -> givenUser.update(invalidName, null, null))
+            assertThatThrownBy(() -> givenUser.updateMember(invalidName, null, null))
                     .isInstanceOf(IllegalArgumentException.class);
         }
 
@@ -114,7 +114,7 @@ class UserTest {
         })
         @DisplayName("예외: 잘못된 형식의 사용자 취미")
         void updateUser_ButInvalidHobby(String invalidHobby) {
-            assertThatThrownBy(() -> givenUser.update(null, null, invalidHobby))
+            assertThatThrownBy(() -> givenUser.updateMember(null, null, invalidHobby))
                     .isInstanceOf(IllegalArgumentException.class);
         }
     }
