@@ -51,13 +51,13 @@ public class Member extends BaseEntity {
 			throw new InvalidDataException(
 					MessageFormat.format("입력된 이름={0}. 이름에는 문자만 입력 가능합니다.", name));
 		}
-		if (name.length() > 10) {
+		if (name.length() > 10 || name.isEmpty()) {
 			throw new InvalidDataException(
 					MessageFormat.format("입력된 이름={0}자. 이름은 최대 {1}자 입력 가능합니다.", name.length(), NAME_MAX_LENGTH));
 		}
 	}
 
-	void validateAge(int age) {
+	private void validateAge(int age) {
 		if (!(0 < age && age <= MAX_AGE)) {
 			throw new InvalidDataException(
 					MessageFormat.format("입력된 나이={0}. 나이는 0 이상 {1} 이하의 숫자로 입력해주세요.", age, MAX_AGE));
@@ -65,7 +65,7 @@ public class Member extends BaseEntity {
 	}
 
 	private void validateHobby(String hobby) {
-		if (hobby.length() > 100) {
+		if (hobby.length() > 100 || hobby.isEmpty()) {
 			throw new InvalidDataException(
 					MessageFormat.format("입력된 취미={0}자. 취미는 최대 {1}자 입력 가능합니다.", hobby.length(), HOBBY_MAX_LENGTH));
 		}
