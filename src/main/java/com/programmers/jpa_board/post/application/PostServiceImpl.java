@@ -8,6 +8,7 @@ import com.programmers.jpa_board.post.domain.dto.response.PostResponse;
 import com.programmers.jpa_board.post.exception.NotFoundPostException;
 import com.programmers.jpa_board.post.infra.PostRepository;
 import com.programmers.jpa_board.user.application.UserProviderService;
+import com.programmers.jpa_board.user.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse create(CreatePostRequest request) {
         Post post = converter.createPostToPost(request);
-        post.addUser(userService.getUser(request.userId()));
+        User user = userService.getUser(request.userId());
+        post.addUser(user);
 
         Post saved = postRepository.save(post);
 
