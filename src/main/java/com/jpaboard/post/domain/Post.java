@@ -7,7 +7,6 @@ import lombok.Builder;
 
 import java.util.Objects;
 
-@Builder
 @Entity
 @Table(name = "post")
 public class Post extends BaseEntity {
@@ -27,8 +26,10 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    protected Post() {}
+    protected Post() {
+    }
 
+    @Builder
     private Post(long id, String title, String content, User user) {
         this.id = id;
         this.title = title;
@@ -37,7 +38,7 @@ public class Post extends BaseEntity {
     }
 
     public void assignWriter(User user) {
-        if(Objects.nonNull(this.user)) {
+        if (Objects.nonNull(this.user)) {
             this.user.getPostList().remove(this);
         }
 

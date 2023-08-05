@@ -8,7 +8,6 @@ import lombok.Builder;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Entity
 @Table(name = "user")
 public class User extends BaseEntity {
@@ -27,10 +26,12 @@ public class User extends BaseEntity {
     private String hobby;
 
     @OneToMany(mappedBy = "user")
-    private List<Post> postList= new ArrayList<>();
+    private List<Post> postList = new ArrayList<>();
 
-    protected User() {}
+    protected User() {
+    }
 
+    @Builder
     private User(long id, String name, int age, String hobby, List<Post> postList) {
         this.id = id;
         this.name = name;
