@@ -50,11 +50,13 @@ test {
 }
 
 asciidoctor {
+    inputs.dir snippetsDir
     configurations 'asciidoctorExtensions'
     baseDirFollowsSourceFile()
-    inputs.dir snippetsDir
     dependsOn test
+    outputDir file('src/main/resources/static/docs')
 }
+
 
 asciidoctor.doFirst {
     delete file('src/main/resources/static/docs')
