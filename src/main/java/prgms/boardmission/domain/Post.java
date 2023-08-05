@@ -24,20 +24,29 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "member_id", referencedColumnName = "userId")
     private Member member;
 
+    protected Post() {
+
+    }
+
+    public Post(long id, String title, String content, String memberName,Member member) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.member = member;
+        setCreatedBy(memberName);
+        setCratedAt();
+    }
+
+    public void updatePost(String content){
+        this.content = content;
+    }
+
     public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {
@@ -46,14 +55,5 @@ public class Post extends BaseEntity {
 
     public Member getMember() {
         return member;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setMember(Member postMember) {
-        member = postMember;
-        this.setCreatedBy(postMember.getName());
     }
 }

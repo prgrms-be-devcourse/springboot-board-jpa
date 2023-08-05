@@ -42,7 +42,8 @@ public class PostService {
     public Long update(Long postId, PostUpdateDto postUpdateDto) {
         Post post = postRepository.findById(postId).get();
         String editContent = postUpdateDto.content();
-        post.setContent(editContent);
+
+        post.updatePost(editContent);
 
         return post.getId();
     }

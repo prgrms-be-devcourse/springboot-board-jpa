@@ -16,15 +16,15 @@ public class BaseEntity {
         return createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public LocalDateTime getCratedAt() {
         return cratedAt;
     }
 
-    public void setCratedAt(LocalDateTime cratedAt) {
-        this.cratedAt = cratedAt;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public void setCratedAt() {
+        this.cratedAt = LocalDateTime.now();
     }
 }

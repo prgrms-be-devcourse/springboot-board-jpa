@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 
 public final class PostConverter {
     public static Post convertToPost(PostDto postDto) {
-        Post post = new Post();
-        post.setId(postDto.postId());
-        post.setTitle(postDto.title());
-        post.setContent(postDto.content());
-        post.setCratedAt(LocalDateTime.now());
-        post.setCreatedBy(postDto.memberDto().name());
-        post.setMember(MemberConverter.convertToMember(postDto.memberDto()));
+        long id = postDto.postId();
+        String title = postDto.title();
+        String content = postDto.content();
+        String memberName = postDto.memberDto().name();
+        Member member = MemberConverter.convertToMember(postDto.memberDto());
+
+        Post post = new Post(id,title,content,memberName,member);
 
         return post;
     }

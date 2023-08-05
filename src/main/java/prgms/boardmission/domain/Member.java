@@ -21,35 +21,29 @@ public class Member extends BaseEntity {
     @Column(name = "hobby", nullable = true)
     private String hobby;
 
-    public Long getId() {
-        return id;
+    public Member(Long id, String name, int age, String hobby) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
     }
 
-    public void setId(Long userId) {
-        this.id = userId;
+    protected Member() {
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getAge() {
         return age;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public String getHobby() {
         return hobby;
-    }
-
-    public void setHobby(String hobby) {
-        this.hobby = hobby;
     }
 }
