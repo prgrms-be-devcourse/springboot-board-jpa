@@ -1,6 +1,0 @@
-[source,bash]
-----
-$ curl 'http://localhost:8080/posts' -i -X POST \
-    -H 'Content-Type: application/json;charset=UTF-8' \
-    -d '{"postId":1,"title":"title","content":"content","memberDto":{"userId":1,"name":"sehan","age":20,"hobby":"hobby"}}'
-----

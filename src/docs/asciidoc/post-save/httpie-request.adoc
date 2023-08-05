@@ -1,5 +1,0 @@
-[source,bash]
-----
-$ echo '{"postId":1,"title":"title","content":"content","memberDto":{"userId":1,"name":"sehan","age":20,"hobby":"hobby"}}' | http POST 'http://localhost:8080/posts' \
-    'Content-Type:application/json;charset=UTF-8'
-----

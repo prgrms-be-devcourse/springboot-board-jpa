@@ -1,9 +1,0 @@
-[source,http,options="nowrap"]
-----
-POST /posts HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 113
-Host: localhost:8080
-
-{"postId":1,"title":"title","content":"content","memberDto":{"userId":1,"name":"sehan","age":20,"hobby":"hobby"}}
-----

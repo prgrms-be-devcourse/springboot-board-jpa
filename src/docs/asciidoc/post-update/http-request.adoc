@@ -1,9 +1,0 @@
-[source,http,options="nowrap"]
-----
-PATCH /posts/1 HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 26
-Host: localhost:8080
-
-{"content":"edit content"}
-----

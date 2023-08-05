@@ -1,4 +1,0 @@
-[source,json,options="nowrap"]
-----
-{"statusCode":200,"data":1,"serverDatetime":"2023-08-03 14:37:12"}
-----
