@@ -28,10 +28,10 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping()
-    public ResponseEntity<PostDto> createPost(@RequestParam Long userId,
+    @PostMapping("/{id}")
+    public ResponseEntity<PostDto> createPost(@PathVariable Long id,
         @RequestBody PostRequest request) {
-        PostDto post = postService.createPost(userId, request.title(), request.content());
+        PostDto post = postService.createPost(id, request.title(), request.content());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
