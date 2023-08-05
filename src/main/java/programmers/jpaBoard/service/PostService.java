@@ -36,16 +36,16 @@ public class PostService {
                 .map(this::toDto);
     }
 
-    private Post findPostById(Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("해당 게시글이 없습니다"));
-    }
-
     public PostDto.Response update(Long id, PostDto.Request request) {
         Post post = findPostById(id);
         post.updatePost(request.title(), request.content());
 
         return toDto(post);
+    }
+
+    private Post findPostById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("해당 게시글이 없습니다"));
     }
 
     private PostDto.Response toDto(Post post) {
