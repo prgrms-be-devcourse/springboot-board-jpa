@@ -21,6 +21,7 @@ public class Post extends BaseEntity {
     private String title;
 
     @Lob
+    @Column(nullable = false, length = 100)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
