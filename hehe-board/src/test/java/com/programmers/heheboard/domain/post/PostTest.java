@@ -153,26 +153,16 @@ class PostTest {
 			.andDo(print())
 			.andDo(document("post-get",
 					responseFields(
+						fieldWithPath("content[].title").type(JsonFieldType.STRING).description("제목"),
+						fieldWithPath("content[].content").type(JsonFieldType.STRING).description("내용"),
+						fieldWithPath("content[].createdAt").type(JsonFieldType.STRING).description("생성일"),
+						fieldWithPath("content[].modifiedAt").type(JsonFieldType.STRING).description("수정일"),
+
 						fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
-						fieldWithPath("data.content").description("List of Posts"),
-						fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("제목"),
-						fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("내용"),
-						fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("생성일"),
-						fieldWithPath("data.content[].modifiedAt").type(JsonFieldType.STRING).description("수정일"),
-
-						fieldWithPath("data.pageable").type(JsonFieldType.STRING).description("pageable"),
-
-						fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("size"),
-						fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("number"),
-
-						fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("unsorted"),
-						fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("empty"),
-						fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted"),
-
-						fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("first"),
-						fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("last"),
-						fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements"),
-						fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("empty")
+						fieldWithPath("size").type(JsonFieldType.NUMBER).description("size"),
+						fieldWithPath("number").type(JsonFieldType.NUMBER).description("number"),
+						fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("first"),
+						fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("last")
 					)
 				)
 			);

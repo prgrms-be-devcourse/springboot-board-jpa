@@ -47,8 +47,8 @@ public class PostController {
 	}
 
 	@GetMapping
-	public ApiResponse<Slice<PostResponseDTO>> getAllPost(@RequestParam int page, @RequestParam int size) {
-		Slice<PostResponseDTO> posts = postService.getPosts(page, size);
-		return ApiResponse.ok(posts);
+	public ApiSliceResponse getPostBySlice(@RequestParam int page, @RequestParam int size) {
+		Slice<PostResponseDTO> postSliceResponseDtos = postService.getPosts(page, size);
+		return ApiSliceResponse.ok(postSliceResponseDtos);
 	}
 }
