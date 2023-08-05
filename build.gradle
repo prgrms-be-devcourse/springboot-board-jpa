@@ -2,11 +2,11 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.1.2'
     id 'io.spring.dependency-management' version '1.1.2'
-    id 'org.asciidoctor.jvm.convert' version '3.3.2' // asciidoctor에 대한 플러그인을 추가
+    id 'org.asciidoctor.jvm.convert' version '3.3.2' // asciidoctor 플러그인 추가
 }
 
 group = 'com.programmers'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 
 java {
     sourceCompatibility = '17'
@@ -16,15 +16,11 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    asciidoctorExt // asciidoctorExt을 Configuration에 지정
+    asciidoctorExt // asciidoctorExt을 Configuration 지정
 }
 
 repositories {
     mavenCentral()
-}
-
-ext {
-    set('snippetsDir', file("build/generated-snippets")) // snippets 파일이 저장될 경로를 설정
 }
 
 dependencies {
@@ -42,28 +38,25 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
-tasks.named('test') {
-    outputs.dir snippetsDir
+ext {
+    set('snippetsDir', file("build/generated-snippets")) // snippets 파일이 저장될 경로를 설정
+}
+
+test {
+    outputs.dir snippetsDir // 테스트 이후 generated-snippets 폴더에 adoc 파일 생성
     useJUnitPlatform()
 }
 
 asciidoctor {
+    dependsOn test // test 이후 asciidoctor를 진행하도록 설정
+    inputs.dir snippetsDir // generated-snippets 폴더에 있는 adoc 파일을 사용
     configurations 'asciidoctorExt' // asciidoctor에서 asciidoctorExt를 configuration으로 사용하도록 설정
     baseDirFollowsSourceFile() // adoc 파일에서는 다른 .adoc 파일을 include하여 사용할 수 있는데, 그럴 경우 경로를 동일하게 baseDir로 설정 (Gradle 7부터 명시)
-    inputs.dir snippetsDir // input 디렉토리를 설정
-    dependsOn test // build 시, test 후 asciidoctor를 진행하도록 설정
-}
-
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')  // 중복을 막기 위해 새로운 문서 생성 시, 이전 문서를 먼저 삭제
-}
-
-tasks.register('copyDocument', Copy) {
-    dependsOn asciidoctor
-    from file("build/docs/asciidoc") // 해당 경로로 부터
-    into file("src/main/resources/static") // 해당 경로로 html 문서들을 복사
 }
 
 bootJar {
-    dependsOn copyDocument // build 지정
+    dependsOn asciidoctor
+    from ("${asciidoctor.outputDir}") {
+        into 'static/docs' // jar 파일 내에 static/docs 폴더를 만들어 html 파일 복사 (배포 파일 실행 시 docs 문서 볼 수 있음)
+    }
 }
