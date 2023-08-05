@@ -1,10 +1,10 @@
 package com.programmers.jpa_board.post.application;
 
+import com.programmers.jpa_board.global.exception.NotFoundException;
 import com.programmers.jpa_board.post.domain.Post;
 import com.programmers.jpa_board.post.domain.dto.request.CreatePostRequest;
 import com.programmers.jpa_board.post.domain.dto.request.UpdatePostRequest;
 import com.programmers.jpa_board.post.domain.dto.response.PostResponse;
-import com.programmers.jpa_board.post.exception.NotFoundPostException;
 import com.programmers.jpa_board.post.infra.PostRepository;
 import com.programmers.jpa_board.post.util.PostConverter;
 import com.programmers.jpa_board.user.application.UserProviderService;
@@ -44,7 +44,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse findById(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST));
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_POST));
 
         return converter.postToDto(post);
     }
@@ -59,7 +59,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse update(Long postId, UpdatePostRequest request) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST));
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_POST));
 
         post.update(request.title(), request.content());
 

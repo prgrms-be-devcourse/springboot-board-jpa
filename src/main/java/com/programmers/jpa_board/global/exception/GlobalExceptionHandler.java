@@ -1,8 +1,6 @@
 package com.programmers.jpa_board.global.exception;
 
 import com.programmers.jpa_board.global.ApiResponse;
-import com.programmers.jpa_board.post.exception.NotFoundPostException;
-import com.programmers.jpa_board.user.exception.NotFoundUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,15 +15,9 @@ public class GlobalExceptionHandler {
         return ApiResponse.fail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
-    @ExceptionHandler(NotFoundUserException.class)
+    @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiResponse<String> notFoundUserHandle(NotFoundUserException exception) {
-        return ApiResponse.fail(HttpStatus.NOT_FOUND, exception.getMessage());
-    }
-
-    @ExceptionHandler(NotFoundPostException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiResponse<String> notFoundPostHandle(NotFoundPostException exception) {
+    public ApiResponse<String> notFoundHandle(NotFoundException exception) {
         return ApiResponse.fail(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 }

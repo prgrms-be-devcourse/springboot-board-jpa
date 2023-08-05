@@ -3,7 +3,7 @@ package com.programmers.jpa_board.user.application;
 import com.programmers.jpa_board.user.domain.User;
 import com.programmers.jpa_board.user.domain.dto.request.CreateUserRequest;
 import com.programmers.jpa_board.user.domain.dto.response.UserResponse;
-import com.programmers.jpa_board.user.exception.NotFoundUserException;
+import com.programmers.jpa_board.global.exception.NotFoundException;
 import com.programmers.jpa_board.user.infra.UserRepository;
 import com.programmers.jpa_board.user.util.UserConverter;
 import org.springframework.stereotype.Service;
@@ -33,6 +33,6 @@ public class UserServiceImpl implements UserProviderService {
     @Override
     public User getUser(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_USER));
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
     }
 }
