@@ -10,9 +10,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p " +
             "WHERE (p.title LIKE %:title%) "+
-            "AND (p.content LIKE %:contents%)")
+            "AND (p.content LIKE %:content%)")
     Slice<Post> findPostAllByFilter(@Param("title") String title,
-                                    @Param("content") String contents,
+                                    @Param("content") String content,
                                     Pageable pageable);
-
 }

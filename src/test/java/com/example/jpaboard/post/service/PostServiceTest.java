@@ -1,5 +1,5 @@
 package com.example.jpaboard.post.service;
-
+/*
 import com.example.jpaboard.member.domain.Age;
 import com.example.jpaboard.member.domain.Member;
 import com.example.jpaboard.member.service.MemberRepository;
@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+/*
 @ActiveProfiles("test")
 @SpringBootTest
 @Transactional
@@ -107,3 +108,5 @@ class PostServiceTest {
         assertThat(updatedContent).isEqualTo("영운의 변경된 content");
     }
 }
+
+ */

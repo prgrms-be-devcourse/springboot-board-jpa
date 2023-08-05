@@ -1,0 +1,24 @@
+= API Docs
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toc-title: API
+:toclevels: 2
+:sectlinks:
+
+== 게시판
+
+=== 검색 필드 및 무한 스크롤
+
+=== /posts
+
+.Request
+
+include::{snippets}/post-findAllBy/curl-request.adoc[]
+include::{snippets}/post-findAllBy/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-findAllBy/http-response.adoc[]
+include::{snippets}/post-findAllBy/response-fields.adoc[]
+

@@ -10,13 +10,15 @@ import com.example.jpaboard.post.controller.mapper.PostApiMapper;
 import com.example.jpaboard.post.service.PostService;
 import com.example.jpaboard.post.service.dto.*;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-@RestController("/posts")
+@RestController
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
@@ -31,13 +33,15 @@ public class PostController {
     SliceResponse<PostResponse> findAllBy(@ModelAttribute FindAllApiRequest findAllApiRequest, Pageable pageable) {
         FindAllRequest findAllRequest = postApiMapper.toFindAllRequest(findAllApiRequest);
 
-        return new SliceResponse<>(postService.findPostAllByFilter(findAllRequest, pageable), SuccessCode.SELECT_SUCCESS);
+        Slice<PostResponse> postAllByFilter = postService.findPostAllByFilter(findAllRequest, pageable);
+        SliceResponse<PostResponse> postResponseSliceResponse = new SliceResponse<>(postAllByFilter, SuccessCode.SELECT_SUCCESS);
+        return postResponseSliceResponse;
     }
 
     @PatchMapping("/{id}")
-    ApiResponse<PostResponse> updatePost (@PathVariable Long postId, @RequestBody UpdateApiRequest updateApiRequest) {
+    ApiResponse<PostResponse> updatePost (@PathVariable Long id, @RequestBody UpdateApiRequest updateApiRequest) {
         UpdateRequest updateRequest = postApiMapper.toUpdateRequest(updateApiRequest);
-        return new ApiResponse<>(postService.updatePost(postId, updateRequest),SuccessCode.UPDATE_SUCCESS);
+        return new ApiResponse<>(postService.updatePost(id, updateRequest),SuccessCode.UPDATE_SUCCESS);
     }
 
     @GetMapping("/{id}")

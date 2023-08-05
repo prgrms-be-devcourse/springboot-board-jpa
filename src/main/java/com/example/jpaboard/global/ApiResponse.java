@@ -11,4 +11,16 @@ public class ApiResponse<T> {
         this.resultCode = successCode.getStatus();
         this.resultMsg = successCode.getMessage();
     }
+
+    public T getResult() {
+        return result;
+    }
+
+    public int getResultCode() {
+        return resultCode;
+    }
+
+    public String getResultMsg() {
+        return resultMsg;
+    }
 }
