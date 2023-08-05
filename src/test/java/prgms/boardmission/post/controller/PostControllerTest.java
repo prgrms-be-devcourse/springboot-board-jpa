@@ -39,7 +39,6 @@ class PostControllerTest {
     private ObjectMapper objectMapper;
     @Autowired
     private PostService postService;
-
     private MemberDto memberDto;
     private PostDto postDto;
 
@@ -154,17 +153,19 @@ class PostControllerTest {
 
     @Test
     void update() throws Exception {
+        String editTitle = "edit title";
         String editContent = "edit content";
 
-        PostUpdateDto postUpdateDto = new PostUpdateDto(editContent);
+        PostUpdateDto postUpdateDto = new PostUpdateDto(editTitle,editContent);
 
-        mockMvc.perform(MockMvcRequestBuilders.patch(("/posts/{postId}"), 2L)
+        mockMvc.perform(MockMvcRequestBuilders.patch(("/posts/{postId}"), 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postUpdateDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-update",
                         requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("content")
                         ),
                         responseFields(

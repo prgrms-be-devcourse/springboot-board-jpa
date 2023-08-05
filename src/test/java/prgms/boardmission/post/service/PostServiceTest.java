@@ -90,9 +90,10 @@ class PostServiceTest {
     @Test
     void update() {
         //Given
+        String editTitle = "edit title";
         String editContent = "edit content";
 
-        PostUpdateDto postUpdateDto = new PostUpdateDto(editContent);
+        PostUpdateDto postUpdateDto = new PostUpdateDto(editTitle,editContent);
         //When
         postService.update(1L, postUpdateDto);
         PostDto editPost = postService.findById(1L);

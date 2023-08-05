@@ -44,8 +44,9 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
 
+        String editTitle = postUpdateDto.title();
         String editContent = postUpdateDto.content();
-        post.updatePost(editContent);
+        post.updatePost(editTitle,editContent);
 
         return post.getId();
     }

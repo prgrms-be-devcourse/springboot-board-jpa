@@ -39,8 +39,9 @@ public class Post extends BaseEntity {
         setCratedAt();
     }
 
-    public void updatePost(String content){
-        this.content = content;
+    public void updatePost(String editTitle,String editContent){
+        this.title = editTitle;
+        this.content = editContent;
     }
 
     public long getId() {
