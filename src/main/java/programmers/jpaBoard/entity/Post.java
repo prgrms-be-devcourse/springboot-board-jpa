@@ -14,7 +14,7 @@ public class Post extends BaseEntity {
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     protected Post() {
