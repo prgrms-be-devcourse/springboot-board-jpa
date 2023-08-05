@@ -1,102 +1,138 @@
 package com.programmers.domain.post.application;
 
 import com.programmers.domain.post.application.converter.PostConverter;
+import com.programmers.domain.post.entity.Post;
+import com.programmers.domain.post.infra.PostRepository;
 import com.programmers.domain.post.ui.dto.PostDto;
 import com.programmers.domain.post.ui.dto.PostResponseDto;
 import com.programmers.domain.post.ui.dto.PostUpdateDto;
-import com.programmers.domain.user.application.UserService;
-import com.programmers.domain.user.application.UserServiceImpl;
-import com.programmers.domain.user.application.converter.UserConverter;
-import com.programmers.domain.user.ui.dto.UserDto;
+import com.programmers.domain.user.entity.User;
+import com.programmers.domain.user.infra.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-@Import(value = {
-        PostServiceImpl.class,
-        UserServiceImpl.class,
-        PostConverter.class,
-        UserConverter.class})
+@ExtendWith(MockitoExtension.class)
 class PostServiceImplTest {
 
-    @Autowired
-    private UserService userService;
+    @InjectMocks
+    private PostServiceImpl postService;
 
-    @Autowired
-    private PostService postService;
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private PostRepository postRepository;
+
+    @Mock
+    private PostConverter postConverter;
 
     @Test
     void createPost() {
-        // given
-        UserDto userDto = new UserDto("name", 25, "hobby");
-        Long userId = userService.createUser(userDto);
-        PostDto postDto = new PostDto("title", "content", userId);
+        //given
+        final Long fakeUserId = 1l;
+        final Long fakePostId = 1l;
 
-        // when
+        User user = new User("명한", 1, "운동");
+        Post post = new Post("제목", "본문", user);
+        ReflectionTestUtils.setField(post, "id", fakePostId);
+        PostDto postDto = new PostDto("title", "content", fakeUserId);
+
+        BDDMockito.given(userRepository.findById(fakeUserId)).willReturn(Optional.of(user));
+        BDDMockito.given(postConverter.convertPost(postDto, user)).willReturn(post);
+        BDDMockito.given(postRepository.save(post)).willReturn(post);
+
+        //when
         Long savedPostId = postService.createPost(postDto);
 
-        // then
-        assertThat(savedPostId).isNotNull();
+        //then
+        Long expectedPostId = 1l;
+        assertThat(savedPostId).isEqualTo(expectedPostId);
     }
 
     @Test
     void findPost() {
-        // Given
-        UserDto userDto = new UserDto("name", 25, "hobby");
-        Long userId = userService.createUser(userDto);
+        //given
+        final Long fakeUserId = 1l;
+        final Long fakePostId = 1l;
 
-        PostDto postDto = new PostDto("title", "content", userId);
-        Long postId = postService.createPost(postDto);
+        User user = new User("명한", 1, "운동");
+        Post post = new Post("제목", "본문", user);
+        ReflectionTestUtils.setField(post, "id", fakePostId);
+        PostResponseDto postResponseDto = new PostResponseDto(fakePostId, "제목", "본문", fakeUserId);
 
-        // When
-        PostResponseDto post = postService.findPost(postId);
+        BDDMockito.given(postRepository.findById(fakePostId)).willReturn(Optional.of(post));
+        BDDMockito.given(postConverter.convertEntityToPostResponseDto(post)).willReturn(postResponseDto);
 
-        // Then
-        assertThat(postId).isEqualTo(post.postId());
+        //when
+        Long postId = 1l;
+        PostResponseDto foundPost = postService.findPost(postId);
+
+        //then
+        Long expectedPostId = 1l;
+        assertThat(foundPost.postId()).isEqualTo(expectedPostId);
     }
 
     @Test
     void findAll() {
         // given
-        UserDto userDto = new UserDto("name", 25, "hobby");
-        Long userId = userService.createUser(userDto);
+        final Long fakeUserId = 1l;
+        final Long fakePostId1 = 1l;
+        final Long fakePostId2 = 2l;
 
-        PostDto postDto = new PostDto("title", "content", userId);
-        PostDto postDto2 = new PostDto("제목", "내용", userId);
-        postService.createPost(postDto);
-        postService.createPost(postDto2);
+        User user = new User("명한", 1, "운동");
+        Post post1 = new Post("제목1", "본문1", user);
+        ReflectionTestUtils.setField(post1, "id", fakePostId1);
+        Post post2 = new Post("제목2", "본문2", user);
+        ReflectionTestUtils.setField(post2, "id", fakePostId2);
+
+        PostResponseDto postResponseDto1 = new PostResponseDto(fakePostId1, "제목1", "본문1", fakeUserId);
+        PostResponseDto postResponseDto2 = new PostResponseDto(fakePostId2, "제목2", "본문2", fakeUserId);
 
         PageRequest pageRequest = PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "id"));
+        PageImpl<Post> posts = new PageImpl<>(List.of(post1, post2));
+        BDDMockito.given(postRepository.findAll(pageRequest)).willReturn(posts);
+        BDDMockito.given(postConverter.convertEntityToPostResponseDto(post1)).willReturn(postResponseDto1);
+        BDDMockito.given(postConverter.convertEntityToPostResponseDto(post2)).willReturn(postResponseDto2);
 
         // when
-        List<PostResponseDto> posts = postService.findAll(pageRequest);
+        List<PostResponseDto> postList = postService.findAll(pageRequest);
 
         // then
         int expectedCount = 2;
-        assertThat(posts).hasSize(expectedCount);
+        assertThat(postList).hasSize(expectedCount);
     }
 
     @Test
     void updatePost() {
         // given
-        UserDto userDto = new UserDto("name", 25, "hobby");
-        Long userId = userService.createUser(userDto);
+        final Long fakeUserId = 1l;
+        final Long fakePostId = 1l;
 
-        PostDto postDto = new PostDto("title", "content", userId);
-        Long savedPostId = postService.createPost(postDto);
+        User user = new User("명한", 1, "운동");
+        Post post = new Post("제목", "본문", user);
+        ReflectionTestUtils.setField(post, "id", fakePostId);
+        PostUpdateDto postUpdateDto = new PostUpdateDto("제목수정", "본문수정");
+        PostResponseDto postResponseDto = new PostResponseDto(fakePostId, "제목수정", "본문수정", fakeUserId);
 
-        PostUpdateDto postUpdateDto = new PostUpdateDto("제목", "내용");
+        BDDMockito.given(postRepository.findById(fakePostId)).willReturn(Optional.of(post));
+        BDDMockito.given(postConverter.convertEntityToPostResponseDto(post)).willReturn(postResponseDto);
 
         // when
-        PostResponseDto updatedPost = postService.updatePost(postUpdateDto, savedPostId);
+        long postId = 1l;
+        PostResponseDto updatedPost = postService.updatePost(postUpdateDto, postId);
 
         // then
         assertThat(updatedPost.title()).isEqualTo(postUpdateDto.title());
