@@ -44,7 +44,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostDto getPostById(Long id) {
+    public PostDto getPost(Long id) {
         Post post = findById(id);
 
         return toDto(post);

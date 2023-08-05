@@ -34,7 +34,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserDto getUserById(Long id) {
+    public UserDto getUser(Long id) {
         User user = findById(id);
 
         return toDto(user);
