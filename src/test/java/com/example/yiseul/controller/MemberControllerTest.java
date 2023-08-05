@@ -17,8 +17,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.RestDocsAutoConfigur
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -100,7 +98,6 @@ class MemberControllerTest {
         // given
         MemberPageResponseDto responseDto = new MemberPageResponseDto(responseDtos, 0, 2, 3, 4, true, false);
 
-        Page<MemberResponseDto> membersPage = new PageImpl<>(membersList, PageRequest.of(0, 2), membersList.size());
         Pageable pageable = PageRequest.of(0, 2);
 
         given(memberService.getMembers(pageable))

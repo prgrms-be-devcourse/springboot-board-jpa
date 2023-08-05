@@ -1,4 +1,11 @@
 package com.example.yiseul.dto.member;
 
-public record MemberCreateRequestDto(String name, int age, String hobby) {
+import jakarta.validation.constraints.NotBlank;
+
+public record MemberCreateRequestDto(
+        @NotBlank
+        String name,
+        Integer age,
+        @NotBlank
+        String hobby) {
 }

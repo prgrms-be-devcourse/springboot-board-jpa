@@ -5,9 +5,9 @@ import com.example.yiseul.dto.member.MemberPageResponseDto;
 import com.example.yiseul.dto.member.MemberResponseDto;
 import com.example.yiseul.dto.member.MemberUpdateRequestDto;
 import com.example.yiseul.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +19,12 @@ import java.util.List;
 @RequestMapping("/api/members")
 public class MemberController {
 
+    private static final int DEFAULT_SIZE = 2;
+
     private final MemberService memberService;
 
     @PostMapping
-    public MemberResponseDto signUp(@RequestBody MemberCreateRequestDto createRequestDto){
+    public MemberResponseDto signUp(@RequestBody @Valid MemberCreateRequestDto createRequestDto){
         log.info(createRequestDto.name());
 
         return memberService.createMember(createRequestDto);
@@ -42,7 +44,7 @@ public class MemberController {
 
     @PatchMapping("/{memberId}")
     public void updateMember(@PathVariable Long memberId,
-                             @RequestBody MemberUpdateRequestDto updateRequestDto) {
+                             @RequestBody @Valid MemberUpdateRequestDto updateRequestDto) {
 
         memberService.updateMember(memberId, updateRequestDto);
     }
@@ -53,9 +55,7 @@ public class MemberController {
         memberService.deleteMember(memberId);
     }
 
-    private static final int DEFAULT_SIZE = 2;
-
-    @GetMapping("/cursor") // 커서 방식 연습용이에용
+    @GetMapping("/cursor") // 커서 방식
     public List<MemberResponseDto> getMembersByCursor(@RequestParam(defaultValue = "0") Long cursor){
         return memberService.findMembersByCursor(cursor, DEFAULT_SIZE);
     }

@@ -34,10 +34,10 @@ public class PostService {
         return PostConverter.convertPostResponseDto(post);
     }
 
-    public Page<PostResponseDto> getPosts(Pageable pageable) {
+    public PostPageResponseDto getPosts(Pageable pageable) {
+        Page<Post> page = postRepository.findAll(pageable);
 
-        return postRepository.findAll(pageable)
-                .map(post -> PostConverter.convertPostResponseDto(post));
+        return PostConverter.convertPostPageResponseDto(page);
     }
 
     public PostResponseDto getPost(Long postId) {

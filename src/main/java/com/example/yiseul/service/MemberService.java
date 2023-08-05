@@ -3,6 +3,7 @@ package com.example.yiseul.service;
 import com.example.yiseul.converter.MemberConverter;
 import com.example.yiseul.domain.Member;
 import com.example.yiseul.dto.member.MemberCreateRequestDto;
+import com.example.yiseul.dto.member.MemberPageResponseDto;
 import com.example.yiseul.dto.member.MemberResponseDto;
 import com.example.yiseul.dto.member.MemberUpdateRequestDto;
 import com.example.yiseul.global.exception.ErrorCode;
@@ -23,7 +24,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true) // 질문
 public class MemberService {
 
     private final MemberRepository memberRepository;

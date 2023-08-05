@@ -35,12 +35,15 @@ public class Post extends BaseEntity {
         changeContent(updateContent);
     }
 
-    private String validateUpdateString(String update, String origin) {
-        if (update == null) {
-
-            return origin;
+    private void changeTitle(String updateTitle) {
+        if (updateTitle != null) {
+            this.title = updateTitle;
         }
-        return update;
     }
 
+    private void changeContent(String updateContent) {
+        if (updateContent != null) {
+            this.content = updateContent;
+        }
+    }
 }

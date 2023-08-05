@@ -1,6 +1,7 @@
 package com.example.yiseul.controller;
 
 import com.example.yiseul.dto.post.PostCreateRequestDto;
+import com.example.yiseul.dto.post.PostPageResponseDto;
 import com.example.yiseul.dto.post.PostResponseDto;
 import com.example.yiseul.dto.post.PostUpdateRequestDto;
 import com.example.yiseul.service.PostService;
@@ -14,8 +15,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.RestDocsAutoConfigur
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -32,7 +31,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -95,19 +93,19 @@ class PostControllerTest {
                 responseDto,
                 new PostResponseDto(2L,"title2", "content2","2023-07-30 18:00", "ja")
         );
+        PostPageResponseDto responseDto = new PostPageResponseDto(postsList, 0, 2, 3, 4, true, false);
 
-        Page<PostResponseDto> postsPage = new PageImpl<>(postsList, PageRequest.of(0, 2), postsList.size());
         Pageable pageable = PageRequest.of(0, 2);
 
         given(postService.getPosts(pageable))
-                .willReturn(postsPage);
+                .willReturn(responseDto);
 
         // when & then
         mvc.perform(MockMvcRequestBuilders.get("/api/posts")
                         .param("page", String.valueOf(pageable.getPageNumber()))
                         .param("size", String.valueOf(pageable.getPageSize())))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(postsPage)))
+                .andExpect(content().string(asJsonString(responseDto)))
 
                 .andDo(document("post-getPostsByPage",
                         responseFields(
@@ -125,6 +123,8 @@ class PostControllerTest {
                                 fieldWithPath("isLast").type(JsonFieldType.BOOLEAN).description("isLast")
                 )));
     }
+
+
 
     @Test
     @DisplayName("특정 게시글 조회에 성공한다.")

@@ -2,7 +2,12 @@ package com.example.yiseul.converter;
 
 import com.example.yiseul.domain.Member;
 import com.example.yiseul.dto.member.MemberCreateRequestDto;
+import com.example.yiseul.dto.member.MemberPageResponseDto;
 import com.example.yiseul.dto.member.MemberResponseDto;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MemberConverter {
 
@@ -13,7 +18,12 @@ public class MemberConverter {
 
     public static MemberResponseDto convertMemberResponseDto(Member member) {
 
-        return new MemberResponseDto(member.getId(), member.getName(), member.getAge(), member.getHobby(), member.getCreatedAt(), member.getCreatedBy());
+        return new MemberResponseDto(member.getId(),
+                member.getName(),
+                member.getAge(),
+                member.getHobby(),
+                member.getCreatedAt(),
+                member.getCreatedBy());
     }
 
     public static MemberPageResponseDto convertMemberPageResponseDto(Page<Member> page) {
