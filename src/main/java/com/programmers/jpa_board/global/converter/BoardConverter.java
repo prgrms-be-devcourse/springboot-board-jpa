@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BoardConverter {
     public User createUsertoUser(CreateUserRequest dto) {
-        return new User(dto.getName(), dto.getAge(), dto.getHobby());
+        return new User(dto.name(), dto.age(), dto.hobby());
     }
 
     public UserResponse userToDto(User user) {
@@ -19,7 +19,7 @@ public class BoardConverter {
     }
 
     public Post createPostToPost(CreatePostRequest dto) {
-        return new Post(dto.getTitle(), dto.getContent());
+        return new Post(dto.title(), dto.content());
     }
 
     public PostResponse postToDto(Post post) {

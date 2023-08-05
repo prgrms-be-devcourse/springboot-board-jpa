@@ -32,7 +32,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse create(CreatePostRequest request) {
         Post post = converter.createPostToPost(request);
-        post.addUser(userService.getUser(request.getUserId()));
+        post.addUser(userService.getUser(request.userId()));
 
         Post saved = postRepository.save(post);
 
@@ -59,7 +59,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST));
 
-        post.update(request.getTitle(), request.getContent());
+        post.update(request.title(), request.content());
 
         return converter.postToDto(post);
     }

@@ -93,7 +93,7 @@ class PostControllerTest {
         PostResponse response = postService.create(request);
 
         //when & then
-        this.mockMvc.perform(get("/posts/{id}", response.getId())
+        this.mockMvc.perform(get("/posts/{id}", response.id())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("post-get",
@@ -167,7 +167,7 @@ class PostControllerTest {
 
 
         //when & then
-        this.mockMvc.perform(put("/posts/{id}", response.getId())
+        this.mockMvc.perform(put("/posts/{id}", response.id())
                         .content(objectMapper.writeValueAsString(updateRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
