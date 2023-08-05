@@ -40,7 +40,7 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
     }
 
-    public Long update(Long postId, PostUpdateDto postUpdateDto) {
+    public Long updatePost(Long postId, PostUpdateDto postUpdateDto) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
 
