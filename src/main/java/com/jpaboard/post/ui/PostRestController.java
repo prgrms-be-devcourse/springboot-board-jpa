@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/posts")
 public class PostRestController {
     private final PostService postService;
 
@@ -18,24 +18,24 @@ public class PostRestController {
         this.postService = postService;
     }
 
-    @GetMapping("/posts")
+    @GetMapping
     public ApiResponse<Page<PostDto>> findPostAll(Pageable pageable) {
         return ApiResponse.ok(postService.findPostAll(pageable));
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public ApiResponse<PostDto> findPost(@PathVariable long id) {
         PostDto postDto = postService.findPost(id);
         return ApiResponse.ok(postDto);
     }
 
-    @PostMapping("/posts")
+    @PostMapping
     public ApiResponse<Long> createPost(@RequestBody PostDto postDto) {
         Long postId = postService.createPost(postDto);
         return ApiResponse.ok(postId);
     }
 
-    @PatchMapping("/posts/{id}")
+    @PatchMapping("/{id}")
     public ApiResponse<Long> updatePost(@PathVariable long id,
                                         @RequestBody PostUpdateDto postUpdateDto) {
         Long postId = postService.updatePost(id, postUpdateDto);
