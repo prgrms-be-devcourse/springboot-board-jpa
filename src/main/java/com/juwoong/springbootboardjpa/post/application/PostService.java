@@ -57,9 +57,7 @@ public class PostService {
     }
 
     private PostDto toDto(Post post) {
-        return new PostDto(post.getId(), post.getUser().getId(), post.getTitle(), post.getContent(),
-            post.getCreatedAt(),
-            post.getUpdatedAt());
+        return new PostDto(post);
     }
 
 }
