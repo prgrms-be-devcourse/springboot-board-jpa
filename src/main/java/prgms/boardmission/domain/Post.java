@@ -36,8 +36,8 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
         this.member = member;
-        setCreatedBy(memberName);
-        setCratedAt();
+        addCreatedBy(memberName);
+        addCratedAt();
     }
 
     public void updatePost(String editTitle, String editContent) {

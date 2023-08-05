@@ -20,11 +20,11 @@ public class BaseEntity {
         return cratedAt;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void addCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
-    public void setCratedAt() {
+    public void addCratedAt() {
         this.cratedAt = LocalDateTime.now();
     }
 }
