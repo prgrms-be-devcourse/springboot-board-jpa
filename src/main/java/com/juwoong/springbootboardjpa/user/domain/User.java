@@ -1,5 +1,6 @@
 package com.juwoong.springbootboardjpa.user.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.juwoong.springbootboardjpa.common.BaseEntity;
@@ -28,7 +29,7 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
-    private List<Post> posts;
+    private List<Post> posts = new ArrayList<>();
 
     protected User() {
     }
