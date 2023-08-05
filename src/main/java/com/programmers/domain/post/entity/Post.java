@@ -23,7 +23,7 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
-    private static final int MAX_LENGTH = 50;
+    private static final int MAX_TITLE_LENGTH = 50;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,8 +58,8 @@ public class Post extends BaseEntity {
         if (Objects.isNull(title) || title.isBlank()) {
             throw new IllegalArgumentException("제목이 비어있습니다.");
         }
-        if (title.length() > MAX_LENGTH) {
-            throw new IllegalArgumentException(String.format("제목 길이가 최대 길이 %s 자를 넘었습니다.", MAX_LENGTH));
+        if (title.length() > MAX_TITLE_LENGTH) {
+            throw new IllegalArgumentException(String.format("제목 길이가 최대 길이 %s 자를 넘었습니다.", MAX_TITLE_LENGTH));
         }
     }
 
