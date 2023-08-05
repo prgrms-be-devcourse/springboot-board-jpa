@@ -2,6 +2,7 @@ package com.example.springbootboardjpa.entity;
 
 import com.example.springbootboardjpa.enums.Hobby;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +30,26 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
+
+    @Builder
+    private User(String name, int age, Hobby hobby) {
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+    }
+
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateAge(int age) {
+        this.age = age;
+    }
+
+    public void updateHobby(Hobby hobby) {
+        this.hobby = hobby;
+    }
 
     public void addPost(Post post) {
         posts.add(post);
