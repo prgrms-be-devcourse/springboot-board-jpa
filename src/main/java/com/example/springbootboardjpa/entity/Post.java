@@ -39,6 +39,12 @@ public class Post extends BaseEntity {
         }
         this.user = user;
         user.addPost(this);
+        setCreatedBy(user.getName());
+    }
+
+
+    private void setCreatedBy(String name) {
+        this.createdBy = name;
     }
 
     public void updateTitle(String title) {
