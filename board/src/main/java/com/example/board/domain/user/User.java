@@ -63,12 +63,12 @@ public class User extends BaseEntity {
   }
 
   public void validateName(String name) {
-    if (isValidName(name)) {
+    if (isNotValidName(name)) {
       throw new IllegalArgumentException("이름은 한글과 영어만 가능합니다.");
     }
   }
 
-  public boolean isValidName(String name) {
+  public boolean isNotValidName(String name) {
     boolean valid = NAME_PATTERN.matcher(name).matches();
 
     return !valid;
