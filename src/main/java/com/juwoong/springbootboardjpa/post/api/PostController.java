@@ -40,7 +40,7 @@ public class PostController {
         return ResponseEntity.ok(post);
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<Page<PostDto>> getAllPosts(@RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "2") int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
