@@ -67,8 +67,12 @@ public class Post extends BaseEntity {
     }
 
     private void validateTitleRange(String title) {
-        if (title.isEmpty() || title.length() > 100) {
+        if (isWithinTitleRange(title)) {
             throw new IllegalArgumentException(INVALID_TITLE);
         }
+    }
+
+    private boolean isWithinTitleRange(String title) {
+        return title.isEmpty() || title.length() > 100;
     }
 }

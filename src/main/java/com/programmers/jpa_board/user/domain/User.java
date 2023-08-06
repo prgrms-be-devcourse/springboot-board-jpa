@@ -78,20 +78,32 @@ public class User extends BaseEntity {
     private void validateNamePattern(String name) {
         Matcher matcher = NAME_PATTERN.matcher(name);
 
-        if (!matcher.find()) {
+        if (isValidNameFormat(matcher)) {
             throw new IllegalArgumentException(INVALID_NAME);
         }
+    }
+
+    private boolean isValidNameFormat(Matcher matcher) {
+        return !matcher.find();
     }
 
     private void validateNameRange(String name) {
-        if (name.isEmpty() || name.length() > 30) {
+        if (isNameWithinRange(name)) {
             throw new IllegalArgumentException(INVALID_NAME);
         }
     }
 
+    private boolean isNameWithinRange(String name) {
+        return name.isEmpty() || name.length() > 30;
+    }
+
     private void validateAgeRange(int age) {
-        if (age < 1 || age > 100) {
+        if (isWithinAgeRange(age)) {
             throw new IllegalArgumentException(INVALID_AGE);
         }
+    }
+
+    private boolean isWithinAgeRange(int age) {
+        return age < 1 || age > 100;
     }
 }
