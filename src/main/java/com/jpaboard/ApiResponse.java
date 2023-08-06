@@ -10,7 +10,7 @@ public class ApiResponse<T> {
 
     private T data;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asiz/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime serverDateTime;
 
     public ApiResponse(int statusCode, T data) {
@@ -27,15 +27,4 @@ public class ApiResponse<T> {
         return new ApiResponse<>(statusCode, errorData);
     }
 
-    public int getStatusCode() {
-        return this.statusCode;
-    }
-
-    public T getData() {
-        return this.data;
-    }
-
-    public LocalDateTime getServerDateTime() {
-        return this.serverDateTime;
-    }
 }
