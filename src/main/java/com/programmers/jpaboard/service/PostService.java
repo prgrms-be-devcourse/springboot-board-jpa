@@ -33,7 +33,7 @@ public class PostService {
 
         Post savedPost = postRepository.save(post);
 
-        return PostIdResponse.of(savedPost.getId());
+        return PostIdResponse.from(savedPost.getId());
     }
 
     public List<PostDetailResponse> findAllPosts() {
@@ -52,7 +52,7 @@ public class PostService {
         post.updateTitle(request.getTitle());
         post.updateContent(request.getContent());
 
-        return PostIdResponse.of(post.getId());
+        return PostIdResponse.from(post.getId());
     }
 
     @Transactional

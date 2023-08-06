@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor(staticName = "of")
+@AllArgsConstructor(staticName = "from")
 public class PostIdResponse {
 
     private Long postId;
