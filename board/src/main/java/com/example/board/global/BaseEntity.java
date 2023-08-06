@@ -5,7 +5,6 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -18,7 +17,10 @@ public abstract class BaseEntity {
   @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
 
-  @Setter
   @Column(name = "created_by")
   private String createdBy;
+
+  protected void setCreatedBy(String name) {
+    this.createdBy = name;
+  }
 }
