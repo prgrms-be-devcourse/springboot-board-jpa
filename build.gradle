@@ -22,10 +22,15 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// DB
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
