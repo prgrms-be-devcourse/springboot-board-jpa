@@ -29,7 +29,7 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = MAX_TITLE_LENGTH, nullable = false)
     private String title;
 
     @Lob
