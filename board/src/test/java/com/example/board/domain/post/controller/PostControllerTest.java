@@ -19,7 +19,6 @@ import com.example.board.domain.user.dto.UserCreateRequest;
 import com.example.board.domain.user.dto.UserResponse;
 import com.example.board.domain.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,11 +65,6 @@ class PostControllerTest {
 
     postCreateRequest = new PostCreateRequest(userResponse.id(), "제목", "내용");
     postResponse = postService.createPost(postCreateRequest);
-  }
-
-  @AfterEach
-  void tearDown() {
-    postRepository.deleteAll();
   }
 
   @Test
