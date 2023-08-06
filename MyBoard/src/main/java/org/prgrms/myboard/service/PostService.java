@@ -65,7 +65,7 @@ public class PostService {
             .toList();
     }
 
-    public List<PostResponseDto> callCursorPagination(Long cursorId, int pageSize) {
+    private List<PostResponseDto> callCursorPagination(Long cursorId, int pageSize) {
         return postRepository.findByIdLessThanOrderByIdLimitByPageSize(cursorId, pageSize)
             .stream()
             .map(Post::toPostResponseDto)
@@ -73,10 +73,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public CursorResult<PostResponseDto> findPostsByCursorPagination(Long cursorIdCandidate, Integer pageSizeCandidate) {
-        int pageSize = pageSizeCandidate == null ? DEFAULT_PAGE_SIZE : pageSizeCandidate;
-        long cursorId = cursorIdCandidate == null ? (long)pageSize : cursorIdCandidate;
-
+    public CursorResult<PostResponseDto> findPostsByCursorPagination(long cursorId, int pageSize) {
         List<PostResponseDto> posts = callCursorPagination(cursorId, pageSize);
         boolean hasNext = postRepository.existsByIdAfter(cursorId);
         boolean hasPrevious = postRepository.existsByIdBefore(cursorId - pageSize);

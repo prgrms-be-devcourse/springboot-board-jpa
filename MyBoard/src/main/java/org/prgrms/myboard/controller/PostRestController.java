@@ -3,6 +3,7 @@ package org.prgrms.myboard.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.prgrms.myboard.domain.CursorResult;
 import org.prgrms.myboard.domain.OffsetResult;
 import org.prgrms.myboard.dto.PostCreateRequestDto;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RequestMapping("/posts")
 @RestController
 @RequiredArgsConstructor
@@ -32,8 +34,8 @@ public class PostRestController {
 
     @GetMapping("/cursor")
     public ResponseEntity<CursorResult<PostResponseDto>> getPostsByCursorId(
-        @RequestParam(value = "cursorId") Long cursorId,
-        @RequestParam(value = "pageSize") Integer pageSize) {
+        @Min(value = 1, message = "cursorId는 최소 1입니다.") @RequestParam(value = "cursorId") long cursorId,
+        @Min(value = 1, message = "pageSize는 최소 1입니다.") @RequestParam(value = "pageSize") int pageSize) {
         return ResponseEntity.ok(postService.findPostsByCursorPagination(cursorId, pageSize));
     }
 
@@ -51,7 +53,7 @@ public class PostRestController {
     @GetMapping
     public ResponseEntity<OffsetResult<PostResponseDto>> getPostsByOffsetPagination(
         @Min(value = 1, message = "page값은 최소 1입니다.") @RequestParam(value = "page") int page,
-        @Min(value = 1, message = "pageSize값은 최소 1입니다.")@RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        @Min(value = 1, message = "pageSize값은 최소 1입니다.") @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         return ResponseEntity.ok(postService.findPostsByOffsetPagination(
             page - PAGE_BASE_OFFSET, pageSize));
     }
