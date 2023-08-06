@@ -16,13 +16,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/users")
+    @GetMapping
     public PageResult<UserDto> findUsers(@ModelAttribute @Valid UsersGetRequest request) {
         Page<UserDto> users = userService.findUsers(
                 request.getPage(),
@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/users")
+    @PostMapping
     public Result<Long> createUser(@RequestBody @Valid UserCreateRequest request) {
         Long userId = userService.createUser(
                 request.getName(),
@@ -41,14 +41,14 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public Result<UserDto> findUser(@PathVariable("userId") Long userId) {
         UserDto user = userService.findUser(userId);
         return new Result<>(user);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping("/users/{userId}")
+    @PatchMapping("/{userId}")
     public void updateUser(@PathVariable("userId") Long userId,
                            @SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId,
                            @RequestBody @Valid UserUpdateRequest request) {
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable("userId") Long userId,
                            @SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId) {
         checkLogin(loginUserId);

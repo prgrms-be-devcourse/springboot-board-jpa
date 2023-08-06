@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/posts")
+    @GetMapping
     public PageResult<PostDto> findPosts(@ModelAttribute @Valid PostsGetRequest request) {
         Page<PostDto> posts = postService.findPosts(
                 request.getPage(),
@@ -33,7 +33,7 @@ public class PostController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/posts")
+    @PostMapping
     public Result<Long> createPost(@SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId,
                                    @RequestBody @Valid PostCreateRequest request) {
         checkLogin(loginUserId);
@@ -45,14 +45,14 @@ public class PostController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/{postId}")
     public Result<PostDto> findPost(@PathVariable("postId") Long postId) {
         PostDto post = postService.findPost(postId);
         return new Result<>(post);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping("/posts/{postId}")
+    @PatchMapping("/{postId}")
     public void updatePost(@PathVariable("postId") Long postId,
                            @SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId,
                            @RequestBody @Valid PostUpdateRequest request) {
@@ -65,7 +65,7 @@ public class PostController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/posts/{postId}")
+    @DeleteMapping("/{postId}")
     public void deletePost(@PathVariable("postId") Long postId,
                            @SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId) {
         checkLogin(loginUserId);
