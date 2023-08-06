@@ -265,4 +265,36 @@ class PostControllerTest {
                         )
                 ));
     }
+
+
+    @Test
+    @DisplayName("없는 id로 update를 시도하면 실패한다")
+    void updatePost_Fail_Test() throws Exception {
+        // Given
+        UserResponse userResponse = UserResponse.builder()
+                .name("이름이름")
+                .age(11)
+                .hobby("사진찍기")
+                .build();
+
+        PostResponse postResponse = PostResponse.builder()
+                .title("제목22")
+                .content("내용314124")
+                .user(userResponse)
+                .build();
+
+        Long postId = postService.createPost(postResponse);
+
+        PostUpdateResponse postUpdateResponse = PostUpdateResponse.builder()
+                .title("수정한 제목")
+                .content("수정한 내용들")
+                .build();
+
+        // When, Then
+        this.mockMvc.perform(patch("/api/posts/{id}", postId + 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postUpdateResponse)))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
 }
