@@ -9,7 +9,7 @@ import com.juwoong.springbootboardjpa.user.domain.constant.Hobby;
 import com.juwoong.springbootboardjpa.user.domain.repository.UserRepository;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class UserService implements UserProvider {
 
     private final UserRepository userRepository;
@@ -18,6 +18,7 @@ public class UserService implements UserProvider {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public UserDto createUser(String userName, int age, Hobby hobby) {
         User user = new User(userName, age, hobby);
         user = userRepository.save(user);
@@ -26,12 +27,10 @@ public class UserService implements UserProvider {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public User provideUser(Long id) {
         return findById(id);
     }
 
-    @Transactional(readOnly = true)
     public UserDto getUser(Long id) {
         User user = findById(id);
 

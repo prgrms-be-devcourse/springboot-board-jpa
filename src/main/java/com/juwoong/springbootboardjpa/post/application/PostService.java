@@ -1,12 +1,10 @@
 package com.juwoong.springbootboardjpa.post.application;
 
 import java.util.NoSuchElementException;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.juwoong.springbootboardjpa.post.application.model.PostDto;
 import com.juwoong.springbootboardjpa.post.domain.Post;
 import com.juwoong.springbootboardjpa.post.domain.repository.PostRepository;
@@ -14,7 +12,7 @@ import com.juwoong.springbootboardjpa.user.application.UserProvider;
 import com.juwoong.springbootboardjpa.user.domain.User;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class PostService {
 
     private final UserProvider userProvider;
@@ -25,6 +23,7 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
+    @Transactional
     public PostDto createPost(Long userId, String postTitle, String postContent) {
         User user = userProvider.provideUser(userId);
 
@@ -34,6 +33,7 @@ public class PostService {
         return toDto(post);
     }
 
+    @Transactional
     public PostDto updatePost(Long id, String title, String content) {
         Post post = findById(id);
         post.update(title, content);
@@ -42,14 +42,12 @@ public class PostService {
         return toDto(post);
     }
 
-    @Transactional(readOnly = true)
     public PostDto getPost(Long id) {
         Post post = findById(id);
 
         return toDto(post);
     }
 
-    @Transactional(readOnly = true)
     public Page<PostDto> getAllPosts(Pageable pageable) {
         return postRepository.findAll(pageable).map(this::toDto);
     }
