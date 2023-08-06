@@ -64,7 +64,7 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(postRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.message").exists())
-                .andExpect(jsonPath("$.payload").exists())
+                .andExpect(jsonPath("$.payload").doesNotExist())
                 .andDo(print())
                 .andDo(document("post-create",
                         requestFields(
@@ -72,8 +72,7 @@ class PostControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용")
                         ),
                         responseFields(
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
-                                fieldWithPath("payload").type(JsonFieldType.VARIES).description("생성된 게시글 URI")
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지")
                         )
                 ));
 

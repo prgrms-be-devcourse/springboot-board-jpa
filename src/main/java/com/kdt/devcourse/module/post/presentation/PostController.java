@@ -50,10 +50,9 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public ApiResponse<URI> create(@RequestBody @Valid PostDto.DefaultRequest request) {
-        Long postId = postService.create(request.getTitle(), request.getContent());
-        URI uri = URI.create(BASE_URI + "/" + postId);
-        return new ApiResponse<>(uri);
+    public ApiResponse<Void> create(@RequestBody @Valid PostDto.DefaultRequest request) {
+        postService.create(request.getTitle(), request.getContent());
+        return new ApiResponse<>();
     }
 
     @PutMapping("/{id}")
