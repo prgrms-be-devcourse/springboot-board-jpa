@@ -1,0 +1,27 @@
+POST http://localhost:8080/api/posts
+Content-Type: application/json
+
+{
+  "title": "Test Title",
+  "content": "Test Content",
+  "userId": 1
+}
+
+###
+GET http://localhost:8080/api/posts/1
+
+###
+GET http://localhost:8080/api/posts?page=0&size=10
+
+###
+PUT http://localhost:8080/api/posts/1
+Content-Type: application/json
+
+{
+  "title": "Updated Title2",
+  "content": "Updated Content2",
+  "userId": 1
+}
+
+###
+
