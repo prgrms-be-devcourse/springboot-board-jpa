@@ -42,6 +42,8 @@ class PostServiceImplTest {
     @Test
     void createPost() {
         //given
+        final Long expectedPostId = 1l;
+
         final Long fakeUserId = 1l;
         final Long fakePostId = 1l;
 
@@ -58,13 +60,14 @@ class PostServiceImplTest {
         Long savedPostId = postService.createPost(postCreateDto);
 
         //then
-        Long expectedPostId = 1l;
         assertThat(savedPostId).isEqualTo(expectedPostId);
     }
 
     @Test
     void findPost() {
         //given
+        final Long expectedPostId = 1l;
+
         final Long fakeUserId = 1l;
         final Long fakePostId = 1l;
 
@@ -77,17 +80,17 @@ class PostServiceImplTest {
         BDDMockito.given(postConverter.convertEntityToPostResponseDto(post)).willReturn(postResponseDto);
 
         //when
-        Long postId = 1l;
-        PostResponseDto foundPost = postService.findPost(postId);
+        PostResponseDto foundPost = postService.findPost(fakePostId);
 
         //then
-        Long expectedPostId = 1l;
         assertThat(foundPost.postId()).isEqualTo(expectedPostId);
     }
 
     @Test
     void findAll() {
         // given
+        final int expectedCount = 2;
+
         final Long fakeUserId = 1l;
         final Long fakePostId1 = 1l;
         final Long fakePostId2 = 2l;
@@ -111,7 +114,6 @@ class PostServiceImplTest {
         List<PostResponseDto> postList = postService.findAll(pageRequest);
 
         // then
-        int expectedCount = 2;
         assertThat(postList).hasSize(expectedCount);
     }
 
@@ -131,8 +133,7 @@ class PostServiceImplTest {
         BDDMockito.given(postConverter.convertEntityToPostResponseDto(post)).willReturn(postResponseDto);
 
         // when
-        long postId = 1l;
-        PostResponseDto updatedPost = postService.updatePost(postUpdateDto, postId);
+        PostResponseDto updatedPost = postService.updatePost(postUpdateDto, fakePostId);
 
         // then
         assertThat(updatedPost.title()).isEqualTo(postUpdateDto.title());
