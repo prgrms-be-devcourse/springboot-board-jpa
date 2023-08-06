@@ -10,7 +10,7 @@ import com.juwoong.springbootboardjpa.user.domain.repository.UserRepository;
 
 @Service
 @Transactional
-public class UserService {
+public class UserService implements UserProvider {
 
     private final UserRepository userRepository;
 
@@ -25,11 +25,10 @@ public class UserService {
         return toDto(user);
     }
 
+    @Override
     @Transactional(readOnly = true)
-    public User getUserByIdForPost(Long id) {
-        User user = findById(id);
-
-        return user;
+    public User provideUser(Long id) {
+        return findById(id);
     }
 
     @Transactional(readOnly = true)

@@ -8,23 +8,23 @@ import org.springframework.transaction.annotation.Transactional;
 import com.juwoong.springbootboardjpa.post.application.model.PostDto;
 import com.juwoong.springbootboardjpa.post.domain.Post;
 import com.juwoong.springbootboardjpa.post.domain.repository.PostRepository;
-import com.juwoong.springbootboardjpa.user.application.UserService;
+import com.juwoong.springbootboardjpa.user.application.UserProvider;
 import com.juwoong.springbootboardjpa.user.domain.User;
 
 @Service
 @Transactional
 public class PostService {
 
-    private final UserService userService;
+    private final UserProvider userProvider;
     private final PostRepository postRepository;
 
-    public PostService(UserService userService, PostRepository postRepository) {
-        this.userService = userService;
+    public PostService(UserProvider userProvider, PostRepository postRepository) {
+        this.userProvider = userProvider;
         this.postRepository = postRepository;
     }
 
     public PostDto createPost(Long userId, String postTitle, String postContent) {
-        User user = userService.getUserByIdForPost(userId);
+        User user = userProvider.provideUser(userId);
 
         Post post = new Post(user, postTitle, postContent);
         post = postRepository.save(post);
