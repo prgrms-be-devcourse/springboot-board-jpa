@@ -3,7 +3,7 @@ package com.jpaboard.post.ui.dto;
 import lombok.Builder;
 
 @Builder
-public record PostUpdateDto(
+public record PostUpdateResponse(
         String title, String content
 ) {
 }

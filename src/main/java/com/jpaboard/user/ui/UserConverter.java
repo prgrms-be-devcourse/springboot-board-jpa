@@ -1,19 +1,19 @@
 package com.jpaboard.user.ui;
 
 import com.jpaboard.user.domain.User;
-import com.jpaboard.user.ui.dto.UserDto;
+import com.jpaboard.user.ui.dto.UserResponse;
 
 public class UserConverter {
-    public static User convertUser(UserDto userDto) {
+    public static User convertUser(UserResponse userResponse) {
         return User.builder()
-                .name(userDto.name())
-                .age(userDto.age())
-                .hobby(userDto.hobby())
+                .name(userResponse.name())
+                .age(userResponse.age())
+                .hobby(userResponse.hobby())
                 .build();
     }
 
-    public static UserDto convertUserDto(User user) {
-        return UserDto.builder()
+    public static UserResponse convertUserDto(User user) {
+        return UserResponse.builder()
                 .name(user.getName())
                 .age(user.getAge())
                 .hobby(user.getHobby())

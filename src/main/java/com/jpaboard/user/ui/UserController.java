@@ -2,7 +2,7 @@ package com.jpaboard.user.ui;
 
 import com.jpaboard.user.application.UserService;
 import com.jpaboard.user.domain.User;
-import com.jpaboard.user.ui.dto.UserDto;
+import com.jpaboard.user.ui.dto.UserResponse;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -14,15 +14,15 @@ public class UserController {
         this.userService = userService;
     }
 
-    public long createUser(UserDto userDto) {
-        User user = UserConverter.convertUser(userDto);
+    public long createUser(UserResponse userResponse) {
+        User user = UserConverter.convertUser(userResponse);
         long id = userService.saveUser(user);
         return id;
     }
 
-    public UserDto getUserById(long id) {
-        UserDto userDto = userService.getUserById(id);
-        return userDto;
+    public UserResponse getUserById(long id) {
+        UserResponse userResponse = userService.getUserById(id);
+        return userResponse;
     }
 
 }
