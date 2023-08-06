@@ -1,14 +1,10 @@
 package org.prgrms.myboard.domain;
 
-import com.querydsl.core.annotations.QueryProjection;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.prgrms.myboard.dto.PostResponseDto;
-import org.prgrms.myboard.dto.PostUpdateRequestDto;
 
 import java.util.Objects;
 
@@ -17,6 +13,8 @@ import java.util.Objects;
 @Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
+    private static final int MAX_TITLE_LENGTH = 30;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id", nullable = false)
@@ -65,7 +63,7 @@ public class Post extends BaseEntity {
     }
 
     private void validateTitle(String title) {
-        if(title.length() >= 30) {
+        if(title.length() >= MAX_TITLE_LENGTH) {
             throw new IllegalArgumentException("제목의 길이는 30글자 이하입니다.");
         }
     }

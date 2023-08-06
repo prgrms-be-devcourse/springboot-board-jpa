@@ -13,6 +13,10 @@ import java.util.List;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
+    private static final int MAX_NAME_LENGTH = 4;
+    private static final int MIN_AGE = 0;
+    private static final int MAX_AGE = 30;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -41,13 +45,13 @@ public class User extends BaseEntity {
     }
 
     private void validateName(String name) {
-        if(name == null || name.isBlank() || name.length() >= 4) {
+        if(name == null || name.isBlank() || name.length() >= MAX_NAME_LENGTH) {
             throw new IllegalArgumentException("잘못된 이름입니다.");
         }
     }
 
     private void validateAge(int age) {
-        if(age <= 0 || age >= 30) {
+        if(age <= MIN_AGE || age >= MAX_AGE) {
             throw new IllegalArgumentException("잘못된 나이입니다.");
         }
     }
