@@ -1,14 +1,18 @@
 package com.programmers.board.service;
 
 import com.programmers.board.constant.AuthConst;
+import com.programmers.board.dto.service.UserDeleteCommand;
+import com.programmers.board.dto.service.UserGetCommand;
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.UserDto;
+import com.programmers.board.dto.service.UserCreateCommand;
+import com.programmers.board.dto.service.UserUpdateCommand;
+import com.programmers.board.dto.service.UsersGetCommand;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +28,13 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long createUser(String name, int age, String hobby) {
-        checkUserNameDuplication(name);
-        User user = new User(name, age, hobby);
+    public Long createUser(UserCreateCommand command) {
+        checkUserNameDuplication(command.getName());
+        User user = new User(
+                command.getName(),
+                command.getAge(),
+                command.getHobby()
+        );
         userRepository.save(user);
         return user.getId();
     }
@@ -39,29 +47,28 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserDto> findUsers(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<User> users = userRepository.findAll(pageRequest);
+    public Page<UserDto> findUsers(UsersGetCommand command) {
+        Page<User> users = userRepository.findAll(command.getPageable());
         return users.map(UserDto::from);
     }
 
     @Transactional(readOnly = true)
-    public UserDto findUser(Long userId) {
-        User user = findUserOrElseThrow(userId);
+    public UserDto findUser(UserGetCommand command) {
+        User user = findUserOrElseThrow(command.getUserId());
         return UserDto.from(user);
     }
 
     @Transactional
-    public void updateUser(Long loginUserId, Long userId, String name, Integer age, String hobby) {
-        User user = findUserOrElseThrow(userId);
-        checkAuthority(loginUserId, userId);
-        user.updateMember(name, age, hobby);
+    public void updateUser(UserUpdateCommand command) {
+        User user = findUserOrElseThrow(command.getUserId());
+        checkAuthority(command.getLoginUserId(), command.getUserId());
+        user.updateMember(command.getName(), command.getAge(), command.getHobby());
     }
 
     @Transactional
-    public void deleteUser(Long userId, Long loginUserId) {
-        User user = findUserOrElseThrow(userId);
-        checkAuthority(loginUserId, userId);
+    public void deleteUser(UserDeleteCommand command) {
+        User user = findUserOrElseThrow(command.getUserId());
+        checkAuthority(command.getLoginUserId(), command.getUserId());
         userRepository.delete(user);
     }
 

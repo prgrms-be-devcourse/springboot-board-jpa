@@ -7,6 +7,7 @@ import com.programmers.board.dto.UserDto;
 import com.programmers.board.dto.request.UserCreateRequest;
 import com.programmers.board.dto.request.UserUpdateRequest;
 import com.programmers.board.dto.request.UsersGetRequest;
+import com.programmers.board.dto.service.*;
 import com.programmers.board.exception.AuthenticationException;
 import com.programmers.board.service.UserService;
 import jakarta.validation.Valid;
@@ -24,26 +25,24 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public PageResult<UserDto> findUsers(@ModelAttribute @Valid UsersGetRequest request) {
-        Page<UserDto> users = userService.findUsers(
-                request.getPage(),
-                request.getSize());
+        UsersGetCommand command = UsersGetCommand.from(request);
+        Page<UserDto> users = userService.findUsers(command);
         return new PageResult<>(users);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Result<Long> createUser(@RequestBody @Valid UserCreateRequest request) {
-        Long userId = userService.createUser(
-                request.getName(),
-                request.getAge(),
-                request.getHobby());
+        UserCreateCommand command = UserCreateCommand.from(request);
+        Long userId = userService.createUser(command);
         return new Result<>(userId);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{userId}")
     public Result<UserDto> findUser(@PathVariable("userId") Long userId) {
-        UserDto user = userService.findUser(userId);
+        UserGetCommand command = UserGetCommand.of(userId);
+        UserDto user = userService.findUser(command);
         return new Result<>(user);
     }
 
@@ -53,12 +52,8 @@ public class UserController {
                            @SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId,
                            @RequestBody @Valid UserUpdateRequest request) {
         checkLogin(loginUserId);
-        userService.updateUser(
-                loginUserId,
-                userId,
-                request.getName(),
-                request.getAge(),
-                request.getHobby());
+        UserUpdateCommand command = UserUpdateCommand.of(userId, loginUserId, request);
+        userService.updateUser(command);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -66,7 +61,8 @@ public class UserController {
     public void deleteUser(@PathVariable("userId") Long userId,
                            @SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId) {
         checkLogin(loginUserId);
-        userService.deleteUser(userId, loginUserId);
+        UserDeleteCommand command = UserDeleteCommand.of(userId, loginUserId);
+        userService.deleteUser(command);
     }
 
     private void checkLogin(Long loginUserId) {

@@ -1,7 +1,12 @@
 package com.programmers.board.service;
 
+import com.programmers.board.dto.service.UserDeleteCommand;
+import com.programmers.board.dto.service.UserGetCommand;
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.UserDto;
+import com.programmers.board.dto.service.UserCreateCommand;
+import com.programmers.board.dto.service.UserUpdateCommand;
+import com.programmers.board.dto.service.UsersGetCommand;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,8 +60,10 @@ class UserServiceTest {
             int age = 20;
             String hobby = "취미";
 
+            UserCreateCommand command = UserCreateCommand.of(name, age, hobby);
+
             //when
-            userService.createUser(name, age, hobby);
+            userService.createUser(command);
 
             //then
             then(userRepository).should().save(any());
@@ -68,12 +75,13 @@ class UserServiceTest {
             //given
             String name = "name";
             User user = new User(name, 20, "hobby");
+            UserCreateCommand command = UserCreateCommand.of(name, 20, "hobby");
 
             given(userRepository.findByName(any())).willReturn(Optional.of(user));
 
             //when
             //then
-            assertThatThrownBy(() -> userService.createUser(name, 20, "hobby"))
+            assertThatThrownBy(() -> userService.createUser(command))
                     .isInstanceOf(DuplicateKeyException.class);
         }
 
@@ -84,12 +92,11 @@ class UserServiceTest {
         @DisplayName("예외: 잘못된 이름 문자열")
         void createUser_ButInvalidName(String invalidName) {
             //given
-            int age = 20;
-            String hobby = "hobby";
+            UserCreateCommand command = UserCreateCommand.of(invalidName, 20, "hobby");
 
             //when
             //then
-            assertThatThrownBy(() -> userService.createUser(invalidName, age, hobby))
+            assertThatThrownBy(() -> userService.createUser(command))
                     .isInstanceOf(IllegalArgumentException.class);
         }
 
@@ -100,12 +107,11 @@ class UserServiceTest {
         @DisplayName("예외: 잘못된 취미 문자열")
         void createUser_ButInvalidHobby(String invalidHobby) {
             //given
-            String name = "name";
-            int age = 20;
+            UserCreateCommand command = UserCreateCommand.of("name", 20, invalidHobby);
 
             //when
             //then
-            assertThatThrownBy(() -> userService.createUser(name, age, invalidHobby))
+            assertThatThrownBy(() -> userService.createUser(command))
                     .isInstanceOf(IllegalArgumentException.class);
         }
     }
@@ -118,11 +124,12 @@ class UserServiceTest {
         int size = 1;
         PageRequest pageRequest = PageRequest.of(page, size);
         PageImpl<User> givenResult = new PageImpl<>(List.of(givenUser), pageRequest, 1);
+        UsersGetCommand command = UsersGetCommand.of(page, size);
 
         given(userRepository.findAll(any(PageRequest.class))).willReturn(givenResult);
 
         //when
-        Page<UserDto> users = userService.findUsers(page, size);
+        Page<UserDto> users = userService.findUsers(command);
 
         //then
         assertThat(users.getContent()).hasSize(1);
@@ -135,10 +142,13 @@ class UserServiceTest {
         @DisplayName("성공")
         void findUser() {
             //given
+            Long userId = 1L;
+            UserGetCommand command = UserGetCommand.of(userId);
+
             given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
 
             //when
-            UserDto findUserDto = userService.findUser(1L);
+            UserDto findUserDto = userService.findUser(command);
 
             //then
             assertThat(findUserDto.getName()).isEqualTo(givenUser.getName());
@@ -150,11 +160,14 @@ class UserServiceTest {
         @DisplayName("예외: 존재하지 않는 회원")
         void findUser_ButEmpty() {
             //given
+            Long userId = 1L;
+            UserGetCommand command = UserGetCommand.of(userId);
+
             given(userRepository.findById(any())).willReturn(Optional.empty());
 
             //when
             //then
-            assertThatThrownBy(() -> userService.findUser(1L))
+            assertThatThrownBy(() -> userService.findUser(command))
                     .isInstanceOf(NoSuchElementException.class);
         }
     }
@@ -166,14 +179,20 @@ class UserServiceTest {
         @DisplayName("성공")
         void updateUser() {
             //given
+            Long userId = 1L;
+            Long loginUserId = 1L;
             String updateName = "updateName";
             Integer updateAge = 22;
             String updateHobby = "updateHobby";
+            UserUpdateCommand command = UserUpdateCommand.of(
+                    userId, loginUserId,
+                    updateName, updateAge, updateHobby
+            );
 
             given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
 
             //when
-            userService.updateUser(1L, 1L, updateName, updateAge, updateHobby);
+            userService.updateUser(command);
 
             //then
             assertThat(givenUser.getName()).isEqualTo(updateName);
@@ -187,12 +206,16 @@ class UserServiceTest {
             //given
             Long userId = 1L;
             Long loginUserId = 2L;
+            UserUpdateCommand command = UserUpdateCommand.of(
+                    userId, loginUserId,
+                    null, null, null
+            );
 
             given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
 
             //when
             //then
-            assertThatThrownBy(() -> userService.updateUser(loginUserId, userId, null, null, null))
+            assertThatThrownBy(() -> userService.updateUser(command))
                     .isInstanceOf(AuthorizationException.class);
         }
     }
@@ -204,10 +227,14 @@ class UserServiceTest {
         @DisplayName("성공")
         void deleteUser() {
             //given
+            Long userId = 1L;
+            Long loginUserId = 1L;
+            UserDeleteCommand command = UserDeleteCommand.of(userId, loginUserId);
+
             given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
 
             //when
-            userService.deleteUser(1L, 1L);
+            userService.deleteUser(command);
 
             //then
             then(userRepository).should().delete(any());
@@ -217,11 +244,15 @@ class UserServiceTest {
         @DisplayName("예외: 업데이트 대상 회원과 로그인 회원 불일치")
         void deleteUser_ButNotEqualUser() {
             //given
+            Long userId = 1L;
+            Long loginUserId = 2L;
+            UserDeleteCommand command = UserDeleteCommand.of(userId, loginUserId);
+
             given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
 
             //when
             //then
-            assertThatThrownBy(() -> userService.deleteUser(1L, 2L))
+            assertThatThrownBy(() -> userService.deleteUser(command))
                     .isInstanceOf(AuthorizationException.class);
         }
     }

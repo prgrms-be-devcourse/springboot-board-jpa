@@ -29,7 +29,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -76,7 +75,7 @@ class UserControllerTest {
             PageRequest pageRequest = PageRequest.of(page, size);
             PageImpl<UserDto> userDtos = new PageImpl<>(List.of(givenUserDto), pageRequest, 1);
 
-            given(userService.findUsers(anyInt(), anyInt())).willReturn(userDtos);
+            given(userService.findUsers(any())).willReturn(userDtos);
 
             //when
             ResultActions resultActions = mvc.perform(get("/api/v1/users")
@@ -127,7 +126,7 @@ class UserControllerTest {
             String hobby = "hobby";
             UserCreateRequest request = new UserCreateRequest(name, age, hobby);
 
-            given(userService.createUser(any(), anyInt(), any())).willReturn(1L);
+            given(userService.createUser(any())).willReturn(1L);
 
             //when
             ResultActions resultActions = mvc.perform(post("/api/v1/users")
