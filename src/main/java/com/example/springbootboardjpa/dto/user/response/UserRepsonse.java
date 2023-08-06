@@ -12,16 +12,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UserRepsonse {
     private Long userId;
-    private String userName;
+    private String name;
     private int age;
     private Hobby hobby;
     private LocalDateTime createdAt;
     private String createdBy;
 
     @Builder
-    public UserRepsonse(Long userId, String userName, int age, Hobby hobby, LocalDateTime createdAt, String createdBy) {
+    public UserRepsonse(Long userId, String name, int age, Hobby hobby, LocalDateTime createdAt, String createdBy) {
         this.userId = userId;
-        this.userName = userName;
+        this.name = name;
         this.age = age;
         this.hobby = hobby;
         this.createdAt = createdAt;
@@ -31,7 +31,7 @@ public class UserRepsonse {
     public static UserRepsonse fromEntity(User user) {
         return UserRepsonse.builder()
                 .userId(user.getId())
-                .userName(user.getName())
+                .name(user.getName())
                 .age(user.getAge())
                 .hobby(user.getHobby())
                 .build();
