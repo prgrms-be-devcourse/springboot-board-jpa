@@ -14,12 +14,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.springbootboardjpa.enums.Hobby.GAME;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -55,19 +58,40 @@ class UserControllerTest extends AbstractRestDocesTest {
                         .content(objectMapper.writeValueAsString(request))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("name").value("Kim Jae won"))
-                .andExpect(jsonPath("age").value(28))
-                .andExpect(jsonPath("hobby").value(GAME.toString()))
-                .andDo(resultHandler);
+                .andDo(resultHandler.document(
+                        requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("나이"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("취미")
+                        ),
+                        responseFields(
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("나이"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("취미"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 일자").optional(),
+                                fieldWithPath("createdBy").type(JsonFieldType.STRING).description("생성자").optional()
+                        )
+                ));
     }
 
     @Test
     @DisplayName("[REST DOCS] GET All Users")
     void findByUserAllTest() throws Exception {
         mockMvc.perform(get("/api/users")
-                        .accept(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(resultHandler);
+                .andDo(resultHandler.document(
+                        responseFields(
+                                fieldWithPath("[].userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
+                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("[].age").type(JsonFieldType.NUMBER).description("나이"),
+                                fieldWithPath("[].hobby").type(JsonFieldType.STRING).description("취미"),
+                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("생성 일시").optional(),
+                                fieldWithPath("[].createdBy").type(JsonFieldType.STRING).description("생성자").optional()
+                        )
+                ));
+
     }
 
     @Test
@@ -78,7 +102,20 @@ class UserControllerTest extends AbstractRestDocesTest {
         mockMvc.perform(get("/api/users/{id}", userId)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(resultHandler);
+                .andDo(resultHandler.document(
+                        pathParameters(
+                                parameterWithName("id").description("사용자 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("나이"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("취미"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 일시").optional(),
+                                fieldWithPath("createdBy").type(JsonFieldType.STRING).description("생성자").optional()
+                        )
+                ));
+
     }
 
     @Test
@@ -94,7 +131,24 @@ class UserControllerTest extends AbstractRestDocesTest {
                         .content(objectMapper.writeValueAsString(request))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(resultHandler);
+                .andDo(resultHandler.document(
+                        pathParameters(
+                                parameterWithName("id").description("사용자 ID")
+                        ),
+                        requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("나이"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("취미")
+                        ),
+                        responseFields(
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("age").type(JsonFieldType.NUMBER).description("나이"),
+                                fieldWithPath("hobby").type(JsonFieldType.STRING).description("취미"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 일시").optional(),
+                                fieldWithPath("createdBy").type(JsonFieldType.STRING).description("생성자").optional()
+                        )
+                ));
     }
 
     @Test
@@ -106,6 +160,10 @@ class UserControllerTest extends AbstractRestDocesTest {
         mockMvc.perform(delete("/api/users/{id}", userId)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
-                .andDo(resultHandler);
+                .andDo(resultHandler.document(
+                        pathParameters(
+                                parameterWithName("id").description("사용자 ID")
+                        )
+                ));
     }
 }
