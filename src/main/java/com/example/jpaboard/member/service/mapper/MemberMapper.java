@@ -3,6 +3,7 @@ package com.example.jpaboard.member.service.mapper;
 import com.example.jpaboard.member.domain.Age;
 import com.example.jpaboard.member.domain.Member;
 import com.example.jpaboard.member.service.dto.CreateMemberRequest;
+
 import org.springframework.stereotype.Component;
 
 @Component

@@ -4,10 +4,14 @@ import com.example.jpaboard.member.service.MemberService;
 import com.example.jpaboard.member.service.dto.FindMemberResponse;
 import com.example.jpaboard.post.domain.Post;
 import com.example.jpaboard.post.domain.PostRepository;
+import com.example.jpaboard.post.service.dto.FindAllRequest;
+import com.example.jpaboard.post.service.dto.PostResponse;
+import com.example.jpaboard.post.service.dto.SaveRequest;
+import com.example.jpaboard.post.service.dto.UpdateRequest;
+import com.example.jpaboard.post.service.mapper.PostMapper;
 import com.example.jpaboard.global.exception.EntityNotFoundException;
 import com.example.jpaboard.global.exception.PermissionDeniedEditException;
-import com.example.jpaboard.post.service.dto.*;
-import com.example.jpaboard.post.service.mapper.PostMapper;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;

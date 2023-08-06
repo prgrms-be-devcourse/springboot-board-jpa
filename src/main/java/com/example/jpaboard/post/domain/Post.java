@@ -2,6 +2,7 @@ package com.example.jpaboard.post.domain;
 
 import com.example.jpaboard.global.BaseEntity;
 import com.example.jpaboard.member.domain.Member;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 

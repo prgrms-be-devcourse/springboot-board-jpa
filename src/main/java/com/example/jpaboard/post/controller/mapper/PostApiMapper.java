@@ -6,6 +6,7 @@ import com.example.jpaboard.post.controller.dto.UpdateApiRequest;
 import com.example.jpaboard.post.service.dto.FindAllRequest;
 import com.example.jpaboard.post.service.dto.SaveRequest;
 import com.example.jpaboard.post.service.dto.UpdateRequest;
+
 import org.springframework.stereotype.Component;
 
 @Component

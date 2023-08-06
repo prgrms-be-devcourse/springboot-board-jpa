@@ -11,9 +11,11 @@ import com.example.jpaboard.post.service.dto.FindAllRequest;
 import com.example.jpaboard.post.service.dto.PostResponse;
 import com.example.jpaboard.post.service.dto.SaveRequest;
 import com.example.jpaboard.post.service.dto.UpdateRequest;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;

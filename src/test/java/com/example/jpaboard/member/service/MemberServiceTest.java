@@ -3,8 +3,10 @@ package com.example.jpaboard.member.service;
 import com.example.jpaboard.member.domain.Age;
 import com.example.jpaboard.member.domain.Member;
 import com.example.jpaboard.member.service.dto.FindMemberResponse;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;

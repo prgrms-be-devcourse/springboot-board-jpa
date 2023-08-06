@@ -4,6 +4,7 @@ import com.example.jpaboard.global.exception.EntityNotFoundException;
 import com.example.jpaboard.member.domain.Member;
 import com.example.jpaboard.member.service.dto.FindMemberResponse;
 import com.example.jpaboard.member.service.mapper.MemberMapper;
+
 import org.springframework.stereotype.Service;
 
 @Service

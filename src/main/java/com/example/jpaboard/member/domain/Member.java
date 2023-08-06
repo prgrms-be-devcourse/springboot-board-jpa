@@ -1,6 +1,7 @@
 package com.example.jpaboard.member.domain;
 
 import com.example.jpaboard.global.BaseEntity;
+
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

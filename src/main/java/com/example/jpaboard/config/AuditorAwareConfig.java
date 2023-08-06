@@ -10,7 +10,6 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.stereotype.Component;
 
-
 @EnableJpaAuditing
 @Configuration
 @Component
