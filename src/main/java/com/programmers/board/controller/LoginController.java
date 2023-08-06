@@ -2,6 +2,7 @@ package com.programmers.board.controller;
 
 import com.programmers.board.constant.AuthConst;
 import com.programmers.board.dto.request.LoginRequest;
+import com.programmers.board.dto.service.login.LoginCommand;
 import com.programmers.board.exception.AuthenticationException;
 import com.programmers.board.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +24,8 @@ public class LoginController {
     @PostMapping("/login")
     public void login(@RequestBody @Valid LoginRequest request,
                       HttpServletRequest httpServletRequest) {
-        Long userId = loginService.login(request.getName());
+        LoginCommand command = LoginCommand.from(request);
+        Long userId = loginService.login(command);
         HttpSession session = httpServletRequest.getSession();
         session.setAttribute(LOGIN_USER_ID, userId);
     }

@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static com.programmers.board.constant.AuthConst.LOGIN_USER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
 import static org.assertj.core.api.InstanceOfAssertFactories.STRING;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
