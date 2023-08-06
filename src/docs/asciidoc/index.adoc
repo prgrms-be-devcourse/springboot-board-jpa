@@ -1,0 +1,41 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 게시판 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toc-title: Table of Contents
+:sectanchors:
+
+[user-save]
+== 유저 생성
+
+include::{snippets}/user-save/http-request.adoc[]
+include::{snippets}/user-save/http-response.adoc[]
+
+[post-save]
+== 게시글 생성
+
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/http-response.adoc[]
+
+[post-get]
+== 게시글 단건 조회
+
+include::{snippets}/post-get/http-request.adoc[]
+include::{snippets}/post-get/http-response.adoc[]
+
+[post-getPage]
+== 게시글 페이징 조회
+
+include::{snippets}/post-getPage/http-request.adoc[]
+include::{snippets}/post-getPage/http-response.adoc[]
+
+[post-update]
+== 게시글 수정
+
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/http-response.adoc[]
