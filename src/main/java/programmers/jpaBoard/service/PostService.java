@@ -3,6 +3,7 @@ package programmers.jpaBoard.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import programmers.jpaBoard.dto.PostDto;
 import programmers.jpaBoard.entity.Post;
 import programmers.jpaBoard.repository.PostRepository;
@@ -12,6 +13,7 @@ import java.util.NoSuchElementException;
 import static programmers.jpaBoard.exception.ErrorMessage.NOT_FOUND_POST;
 
 @Service
+@Transactional
 public class PostService {
 
     private final PostRepository postRepository;
