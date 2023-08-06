@@ -65,7 +65,7 @@ public class Post extends BaseEntity {
 
     public void changeTitleAndContent(String title, String content) {
         validateTitle(title);
-        validateTitle(content);
+        validateContent(content);
         this.title = title;
         this.content = content;
     }
