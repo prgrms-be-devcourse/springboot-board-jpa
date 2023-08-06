@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import programmers.jpaBoard.dto.PostDto;
+import programmers.jpaBoard.dto.PostResponse;
 import programmers.jpaBoard.entity.Post;
 import programmers.jpaBoard.repository.PostRepository;
 
@@ -22,25 +22,25 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public PostDto.Response create(String title, String content) {
+    public PostResponse create(String title, String content) {
         Post post = new Post(title, content);
 
         Post savedPost = postRepository.save(post);
         return toResponse(savedPost);
     }
 
-    public PostDto.Response getPost(Long id) {
+    public PostResponse getPost(Long id) {
         Post post = findPostById(id);
 
         return toResponse(post);
     }
 
-    public Page<PostDto.Response> getAllPost(Pageable pageable) {
+    public Page<PostResponse> getAllPost(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(this::toResponse);
     }
 
-    public PostDto.Response update(Long id, String title, String content) {
+    public PostResponse update(Long id, String title, String content) {
         Post post = findPostById(id);
         post.updatePost(title, content);
 
@@ -52,8 +52,8 @@ public class PostService {
                 .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_POST.getMessage()));
     }
 
-    private PostDto.Response toResponse(Post post) {
-        return new PostDto.Response(
+    private PostResponse toResponse(Post post) {
+        return new PostResponse(
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import programmers.jpaBoard.dto.PostDto;
+import programmers.jpaBoard.dto.CreatedPost;
+import programmers.jpaBoard.dto.PostResponse;
+import programmers.jpaBoard.dto.UpdatedPost;
 import programmers.jpaBoard.service.PostService;
 
 @RestController
@@ -27,30 +29,30 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostDto.Response> createPost(@RequestBody PostDto.Request request) {
-        PostDto.Response response = postService.create(request.title(), request.content());
+    public ResponseEntity<PostResponse> createPost(@RequestBody CreatedPost.Request request) {
+        PostResponse response = postService.create(request.title(), request.content());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostDto.Response> getPost(@PathVariable Long id) {
-        PostDto.Response response = postService.getPost(id);
+    public ResponseEntity<PostResponse> getPost(@PathVariable Long id) {
+        PostResponse response = postService.getPost(id);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<Page<PostDto.Response>> getAllPost(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<Page<PostResponse>> getAllPost(@RequestParam int page, @RequestParam int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<PostDto.Response> responses = postService.getAllPost(pageable);
+        Page<PostResponse> responses = postService.getAllPost(pageable);
 
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostDto.Response> updatePost(@PathVariable Long id, @RequestBody PostDto.Request request) {
-        PostDto.Response response = postService.update(id, request.title(), request.content());
+    public ResponseEntity<PostResponse> updatePost(@PathVariable Long id, @RequestBody UpdatedPost.Request request) {
+        PostResponse response = postService.update(id, request.title(), request.content());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
