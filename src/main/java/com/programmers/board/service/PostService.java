@@ -4,12 +4,12 @@ import com.programmers.board.constant.AuthConst;
 import com.programmers.board.domain.Post;
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.PostDto;
+import com.programmers.board.dto.service.post.*;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.PostRepository;
 import com.programmers.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,39 +25,45 @@ public class PostService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long createPost(Long userId, String title, String content) {
-        User user = findUserOrElseThrow(userId);
-        Post post = new Post(title, content, user);
+    public Long createPost(PostCreateCommand command) {
+        User user = findUserOrElseThrow(command.getLoginUserId());
+        Post post = new Post(
+                command.getTitle(),
+                command.getContent(),
+                user
+        );
         postRepository.save(post);
         return post.getId();
     }
 
     @Transactional(readOnly = true)
-    public Page<PostDto> findPosts(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Post> posts = postRepository.findAllWithUser(pageRequest);
+    public Page<PostDto> findPosts(PostsGetCommand command) {
+        Page<Post> posts = postRepository.findAllWithUser(command.getPageable());
         return posts.map(PostDto::from);
     }
 
     @Transactional(readOnly = true)
-    public PostDto findPost(Long postId) {
-        Post post = postRepository.findByIdWithUser(postId)
+    public PostDto findPost(PostGetCommand command) {
+        Post post = postRepository.findByIdWithUser(command.getPostId())
                 .orElseThrow(() -> new NoSuchElementException(NO_SUCH_POST));
         return PostDto.from(post);
     }
 
     @Transactional
-    public void updatePost(Long loginUserId, Long postId, String title, String content) {
-        User loginUser = findUserOrElseThrow(loginUserId);
-        Post post = findPostOrElseThrow(postId);
+    public void updatePost(PostUpdateCommand command) {
+        User loginUser = findUserOrElseThrow(command.getLoginUserId());
+        Post post = findPostOrElseThrow(command.getPostId());
         checkAuthority(post, loginUser);
-        post.updatePost(title, content);
+        post.updatePost(
+                command.getTitle(),
+                command.getContent()
+        );
     }
 
     @Transactional
-    public void deletePost(Long postId, Long loginUserId) {
-        User loginUser = findUserOrElseThrow(loginUserId);
-        Post post = findPostOrElseThrow(postId);
+    public void deletePost(PostDeleteCommand command) {
+        User loginUser = findUserOrElseThrow(command.getLoginUserId());
+        Post post = findPostOrElseThrow(command.getPostId());
         checkAuthority(post, loginUser);
         postRepository.delete(post);
     }

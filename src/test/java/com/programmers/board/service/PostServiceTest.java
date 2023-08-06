@@ -4,6 +4,7 @@ import com.programmers.board.domain.Post;
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.PostDto;
 import com.programmers.board.dto.UserDto;
+import com.programmers.board.dto.service.post.*;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.PostRepository;
 import com.programmers.board.repository.UserRepository;
@@ -58,11 +59,12 @@ class PostServiceTest {
             Long userId = 1L;
             String title = "title";
             String content = "content";
+            PostCreateCommand command = PostCreateCommand.of(userId, title, content);
 
             given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
 
             //when
-            postService.createPost(userId, title, content);
+            postService.createPost(command);
 
             //then
             then(postRepository).should().save(any());
@@ -75,12 +77,13 @@ class PostServiceTest {
             Long userId = 1L;
             String title = "title";
             String content = "content";
+            PostCreateCommand command = PostCreateCommand.of(userId, title, content);
 
             given(userRepository.findById(any())).willReturn(Optional.empty());
 
             //when
             //then
-            assertThatThrownBy(() -> postService.createPost(userId, title, content))
+            assertThatThrownBy(() -> postService.createPost(command))
                     .isInstanceOf(NoSuchElementException.class);
         }
     }
@@ -93,11 +96,12 @@ class PostServiceTest {
         int size = 1;
         PageRequest pageRequest = PageRequest.of(page, size);
         PageImpl<Post> posts = new PageImpl<>(List.of(givenPost), pageRequest, 1);
+        PostsGetCommand command = PostsGetCommand.of(page, size);
 
         given(postRepository.findAllWithUser(pageRequest)).willReturn(posts);
 
         //when
-        Page<PostDto> postPage = postService.findPosts(page, size);
+        Page<PostDto> postPage = postService.findPosts(command);
 
         //then
         assertThat(postPage.getContent()).hasSize(1);
@@ -110,10 +114,12 @@ class PostServiceTest {
         @DisplayName("성공")
         void findPost() {
             //given
+            PostGetCommand command = PostGetCommand.of(1L);
+
             given(postRepository.findByIdWithUser(any())).willReturn(Optional.ofNullable(givenPost));
 
             //when
-            PostDto findPost = postService.findPost(1L);
+            PostDto findPost = postService.findPost(command);
 
             //then
             UserDto findUser = findPost.getUser();
@@ -128,11 +134,13 @@ class PostServiceTest {
         @DisplayName("예외: 존재하지 않는 게시글")
         void findPost_ButEmpty() {
             //given
-            given(postRepository.findByIdWithUser(any())).willThrow(NoSuchElementException.class);
+            PostGetCommand command = PostGetCommand.of(1L);
+
+            given(postRepository.findByIdWithUser(any())).willReturn(Optional.empty());
 
             //when
             //then
-            assertThatThrownBy(() -> postService.findPost(any()))
+            assertThatThrownBy(() -> postService.findPost(command))
                     .isInstanceOf(NoSuchElementException.class);
         }
     }
@@ -146,12 +154,13 @@ class PostServiceTest {
             //given
             String updateTitle = "updateTitle";
             String updateContent = "updateContent";
+            PostUpdateCommand command = PostUpdateCommand.of(1L, 1L, updateTitle, updateContent);
 
             given(postRepository.findById(any())).willReturn(Optional.ofNullable(givenPost));
             given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
 
             //when
-            postService.updatePost(1L, 1L, updateTitle, updateContent);
+            postService.updatePost(command);
 
             //then
             assertThat(givenPost.getTitle()).isEqualTo(updateTitle);
@@ -162,16 +171,19 @@ class PostServiceTest {
         @DisplayName("예외: 게시글 작성자와 로그인 회원 불일치")
         void updatePost_ButNotEqualUser() {
             //given
+            Long userId = 1L;
+            Long loginUserId = 2L;
             User user = new User("newUser", 20, "newHobby");
-            ReflectionTestUtils.setField(givenUser, "id", 1L);
-            ReflectionTestUtils.setField(user, "id", 2L);
+            ReflectionTestUtils.setField(givenUser, "id", userId);
+            ReflectionTestUtils.setField(user, "id", loginUserId);
+            PostUpdateCommand command = PostUpdateCommand.of(1L, loginUserId, "tile", "request");
 
             given(postRepository.findById(any())).willReturn(Optional.ofNullable(givenPost));
             given(userRepository.findById(any())).willReturn(Optional.of(user));
 
             //when
             //then
-            assertThatThrownBy(() -> postService.updatePost(2L, 1L, "updateTitle", "updateContent"))
+            assertThatThrownBy(() -> postService.updatePost(command))
                     .isInstanceOf(AuthorizationException.class);
         }
     }
@@ -183,11 +195,13 @@ class PostServiceTest {
         @DisplayName("성공")
         void deletePost() {
             //given
+            PostDeleteCommand command = PostDeleteCommand.of(1L, 1L);
+
             given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
             given(postRepository.findById(any())).willReturn(Optional.ofNullable(givenPost));
 
             //when
-            postService.deletePost(1L, 1L);
+            postService.deletePost(command);
 
             //then
             then(postRepository).should().delete(any());
@@ -197,16 +211,19 @@ class PostServiceTest {
         @DisplayName("예외: 게시글 작성자와 로그인 회원 불일치")
         void deletePost_ButNotEqualUser() {
             //given
+            Long userId = 1L;
+            Long loginUserId = 2L;
             User user = new User("newUser", 20, "newHobby");
-            ReflectionTestUtils.setField(givenUser, "id", 1L);
-            ReflectionTestUtils.setField(user, "id", 2L);
+            ReflectionTestUtils.setField(givenUser, "id", userId);
+            ReflectionTestUtils.setField(user, "id", loginUserId);
+            PostDeleteCommand command = PostDeleteCommand.of(userId, loginUserId);
 
             given(userRepository.findById(any())).willReturn(Optional.of(user));
             given(postRepository.findById(any())).willReturn(Optional.ofNullable(givenPost));
 
             //when
             //then
-            assertThatThrownBy(() -> postService.deletePost(1L, 2L))
+            assertThatThrownBy(() -> postService.deletePost(command))
                     .isInstanceOf(AuthorizationException.class);
         }
     }

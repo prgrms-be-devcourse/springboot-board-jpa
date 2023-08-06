@@ -28,7 +28,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -78,7 +77,7 @@ class PostControllerTest {
             PageRequest pageRequest = PageRequest.of(page, size);
             PageImpl<PostDto> postDtos = new PageImpl<>(List.of(givenPost), pageRequest, 1);
 
-            given(postService.findPosts(anyInt(), anyInt())).willReturn(postDtos);
+            given(postService.findPosts(any())).willReturn(postDtos);
 
             //when
             ResultActions resultActions = mvc.perform(get("/api/v1/posts")
@@ -139,7 +138,7 @@ class PostControllerTest {
             String content = "content";
             PostCreateRequest request = new PostCreateRequest(title, content);
 
-            given(postService.createPost(any(), any(), any())).willReturn(1L);
+            given(postService.createPost(any())).willReturn(1L);
 
             //when
             ResultActions resultActions = mvc.perform(post("/api/v1/posts")
