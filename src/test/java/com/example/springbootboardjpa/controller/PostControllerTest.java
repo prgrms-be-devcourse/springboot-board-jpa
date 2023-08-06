@@ -23,8 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.springbootboardjpa.enums.Hobby.GAME;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -72,18 +73,35 @@ class PostControllerTest extends AbstractRestDocesTest {
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("게시물 제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("게시물 내용"),
                                 fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시물 ID"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시물 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시물 내용"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 ID"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시물 작성 일자"),
+                                fieldWithPath("createdBy").type(JsonFieldType.STRING).description("게시물 작성자")
                         )
-
                 ));
+
     }
 
     @Test
     @DisplayName("[REST DOCS] GET All posts")
     void findByUserAllTest() throws Exception {
-        mockMvc.perform(get("/api/users")
+        mockMvc.perform(get("/api/posts")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(resultHandler);
+                .andDo(resultHandler.document(
+                        responseFields(
+                                fieldWithPath("[]postId").type(JsonFieldType.NUMBER).description("게시물 ID"),
+                                fieldWithPath("[]title").type(JsonFieldType.STRING).description("게시물 제목"),
+                                fieldWithPath("[]content").type(JsonFieldType.STRING).description("게시물 내용"),
+                                fieldWithPath("[]userId").type(JsonFieldType.NUMBER).description("작성자 ID"),
+                                fieldWithPath("[]createdAt").type(JsonFieldType.STRING).description("게시물 작성일시"),
+                                fieldWithPath("[]createdBy").type(JsonFieldType.STRING).description("게시물 작성자")
+                        )
+                ));
     }
 
     @Test
@@ -94,14 +112,26 @@ class PostControllerTest extends AbstractRestDocesTest {
         mockMvc.perform(get("/api/posts/{id}", postId)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(resultHandler);
+                .andDo(resultHandler.document(
+                        pathParameters(
+                                parameterWithName("id").description("조회할 게시물 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시물 ID"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시물 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시물 내용"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 ID"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시물 작성일시"),
+                                fieldWithPath("createdBy").type(JsonFieldType.STRING).description("게시물 작성자")
+                        )
+                ));
     }
 
     @Test
     @DisplayName("[REST DOCS] UPDATE user")
     @Transactional
-    void updateUserTest() throws Exception {
-        long postId = 1;
+    void updatePostTest() throws Exception {
+        long postId = 1L;
         PostUpdateRequest request = new PostUpdateRequest("황창현 바부", "황창현은 엄청난 바부입니다.");
 
         mockMvc.perform(patch("/api/posts/{id}", postId)
@@ -109,7 +139,23 @@ class PostControllerTest extends AbstractRestDocesTest {
                         .content(objectMapper.writeValueAsString(request))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(resultHandler);
+                .andDo(resultHandler.document(
+                        pathParameters(
+                                parameterWithName("id").description("수정할 게시물 ID")
+                        ),
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("수정할 게시물 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("수정할 게시물 내용")
+                        ),
+                        responseFields(
+                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시물 ID"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시물 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시물 내용"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 ID"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시물 작성 일자"),
+                                fieldWithPath("createdBy").type(JsonFieldType.STRING).description("게시물 작성자")
+                        )
+                ));
     }
 
     @Test
@@ -121,6 +167,10 @@ class PostControllerTest extends AbstractRestDocesTest {
         mockMvc.perform(delete("/api/posts/{id}", postId)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
-                .andDo(resultHandler);
+                .andDo(resultHandler.document(
+                        pathParameters(
+                                parameterWithName("id").description("삭제할 게시물 ID")
+                        )
+                ));
     }
 }
