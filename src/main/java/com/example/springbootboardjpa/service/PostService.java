@@ -4,7 +4,9 @@ import com.example.springbootboardjpa.dto.post.request.PostCreateRequest;
 import com.example.springbootboardjpa.dto.post.request.PostUpdateRequest;
 import com.example.springbootboardjpa.dto.post.response.PostResponse;
 import com.example.springbootboardjpa.entity.Post;
+import com.example.springbootboardjpa.entity.User;
 import com.example.springbootboardjpa.repository.PostRepository;
+import com.example.springbootboardjpa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +18,18 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class PostService {
 
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
 
     @Transactional
     public PostResponse createPost(PostCreateRequest postCreateRequest) {
-        Post post = postRepository.save(postCreateRequest.toEntity());
+        User user = userRepository.findById(postCreateRequest.getUserId())
+                .orElseThrow(() -> new NoSuchElementException("해당 유저가 존재하지 않습니다."));
+
+
+        Post post = postCreateRequest.toEntity();
+        post.updateUser(user);
+        postRepository.save(post);
         return PostResponse.fromEntity(post);
     }
 
