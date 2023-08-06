@@ -1,10 +1,12 @@
 package com.juwoong.springbootboardjpa.post.application;
 
 import java.util.NoSuchElementException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.juwoong.springbootboardjpa.post.application.model.PostDto;
 import com.juwoong.springbootboardjpa.post.domain.Post;
 import com.juwoong.springbootboardjpa.post.domain.repository.PostRepository;
@@ -53,7 +55,8 @@ public class PostService {
     }
 
     private Post findById(Long id) {
-        return postRepository.findById(id).orElseThrow(() -> new NoSuchElementException("게시물이 존재하지 않습니다."));
+        return postRepository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("게시물이 존재하지 않습니다."));
     }
 
     private PostDto toDto(Post post) {
