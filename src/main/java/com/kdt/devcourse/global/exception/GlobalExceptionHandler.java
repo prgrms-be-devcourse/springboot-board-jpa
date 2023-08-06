@@ -2,12 +2,12 @@ package com.kdt.devcourse.global.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -15,11 +15,11 @@ public class GlobalExceptionHandler {
 
     private static final String INTERNAL_ERROR_MESSAGE = "서버 내부 오류가 발생했습니다.";
 
-    @ExceptionHandler(PostNotFoundException.class)
-    @ResponseStatus(NOT_FOUND)
-    public ErrorResponse handleEntityNotFoundException(PostNotFoundException e) {
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(CustomException e) {
         log.warn("PostNotFoundException : {}", e.getMessage());
-        return new ErrorResponse(e.getErrorCode());
+        ErrorResponse response = new ErrorResponse(e.getErrorCode());
+        return ResponseEntity.status(e.getHttpStatus()).body(response);
     }
 
     @ExceptionHandler(RuntimeException.class)

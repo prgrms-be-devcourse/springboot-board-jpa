@@ -1,6 +1,6 @@
 package com.kdt.devcourse.module.post.application;
 
-import com.kdt.devcourse.global.exception.PostNotFoundException;
+import com.kdt.devcourse.global.exception.common.PostNotFoundException;
 import com.kdt.devcourse.module.post.domain.Post;
 import com.kdt.devcourse.module.post.domain.repository.PostRepository;
 import com.kdt.devcourse.module.post.presentation.dto.PostDto;
