@@ -8,10 +8,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class PostDto {
-    private Long postId;
-    private String title;
-    private String content;
-    private UserDto user;
+    private final Long postId;
+    private final String title;
+    private final String content;
+    private final UserDto user;
 
     public static PostDto from(Post post) {
         UserDto userDto = UserDto.from(post.getUser());
