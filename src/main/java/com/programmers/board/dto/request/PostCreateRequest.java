@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PostCreateRequest {
     private static final String TITLE_VALIDATE = "게시글 제목은 1자 이상, 100자 이하여야 합니다";
-    private static final String CONTENT_VALIDATE = "게시글 본문은 1자 이사이어야 합니다";
+    private static final String CONTENT_VALIDATE = "게시글 본문은 1자 이상이어야 합니다";
     private static final String TITLE_MANDATORY = "게시글 제목은 필수입니다";
     private static final String CONTENT_MANDATORY = "게시글 본문은 필수입니다";
 
