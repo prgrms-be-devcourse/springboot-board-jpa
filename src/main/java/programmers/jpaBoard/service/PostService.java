@@ -9,6 +9,8 @@ import programmers.jpaBoard.repository.PostRepository;
 
 import java.util.NoSuchElementException;
 
+import static programmers.jpaBoard.exception.ErrorMessage.NOT_FOUND_POST;
+
 @Service
 public class PostService {
 
@@ -45,7 +47,7 @@ public class PostService {
 
     private Post findPostById(Long id) {
         return postRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("해당 게시글이 없습니다"));
+                .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_POST.getMessage()));
     }
 
     private PostDto.Response toResponse(Post post) {
