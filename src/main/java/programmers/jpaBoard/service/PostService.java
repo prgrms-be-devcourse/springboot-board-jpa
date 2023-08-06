@@ -18,8 +18,8 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public PostDto.Response create(PostDto.Request request) {
-        Post post = new Post(request.title(), request.content());
+    public PostDto.Response create(String title, String content) {
+        Post post = new Post(title, content);
 
         Post savedPost = postRepository.save(post);
         return toDto(savedPost);
@@ -36,9 +36,9 @@ public class PostService {
                 .map(this::toDto);
     }
 
-    public PostDto.Response update(Long id, PostDto.Request request) {
+    public PostDto.Response update(Long id, String title, String content) {
         Post post = findPostById(id);
-        post.updatePost(request.title(), request.content());
+        post.updatePost(title, content);
 
         return toDto(post);
     }

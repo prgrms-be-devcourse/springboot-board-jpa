@@ -28,7 +28,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostDto.Response> createPost(@RequestBody PostDto.Request request) {
-        PostDto.Response response = postService.create(request);
+        PostDto.Response response = postService.create(request.title(), request.content());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -50,7 +50,7 @@ public class PostController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PostDto.Response> updatePost(@PathVariable Long id, @RequestBody PostDto.Request request) {
-        PostDto.Response response = postService.update(id, request);
+        PostDto.Response response = postService.update(id, request.title(), request.content());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
