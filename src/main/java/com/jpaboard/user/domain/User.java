@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -61,6 +62,6 @@ public class User extends BaseEntity {
     }
 
     public List<Post> getPostList() {
-        return postList;
+        return Collections.unmodifiableList(this.postList);
     }
 }
