@@ -53,7 +53,7 @@ class PostApiControllerTest {
     void setUp() {
         User temp = new UserCreateRequest("you", 40, "play").toEntity();
         user = userRepository.save(temp);
-        System.out.println("User ID: " + user.getId()); // 이 부분이 추가된 로그 코드입니다.
+        System.out.println("User ID: " + user.getId());
 
     }
 
@@ -107,7 +107,6 @@ class PostApiControllerTest {
     @Test
     @DisplayName("Get single post")
     public void getPostTest() throws Exception {
-        // Create a post for test
         Post post = Post.builder()
                 .title("Test title")
                 .content("Test content")
@@ -167,7 +166,7 @@ class PostApiControllerTest {
     @Test
     @DisplayName("Update a post")
     public void updatePostTest() throws Exception {
-        // Create a post for test
+
         Post post = Post.builder()
                 .title("Test title")
                 .content("Test content")
