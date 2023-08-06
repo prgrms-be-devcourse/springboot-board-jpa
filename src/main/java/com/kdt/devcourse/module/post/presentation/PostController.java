@@ -2,7 +2,7 @@ package com.kdt.devcourse.module.post.presentation;
 
 import com.kdt.devcourse.global.ApiResponse;
 import com.kdt.devcourse.module.post.application.PostService;
-import com.kdt.devcourse.module.post.presentation.dto.PostDto;
+import com.kdt.devcourse.module.post.presentation.dto.CreateOrUpdatePost;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.net.URI;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -34,32 +32,32 @@ public class PostController {
 
     @GetMapping
     @ResponseStatus(OK)
-    public ApiResponse<Page<PostDto.DefaultResponse>> findAll(@RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "10") int size) {
+    public ApiResponse<Page<CreateOrUpdatePost.Response>> findAll(@RequestParam(defaultValue = "0") int page,
+                                                                  @RequestParam(defaultValue = "10") int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<PostDto.DefaultResponse> responses = postService.findAll(pageRequest);
+        Page<CreateOrUpdatePost.Response> responses = postService.findAll(pageRequest);
         return new ApiResponse<>(responses);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(OK)
-    public ApiResponse<PostDto.DefaultResponse> findOneById(@PathVariable Long id) {
-        PostDto.DefaultResponse postResponse = postService.getPostResponse(id);
+    public ApiResponse<CreateOrUpdatePost.Response> findOneById(@PathVariable Long id) {
+        CreateOrUpdatePost.Response postResponse = postService.getPostResponse(id);
         return new ApiResponse<>(postResponse);
     }
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public ApiResponse<Void> create(@RequestBody @Valid PostDto.DefaultRequest request) {
-        postService.create(request.getTitle(), request.getContent());
+    public ApiResponse<Void> create(@RequestBody @Valid CreateOrUpdatePost.Request request) {
+        postService.create(request.title(), request.content());
         return new ApiResponse<>();
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(OK)
     public ApiResponse<Void> update(@PathVariable Long id,
-                                    @RequestBody @Valid PostDto.DefaultRequest request) {
-        postService.update(id, request.getTitle(), request.getContent());
+                                    @RequestBody @Valid CreateOrUpdatePost.Request request) {
+        postService.update(id, request.title(), request.content());
         return new ApiResponse<>();
     }
 }

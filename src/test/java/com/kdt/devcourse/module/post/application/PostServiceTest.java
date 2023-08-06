@@ -2,7 +2,7 @@ package com.kdt.devcourse.module.post.application;
 
 import com.kdt.devcourse.module.post.domain.Post;
 import com.kdt.devcourse.module.post.domain.repository.PostRepository;
-import com.kdt.devcourse.module.post.presentation.dto.PostDto;
+import com.kdt.devcourse.module.post.presentation.dto.CreateOrUpdatePost;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,11 +36,11 @@ class PostServiceTest {
         willReturn(Optional.of(post)).given(postRepository).findById(any());
 
         // when
-        PostDto.DefaultResponse postResponse = postService.getPostResponse(1L);
+        CreateOrUpdatePost.Response postResponse = postService.getPostResponse(1L);
 
         // then
         then(postRepository).should(times(1)).findById(any());
-        assertThat(postResponse.getTitle()).isEqualTo(title);
-        assertThat(postResponse.getContent()).isEqualTo(content);
+        assertThat(postResponse.title()).isEqualTo(title);
+        assertThat(postResponse.content()).isEqualTo(content);
     }
 }

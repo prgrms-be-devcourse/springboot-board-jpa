@@ -3,7 +3,7 @@ package com.kdt.devcourse.module.post.application;
 import com.kdt.devcourse.global.exception.common.PostNotFoundException;
 import com.kdt.devcourse.module.post.domain.Post;
 import com.kdt.devcourse.module.post.domain.repository.PostRepository;
-import com.kdt.devcourse.module.post.presentation.dto.PostDto;
+import com.kdt.devcourse.module.post.presentation.dto.CreateOrUpdatePost;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,12 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Page<PostDto.DefaultResponse> findAll(Pageable pageable) {
+    public Page<CreateOrUpdatePost.Response> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(this::toResponse);
     }
 
-    public PostDto.DefaultResponse getPostResponse(Long id) {
+    public CreateOrUpdatePost.Response getPostResponse(Long id) {
         Post post = findById(id);
         return toResponse(post);
     }
@@ -47,7 +47,7 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND, id));
     }
 
-    private PostDto.DefaultResponse toResponse(Post post) {
-        return new PostDto.DefaultResponse(post.getId(), post.getTitle(), post.getContent());
+    private CreateOrUpdatePost.Response toResponse(Post post) {
+        return new CreateOrUpdatePost.Response(post.getId(), post.getTitle(), post.getContent());
     }
 }
