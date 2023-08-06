@@ -19,16 +19,19 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
+    private static final int MAX_HOBBY_LENGTH = 100;
+    private static final int MAX_NAME_LENGTH = 5;
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 5, nullable = false)
+    @Column(length = MAX_NAME_LENGTH, nullable = false)
     private String name;
 
     @Column(nullable = false)
     private int age;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = MAX_HOBBY_LENGTH, nullable = false)
     private String hobby;
 
     public User(String name, int age, String hobby) {
@@ -44,6 +47,9 @@ public class User extends BaseEntity {
         if (Objects.isNull(hobby) || hobby.isBlank()) {
             throw new IllegalArgumentException("취미가 비어있습니다.");
         }
+        if (hobby.length() > MAX_HOBBY_LENGTH) {
+            throw new IllegalArgumentException(String.format("취미 길이가 %s를 넘었습니다. 입력값: %s", MAX_HOBBY_LENGTH, hobby.length()));
+        }
     }
 
     private static void validateAge(int age) {
@@ -55,6 +61,9 @@ public class User extends BaseEntity {
     private static void validateName(String name) {
         if (Objects.isNull(name) || name.isBlank()) {
             throw new IllegalArgumentException("이름이 비어있습니다.");
+        }
+        if (name.length() > MAX_NAME_LENGTH) {
+            throw new IllegalArgumentException(String.format("이름 길이가 %s를 넘었습니다. 입력값: %s", MAX_NAME_LENGTH, name.length()));
         }
     }
 }
