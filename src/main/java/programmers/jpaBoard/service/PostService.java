@@ -22,25 +22,25 @@ public class PostService {
         Post post = new Post(title, content);
 
         Post savedPost = postRepository.save(post);
-        return toDto(savedPost);
+        return toResponse(savedPost);
     }
 
     public PostDto.Response getPost(Long id) {
         Post post = findPostById(id);
 
-        return toDto(post);
+        return toResponse(post);
     }
 
     public Page<PostDto.Response> getAllPost(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(this::toDto);
+                .map(this::toResponse);
     }
 
     public PostDto.Response update(Long id, String title, String content) {
         Post post = findPostById(id);
         post.updatePost(title, content);
 
-        return toDto(post);
+        return toResponse(post);
     }
 
     private Post findPostById(Long id) {
@@ -48,7 +48,7 @@ public class PostService {
                 .orElseThrow(() -> new NoSuchElementException("해당 게시글이 없습니다"));
     }
 
-    private PostDto.Response toDto(Post post) {
+    private PostDto.Response toResponse(Post post) {
         return new PostDto.Response(
                 post.getId(),
                 post.getTitle(),
