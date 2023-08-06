@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.juwoong.springbootboardjpa.post.api.model.PostRequest;
 import com.juwoong.springbootboardjpa.post.application.PostService;
 import com.juwoong.springbootboardjpa.post.application.model.PostDto;
@@ -26,9 +27,9 @@ public class PostController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<PostDto> createPost(@PathVariable Long userId,
+    public ResponseEntity<PostDto> createPost(@PathVariable Long id,
         @RequestBody PostRequest request) {
-        PostDto post = postService.createPost(userId, request.title(), request.content());
+        PostDto post = postService.createPost(id, request.title(), request.content());
 
         return ResponseEntity.ok(post);
     }
@@ -42,7 +43,7 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<Page<PostDto>> getAllPosts(@RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "2") int size) {
+        @RequestParam(defaultValue = "10") int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<PostDto> posts = postService.getAllPosts(pageRequest);
 

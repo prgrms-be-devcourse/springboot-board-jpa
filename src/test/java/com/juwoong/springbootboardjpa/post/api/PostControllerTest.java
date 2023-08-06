@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -33,6 +34,7 @@ import com.juwoong.springbootboardjpa.user.application.UserService;
 
 @WebMvcTest
 @AutoConfigureRestDocs
+@MockBean(JpaMetamodelMappingContext.class)
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 class PostControllerTest {
 
@@ -57,33 +59,32 @@ class PostControllerTest {
 
     @DisplayName("Post 생성에 대한 성공 테스트")
     @Test
-    public void CreatePostTest() throws Exception {
+    public void createPostTest() throws Exception {
         // Given
-        PostRequest request = new PostRequest(1L, "Sample Post", "This is a sample post content.");
+        PostRequest request = new PostRequest("Sample Post", "This is a sample post content.");
 
         Long postId = 1L;
-        PostDto postDto = new PostDto(postId, request.getUserId(), request.getPostTitle(), request.getPostContent(),
+        Long userId = 1L;
+        PostDto postDto = new PostDto(postId, userId, request.title(), request.content(),
             null, null);
 
-        when(postService.createPost(request.getUserId(), request.getPostTitle(), request.getPostContent())).thenReturn(
+        when(postService.createPost(userId, request.title(), request.content())).thenReturn(
             postDto);
 
         // When and Then
-        mockMvc.perform(post("/api/post/create")
+        mockMvc.perform(post("/api/posts/{id}", userId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(postId))
-            .andExpect(jsonPath("$.userId").value(request.getUserId()))
-            .andExpect(jsonPath("$.title").value(request.getPostTitle()))
-            .andExpect(jsonPath("$.content").value(request.getPostContent()))
+            .andExpect(jsonPath("$.userId").value(userId))
+            .andExpect(jsonPath("$.title").value(request.title()))
+            .andExpect(jsonPath("$.content").value(request.content()))
             .andDo(document("create-post",
                 requestFields(
-                    fieldWithPath("postId").description("The ID of the created post"),
-                    fieldWithPath("userId").description("The ID of the user who creates the post"),
-                    fieldWithPath("postTitle").description("The title of the post"),
-                    fieldWithPath("postContent").description("The content of the post")
+                    fieldWithPath("title").description("The title of the post"),
+                    fieldWithPath("content").description("The content of the post")
                 ),
                 responseFields(
                     fieldWithPath("id").description("The ID of the created post"),
@@ -98,21 +99,21 @@ class PostControllerTest {
 
     @DisplayName("Post ID 조회에 대한 성공 테스트")
     @Test
-    public void SearchByIdTest() throws Exception {
+    public void getPostTest() throws Exception {
         // Given
         Long postId = 1L;
         PostDto postDto = new PostDto(postId, null, "Sample Post", "This is a sample post content.", null, null);
 
-        when(postService.searchById(postId)).thenReturn(postDto);
+        when(postService.getPost(postId)).thenReturn(postDto);
 
         // When and Then
-        mockMvc.perform(get("/api/post/search/{id}", postId))
+        mockMvc.perform(get("/api/posts/{id}", postId))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(postId))
             .andExpect(jsonPath("$.title").value("Sample Post"))
             .andExpect(jsonPath("$.content").value("This is a sample post content."))
-            .andDo(document("search-by-id",
+            .andDo(document("get-post",
                 responseFields(
                     fieldWithPath("id").description("The postID of the post"),
                     fieldWithPath("userId").description("The userID of the post"),
@@ -126,20 +127,20 @@ class PostControllerTest {
 
     @DisplayName("Post 페이징 전체조회에 대한 성공 테스트")
     @Test
-    public void testGetAllUsers() throws Exception {
+    public void getAllPostsTest() throws Exception {
         // Given
         int page = 0;
-        int size = 2;
+        int size = 10;
 
         List<PostDto> postDtoList = new ArrayList<>();
         postDtoList.add(new PostDto(1L, null, "Post 1", "Content 1", null, null));
         postDtoList.add(new PostDto(2L, null, "Post 2", "Content 2", null, null));
-        Page<PostDto> pageResult = new PageImpl<>(postDtoList, PageRequest.of(page, size), 2);
+        Page<PostDto> pageResult = new PageImpl<>(postDtoList, PageRequest.of(page, size), 10);
 
-        when(postService.searchAll(any(PageRequest.class))).thenReturn(pageResult);
+        when(postService.getAllPosts(any(PageRequest.class))).thenReturn(pageResult);
 
         // When and Then
-        mockMvc.perform(get("/api/post/search")
+        mockMvc.perform(get("/api/posts")
                 .param("page", String.valueOf(page))
                 .param("size", String.valueOf(size)))
             .andExpect(status().isOk())
@@ -183,27 +184,28 @@ class PostControllerTest {
 
     @DisplayName("Post 수정에 대한 성공 테스트")
     @Test
-    public void testEditPost() throws Exception {
+    public void updatePostTest() throws Exception {
         // Given
-        PostRequest request = new PostRequest(1L, "Sample Post", "This is a sample post content.");
+        PostRequest request = new PostRequest("Sample Post", "This is a sample post content.");
 
-        Long postId = 2L;
-        PostDto postDto = new PostDto(postId, request.getUserId(), request.getPostTitle(), request.getPostContent(),
+        Long postId = 1L;
+        Long userId = 1L;
+        PostDto postDto = new PostDto(postId, userId, request.title(), request.content(),
             null, null);
 
-        when(postService.editPost(request.getPostId(), request.getPostTitle(), request.getPostContent())).thenReturn(
+        when(postService.createPost(userId, request.title(), request.content())).thenReturn(
             postDto);
 
         // When and Then
-        mockMvc.perform(put("/api/post/update")
+        mockMvc.perform(put("/api/posts/{id}", postId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(postId))
-            .andExpect(jsonPath("$.userId").value(request.getUserId()))
-            .andExpect(jsonPath("$.title").value(request.getPostTitle()))
-            .andExpect(jsonPath("$.content").value(request.getPostContent()))
+            .andExpect(jsonPath("$.userId").value(userId))
+            .andExpect(jsonPath("$.title").value(request.title()))
+            .andExpect(jsonPath("$.content").value(request.content()))
             .andDo(document("edit-post",
                 requestFields(
                     fieldWithPath("postId").description("The ID of the created post"),
