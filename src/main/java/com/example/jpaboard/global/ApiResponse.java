@@ -23,4 +23,5 @@ public class ApiResponse<T> {
     public String getResultMsg() {
         return resultMsg;
     }
+
 }

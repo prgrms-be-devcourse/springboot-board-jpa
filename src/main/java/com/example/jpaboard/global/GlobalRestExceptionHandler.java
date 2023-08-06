@@ -1,7 +1,7 @@
 package com.example.jpaboard.global;
 
-import com.example.jpaboard.post.exception.EntityNotFoundException;
-import com.example.jpaboard.post.exception.PermissionDeniedEditException;
+import com.example.jpaboard.global.exception.EntityNotFoundException;
+import com.example.jpaboard.global.exception.PermissionDeniedEditException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +19,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 @RestControllerAdvice
 public class GlobalRestExceptionHandler {
+
     private static final Logger logger = LoggerFactory.getLogger(GlobalRestExceptionHandler.class);
 
     @ExceptionHandler(BindException.class)
@@ -29,8 +30,8 @@ public class GlobalRestExceptionHandler {
         return ResponseEntity.status(statusCode).body(getErrorResponse(statusCode, resultStringBuilder.toString(), request.getRequestURI()));
     }
 
-    @ExceptionHandler({MissingRequestHeaderException.class, HttpMessageNotReadableException.class,
-            HttpClientErrorException.BadRequest.class, NoHandlerFoundException.class})
+    @ExceptionHandler({IllegalArgumentException.class, MissingRequestHeaderException.class, HttpMessageNotReadableException.class,
+            HttpClientErrorException.class, NoHandlerFoundException.class})
     public ResponseEntity<ErrorResponse> handleBadRequestException(HttpServletRequest request, Exception e) {
         int statusCode = HttpStatus.BAD_REQUEST.value();
 
@@ -73,4 +74,5 @@ public class GlobalRestExceptionHandler {
     private static ErrorResponse getErrorResponse(int status, String masesage, String requestURI) {
         return new ErrorResponse(status, masesage, requestURI);
     }
+
 }

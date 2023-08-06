@@ -34,28 +34,28 @@ public class PostController {
     SliceResponse<PostResponse> findAllBy(@ModelAttribute FindAllApiRequest findAllApiRequest, Pageable pageable) {
         FindAllRequest findAllRequest = postApiMapper.toFindAllRequest(findAllApiRequest);
 
-        Slice<PostResponse> postAllByFilter = postService.findPostAllByFilter(findAllRequest, pageable);
+        Slice<PostResponse> postAllByFilter = postService.findAllByFilter(findAllRequest, pageable);
         SliceResponse<PostResponse> postResponseSliceResponse = new SliceResponse<>(postAllByFilter, SuccessCode.SELECT_SUCCESS);
         return postResponseSliceResponse;
     }
 
     @PatchMapping("/{id}")
-    ApiResponse<PostResponse> updatePost (@PathVariable Long id, @RequestBody UpdateApiRequest updateApiRequest) {
+    ApiResponse<PostResponse> updatePost(@PathVariable Long id, @RequestBody @Valid UpdateApiRequest updateApiRequest) {
         UpdateRequest updateRequest = postApiMapper.toUpdateRequest(updateApiRequest);
-        return new ApiResponse<>(postService.updatePost(id, updateRequest),SuccessCode.UPDATE_SUCCESS);
+        return new ApiResponse<>(postService.updatePost(id, updateRequest), SuccessCode.UPDATE_SUCCESS);
     }
 
     @GetMapping("/{id}")
-    ApiResponse<PostResponse> findById (@PathVariable Long id) {
+    ApiResponse<PostResponse> findById(@PathVariable Long id) {
         return new ApiResponse<>(postService.findById(id), SuccessCode.SELECT_SUCCESS);
     }
 
     @PostMapping
-    ResponseEntity<PostResponse> savePost (@RequestBody @Valid SaveApiRequest saveApiRequest ) {
+    ResponseEntity<PostResponse> savePost(@RequestBody @Valid SaveApiRequest saveApiRequest) {
         SaveRequest saveRequest = postApiMapper.toSaveRequest(saveApiRequest);
-        PostResponse saveResponse =postService.savePost(saveRequest);
+        PostResponse saveResponse = postService.savePost(saveRequest);
 
-        URI location =  ServletUriComponentsBuilder.fromCurrentRequest()
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(saveResponse.postId())
                 .toUri();

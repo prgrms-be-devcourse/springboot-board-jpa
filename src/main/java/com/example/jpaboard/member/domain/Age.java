@@ -9,7 +9,8 @@ public class Age {
 
     private int age;
 
-    protected Age() { }
+    protected Age() {
+    }
 
     public Age(int age) {
         validateAge(age);
@@ -17,7 +18,7 @@ public class Age {
     }
 
     private void validateAge(int age) {
-        if (age < AGE_MIN ) {
+        if (age < AGE_MIN) {
             throw new IllegalArgumentException();
         }
     }

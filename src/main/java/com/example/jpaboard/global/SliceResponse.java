@@ -2,7 +2,7 @@ package com.example.jpaboard.global;
 
 import org.springframework.data.domain.Slice;
 
-public class SliceResponse<T> extends ApiResponse{
+public class SliceResponse<T> extends ApiResponse {
 
     private Slice<T> data;
 

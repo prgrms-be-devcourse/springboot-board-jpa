@@ -5,8 +5,8 @@ import com.example.jpaboard.member.domain.Member;
 import com.example.jpaboard.member.service.MemberRepository;
 import com.example.jpaboard.post.domain.Post;
 import com.example.jpaboard.post.domain.PostRepository;
-import com.example.jpaboard.post.exception.EntityNotFoundException;
-import com.example.jpaboard.post.exception.PermissionDeniedEditException;
+import com.example.jpaboard.global.exception.EntityNotFoundException;
+import com.example.jpaboard.global.exception.PermissionDeniedEditException;
 import com.example.jpaboard.post.service.dto.FindAllRequest;
 import com.example.jpaboard.post.service.dto.PostResponse;
 import com.example.jpaboard.post.service.dto.SaveRequest;
@@ -59,7 +59,7 @@ class PostServiceTest {
         FindAllRequest findAllRequest = new FindAllRequest("", "");
 
         //when
-        Slice<PostResponse> findPosts = postService.findPostAllByFilter(findAllRequest, PageRequest.of(0, 10));
+        Slice<PostResponse> findPosts = postService.findAllByFilter(findAllRequest, PageRequest.of(0, 10));
 
         //then
         assertThat(findPosts.getContent().size()).isEqualTo(2);
@@ -167,4 +167,5 @@ class PostServiceTest {
         setupMemberId2 = member2.getId();
         setupMemberId3 = member3.getId();
     }
+
 }

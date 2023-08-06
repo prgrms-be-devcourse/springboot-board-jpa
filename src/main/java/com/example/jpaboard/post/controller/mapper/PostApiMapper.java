@@ -23,7 +23,7 @@ public class PostApiMapper {
     }
 
     public SaveRequest toSaveRequest(SaveApiRequest saveApiRequest) {
-        return new SaveRequest( saveApiRequest.memberId(),
+        return new SaveRequest(saveApiRequest.memberId(),
                 saveApiRequest.title(),
                 saveApiRequest.content());
     }

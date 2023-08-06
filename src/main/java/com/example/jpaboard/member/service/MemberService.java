@@ -1,5 +1,6 @@
 package com.example.jpaboard.member.service;
 
+import com.example.jpaboard.global.exception.EntityNotFoundException;
 import com.example.jpaboard.member.domain.Member;
 import com.example.jpaboard.member.service.dto.FindMemberResponse;
 import com.example.jpaboard.member.service.mapper.MemberMapper;
@@ -17,7 +18,7 @@ public class MemberService {
     }
 
     public FindMemberResponse findById(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("존재하지 않은 고객입니다."));
+        Member member = memberRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않은 고객입니다."));
 
         return new FindMemberResponse(member);
     }

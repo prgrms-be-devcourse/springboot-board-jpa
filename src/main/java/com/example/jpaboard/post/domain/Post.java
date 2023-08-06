@@ -3,6 +3,7 @@ package com.example.jpaboard.post.domain;
 import com.example.jpaboard.global.BaseEntity;
 import com.example.jpaboard.member.domain.Member;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "posts")
@@ -11,17 +12,19 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private String title;
 
     @Lob
-    @Column(nullable = false)
+    @NotNull
     private String content;
 
+    @NotNull
     @ManyToOne
     private Member member;
 
-    protected Post() { }
+    protected Post() {
+    }
 
     public Post(String title, String content, Member member) {
         this.title = title;
@@ -45,15 +48,12 @@ public class Post extends BaseEntity {
         return member;
     }
 
-    public void setTitle(String title) {
+    public void changTitle(String title) {
         this.title = title;
     }
 
-    public void setContent(String content) {
+    public void changeContent(String content) {
         this.content = content;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
 }

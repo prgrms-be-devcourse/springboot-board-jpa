@@ -2,9 +2,7 @@ package com.example.jpaboard.member.service.dto;
 
 import com.example.jpaboard.member.domain.Age;
 import com.example.jpaboard.member.domain.Member;
-import lombok.Getter;
 
-@Getter
 public class FindMemberResponse {
 
     private final Long id;
@@ -18,7 +16,8 @@ public class FindMemberResponse {
         this.age = age;
         this.hobby = hobby;
     }
-    public FindMemberResponse (Member member) {
+
+    public FindMemberResponse(Member member) {
         this(member.getId(), member.getName(), member.getAge(), member.getHobby());
     }
 
@@ -37,4 +36,5 @@ public class FindMemberResponse {
     public String getHobby() {
         return hobby;
     }
+
 }
