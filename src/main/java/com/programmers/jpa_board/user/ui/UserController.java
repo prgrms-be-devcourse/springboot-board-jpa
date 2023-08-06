@@ -20,7 +20,7 @@ public class UserController {
 
     @PostMapping
     public ApiResponse<UserResponse> save(@RequestBody CreateUserRequest request) {
-        UserResponse response = userService.create(request);
+        UserResponse response = userService.save(request);
 
         return ApiResponse.created(response);
     }

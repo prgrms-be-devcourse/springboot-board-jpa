@@ -31,9 +31,9 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public PostResponse create(CreatePostRequest request) {
+    public PostResponse save(CreatePostRequest request) {
         Post post = converter.toEntity(request);
-        User user = userService.getUser(request.userId());
+        User user = userService.getOne(request.userId());
         post.addUser(user);
 
         Post saved = postRepository.save(post);
@@ -42,7 +42,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse findById(Long postId) {
+    public PostResponse getOne(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_POST));
 
@@ -50,7 +50,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostResponse> findPage(Pageable pageable) {
+    public Page<PostResponse> getPage(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(converter::toDto);
     }

@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserProviderService {
     }
 
     @Transactional
-    public UserResponse create(CreateUserRequest request) {
+    public UserResponse save(CreateUserRequest request) {
         User user = converter.toEntity(request);
         User saved = userRepository.save(user);
 
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserProviderService {
     }
 
     @Override
-    public User getUser(Long id) {
+    public User getOne(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
     }

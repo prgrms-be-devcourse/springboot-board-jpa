@@ -26,21 +26,21 @@ public class PostController {
 
     @PostMapping
     public ApiResponse<PostResponse> save(@RequestBody CreatePostRequest request) {
-        PostResponse response = postService.create(request);
+        PostResponse response = postService.save(request);
 
         return ApiResponse.created(response);
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<PostResponse> findById(@PathVariable("id") Long id) {
-        PostResponse response = postService.findById(id);
+    public ApiResponse<PostResponse> getOne(@PathVariable("id") Long id) {
+        PostResponse response = postService.getOne(id);
 
         return ApiResponse.ok(response);
     }
 
     @GetMapping
-    public ApiResponse<Page<PostResponse>> findPage(Pageable pageable) {
-        Page<PostResponse> responses = postService.findPage(pageable);
+    public ApiResponse<Page<PostResponse>> getPage(Pageable pageable) {
+        Page<PostResponse> responses = postService.getPage(pageable);
 
         return ApiResponse.ok(responses);
     }

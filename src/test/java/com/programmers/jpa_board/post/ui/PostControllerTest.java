@@ -90,7 +90,7 @@ class PostControllerTest {
     void 단건_조회_성공() throws Exception {
         //given
         CreatePostRequest request = new CreatePostRequest("제목-범철", "내용이야", user.getId());
-        PostResponse response = postService.create(request);
+        PostResponse response = postService.save(request);
 
         //when & then
         this.mockMvc.perform(get("/posts/{id}", response.id())
@@ -114,9 +114,9 @@ class PostControllerTest {
     void 페이징_조회_성공() throws Exception {
         //given
         CreatePostRequest request = new CreatePostRequest("제목-범철", "내용이야", user.getId());
-        postService.create(request);
+        postService.save(request);
         CreatePostRequest request2 = new CreatePostRequest("제목-범철2", "내용이야2", user.getId());
-        postService.create(request2);
+        postService.save(request2);
 
         //when & then
         this.mockMvc.perform(get("/posts")
@@ -161,7 +161,7 @@ class PostControllerTest {
     void 수정_성공() throws Exception {
         //given
         CreatePostRequest request = new CreatePostRequest("제목-범철", "내용이야", user.getId());
-        PostResponse response = postService.create(request);
+        PostResponse response = postService.save(request);
 
         UpdatePostRequest updateRequest = new UpdatePostRequest("변경-범철", "변경내용");
 
