@@ -1,0 +1,21 @@
+== Post
+
+=== CREATE Post
+
+operation::post-controller-test/create-post-test[snippets='http-request,http-response']
+
+=== READ Posts
+
+operation::post-controller-test/find-all-posts-test[snippets='http-request,http-response']
+
+=== READ Post
+
+operation::post-controller-test/find-post-by-id-test[snippets='http-request,http-response']
+
+=== UPDATE Post
+
+operation::post-controller-test/update-post-test[snippets='http-request,http-response']
+
+=== DELETE Post
+
+operation::post-controller-test/delete-post-test[snippets='http-request,http-response']

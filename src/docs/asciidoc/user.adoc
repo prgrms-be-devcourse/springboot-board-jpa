@@ -1,0 +1,5 @@
+== User
+
+=== CREATE User
+
+operation::user-controller-test/create-user-test[snippets='http-request,http-response']
