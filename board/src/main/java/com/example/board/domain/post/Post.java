@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class Post extends BaseEntity {
 
   private static final int TITLE_MAX = 30;
-  private static final int CONTENT_MAX = 100;
+  private static final int CONTENT_MAX = 1000;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
