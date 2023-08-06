@@ -56,7 +56,6 @@ public class Post extends BaseEntity {
         }
 
         this.user = user;
-        updateCreatedBy(user.getCreatedBy());
         user.getPosts().add(this);
     }
 

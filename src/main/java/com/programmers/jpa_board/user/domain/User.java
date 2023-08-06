@@ -47,7 +47,6 @@ public class User extends BaseEntity {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        this.updateCreatedBy(name);
     }
 
     public Long getId() {
