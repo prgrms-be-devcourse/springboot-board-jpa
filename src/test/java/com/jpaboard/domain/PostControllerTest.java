@@ -3,9 +3,9 @@ package com.jpaboard.domain;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpaboard.post.application.PostService;
 import com.jpaboard.post.infra.JpaPostRepository;
-import com.jpaboard.post.ui.dto.PostDto;
-import com.jpaboard.post.ui.dto.PostUpdateDto;
-import com.jpaboard.user.ui.dto.UserDto;
+import com.jpaboard.post.ui.dto.PostResponse;
+import com.jpaboard.post.ui.dto.PostUpdateResponse;
+import com.jpaboard.user.ui.dto.UserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,45 +51,45 @@ class PostControllerTest {
     @DisplayName("모든 id를 조회하고 rest doc객체를 생성한다")
     void findPostAll_Test() throws Exception {
         // Given
+        UserResponse userResponse = UserResponse.builder()
+                .name("이름이름11")
+                .age(11)
+                .hobby("사진찍기11")
+                .build();
+
         Long postId = postService.createPost(
-                PostDto.builder()
+                PostResponse.builder()
                         .title("제목11")
                         .content("111111")
-                        .user(
-                                UserDto.builder()
-                                        .name("이름이름11")
-                                        .age(11)
-                                        .hobby("사진찍기11")
-                                        .build()
-                        )
+                        .user(userResponse)
                         .build()
         );
+
+        UserResponse userResponse1 = UserResponse.builder()
+                .name("이름이름22")
+                .age(22)
+                .hobby("사진찍기22")
+                .build();
 
         Long postId2 = postService.createPost(
-                PostDto.builder()
+                PostResponse.builder()
                         .title("제목22")
                         .content("222222")
-                        .user(
-                                UserDto.builder()
-                                        .name("이름이름22")
-                                        .age(22)
-                                        .hobby("사진찍기22")
-                                        .build()
-                        )
+                        .user(userResponse1)
                         .build()
         );
 
+        UserResponse userResponse2 = UserResponse.builder()
+                .name("이름이름33")
+                .age(33)
+                .hobby("사진찍기33")
+                .build();
+
         Long postId3 = postService.createPost(
-                PostDto.builder()
+                PostResponse.builder()
                         .title("제목33")
                         .content("33333")
-                        .user(
-                                UserDto.builder()
-                                        .name("이름이름33")
-                                        .age(33)
-                                        .hobby("사진찍기33")
-                                        .build()
-                        )
+                        .user(userResponse2)
                         .build()
         );
 
@@ -148,17 +148,17 @@ class PostControllerTest {
     @DisplayName("id에 따라 post를 조회하고 rest doc객체를 생성한다")
     void findPostById_Test() throws Exception {
         // Given
+        UserResponse userResponse = UserResponse.builder()
+                .name("이름이름")
+                .age(11)
+                .hobby("사진찍기")
+                .build();
+
         Long postId = postService.createPost(
-                PostDto.builder()
+                PostResponse.builder()
                         .title("제목22")
                         .content("내용314124")
-                        .user(
-                                UserDto.builder()
-                                        .name("이름이름")
-                                        .age(11)
-                                        .hobby("사진찍기")
-                                        .build()
-                        )
+                        .user(userResponse)
                         .build()
         );
 
@@ -187,24 +187,24 @@ class PostControllerTest {
     @DisplayName("post를 성공적으로 생성하고 rest doc객체를 생성한다")
     void createPost_Test() throws Exception {
         // Given
-        PostDto postDto = PostDto.builder()
-                .title("제목22")
-                .content("내용314124")
-                .user(
-                        UserDto.builder()
-                                .name("이름이름")
-                                .age(11)
-                                .hobby("사진찍기")
-                                .build()
-                )
+        UserResponse userResponse = UserResponse.builder()
+                .name("이름이름")
+                .age(11)
+                .hobby("사진찍기")
                 .build();
 
-        Long postId = postService.createPost(postDto);
+        PostResponse postResponse = PostResponse.builder()
+                .title("제목22")
+                .content("내용314124")
+                .user(userResponse)
+                .build();
+
+        Long postId = postService.createPost(postResponse);
 
         // When, Then
         this.mockMvc.perform(post("/api/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postDto)))
+                        .content(objectMapper.writeValueAsString(postResponse)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-create",
@@ -228,21 +228,21 @@ class PostControllerTest {
     @DisplayName("id로 찾은 post를 수정하고 rest doc객체를 생성한다")
     void updatePost_Test() throws Exception {
         // Given
-        PostDto postDto = PostDto.builder()
-                .title("제목22")
-                .content("내용314124")
-                .user(
-                        UserDto.builder()
-                                .name("이름이름")
-                                .age(11)
-                                .hobby("사진찍기")
-                                .build()
-                )
+        UserResponse userResponse = UserResponse.builder()
+                .name("이름이름")
+                .age(11)
+                .hobby("사진찍기")
                 .build();
 
-        Long postId = postService.createPost(postDto);
+        PostResponse postResponse = PostResponse.builder()
+                .title("제목22")
+                .content("내용314124")
+                .user(userResponse)
+                .build();
 
-        PostUpdateDto postUpdateDto = PostUpdateDto.builder()
+        Long postId = postService.createPost(postResponse);
+
+        PostUpdateResponse postUpdateResponse = PostUpdateResponse.builder()
                 .title("수정한 제목")
                 .content("수정한 내용들")
                 .build();
@@ -250,7 +250,7 @@ class PostControllerTest {
         // When, Then
         this.mockMvc.perform(patch("/api/posts/{id}", postId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postUpdateDto)))
+                        .content(objectMapper.writeValueAsString(postUpdateResponse)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-update",
