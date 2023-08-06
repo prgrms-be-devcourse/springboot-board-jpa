@@ -7,7 +7,7 @@ public class CursorPageRequest extends PageRequest {
 
     private final long cursor;
 
-    public CursorPageRequest(Long cursor, int size, Sort sort) {
+    private CursorPageRequest(Long cursor, int size, Sort sort) {
         super(0, size, sort);
         this.cursor = cursor;
     }

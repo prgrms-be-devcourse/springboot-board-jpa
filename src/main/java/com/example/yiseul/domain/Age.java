@@ -11,7 +11,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 public class Age {
 
-    public static final int MIN_AGE = 0;
+    public static final int MIN_AGE = 1;
 
     private Integer age;
 
