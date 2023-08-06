@@ -1,7 +1,7 @@
 package com.programmers.domain.post.application.converter;
 
 import com.programmers.domain.post.entity.Post;
-import com.programmers.domain.post.ui.dto.PostDto;
+import com.programmers.domain.post.ui.dto.PostCreateDto;
 import com.programmers.domain.post.ui.dto.PostResponseDto;
 import com.programmers.domain.user.entity.User;
 import org.springframework.stereotype.Component;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class PostConverter {
 
-    public Post convertPost(PostDto postDto, User user) {
-        return new Post(postDto.title(), postDto.content(), user);
+    public Post convertPost(PostCreateDto postCreateDto, User user) {
+        return new Post(postCreateDto.title(), postCreateDto.content(), user);
     }
 
-    public PostDto convertPostDto(Post post) {
-        return new PostDto(post.getTitle(), post.getContent(), post.getUser().getId());
+    public PostCreateDto convertPostDto(Post post) {
+        return new PostCreateDto(post.getTitle(), post.getContent(), post.getUser().getId());
     }
 
     public PostResponseDto convertEntityToPostResponseDto(Post post){

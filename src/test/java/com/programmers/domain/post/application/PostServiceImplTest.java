@@ -3,7 +3,7 @@ package com.programmers.domain.post.application;
 import com.programmers.domain.post.application.converter.PostConverter;
 import com.programmers.domain.post.entity.Post;
 import com.programmers.domain.post.infra.PostRepository;
-import com.programmers.domain.post.ui.dto.PostDto;
+import com.programmers.domain.post.ui.dto.PostCreateDto;
 import com.programmers.domain.post.ui.dto.PostResponseDto;
 import com.programmers.domain.post.ui.dto.PostUpdateDto;
 import com.programmers.domain.user.entity.User;
@@ -48,14 +48,14 @@ class PostServiceImplTest {
         User user = new User("명한", 1, "운동");
         Post post = new Post("제목", "본문", user);
         ReflectionTestUtils.setField(post, "id", fakePostId);
-        PostDto postDto = new PostDto("title", "content", fakeUserId);
+        PostCreateDto postCreateDto = new PostCreateDto("title", "content", fakeUserId);
 
         BDDMockito.given(userRepository.findById(fakeUserId)).willReturn(Optional.of(user));
-        BDDMockito.given(postConverter.convertPost(postDto, user)).willReturn(post);
+        BDDMockito.given(postConverter.convertPost(postCreateDto, user)).willReturn(post);
         BDDMockito.given(postRepository.save(post)).willReturn(post);
 
         //when
-        Long savedPostId = postService.createPost(postDto);
+        Long savedPostId = postService.createPost(postCreateDto);
 
         //then
         Long expectedPostId = 1l;

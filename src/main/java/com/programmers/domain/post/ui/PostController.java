@@ -2,7 +2,7 @@ package com.programmers.domain.post.ui;
 
 import com.programmers.common.dto.ApiIdResponse;
 import com.programmers.domain.post.application.PostService;
-import com.programmers.domain.post.ui.dto.PostDto;
+import com.programmers.domain.post.ui.dto.PostCreateDto;
 import com.programmers.domain.post.ui.dto.PostResponseDto;
 import com.programmers.domain.post.ui.dto.PostUpdateDto;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +30,8 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ApiIdResponse createPost(@RequestBody PostDto postDto) {
-        return new ApiIdResponse(postService.createPost(postDto));
+    public ApiIdResponse createPost(@RequestBody PostCreateDto postCreateDto) {
+        return new ApiIdResponse(postService.createPost(postCreateDto));
     }
 
     @GetMapping

@@ -2,7 +2,7 @@ package com.programmers.domain.post.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.programmers.domain.post.application.PostService;
-import com.programmers.domain.post.ui.dto.PostDto;
+import com.programmers.domain.post.ui.dto.PostCreateDto;
 import com.programmers.domain.post.ui.dto.PostUpdateDto;
 import com.programmers.domain.user.application.UserService;
 import com.programmers.domain.user.ui.dto.UserDto;
@@ -44,12 +44,12 @@ class PostControllerTest {
     void createPost() throws Exception {
         //given
         Long userId = userService.createUser(new UserDto("유명한", 25, "농구"));
-        PostDto postDto = new PostDto("제목", "본문", userId);
+        PostCreateDto postCreateDto = new PostCreateDto("제목", "본문", userId);
 
         //when, then
         mockMvc.perform(MockMvcRequestBuilders.post("/api/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postDto)))
+                        .content(objectMapper.writeValueAsString(postCreateDto)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("post-save",
@@ -71,14 +71,14 @@ class PostControllerTest {
         //given
         Long userId = userService.createUser(new UserDto("유명한", 25, "농구"));
 
-        PostDto postDto1 = new PostDto("제목1", "본문1", userId);
-        postService.createPost(postDto1);
+        PostCreateDto postCreateDto1 = new PostCreateDto("제목1", "본문1", userId);
+        postService.createPost(postCreateDto1);
 
-        PostDto postDto2 = new PostDto("제목2", "본문2", userId);
-        postService.createPost(postDto2);
+        PostCreateDto postCreateDto2 = new PostCreateDto("제목2", "본문2", userId);
+        postService.createPost(postCreateDto2);
 
-        PostDto postDto3 = new PostDto("제목3", "본문3", userId);
-        postService.createPost(postDto3);
+        PostCreateDto postCreateDto3 = new PostCreateDto("제목3", "본문3", userId);
+        postService.createPost(postCreateDto3);
 
         //when, then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/posts")
@@ -103,8 +103,8 @@ class PostControllerTest {
     void findPost() throws Exception {
         //given
         Long userId = userService.createUser(new UserDto("유명한", 25, "농구"));
-        PostDto postDto = new PostDto("제목", "본문", userId);
-        Long postId = postService.createPost(postDto);
+        PostCreateDto postCreateDto = new PostCreateDto("제목", "본문", userId);
+        Long postId = postService.createPost(postCreateDto);
 
         //when, then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/posts/{id}", postId))
@@ -126,8 +126,8 @@ class PostControllerTest {
     void updatePost() throws Exception{
         //given
         Long userId = userService.createUser(new UserDto("유명한", 25, "농구"));
-        PostDto postDto = new PostDto("제목", "본문", userId);
-        Long postId = postService.createPost(postDto);
+        PostCreateDto postCreateDto = new PostCreateDto("제목", "본문", userId);
+        Long postId = postService.createPost(postCreateDto);
 
         PostUpdateDto postUpdateDto = new PostUpdateDto("제목수정", "본문수정");
         postService.updatePost(postUpdateDto, postId);

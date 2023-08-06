@@ -3,7 +3,7 @@ package com.programmers.domain.post.application;
 import com.programmers.domain.post.application.converter.PostConverter;
 import com.programmers.domain.post.entity.Post;
 import com.programmers.domain.post.infra.PostRepository;
-import com.programmers.domain.post.ui.dto.PostDto;
+import com.programmers.domain.post.ui.dto.PostCreateDto;
 import com.programmers.domain.post.ui.dto.PostResponseDto;
 import com.programmers.domain.post.ui.dto.PostUpdateDto;
 import com.programmers.domain.user.entity.User;
@@ -29,10 +29,10 @@ public class PostServiceImpl implements PostService{
 
     @Override
     @Transactional
-    public Long createPost(PostDto postDto) {
-        User user = userRepository.findById(postDto.userId())
+    public Long createPost(PostCreateDto postCreateDto) {
+        User user = userRepository.findById(postCreateDto.userId())
                 .orElseThrow(() -> new NoSuchElementException(USER_NOT_FOUND));
-        Post post = postConverter.convertPost(postDto, user);
+        Post post = postConverter.convertPost(postCreateDto, user);
         Post savedPost = postRepository.save(post);
         return savedPost.getId();
     }
