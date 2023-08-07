@@ -52,10 +52,10 @@ public class User extends BaseEntity{
         this.hobby = hobby;
     }
 
-    public static ResponseUserDto toResponseDto(User user) {
+    public static ResponseUserDto toDtoForResponse(User user) {
         return new ResponseUserDto(user.id, user.name, user.age, user.hobby);
     }
-    public static CreateUserDto toCreateDto(User user) {
+    public static CreateUserDto toDtoForCreate(User user) {
         return new CreateUserDto(user.name, user.age, user.hobby);
     }
 
