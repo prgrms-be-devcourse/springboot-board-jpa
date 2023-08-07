@@ -21,24 +21,22 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserProviderService userService;
-    private final PostConverter converter;
 
-    public PostServiceImpl(PostRepository postRepository, UserProviderService userService, PostConverter converter) {
+    public PostServiceImpl(PostRepository postRepository, UserProviderService userService) {
         this.postRepository = postRepository;
         this.userService = userService;
-        this.converter = converter;
     }
 
     @Transactional
     @Override
     public PostResponse save(CreatePostRequest request) {
-        Post post = converter.toEntity(request);
+        Post post = PostConverter.toEntity(request);
         User user = userService.getOne(request.userId());
         post.addUser(user);
 
         Post saved = postRepository.save(post);
 
-        return converter.toDto(saved);
+        return PostConverter.toDto(saved);
     }
 
     @Override
@@ -46,13 +44,13 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_POST));
 
-        return converter.toDto(post);
+        return PostConverter.toDto(post);
     }
 
     @Override
     public Page<PostResponse> getPage(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(converter::toDto);
+                .map(PostConverter::toDto);
     }
 
     @Transactional
@@ -63,6 +61,6 @@ public class PostServiceImpl implements PostService {
 
         post.update(request.title(), request.content());
 
-        return converter.toDto(post);
+        return PostConverter.toDto(post);
     }
 }

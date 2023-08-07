@@ -15,19 +15,17 @@ public class UserServiceImpl implements UserProviderService {
     private static final String NOT_FOUND_USER = "회원이 존재하지 않습니다.";
 
     private final UserRepository userRepository;
-    private final UserConverter converter;
 
-    public UserServiceImpl(UserRepository userRepository, UserConverter converter) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.converter = converter;
     }
 
     @Transactional
     public UserResponse save(CreateUserRequest request) {
-        User user = converter.toEntity(request);
+        User user = UserConverter.toEntity(request);
         User saved = userRepository.save(user);
 
-        return converter.toDto(saved);
+        return UserConverter.toDto(saved);
     }
 
     @Override
