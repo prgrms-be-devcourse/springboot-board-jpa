@@ -35,4 +35,9 @@ public class Post extends BaseTimeEntity {
 
     @CreatedBy
     private String createdBy;
+
+    public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
