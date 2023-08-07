@@ -4,7 +4,9 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -29,6 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,11 +104,14 @@ class PostControllerTest {
     // when
 
     // then
-    mockMvc.perform(get("/api/posts/{postId}", savedPostId)
+    mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/{postId}", savedPostId)
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("post-get",
+            pathParameters(
+                parameterWithName("postId").description("postId")
+            ),
             responseFields(
                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("id"),
                 fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
@@ -128,12 +134,16 @@ class PostControllerTest {
 
     //then
 
-    mockMvc.perform(get("/api/posts")
+    mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts")
             .param("page", String.valueOf(pageable.getPageNumber()))
             .param("size", String.valueOf(pageable.getPageSize())))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("post-get-page",
+            queryParameters(
+                parameterWithName("page").description("page"),
+                parameterWithName("size").description("size")
+            ),
             responseFields(
                 fieldWithPath("content.[].id").type(JsonFieldType.NUMBER).description("postId"),
                 fieldWithPath("content.[].title").type(JsonFieldType.STRING).description("title"),
