@@ -27,8 +27,9 @@ public class PostController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public void createPost(@RequestBody @Valid PostCreateRequest postCreateRequest) {
-    postService.createPost(postCreateRequest);
+  public Long createPost(@RequestBody @Valid PostCreateRequest postCreateRequest) {
+    PostResponse postResponse = postService.createPost(postCreateRequest);
+    return postResponse.id();
   }
 
   @GetMapping("/{postId}")
