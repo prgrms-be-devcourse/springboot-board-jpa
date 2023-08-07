@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import static com.programmers.board.constant.AuthConst.LOGIN_USER_ID;
+import static com.programmers.board.constant.SessionConst.LOGIN_USER_ID;
 
 @RestController
 @RequestMapping("/api/v1")

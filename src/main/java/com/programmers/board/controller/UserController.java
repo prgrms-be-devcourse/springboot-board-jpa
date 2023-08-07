@@ -1,6 +1,6 @@
 package com.programmers.board.controller;
 
-import com.programmers.board.constant.AuthConst;
+import com.programmers.board.constant.SessionConst;
 import com.programmers.board.constant.AuthErrorMessage;
 import com.programmers.board.controller.response.PageResult;
 import com.programmers.board.controller.response.Result;
@@ -50,7 +50,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/{userId}")
     public void updateUser(@PathVariable("userId") Long userId,
-                           @SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId,
+                           @SessionAttribute(name = SessionConst.LOGIN_USER_ID, required = false) Long loginUserId,
                            @RequestBody @Valid UserUpdateRequest request) {
         checkLogin(loginUserId);
         UserUpdateCommand command = UserUpdateCommand.of(userId, loginUserId, request);
@@ -60,7 +60,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable("userId") Long userId,
-                           @SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId) {
+                           @SessionAttribute(name = SessionConst.LOGIN_USER_ID, required = false) Long loginUserId) {
         checkLogin(loginUserId);
         UserDeleteCommand command = UserDeleteCommand.of(userId, loginUserId);
         userService.deleteUser(command);

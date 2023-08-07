@@ -1,6 +1,6 @@
 package com.programmers.board.controller;
 
-import com.programmers.board.constant.AuthConst;
+import com.programmers.board.constant.SessionConst;
 import com.programmers.board.constant.AuthErrorMessage;
 import com.programmers.board.controller.response.PageResult;
 import com.programmers.board.controller.response.Result;
@@ -35,7 +35,7 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Result<Long> createPost(@SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId,
+    public Result<Long> createPost(@SessionAttribute(name = SessionConst.LOGIN_USER_ID, required = false) Long loginUserId,
                                    @RequestBody @Valid PostCreateRequest request) {
         checkLogin(loginUserId);
         PostCreateCommand command = PostCreateCommand.of(loginUserId, request);
@@ -54,7 +54,7 @@ public class PostController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/{postId}")
     public void updatePost(@PathVariable("postId") Long postId,
-                           @SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId,
+                           @SessionAttribute(name = SessionConst.LOGIN_USER_ID, required = false) Long loginUserId,
                            @RequestBody @Valid PostUpdateRequest request) {
         checkLogin(loginUserId);
         PostUpdateCommand command = PostUpdateCommand.of(postId, loginUserId, request);
@@ -64,7 +64,7 @@ public class PostController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{postId}")
     public void deletePost(@PathVariable("postId") Long postId,
-                           @SessionAttribute(name = AuthConst.LOGIN_USER_ID, required = false) Long loginUserId) {
+                           @SessionAttribute(name = SessionConst.LOGIN_USER_ID, required = false) Long loginUserId) {
         checkLogin(loginUserId);
         PostDeleteCommand command = PostDeleteCommand.of(postId, loginUserId);
         postService.deletePost(command);

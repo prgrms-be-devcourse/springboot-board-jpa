@@ -1,6 +1,6 @@
 package com.programmers.board.config;
 
-import com.programmers.board.constant.AuthConst;
+import com.programmers.board.constant.SessionConst;
 import com.programmers.board.domain.User;
 import com.programmers.board.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +30,7 @@ public class AuditConfig {
     }
 
     private User getUser(UserRepository userRepository, HttpSession session) {
-        Long loginUserId = (Long) session.getAttribute(AuthConst.LOGIN_USER_ID);
+        Long loginUserId = (Long) session.getAttribute(SessionConst.LOGIN_USER_ID);
         return userRepository.findById(loginUserId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다"));
     }
