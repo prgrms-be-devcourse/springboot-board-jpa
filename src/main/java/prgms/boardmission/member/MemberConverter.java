@@ -13,7 +13,6 @@ public final class MemberConverter {
     }
 
     public static MemberDto convertToMemberDto(Member member) {
-        Long userId = member.getId();
         String name = member.getName();
         int age = member.getAge();
         String hobby = member.getHobby();
