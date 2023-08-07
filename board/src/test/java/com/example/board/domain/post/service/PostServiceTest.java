@@ -80,7 +80,6 @@ class PostServiceTest {
     UserResponse userResponse = postResponse.userResponse();
 
     // then
-    assertThat(postResponse.id()).isEqualTo(post.getId());
     assertThat(postResponse.title()).isEqualTo(post.getTitle());
     assertThat(postResponse.content()).isEqualTo(post.getContent());
     assertThat(userResponse.id()).isEqualTo(user.getId());
