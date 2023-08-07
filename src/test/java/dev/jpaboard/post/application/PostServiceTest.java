@@ -44,8 +44,8 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        postRepository.deleteAllInBatch();
-        userRepository.deleteAllInBatch();
+        postRepository.deleteAll();
+        userRepository.deleteAll();
         user = savedUser();
         post = savedPost(user);
     }

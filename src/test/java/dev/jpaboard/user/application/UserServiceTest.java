@@ -1,5 +1,6 @@
 package dev.jpaboard.user.application;
 
+import dev.jpaboard.post.repository.PostRepository;
 import dev.jpaboard.user.domain.User;
 import dev.jpaboard.user.dto.request.UserUpdateRequest;
 import dev.jpaboard.user.dto.response.UserInfoResponse;
@@ -18,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest
 class UserServiceTest {
 
     private static final String 이메일 = "qkrdmswl1018@naver.com";
@@ -33,11 +34,15 @@ class UserServiceTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PostRepository postRepository;
+
     private User user;
 
     @BeforeEach
     void setUp() {
-        userRepository.deleteAllInBatch();
+        postRepository.deleteAll();
+        userRepository.deleteAll();
         user = savedUser();
     }
 
