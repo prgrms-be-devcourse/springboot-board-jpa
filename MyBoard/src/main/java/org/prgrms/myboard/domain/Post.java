@@ -26,7 +26,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-    @Column(name = "created_by", nullable = false)
+    @Column(nullable = false)
     private String createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
