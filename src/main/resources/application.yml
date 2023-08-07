@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/board-jpa
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+  output:
+    ansi:
+      enabled: always
+
+logging.level:
+  org.hibernate.SQL: debug
+  # org.hibernate.type: trace
