@@ -34,7 +34,7 @@ public class UserService {
     }
 
     public ResponseUserDto updateUser(Long id, UpdateUserDto userDto) {
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id).orElseThrow(() ->  new RuntimeException("id에 해당하는 user는 없습니다."));
         user.changeName(userDto.name());
         user.changeAge(userDto.age());
         user.changeHobby(userDto.hobby());
