@@ -34,12 +34,4 @@ public class Comment extends BaseTime {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "comment")
     private List<CommentLike> commentLikes = new ArrayList<>();
-
-    public CommentResponseDto from() {
-        return CommentResponseDto.builder()
-                .content(content)
-                .name(user.getName())
-                .createdAt(getCreatedAt())
-                .build();
-    }
 }

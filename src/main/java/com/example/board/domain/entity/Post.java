@@ -44,28 +44,4 @@ public class Post extends BaseTime {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
     }
-
-    //dto 변환 로직
-    public PostResponseDto from() {
-        return PostResponseDto.builder()
-                .title(title)
-                .content(content)
-                .name(user.getName())
-                .createdAt(this.getCreatedAt())
-                .build();
-    }
-
-    //dto 변환 로직(+ 댓글)
-    public PostWithCommentResponseDto fromWithComment() {
-        return PostWithCommentResponseDto.builder()
-                .title(title)
-                .content(content)
-                .name(user.getName())
-                .createdAt(this.getCreatedAt())
-                .comments(getComments()
-                        .stream()
-                        .map(Comment::from)
-                        .toList())
-                .build();
-    }
 }

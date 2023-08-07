@@ -27,7 +27,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponseDto findUser(Long userId) {
         User findUser = getUser(userId);
-        return findUser.from();
+        return UserResponseDto.from(findUser);
     }
 
     @Transactional

@@ -1,5 +1,7 @@
 package com.example.board.dto.post;
 
+import com.example.board.domain.entity.Comment;
+import com.example.board.domain.entity.Post;
 import com.example.board.dto.comment.CommentResponseDto;
 import lombok.*;
 
@@ -21,4 +23,17 @@ public class PostWithCommentResponseDto {
     private LocalDateTime createdAt;
 
     private List<CommentResponseDto> comments;
+
+    public static PostWithCommentResponseDto from(Post post) {
+        return PostWithCommentResponseDto.builder()
+                .title(post.getTitle())
+                .content(post.getContent())
+                .name(post.getUser().getName())
+                .createdAt(post.getCreatedAt())
+                .comments(post.getComments()
+                        .stream()
+                        .map(CommentResponseDto::from)
+                        .toList())
+                .build();
+    }
 }

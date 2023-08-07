@@ -54,14 +54,4 @@ public class User extends BaseTime {
         this.age = (requestDto.getAge() != null) ? requestDto.getAge() : this.age;
         this.hobby = (requestDto.getHobby() != null) ? requestDto.getHobby() : this.hobby;
     }
-
-    //Dto 변환 로직
-    public UserResponseDto from() {
-        return UserResponseDto.builder()
-                .name(name)
-                .email(email)
-                .age(age)
-                .hobby(hobby)
-                .build();
-    }
 }

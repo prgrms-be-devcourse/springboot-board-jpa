@@ -1,5 +1,6 @@
 package com.example.board.dto.comment;
 
+import com.example.board.domain.entity.Comment;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,4 +15,12 @@ public class CommentResponseDto {
     private String content;
     private String name;
     private LocalDateTime createdAt;
+
+    public static CommentResponseDto from(Comment comment) {
+        return CommentResponseDto.builder()
+                .content(comment.getContent())
+                .name(comment.getUser().getName())
+                .createdAt(comment.getCreatedAt())
+                .build();
+    }
 }

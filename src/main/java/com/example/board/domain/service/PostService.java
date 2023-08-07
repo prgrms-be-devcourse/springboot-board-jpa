@@ -40,14 +40,14 @@ public class PostService {
     public PostResponseDto findPost(Long postId) {
         //fetch 를 통한 user 조회
         Post findPost = getPostWithUser(postId);
-        return findPost.from();
+        return PostResponseDto.from(findPost);
     }
 
     //게시글 단건 조회 + 댓글
     @Transactional(readOnly = true)
     public PostWithCommentResponseDto findPostWithComment(Long postId) {
         Post findPost = getPostWithUserAndComment(postId);
-        return findPost.fromWithComment();
+        return PostWithCommentResponseDto.from(findPost);
     }
 
     //게시글 페이지 조회
@@ -55,7 +55,7 @@ public class PostService {
     public Page<PostResponseDto> findPostsPaged(Pageable pageable) {
         //최신순 조회
         return postRepository.findAll(pageable)
-                .map(Post::from);
+                .map(PostResponseDto::from);
     }
 
     //게시글 수정 (dirty checking)

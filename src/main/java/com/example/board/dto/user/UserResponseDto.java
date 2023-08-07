@@ -1,5 +1,6 @@
 package com.example.board.dto.user;
 
+import com.example.board.domain.entity.User;
 import lombok.*;
 
 @Getter
@@ -16,4 +17,12 @@ public class UserResponseDto {
 
     private String hobby;
 
+    public static UserResponseDto from(User user) {
+        return UserResponseDto.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .age(user.getAge())
+                .hobby(user.getHobby())
+                .build();
+    }
 }
