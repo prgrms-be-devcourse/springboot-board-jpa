@@ -15,7 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.example.board.domain.post.dto.PostCreateRequest;
 import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
-import com.example.board.domain.post.repository.PostRepository;
 import com.example.board.domain.post.service.PostService;
 import com.example.board.domain.user.dto.UserCreateRequest;
 import com.example.board.domain.user.dto.UserResponse;
@@ -36,7 +35,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -54,9 +52,6 @@ class PostControllerTest {
 
   @Autowired
   private UserService userService;
-
-  @Autowired
-  private PostRepository postRepository;
 
   private PostResponse postResponse;
   private PostCreateRequest postCreateRequest;
