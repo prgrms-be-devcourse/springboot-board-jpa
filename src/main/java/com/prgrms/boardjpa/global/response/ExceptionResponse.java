@@ -14,13 +14,13 @@ public class ExceptionResponse<T> {
 
     private final HttpStatus httpStatus;
     private final String message;
-    private final Map<String, String> valid;
+    private final Map<String, String> detailsMessage;
 
     @Builder
-    public ExceptionResponse(HttpStatus httpStatus, String message, Map<String, String> valid) {
+    public ExceptionResponse(HttpStatus httpStatus, String message, Map<String, String> detailsMessage) {
         this.httpStatus = httpStatus;
         this.message = message;
-        this.valid = valid != null ? valid : new HashMap<>();
+        this.detailsMessage = detailsMessage != null ? detailsMessage : new HashMap<>();
     }
 
     public static ResponseEntity<ExceptionResponse> toResponseEntity(ErrorCode errorCode) {
@@ -33,6 +33,6 @@ public class ExceptionResponse<T> {
     }
 
     public void addValidation(String filedName, String errorMessage) {
-        this.valid.put(filedName, errorMessage);
+        this.detailsMessage.put(filedName, errorMessage);
     }
 }
