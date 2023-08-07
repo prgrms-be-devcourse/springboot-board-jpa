@@ -1,19 +1,23 @@
 package com.prgrms.boardjpa.User.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prgrms.boardjpa.User.domain.User;
-import com.prgrms.boardjpa.User.domain.UserRepository;
+import com.prgrms.boardjpa.User.application.UserService;
 import com.prgrms.boardjpa.User.dto.UserRequest;
+import com.prgrms.boardjpa.User.dto.UserResponse;
+import com.prgrms.boardjpa.global.ErrorCode;
+import com.prgrms.boardjpa.global.exception.BusinessServiceException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Attributes;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -24,19 +28,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
 @AutoConfigureRestDocs
+@WebMvcTest(UserApiController.class)
 class UserApiControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
-    @Autowired
-    UserRepository userRepository;
+    @MockBean
+    private UserService userService;
 
     @Test
     @DisplayName("유저 등록 성공")
@@ -48,6 +51,8 @@ class UserApiControllerTest {
                 .age(10)
                 .hobby("soccer")
                 .build();
+        UserResponse userResponse = new UserResponse(1L, "lee", 10, "soccer");
+        given(userService.join(any())).willReturn(userResponse);
 
         //when -> then
         mockMvc.perform(post("/api/v1/users")
@@ -75,17 +80,13 @@ class UserApiControllerTest {
     void createUserFailTest_duplicatedName() throws Exception {
 
         //given
-        userRepository.save(User.builder()
-                .name("hong")
-                .hobby("golf")
-                .age(20)
-                .build());
-
         UserRequest userRequest = UserRequest.builder()
                 .name("hong")
                 .age(10)
                 .hobby("soccer")
                 .build();
+        given(userService.join(any())).willThrow(new BusinessServiceException(ErrorCode.DUPLICATED_NAME));
+
 
         //when -> then
         mockMvc.perform(post("/api/v1/users")
@@ -103,7 +104,7 @@ class UserApiControllerTest {
                         ), responseFields(
                                 fieldWithPath("httpStatus").type(STRING).description("상태 코드"),
                                 fieldWithPath("message").type(STRING).description("응답 메세지"),
-                                fieldWithPath("valid").type(OBJECT).description("상세 정보")
+                                fieldWithPath("detailsMessage").type(OBJECT).description("상세 정보")
                         )));
     }
 
@@ -134,7 +135,7 @@ class UserApiControllerTest {
                         ), responseFields(
                                 fieldWithPath("httpStatus").type(STRING).description("상태 코드"),
                                 fieldWithPath("message").type(STRING).description("응답 메세지"),
-                                subsectionWithPath("valid").description("상세 정보")
+                                subsectionWithPath("detailsMessage").description("상세 정보")
                                         .attributes(
                                                 Attributes.key("name").value("상세 에러 메세지 - 이름은 영어만 가능합니다.")
                                         )

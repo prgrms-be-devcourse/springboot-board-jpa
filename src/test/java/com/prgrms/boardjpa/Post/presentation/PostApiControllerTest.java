@@ -1,38 +1,35 @@
 package com.prgrms.boardjpa.Post.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prgrms.boardjpa.Post.domain.Post;
-import com.prgrms.boardjpa.Post.domain.PostRepository;
+import com.prgrms.boardjpa.Post.application.PostService;
 import com.prgrms.boardjpa.Post.dto.request.PostCreateRequest;
 import com.prgrms.boardjpa.Post.dto.request.PostUpdateRequest;
-import com.prgrms.boardjpa.User.domain.User;
-import com.prgrms.boardjpa.User.domain.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
+import com.prgrms.boardjpa.Post.dto.response.PostListResponse;
+import com.prgrms.boardjpa.Post.dto.response.PostResponse;
+import com.prgrms.boardjpa.User.application.UserService;
+import com.prgrms.boardjpa.global.ErrorCode;
+import com.prgrms.boardjpa.global.exception.BusinessServiceException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.restdocs.snippet.Attributes;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
-import static org.springframework.restdocs.payload.JsonFieldType.OBJECT;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -40,10 +37,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@SpringBootTest
-@Transactional
+@WebMvcTest(PostApiController.class)
 class PostApiControllerTest {
 
     @Autowired
@@ -52,24 +47,11 @@ class PostApiControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Autowired
-    PostRepository postRepository;
+    @MockBean
+    PostService postService;
 
-    @Autowired
-    UserRepository userRepository;
-
-    User user;
-
-    @BeforeEach
-    void setUp() {
-        user = User.builder()
-                .hobby("soccer")
-                .age(10)
-                .name("lee")
-                .build();
-
-        userRepository.save(user);
-    }
+    @MockBean
+    UserService userService;
 
     @Test
     @DisplayName("게시물 등록 성공")
@@ -77,10 +59,14 @@ class PostApiControllerTest {
 
         //given
         PostCreateRequest postCreateRequest = PostCreateRequest.builder()
-                .userId(user.getId())
+                .userId(1L)
                 .title("제목")
                 .content("내용")
                 .build();
+        PostResponse postResponse = new PostResponse(1L, "제목", "내용", 1L);
+
+        given(postService.create(any()))
+                .willReturn(postResponse);
 
         //when -> //then
         mockMvc.perform(post("/api/v1/posts")
@@ -114,6 +100,9 @@ class PostApiControllerTest {
                 .content("내용")
                 .build();
 
+        given(postService.create(any()))
+                .willThrow(new BusinessServiceException(ErrorCode.NOT_FOUND_USER));
+
         //when -> then
         mockMvc.perform(post("/api/v1/posts")
                         .contentType(APPLICATION_JSON)
@@ -130,7 +119,7 @@ class PostApiControllerTest {
                         responseFields(
                                 fieldWithPath("httpStatus").type(STRING).description("상태 코드"),
                                 fieldWithPath("message").type(STRING).description("응답 메세지"),
-                                fieldWithPath("valid").type(OBJECT).description("상세 정보")
+                                fieldWithPath("detailsMessage").type(OBJECT).description("상세 정보")
                         )));
     }
 
@@ -161,7 +150,7 @@ class PostApiControllerTest {
                         responseFields(
                                 fieldWithPath("httpStatus").type(STRING).description("상태 코드"),
                                 fieldWithPath("message").type(STRING).description("응답 메세지"),
-                                subsectionWithPath("valid").description("상세 정보")
+                                subsectionWithPath("detailsMessage").description("상세 정보")
                                         .attributes(
                                                 Attributes.key("title").value("상세 에러 메세지 - 제목을 입력해 주세요.")
                                         )
@@ -173,19 +162,8 @@ class PostApiControllerTest {
     void findAllSuccessTest() throws Exception {
 
         //given
-        Post post1 = Post.builder()
-                .title("제목1")
-                .content("내용1")
-                .build();
-        post1.updateUser(user);
-        postRepository.save(post1);
-
-        Post post2 = Post.builder()
-                .title("제목")
-                .content("내용2")
-                .build();
-        post2.updateUser(user);
-        postRepository.save(post2);
+        PostListResponse response = new PostListResponse(List.of(new PostResponse(1L, "제목", "내용", 1L)));
+        given(postService.findAll(any())).willReturn(response);
 
         //when -> then
         mockMvc.perform(get("/api/v1/posts")
@@ -207,15 +185,11 @@ class PostApiControllerTest {
     void findOneSuccessTest() throws Exception {
 
         //given
-        Post post = Post.builder()
-                .title("제목1")
-                .content("내용1")
-                .build();
-        post.updateUser(user);
-        postRepository.save(post);
+        PostResponse postResponse = new PostResponse(1L, "제목", "내용", 1L);
+        given(postService.findOne(anyLong())).willReturn(postResponse);
 
         //when -> then
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", post.getId())
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", postResponse.id())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -235,8 +209,11 @@ class PostApiControllerTest {
     @DisplayName("게시물 단건 조회 실패 - 존재하지 않는 게시물")
     void findOneFailTest_notFoundPost() throws Exception {
 
+        long invalidId = 100L;
+        given(postService.findOne(any())).willThrow(new BusinessServiceException(ErrorCode.NOT_FOUND_POST));
+
         //when -> then
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", 100L)
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", invalidId)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andDo(print())
@@ -247,7 +224,7 @@ class PostApiControllerTest {
                         responseFields(
                                 fieldWithPath("httpStatus").type(STRING).description("상태 코드"),
                                 fieldWithPath("message").type(STRING).description("응답 메세지"),
-                                fieldWithPath("valid").type(OBJECT).description("상세 정보")
+                                fieldWithPath("detailsMessage").type(OBJECT).description("상세 정보")
                         )));
     }
 
@@ -256,17 +233,12 @@ class PostApiControllerTest {
     void updatePostSuccessTest() throws Exception {
 
         //given
-        Post post = Post.builder()
-                .title("제목1")
-                .content("내용1")
-                .build();
-        post.updateUser(user);
-        postRepository.save(post);
-
         PostUpdateRequest postUpdateRequest = new PostUpdateRequest("제목변경", "내용변경");
+        PostResponse postResponse = new PostResponse(1L, "제목변경", "내용변경", 1L);
+        given(postService.update(anyLong(), any())).willReturn(postResponse);
 
         //when -> then
-        mockMvc.perform(patch("/api/v1/posts/{id}", post.getId())
+        mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/v1/posts/{id}", 1L)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postUpdateRequest)))
                 .andExpect(status().isOk())
@@ -293,17 +265,11 @@ class PostApiControllerTest {
     void updatePostFailTest_notFoundPost() throws Exception {
 
         //given
-        Post post = Post.builder()
-                .title("제목1")
-                .content("내용1")
-                .build();
-        post.updateUser(user);
-        postRepository.save(post);
-
         PostUpdateRequest postUpdateRequest = new PostUpdateRequest("제목변경", "내용변경");
 
+        given(postService.update(anyLong(), any())).willThrow(new BusinessServiceException(ErrorCode.NOT_FOUND_POST));
         //when -> then
-        mockMvc.perform(patch("/api/v1/posts/{id}", 100L)
+        mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/v1/posts/{id}", 100L)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postUpdateRequest)))
                 .andExpect(status().isNotFound())
@@ -320,7 +286,7 @@ class PostApiControllerTest {
                         responseFields(
                                 fieldWithPath("httpStatus").type(STRING).description("상태 코드"),
                                 fieldWithPath("message").type(STRING).description("응답 메세지"),
-                                fieldWithPath("valid").type(OBJECT).description("상세 정보")
+                                fieldWithPath("detailsMessage").type(OBJECT).description("상세 정보")
                         )));
     }
 
