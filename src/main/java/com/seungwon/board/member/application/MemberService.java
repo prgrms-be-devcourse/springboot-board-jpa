@@ -18,9 +18,9 @@ public class MemberService {
 
 	public Long create(MemberRequestDto memberRequestDto) {
 		Member member = Member.builder()
-				.age(26)
-				.hobby("운동")
-				.name("한승원")
+				.age(memberRequestDto.age())
+				.hobby(memberRequestDto.hobby())
+				.name(memberRequestDto.name())
 				.build();
 		Member result = memberRepository.save(member);
 		return result.getId();
