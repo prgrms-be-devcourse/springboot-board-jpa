@@ -6,11 +6,11 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 
+import static com.programmers.jpa_board.global.exception.ExceptionMessage.INVALID_TITLE;
+
 @Entity
 @Table(name = "posts")
 public class Post extends BaseEntity {
-    private static final String INVALID_TITLE = "제목 형식이 잘못 되었습니다.";
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -67,7 +67,7 @@ public class Post extends BaseEntity {
 
     private void validateTitleRange(String title) {
         if (isWithinTitleRange(title)) {
-            throw new IllegalArgumentException(INVALID_TITLE);
+            throw new IllegalArgumentException(INVALID_TITLE.getMessage());
         }
     }
 

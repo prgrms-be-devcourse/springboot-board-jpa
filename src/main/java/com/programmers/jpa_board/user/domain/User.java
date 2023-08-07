@@ -15,12 +15,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.programmers.jpa_board.global.exception.ExceptionMessage.INVALID_AGE;
+import static com.programmers.jpa_board.global.exception.ExceptionMessage.INVALID_NAME;
+
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
     private static final Pattern NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z]+$");
-    private static final String INVALID_NAME = "이름 형식이 잘못 되었습니다.";
-    private static final String INVALID_AGE = "나이가 잘못 입력 되었습니다.";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,7 +79,7 @@ public class User extends BaseEntity {
         Matcher matcher = NAME_PATTERN.matcher(name);
 
         if (isValidNameFormat(matcher)) {
-            throw new IllegalArgumentException(INVALID_NAME);
+            throw new IllegalArgumentException(INVALID_NAME.getMessage());
         }
     }
 
@@ -88,7 +89,7 @@ public class User extends BaseEntity {
 
     private void validateNameRange(String name) {
         if (isNameWithinRange(name)) {
-            throw new IllegalArgumentException(INVALID_NAME);
+            throw new IllegalArgumentException(INVALID_NAME.getMessage());
         }
     }
 
@@ -98,7 +99,7 @@ public class User extends BaseEntity {
 
     private void validateAgeRange(int age) {
         if (isWithinAgeRange(age)) {
-            throw new IllegalArgumentException(INVALID_AGE);
+            throw new IllegalArgumentException(INVALID_AGE.getMessage());
         }
     }
 

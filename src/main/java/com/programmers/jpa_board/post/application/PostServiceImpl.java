@@ -14,11 +14,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.programmers.jpa_board.global.exception.ExceptionMessage.NOT_FOUND_POST;
+
 @Transactional(readOnly = true)
 @Service
 public class PostServiceImpl implements PostService {
-    private static final String NOT_FOUND_POST = "게시글이 존재하지 않습니다.";
-
     private final PostRepository postRepository;
     private final UserProviderService userService;
 
@@ -42,7 +42,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse getOne(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundException(NOT_FOUND_POST));
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_POST.getMessage()));
 
         return PostConverter.toDto(post);
     }
@@ -57,7 +57,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse update(Long postId, UpdatePostRequest request) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundException(NOT_FOUND_POST));
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_POST.getMessage()));
 
         post.update(request.title(), request.content());
 
