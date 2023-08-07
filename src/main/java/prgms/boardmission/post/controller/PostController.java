@@ -32,27 +32,27 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping("/")
-    public ApiResponse<Long> save(@RequestBody PostDto postDto) {
-        Long id = postService.save(postDto);
+    @PostMapping("")
+    public ApiResponse<Long> save(@RequestBody PostDto.Request request) {
+        Long id = postService.save(request);
         return ApiResponse.ok(id);
     }
 
-    @GetMapping("/")
-    public ApiResponse<Page<PostDto>> findAll(Pageable pageable) {
-        Page<PostDto> postDtoPage = postService.findAll(pageable);
+    @GetMapping("")
+    public ApiResponse<Page<PostDto.Response>> findAll(Pageable pageable) {
+        Page<PostDto.Response> postDtoPage = postService.findAll(pageable);
         return ApiResponse.ok(postDtoPage);
     }
 
     @GetMapping("/{postId}")
     public ApiResponse<PostDto> findById(@PathVariable long postId) {
-        PostDto postDto = postService.findById(postId);
+        PostDto.Response postDto = postService.findById(postId);
         return ApiResponse.ok(postDto);
     }
 
     @PatchMapping("/{postId}")
-    public ApiResponse<Long> update(@PathVariable long postId, PostUpdateDto postUpdateDto) {
-        Long updateId = postService.updatePost(postId, postUpdateDto);
-        return ApiResponse.ok(updateId);
+    public ApiResponse<PostUpdateDto.Response> update(@PathVariable long postId, PostUpdateDto.Request request) {
+        PostUpdateDto.Response postUpdateDto = postService.updatePost(postId, request);
+        return ApiResponse.ok(postUpdateDto);
     }
 }

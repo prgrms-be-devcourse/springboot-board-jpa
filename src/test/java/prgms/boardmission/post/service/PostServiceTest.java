@@ -22,7 +22,7 @@ class PostServiceTest {
     private PostService postService;
 
     private MemberDto memberDto;
-    private PostDto postDto;
+    private PostDto.Request postDto;
 
     private PageRequest pageable = PageRequest.of(0, 10);
 
@@ -39,7 +39,7 @@ class PostServiceTest {
         String title = "title";
         String content = "content";
 
-        postDto = new PostDto(title, content, memberDto);
+        postDto = new PostDto.Request(title, content, memberDto);
 
         postService.save(postDto);
     }
@@ -51,11 +51,11 @@ class PostServiceTest {
         String title = "another title";
         String content = "another content";
 
-        PostDto newPostDto = new PostDto(title, content, memberDto);
+        PostDto.Request newPostDto = new PostDto.Request(title, content, memberDto);
         postService.save(newPostDto);
 
         //When
-        Page<PostDto> allPosts = postService.findAll(pageable);
+        Page<PostDto.Response> allPosts = postService.findAll(pageable);
 
         //Then
         Assertions.assertEquals(2, allPosts.getTotalElements());
@@ -66,7 +66,7 @@ class PostServiceTest {
         @Test
         void findById_success() {
             //When
-            PostDto post = postService.findById(1L);
+            PostDto.Response post = postService.findById(1L);
 
             //Then
             Assertions.assertEquals("title", post.title());
@@ -81,7 +81,7 @@ class PostServiceTest {
     @Test
     void findAll() {
         //When
-        Page<PostDto> allPosts = postService.findAll(pageable);
+        Page<PostDto.Response> allPosts = postService.findAll(pageable);
 
         //Then
         Assertions.assertEquals(1, allPosts.getTotalPages());
@@ -93,10 +93,11 @@ class PostServiceTest {
         String editTitle = "edit title";
         String editContent = "edit content";
 
-        PostUpdateDto postUpdateDto = new PostUpdateDto(editTitle,editContent);
+        PostUpdateDto.Request postUpdateDto = new PostUpdateDto.Request(editTitle,editContent);
         //When
         postService.updatePost(1L, postUpdateDto);
-        PostDto editPost = postService.findById(1L);
+
+        PostDto.Response editPost = postService.findById(1L);
 
         //Then
         Assertions.assertEquals(editContent, editPost.content());

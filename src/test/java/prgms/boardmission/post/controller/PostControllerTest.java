@@ -40,7 +40,7 @@ class PostControllerTest {
     @Autowired
     private PostService postService;
     private MemberDto memberDto;
-    private PostDto postDto;
+    private PostDto.Request postDto;
 
     @BeforeEach
     void setUp() {
@@ -53,7 +53,7 @@ class PostControllerTest {
         String title = "title";
         String content = "content";
 
-        postDto = new PostDto(title, content, memberDto);
+        postDto = new PostDto.Request(title, content, memberDto);
 
         postService.save(postDto);
     }
@@ -75,9 +75,8 @@ class PostControllerTest {
                                 fieldWithPath("memberDto.hobby").type(JsonFieldType.STRING).description("memberDto.hobby")
                         ),
                         responseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
-                                fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답시간")
+                                fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태코드"),
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터")
                         )
                 ));
     }
@@ -90,16 +89,13 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(document("post-findAll",
                         responseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                                fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태코드"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
-                                fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답시간"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
                                 fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("데이터"),
-                                fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("postId"),
-                                fieldWithPath("data.content[].memberDto").type(JsonFieldType.OBJECT).description("memberDto"),
-                                fieldWithPath("data.content[].memberDto.name").type(JsonFieldType.STRING).description("name"),
-                                fieldWithPath("data.content[].memberDto.age").type(JsonFieldType.NUMBER).description("age"),
-                                fieldWithPath("data.content[].memberDto.hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("data.content[].postId").type(JsonFieldType.NUMBER).description("postId"),
+                                fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("createdAt"),
                                 fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("title"),
 
                                 fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("pageable"),
@@ -138,15 +134,12 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(document("post-findById",
                         responseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
+                                fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태코드"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
-                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
                                 fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
-                                fieldWithPath("data.memberDto").type(JsonFieldType.OBJECT).description("memberDto"),
-                                fieldWithPath("data.memberDto.name").type(JsonFieldType.STRING).description("memberDto.name"),
-                                fieldWithPath("data.memberDto.age").type(JsonFieldType.NUMBER).description("memberDto.age"),
-                                fieldWithPath("data.memberDto.hobby").type(JsonFieldType.STRING).description("memberDto.hobby"),
-                                fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답시간")
+                                fieldWithPath("data.postId").type(JsonFieldType.NUMBER).description("postId"),
+                                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("createdAt"),
+                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("title")
                         )
                 ));
     }
@@ -156,7 +149,7 @@ class PostControllerTest {
         String editTitle = "edit title";
         String editContent = "edit content";
 
-        PostUpdateDto postUpdateDto = new PostUpdateDto(editTitle, editContent);
+        PostUpdateDto postUpdateDto = new PostUpdateDto.Request(editTitle, editContent);
 
         mockMvc.perform(MockMvcRequestBuilders.patch(("/posts/{postId}"), 1L)
                         .contentType(MediaType.APPLICATION_JSON)

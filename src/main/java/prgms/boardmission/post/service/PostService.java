@@ -11,6 +11,8 @@ import prgms.boardmission.post.dto.PostUpdateDto;
 import prgms.boardmission.post.exception.NotFoundPostException;
 import prgms.boardmission.post.repository.PostRepository;
 
+import java.time.LocalDateTime;
+
 @Service
 @Transactional
 public class PostService {
@@ -22,34 +24,34 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public long save(PostDto postDto) {
-        Post newPost = PostConverter.convertToPost(postDto);
-        Post Post = postRepository.save(newPost);
+    public long save(PostDto.Request request) {
+        Post newPost = PostConverter.convertToPost(request);
+        postRepository.save(newPost);
 
         return newPost.getId();
     }
 
     @Transactional(readOnly = true)
-    public Page<PostDto> findAll(Pageable pageable) {
+    public Page<PostDto.Response> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(PostConverter::convertToPostDto);
     }
 
     @Transactional(readOnly = true)
-    public PostDto findById(long postId) {
+    public PostDto.Response findById(long postId) {
         return postRepository.findById(postId)
                 .map(PostConverter::convertToPostDto)
                 .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
     }
 
-    public Long updatePost(Long postId, PostUpdateDto postUpdateDto) {
+    public PostUpdateDto.Response updatePost(Long postId, PostUpdateDto.Request request) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
 
-        String editTitle = postUpdateDto.title();
-        String editContent = postUpdateDto.content();
+        String editTitle = request.title();
+        String editContent = request.content();
         post.updatePost(editTitle, editContent);
 
-        return post.getId();
+        return new PostUpdateDto.Response(post.getId(), LocalDateTime.now());
     }
 }
