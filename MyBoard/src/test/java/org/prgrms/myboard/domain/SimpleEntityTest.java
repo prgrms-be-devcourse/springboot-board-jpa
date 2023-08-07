@@ -46,7 +46,7 @@ public class SimpleEntityTest {
         entityTransaction.begin();
         User user = User.builder()
             .name("구범모")
-            .age(21)
+            .age(21)    
             .build();
 
         // when
@@ -63,17 +63,15 @@ public class SimpleEntityTest {
     void insert_board_test() {
         // given
         entityTransaction.begin();
-        Post post = new Post("testBoard", "this_is_test");
         User user = User.builder()
             .age(27)
             .name("구범모형")
             .hobby("구범모랑놀기")
             .build();
+        Post post = new Post("testBoard", "this_is_test", user);
 
         // when
-        post.allocateUser(user);
         entityManager.persist(user);
-//        entityManager.persist(board);
 
         // then
         entityTransaction.commit();
@@ -86,13 +84,18 @@ public class SimpleEntityTest {
     void board_must_have_user() {
         // given
         entityTransaction.begin();
-        Post board = new Post("No_author_board", "No_author_board");
+        User user = User.builder()
+            .name("구범모")
+            .age(21)
+            .build();
+        Post post = new Post("No_author_board", "No_author_board", user);
 
         // when
-//        entityManager.persist(board);
+        entityManager.persist(post);
 
         // then
         assertThrows(ConstraintViolationException.class,
-            () -> entityManager.persist(board));
+            () -> entityManager.persist(post));
+        entityTransaction.commit();
     }
 }
