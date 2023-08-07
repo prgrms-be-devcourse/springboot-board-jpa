@@ -44,7 +44,10 @@ public class MemberService {
 
     public MemberResponseDto getMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> {
+                    log.error("MemberService : Member {} is not found",memberId);
+                    return new MemberException(ErrorCode.MEMBER_NOT_FOUND);
+                });
 
         return MemberConverter.convertMemberResponseDto(member);
     }
@@ -52,7 +55,10 @@ public class MemberService {
     @Transactional
     public void updateMember(Long memberId, MemberUpdateRequestDto updateRequestDto) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> {
+                    log.error("MemberService : Member {} is not found",memberId);
+                    return new MemberException(ErrorCode.MEMBER_NOT_FOUND);
+                });
 
         member.updateInfo(updateRequestDto.name(), updateRequestDto.age(), updateRequestDto.hobby());
     }
@@ -60,6 +66,7 @@ public class MemberService {
     @Transactional
     public void deleteMember(Long memberId) {
         if (!memberRepository.existsById(memberId)) {
+            log.error("MemberService : Member {} is not found",memberId);
             throw new MemberException(ErrorCode.MEMBER_NOT_FOUND);
         }
 

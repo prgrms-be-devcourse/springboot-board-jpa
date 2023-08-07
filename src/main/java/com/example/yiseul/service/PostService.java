@@ -8,6 +8,7 @@ import com.example.yiseul.dto.post.PostPageResponseDto;
 import com.example.yiseul.dto.post.PostResponseDto;
 import com.example.yiseul.dto.post.PostUpdateRequestDto;
 import com.example.yiseul.global.exception.ErrorCode;
+import com.example.yiseul.global.exception.MemberException;
 import com.example.yiseul.global.exception.PostException;
 import com.example.yiseul.repository.MemberRepository;
 import com.example.yiseul.repository.PostRepository;
@@ -27,7 +28,11 @@ public class PostService {
 
     @Transactional
     public PostResponseDto createPost(PostCreateRequestDto createRequestDto){
-        Member member = memberRepository.findById(createRequestDto.memberId()).orElseThrow(IllegalArgumentException::new);
+        Member member = memberRepository.findById(createRequestDto.memberId())
+                .orElseThrow(() -> {
+                    log.error("PostService : Member {} is not found",createRequestDto.memberId());
+                    throw new MemberException(ErrorCode.MEMBER_NOT_FOUND);
+                });
         Post post = PostConverter.convertPost(member, createRequestDto);
         postRepository.save(post);
 
@@ -42,7 +47,10 @@ public class PostService {
 
     public PostResponseDto getPost(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new PostException(ErrorCode.POST_NOT_FOUND));
+                .orElseThrow(() -> {
+                    log.error("PostService : Post {} is not found", postId);
+                    return new PostException(ErrorCode.POST_NOT_FOUND);
+                });
 
         return PostConverter.convertPostResponseDto(post);
     }
@@ -50,7 +58,10 @@ public class PostService {
     @Transactional
     public void updatePost(Long postId, PostUpdateRequestDto updateRequestDto) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new PostException(ErrorCode.POST_NOT_FOUND));
+                .orElseThrow(() -> {
+                            log.error("PostService : Post {} is not found", postId);
+                            return new PostException(ErrorCode.POST_NOT_FOUND);
+                });
 
         post.updatePost(updateRequestDto.title(), updateRequestDto.content());
     }

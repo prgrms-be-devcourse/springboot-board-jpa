@@ -43,6 +43,9 @@ class PostControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @MockBean
     private PostService postService;
 
@@ -65,9 +68,9 @@ class PostControllerTest {
         //when,then
         mvc.perform(post("/api/posts")
                         .contentType(APPLICATION_JSON)
-                        .content(asJsonString(createRequestDto)))
+                        .content(objectMapper.writeValueAsString(createRequestDto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(responseDto)))
+                .andExpect(content().string(objectMapper.writeValueAsString(responseDto)))
 
                 .andDo(document("post-create",
                         requestFields(
@@ -105,7 +108,7 @@ class PostControllerTest {
                         .param("page", String.valueOf(pageable.getPageNumber()))
                         .param("size", String.valueOf(pageable.getPageSize())))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(responseDto)))
+                .andExpect(content().string(objectMapper.writeValueAsString(responseDto)))
 
                 .andDo(document("post-getPostsByPage",
                         responseFields(
@@ -136,7 +139,7 @@ class PostControllerTest {
         //when & then
         mvc.perform(get("/api/posts/{postId}", 1))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(responseDto)))
+                .andExpect(content().string(objectMapper.writeValueAsString(responseDto)))
 
                 .andDo(document("post-getPost",
                         responseFields(
@@ -161,7 +164,7 @@ class PostControllerTest {
         // when & then
         mvc.perform(patch("/api/posts/{postId}", 1)
                         .contentType(APPLICATION_JSON)
-                        .content(asJsonString(updateRequestDto)))
+                        .content(objectMapper.writeValueAsString(updateRequestDto)))
                         .andExpect(status().isOk())
 
                         .andDo(document("post-update",
@@ -186,9 +189,4 @@ class PostControllerTest {
                 .andDo(document("post-delete"));
     }
 
-    private String asJsonString(Object obj) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-
-        return mapper.writeValueAsString(obj);
-    }
 }

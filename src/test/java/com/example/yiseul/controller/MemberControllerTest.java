@@ -45,6 +45,9 @@ class MemberControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @MockBean
     private MemberService memberService;
 
@@ -71,9 +74,9 @@ class MemberControllerTest {
         //when,then
         mvc.perform(post("/api/members")
                 .contentType(APPLICATION_JSON)
-                .content(asJsonString(createRequestDto)))
+                .content(objectMapper.writeValueAsString(createRequestDto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(responseDto1)))
+                .andExpect(content().string(objectMapper.writeValueAsString(responseDto1)))
 
                 .andDo(document("member-signup",
                         requestFields(
@@ -108,7 +111,7 @@ class MemberControllerTest {
                 .param("page", String.valueOf(pageable.getPageNumber()))
                 .param("size", String.valueOf(pageable.getPageSize())))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(responseDto)))
+                .andExpect(content().string(objectMapper.writeValueAsString(responseDto)))
 
                 .andDo(document("member-getMembersByPage",
                         responseFields(
@@ -138,7 +141,7 @@ class MemberControllerTest {
         //when & then
         mvc.perform(get("/api/members/{memberId}", 1))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(responseDto1)))
+                .andExpect(content().string(objectMapper.writeValueAsString(responseDto1)))
 
                 .andDo(document("member-getMember",
                         responseFields(
@@ -164,7 +167,7 @@ class MemberControllerTest {
         // when & then
         mvc.perform(patch("/api/members/{memberId}", 1)
                         .contentType(APPLICATION_JSON)
-                        .content(asJsonString(updateRequestDto)))
+                        .content(objectMapper.writeValueAsString(updateRequestDto)))
                         .andExpect(status().isOk())
 
                         .andDo(document("member-update",
@@ -200,7 +203,7 @@ class MemberControllerTest {
         mvc.perform(get("/api/members/cursor")
                 .param("cursorId", cursorId != null ? cursorId : "0"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(responseDtos)))
+                .andExpect(content().string(objectMapper.writeValueAsString(responseDtos)))
 
                 .andDo(document("member-getMembersByCursor",
                         responseFields(
@@ -213,12 +216,6 @@ class MemberControllerTest {
                         )
                 ));
 
-    }
-
-    private String asJsonString(Object obj) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-
-        return mapper.writeValueAsString(obj);
     }
 
 }
