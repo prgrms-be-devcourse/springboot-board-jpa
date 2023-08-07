@@ -12,10 +12,9 @@ public final class PostConverter {
     public static Post convertToPost(PostDto postDto) {
         String title = postDto.title();
         String content = postDto.content();
-        String memberName = postDto.memberDto().name();
         Member member = MemberConverter.convertToMember(postDto.memberDto());
 
-        Post post = new Post(title, content, memberName, member);
+        Post post = new Post(title, content, member);
 
         return post;
     }
