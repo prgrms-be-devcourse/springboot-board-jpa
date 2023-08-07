@@ -77,7 +77,7 @@ class PostControllerTest {
             PageRequest pageRequest = PageRequest.of(page, size);
             PageImpl<PostDto> postDtos = new PageImpl<>(List.of(givenPost), pageRequest, 1);
 
-            given(postService.findPosts(any())).willReturn(postDtos);
+            given(postService.findPosts(pageRequest)).willReturn(postDtos);
 
             //when
             ResultActions resultActions = mvc.perform(get("/api/v1/posts")
@@ -106,24 +106,6 @@ class PostControllerTest {
                                     fieldWithPath("user.age").type(JsonFieldType.NUMBER).description("작성자 나이"),
                                     fieldWithPath("user.hobby").type(JsonFieldType.STRING).description("작성자 취미")
                             )));
-        }
-
-        @Test
-        @DisplayName("실패(400): 잘못된 범위의 페이지 번호")
-        void findPosts_ButPageOutOfRange() throws Exception {
-            //given
-            int pageOutOfRange = -1;
-            int sizeOutOfRange = 0;
-
-            //when
-            ResultActions resultActions = mvc.perform(get("/api/v1/posts")
-                            .param("page", String.valueOf(pageOutOfRange))
-                            .param("size", String.valueOf(sizeOutOfRange)))
-                    .andDo(print());
-
-            //then
-            resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").isString());
         }
     }
 

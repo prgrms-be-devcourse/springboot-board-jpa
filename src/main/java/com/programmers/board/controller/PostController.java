@@ -7,13 +7,13 @@ import com.programmers.board.controller.response.Result;
 import com.programmers.board.dto.PostDto;
 import com.programmers.board.dto.request.PostCreateRequest;
 import com.programmers.board.dto.request.PostUpdateRequest;
-import com.programmers.board.dto.request.PostsGetRequest;
 import com.programmers.board.dto.service.post.*;
 import com.programmers.board.exception.AuthenticationException;
 import com.programmers.board.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +27,8 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PageResult<PostDto> findPosts(@ModelAttribute @Valid PostsGetRequest request) {
-        PostsGetCommand command = PostsGetCommand.from(request);
-        Page<PostDto> posts = postService.findPosts(command);
+    public PageResult<PostDto> findPosts(Pageable pageable) {
+        Page<PostDto> posts = postService.findPosts(pageable);
         return new PageResult<>(posts);
     }
 

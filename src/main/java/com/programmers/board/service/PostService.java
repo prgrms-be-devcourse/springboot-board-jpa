@@ -10,6 +10,7 @@ import com.programmers.board.repository.PostRepository;
 import com.programmers.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +38,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostDto> findPosts(PostsGetCommand command) {
-        Page<Post> posts = postRepository.findAllWithUser(command.getPageable());
+    public Page<PostDto> findPosts(Pageable pageable) {
+        Page<Post> posts = postRepository.findAllWithUser(pageable);
         return posts.map(PostDto::from);
     }
 

@@ -96,12 +96,11 @@ class PostServiceTest {
         int size = 1;
         PageRequest pageRequest = PageRequest.of(page, size);
         PageImpl<Post> posts = new PageImpl<>(List.of(givenPost), pageRequest, 1);
-        PostsGetCommand command = PostsGetCommand.of(page, size);
 
         given(postRepository.findAllWithUser(pageRequest)).willReturn(posts);
 
         //when
-        Page<PostDto> postPage = postService.findPosts(command);
+        Page<PostDto> postPage = postService.findPosts(pageRequest);
 
         //then
         assertThat(postPage.getContent()).hasSize(1);

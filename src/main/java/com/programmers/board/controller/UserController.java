@@ -7,13 +7,13 @@ import com.programmers.board.controller.response.Result;
 import com.programmers.board.dto.UserDto;
 import com.programmers.board.dto.request.UserCreateRequest;
 import com.programmers.board.dto.request.UserUpdateRequest;
-import com.programmers.board.dto.request.UsersGetRequest;
 import com.programmers.board.dto.service.*;
 import com.programmers.board.exception.AuthenticationException;
 import com.programmers.board.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +25,8 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PageResult<UserDto> findUsers(@ModelAttribute @Valid UsersGetRequest request) {
-        UsersGetCommand command = UsersGetCommand.from(request);
-        Page<UserDto> users = userService.findUsers(command);
+    public PageResult<UserDto> findUsers(Pageable pageable) {
+        Page<UserDto> users = userService.findUsers(pageable);
         return new PageResult<>(users);
     }
 

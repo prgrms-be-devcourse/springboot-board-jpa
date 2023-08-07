@@ -101,17 +101,6 @@ class UserControllerTest {
                                     fieldWithPath("hobby").type(JsonFieldType.STRING).description("회원 취미")
                             )));
         }
-
-        @Test
-        @DisplayName("실패(400): 잘못된 범위의 페이지 번호")
-        void findUsers_ButInvalidPage() throws Exception {
-            ResultActions resultActions = mvc.perform(get("/api/v1/users")
-                            .param("page", "-1")
-                            .param("size", "0"))
-                    .andDo(print());
-
-            resultActions.andExpect(status().isBadRequest());
-        }
     }
 
     @Nested

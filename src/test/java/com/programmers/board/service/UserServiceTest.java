@@ -6,7 +6,6 @@ import com.programmers.board.domain.User;
 import com.programmers.board.dto.UserDto;
 import com.programmers.board.dto.service.UserCreateCommand;
 import com.programmers.board.dto.service.UserUpdateCommand;
-import com.programmers.board.dto.service.UsersGetCommand;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -124,12 +123,11 @@ class UserServiceTest {
         int size = 1;
         PageRequest pageRequest = PageRequest.of(page, size);
         PageImpl<User> givenResult = new PageImpl<>(List.of(givenUser), pageRequest, 1);
-        UsersGetCommand command = UsersGetCommand.of(page, size);
 
         given(userRepository.findAll(any(PageRequest.class))).willReturn(givenResult);
 
         //when
-        Page<UserDto> users = userService.findUsers(command);
+        Page<UserDto> users = userService.findUsers(pageRequest);
 
         //then
         assertThat(users.getContent()).hasSize(1);

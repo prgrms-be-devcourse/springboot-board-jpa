@@ -7,12 +7,12 @@ import com.programmers.board.domain.User;
 import com.programmers.board.dto.UserDto;
 import com.programmers.board.dto.service.UserCreateCommand;
 import com.programmers.board.dto.service.UserUpdateCommand;
-import com.programmers.board.dto.service.UsersGetCommand;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,8 +47,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserDto> findUsers(UsersGetCommand command) {
-        Page<User> users = userRepository.findAll(command.getPageable());
+    public Page<UserDto> findUsers(Pageable pageable) {
+        Page<User> users = userRepository.findAll(pageable);
         return users.map(UserDto::from);
     }
 
