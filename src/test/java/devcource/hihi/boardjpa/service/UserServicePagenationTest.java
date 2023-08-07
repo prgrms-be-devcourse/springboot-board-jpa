@@ -5,6 +5,7 @@ import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
 import devcource.hihi.boardjpa.repository.UserRepository;
 import devcource.hihi.boardjpa.test.UserRepositoryTestHelper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -39,6 +40,7 @@ class UserServicePagenationTest {
     }
 
     @Test
+    @DisplayName("오프셋 방식으로 페이지를 조회한다.")
     void testGetUsersWithPagination() {
 
         //given

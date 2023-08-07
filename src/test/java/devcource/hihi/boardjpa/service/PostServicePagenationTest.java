@@ -5,6 +5,7 @@ import devcource.hihi.boardjpa.dto.post.PageCursorDto;
 import devcource.hihi.boardjpa.repository.PostRepository;
 import devcource.hihi.boardjpa.test.PostRepositoryTestHelper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,6 +35,7 @@ public class PostServicePagenationTest {
     }
 
     @Test
+    @DisplayName("커서 방식으로 페이지를 조회한다.")
     public void testGetPostsByCursor() {
 
         List<Post> samplePosts = PostRepositoryTestHelper.createSamplePosts(10);

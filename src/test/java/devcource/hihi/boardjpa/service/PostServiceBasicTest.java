@@ -20,7 +20,7 @@ public class PostServiceBasicTest {
     private PostService postService;
 
     @Test
-    @DisplayName("")
+    @DisplayName("post를 저장한다.")
     public void saveTest(){
         //given
         User user = new User("테스트용 고객",45,"숨쉬기");

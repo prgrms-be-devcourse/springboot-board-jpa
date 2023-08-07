@@ -3,6 +3,7 @@ package devcource.hihi.boardjpa.service;
 import devcource.hihi.boardjpa.domain.User;
 import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
 import devcource.hihi.boardjpa.repository.UserRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,7 @@ class UserServiceBasicTest {
 
 
     @Test
+    @DisplayName("고객을 저장한다.")
     public void saveTest() {
         //given
         User user = User.builder()
@@ -36,6 +38,7 @@ class UserServiceBasicTest {
     }
 
     @Test
+    @DisplayName("id로 고객을 조회한다.")
     public void findById() {
         //given
         User user = User.builder()
