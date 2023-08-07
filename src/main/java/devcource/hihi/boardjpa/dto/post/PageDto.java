@@ -11,6 +11,5 @@ public class PageDto<T> {
     private List<T> data;
     private Long prevCursor;
     private Long nextCursor;
-
 }
 
