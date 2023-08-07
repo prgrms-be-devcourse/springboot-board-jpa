@@ -48,6 +48,7 @@ public class Post extends BaseEntity {
 		this.title = title;
 		this.content = content;
 		this.writer = writer;
+		createdBy = writer.getName();
 	}
 
 	private void validateTitle(String title) {
