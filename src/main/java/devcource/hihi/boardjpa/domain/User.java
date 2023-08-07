@@ -3,6 +3,7 @@ package devcource.hihi.boardjpa.domain;
 import devcource.hihi.boardjpa.dto.user.CreateUserDto;
 import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,6 +27,7 @@ public class User extends BaseEntity{
     private String name;
 
     @NotNull
+    @Min(value = 1)
     private Integer age;
 
     private String hobby;
