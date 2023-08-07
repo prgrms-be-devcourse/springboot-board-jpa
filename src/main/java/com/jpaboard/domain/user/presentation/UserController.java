@@ -27,7 +27,7 @@ public class UserController {
         return ResponseEntity.ok(userService.findUserById(id));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Void> userUpdate(@PathVariable Long id, @RequestBody @Valid UserUpdateRequest request) {
         userService.updateUser(id, request);
         return ResponseEntity.ok().build();

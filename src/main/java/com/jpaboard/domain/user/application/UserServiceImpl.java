@@ -36,8 +36,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(Long id, UserUpdateRequest request) {
         User user = userRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        User forUpdate = UserConverter.convertRequestToEntity(request);
-        user.update(forUpdate);
+        user.update(request.name(), request.age(), request.hobby());
     }
 
     @Transactional

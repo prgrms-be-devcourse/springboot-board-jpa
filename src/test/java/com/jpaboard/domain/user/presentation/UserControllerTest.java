@@ -97,7 +97,7 @@ class UserControllerTest {
     void testUserUpdate() throws Exception {
         UserUpdateRequest request = new UserUpdateRequest("수정된 이름", 100, "수정된 취미");
 
-        mockMvc.perform(put("/api/users/{id}", userId)
+        mockMvc.perform(patch("/api/users/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isOk())
