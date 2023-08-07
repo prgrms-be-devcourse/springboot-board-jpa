@@ -22,10 +22,11 @@ public final class PostConverter {
     public static PostResponse convertEntityToResponse(Post post) {
         return PostResponse.builder()
                 .id(post.getId())
+                .name(post.getUser().getName())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .create_at(post.getCreateAt())
-                .update_at(post.getUpdateAt())
+                .createAt(post.getCreateAt())
+                .updateAt(post.getUpdateAt())
                 .build();
     }
 
