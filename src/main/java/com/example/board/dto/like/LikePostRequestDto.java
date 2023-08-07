@@ -8,9 +8,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -22,8 +21,7 @@ public class LikePostRequestDto {
     @NotNull
     private Long userId;
     @NotNull
-    @Min(0)
-    @Max(1)
+    @Range(min = 0, max = 1, message = "값은 0에서 1 사이의 정수만 가능합니다")
     private Integer likeType;
 
     public PostLike toEntity(User user, Post post) {
