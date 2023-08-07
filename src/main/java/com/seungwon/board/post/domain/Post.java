@@ -52,7 +52,7 @@ public class Post extends BaseEntity {
 	}
 
 	private void validateTitle(String title) {
-		if (title.length() > TITLE_MAX_LENGTH || title.isEmpty()) {
+		if (title.length() > TITLE_MAX_LENGTH || title.isBlank()) {
 			throw new InvalidDataException(
 					MessageFormat.format("입력된 제목={0}자. 제목은 최대 {1}자 입력 가능합니다.", title.length(), TITLE_MAX_LENGTH));
 		}

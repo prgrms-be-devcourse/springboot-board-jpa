@@ -51,7 +51,7 @@ public class Member extends BaseEntity {
 			throw new InvalidDataException(
 					MessageFormat.format("입력된 이름={0}. 이름에는 문자만 입력 가능합니다.", name));
 		}
-		if (name.length() > 10 || name.isEmpty()) {
+		if (name.length() > 10 || name.isBlank()) {
 			throw new InvalidDataException(
 					MessageFormat.format("입력된 이름={0}자. 이름은 최대 {1}자 입력 가능합니다.", name.length(), NAME_MAX_LENGTH));
 		}
@@ -65,7 +65,7 @@ public class Member extends BaseEntity {
 	}
 
 	private void validateHobby(String hobby) {
-		if (hobby.length() > 100 || hobby.isEmpty()) {
+		if (hobby.length() > 100 || hobby.isBlank()) {
 			throw new InvalidDataException(
 					MessageFormat.format("입력된 취미={0}자. 취미는 최대 {1}자 입력 가능합니다.", hobby.length(), HOBBY_MAX_LENGTH));
 		}
