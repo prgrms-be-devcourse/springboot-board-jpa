@@ -13,12 +13,10 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.request.RequestDocumentation;
-import org.springframework.restdocs.request.RequestPartDescriptor;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -37,9 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureRestDocs
 @MockBean(JpaMetamodelMappingContext.class)
-//@ExtendWith(MockitoExtension.class)
-//@AutoConfigureMockMvc
-//@SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @WebMvcTest(PostRestController.class)
 public class RestdocsTest {
@@ -159,12 +154,12 @@ public class RestdocsTest {
         OffsetResult<PostResponseDto> offsetResult = new OffsetResult<>(1, 1, 2, postResponseDtos);
 
         // when
-        when(postService.findPostsByOffsetPagination(any())).thenReturn(offsetResult);
+        when(postService.findPostsByOffsetPagination(anyInt(), anyInt())).thenReturn(offsetResult);
 
         // then
         mockMvc.perform(RestDocumentationRequestBuilders.get("/posts?page={page}&pageSize={pageSize}", 1, 10))
             .andExpect(status().isOk()) // 200
-//            .andDo(print())
+            .andDo(print())
             .andDo(document("post-offsetPagination",
                 RequestDocumentation.queryParameters(
                     parameterWithName("page").description("Index of Page"),

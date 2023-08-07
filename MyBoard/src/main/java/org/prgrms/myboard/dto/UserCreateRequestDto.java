@@ -1,6 +1,5 @@
 package org.prgrms.myboard.dto;
 
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import org.prgrms.myboard.domain.User;
