@@ -3,8 +3,6 @@ package com.example.board.domain.entity;
 
 import com.example.board.domain.BaseTime;
 import com.example.board.dto.post.PostRequestDto;
-import com.example.board.dto.post.PostResponseDto;
-import com.example.board.dto.post.PostWithCommentResponseDto;
 import lombok.*;
 
 import javax.persistence.*;

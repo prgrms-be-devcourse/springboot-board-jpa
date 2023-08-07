@@ -2,7 +2,6 @@ package com.example.board.domain.entity;
 
 
 import com.example.board.domain.BaseTime;
-import com.example.board.dto.comment.CommentResponseDto;
 import lombok.*;
 
 import javax.persistence.*;
