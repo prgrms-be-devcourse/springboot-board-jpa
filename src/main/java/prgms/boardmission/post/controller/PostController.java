@@ -2,6 +2,7 @@ package prgms.boardmission.post.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,7 +23,7 @@ public class PostController {
 
     @ExceptionHandler(NoSuchElementException.class)
     public ApiResponse<String> notFoundHandler(NoSuchElementException e) {
-        return ApiResponse.fail(404, e.getMessage());
+        return ApiResponse.fail(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
     public PostController(PostService postService) {

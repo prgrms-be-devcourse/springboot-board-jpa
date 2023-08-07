@@ -1,27 +1,28 @@
 package prgms.boardmission;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
 public class ApiResponse<T> {
-    private int statusCode;
+    private HttpStatus statusCode;
     private T data;
 
-    public ApiResponse(int statusCode, T data) {
+    public ApiResponse(HttpStatus statusCode, T data) {
         this.statusCode = statusCode;
         this.data = data;
     }
 
     public static <T> ApiResponse<T> ok(T data) {
-        return new ApiResponse<>(200, data);
+        return new ApiResponse<>(HttpStatus.OK, data);
     }
 
-    public static <T> ApiResponse<T> fail(int statusCode, T data) {
+    public static <T> ApiResponse<T> fail(HttpStatus statusCode, T data) {
         return new ApiResponse<>(statusCode, data);
     }
 
-    public int getStatusCode() {
+    public HttpStatus getStatusCode() {
         return statusCode;
     }
 
