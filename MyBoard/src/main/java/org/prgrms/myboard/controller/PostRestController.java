@@ -10,7 +10,6 @@ import org.prgrms.myboard.dto.PostCreateRequestDto;
 import org.prgrms.myboard.dto.PostResponseDto;
 import org.prgrms.myboard.dto.PostUpdateRequestDto;
 import org.prgrms.myboard.service.PostService;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 public class PostRestController {
-    private static final int PAGE_BASE_OFFSET = 1;
+    private static final int BASE_OFFSET = 1;
     private final PostService postService;
 
     @PostMapping
@@ -54,8 +53,9 @@ public class PostRestController {
     public ResponseEntity<OffsetResult<PostResponseDto>> getPostsByOffsetPagination(
         @Min(value = 1, message = "page값은 최소 1입니다.") @RequestParam(value = "page") int page,
         @Min(value = 1, message = "pageSize값은 최소 1입니다.") @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        int baseIndex = page - BASE_OFFSET;
         return ResponseEntity.ok(postService.findPostsByOffsetPagination(
-            page - PAGE_BASE_OFFSET, pageSize));
+            baseIndex, pageSize));
     }
 
     @GetMapping("/user/{userId}")
