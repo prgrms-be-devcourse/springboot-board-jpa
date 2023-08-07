@@ -22,13 +22,13 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
-    public ResponseUserDto createDto(CreateUserDto userDto) {
+    public ResponseUserDto createUser(CreateUserDto userDto) {
         User user = userDto.toEntity();
         User savedUser = userRepository.save(user);
         return User.toDtoForResponse(savedUser);
     }
 
-    public ResponseUserDto findById(Long id) {
+    public ResponseUserDto getUser(Long id) {
         User findUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("id에 해당하는 user는 없습니다."));
         return User.toDtoForResponse(findUser);
     }

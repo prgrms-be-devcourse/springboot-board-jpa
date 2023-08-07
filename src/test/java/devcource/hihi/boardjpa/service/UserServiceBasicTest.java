@@ -29,7 +29,7 @@ class UserServiceBasicTest {
                 .build();
 
         //when
-        ResponseUserDto dto = userService.createDto(User.toDtoForCreate(user));
+        ResponseUserDto dto = userService.createUser(User.toDtoForCreate(user));
 
         //then
         assertEquals(user.getName(), dto.name());
@@ -45,8 +45,8 @@ class UserServiceBasicTest {
                 .build();
 
         //when
-        ResponseUserDto dto = userService.createDto(User.toDtoForCreate(user));
-        ResponseUserDto byId = userService.findById(dto.id());
+        ResponseUserDto dto = userService.createUser(User.toDtoForCreate(user));
+        ResponseUserDto byId = userService.getUser(dto.id());
 
         //then
         assertEquals(dto.id(), byId.id());

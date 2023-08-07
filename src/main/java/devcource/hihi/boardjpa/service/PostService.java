@@ -3,7 +3,7 @@ package devcource.hihi.boardjpa.service;
 import devcource.hihi.boardjpa.domain.Post;
 import devcource.hihi.boardjpa.domain.User;
 import devcource.hihi.boardjpa.dto.post.CreatePostDto;
-import devcource.hihi.boardjpa.dto.post.PageDto;
+import devcource.hihi.boardjpa.dto.post.PageCursorDto;
 import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import devcource.hihi.boardjpa.dto.post.UpdatePostDto;
 import devcource.hihi.boardjpa.repository.PostRepository;
@@ -51,7 +51,7 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
-    public PageDto<Post> getPostsByCursor(Long cursor, int limit) {
+    public PageCursorDto<Post> getPostsByCursor(Long cursor, int limit) {
         List<Post> posts = postRepository.findByCursor(cursor, limit + 1);
         Long prevCursor = null;
         Long nextCursor = null;
@@ -67,7 +67,7 @@ public class PostService {
             }
         }
 
-        return new PageDto<>(posts, prevCursor, nextCursor);
+        return new PageCursorDto<>(posts, prevCursor, nextCursor);
     }
 
 

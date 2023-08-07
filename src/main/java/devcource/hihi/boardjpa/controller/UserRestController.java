@@ -26,12 +26,12 @@ public class UserRestController {
 
     @PostMapping
     public ResponseEntity<ResponseUserDto> createUser(@Valid @RequestBody CreateUserDto userDto) {
-        return ResponseEntity.ok(userService.createDto(userDto));
+        return ResponseEntity.ok(userService.createUser(userDto));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseUserDto> findByUserId(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.findById(id));
+        return ResponseEntity.ok(userService.getUser(id));
     }
 
     @PostMapping("/{id}")

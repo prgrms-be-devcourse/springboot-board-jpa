@@ -7,7 +7,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class PageDto<T> {
+public class PageCursorDto<T> {
     private List<T> data;
     private Long prevCursor;
     private Long nextCursor;

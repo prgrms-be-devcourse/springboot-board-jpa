@@ -1,11 +1,9 @@
 package devcource.hihi.boardjpa.service;
 
 import devcource.hihi.boardjpa.domain.Post;
-import devcource.hihi.boardjpa.domain.User;
-import devcource.hihi.boardjpa.dto.post.PageDto;
+import devcource.hihi.boardjpa.dto.post.PageCursorDto;
 import devcource.hihi.boardjpa.repository.PostRepository;
 import devcource.hihi.boardjpa.test.PostRepositoryTestHelper;
-import devcource.hihi.boardjpa.test.UserRepositoryTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -45,13 +43,13 @@ public class PostServicePagenationTest {
         when(postRepository.findByCursor(10L, 10 + 1)).thenReturn(samplePosts.subList(10, 15));
 
         // 첫 페이지 조회 테스트
-        PageDto<Post> firstPage = postService.getPostsByCursor(null, 10);
+        PageCursorDto<Post> firstPage = postService.getPostsByCursor(null, 10);
         assertThat(firstPage.getData()).hasSize(10);
         assertThat(firstPage.getPrevCursor()).isNull();
         assertThat(firstPage.getNextCursor()).isEqualTo("10");
 
         // 두 번째 페이지 조회 테스트
-        PageDto<Post> secondPage = postService.getPostsByCursor(10L, 10);
+        PageCursorDto<Post> secondPage = postService.getPostsByCursor(10L, 10);
         assertThat(secondPage.getData()).hasSize(5);
         assertThat(secondPage.getPrevCursor()).isEqualTo("10");
         assertThat(secondPage.getNextCursor()).isNull();

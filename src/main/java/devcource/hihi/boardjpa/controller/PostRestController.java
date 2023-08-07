@@ -2,15 +2,13 @@ package devcource.hihi.boardjpa.controller;
 
 import devcource.hihi.boardjpa.domain.Post;
 import devcource.hihi.boardjpa.dto.post.CreatePostDto;
-import devcource.hihi.boardjpa.dto.post.PageDto;
+import devcource.hihi.boardjpa.dto.post.PageCursorDto;
 import devcource.hihi.boardjpa.dto.post.UpdatePostDto;
 import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import devcource.hihi.boardjpa.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
@@ -22,8 +20,8 @@ public class PostRestController {
         this.postService = postService;
     }
     @GetMapping
-    public PageDto<Post> getPostsByCursor(@RequestParam(value = "cursor", required = false) Long cursor,
-                                          @RequestParam(value = "limit", defaultValue = "10") int limit) {
+    public PageCursorDto<Post> getPostsByCursor(@RequestParam(value = "cursor", required = false) Long cursor,
+                                                @RequestParam(value = "limit", defaultValue = "10") int limit) {
         return postService.getPostsByCursor(cursor, limit);
     }
 
