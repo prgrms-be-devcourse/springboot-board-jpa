@@ -29,15 +29,12 @@ public class Post extends BaseEntity {
     private Member member;
 
     protected Post() {
-
     }
 
-    public Post(String title, String content, String memberName, Member member) {
+    public Post(String title, String content, Member member) {
         this.title = title;
         this.content = content;
         this.member = member;
-        addCreatedBy(memberName);
-        addCratedAt();
     }
 
     public void updatePost(String editTitle, String editContent) {
