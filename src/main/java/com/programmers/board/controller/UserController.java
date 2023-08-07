@@ -1,6 +1,7 @@
 package com.programmers.board.controller;
 
 import com.programmers.board.constant.AuthConst;
+import com.programmers.board.constant.AuthErrorMessage;
 import com.programmers.board.controller.response.PageResult;
 import com.programmers.board.controller.response.Result;
 import com.programmers.board.dto.UserDto;
@@ -67,7 +68,7 @@ public class UserController {
 
     private void checkLogin(Long loginUserId) {
         if (loginUserId == null) {
-            throw new AuthenticationException(AuthConst.NO_LOGIN);
+            throw new AuthenticationException(AuthErrorMessage.NO_LOGIN.getMessage());
         }
     }
 }

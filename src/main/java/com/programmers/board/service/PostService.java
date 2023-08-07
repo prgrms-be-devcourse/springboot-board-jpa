@@ -1,6 +1,6 @@
 package com.programmers.board.service;
 
-import com.programmers.board.constant.AuthConst;
+import com.programmers.board.constant.AuthErrorMessage;
 import com.programmers.board.domain.Post;
 import com.programmers.board.domain.User;
 import com.programmers.board.dto.PostDto;
@@ -80,7 +80,7 @@ public class PostService {
 
     private void checkAuthority(Post post, User loginUser) {
         if (!post.isWriter(loginUser)) {
-            throw new AuthorizationException(AuthConst.NO_AUTHORIZATION);
+            throw new AuthorizationException(AuthErrorMessage.NO_AUTHORIZATION.getMessage());
         }
     }
 }

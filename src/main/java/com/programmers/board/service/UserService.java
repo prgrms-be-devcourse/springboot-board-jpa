@@ -1,6 +1,6 @@
 package com.programmers.board.service;
 
-import com.programmers.board.constant.AuthConst;
+import com.programmers.board.constant.AuthErrorMessage;
 import com.programmers.board.dto.service.UserDeleteCommand;
 import com.programmers.board.dto.service.UserGetCommand;
 import com.programmers.board.domain.User;
@@ -80,7 +80,7 @@ public class UserService {
 
     private void checkAuthority(Long loginUserId, Long userId) {
         if (notEqualsUserId(loginUserId, userId)) {
-            throw new AuthorizationException(AuthConst.NO_AUTHORIZATION);
+            throw new AuthorizationException(AuthErrorMessage.NO_AUTHORIZATION.getMessage());
         }
     }
 

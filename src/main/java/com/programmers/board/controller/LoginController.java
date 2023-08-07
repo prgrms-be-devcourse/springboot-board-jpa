@@ -1,6 +1,6 @@
 package com.programmers.board.controller;
 
-import com.programmers.board.constant.AuthConst;
+import com.programmers.board.constant.AuthErrorMessage;
 import com.programmers.board.dto.request.LoginRequest;
 import com.programmers.board.dto.service.login.LoginCommand;
 import com.programmers.board.exception.AuthenticationException;
@@ -35,7 +35,7 @@ public class LoginController {
     public void logout(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession(false);
         if (session == null) {
-            throw new AuthenticationException(AuthConst.NO_LOGIN);
+            throw new AuthenticationException(AuthErrorMessage.NO_LOGIN.getMessage());
         }
         session.invalidate();
     }
