@@ -9,7 +9,7 @@ public record PostResponse(
         Long id,
         String title,
         String content,
-        LocalDateTime create_at,
-        LocalDateTime update_at
+        LocalDateTime createAt,
+        LocalDateTime updateAt
 ) {
 }
