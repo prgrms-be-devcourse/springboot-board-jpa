@@ -1,0 +1,29 @@
+= 게시판 JPA 구현 과제
+문종운, 김재웅
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 6
+:sectlinks:
+:operation-http-request-title: request
+:operation-http-response-title: response
+
+[[create-post]]
+== 게시글 생성
+operation::create-post[snippets = 'http-request,http-response,request-body,response-fields']
+
+[[read-post]]
+== 특정 게시글 조회
+operation::read-post[snippets = 'http-request,http-response,request-body,response-fields']
+
+[[read-posts]]
+== 모든 게시글 조회
+operation::read-posts[snippets = 'http-request,http-response,request-body,response-fields']
+
+[[update-post]]
+== 게시글 수정
+operation::update-post[snippets = 'http-request,http-response,request-body,response-fields']
+
+
+
