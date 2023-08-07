@@ -34,7 +34,7 @@ public class PostService {
 	}
 
 	@Transactional(readOnly = true)
-	public PostResponseDto findBy(Long id){
+	public PostResponseDto findBy(Long id) {
 		Post post = postRepository.findById(id)
 				.orElseThrow(() -> new NoSuchDataException(MessageFormat.format("해당 포스트가 존재하지 않습니다[id={0}] ", id)));
 		return new PostResponseDto(post);
@@ -58,6 +58,13 @@ public class PostService {
 		Post post = postRepository.findById(id)
 				.orElseThrow(() -> new InvalidRequestException(
 						MessageFormat.format("존재하지 않는 포스트에 대한 수정 요청입니다[id={0}] ", id)));
+		Long updater = postRequestDto.writerId();
+		Long initialWriter = post.getWriter().getId();
+		if (updater != initialWriter) {
+			throw new InvalidRequestException(
+					MessageFormat.format("작성자는 변경 불가능합니다[기존 작성자 id={0}, 요청된 작성자 id={1}] ", initialWriter, updater)
+			);
+		}
 		post.modify(postRequestDto.title(), postRequestDto.content());
 		return new PostSaveRequestDto(post);
 	}
