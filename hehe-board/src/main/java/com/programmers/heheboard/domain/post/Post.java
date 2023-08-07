@@ -29,6 +29,8 @@ import lombok.NoArgsConstructor;
 public class Post extends BaseEntity {
 	private static final int TITLE_MAX_LEN = 30;
 	private static final int TITLE_MIN_LEN = 1;
+	private static final int CONTENT_MAX_LEN = 5000;
+
 	private static final String NOT_VALID_TITLE_REG_EXP = "//gm";
 	private static final String NOT_VALID_CONTENT_REG_EXP = "//gm";
 	@Id
@@ -36,7 +38,7 @@ public class Post extends BaseEntity {
 	private Long id;
 	@Column(nullable = false)
 	private String title;
-	@Lob
+	@Column(columnDefinition = "TEXT", length = 5000)
 	private String content;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
@@ -59,7 +61,8 @@ public class Post extends BaseEntity {
 	}
 
 	private void validateContent(String content) {
-		if (Pattern.matches(NOT_VALID_CONTENT_REG_EXP, content)) {
+		if (content.length() > CONTENT_MAX_LEN ||
+			Pattern.matches(NOT_VALID_CONTENT_REG_EXP, content)) {
 			throw new GlobalRuntimeException(ErrorCode.POST_CONTENT_VALIDATION_FAIL);
 		}
 	}
