@@ -57,10 +57,10 @@ public class Post extends BaseEntity {
     }
 
     public static ResponsePostDto toResponseDto(Post post) {
-        return new ResponsePostDto(post.getId(),post.title, post.content, post.user,post.getCreated_at(),post.getUpdated_at());
+        return new ResponsePostDto(post.getId(),post.getTitle(), post.getContent(), post.getUser(),post.getCreated_at(),post.getUpdated_at());
     }
     public static CreatePostDto toCreateDto(Post post) {
-        return new CreatePostDto(post.title, post.content, post.user);
+        return new CreatePostDto(post.getTitle(), post.getContent(),  post.getUser());
     }
 
 }
