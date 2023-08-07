@@ -15,7 +15,7 @@ import jakarta.persistence.ManyToOne;
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false, length = 30)
     private String title;
