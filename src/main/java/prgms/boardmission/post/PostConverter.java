@@ -25,6 +25,5 @@ public final class PostConverter {
         MemberDto memberDto = MemberConverter.convertToMemberDto(member);
 
         return new PostDto(post.getTitle(), post.getContent(), memberDto);
-
     }
 }
