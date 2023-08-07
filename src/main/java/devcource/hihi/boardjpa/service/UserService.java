@@ -5,17 +5,20 @@ import devcource.hihi.boardjpa.dto.user.CreateUserDto;
 import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
 import devcource.hihi.boardjpa.dto.user.UpdateUserDto;
 import devcource.hihi.boardjpa.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
 
     private UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 
     public Page<User> getUsersWithPagination(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);

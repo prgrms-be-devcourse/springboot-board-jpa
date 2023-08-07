@@ -35,12 +35,12 @@ public class UserRestController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<ResponseUserDto> updatePost(@PathVariable Long id, UpdateUserDto userDto) {
+    public ResponseEntity<ResponseUserDto> updateUser(@PathVariable Long id, UpdateUserDto userDto) {
         return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id) {
+    public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
 
