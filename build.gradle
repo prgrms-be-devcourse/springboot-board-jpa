@@ -64,7 +64,7 @@ tasks.register("copyOasToSwagger") {
 	delete "src/main/resources/static/swagger-ui/openapi3.json"
 	copy {
 		from "$buildDir/api-spec/openapi3.json"
-		into "src/main/resources/static/swagger-ui/."
+		into "src/main/resources/static/swagger-ui/"
 	}
 	dependsOn "openapi3"
 }
@@ -81,4 +81,5 @@ task copyDocument(type: Copy) {
 
 build {
 	dependsOn copyDocument
+	dependsOn copyOasToSwagger
 }

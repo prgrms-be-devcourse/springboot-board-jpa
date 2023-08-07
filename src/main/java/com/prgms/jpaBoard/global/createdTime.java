@@ -5,6 +5,7 @@ import jakarta.persistence.MappedSuperclass;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
@@ -12,13 +13,13 @@ import java.time.ZonedDateTime;
 public abstract class createdTime {
 
     @CreatedDate
-    private ZonedDateTime createdAt;
+    private LocalDateTime createdAt;
 
     protected createdTime() {
 
     }
 
-    public ZonedDateTime getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 }

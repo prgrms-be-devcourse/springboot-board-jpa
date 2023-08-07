@@ -8,17 +8,18 @@ import com.prgms.jpaBoard.domain.post.presentation.dto.PostSaveRequest;
 import com.prgms.jpaBoard.domain.post.presentation.dto.PostUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = PostController.class)
+@MockBean(JpaMetamodelMappingContext.class)
 class PostControllerTest {
 
     @Autowired
@@ -65,7 +67,7 @@ class PostControllerTest {
                 1L,
                 "title",
                 "content",
-                ZonedDateTime.now(ZoneId.of("Asia/Seoul")),
+                LocalDateTime.now(),
                 "Writer");
 
         given(postService.readOne(1L)).willReturn(postResponse);
@@ -90,28 +92,28 @@ class PostControllerTest {
                 1L,
                 "titleA",
                 "contentA",
-                ZonedDateTime.now(ZoneId.of("Asia/Seoul")),
+                LocalDateTime.now(),
                 "Writer");
 
         PostResponse postResponseB = new PostResponse(
                 2L,
                 "titleB",
                 "contentB",
-                ZonedDateTime.now(ZoneId.of("Asia/Seoul")),
+                LocalDateTime.now(),
                 "Writer");
 
         PostResponse postResponseC = new PostResponse(
                 3L,
                 "titleC",
                 "contentC",
-                ZonedDateTime.now(ZoneId.of("Asia/Seoul")),
+                LocalDateTime.now(),
                 "Writer");
 
         PostResponse postResponseD = new PostResponse(
                 4L,
                 "titleD",
                 "contentD",
-                ZonedDateTime.now(ZoneId.of("Asia/Seoul")),
+                LocalDateTime.now(),
                 "Writer");
 
         PageRequest pageRequest = PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "id"));
@@ -143,7 +145,7 @@ class PostControllerTest {
                 1L,
                 "ModifiedTitle",
                 "ModifiedContent",
-                ZonedDateTime.now(ZoneId.of("Asia/Seoul")),
+                LocalDateTime.now(),
                 "Writer"
         );
 

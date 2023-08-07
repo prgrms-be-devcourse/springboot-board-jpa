@@ -3,6 +3,7 @@ package com.prgms.jpaBoard.domain.user.application.dto;
 import com.prgms.jpaBoard.domain.user.HobbyType;
 import com.prgms.jpaBoard.domain.user.User;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 public record UserResponse(
@@ -10,7 +11,7 @@ public record UserResponse(
         String name,
         int age,
         HobbyType hobby,
-        ZonedDateTime createdAt
+        LocalDateTime createdAt
 ) {
 
     public UserResponse(User user) {
