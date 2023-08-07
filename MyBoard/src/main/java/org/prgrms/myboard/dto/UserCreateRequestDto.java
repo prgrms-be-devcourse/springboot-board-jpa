@@ -4,10 +4,13 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import org.prgrms.myboard.domain.User;
 
+import static org.prgrms.myboard.util.ErrorMessage.MIN_AGE_MESSAGE;
+import static org.prgrms.myboard.util.ErrorMessage.NAME_NOT_BLANK_MESSAGE;
+
 public record UserCreateRequestDto(
-    @NotBlank(message = "이름이 비어있습니다.")
+    @NotBlank(message = NAME_NOT_BLANK_MESSAGE)
     String name,
-    @Min(value = 1, message = "나이는 최소 한살입니다.")
+    @Min(value = 1, message = MIN_AGE_MESSAGE)
     int age,
     String hobby
 ) {

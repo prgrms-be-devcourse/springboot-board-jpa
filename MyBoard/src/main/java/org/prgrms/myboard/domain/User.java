@@ -8,6 +8,9 @@ import org.prgrms.myboard.dto.UserResponseDto;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.prgrms.myboard.util.ErrorMessage.WRONG_AGE_MESSAGE;
+import static org.prgrms.myboard.util.ErrorMessage.WRONG_NAME_MESSAGE;
+
 @Getter
 @Entity
 @Table(name = "users")
@@ -46,13 +49,13 @@ public class User extends BaseEntity {
 
     private void validateName(String name) {
         if(name == null || name.isBlank() || name.length() >= MAX_NAME_LENGTH) {
-            throw new IllegalArgumentException("잘못된 이름입니다.");
+            throw new IllegalArgumentException(WRONG_NAME_MESSAGE);
         }
     }
 
     private void validateAge(int age) {
         if(age <= MIN_AGE || age >= MAX_AGE) {
-            throw new IllegalArgumentException("잘못된 나이입니다.");
+            throw new IllegalArgumentException(WRONG_AGE_MESSAGE);
         }
     }
 

@@ -18,18 +18,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.prgrms.myboard.util.ErrorMessage.ID_NOT_FOUND_MESSAGE;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
     private static final int PAGE_BASE_OFFSET = 1;
-    private static final int DEFAULT_PAGE_SIZE = 10;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
     @Transactional
     public PostResponseDto createPost(PostCreateRequestDto postCreateRequestDto) {
         User user = userRepository.findById(postCreateRequestDto.userId())
-            .orElseThrow(() -> new RuntimeException("존재하지 않는 Id입니다."));
+            .orElseThrow(() -> new RuntimeException(ID_NOT_FOUND_MESSAGE));
         Post post = new Post(postCreateRequestDto.title(), postCreateRequestDto.content(), user);
         postRepository.save(post);
         return post.toPostResponseDto();
@@ -38,21 +39,21 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponseDto findById(Long id) {
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("존재하지 않는 id입니다."));
+            .orElseThrow(() -> new RuntimeException(ID_NOT_FOUND_MESSAGE));
         return post.toPostResponseDto();
     }
 
     @Transactional
     public void deleteById(Long id) {
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("존재하지 않는 id입니다."));
+            .orElseThrow(() -> new RuntimeException(ID_NOT_FOUND_MESSAGE));
         postRepository.delete(post);
     }
 
     @Transactional
     public PostResponseDto updateById(Long id, PostUpdateRequestDto postUpdateRequestDto) {
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("존재하지 않는 id입니다."));
+            .orElseThrow(() -> new RuntimeException(ID_NOT_FOUND_MESSAGE));
         post.update(postUpdateRequestDto.title(), postUpdateRequestDto.content());
         return post.toPostResponseDto();
     }
