@@ -29,8 +29,7 @@ public class PostServiceImpl implements PostService {
     public Long createPost(PostCreateRequest request) {
         User user = userRepository.findById(request.userId()).orElseThrow(IllegalArgumentException::new);
         Post post = PostConverter.convertRequestToEntity(request, user);
-        postRepository.save(post);
-        return post.getId();
+        return postRepository.save(post).getId();
     }
 
     public PostResponse findPostById(Long id) {
