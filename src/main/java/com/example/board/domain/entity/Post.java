@@ -34,7 +34,7 @@ public class Post extends BaseTime {
     private User user;
 
     //게시글을 지울때 댓글도 같이 삭제하기 위해 cascade 옵션 사용
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
