@@ -19,7 +19,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findByIdWithUserAndComments(@Param("postId") Long postId);
 
     // 페이징된 게시글만 조회
-    // @Query("select p from Post p join fetch p.user u") fetch Join을 사용하면 에러가 발생하여 일반적으로 가져오는 경우
-    // N+1문제 발생...
+    @Query(value = "select p from Post p join fetch p.user u",
+            countQuery = "select count(p) from Post p")
     Page<Post> findAll(Pageable pageable);
 }
