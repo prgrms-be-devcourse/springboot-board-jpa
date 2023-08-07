@@ -1,6 +1,5 @@
 package com.example.board.dto.post;
 
-import com.example.board.domain.entity.Comment;
 import com.example.board.domain.entity.Post;
 import com.example.board.dto.comment.CommentResponseDto;
 import lombok.*;
