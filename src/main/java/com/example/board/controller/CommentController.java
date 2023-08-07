@@ -18,8 +18,8 @@ public class CommentController {
 
     @PostMapping()
     public ResponseEntity<Long> createComment(@Valid @RequestBody CommentRequestDto requestDto) {
-        Long comment = commentService.createComment(requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(comment);
+        Long commentId = commentService.createComment(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentId);
     }
 
     @DeleteMapping("/{commentId}")
