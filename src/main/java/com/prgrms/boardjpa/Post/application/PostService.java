@@ -64,9 +64,16 @@ public class PostService {
         User user = userRepository.findById(post.getUser().getId())
                 .orElseThrow(() -> new BusinessServiceException(ErrorCode.NOT_FOUND_USER));
 
+        checkAuthorAndModifier(user.getId(), post.getUser().getId());
+
         post.update(updateRequest.title(), updateRequest.content());
-        post.updateUser(user);
 
         return PostResponse.create(post);
+    }
+
+    private static void checkAuthorAndModifier(Long modifierId, Long authorId) {
+        if (modifierId != authorId) {
+            throw new BusinessServiceException(ErrorCode.NOT_MATCH_AUTHOR_MODIFIER);
+        }
     }
 }

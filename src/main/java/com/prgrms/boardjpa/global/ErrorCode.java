@@ -13,7 +13,8 @@ public enum ErrorCode {
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
 
     //게시물
-    NOT_FOUND_POST(HttpStatus.NOT_FOUND, "존재하지 않는 게시물입니다.");
+    NOT_FOUND_POST(HttpStatus.NOT_FOUND, "존재하지 않는 게시물입니다."),
+    NOT_MATCH_AUTHOR_MODIFIER(HttpStatus.BAD_REQUEST, "작성자와 수정자가 동일하지 않습니다.");
 
     private final HttpStatus status;
     private final String message;
