@@ -55,10 +55,10 @@ public class User extends BaseEntity{
     }
 
     public static ResponseUserDto toDtoForResponse(User user) {
-        return new ResponseUserDto(user.id, user.name, user.age, user.hobby);
+        return new ResponseUserDto(user.getId(), user.getName(), user.getAge(), user.getHobby());
     }
     public static CreateUserDto toDtoForCreate(User user) {
-        return new CreateUserDto(user.name, user.age, user.hobby);
+        return new CreateUserDto(user.getName(), user.getAge(), user.getHobby());
     }
 
 }
