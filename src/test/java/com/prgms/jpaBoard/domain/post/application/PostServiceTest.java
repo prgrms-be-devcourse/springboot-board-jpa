@@ -37,7 +37,7 @@ class PostServiceTest {
         PostSaveRequest postSaveRequest = new PostSaveRequest("aaa", "금요일 밤에 미션하는중.", savedUser.getId());
 
         // When
-        Long savedPostId = postService.post(postSaveRequest);
+        Long savedPostId = postService.save(postSaveRequest);
 
         // Then
         assertThat(savedPostId).isNotNull();
@@ -51,7 +51,7 @@ class PostServiceTest {
         User savedUser = userRepository.save(user);
 
         PostSaveRequest postSaveRequest = new PostSaveRequest("aaa", "금요일 밤에 미션하는중.", savedUser.getId());
-        Long savedPostId = postService.post(postSaveRequest);
+        Long savedPostId = postService.save(postSaveRequest);
 
         // When
         PostResponse postResponse = postService.readOne(savedPostId);
@@ -71,8 +71,8 @@ class PostServiceTest {
 
         PostSaveRequest postSaveRequestA = new PostSaveRequest("aaa", "금요일 밤에 미션하는중.", savedUser.getId());
         PostSaveRequest postSaveRequestB = new PostSaveRequest("bbb", "곧 토요일", savedUser.getId());
-        postService.post(postSaveRequestA);
-        postService.post(postSaveRequestB);
+        postService.save(postSaveRequestA);
+        postService.save(postSaveRequestB);
 
         PageRequest pageRequest = PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "id"));
 
@@ -91,7 +91,7 @@ class PostServiceTest {
         User savedUser = userRepository.save(user);
 
         PostSaveRequest postSaveRequest = new PostSaveRequest("aaa", "금요일 밤에 미션하는중.", savedUser.getId());
-        Long savedPostId = postService.post(postSaveRequest);
+        Long savedPostId = postService.save(postSaveRequest);
 
         PostUpdateRequest postUpdateRequest = new PostUpdateRequest("bbb", "곧 토요일");
 

@@ -26,8 +26,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
@@ -74,7 +72,7 @@ public class PostControllerRestDocsTest {
         // Given
         PostSaveRequest postSaveRequest = new PostSaveRequest("제목", "내용", 1L);
 
-        given(postService.post(postSaveRequest)).willReturn(1L);
+        given(postService.save(postSaveRequest)).willReturn(1L);
 
         // When
 

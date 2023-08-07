@@ -43,7 +43,7 @@ public class PostController {
 
     @PostMapping("/posts")
     public ResponseEntity<ApiResponse<Map<String, Long>>> post(@RequestBody PostSaveRequest postSaveRequest) {
-        Long postId = postService.post(postSaveRequest);
+        Long postId = postService.save(postSaveRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse
                         .success(HttpStatus.CREATED.value(), Collections.singletonMap("id", postId)));

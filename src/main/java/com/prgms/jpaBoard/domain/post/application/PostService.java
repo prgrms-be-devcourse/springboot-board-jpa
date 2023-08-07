@@ -31,7 +31,7 @@ public class PostService {
     }
 
     @Transactional
-    public Long post(PostSaveRequest postSaveRequest) {
+    public Long save(PostSaveRequest postSaveRequest) {
         User findUser = userRepository.findById(postSaveRequest.userId())
                 .orElseThrow(() -> new NoSuchElementException(USER_NOT_FOUND_MSG));
 

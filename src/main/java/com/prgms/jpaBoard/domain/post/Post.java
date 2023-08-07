@@ -35,15 +35,7 @@ public class Post extends createdUser {
     }
     
     public void updatePost(String title, String content) {
-        changeTitle(title);
-        changeContent(content);
-    }
-
-    private void changeTitle(String title) {
         this.title = title;
-    }
-
-    private void changeContent(String content) {
         this.content = content;
     }
 

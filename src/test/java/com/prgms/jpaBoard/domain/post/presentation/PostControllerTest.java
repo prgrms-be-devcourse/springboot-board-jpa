@@ -8,7 +8,6 @@ import com.prgms.jpaBoard.domain.post.presentation.dto.PostSaveRequest;
 import com.prgms.jpaBoard.domain.post.presentation.dto.PostUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -46,7 +45,7 @@ class PostControllerTest {
         // Given
         PostSaveRequest postSaveRequest = new PostSaveRequest("제목", "내용", 1L);
 
-        given(postService.post(postSaveRequest)).willReturn(1L);
+        given(postService.save(postSaveRequest)).willReturn(1L);
 
         // When
 
