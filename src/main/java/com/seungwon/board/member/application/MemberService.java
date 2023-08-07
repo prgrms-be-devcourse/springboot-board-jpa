@@ -8,6 +8,7 @@ import com.seungwon.board.member.domain.Member;
 import com.seungwon.board.member.infra.MemberRepository;
 
 @Service
+@Transactional
 public class MemberService {
 	private final MemberRepository memberRepository;
 
@@ -15,7 +16,6 @@ public class MemberService {
 		this.memberRepository = memberRepository;
 	}
 
-	@Transactional
 	public Long create(MemberRequestDto memberRequestDto) {
 		Member member = Member.builder()
 				.age(26)
