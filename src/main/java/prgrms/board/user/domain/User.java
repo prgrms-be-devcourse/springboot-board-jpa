@@ -1,5 +1,6 @@
 package prgrms.board.user.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -45,7 +46,11 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String createdBy;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     List<Post> posts = new ArrayList<>();
 
     public User(String name, Integer age) {

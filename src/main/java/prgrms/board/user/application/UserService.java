@@ -2,15 +2,11 @@ package prgrms.board.user.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import prgrms.board.post.domain.Post;
-import prgrms.board.user.application.dto.response.UserFindResponse;
 import prgrms.board.user.application.dto.request.UserSaveRequest;
+import prgrms.board.user.application.dto.response.UserFindResponse;
 import prgrms.board.user.application.dto.response.UserSaveResponse;
 import prgrms.board.user.domain.User;
 import prgrms.board.user.domain.UserRepository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -23,23 +19,16 @@ public class UserService {
 
     @Transactional
     public UserSaveResponse saveUser(UserSaveRequest request) {
-        String name = request.name();
-        Integer age = request.age();
-        User newUser = new User(name, age);
+        User newUser = request.toEntity();
         User savedUser = userRepository.save(newUser);
-        Long userId = savedUser.getId();
 
-        return new UserSaveResponse(userId, name, age);
+        return UserSaveResponse.of(savedUser);
     }
 
     public UserFindResponse findById(Long userId) {
-        Optional<User> userResponse = userRepository.findById(userId);
-        User userById = userResponse.orElseThrow();
-        String name = userById.getName();
-        Integer age = userById.getAge();
-        String hobby = userById.getHobby();
-        List<Post> posts = userById.getPosts();
+        User userById = userRepository.findById(userId)
+                .orElseThrow();
 
-        return new UserFindResponse(name, age, hobby, posts);
+        return UserFindResponse.of(userById);
     }
 }

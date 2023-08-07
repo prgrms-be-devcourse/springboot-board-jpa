@@ -37,23 +37,19 @@ public class PostService {
 
     @Transactional
     public PostSaveResponse savePost(PostSaveRequest request) {
-        String title = request.title();
-        String content = request.content();
-        Post newPost = new Post(title, content);
+        Post newPost = request.toEntity();
 
         Long userId = request.userId();
-        Optional<User> response = userRepository.findById(userId);
-        User user = response.orElseThrow(() ->
-                new UserNotFoundException(ErrorCode.USER_NOT_FOUND,
-                        this.getClass().getName()));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(
+                        ErrorCode.USER_NOT_FOUND,
+                        this.getClass().getName()
+                ));
         newPost.updateUser(user);
 
         postRepository.save(newPost);
 
-        Long postId = newPost.getId();
-        LocalDateTime createdAt = newPost.getCreatedAt();
-
-        return new PostSaveResponse(postId, userId, createdAt);
+        return PostSaveResponse.of(newPost);
     }
 
     @Transactional
@@ -61,9 +57,8 @@ public class PostService {
             Long postId,
             PostUpdateRequest request
     ) {
-        Optional<Post> response = postRepository.findById(postId);
-        Post post = response.orElseThrow(() ->
-                new PostNotFoundException(
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(
                         ErrorCode.POST_NOT_FOUND,
                         this.getClass().getName()
                 ));
@@ -73,16 +68,12 @@ public class PostService {
         post.updateTitle(postTitle);
         post.updateContent(postContent);
 
-        User user = post.getUser();
-        post.updateUser(user);
-
         return PostUpdateResponse.of(post);
     }
 
     public PostFindResponse findByPostId(Long postId) {
-        Optional<Post> response = postRepository.findById(postId);
-        Post post = response.orElseThrow(() ->
-                new PostNotFoundException(
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(
                         ErrorCode.POST_NOT_FOUND,
                         this.getClass().getName()
                 ));
