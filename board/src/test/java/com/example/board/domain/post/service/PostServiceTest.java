@@ -11,7 +11,6 @@ import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.repository.PostRepository;
 import com.example.board.domain.user.User;
-import com.example.board.domain.user.dto.UserResponse;
 import com.example.board.domain.user.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
@@ -77,15 +76,12 @@ class PostServiceTest {
 
     // when
     PostResponse postResponse = postService.getPost(1L);
-    UserResponse userResponse = postResponse.userResponse();
+    String author = postResponse.author();
 
     // then
     assertThat(postResponse.title()).isEqualTo(post.getTitle());
     assertThat(postResponse.content()).isEqualTo(post.getContent());
-    assertThat(userResponse.id()).isEqualTo(user.getId());
-    assertThat(userResponse.name()).isEqualTo(user.getName());
-    assertThat(userResponse.age()).isEqualTo(user.getAge());
-    assertThat(userResponse.hobby()).isEqualTo(user.getHobby());
+    assertThat(postResponse.author()).isEqualTo(user.getName());
   }
 
   @Test
