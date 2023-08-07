@@ -23,6 +23,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PostServicePagenationTest {
 
+    private final int postSize = 10;
+    private final Long cursor = 10L;
+
     @Mock
     private PostRepository postRepository;
 
@@ -38,11 +41,11 @@ public class PostServicePagenationTest {
     @DisplayName("커서 방식으로 페이지를 조회한다.")
     public void testGetPostsByCursor() {
 
-        List<Post> samplePosts = PostRepositoryTestHelper.createSamplePosts(10);
+        List<Post> samplePosts = PostRepositoryTestHelper.createSamplePosts(postSize);
 
         // Repository 메소드 호출 시 테스트용 데이터 반환하도록 설정
-        when(postRepository.findByCursor(null, 10 + 1)).thenReturn(samplePosts.subList(0, 11));
-        when(postRepository.findByCursor(10L, 10 + 1)).thenReturn(samplePosts.subList(10, 15));
+        when(postRepository.findByCursor(null, postSize + 1)).thenReturn(samplePosts.subList(0, 11));
+        when(postRepository.findByCursor(cursor, postSize + 1)).thenReturn(samplePosts.subList(10, 15));
 
         // 첫 페이지 조회 테스트
         PageCursorDto<Post> firstPage = postService.getPostsByCursor(null, 10);
