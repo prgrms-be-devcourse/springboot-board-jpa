@@ -20,7 +20,7 @@ import com.seungwon.board.post.application.dto.PostResponseDto;
 import com.seungwon.board.post.application.dto.PostSaveRequestDto;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/api/v1/posts")
 public class PostController {
 	private final PostService postService;
 

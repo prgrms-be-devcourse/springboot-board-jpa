@@ -10,7 +10,7 @@ import com.seungwon.board.member.application.MemberService;
 import com.seungwon.board.member.application.dto.MemberRequestDto;
 
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/api/v1/members")
 public class MemberController {
 	private final MemberService memberService;
 
