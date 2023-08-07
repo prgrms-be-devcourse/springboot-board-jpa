@@ -35,11 +35,11 @@ public class User extends BaseEntity {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private long id;
     @Column(nullable = false, length = 50)
     private String name;
     @Column(nullable = false)
-    private Integer age;
+    private int age;
     @Column
     private String hobby;
     @Column(nullable = false, length = 50)

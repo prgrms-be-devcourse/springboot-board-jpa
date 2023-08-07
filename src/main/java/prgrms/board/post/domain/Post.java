@@ -30,7 +30,7 @@ public class Post extends BaseEntity {
     @Id
     @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private long id;
     @Column(nullable = false, length = 50)
     private String title;
     @Column(nullable = false)
