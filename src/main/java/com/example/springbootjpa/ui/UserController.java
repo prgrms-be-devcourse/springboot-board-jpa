@@ -2,7 +2,9 @@ package com.example.springbootjpa.ui;
 
 
 import com.example.springbootjpa.application.UserService;
+import com.example.springbootjpa.domain.user.Hobby;
 import com.example.springbootjpa.domain.user.User;
+import com.example.springbootjpa.ui.dto.user.UserFindResponses;
 import com.example.springbootjpa.domain.user.UserRepository;
 import com.example.springbootjpa.ui.dto.user.UserFindResponse;
 import com.example.springbootjpa.ui.dto.user.UserSaveRequest;
@@ -36,9 +38,10 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserFindResponse>> findAll() {
+    public ResponseEntity<UserFindResponses> findAll() {
+        UserFindResponses userFindResponses = new UserFindResponses(userService.findAllUsers());
 
-        return ResponseEntity.ok(userService.findAllUsers());
+        return ResponseEntity.ok(userFindResponses);
     }
 
     @GetMapping("/{userId}")

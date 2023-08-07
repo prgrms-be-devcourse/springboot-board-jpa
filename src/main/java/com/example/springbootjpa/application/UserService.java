@@ -36,9 +36,9 @@ public class UserService {
                 .toList();
     }
 
-    public UserFindResponse find(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Invalid user id!! please check user id again")
+    public UserFindResponse find(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Invalid user id!! please check user id again {}", userId))
         );
 
         return UserFindResponse.from(user);

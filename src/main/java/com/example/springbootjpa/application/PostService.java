@@ -50,7 +50,7 @@ public class PostService {
     private Post findByPostId(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException("Invalid post id!! please check post id again")
+                        () -> new EntityNotFoundException(String.format("Invalid post id!! please check post id again {}", postId))
                 );
     }
 
@@ -58,7 +58,7 @@ public class PostService {
     public long createPost(long userId, String title, String content) {
         User user = userRepository.findById(userId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException("Invalid user id!! please check user id again")
+                        () -> new EntityNotFoundException(String.format("Invalid user id!! please check user id again {}", userId))
                 );
 
         Post post = new Post(title, content, user);
