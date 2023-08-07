@@ -72,13 +72,18 @@ public class Post extends BaseEntity {
 		this.user = user;
 	}
 
-	public void changeTitle(String newTitle) {
+	public void updatePost(String newTitle, String newContent) {
+		changeTitle(newTitle);
+		changeContents(newContent);
+	}
+
+	private void changeTitle(String newTitle) {
 		validateTitle(newTitle);
 		this.title = newTitle;
 	}
 
-	public void changeContents(String newContent) {
-		validateContent(content);
+	private void changeContents(String newContent) {
+		validateContent(newContent);
 		this.content = newContent;
 	}
 }

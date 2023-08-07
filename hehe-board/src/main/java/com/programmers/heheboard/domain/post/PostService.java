@@ -50,8 +50,10 @@ public class PostService {
 		Post retrievedPost = postRepository.findById(postId)
 			.orElseThrow(() ->new GlobalRuntimeException(ErrorCode.POST_NOT_FOUND));
 
-		retrievedPost.changeTitle(updatePostRequestDto.getTitle());
-		retrievedPost.changeContents(updatePostRequestDto.getContent());
+		String newTitle = updatePostRequestDto.getTitle();
+		String newContent = updatePostRequestDto.getContent();
+
+		retrievedPost.updatePost(newTitle, newContent);
 
 		return PostResponseDto.toResponse(retrievedPost);
 	}
