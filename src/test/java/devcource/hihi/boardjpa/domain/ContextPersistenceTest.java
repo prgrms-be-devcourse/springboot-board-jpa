@@ -22,8 +22,22 @@ public class ContextPersistenceTest {
     private static EntityManager entityManager;
     private static EntityTransaction transaction;
 
+    private Post post;
+    private User user;
+
     @BeforeAll
     private void setUp() {
+        post = Post.builder()
+                .title("hello")
+                .content("good")
+                .build();
+
+        user = User.builder()
+                .name("yejin")
+                .age(25)
+                .hobby("walking")
+                .build();
+
         entityManager = emf.createEntityManager();
         transaction = entityManager.getTransaction();
     }
@@ -37,16 +51,7 @@ public class ContextPersistenceTest {
     @DisplayName("양방향 관계를 저장한다.")
     void save_mapping_test () {
         transaction.begin();
-        Post post = Post.builder()
-                .title("hello")
-                .content("good")
-                .build();
 
-        User user = User.builder()
-                .name("yejin")
-                .age(25)
-                .hobby("walking")
-                .build();
 
         post.allocateUser(user);
 
@@ -60,17 +65,6 @@ public class ContextPersistenceTest {
     void set_method_test() {
         transaction.begin();
 
-        Post post = Post.builder()
-                .title("hello")
-                .content("good")
-                .build();
-
-        User user = User.builder()
-                .name("yejin")
-                .age(25)
-                .hobby("walking")
-                .build();
-
         post.allocateUser(user);
 
         entityManager.persist(user);
@@ -83,18 +77,9 @@ public class ContextPersistenceTest {
     void find_object_graph_test() {
         transaction.begin();
 
-        Post post = Post.builder()
-                .title("hello")
-                .content("good")
-                .build();
 
         entityManager.persist(post);
 
-        User user = User.builder()
-                .name("yejin")
-                .age(25)
-                .hobby("walking")
-                .build();
 
         post.allocateUser(user);
         entityManager.persist(user);
