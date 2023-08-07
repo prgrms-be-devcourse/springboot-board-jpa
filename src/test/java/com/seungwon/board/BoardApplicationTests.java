@@ -79,7 +79,7 @@ class BoardApplicationTests {
 				.build();
 
 		// then
-		mockMvc.perform(post("/posts")
+		mockMvc.perform(post("/api/v1/posts")
 						.content(objectMapper.writeValueAsString(postRequestDto))
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -103,7 +103,7 @@ class BoardApplicationTests {
 		// given
 		// when
 		// then
-		mockMvc.perform(get("/posts")
+		mockMvc.perform(get("/api/v1/posts")
 						.param("page", String.valueOf(0))
 						.param("size", String.valueOf(5))
 						.contentType(MediaType.APPLICATION_JSON))
@@ -153,7 +153,7 @@ class BoardApplicationTests {
 		// when
 		Long id = post.getId();
 		// then
-		mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/{id}", id)
+		mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", id)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andDo(document("post-inquiry-id",
@@ -184,7 +184,7 @@ class BoardApplicationTests {
 				.build();
 		long postId = post.getId();
 		// then
-		mockMvc.perform(RestDocumentationRequestBuilders.patch("/posts/{id}", postId)
+		mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/v1/posts/{id}", postId)
 						.content(objectMapper.writeValueAsString(postRequestDto))
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
