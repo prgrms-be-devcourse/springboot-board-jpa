@@ -4,10 +4,8 @@ import java.time.LocalDateTime;
 
 import lombok.Builder;
 
+@Builder
 public record UserResponseDto(String name, int age, String hobby, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-	@Builder
-	public UserResponseDto {
-	}
 
 	public static UserResponseDto toResponse(User user) {
 		return UserResponseDto.builder()

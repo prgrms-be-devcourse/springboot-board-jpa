@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.programmers.heheboard.global.ApiResponse;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -28,13 +29,13 @@ public class PostController {
 	}
 
 	@PostMapping
-	public ApiResponse<PostResponseDto> save(@RequestBody CreatePostRequestDto createPostRequestDto) {
+	public ApiResponse<PostResponseDto> save(@Valid @RequestBody CreatePostRequestDto createPostRequestDto) {
 		PostResponseDto postDto = postService.createPost(createPostRequestDto);
 		return ApiResponse.ok(postDto);
 	}
 
 	@PutMapping("/{post-id}")
-	public ApiResponse<PostResponseDto> updatePost(@RequestBody UpdatePostRequestDto updatePostRequestDto,
+	public ApiResponse<PostResponseDto> updatePost(@Valid @RequestBody UpdatePostRequestDto updatePostRequestDto,
 		@PathVariable("post-id") Long postId) {
 		PostResponseDto postResponseDTO = postService.updatePost(postId, updatePostRequestDto);
 		return ApiResponse.ok(postResponseDTO);

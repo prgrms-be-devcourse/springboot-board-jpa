@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.programmers.heheboard.global.ApiResponse;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -16,7 +17,7 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping
-	public ApiResponse<UserResponseDto> createUser(@RequestBody CreateUserRequestDto createUserRequestDto) {
+	public ApiResponse<UserResponseDto> createUser(@Valid @RequestBody CreateUserRequestDto createUserRequestDto) {
 		return ApiResponse.ok(userService.createUser(createUserRequestDto));
 	}
 }
