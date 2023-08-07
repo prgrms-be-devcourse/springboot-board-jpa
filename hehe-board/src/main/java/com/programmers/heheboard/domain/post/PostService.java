@@ -29,7 +29,7 @@ public class PostService {
 		return PostResponseDto.toResponse(postRepository.save(post));
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public PostResponseDto findPost(Long postId) {
 		Post retrievedPost = postRepository.findById(postId)
 			.orElseThrow(() -> new GlobalRuntimeException(ErrorCode.POST_NOT_FOUND));
@@ -37,7 +37,7 @@ public class PostService {
 		return PostResponseDto.toResponse(retrievedPost);
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public Slice<PostResponseDto> getPosts(int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size);
 
