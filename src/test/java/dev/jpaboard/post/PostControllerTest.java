@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PostControllerTest extends ControllerTest {
 
     @MockBean
-    PostService postService;
+    private PostService postService;
 
     @DisplayName("로그인한 유저는 게시물을 생성할 수 있다.")
     @Test

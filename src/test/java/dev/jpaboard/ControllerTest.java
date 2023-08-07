@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,7 +21,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ExtendWith({RestDocumentationExtension.class})
 public abstract class ControllerTest {
 
+    protected static final String SESSION_KEY_VALUE = "userId";
+    protected static final long SESSION_USERID_VALUE = 1L;
     protected ObjectMapper objectMapper = new ObjectMapper();
+
+    protected MockHttpSession session = new MockHttpSession();
 
     protected MockMvc mockMvc;
 
@@ -31,6 +36,8 @@ public abstract class ControllerTest {
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .alwaysDo(print())
                 .build();
+
+        session.setAttribute(SESSION_KEY_VALUE, SESSION_USERID_VALUE);
     }
 
 }

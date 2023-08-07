@@ -27,9 +27,11 @@ public class UserController {
         return userService.findUser(userId);
     }
 
-    @GetMapping("/me")
-    public UserResponse findUser(@SessionAttribute(name = "userId") Long userId) {
-        return userService.findUser(userId);
+    @PatchMapping
+    @ResponseStatus(NO_CONTENT)
+    public void updateUser(@RequestBody UserUpdateRequest request,
+                           @SessionAttribute(name = "userId") Long userId) {
+        userService.update(request, userId);
     }
 
     @DeleteMapping("/me")

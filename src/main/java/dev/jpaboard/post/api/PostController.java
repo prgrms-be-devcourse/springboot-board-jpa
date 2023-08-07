@@ -33,9 +33,8 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public PostResponse create(@RequestBody PostCreateRequest request,
-                               @SessionAttribute(name = "userId", required = false) Long userId) {
-        validateUserId(userId);
+    public PostResponse createPost(@Valid @RequestBody PostCreateRequest request,
+                                   @SessionAttribute(name = "userId") Long userId) {
         return postService.create(request, userId);
     }
 

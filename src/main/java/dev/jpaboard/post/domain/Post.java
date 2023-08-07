@@ -63,4 +63,5 @@ public class Post extends BaseEntity {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }
