@@ -53,8 +53,6 @@ class PostApiControllerTest {
     void setUp() {
         User temp = new UserCreateRequest("you", 40, "play").toEntity();
         user = userRepository.save(temp);
-        System.out.println("User ID: " + user.getId());
-
     }
 
     @Test
@@ -135,10 +133,8 @@ class PostApiControllerTest {
     @Test
     @DisplayName("Create new post")
     public void createPostTest() throws Exception {
-        System.out.println("User ID: " + user.getId());
 
         PostCreateRequest requestDto = new PostCreateRequest(" Test title", "Test content", user.getId());
-        System.out.println("User ID: " + requestDto);
 
         mockMvc.perform(post("/api/v1/posts")
                         .contentType(APPLICATION_JSON)
