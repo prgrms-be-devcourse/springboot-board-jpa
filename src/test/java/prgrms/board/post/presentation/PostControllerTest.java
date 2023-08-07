@@ -257,7 +257,7 @@ class PostControllerTest {
         );
 
         // when, then
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/v1/posts/{id}", post.getId())
+        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/v1/posts/{id}", post.getId())
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
