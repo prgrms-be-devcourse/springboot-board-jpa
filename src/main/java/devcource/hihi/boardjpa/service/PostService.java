@@ -34,13 +34,13 @@ public class PostService {
         return Post.toResponseDto(post);
     }
     public ResponsePostDto findById(Long id) {
-        Post post = postRepository.findById(id).get();
+        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("id에 해당하는 post가 없습니다."));
         return Post.toResponseDto(post);
     }
 
     @Transactional
     public ResponsePostDto updatePost(Long id, UpdatePostDto dto) {
-        Post post = postRepository.findById(id).get();
+        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("id에 해당하는 post가 없습니다."));
         post.changeTitle(dto.title());
         post.changeContent(dto.content());
         return Post.toResponseDto(post);
