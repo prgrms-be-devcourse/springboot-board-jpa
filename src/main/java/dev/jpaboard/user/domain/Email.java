@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 @Embeddable
@@ -28,5 +29,16 @@ public class Email {
         }
     }
 
-}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Email email1)) return false;
+        return Objects.equals(email, email1.email);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
+    }
+
+}
