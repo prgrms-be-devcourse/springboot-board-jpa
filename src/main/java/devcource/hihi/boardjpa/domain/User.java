@@ -61,4 +61,12 @@ public class User extends BaseEntity{
         return new CreateUserDto(user.getName(), user.getAge(), user.getHobby());
     }
 
+    public void addPost(Post post) {
+        this.getPostList().add(post);
+    }
+
+    public void removePost(Post post) {
+        this.getPostList().remove(post);
+    }
+
 }

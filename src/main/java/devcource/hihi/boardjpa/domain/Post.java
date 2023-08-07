@@ -49,11 +49,11 @@ public class Post extends BaseEntity {
     }
 
     public void allocateUser(User user) {
-        if(Objects.nonNull(this.user)) {
-            this.user.getPostList().remove(this);
+        if(Objects.nonNull(user)) {
+            this.user.removePost(this);
         }
         this.user = user;
-        this.user.getPostList().add(this);
+        this.user.addPost(this);
     }
 
     public static ResponsePostDto toResponseDto(Post post) {
