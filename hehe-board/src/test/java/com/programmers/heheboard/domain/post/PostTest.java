@@ -154,16 +154,17 @@ class PostTest {
 			.andDo(print())
 			.andDo(document("post-get",
 					responseFields(
-						fieldWithPath("content[].title").type(JsonFieldType.STRING).description("제목"),
-						fieldWithPath("content[].content").type(JsonFieldType.STRING).description("내용"),
-						fieldWithPath("content[].createdAt").type(JsonFieldType.STRING).description("생성일"),
-						fieldWithPath("content[].modifiedAt").type(JsonFieldType.STRING).description("수정일"),
-
 						fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
-						fieldWithPath("size").type(JsonFieldType.NUMBER).description("size"),
-						fieldWithPath("number").type(JsonFieldType.NUMBER).description("number"),
-						fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("first"),
-						fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("last")
+
+						fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("제목"),
+						fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("내용"),
+						fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("생성일"),
+						fieldWithPath("data.content[].modifiedAt").type(JsonFieldType.STRING).description("수정일"),
+
+						fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("size"),
+						fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("number"),
+						fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("first"),
+						fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("last")
 					)
 				)
 			);

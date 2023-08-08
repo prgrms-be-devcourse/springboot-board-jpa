@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.programmers.heheboard.global.ApiResponse;
+import com.programmers.heheboard.global.response.ApiResponse;
+import com.programmers.heheboard.global.response.ApiSliceResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,7 @@ public class PostController {
 	}
 
 	@GetMapping
-	public ApiSliceResponse getPostBySlice(@RequestParam int page, @RequestParam int size) {
+	public ApiResponse<ApiSliceResponse> getPostBySlice(@RequestParam int page, @RequestParam int size) {
 		Slice<PostResponseDto> postSliceResponseDtos = postService.getPosts(page, size);
 		return ApiSliceResponse.ok(postSliceResponseDtos);
 	}

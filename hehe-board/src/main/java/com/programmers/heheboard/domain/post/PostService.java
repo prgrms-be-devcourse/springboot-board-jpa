@@ -20,10 +20,10 @@ public class PostService {
 
 	@Transactional
 	public PostResponseDto createPost(CreatePostRequestDto createPostRequestDto) {
-		Post post = createPostRequestDto.toEntity();
 		User user = userRepository.findById(createPostRequestDto.getUserId())
 			.orElseThrow(() -> new GlobalRuntimeException(ErrorCode.USER_NOT_FOUND));
 
+		Post post = createPostRequestDto.toEntity();
 		post.attachUser(user);
 
 		return PostResponseDto.toResponse(postRepository.save(post));

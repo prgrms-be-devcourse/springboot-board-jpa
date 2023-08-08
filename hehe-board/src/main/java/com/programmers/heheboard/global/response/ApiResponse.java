@@ -1,4 +1,4 @@
-package com.programmers.heheboard.global;
+package com.programmers.heheboard.global.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
