@@ -1,0 +1,76 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:sectnums:
+:docinfo: shared-head
+
+== 게시글
+
+=== 게시글 생성
+
+==== [POST] /api/v1/posts
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+
+.Request Fields
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+
+=== 게시글 조회
+
+==== [GET] /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-get-one/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get-one/http-response.adoc[]
+
+.Response Fields
+include::{snippets}/post-get-one/response-fields.adoc[]
+
+=== 게시글 페이지 조회
+
+==== [GET] /api/v1/posts?page={page}&size={size}&sort={sort}
+
+.Request
+include::{snippets}/post-get-by-page/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get-by-page/http-response.adoc[]
+
+.Response Fields
+include::{snippets}/post-get-by-page/response-fields.adoc[]
+
+=== 게시글 수정
+
+==== [PATCH] /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+
+.Request Fields
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+
+=== 게시글 삭제
+
+==== [DELETE] /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-delete/http-request.adoc[]
+
+.Response
+include::{snippets}/post-delete/http-response.adoc[]
