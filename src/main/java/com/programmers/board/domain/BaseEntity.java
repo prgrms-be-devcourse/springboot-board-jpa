@@ -18,5 +18,5 @@ public abstract class BaseEntity {
 
     @CreatedBy
     @Column(updatable = false)
-    private String createdBy;
+    private Long createdBy;
 }
