@@ -1,0 +1,67 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: build/generated-snippets
+endif::[]
+
+= API Documentation
+
+This document explains the REST APIs of the application.
+
+TIP: See the `src/test/java` directory for the actual test cases.
+
+== HTTP Requests
+
+This application defines the following as the main, general HTTP requests:
+
+* POST: To create a resource
+* GET: To retrieve a resource
+* PUT: To update a resource
+* DELETE: To delete a resource
+
+== 게시판 API
+
+== 게시글 기능
+
+=== Get all posts
+= {uri-post}/posts
+
+.Request
+
+include::{snippets}/get-all-posts/http-request.adoc[]
+include::{snippets}/get-all-posts/http-response.adoc[]
+include::{snippets}/get-all-posts/response-fields.adoc[]
+
+=== Get single post
+= {uri-post}/posts/{id}
+
+.Request
+
+include::{snippets}/get-post/http-request.adoc[]
+include::{snippets}/get-post/http-response.adoc[]
+include::{snippets}/get-post/response-fields.adoc[]
+
+=== Create new post
+= {uri-post}/posts
+
+.Request
+
+include::{snippets}/create-post/http-request.adoc[]
+include::{snippets}/create-post/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/create-post/http-response.adoc[]
+include::{snippets}/create-post/response-fields.adoc[]
+
+=== Update a post
+= {uri-post}/posts/{id}
+
+.Request
+
+include::{snippets}/update-post/http-request.adoc[]
+include::{snippets}/update-post/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/update-post/http-response.adoc[]
+include::{snippets}/update-post/response-fields.adoc[]
