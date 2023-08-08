@@ -1,6 +1,6 @@
 :hardbreaks:
 ifndef::snippets[]
-:snippets: ../../../target/generated-snippets
+:snippets: ./build/generated-snippets
 endif::[]
 
 == 게시판 API
