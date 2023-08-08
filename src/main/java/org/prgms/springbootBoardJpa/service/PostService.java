@@ -27,14 +27,13 @@ public class PostService {
     @Transactional
     public void update(Long id, PostUpdateRequest request) {
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("존재하는 게시물이 없습니다."));
-        post.updateTitle(request.title());
-        post.updateContent(request.content());
+            .orElseThrow(() -> new IllegalArgumentException("존재하는 게시물이 없습니다. id : " + id));
+        post.update(request.title(), request.content());
     }
 
     public PostResponse findOne(Long id) {
         Post post = postRepository.findById(id)
-                                .orElseThrow(() -> new IllegalArgumentException("존재하는 게시물이 없습니다."));
+                                .orElseThrow(() -> new IllegalArgumentException("존재하는 게시물이 없습니다. id : " + id));
         return PostResponse.from(post);
     }
 

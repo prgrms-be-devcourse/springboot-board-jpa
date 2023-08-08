@@ -39,11 +39,8 @@ public class Post extends BaseEntity {
         super.updateCreatedBy(user.getName());
     }
 
-    public void updateTitle(String title) {
+    public void update(String title, String content) {
         this.title = title;
-    }
-
-    public void updateContent(String content) {
         this.content = content;
     }
 
