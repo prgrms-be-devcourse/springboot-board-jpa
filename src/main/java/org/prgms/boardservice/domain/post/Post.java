@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.prgms.boardservice.domain.BaseTime;
 
 import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_CONTENT;
@@ -36,14 +35,13 @@ public class Post extends BaseTime {
 
         this.title = title;
         this.content = content;
-        
-    public void changeTitle(String title) {
-        validateTitleLength(title);
-        this.title = title;
     }
 
-    public void changeContent(String content) {
+    public void update(String title, String content) {
+        validateTitleLength(title);
         validateContentLength(content);
+
+        this.title = title;
         this.content = content;
     }
 
