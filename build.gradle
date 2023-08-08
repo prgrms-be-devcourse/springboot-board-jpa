@@ -3,6 +3,10 @@ plugins {
     id 'org.springframework.boot' version '3.1.2'
     id 'io.spring.dependency-management' version '1.1.2'
     id 'org.asciidoctor.jvm.convert' version '3.3.2' // asciidoctor 플러그인 추가
+
+    // rest docs + swagger
+    id 'com.epages.restdocs-api-spec' version '0.18.2'
+    id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'com.programmers'
@@ -36,6 +40,10 @@ dependencies {
 
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor' // adoc 파일에서 사용할 snippets 속성이 자동으로 build/generated-snippets를 가리키도록 해줌
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    // rest docs + swagger
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.18.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 }
 
 ext {
@@ -56,7 +64,19 @@ asciidoctor {
 
 bootJar {
     dependsOn asciidoctor
-    from ("${asciidoctor.outputDir}") {
+    dependsOn(':openapi3')
+
+    from("${asciidoctor.outputDir}") {
         into 'static/docs' // jar 파일 내에 static/docs 폴더를 만들어 html 파일 복사 (배포 파일 실행 시 docs 문서 볼 수 있음)
     }
+}
+
+openapi3 {
+    server = "http://localhost:8080"
+    title = "JPA Board API Document"
+    description = "Spring Rest Docs with Swagger"
+    version = "1.0.0"
+    outputFileNamePrefix = 'v1.0.0'
+    format = 'json'
+    outputDirectory = 'build/resources/main/static/docs'
 }

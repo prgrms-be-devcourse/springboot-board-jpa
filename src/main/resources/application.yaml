@@ -18,3 +18,8 @@ spring:
         format_sql: true
         hbm2ddl:
           auto: create-drop
+
+springdoc:
+  swagger-ui:
+    url: /docs/v1.0.0.json
+    path: /swagger

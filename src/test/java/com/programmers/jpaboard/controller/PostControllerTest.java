@@ -1,5 +1,14 @@
 package com.programmers.jpaboard.controller;
 
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.resourceDetails;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -23,11 +32,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 @AutoConfigureMockMvc
@@ -63,13 +71,20 @@ class PostControllerTest extends AbstractRestDocsTest {
     @DisplayName("[RestDocs] CREATE Post")
     @Transactional
     void createPostTest() throws Exception {
+        // given
         PostCreateRequest request = new PostCreateRequest("my title", "my content", 1L);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated())
-                .andDo(resultHandler.document(
+        // when
+        ResultActions resultActions = mockMvc.perform(post("/api/v1/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)));
+
+        // then
+        resultActions.andExpect(status().isCreated())
+                .andDo(document("CREATE Post",
+                        resourceDetails().description("게시물 생성"),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("게시물 제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("게시물 내용"),
@@ -87,9 +102,15 @@ class PostControllerTest extends AbstractRestDocsTest {
     @Test
     @DisplayName("[RestDocs] READ ALL Posts")
     void findAllPostsTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/posts"))
-                .andExpect(status().isOk())
-                .andDo(resultHandler.document(
+        // when
+        ResultActions resultActions = mockMvc.perform(get("/api/v1/posts"));
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(document("READ ALL Posts",
+                        resourceDetails().description("전체 게시물 조회"),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
                                 fieldWithPath("message").type(JsonFieldType.NULL).description("응답 메시지"),
@@ -107,11 +128,18 @@ class PostControllerTest extends AbstractRestDocsTest {
     @Test
     @DisplayName("[RestDocs] READ Post")
     void findPostByIdTest() throws Exception {
+        // given
         Long id = 1L;
 
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", id))
-                .andExpect(status().isOk())
-                .andDo(resultHandler.document(
+        // when
+        ResultActions resultActions = mockMvc.perform(get("/api/v1/posts/{id}", id));
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(document("READ Post",
+                        resourceDetails().description("상세 게시물 조회"),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("조회할 게시물 ID")
                         ),
@@ -133,14 +161,21 @@ class PostControllerTest extends AbstractRestDocsTest {
     @DisplayName("[RestDocs] UPDATE Post")
     @Transactional
     void updatePostTest() throws Exception {
+        // given
         Long id = 1L;
         PostUpdateRequest request = new PostUpdateRequest("updated title", "updated content");
 
-        mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/v1/posts/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andDo(resultHandler.document(
+        // when
+        ResultActions resultActions = mockMvc.perform(patch("/api/v1/posts/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)));
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(document("UPDATE Post",
+                        resourceDetails().description("게시물 수정"),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("수정할 게시물 ID")
                         ),
@@ -161,11 +196,18 @@ class PostControllerTest extends AbstractRestDocsTest {
     @DisplayName("[RestDocs] DELETE Post")
     @Transactional
     void deletePostTest() throws Exception {
+        // given
         Long id = 1L;
 
-        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/v1/posts/{id}", id))
-                .andExpect(status().isOk())
-                .andDo(resultHandler.document(
+        // when
+        ResultActions resultActions = mockMvc.perform(delete("/api/v1/posts/{id}", id));
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(document("DELETE Post",
+                        resourceDetails().description("게시물 삭제"),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("삭제할 게시물 ID")
                         ),
