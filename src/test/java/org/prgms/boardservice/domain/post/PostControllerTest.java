@@ -15,6 +15,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -22,6 +24,12 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -56,7 +64,17 @@ class PostControllerTest {
         resultActions
                 .andExpect(status().isCreated())
                 .andExpect(header().stringValues("Location", "/api/v1/posts/1"))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-save",
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id")
+                        ),
+                        responseHeaders(
+                                headerWithName("location").description("리소스 위치")
+                        ))
+                );
     }
 
     @Test
@@ -69,7 +87,7 @@ class PostControllerTest {
         given(postService.getById(postId)).willReturn(post);
 
         // when
-        ResultActions resultActions = mockMvc.perform(get("/api/v1/posts/{id}", postId));
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", postId));
 
         // then
         resultActions
@@ -78,7 +96,18 @@ class PostControllerTest {
                 .andExpect(jsonPath("title").value(post.getTitle()))
                 .andExpect(jsonPath("content").value(post.getContent()))
                 .andExpect(jsonPath("userId").value(post.getUserId()))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-get-one",
+                        pathParameters(
+                                parameterWithName("id").description("게시글 id")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 id"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id")
+                        ))
+                );
     }
 
     @Test
@@ -112,7 +141,23 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.pageable.totalPages").value(2))
                 .andExpect(jsonPath("$.pageable.totalElements").value(3))
                 .andExpect(jsonPath("$.pageable.sort").value("id: DESC"))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-get-by-page",
+                        responseFields(
+                                fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("데이터"),
+                                fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("게시글 id"),
+                                fieldWithPath("data[].title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("data[].content").type(JsonFieldType.STRING).description("내용"),
+                                fieldWithPath("data[].userId").type(JsonFieldType.NUMBER).description("유저 id"),
+                                fieldWithPath("pageable.first").type(JsonFieldType.BOOLEAN).description("처음 페이지 여부"),
+                                fieldWithPath("pageable.last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부"),
+                                fieldWithPath("pageable.number").type(JsonFieldType.NUMBER).description("페이지 번호"),
+                                fieldWithPath("pageable.size").type(JsonFieldType.NUMBER).description("페이지 당 게시글 개수"),
+                                fieldWithPath("pageable.sort").type(JsonFieldType.STRING).description("정렬 기준"),
+                                fieldWithPath("pageable.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
+                                fieldWithPath("pageable.totalElements").type(JsonFieldType.NUMBER).description("전체 게시글 수")
+                        ))
+                );
     }
 
     @Test
@@ -133,7 +178,16 @@ class PostControllerTest {
         resultActions
                 .andExpect(status().isNoContent())
                 .andExpect(header().stringValues("Location", "/api/v1/posts/1"))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-update",
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
+                        ),
+                        responseHeaders(
+                                headerWithName("location").description("리소스 위치")
+                        ))
+                );
     }
 
     @Test
@@ -143,11 +197,16 @@ class PostControllerTest {
         Long postId = 1L;
 
         // when
-        ResultActions resultActions = mockMvc.perform(delete("/api/v1/posts/{id}", postId));
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/v1/posts/{id}", postId));
 
         // then
         resultActions
                 .andExpect(status().isNoContent())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("post-delete",
+                        pathParameters(
+                                parameterWithName("id").description("게시글 id")
+                        )
+                ));
     }
 }
