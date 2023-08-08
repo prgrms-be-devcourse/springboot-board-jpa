@@ -110,10 +110,11 @@ class PostControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("content.[].id").type(JsonFieldType.NUMBER).description("게시글 Id"),
+                                fieldWithPath("content.[].name").type(JsonFieldType.STRING).description("작성자"),
                                 fieldWithPath("content.[].title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content.[].content").type(JsonFieldType.STRING).description("본문"),
-                                fieldWithPath("content.[].create_at").type(JsonFieldType.STRING).description("생성일"),
-                                fieldWithPath("content.[].update_at").type(JsonFieldType.STRING).description("수정일"),
+                                fieldWithPath("content.[].createAt").type(JsonFieldType.STRING).description("생성일"),
+                                fieldWithPath("content.[].updateAt").type(JsonFieldType.STRING).description("수정일"),
 
                                 fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description("전체 데이터 개수"),
                                 fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("전체 요소 개수"),
