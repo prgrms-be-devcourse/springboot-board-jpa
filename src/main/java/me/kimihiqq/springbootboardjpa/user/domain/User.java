@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 public class User extends BaseEntity {
 
     private static final Pattern NAME_PATTERN = Pattern.compile("[\\p{L} ]+");
-    private static final Pattern AGE_PATTERN = Pattern.compile("^\\d+$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -53,18 +52,16 @@ public class User extends BaseEntity {
     }
 
     private void validateAge(int age) {
-        if (age < 0 || age > 120 || !AGE_PATTERN.matcher(String.valueOf(age)).matches()) {
+        if (age < 0 || age > 120) {
             throw new UserException(ErrorCode.INVALID_USER_INPUT, String.format("Invalid age: %d", age));
         }
     }
 
     public void addPost(Post post) {
-        posts.add(post);
         post.setUser(this);
     }
 
     public void removePost(Post post) {
-        posts.remove(post);
         post.setUser(null);
     }
 
