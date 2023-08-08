@@ -149,7 +149,7 @@ class PostControllerTest {
         String editTitle = "edit title";
         String editContent = "edit content";
 
-        PostUpdateDto postUpdateDto = new PostUpdateDto.Request(editTitle, editContent);
+        PostUpdateDto.Request postUpdateDto = new PostUpdateDto.Request(editTitle, editContent);
 
         mockMvc.perform(MockMvcRequestBuilders.patch(("/posts/{postId}"), 1L)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -162,9 +162,10 @@ class PostControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("content")
                         ),
                         responseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
-                                fieldWithPath("serverDatetime").type(JsonFieldType.STRING).description("응답시간")
+                                fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태코드"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
+                                fieldWithPath("data.postId").type(JsonFieldType.NUMBER).description("postId"),
+                                fieldWithPath("data.updatedAt").type(JsonFieldType.STRING).description("updatedAt")
                         )
                 ));
     }

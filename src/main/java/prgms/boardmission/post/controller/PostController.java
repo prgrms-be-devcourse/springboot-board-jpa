@@ -51,7 +51,8 @@ public class PostController {
     }
 
     @PatchMapping("/{postId}")
-    public ApiResponse<PostUpdateDto.Response> update(@PathVariable long postId, PostUpdateDto.Request request) {
+    public ApiResponse<PostUpdateDto.Response> update(@PathVariable long postId,
+                                                      @RequestBody PostUpdateDto.Request request) {
         PostUpdateDto.Response postUpdateDto = postService.updatePost(postId, request);
         return ApiResponse.ok(postUpdateDto);
     }
