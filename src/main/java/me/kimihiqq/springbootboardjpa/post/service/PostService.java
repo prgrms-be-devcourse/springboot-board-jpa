@@ -1,6 +1,6 @@
 package me.kimihiqq.springbootboardjpa.post.service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import me.kimihiqq.springbootboardjpa.post.domain.Post;
 import me.kimihiqq.springbootboardjpa.post.dto.request.PostCreateRequest;

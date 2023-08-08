@@ -19,7 +19,6 @@ public class PostCreateRequest {
     private Long userId;
 
     public Post toEntity(User user) {
-        System.out.println("toentity" );
         return Post.builder()
                 .title(title)
                 .content(content)
