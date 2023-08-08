@@ -1,4 +1,4 @@
-package com.programmers.board.dto.service;
+package com.programmers.board.dto.service.user;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

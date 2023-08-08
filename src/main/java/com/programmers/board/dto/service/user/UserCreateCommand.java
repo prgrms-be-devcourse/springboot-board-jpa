@@ -1,4 +1,4 @@
-package com.programmers.board.dto.service;
+package com.programmers.board.dto.service.user;
 
 import com.programmers.board.dto.request.UserCreateRequest;
 import lombok.AllArgsConstructor;
