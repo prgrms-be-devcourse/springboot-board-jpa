@@ -18,8 +18,6 @@ import java.time.LocalDateTime;
 public class PostService {
     private final PostRepository postRepository;
 
-    private String NOT_FOUND_POST_MESSAGE = "해당 게시글을 찾을 수 없습니다.";
-
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
@@ -41,12 +39,12 @@ public class PostService {
     public PostDto.Response findById(long postId) {
         return postRepository.findById(postId)
                 .map(PostConverter::convertToPostDto)
-                .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
+                .orElseThrow(() -> new NotFoundPostException());
     }
 
     public PostUpdateDto.Response updatePost(Long postId, PostUpdateDto.Request request) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundPostException(NOT_FOUND_POST_MESSAGE));
+                .orElseThrow(() -> new NotFoundPostException());
 
         String editTitle = request.title();
         String editContent = request.content();
