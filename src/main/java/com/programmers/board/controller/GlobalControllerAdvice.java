@@ -31,15 +31,6 @@ public class GlobalControllerAdvice {
         return new ErrorResult(errorMessages);
     }
 
-    private String createErrorMessages(MethodArgumentNotValidException ex) {
-        StringBuilder sb = new StringBuilder();
-        for (ObjectError error : ex.getAllErrors()) {
-            String errorMessage = error.getDefaultMessage();
-            sb.append(errorMessage).append(",");
-        }
-        return sb.toString();
-    }
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResult illegalArgumentExHandle(IllegalArgumentException ex) {
@@ -72,6 +63,15 @@ public class GlobalControllerAdvice {
     public ErrorResult exHandle(Exception ex) {
         logError(ex);
         return new ErrorResult("서버 오류가 발생했습니다");
+    }
+
+    private String createErrorMessages(MethodArgumentNotValidException ex) {
+        StringBuilder sb = new StringBuilder();
+        for (ObjectError error : ex.getAllErrors()) {
+            String errorMessage = error.getDefaultMessage();
+            sb.append(errorMessage).append(",");
+        }
+        return sb.toString();
     }
 
     private void logWarn(Exception ex) {
