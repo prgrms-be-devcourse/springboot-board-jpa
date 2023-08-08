@@ -1,5 +1,6 @@
 package org.prgms.boardservice.domain.post;
 
+import org.prgms.boardservice.domain.post.dto.PageDto;
 import org.prgms.boardservice.domain.post.dto.PostCreateRequestDto;
 import org.prgms.boardservice.domain.post.dto.PostResponseDto;
 import org.prgms.boardservice.domain.post.dto.PostUpdateRequestDto;
@@ -44,10 +45,11 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PostResponseDto>> getPage(Pageable pageable) throws NoSuchElementException {
+    public ResponseEntity<PageDto<PostResponseDto>> getPage(Pageable pageable) throws NoSuchElementException {
         Page<Post> page = postService.getByPage(pageable);
+        Page<PostResponseDto> postResponseDtoPage = page.map(PostResponseDto::new);
 
-        return ResponseEntity.ok(page.map(PostResponseDto::new));
+        return ResponseEntity.ok(new PageDto<>(postResponseDtoPage));
     }
 
     @PatchMapping("/{id}")
