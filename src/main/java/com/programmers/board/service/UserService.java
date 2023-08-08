@@ -40,10 +40,15 @@ public class UserService {
     }
 
     private void checkUserNameDuplication(String name) {
-        userRepository.findByName(name)
-                .ifPresent(user -> {
-                    throw new DuplicateKeyException(USER_NAME_DUPLICATION);
-                });
+        if (isDuplicatedUserName(name)) {
+            throw new DuplicateKeyException(USER_NAME_DUPLICATION);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isDuplicatedUserName(String name) {
+        return userRepository.findByName(name)
+                .isPresent();
     }
 
     @Transactional(readOnly = true)

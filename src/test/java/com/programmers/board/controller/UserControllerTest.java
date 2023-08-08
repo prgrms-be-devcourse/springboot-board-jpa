@@ -361,4 +361,29 @@ class UserControllerTest {
                                 parameterWithName("userId").description("회원 ID")
                         )));
     }
+
+    @Test
+    @DisplayName("성공(200): user name 중복 검사 호출")
+    void isDuplicatedUserName() throws Exception {
+        //given
+        given(userService.isDuplicatedUserName(any())).willReturn(false);
+
+        //when
+        ResultActions resultActions = mvc.perform(get("/api/v1/users/duplications")
+                .param("name", "name")
+                .accept(MediaType.APPLICATION_JSON));
+
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("user-duplicate",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        queryParameters(
+                                parameterWithName("name").description("회원 이름")
+                        ),
+                        responseFields(
+                                fieldWithPath("data").type(JsonFieldType.BOOLEAN).description("중복 여부")
+                        )));
+    }
 }

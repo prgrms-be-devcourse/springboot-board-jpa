@@ -254,4 +254,34 @@ class UserServiceTest {
                     .isInstanceOf(AuthorizationException.class);
         }
     }
+
+    @Nested
+    @DisplayName("중첩: 회원 이름 중복 검사")
+    class IsDuplicatedUserNameTest {
+        @Test
+        @DisplayName("성공: 회원 중복O")
+        void success_duplicate() {
+            //given
+            given(userRepository.findByName(any())).willReturn(Optional.ofNullable(givenUser));
+
+            //when
+            boolean duplicated = userService.isDuplicatedUserName("name");
+
+            //then
+            assertThat(duplicated).isTrue();
+        }
+
+        @Test
+        @DisplayName("성공: 회원 중복X")
+        void success_notDuplicate() {
+            //given
+            given(userRepository.findByName(any())).willReturn(Optional.empty());
+
+            //when
+            boolean duplicated = userService.isDuplicatedUserName("name");
+
+            //then
+            assertThat(duplicated).isFalse();
+        }
+    }
 }

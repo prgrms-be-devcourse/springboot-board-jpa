@@ -65,6 +65,13 @@ public class UserController {
         userService.deleteUser(command);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/duplications")
+    public Result<Boolean> isDuplicatedUserName(@RequestParam("name") String name) {
+        boolean duplicationUserName = userService.isDuplicatedUserName(name);
+        return new Result<>(duplicationUserName);
+    }
+
     private void checkLogin(Long loginUserId) {
         if (loginUserId == null) {
             throw new AuthenticationException(AuthErrorMessage.NO_LOGIN.getMessage());
