@@ -23,27 +23,27 @@ public class UserController {
     public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserRequestDto userRequestDto) {
         UserResponseDto userResponseDto = userService.create(userRequestDto);
 
-        return ResponseEntity.ok().body(userResponseDto);
+        return ResponseEntity.ok(userResponseDto);
     }
 
     @GetMapping
     public ResponseEntity<Page<UserResponseDto>> findAll(@PageableDefault(sort = "id", size = 10, direction = Sort.Direction.DESC) Pageable pageable) {
         Page<UserResponseDto> userResponseDtos = userService.findAll(pageable);
 
-        return ResponseEntity.ok().body(userResponseDtos);
+        return ResponseEntity.ok(userResponseDtos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> findById(@PathVariable Long id) {
         UserResponseDto userResponseDto = userService.findById(id);
 
-        return ResponseEntity.ok().body(userResponseDto);
+        return ResponseEntity.ok(userResponseDto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody @Valid UserRequestDto userRequestDto) {
         UserResponseDto userResponseDto = userService.update(id, userRequestDto);
 
-        return ResponseEntity.ok().body(userResponseDto);
+        return ResponseEntity.ok(userResponseDto);
     }
 }

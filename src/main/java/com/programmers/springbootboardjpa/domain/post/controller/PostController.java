@@ -24,27 +24,27 @@ public class PostController {
     public ResponseEntity<PostResponseDto> create(@RequestBody @Valid PostCreateRequestDto postCreateRequestDto) {
         PostResponseDto postResponseDto = postService.create(postCreateRequestDto);
 
-        return ResponseEntity.ok().body(postResponseDto);
+        return ResponseEntity.ok(postResponseDto);
     }
 
     @GetMapping
     public ResponseEntity<Page<PostResponseDto>> findAll(@PageableDefault(sort = "id", size = 10, direction = Sort.Direction.DESC) Pageable pageable) {
         Page<PostResponseDto> postResponseDtos = postService.findAll(pageable);
 
-        return ResponseEntity.ok().body(postResponseDtos);
+        return ResponseEntity.ok(postResponseDtos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PostResponseDto> findById(@PathVariable Long id) {
         PostResponseDto postResponseDto = postService.findById(id);
 
-        return ResponseEntity.ok().body(postResponseDto);
+        return ResponseEntity.ok(postResponseDto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PostResponseDto> update(@PathVariable Long id, @RequestBody @Valid PostUpdateRequestDto postUpdateRequestDto) {
         PostResponseDto postResponseDto = postService.update(id, postUpdateRequestDto);
 
-        return ResponseEntity.ok().body(postResponseDto);
+        return ResponseEntity.ok(postResponseDto);
     }
 }
