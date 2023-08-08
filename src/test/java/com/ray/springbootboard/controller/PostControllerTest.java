@@ -43,7 +43,7 @@ class PostControllerTest {
         // Given
         PostSaveRequest request = new PostSaveRequest("title", "content");
         Long userId = 1L;
-        given(postService.save(any(Post.class), any(Long.class)))
+        given(postService.save(any(Post.class)))
                 .willReturn(1L);
 
         // When
