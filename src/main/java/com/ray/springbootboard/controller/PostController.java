@@ -25,7 +25,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Void> savePost(@RequestBody PostSaveRequest request, @RequestParam Long userId) {
-        Long savedPostId = service.save(request.toEntity(), userId);
+        Long savedPostId = service.save(request.toEntity(userId));
 
         return ResponseEntity.created(URI.create("/api/v1/posts/" + savedPostId)).build();
     }

@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostService {
 
-    Long save(Post post, Long userId);
+    Long save(Post post);
 
     Post getById(Long id);
 

@@ -41,20 +41,17 @@ public class Post extends BaseTimeEntity {
     @CreatedBy
     private String createdBy;
 
-    public Post(String title, String content) {
+    public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
-    }
-
-    public void allocateWriter(User user) {
         this.user = user;
     }
 
     public void update(String title, String content) {
         validate(title);
         validate(content);
-        this.title = test(this.title, title);
-        this.content = test(this.content, content);
+        this.title = title;
+        this.content = content;
     }
 
     private void validate(String target) {

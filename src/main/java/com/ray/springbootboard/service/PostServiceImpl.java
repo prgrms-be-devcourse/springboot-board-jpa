@@ -1,9 +1,7 @@
 package com.ray.springbootboard.service;
 
 import com.ray.springbootboard.domain.Post;
-import com.ray.springbootboard.domain.User;
 import com.ray.springbootboard.repository.PostRepository;
-import com.ray.springbootboard.repository.UserRepository;
 import com.ray.springbootboard.service.vo.PostUpdateInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,14 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
 
     @Override
     @Transactional
-    public Long save(Post post, Long userId) {
-        User user = userRepository.getReferenceById(userId);
-        post.allocateWriter(user);
-
+    public Long save(Post post) {
         return postRepository.save(post).getId();
     }
 
