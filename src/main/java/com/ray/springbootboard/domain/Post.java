@@ -62,12 +62,4 @@ public class Post extends BaseTimeEntity {
             throw new IllegalArgumentException("빈 값일 수 없습니다");
         }
     }
-
-    public String test(String origin, String target) {
-        if (origin.equals(target)) {
-            return origin;
-        }
-
-        return target;
-    }
 }
