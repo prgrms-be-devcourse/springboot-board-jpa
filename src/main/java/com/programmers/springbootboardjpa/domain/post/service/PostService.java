@@ -43,12 +43,14 @@ public class PostService {
         return PostResponseDto.from(post);
     }
 
+    @Transactional(readOnly = true)
     public PostResponseDto findById(Long id) {
         return postRepository.findById(id)
                 .map(PostResponseDto::from)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.POST_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
     public Page<PostResponseDto> findAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(PostResponseDto::from);

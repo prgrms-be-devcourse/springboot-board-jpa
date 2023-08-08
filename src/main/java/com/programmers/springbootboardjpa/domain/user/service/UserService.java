@@ -36,12 +36,14 @@ public class UserService {
         return UserResponseDto.from(user);
     }
 
+    @Transactional(readOnly = true)
     public UserResponseDto findById(Long id) {
         return userRepository.findById(id)
                 .map(UserResponseDto::from)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
     public Page<UserResponseDto> findAll(Pageable pageable) {
         return userRepository.findAll(pageable)
                 .map(UserResponseDto::from);
