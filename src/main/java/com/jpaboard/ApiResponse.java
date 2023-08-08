@@ -1,22 +1,14 @@
 package com.jpaboard;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.time.LocalDateTime;
 
 public class ApiResponse<T> {
 
-    private int statusCode;
-
-    private T data;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime serverDateTime;
+    private final int statusCode;
+    private final T data;
 
     public ApiResponse(int statusCode, T data) {
         this.statusCode = statusCode;
         this.data = data;
-        this.serverDateTime = LocalDateTime.now();
     }
 
     public static <T> ApiResponse<T> ok(T data) {
@@ -27,4 +19,11 @@ public class ApiResponse<T> {
         return new ApiResponse<>(statusCode, errorData);
     }
 
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public T getData() {
+        return data;
+    }
 }
