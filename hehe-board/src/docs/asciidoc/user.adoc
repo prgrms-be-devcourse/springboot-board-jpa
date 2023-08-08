@@ -1,0 +1,31 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 유저(User)
+User 에 대한 등록 기능을 제공합니다.
+
+=== 유저 등록
+유저를 새롭게 등록합다.
+
+|====
+|속성 |설명
+
+|`name` |사용자 이름(문자열 입력)
+|`age` |사용자 나이(최소: 1, 최대: 120)
+|`hobby` |사용자 취미(문자열 입력)
+
+|====
+
+
+[discrete]
+==== 요청
+include::{snippets}/member-save/curl-request.adoc[]
+include::{snippets}/member-save/httpie-request.adoc[]
+include::{snippets}/member-save/http-request.adoc[]
+include::{snippets}/member-save/request-fields.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/member-save/http-response.adoc[]
+include::{snippets}/member-save/response-fields.adoc[]
