@@ -1,11 +1,11 @@
 package com.programmers.board.controller;
 
-import com.programmers.board.controller.response.ErrorResult;
 import com.programmers.board.exception.AuthenticationException;
 import com.programmers.board.exception.AuthorizationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,50 +19,50 @@ import java.util.NoSuchElementException;
 public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
-    public ErrorResult noSuchElementExHandle(NoSuchElementException ex) {
+    public ProblemDetail noSuchElementExHandle(NoSuchElementException ex) {
         logWarn(ex);
-        return new ErrorResult(ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ErrorResult methodArgumentNotValidExHandle(MethodArgumentNotValidException ex) {
+    public ProblemDetail methodArgumentNotValidExHandle(MethodArgumentNotValidException ex) {
         String errorMessages = createErrorMessages(ex);
-        return new ErrorResult(errorMessages);
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, errorMessages);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
-    public ErrorResult illegalArgumentExHandle(IllegalArgumentException ex) {
+    public ProblemDetail illegalArgumentExHandle(IllegalArgumentException ex) {
         logWarn(ex);
-        return new ErrorResult(ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(AuthenticationException.class)
-    public ErrorResult authenticationExHandle(AuthenticationException ex) {
+    public ProblemDetail authenticationExHandle(AuthenticationException ex) {
         logWarn(ex);
-        return new ErrorResult(ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AuthorizationException.class)
-    public ErrorResult authorizationExHandle(AuthorizationException ex) {
+    public ProblemDetail authorizationExHandle(AuthorizationException ex) {
         logWarn(ex);
-        return new ErrorResult(ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DuplicateKeyException.class)
-    public ErrorResult duplicateKeyExHandle(DuplicateKeyException ex) {
-        return new ErrorResult(ex.getMessage());
+    public ProblemDetail duplicateKeyExHandle(DuplicateKeyException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public ErrorResult exHandle(Exception ex) {
+    public ProblemDetail exHandle(Exception ex) {
         logError(ex);
-        return new ErrorResult("서버 오류가 발생했습니다");
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다");
     }
 
     private String createErrorMessages(MethodArgumentNotValidException ex) {

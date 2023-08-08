@@ -113,7 +113,8 @@ class LoginControllerTest {
             //then
             resultActions.andDo(print())
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").isString());
+                    .andExpect(jsonPath("$.status").isNumber())
+                    .andExpect(jsonPath("$.detail").isString());
         }
 
         @ParameterizedTest
@@ -133,7 +134,8 @@ class LoginControllerTest {
             //then
             resultActions.andDo(print())
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").isString());
+                    .andExpect(jsonPath("$.status").isNumber())
+                    .andExpect(jsonPath("$.detail").isString());
         }
     }
 

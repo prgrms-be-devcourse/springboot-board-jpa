@@ -155,7 +155,8 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").isString());
+                    .andExpect(jsonPath("$.status").isNumber())
+                    .andExpect(jsonPath("$.detail").isString());
         }
 
         @Test
@@ -173,7 +174,8 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").isString());
+                    .andExpect(jsonPath("$.status").isNumber())
+                    .andExpect(jsonPath("$.detail").isString());
         }
 
         @Test
@@ -191,7 +193,8 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").isString());
+                    .andExpect(jsonPath("$.status").isNumber())
+                    .andExpect(jsonPath("$.detail").isString());
         }
     }
 
@@ -277,7 +280,8 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").isString());
+                    .andExpect(jsonPath("$.status").isNumber())
+                    .andExpect(jsonPath("$.detail").isString());
         }
 
         @ParameterizedTest
@@ -297,7 +301,8 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").isString());
+                    .andExpect(jsonPath("$.status").isNumber())
+                    .andExpect(jsonPath("$.detail").isString());
         }
 
         @Test
@@ -315,7 +320,8 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").isString());
+                    .andExpect(jsonPath("$.status").isNumber())
+                    .andExpect(jsonPath("$.detail").isString());
         }
 
         @ParameterizedTest
@@ -336,7 +342,8 @@ class UserControllerTest {
 
             //then
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").isString());
+                    .andExpect(jsonPath("$.status").isNumber())
+                    .andExpect(jsonPath("$.detail").isString());
         }
     }
 

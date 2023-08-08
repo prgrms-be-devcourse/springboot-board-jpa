@@ -104,7 +104,11 @@ class GlobalControllerAdviceTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                                fieldWithPath("type").type(JsonFieldType.STRING).description("문제 설명 문서"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("문제 요약"),
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
+                                fieldWithPath("detail").type(JsonFieldType.STRING).description("문제 상세 설명"),
+                                fieldWithPath("instance").type(JsonFieldType.STRING).description("문제 발생 엔드포인트")
                         )));
     }
 
@@ -123,7 +127,11 @@ class GlobalControllerAdviceTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                                fieldWithPath("type").type(JsonFieldType.STRING).description("문제 설명 문서"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("문제 요약"),
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
+                                fieldWithPath("detail").type(JsonFieldType.STRING).description("문제 상세 설명"),
+                                fieldWithPath("instance").type(JsonFieldType.STRING).description("문제 발생 엔드포인트")
                         )));
     }
 
@@ -141,7 +149,11 @@ class GlobalControllerAdviceTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                                fieldWithPath("type").type(JsonFieldType.STRING).description("문제 설명 문서"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("문제 요약"),
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
+                                fieldWithPath("detail").type(JsonFieldType.STRING).description("문제 상세 설명"),
+                                fieldWithPath("instance").type(JsonFieldType.STRING).description("문제 발생 엔드포인트")
                         )));
     }
 
@@ -159,7 +171,11 @@ class GlobalControllerAdviceTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                                fieldWithPath("type").type(JsonFieldType.STRING).description("문제 설명 문서"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("문제 요약"),
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
+                                fieldWithPath("detail").type(JsonFieldType.STRING).description("문제 상세 설명"),
+                                fieldWithPath("instance").type(JsonFieldType.STRING).description("문제 발생 엔드포인트")
                         )));
     }
 
@@ -177,7 +193,11 @@ class GlobalControllerAdviceTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                                fieldWithPath("type").type(JsonFieldType.STRING).description("문제 설명 문서"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("문제 요약"),
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
+                                fieldWithPath("detail").type(JsonFieldType.STRING).description("문제 상세 설명"),
+                                fieldWithPath("instance").type(JsonFieldType.STRING).description("문제 발생 엔드포인트")
                         )));
     }
 
@@ -195,7 +215,11 @@ class GlobalControllerAdviceTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                                fieldWithPath("type").type(JsonFieldType.STRING).description("문제 설명 문서"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("문제 요약"),
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
+                                fieldWithPath("detail").type(JsonFieldType.STRING).description("문제 상세 설명"),
+                                fieldWithPath("instance").type(JsonFieldType.STRING).description("문제 발생 엔드포인트")
                         )));
     }
 
@@ -213,7 +237,11 @@ class GlobalControllerAdviceTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지")
+                                fieldWithPath("type").type(JsonFieldType.STRING).description("문제 설명 문서"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("문제 요약"),
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
+                                fieldWithPath("detail").type(JsonFieldType.STRING).description("문제 상세 설명"),
+                                fieldWithPath("instance").type(JsonFieldType.STRING).description("문제 발생 엔드포인트")
                         )));
     }
 }
