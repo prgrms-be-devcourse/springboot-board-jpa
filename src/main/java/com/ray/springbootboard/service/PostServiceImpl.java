@@ -24,7 +24,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getById(Long id) {
-        return getPostById(id);
+        return postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 아이디를 가진 포스트가 없습니다"));
     }
 
     @Override
@@ -35,14 +36,10 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Long update(PostUpdateInfo info) {
-        Post post = getPostById(info.id());
+        Post post = getById(info.id());
         post.update(info.title(), info.content());
 
         return post.getId();
     }
 
-    private Post getPostById(Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 아이디를 가진 포스트가 없습니다"));
-    }
 }
