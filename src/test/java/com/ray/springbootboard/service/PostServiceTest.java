@@ -54,7 +54,7 @@ class PostServiceTest {
         given(postRepository.findById(wrongId)).willThrow(IllegalArgumentException.class);
 
         // When & Then
-        assertThatThrownBy(() -> postService.getById(10000L))
+        assertThatThrownBy(() -> postService.getById(wrongId))
                 .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
@@ -100,7 +100,7 @@ class PostServiceTest {
                 Arguments.arguments("title2", ""),
                 Arguments.arguments("title2", " "),
                 Arguments.arguments("", "content2"),
-                Arguments.arguments(" ", "content2")
-        );
+                Arguments.arguments(" ", "content2"),
+                Arguments.arguments(" ", "content2"),        );
     }
 }
