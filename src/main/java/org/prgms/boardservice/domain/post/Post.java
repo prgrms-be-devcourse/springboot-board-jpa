@@ -3,6 +3,7 @@ package org.prgms.boardservice.domain.post;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 import org.prgms.boardservice.domain.BaseTime;
 
 import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_CONTENT;
@@ -13,6 +14,7 @@ import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_TITLE;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@DynamicUpdate
 public class Post extends BaseTime {
 
     @Id
