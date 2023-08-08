@@ -101,6 +101,7 @@ class PostServiceTest {
                 Arguments.arguments("title2", " "),
                 Arguments.arguments("", "content2"),
                 Arguments.arguments(" ", "content2"),
-                Arguments.arguments(" ", "content2"),        );
+                Arguments.arguments(" ", "content2")
+        );
     }
 }
