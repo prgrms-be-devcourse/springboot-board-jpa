@@ -50,7 +50,8 @@ class PostServiceTest {
     @DisplayName("아이디로 포스트를 찾는데 실패한다")
     void failFindPostByWrongId() {
         // Given
-        given(postRepository.findById(10000L)).willThrow(IllegalArgumentException.class);
+        Long wrongId = 10000L;
+        given(postRepository.findById(wrongId)).willThrow(IllegalArgumentException.class);
 
         // When & Then
         assertThatThrownBy(() -> postService.getById(10000L))
