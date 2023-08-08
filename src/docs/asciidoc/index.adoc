@@ -1,0 +1,20 @@
+= API Docs
+Spring-JPA-Board
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toc-title: API
+:toclevels: 2
+:sectlinks:
+
+== Save
+operation::post/save[snippets='http-request,request-fields,http-response']
+
+== Get All
+operation::post/getAll[snippets='http-request,http-response,response-fields']
+
+== Get by Id
+operation::post/getById[snippets='http-request,http-response,response-fields']
+
+== Update
+operation::post/update[snippets='http-request,request-fields,http-response']
