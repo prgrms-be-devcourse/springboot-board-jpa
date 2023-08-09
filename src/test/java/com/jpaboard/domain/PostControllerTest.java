@@ -3,9 +3,8 @@ package com.jpaboard.domain;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpaboard.post.application.PostService;
 import com.jpaboard.post.infra.JpaPostRepository;
-import com.jpaboard.post.ui.dto.PostRequest;
-import com.jpaboard.post.ui.dto.PostUpdateRequest;
-import com.jpaboard.user.ui.dto.UserResponse;
+import com.jpaboard.post.ui.dto.PostDto;
+import com.jpaboard.user.ui.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,9 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -47,24 +48,27 @@ class PostControllerTest {
     @Autowired
     private JpaPostRepository postRepository;
 
+    private List<PostDto.Request> postRequestList = new ArrayList<>();
+
     @BeforeEach
     void setUp() {
         postRepository.deleteAll();
+        postRequestList.clear();
     }
 
-    private static UserResponse getUserResponse(String name, int age, String hobby) {
-        return UserResponse.builder()
+    private UserDto.Request getUserRequest(String name, int age, String hobby) {
+        return UserDto.Request.builder()
                 .name(name)
                 .age(age)
                 .hobby(hobby)
                 .build();
     }
 
-    private static PostRequest getPostRequest(String title, String content, UserResponse userResponse) {
-        return PostRequest.builder()
+    private PostDto.Request getPostRequest(String title, String content, UserDto.Request response) {
+        return PostDto.Request.builder()
                 .title(title)
                 .content(content)
-                .user(userResponse)
+                .user(response)
                 .build();
     }
 
@@ -80,9 +84,13 @@ class PostControllerTest {
             String title = "제목" + i;
             String content = "내용" + (111 * i);
 
-            UserResponse userResponse = getUserResponse(name, age, hobby);
-            PostRequest postRequest = getPostRequest(title, content, userResponse);
+            UserDto.Request userRequest = getUserRequest(name, age, hobby);
+            PostDto.Request postRequest = getPostRequest(title, content, userRequest);
 
+            postRequestList.add(postRequest);
+        }
+
+        for (PostDto.Request postRequest : postRequestList) {
             postService.createPost(postRequest);
         }
 
@@ -149,8 +157,8 @@ class PostControllerTest {
     @DisplayName("id에 따라 post를 조회하고 rest doc객체를 생성한다")
     void findPostById_Test() throws Exception {
         // Given
-        UserResponse userResponse = getUserResponse("이름이름", 11, "사진찍기");
-        PostRequest postRequest = getPostRequest("제목22", "내용3124213", userResponse);
+        UserDto.Request userRequest = getUserRequest("이름이름", 11, "사진찍기");
+        PostDto.Request postRequest = getPostRequest("제목22", "내용3124213", userRequest);
 
         Long postId = postService.createPost(postRequest);
 
@@ -178,8 +186,8 @@ class PostControllerTest {
     @DisplayName("post를 성공적으로 생성하고 rest doc객체를 생성한다")
     void createPost_Test() throws Exception {
         // Given
-        UserResponse userResponse = getUserResponse("이름이름", 11, "사진찍기");
-        PostRequest postRequest = getPostRequest("제목22", "내용3124213", userResponse);
+        UserDto.Request userRequest = getUserRequest("이름이름", 11, "사진찍기");
+        PostDto.Request postRequest = getPostRequest("제목22", "내용3124213", userRequest);
 
         postService.createPost(postRequest);
 
@@ -209,12 +217,12 @@ class PostControllerTest {
     @DisplayName("id로 찾은 post를 수정하고 rest doc객체를 생성한다")
     void updatePost_Test() throws Exception {
         // Given
-        UserResponse userResponse = getUserResponse("susuyeon", 24, "shopping");
-        PostRequest postRequest = getPostRequest("제목22", "내용3124213", userResponse);
+        UserDto.Request userRequest = getUserRequest("susuyeon", 24, "shopping");
+        PostDto.Request postRequest = getPostRequest("제목22", "내용3124213", userRequest);
 
         Long postId = postService.createPost(postRequest);
 
-        PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
+        PostDto.PostUpdateRequest postUpdateRequest = PostDto.PostUpdateRequest.builder()
                 .title("수정한 제목")
                 .content("수정한 내용들")
                 .build();
@@ -242,12 +250,12 @@ class PostControllerTest {
     @DisplayName("없는 id로 update를 시도하면 실패한다")
     void updatePost_Fail_Test() throws Exception {
         // Given
-        UserResponse userResponse = getUserResponse("이름이름", 11, "사진찍기");
-        PostRequest postRequest = getPostRequest("제목22", "내용3124213", userResponse);
+        UserDto.Request userRequest = getUserRequest("이름이름", 11, "사진찍기");
+        PostDto.Request postRequest = getPostRequest("제목22", "내용3124213", userRequest);
 
         Long postId = postService.createPost(postRequest);
 
-        PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
+        PostDto.PostUpdateRequest postUpdateRequest = PostDto.PostUpdateRequest.builder()
                 .title("수정한 제목")
                 .content("수정한 내용들")
                 .build();
