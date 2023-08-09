@@ -32,13 +32,13 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping("")
+    @PostMapping
     public ApiResponse<Long> save(@RequestBody PostDto.Request request) {
         Long id = postService.save(request);
         return ApiResponse.ok(id);
     }
 
-    @GetMapping("")
+    @GetMapping
     public ApiResponse<Page<PostDto.Response>> findAll(Pageable pageable) {
         Page<PostDto.Response> postDtoPage = postService.findAll(pageable);
         return ApiResponse.ok(postDtoPage);
