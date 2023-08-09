@@ -16,13 +16,13 @@ public class LogAspect {
     private void logUnexpectedEx() {}
 
     @AfterThrowing(value = "logService()", throwing = "ex")
-    public void doLogExpectedServiceEx(JoinPoint joinPoint, Exception ex) {
+    public void doLogExpectedExOnService(JoinPoint joinPoint, Exception ex) {
         log.warn("[EX Point] {}", joinPoint.getSignature());
         log.warn("[EX] Type = {}, Message = {}", ex.getClass().getSimpleName(), ex.getMessage());
     }
 
     @Before("logUnexpectedEx()")
-    public void doLogUnexpectedServiceEx(JoinPoint joinPoint) {
+    public void doLogUnexpectedEx(JoinPoint joinPoint) {
         Arrays.stream(joinPoint.getArgs())
                 .filter(o -> o instanceof Exception)
                 .forEach(o -> {
