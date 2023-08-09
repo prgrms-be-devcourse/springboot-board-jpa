@@ -6,4 +6,6 @@ public interface UserService {
 
     Long save(User user);
 
+    User getById(Long id);
+
 }

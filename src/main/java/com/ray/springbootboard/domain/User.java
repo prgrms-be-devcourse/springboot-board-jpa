@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
@@ -14,6 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 public class User extends BaseTimeEntity {
 
@@ -33,4 +35,7 @@ public class User extends BaseTimeEntity {
     @Column(length = 20)
     private String hobby;
 
+    public static User withOnlyId(Long id) {
+        return new User(id, null, null, null);
+    }
 }
