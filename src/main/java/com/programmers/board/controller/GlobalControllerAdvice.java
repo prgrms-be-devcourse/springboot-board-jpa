@@ -20,7 +20,6 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
     public ProblemDetail noSuchElementExHandle(NoSuchElementException ex) {
-        logWarn(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
@@ -34,21 +33,18 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ProblemDetail illegalArgumentExHandle(IllegalArgumentException ex) {
-        logWarn(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(AuthenticationException.class)
     public ProblemDetail authenticationExHandle(AuthenticationException ex) {
-        logWarn(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AuthorizationException.class)
     public ProblemDetail authorizationExHandle(AuthorizationException ex) {
-        logWarn(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
     }
 
@@ -61,7 +57,6 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ProblemDetail exHandle(Exception ex) {
-        logError(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다");
     }
 
@@ -72,14 +67,5 @@ public class GlobalControllerAdvice {
             sb.append(errorMessage).append(",");
         }
         return sb.toString();
-    }
-
-    private void logWarn(Exception ex) {
-        log.warn("[EX TYPE] - {}", ex.getClass().getSimpleName());
-        log.warn("[EX MESSAGE] - {}", ex.getMessage());
-    }
-
-    private void logError(Exception ex) {
-        log.error("[EX]", ex);
     }
 }
