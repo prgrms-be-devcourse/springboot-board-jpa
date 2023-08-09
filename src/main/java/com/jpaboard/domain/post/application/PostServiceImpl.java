@@ -10,6 +10,8 @@ import com.jpaboard.domain.post.dto.response.PostResponse;
 import com.jpaboard.domain.post.infrastructure.PostRepository;
 import com.jpaboard.domain.user.User;
 import com.jpaboard.domain.user.infrastructure.UserRepository;
+import com.jpaboard.global.exception.PostNotFoundException;
+import com.jpaboard.global.exception.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,13 +29,13 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     public Long createPost(PostCreateRequest request) {
-        User user = userRepository.findById(request.userId()).orElseThrow(EntityNotFoundException::new);
+        User user = userRepository.findById(request.userId()).orElseThrow(UserNotFoundException::new);
         Post post = PostConverter.convertRequestToEntity(request, user);
         return postRepository.save(post).getId();
     }
 
     public PostResponse findPostById(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
         return PostConverter.convertEntityToResponse(post);
     }
 
@@ -51,7 +53,7 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     public void updatePost(Long id, PostUpdateRequest request) {
-        Post post = postRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
         post.update(request.title(), request.content());
     }
 

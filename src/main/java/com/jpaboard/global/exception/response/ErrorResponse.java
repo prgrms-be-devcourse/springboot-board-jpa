@@ -1,4 +1,4 @@
-package com.jpaboard.global.exception;
+package com.jpaboard.global.exception.response;
 
 import lombok.Getter;
 import org.springframework.validation.BindingResult;
