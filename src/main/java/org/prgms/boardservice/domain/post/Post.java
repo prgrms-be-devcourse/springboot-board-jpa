@@ -12,6 +12,7 @@ import org.prgms.boardservice.domain.BaseTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @DynamicUpdate
+@EqualsAndHashCode(of = "id", callSuper = false)
 public class Post extends BaseTime {
 
     @Id
@@ -24,6 +25,7 @@ public class Post extends BaseTime {
     @Embedded
     private Content content;
 
+    @NotNull
     private Long userId;
 
     public Post(Title title, Content content, Long userId) {
