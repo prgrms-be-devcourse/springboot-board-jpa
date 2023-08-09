@@ -26,7 +26,7 @@ class PostServiceTest {
     @Autowired
     PostService postService;
 
-    private final Post post = new Post("title", "content", 1L);
+    private final Post post = new Post(new Title("title"), new Content("content"), 1L);
 
     @BeforeEach
     void setUp() {
@@ -36,7 +36,7 @@ class PostServiceTest {
     @Test
     @DisplayName("게시글이 성공적으로 생성된다.")
     void success_Create_Post() {
-        Long id =  postService.create(new Post("title", "content", 1L));
+        Long id =  postService.create(new Post(new Title("title"), new Content("content"), 1L));
 
         Post get = postService.getById(id);
 
@@ -90,8 +90,8 @@ class PostServiceTest {
     @Test
     @DisplayName("게시글을 페이징하여 조회할 수 있다.")
     void success_Get_By_Page() {
-        Post post1 = new Post("title1", "content1", 1L);
-        Post post2 = new Post("title2", "content2", 1L);
+        Post post1 = new Post(1L, new Title("title1"), new Content("content1"), 1L);
+        Post post2 = new Post(2L, new Title("title2"), new Content("content2"), 1L);
 
         postService.create(post1);
         postService.create(post2);

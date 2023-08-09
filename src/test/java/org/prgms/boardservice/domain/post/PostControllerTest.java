@@ -82,7 +82,7 @@ class PostControllerTest {
     void success_Get_One_Post() throws Exception {
         // given
         Long postId = 1L;
-        Post post = new Post(postId, "title", "content", 1L);
+        Post post = new Post(postId, new Title("title"), new Content("content"), 1L);
 
         given(postService.getById(postId)).willReturn(post);
 
@@ -116,8 +116,8 @@ class PostControllerTest {
         // given
         PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(Sort.Direction.DESC, "id"));
 
-        Post post1 = new Post(1L, "title1", "content1", 1L);
-        Post post2 = new Post(2L, "title2", "content2", 1L);
+        Post post1 = new Post(1L, new Title("title1"), new Content("content1"), 1L);
+        Post post2 = new Post(2L, new Title("title2"), new Content("content2"), 1L);
 
         Page<Post> posts = new PageImpl<>(List.of(post2, post1), pageRequest, 3);
 

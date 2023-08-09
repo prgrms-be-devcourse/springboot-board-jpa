@@ -28,7 +28,7 @@ public class PostService {
         Post findPost = postRepository.findById(postUpdateVo.id())
                 .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_POST.getMessage()));
 
-        findPost.update(postUpdateVo.title(), postUpdateVo.content());
+        findPost.update(new Title(postUpdateVo.title()), new Content(postUpdateVo.content()));
 
         return postRepository.save(findPost).getId();
     }
