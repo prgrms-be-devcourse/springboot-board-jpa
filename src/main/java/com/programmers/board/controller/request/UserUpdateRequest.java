@@ -1,4 +1,4 @@
-package com.programmers.board.dto.request;
+package com.programmers.board.controller.request;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;

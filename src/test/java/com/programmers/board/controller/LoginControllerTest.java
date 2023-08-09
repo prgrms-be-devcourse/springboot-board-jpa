@@ -1,7 +1,7 @@
 package com.programmers.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.programmers.board.dto.request.LoginRequest;
+import com.programmers.board.controller.request.LoginRequest;
 import com.programmers.board.service.LoginService;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;

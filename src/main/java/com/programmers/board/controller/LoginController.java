@@ -1,8 +1,8 @@
 package com.programmers.board.controller;
 
 import com.programmers.board.constant.AuthErrorMessage;
-import com.programmers.board.dto.request.LoginRequest;
-import com.programmers.board.dto.service.login.LoginCommand;
+import com.programmers.board.controller.request.LoginRequest;
+import com.programmers.board.service.request.login.LoginCommand;
 import com.programmers.board.exception.AuthenticationException;
 import com.programmers.board.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;

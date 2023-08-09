@@ -1,11 +1,11 @@
 package com.programmers.board.service;
 
-import com.programmers.board.dto.service.user.UserDeleteCommand;
-import com.programmers.board.dto.service.user.UserGetCommand;
+import com.programmers.board.service.request.user.UserDeleteCommand;
+import com.programmers.board.service.request.user.UserGetCommand;
 import com.programmers.board.domain.User;
-import com.programmers.board.dto.UserDto;
-import com.programmers.board.dto.service.user.UserCreateCommand;
-import com.programmers.board.dto.service.user.UserUpdateCommand;
+import com.programmers.board.service.response.UserDto;
+import com.programmers.board.service.request.user.UserCreateCommand;
+import com.programmers.board.service.request.user.UserUpdateCommand;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;

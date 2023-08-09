@@ -1,6 +1,6 @@
-package com.programmers.board.dto.service.user;
+package com.programmers.board.service.request.user;
 
-import com.programmers.board.dto.request.UserUpdateRequest;
+import com.programmers.board.controller.request.UserUpdateRequest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

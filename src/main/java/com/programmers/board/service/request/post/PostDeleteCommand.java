@@ -1,4 +1,4 @@
-package com.programmers.board.dto.service.post;
+package com.programmers.board.service.request.post;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
 package com.programmers.board.service;
 
 import com.programmers.board.domain.User;
-import com.programmers.board.dto.service.login.LoginCommand;
+import com.programmers.board.service.request.login.LoginCommand;
 import com.programmers.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

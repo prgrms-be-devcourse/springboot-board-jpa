@@ -1,4 +1,4 @@
-package com.programmers.board.dto.request;
+package com.programmers.board.controller.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.validation.constraints.NotBlank;

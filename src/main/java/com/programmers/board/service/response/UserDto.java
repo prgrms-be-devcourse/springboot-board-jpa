@@ -1,4 +1,4 @@
-package com.programmers.board.dto;
+package com.programmers.board.service.response;
 
 import com.programmers.board.domain.User;
 import lombok.AccessLevel;

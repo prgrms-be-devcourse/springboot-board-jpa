@@ -1,6 +1,6 @@
-package com.programmers.board.dto.service.user;
+package com.programmers.board.service.request.user;
 
-import com.programmers.board.dto.request.UserCreateRequest;
+import com.programmers.board.controller.request.UserCreateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

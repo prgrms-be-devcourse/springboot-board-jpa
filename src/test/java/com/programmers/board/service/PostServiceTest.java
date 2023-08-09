@@ -2,12 +2,15 @@ package com.programmers.board.service;
 
 import com.programmers.board.domain.Post;
 import com.programmers.board.domain.User;
-import com.programmers.board.dto.PostDto;
-import com.programmers.board.dto.UserDto;
-import com.programmers.board.dto.service.post.*;
+import com.programmers.board.service.response.PostDto;
+import com.programmers.board.service.response.UserDto;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.PostRepository;
 import com.programmers.board.repository.UserRepository;
+import com.programmers.board.service.request.post.PostCreateCommand;
+import com.programmers.board.service.request.post.PostDeleteCommand;
+import com.programmers.board.service.request.post.PostGetCommand;
+import com.programmers.board.service.request.post.PostUpdateCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

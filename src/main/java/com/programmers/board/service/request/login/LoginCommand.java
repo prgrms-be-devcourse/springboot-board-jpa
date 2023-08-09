@@ -1,6 +1,6 @@
-package com.programmers.board.dto.service.login;
+package com.programmers.board.service.request.login;
 
-import com.programmers.board.dto.request.LoginRequest;
+import com.programmers.board.controller.request.LoginRequest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

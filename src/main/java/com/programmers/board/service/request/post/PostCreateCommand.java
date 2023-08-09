@@ -1,6 +1,6 @@
-package com.programmers.board.dto.service.post;
+package com.programmers.board.service.request.post;
 
-import com.programmers.board.dto.request.PostCreateRequest;
+import com.programmers.board.controller.request.PostCreateRequest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
