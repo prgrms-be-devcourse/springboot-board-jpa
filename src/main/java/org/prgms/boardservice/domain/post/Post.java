@@ -45,19 +45,22 @@ public class Post extends BaseTime {
         this.title = title;
     }
 
-    public void changeContent(String content) {
+    public void update(String title, String content) {
+        validateTitleLength(title);
         validateContentLength(content);
+
+        this.title = title;
         this.content = content;
     }
 
     private void validateTitleLength(String title) {
-        if (title == null || title.trim().length() == 0 || title.length() > 20) {
+        if (!hasText(title) || title.length() > 20) {
             throw new IllegalArgumentException(INVALID_POST_TITLE.getMessage());
         }
     }
 
     private void validateContentLength(String content) {
-        if (content == null || content.trim().length() == 0 || content.length() > 500) {
+        if (!hasText(content) || content.length() > 500) {
             throw new IllegalArgumentException(INVALID_POST_CONTENT.getMessage());
         }
     }

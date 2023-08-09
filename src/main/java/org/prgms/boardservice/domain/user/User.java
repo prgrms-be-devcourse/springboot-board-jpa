@@ -16,6 +16,9 @@ import static org.prgms.boardservice.util.ErrorMessage.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTime {
 
+    private static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+    private static final String PASSWORD_REGEX = "^.*(?=^.{8,15}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -44,17 +47,13 @@ public class User extends BaseTime {
     }
 
     private void validateEmailPattern(String email) {
-        String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-
-        if (!Pattern.matches(regex, email)) {
+        if (!Pattern.matches(EMAIL_REGEX, email)) {
             throw new IllegalArgumentException(INVALID_USER_EMAIL_PATTERN.getMessage());
         }
     }
 
     private void validatePasswordPattern(String password) {
-        String regex = "^.*(?=^.{8,15}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$";
-
-        if (!Pattern.matches(regex, password)) {
+        if (!Pattern.matches(PASSWORD_REGEX, password)) {
             throw new IllegalArgumentException(INVALID_USER_PASSWORD_PATTERN.getMessage());
         }
     }
