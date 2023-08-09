@@ -3,8 +3,8 @@ package com.jpaboard.domain;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpaboard.post.application.PostService;
 import com.jpaboard.post.infra.JpaPostRepository;
-import com.jpaboard.post.ui.dto.PostResponse;
-import com.jpaboard.post.ui.dto.PostUpdateResponse;
+import com.jpaboard.post.ui.dto.PostRequest;
+import com.jpaboard.post.ui.dto.PostUpdateRequest;
 import com.jpaboard.user.ui.dto.UserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +16,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -28,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @SpringBootTest
+@Transactional
 class PostControllerTest {
 
     @Autowired
@@ -47,62 +52,58 @@ class PostControllerTest {
         postRepository.deleteAll();
     }
 
+    private static UserResponse getUserResponse(String name, int age, String hobby) {
+        return UserResponse.builder()
+                .name(name)
+                .age(age)
+                .hobby(hobby)
+                .build();
+    }
+
+    private static PostRequest getPostRequest(String title, String content, UserResponse userResponse) {
+        return PostRequest.builder()
+                .title(title)
+                .content(content)
+                .user(userResponse)
+                .build();
+    }
+
     @Test
     @DisplayName("모든 id를 조회하고 rest doc객체를 생성한다")
     void findPostAll_Test() throws Exception {
         // Given
-        UserResponse userResponse = UserResponse.builder()
-                .name("이름이름11")
-                .age(11)
-                .hobby("사진찍기11")
-                .build();
+        for (int i = 1; i <= 3; i++) {
+            String name = "이름이름" + i;
+            int age = 11 * i;
+            String hobby = "사진찍기" + i;
 
-        Long postId = postService.createPost(
-                PostResponse.builder()
-                        .title("제목11")
-                        .content("111111")
-                        .user(userResponse)
-                        .build()
-        );
+            String title = "제목" + i;
+            String content = "내용" + (111 * i);
 
-        UserResponse userResponse1 = UserResponse.builder()
-                .name("이름이름22")
-                .age(22)
-                .hobby("사진찍기22")
-                .build();
+            UserResponse userResponse = getUserResponse(name, age, hobby);
+            PostRequest postRequest = getPostRequest(title, content, userResponse);
 
-        Long postId2 = postService.createPost(
-                PostResponse.builder()
-                        .title("제목22")
-                        .content("222222")
-                        .user(userResponse1)
-                        .build()
-        );
+            postService.createPost(postRequest);
+        }
 
-        UserResponse userResponse2 = UserResponse.builder()
-                .name("이름이름33")
-                .age(33)
-                .hobby("사진찍기33")
-                .build();
-
-        Long postId3 = postService.createPost(
-                PostResponse.builder()
-                        .title("제목33")
-                        .content("33333")
-                        .user(userResponse2)
-                        .build()
-        );
+        Map<String, Integer> pageParam = new HashMap<>();
+        pageParam.put("page", 0);
+        pageParam.put("size", 8);
 
         // When, Them
         this.mockMvc.perform(get("/api/posts")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(pageParam)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-getAll",
+                        requestFields(
+                                fieldWithPath("page").type(JsonFieldType.NUMBER).description("페이지 쪽수"),
+                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("페이지 글 사이즈")
+                        ),
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
-                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간"),
 
                                 fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("제목"),
                                 fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("data.pageable"),
@@ -148,19 +149,10 @@ class PostControllerTest {
     @DisplayName("id에 따라 post를 조회하고 rest doc객체를 생성한다")
     void findPostById_Test() throws Exception {
         // Given
-        UserResponse userResponse = UserResponse.builder()
-                .name("이름이름")
-                .age(11)
-                .hobby("사진찍기")
-                .build();
+        UserResponse userResponse = getUserResponse("이름이름", 11, "사진찍기");
+        PostRequest postRequest = getPostRequest("제목22", "내용3124213", userResponse);
 
-        Long postId = postService.createPost(
-                PostResponse.builder()
-                        .title("제목22")
-                        .content("내용314124")
-                        .user(userResponse)
-                        .build()
-        );
+        Long postId = postService.createPost(postRequest);
 
         // When, Then
         this.mockMvc.perform(get("/api/posts/{id}", postId)
@@ -171,7 +163,6 @@ class PostControllerTest {
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
-                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간"),
 
                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글제목"),
                                 fieldWithPath("data.content").type(JsonFieldType.STRING).description("게시글내용"),
@@ -187,24 +178,15 @@ class PostControllerTest {
     @DisplayName("post를 성공적으로 생성하고 rest doc객체를 생성한다")
     void createPost_Test() throws Exception {
         // Given
-        UserResponse userResponse = UserResponse.builder()
-                .name("이름이름")
-                .age(11)
-                .hobby("사진찍기")
-                .build();
+        UserResponse userResponse = getUserResponse("이름이름", 11, "사진찍기");
+        PostRequest postRequest = getPostRequest("제목22", "내용3124213", userResponse);
 
-        PostResponse postResponse = PostResponse.builder()
-                .title("제목22")
-                .content("내용314124")
-                .user(userResponse)
-                .build();
-
-        Long postId = postService.createPost(postResponse);
+        postService.createPost(postRequest);
 
         // When, Then
         this.mockMvc.perform(post("/api/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postResponse)))
+                        .content(objectMapper.writeValueAsString(postRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-create",
@@ -218,8 +200,7 @@ class PostControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
-                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터")
                         )
                 ));
     }
@@ -228,21 +209,12 @@ class PostControllerTest {
     @DisplayName("id로 찾은 post를 수정하고 rest doc객체를 생성한다")
     void updatePost_Test() throws Exception {
         // Given
-        UserResponse userResponse = UserResponse.builder()
-                .name("이름이름")
-                .age(11)
-                .hobby("사진찍기")
-                .build();
+        UserResponse userResponse = getUserResponse("susuyeon", 24, "shopping");
+        PostRequest postRequest = getPostRequest("제목22", "내용3124213", userResponse);
 
-        PostResponse postResponse = PostResponse.builder()
-                .title("제목22")
-                .content("내용314124")
-                .user(userResponse)
-                .build();
+        Long postId = postService.createPost(postRequest);
 
-        Long postId = postService.createPost(postResponse);
-
-        PostUpdateResponse postUpdateResponse = PostUpdateResponse.builder()
+        PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
                 .title("수정한 제목")
                 .content("수정한 내용들")
                 .build();
@@ -250,7 +222,7 @@ class PostControllerTest {
         // When, Then
         this.mockMvc.perform(patch("/api/posts/{id}", postId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postUpdateResponse)))
+                        .content(objectMapper.writeValueAsString(postUpdateRequest)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-update",
@@ -260,8 +232,7 @@ class PostControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태코드"),
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터"),
-                                fieldWithPath("serverDateTime").type(JsonFieldType.STRING).description("응답시간")
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터")
                         )
                 ));
     }
@@ -271,21 +242,12 @@ class PostControllerTest {
     @DisplayName("없는 id로 update를 시도하면 실패한다")
     void updatePost_Fail_Test() throws Exception {
         // Given
-        UserResponse userResponse = UserResponse.builder()
-                .name("이름이름")
-                .age(11)
-                .hobby("사진찍기")
-                .build();
+        UserResponse userResponse = getUserResponse("이름이름", 11, "사진찍기");
+        PostRequest postRequest = getPostRequest("제목22", "내용3124213", userResponse);
 
-        PostResponse postResponse = PostResponse.builder()
-                .title("제목22")
-                .content("내용314124")
-                .user(userResponse)
-                .build();
+        Long postId = postService.createPost(postRequest);
 
-        Long postId = postService.createPost(postResponse);
-
-        PostUpdateResponse postUpdateResponse = PostUpdateResponse.builder()
+        PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
                 .title("수정한 제목")
                 .content("수정한 내용들")
                 .build();
@@ -293,7 +255,7 @@ class PostControllerTest {
         // When, Then
         this.mockMvc.perform(patch("/api/posts/{id}", postId + 1)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postUpdateResponse)))
+                        .content(objectMapper.writeValueAsString(postUpdateRequest)))
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }
