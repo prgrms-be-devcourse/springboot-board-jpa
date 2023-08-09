@@ -1,9 +1,7 @@
 package com.jpaboard.user.ui.dto;
 
-import lombok.Builder;
 
-@Builder
-public record UserResponse(
+public record Request(
         String name, int age, String hobby
-) {
+) implements UserDto{
 }

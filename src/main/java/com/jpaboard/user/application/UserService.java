@@ -4,7 +4,7 @@ import com.jpaboard.exception.NotFoundUserException;
 import com.jpaboard.user.domain.User;
 import com.jpaboard.user.infra.JpaUserRepository;
 import com.jpaboard.user.ui.UserConverter;
-import com.jpaboard.user.ui.dto.UserResponse;
+import com.jpaboard.user.ui.dto.UserDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +25,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserResponse getUserById(long id) {
+    public UserDto.Response getUserById(long id) {
         return userRepository.findById(id)
-                .map(UserConverter::convertUserDto)
+                .map(UserConverter::convertUserResponse)
                 .orElseThrow(NotFoundUserException::new);
     }
 }
