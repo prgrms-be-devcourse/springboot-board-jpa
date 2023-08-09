@@ -17,4 +17,10 @@ public class UserServiceImpl implements UserService {
     public Long save(User user) {
         return userRepository.save(user).getId();
     }
+
+    @Override
+    public User getById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 아이디를 가진 사용자가 없습니다"));
+    }
 }
