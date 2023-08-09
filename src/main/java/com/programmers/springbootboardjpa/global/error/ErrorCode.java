@@ -22,6 +22,8 @@ public enum ErrorCode {
 
     INVALID_USER_HOBBY(HttpStatus.BAD_REQUEST, "취미는 1자 이상 30자 이하로 입력해주세요."),
 
+    INVALID_ENTITY_VALUE(HttpStatus.BAD_REQUEST, "유효하지 않은 엔티티 값입니다."),
+
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."),
 
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시물을 찾을 수 없습니다."),

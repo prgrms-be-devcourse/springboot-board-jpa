@@ -2,6 +2,7 @@ package com.programmers.springbootboardjpa.global.error;
 
 import com.programmers.springbootboardjpa.global.error.exception.InvalidEntityValueException;
 import com.programmers.springbootboardjpa.global.error.exception.NotFoundException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -18,6 +19,12 @@ public class GlobalExceptionHandler {
     private ErrorResponse notFoundExceptionHandler(NotFoundException exception) {
 
         return new ErrorResponse(exception.getErrorCode());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    private ErrorResponse methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
+
+        return new ErrorResponse(ErrorCode.INVALID_ENTITY_VALUE, exception.getBindingResult().getFieldErrors().get(0).getDefaultMessage());
     }
 
     @ExceptionHandler(Exception.class)

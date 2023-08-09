@@ -4,29 +4,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.programmers.springbootboardjpa.domain.user.dto.UserRequestDto;
 import com.programmers.springbootboardjpa.domain.user.dto.UserResponseDto;
 import com.programmers.springbootboardjpa.domain.user.service.UserService;
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeEach;
+import com.programmers.springbootboardjpa.global.error.ErrorCode;
+import com.programmers.springbootboardjpa.global.error.exception.InvalidEntityValueException;
+import com.programmers.springbootboardjpa.global.error.exception.NotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@Transactional
-@SpringBootTest
+@WebMvcTest(UserController.class)
 class UserControllerTest {
 
     @Autowired
@@ -35,30 +44,41 @@ class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
+    @MockBean
     private UserService userService;
-
-    private UserRequestDto userRequestDto;
-
-    @BeforeEach
-    void setUp() {
-        userRequestDto = UserRequestDto.builder()
-                .name("김이름")
-                .age(26)
-                .hobby("산책")
-                .build();
-    }
 
     @DisplayName("회원 등록 성공")
     @Test
     void create() throws Exception {
         //given
+        UserRequestDto userRequestDto = UserRequestDto.builder()
+                .name("김이름")
+                .age(26)
+                .hobby("산책")
+                .build();
+
+        UserResponseDto userResponseDto = UserResponseDto.builder()
+                .id(1L)
+                .name("김이름")
+                .age(26)
+                .hobby("산책")
+                .createdAt(LocalDateTime.now())
+                .createdBy(null)
+                .build();
+
+        when(userService.create(any(UserRequestDto.class))).thenReturn(userResponseDto);
+
         //when
         //then
         mockMvc.perform(post("/api/v1/users")
                         .content(objectMapper.writeValueAsString(userRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(userResponseDto.id()))
+                .andExpect(jsonPath("$.name").value("김이름"))
+                .andExpect(jsonPath("$.age").value(26))
+                .andExpect(jsonPath("$.hobby").value("산책"))
                 .andDo(document("user-create",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -81,11 +101,13 @@ class UserControllerTest {
     @Test
     void createFail() throws Exception {
         //given
-        userRequestDto = UserRequestDto.builder()
+        UserRequestDto userRequestDto = UserRequestDto.builder()
                 .name("1111")
                 .age(26)
                 .hobby("산책")
                 .build();
+
+        when(userService.create(any(UserRequestDto.class))).thenThrow(new InvalidEntityValueException(ErrorCode.INVALID_USER_NAME_PATTERN));
 
         //when
         //then
@@ -93,6 +115,11 @@ class UserControllerTest {
                         .content(objectMapper.writeValueAsString(userRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.code").value("INVALID_USER_NAME_PATTERN"))
+                .andExpect(jsonPath("$.message").value("회원 이름은 한글 또는 영어로 입력해주세요."))
                 .andDo(document("user-create-fail",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -114,7 +141,20 @@ class UserControllerTest {
     @Test
     void findAll() throws Exception {
         //given
-        userService.create(userRequestDto);
+        UserResponseDto userResponseDto = UserResponseDto.builder()
+                .id(1L)
+                .name("김이름")
+                .age(26)
+                .hobby("산책")
+                .createdAt(LocalDateTime.now())
+                .createdBy(null)
+                .build();
+
+        List<UserResponseDto> userResponseDtos = List.of(userResponseDto);
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        Page<UserResponseDto> userResponseDtoPage = new PageImpl<>(userResponseDtos, pageRequest, userResponseDtos.size());
+        when(userService.findAll(any(Pageable.class))).thenReturn(userResponseDtoPage);
 
         //when
         //then
@@ -123,6 +163,12 @@ class UserControllerTest {
                         .param("size", String.valueOf(10))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.content[0].id").value(userResponseDto.id()))
+                .andExpect(jsonPath("$.content[0].name").value("김이름"))
+                .andExpect(jsonPath("$.content[0].age").value(26))
+                .andExpect(jsonPath("$.content[0].hobby").value("산책"))
                 .andDo(document("user-get-all",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -160,14 +206,27 @@ class UserControllerTest {
     @Test
     void findById() throws Exception {
         //given
-        UserResponseDto userResponseDto = userService.create(userRequestDto);
-        Long savedUserId = userResponseDto.id();
+        UserResponseDto userResponseDto = UserResponseDto.builder()
+                .id(1L)
+                .name("김이름")
+                .age(26)
+                .hobby("산책")
+                .createdAt(LocalDateTime.now())
+                .createdBy(null)
+                .build();
+
+        when(userService.findById(any(Long.class))).thenReturn(userResponseDto);
 
         //when
         //then
-        mockMvc.perform(get("/api/v1/users/{id}", savedUserId)
+        mockMvc.perform(get("/api/v1/users/{id}", userResponseDto.id())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(userResponseDto.id()))
+                .andExpect(jsonPath("$.name").value("김이름"))
+                .andExpect(jsonPath("$.age").value(26))
+                .andExpect(jsonPath("$.hobby").value("산책"))
                 .andDo(document("user-get-one",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -186,11 +245,18 @@ class UserControllerTest {
     @Test
     void findByIdFail() throws Exception {
         //given
+        when(userService.findById(any(Long.class))).thenThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
+
         //when
         //then
         mockMvc.perform(get("/api/v1/users/{id}", 11111L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.error").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.code").value("USER_NOT_FOUND"))
+                .andExpect(jsonPath("$.message").value("회원을 찾을 수 없습니다."))
                 .andDo(document("user-get-one-fail",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -208,21 +274,35 @@ class UserControllerTest {
     @Test
     void update() throws Exception {
         //given
-        UserResponseDto userResponseDto = userService.create(userRequestDto);
-        Long savedUserId = userResponseDto.id();
-
         UserRequestDto userUpdateRequestDto = UserRequestDto.builder()
                 .name("이이름")
                 .age(28)
                 .hobby("영화 보기")
                 .build();
 
+        UserResponseDto userResponseDto = UserResponseDto.builder()
+                .id(1L)
+                .name("이이름")
+                .age(28)
+                .hobby("영화 보기")
+                .createdAt(LocalDateTime.now())
+                .createdBy(null)
+                .build();
+
+        when(userService.update(any(Long.class), any(UserRequestDto.class))).thenReturn(userResponseDto);
+
         //when
         //then
-        mockMvc.perform(put("/api/v1/users/{id}", savedUserId)
+        mockMvc.perform(put("/api/v1/users/{id}", userResponseDto.id())
                         .content(objectMapper.writeValueAsString(userUpdateRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(userResponseDto.id()))
+                .andExpect(jsonPath("$.name").value("이이름"))
+                .andExpect(jsonPath("$.age").value(28))
+                .andExpect(jsonPath("$.hobby").value("영화 보기"))
                 .andDo(document("user-update",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -246,21 +326,36 @@ class UserControllerTest {
     @Test
     void updateFail() throws Exception {
         //given
-        UserResponseDto userResponseDto = userService.create(userRequestDto);
-        Long savedUserId = userResponseDto.id();
-
         UserRequestDto userUpdateRequestDto = UserRequestDto.builder()
-                .name("123")
+                .name(" ")
                 .age(28)
                 .hobby("영화 보기")
                 .build();
 
+        UserResponseDto userResponseDto = UserResponseDto.builder()
+                .id(1L)
+                .name(" ")
+                .age(28)
+                .hobby("영화 보기")
+                .createdAt(LocalDateTime.now())
+                .createdBy(null)
+                .build();
+
+        Long userId = userResponseDto.id();
+
+        when(userService.update(any(Long.class), any(UserRequestDto.class))).thenReturn(userResponseDto);
+
         //when
         //then
-        mockMvc.perform(put("/api/v1/users/{id}", savedUserId)
+        mockMvc.perform(put("/api/v1/users/{id}", userId)
                         .content(objectMapper.writeValueAsString(userUpdateRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.code").value("INVALID_ENTITY_VALUE"))
+                .andExpect(jsonPath("$.message").value("이름을 입력해주세요."))
                 .andDo(document("user-update-fail",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),

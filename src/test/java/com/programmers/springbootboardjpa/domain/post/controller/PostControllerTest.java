@@ -5,31 +5,36 @@ import com.programmers.springbootboardjpa.domain.post.dto.PostCreateRequestDto;
 import com.programmers.springbootboardjpa.domain.post.dto.PostResponseDto;
 import com.programmers.springbootboardjpa.domain.post.dto.PostUpdateRequestDto;
 import com.programmers.springbootboardjpa.domain.post.service.PostService;
-import com.programmers.springbootboardjpa.domain.user.dto.UserRequestDto;
-import com.programmers.springbootboardjpa.domain.user.dto.UserResponseDto;
-import com.programmers.springbootboardjpa.domain.user.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
+import com.programmers.springbootboardjpa.global.error.ErrorCode;
+import com.programmers.springbootboardjpa.global.error.exception.NotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@Transactional
-@SpringBootTest
+@WebMvcTest(PostController.class)
 class PostControllerTest {
 
     @Autowired
@@ -38,44 +43,41 @@ class PostControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
+    @MockBean
     private PostService postService;
-
-    @Autowired
-    private UserService userService;
-
-    private PostCreateRequestDto postCreateRequestDto;
-
-    private Long userId;
-
-    @BeforeEach
-    void setUp() {
-        UserRequestDto userRequestDto = UserRequestDto.builder()
-                .name("김이름")
-                .age(27)
-                .hobby("산책")
-                .build();
-
-        UserResponseDto userResponseDto = userService.create(userRequestDto);
-        userId = userResponseDto.id();
-
-        postCreateRequestDto = PostCreateRequestDto.builder()
-                .title("등록용 제목")
-                .content("등록용 내용")
-                .userId(userId)
-                .build();
-    }
 
     @DisplayName("게시글 등록 성공")
     @Test
     void create() throws Exception {
         //given
+        PostCreateRequestDto postCreateRequestDto = PostCreateRequestDto.builder()
+                .title("등록용 제목")
+                .content("등록용 내용")
+                .userId(1L)
+                .build();
+
+        PostResponseDto postResponseDto = PostResponseDto.builder()
+                .id(1L)
+                .title("등록용 제목")
+                .content("등록용 내용")
+                .userId(1L)
+                .createdBy(null)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        when(postService.create(any(PostCreateRequestDto.class))).thenReturn(postResponseDto);
+
         //when
         //then
         mockMvc.perform(post("/api/v1/posts")
                         .content(objectMapper.writeValueAsString(postCreateRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(postResponseDto.id()))
+                .andExpect(jsonPath("$.title").value("등록용 제목"))
+                .andExpect(jsonPath("$.content").value("등록용 내용"))
+                .andExpect(jsonPath("$.userId").value(postResponseDto.userId()))
                 .andDo(document("post-create",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -98,11 +100,22 @@ class PostControllerTest {
     @Test
     void createFail() throws Exception {
         //given
-        postCreateRequestDto = PostCreateRequestDto.builder()
+        PostCreateRequestDto postCreateRequestDto = PostCreateRequestDto.builder()
                 .title(" ")
                 .content("등록용 내용")
-                .userId(userId)
+                .userId(1L)
                 .build();
+
+        PostResponseDto postResponseDto = PostResponseDto.builder()
+                .id(1L)
+                .title(" ")
+                .content("등록용 내용")
+                .userId(1L)
+                .createdBy(null)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        when(postService.create(any(PostCreateRequestDto.class))).thenReturn(postResponseDto);
 
         //when
         //then
@@ -110,6 +123,11 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(postCreateRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.code").value("INVALID_ENTITY_VALUE"))
+                .andExpect(jsonPath("$.message").value("제목을 입력해주세요."))
                 .andDo(document("post-create-fail",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -131,7 +149,20 @@ class PostControllerTest {
     @Test
     void findAll() throws Exception {
         //given
-        postService.create(postCreateRequestDto);
+        PostResponseDto postResponseDto = PostResponseDto.builder()
+                .id(1L)
+                .title("등록용 제목")
+                .content("등록용 내용")
+                .userId(1L)
+                .createdBy(null)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        List<PostResponseDto> postResponseDtos = List.of(postResponseDto);
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        Page<PostResponseDto> postResponseDtoPage = new PageImpl<>(postResponseDtos, pageRequest, postResponseDtos.size());
+        when(postService.findAll(any(Pageable.class))).thenReturn(postResponseDtoPage);
 
         //when
         //then
@@ -140,6 +171,12 @@ class PostControllerTest {
                         .param("size", String.valueOf(10))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.content[0].id").value(postResponseDto.id()))
+                .andExpect(jsonPath("$.content[0].title").value("등록용 제목"))
+                .andExpect(jsonPath("$.content[0].content").value("등록용 내용"))
+                .andExpect(jsonPath("$.content[0].userId").value(postResponseDto.userId()))
                 .andDo(document("post-get-all",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -177,14 +214,27 @@ class PostControllerTest {
     @Test
     void findById() throws Exception {
         //given
-        PostResponseDto postResponseDto = postService.create(postCreateRequestDto);
-        Long savedPostId = postResponseDto.id();
+        PostResponseDto postResponseDto = PostResponseDto.builder()
+                .id(1L)
+                .title("등록용 제목")
+                .content("등록용 내용")
+                .userId(1L)
+                .createdBy(null)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        when(postService.findById(any(Long.class))).thenReturn(postResponseDto);
 
         //when
         //then
-        mockMvc.perform(get("/api/v1/posts/{id}", savedPostId)
+        mockMvc.perform(get("/api/v1/posts/{id}", postResponseDto.id())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(postResponseDto.id()))
+                .andExpect(jsonPath("$.title").value("등록용 제목"))
+                .andExpect(jsonPath("$.content").value("등록용 내용"))
+                .andExpect(jsonPath("$.userId").value(postResponseDto.userId()))
                 .andDo(document("post-get-one",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -203,11 +253,18 @@ class PostControllerTest {
     @Test
     void findByIdFail() throws Exception {
         //given
+        when(postService.findById(any(Long.class))).thenThrow(new NotFoundException(ErrorCode.POST_NOT_FOUND));
+
         //when
         //then
         mockMvc.perform(get("/api/v1/posts/{id}", 11111L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.error").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.code").value("POST_NOT_FOUND"))
+                .andExpect(jsonPath("$.message").value("게시물을 찾을 수 없습니다."))
                 .andDo(document("post-get-one-fail",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -225,20 +282,33 @@ class PostControllerTest {
     @Test
     void update() throws Exception {
         //given
-        PostResponseDto postResponseDto = postService.create(postCreateRequestDto);
-        Long savedPostId = postResponseDto.id();
-
         PostUpdateRequestDto postUpdateRequestDto = PostUpdateRequestDto.builder()
                 .title("수정용 제목")
                 .content("수정용 내용")
                 .build();
 
+        PostResponseDto postResponseDto = PostResponseDto.builder()
+                .id(1L)
+                .title("수정용 제목")
+                .content("수정용 내용")
+                .userId(1L)
+                .createdBy(null)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        when(postService.update(any(Long.class), any(PostUpdateRequestDto.class))).thenReturn(postResponseDto);
+
         //when
         //then
-        mockMvc.perform(put("/api/v1/posts/{id}", savedPostId)
+        mockMvc.perform(put("/api/v1/posts/{id}", postResponseDto.id())
                         .content(objectMapper.writeValueAsString(postUpdateRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(postResponseDto.id()))
+                .andExpect(jsonPath("$.title").value("수정용 제목"))
+                .andExpect(jsonPath("$.content").value("수정용 내용"))
+                .andExpect(jsonPath("$.userId").value(postResponseDto.userId()))
                 .andDo(document("post-update",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -261,20 +331,33 @@ class PostControllerTest {
     @Test
     void updateFail() throws Exception {
         //given
-        PostResponseDto postResponseDto = postService.create(postCreateRequestDto);
-        Long savedPostId = postResponseDto.id();
-
         PostUpdateRequestDto postUpdateRequestDto = PostUpdateRequestDto.builder()
                 .title("수정용 제목")
                 .content(" ")
                 .build();
 
+        PostResponseDto postResponseDto = PostResponseDto.builder()
+                .id(1L)
+                .title("수정용 제목")
+                .content(" ")
+                .userId(1L)
+                .createdBy(null)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        when(postService.update(any(Long.class), any(PostUpdateRequestDto.class))).thenReturn(postResponseDto);
+
         //when
         //then
-        mockMvc.perform(put("/api/v1/posts/{id}", savedPostId)
+        mockMvc.perform(put("/api/v1/posts/{id}", postResponseDto.id())
                         .content(objectMapper.writeValueAsString(postUpdateRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.code").value("INVALID_ENTITY_VALUE"))
+                .andExpect(jsonPath("$.message").value("내용을 입력해주세요."))
                 .andDo(document("post-update-fail",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
