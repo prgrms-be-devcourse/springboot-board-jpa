@@ -6,6 +6,7 @@ import com.jpaboard.domain.user.dto.request.UserCreationRequest;
 import com.jpaboard.domain.user.dto.request.UserUpdateRequest;
 import com.jpaboard.domain.user.dto.response.UserResponse;
 import com.jpaboard.domain.user.infrastructure.UserRepository;
+import com.jpaboard.global.exception.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
 
     @Transactional
@@ -27,7 +29,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse findUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(UserNotFoundException::new);
         return UserConverter.convertEntityToResponse(user);
     }
 

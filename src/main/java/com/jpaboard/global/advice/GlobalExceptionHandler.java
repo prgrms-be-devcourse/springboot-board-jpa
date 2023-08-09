@@ -18,6 +18,12 @@ public class GlobalExceptionHandler {
         return ErrorResponse.create(ErrorCodeWithDetail.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler({PostNotFoundException.class, UserNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleEntityNotFoundException(RuntimeException e) {
+        return ErrorResponse.create(ErrorCodeWithDetail.ENTITY_NOT_FOUND);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {

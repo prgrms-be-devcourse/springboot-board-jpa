@@ -9,6 +9,7 @@ import com.jpaboard.domain.post.dto.response.PostPageResponse;
 import com.jpaboard.domain.post.dto.response.PostResponse;
 import com.jpaboard.domain.post.infrastructure.PostRepository;
 import com.jpaboard.domain.user.User;
+import com.jpaboard.domain.user.application.UserServiceImpl;
 import com.jpaboard.domain.user.infrastructure.UserRepository;
 import com.jpaboard.global.exception.PostNotFoundException;
 import com.jpaboard.global.exception.UserNotFoundException;
