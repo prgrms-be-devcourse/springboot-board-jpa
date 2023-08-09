@@ -1,9 +1,6 @@
 package com.jpaboard.post.ui.dto;
 
-import lombok.Builder;
-
-@Builder
-public record PostUpdateResponse(
+public record UpdateRequest(
         String title, String content
-) {
+) implements PostDto {
 }

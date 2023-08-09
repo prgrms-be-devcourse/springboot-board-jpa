@@ -1,49 +1,48 @@
 package com.jpaboard.post.ui;
 
 import com.jpaboard.post.domain.Post;
-import com.jpaboard.post.ui.dto.PostRequest;
-import com.jpaboard.post.ui.dto.PostResponse;
+import com.jpaboard.post.ui.dto.PostDto;
 import com.jpaboard.user.domain.User;
 import com.jpaboard.user.ui.UserConverter;
-import com.jpaboard.user.ui.dto.UserResponse;
+import com.jpaboard.user.ui.dto.UserDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostConverter {
-    public static Post convertPostRequest(PostRequest postRequest) {
-        User user = UserConverter.convertUser(postRequest.user());
+    public static Post convertPostRequest(PostDto.Request request) {
+        User user = UserConverter.convertUser(request.user());
 
         return Post.builder()
-                .title(postRequest.title())
-                .content(postRequest.content())
+                .title(request.title())
+                .content(request.content())
                 .user(user)
                 .build();
     }
 
-    public static Post convertPostResponse(PostResponse postResponse) {
-        User user = UserConverter.convertUser(postResponse.user());
+    public static Post convertPostResponse(PostDto.Response response) {
+        User user = UserConverter.convertUser(response.user());
 
         return Post.builder()
-                .title(postResponse.title())
-                .content(postResponse.content())
+                .title(response.title())
+                .content(response.content())
                 .user(user)
                 .build();
     }
 
-    public static PostRequest convertPostRequest(Post post) {
-        UserResponse user = UserConverter.convertUserDto(post.getUser());
+    public static PostDto.Request convertPostRequest(Post post) {
+        UserDto.Request user = UserConverter.convertUserRequest(post.getUser());
 
-        return PostRequest.builder()
+        return PostDto.Request.builder()
                 .title(post.getTitle())
                 .content(post.getContent())
                 .user(user)
                 .build();
     }
 
-    public static PostResponse convertPostResponse(Post post) {
-        UserResponse user = UserConverter.convertUserDto(post.getUser());
+    public static PostDto.Response convertPostResponse(Post post) {
+        UserDto.Response user = UserConverter.convertUserResponse(post.getUser());
 
-        return PostResponse.builder()
+        return PostDto.Response.builder()
                 .title(post.getTitle())
                 .content(post.getContent())
                 .user(user)

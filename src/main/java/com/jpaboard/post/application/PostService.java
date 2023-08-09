@@ -4,8 +4,7 @@ import com.jpaboard.exception.NotFoundPostException;
 import com.jpaboard.post.domain.Post;
 import com.jpaboard.post.infra.JpaPostRepository;
 import com.jpaboard.post.ui.PostConverter;
-import com.jpaboard.post.ui.dto.PostResponse;
-import com.jpaboard.post.ui.dto.PostUpdateResponse;
+import com.jpaboard.post.ui.dto.PostDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,25 +22,25 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostResponse> findPostAll(Pageable pageable) {
+    public Page<PostDto.Response> findPostAll(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(PostConverter::convertPostDto);
+                .map(PostConverter::convertPostResponse);
     }
 
     @Transactional(readOnly = true)
-    public PostResponse findPost(long id) {
+    public PostDto.Response findPost(long id) {
         Post post = findBydId(id);
-        return PostConverter.convertPostDto(post);
+        return PostConverter.convertPostResponse(post);
     }
 
-    public Long createPost(PostResponse postResponse) {
-        Post post = postRepository.save(PostConverter.convertPost(postResponse));
+    public Long createPost(PostDto.Request request) {
+        Post post = postRepository.save(PostConverter.convertPostRequest(request));
         return post.getId();
     }
 
-    public Long updatePost(long id, PostUpdateResponse postUpdateResponse) {
+    public Long updatePost(long id, PostDto.PostUpdateRequest postUpdateRequest) {
         Post post = findBydId(id);
-        post.updatePost(postUpdateResponse.title(), postUpdateResponse.content());
+        post.updatePost(postUpdateRequest.title(), postUpdateRequest.content());
         return post.getId();
     }
 
