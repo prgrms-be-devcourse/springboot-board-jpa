@@ -25,7 +25,7 @@ public class PostService {
 
     @Transactional
     public PostDto createPost(Long userId, String postTitle, String postContent) {
-        User user = userProvider.provideUser(userId);
+        User user = userProvider.getAuthor(userId);
 
         Post post = new Post(user, postTitle, postContent);
         post = postRepository.save(post);

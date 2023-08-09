@@ -4,6 +4,6 @@ import com.juwoong.springbootboardjpa.user.domain.User;
 
 public interface UserProvider {
 
-    User provideUser(Long id);
+    User getAuthor(Long id);
 
 }

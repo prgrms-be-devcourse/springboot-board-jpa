@@ -27,7 +27,7 @@ public class UserService implements UserProvider {
     }
 
     @Override
-    public User provideUser(Long id) {
+    public User getAuthor(Long id) {
         return findById(id);
     }
 
