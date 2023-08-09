@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static java.util.Objects.isNull;
@@ -32,7 +31,7 @@ public class User extends BaseEntity {
     private String hobby;
 
     public User(String name, int age, String hobby) {
-        nullCheck(name, hobby);
+        validateNotNullArguments(name, hobby);
         validateName(name);
         validateHobby(hobby);
         this.name = name;
@@ -40,7 +39,7 @@ public class User extends BaseEntity {
         this.hobby = hobby;
     }
 
-    private void nullCheck(String name, String hobby) {
+    private void validateNotNullArguments(String name, String hobby) {
         if (isNull(name)) {
             throw new IllegalArgumentException("사용자 이름은 필수입니다");
         }

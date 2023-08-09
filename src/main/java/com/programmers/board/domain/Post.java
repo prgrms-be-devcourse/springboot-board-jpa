@@ -34,7 +34,7 @@ public class Post extends BaseEntity {
     private User user;
 
     public Post(String title, String content, User user) {
-        nullCheck(title, content, user);
+        validateNotNullArguments(title, content, user);
         validateTitle(title);
         validateContent(content);
         this.title = title;
@@ -42,7 +42,7 @@ public class Post extends BaseEntity {
         this.user = user;
     }
 
-    public void nullCheck(String title, String content, User user) {
+    public void validateNotNullArguments(String title, String content, User user) {
         if (isNull(title)) {
             throw new IllegalArgumentException("게시글 제목은 필수입니다.");
         }
