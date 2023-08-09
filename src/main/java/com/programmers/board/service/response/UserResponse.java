@@ -7,13 +7,13 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserDto {
+public class UserResponse {
     private final Long userId;
     private final String name;
     private final int age;
     private final String hobby;
 
-    public static UserDto from(User user) {
-        return new UserDto(user.getId(), user.getName(), user.getAge(), user.getHobby());
+    public static UserResponse from(User user) {
+        return new UserResponse(user.getId(), user.getName(), user.getAge(), user.getHobby());
     }
 }

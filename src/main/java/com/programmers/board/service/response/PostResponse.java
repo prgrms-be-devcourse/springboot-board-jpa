@@ -7,15 +7,15 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class PostDto {
+public class PostResponse {
     private final Long postId;
     private final String title;
     private final String content;
-    private final UserDto user;
+    private final UserResponse user;
 
-    public static PostDto from(Post post) {
-        UserDto userDto = UserDto.from(post.getUser());
-        return new PostDto(
+    public static PostResponse from(Post post) {
+        UserResponse userDto = UserResponse.from(post.getUser());
+        return new PostResponse(
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),

@@ -3,7 +3,7 @@ package com.programmers.board.service;
 import com.programmers.board.service.request.user.UserDeleteCommand;
 import com.programmers.board.service.request.user.UserGetCommand;
 import com.programmers.board.domain.User;
-import com.programmers.board.service.response.UserDto;
+import com.programmers.board.service.response.UserResponse;
 import com.programmers.board.service.request.user.UserCreateCommand;
 import com.programmers.board.service.request.user.UserUpdateCommand;
 import com.programmers.board.exception.AuthorizationException;
@@ -127,7 +127,7 @@ class UserServiceTest {
         given(userRepository.findAll(any(PageRequest.class))).willReturn(givenResult);
 
         //when
-        Page<UserDto> users = userService.findUsers(pageRequest);
+        Page<UserResponse> users = userService.findUsers(pageRequest);
 
         //then
         assertThat(users.getContent()).hasSize(1);
@@ -146,7 +146,7 @@ class UserServiceTest {
             given(userRepository.findById(any())).willReturn(Optional.ofNullable(givenUser));
 
             //when
-            UserDto findUserDto = userService.findUser(command);
+            UserResponse findUserDto = userService.findUser(command);
 
             //then
             assertThat(findUserDto.getName()).isEqualTo(givenUser.getName());

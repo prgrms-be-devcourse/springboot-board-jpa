@@ -4,7 +4,7 @@ import com.programmers.board.constant.SessionConst;
 import com.programmers.board.constant.AuthErrorMessage;
 import com.programmers.board.controller.response.PageResult;
 import com.programmers.board.controller.response.Result;
-import com.programmers.board.service.response.PostDto;
+import com.programmers.board.service.response.PostResponse;
 import com.programmers.board.controller.request.PostCreateRequest;
 import com.programmers.board.controller.request.PostUpdateRequest;
 import com.programmers.board.exception.AuthenticationException;
@@ -30,8 +30,8 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PageResult<PostDto> findPosts(Pageable pageable) {
-        Page<PostDto> posts = postService.findPosts(pageable);
+    public PageResult<PostResponse> findPosts(Pageable pageable) {
+        Page<PostResponse> posts = postService.findPosts(pageable);
         return new PageResult<>(posts);
     }
 
@@ -47,9 +47,9 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{postId}")
-    public Result<PostDto> findPost(@PathVariable("postId") Long postId) {
+    public Result<PostResponse> findPost(@PathVariable("postId") Long postId) {
         PostGetCommand command = PostGetCommand.of(postId);
-        PostDto post = postService.findPost(command);
+        PostResponse post = postService.findPost(command);
         return new Result<>(post);
     }
 

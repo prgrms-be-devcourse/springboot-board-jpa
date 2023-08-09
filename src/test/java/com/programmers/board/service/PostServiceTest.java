@@ -2,8 +2,8 @@ package com.programmers.board.service;
 
 import com.programmers.board.domain.Post;
 import com.programmers.board.domain.User;
-import com.programmers.board.service.response.PostDto;
-import com.programmers.board.service.response.UserDto;
+import com.programmers.board.service.response.PostResponse;
+import com.programmers.board.service.response.UserResponse;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.PostRepository;
 import com.programmers.board.repository.UserRepository;
@@ -103,7 +103,7 @@ class PostServiceTest {
         given(postRepository.findAllWithUser(pageRequest)).willReturn(posts);
 
         //when
-        Page<PostDto> postPage = postService.findPosts(pageRequest);
+        Page<PostResponse> postPage = postService.findPosts(pageRequest);
 
         //then
         assertThat(postPage.getContent()).hasSize(1);
@@ -121,10 +121,10 @@ class PostServiceTest {
             given(postRepository.findByIdWithUser(any())).willReturn(Optional.ofNullable(givenPost));
 
             //when
-            PostDto findPost = postService.findPost(command);
+            PostResponse findPost = postService.findPost(command);
 
             //then
-            UserDto findUser = findPost.getUser();
+            UserResponse findUser = findPost.getUser();
             assertThat(findPost.getTitle()).isEqualTo(givenPost.getTitle());
             assertThat(findPost.getContent()).isEqualTo(givenPost.getContent());
             assertThat(findUser.getName()).isEqualTo(givenUser.getName());

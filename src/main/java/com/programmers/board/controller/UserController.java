@@ -4,7 +4,7 @@ import com.programmers.board.constant.SessionConst;
 import com.programmers.board.constant.AuthErrorMessage;
 import com.programmers.board.controller.response.PageResult;
 import com.programmers.board.controller.response.Result;
-import com.programmers.board.service.response.UserDto;
+import com.programmers.board.service.response.UserResponse;
 import com.programmers.board.controller.request.UserCreateRequest;
 import com.programmers.board.controller.request.UserUpdateRequest;
 import com.programmers.board.service.request.user.UserCreateCommand;
@@ -28,8 +28,8 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PageResult<UserDto> findUsers(Pageable pageable) {
-        Page<UserDto> users = userService.findUsers(pageable);
+    public PageResult<UserResponse> findUsers(Pageable pageable) {
+        Page<UserResponse> users = userService.findUsers(pageable);
         return new PageResult<>(users);
     }
 
@@ -43,9 +43,9 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{userId}")
-    public Result<UserDto> findUser(@PathVariable("userId") Long userId) {
+    public Result<UserResponse> findUser(@PathVariable("userId") Long userId) {
         UserGetCommand command = UserGetCommand.of(userId);
-        UserDto user = userService.findUser(command);
+        UserResponse user = userService.findUser(command);
         return new Result<>(user);
     }
 

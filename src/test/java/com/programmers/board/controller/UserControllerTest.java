@@ -3,7 +3,7 @@ package com.programmers.board.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.programmers.board.constant.SessionConst;
 import com.programmers.board.domain.User;
-import com.programmers.board.service.response.UserDto;
+import com.programmers.board.service.response.UserResponse;
 import com.programmers.board.controller.request.UserCreateRequest;
 import com.programmers.board.controller.request.UserUpdateRequest;
 import com.programmers.board.service.UserService;
@@ -50,13 +50,13 @@ class UserControllerTest {
     @MockBean
     UserService userService;
 
-    UserDto givenUserDto;
+    UserResponse givenUserDto;
     MockHttpSession givenSession;
 
     @BeforeEach
     void setUp() {
         User user = new User("name", 20, "hobby");
-        givenUserDto = UserDto.from(user);
+        givenUserDto = UserResponse.from(user);
         ReflectionTestUtils.setField(givenUserDto, "userId", 1L);
 
         givenSession = new MockHttpSession();
@@ -73,7 +73,7 @@ class UserControllerTest {
             int page = 0;
             int size = 1;
             PageRequest pageRequest = PageRequest.of(page, size);
-            PageImpl<UserDto> userDtos = new PageImpl<>(List.of(givenUserDto), pageRequest, 1);
+            PageImpl<UserResponse> userDtos = new PageImpl<>(List.of(givenUserDto), pageRequest, 1);
 
             given(userService.findUsers(any())).willReturn(userDtos);
 

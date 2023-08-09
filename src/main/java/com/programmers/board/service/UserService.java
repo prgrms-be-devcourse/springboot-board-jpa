@@ -4,7 +4,7 @@ import com.programmers.board.constant.AuthErrorMessage;
 import com.programmers.board.service.request.user.UserDeleteCommand;
 import com.programmers.board.service.request.user.UserGetCommand;
 import com.programmers.board.domain.User;
-import com.programmers.board.service.response.UserDto;
+import com.programmers.board.service.response.UserResponse;
 import com.programmers.board.service.request.user.UserCreateCommand;
 import com.programmers.board.service.request.user.UserUpdateCommand;
 import com.programmers.board.exception.AuthorizationException;
@@ -52,15 +52,15 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserDto> findUsers(Pageable pageable) {
+    public Page<UserResponse> findUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
-        return users.map(UserDto::from);
+        return users.map(UserResponse::from);
     }
 
     @Transactional(readOnly = true)
-    public UserDto findUser(UserGetCommand command) {
+    public UserResponse findUser(UserGetCommand command) {
         User user = findUserOrElseThrow(command.getUserId());
-        return UserDto.from(user);
+        return UserResponse.from(user);
     }
 
     @Transactional

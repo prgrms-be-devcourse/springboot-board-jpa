@@ -3,7 +3,7 @@ package com.programmers.board.service;
 import com.programmers.board.constant.AuthErrorMessage;
 import com.programmers.board.domain.Post;
 import com.programmers.board.domain.User;
-import com.programmers.board.service.response.PostDto;
+import com.programmers.board.service.response.PostResponse;
 import com.programmers.board.exception.AuthorizationException;
 import com.programmers.board.repository.PostRepository;
 import com.programmers.board.repository.UserRepository;
@@ -41,16 +41,16 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostDto> findPosts(Pageable pageable) {
+    public Page<PostResponse> findPosts(Pageable pageable) {
         Page<Post> posts = postRepository.findAllWithUser(pageable);
-        return posts.map(PostDto::from);
+        return posts.map(PostResponse::from);
     }
 
     @Transactional(readOnly = true)
-    public PostDto findPost(PostGetCommand command) {
+    public PostResponse findPost(PostGetCommand command) {
         Post post = postRepository.findByIdWithUser(command.getPostId())
                 .orElseThrow(() -> new NoSuchElementException(NO_SUCH_POST));
-        return PostDto.from(post);
+        return PostResponse.from(post);
     }
 
     @Transactional

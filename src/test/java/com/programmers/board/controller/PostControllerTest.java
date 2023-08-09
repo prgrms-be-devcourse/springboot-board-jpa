@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.programmers.board.constant.SessionConst;
 import com.programmers.board.domain.Post;
 import com.programmers.board.domain.User;
-import com.programmers.board.service.response.PostDto;
+import com.programmers.board.service.response.PostResponse;
 import com.programmers.board.controller.request.PostCreateRequest;
 import com.programmers.board.controller.request.PostUpdateRequest;
 import com.programmers.board.service.PostService;
@@ -50,7 +50,7 @@ class PostControllerTest {
     @MockBean
     PostService postService;
 
-    PostDto givenPost;
+    PostResponse givenPost;
     MockHttpSession givenSession;
 
     @BeforeEach
@@ -59,7 +59,7 @@ class PostControllerTest {
         Post post = new Post("title", "content", user);
         ReflectionTestUtils.setField(user, "id", 1L);
         ReflectionTestUtils.setField(post, "id", 1L);
-        givenPost = PostDto.from(post);
+        givenPost = PostResponse.from(post);
 
         givenSession = new MockHttpSession();
         givenSession.setAttribute(SessionConst.LOGIN_USER_ID, 1L);
@@ -75,7 +75,7 @@ class PostControllerTest {
             int page = 0;
             int size = 1;
             PageRequest pageRequest = PageRequest.of(page, size);
-            PageImpl<PostDto> postDtos = new PageImpl<>(List.of(givenPost), pageRequest, 1);
+            PageImpl<PostResponse> postDtos = new PageImpl<>(List.of(givenPost), pageRequest, 1);
 
             given(postService.findPosts(pageRequest)).willReturn(postDtos);
 
