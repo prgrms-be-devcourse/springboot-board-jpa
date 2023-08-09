@@ -5,6 +5,7 @@ import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.service.PostService;
 import jakarta.validation.Valid;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,9 +28,11 @@ public class PostController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Long createPost(@RequestBody @Valid PostCreateRequest postCreateRequest) {
+  public String createPost(@RequestBody @Valid PostCreateRequest postCreateRequest) {
     PostResponse postResponse = postService.createPost(postCreateRequest);
-    return postResponse.id();
+    URI location = URI.create("/api/posts/" + postResponse.id());
+
+    return location.toString();
   }
 
   @GetMapping("/{postId}")
