@@ -36,18 +36,21 @@ public class PostService {
 	public PostResponseDto findBy(Long id) {
 		Post post = postRepository.findById(id)
 				.orElseThrow(() -> new NoSuchDataException(MessageFormat.format("해당 포스트가 존재하지 않습니다[id={0}] ", id)));
+
 		return new PostResponseDto(post);
 	}
 
 	public PostSaveRequestDto create(PostRequestDto postRequestDto) {
 		Long userId = postRequestDto.writerId();
 		Member member = memberRepository.findById(userId).orElseThrow();
+
 		Post post = Post.builder()
 				.writer(member)
 				.title(postRequestDto.title())
 				.content(postRequestDto.content())
 				.build();
 		Post result = postRepository.save(post);
+
 		return new PostSaveRequestDto(result);
 	}
 

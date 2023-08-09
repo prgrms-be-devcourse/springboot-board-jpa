@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,26 +31,33 @@ public class PostController {
 	ResponseEntity<Page<PostResponseDto>> findAll(
 			@PageableDefault(sort = "id", size = 5, direction = Sort.Direction.ASC)
 			Pageable pageable) {
+
 		Page<PostResponseDto> response = postService.findAll(pageable);
+
 		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/{id}")
 	ResponseEntity<PostResponseDto> findBy(@PathVariable("id") Long id) {
-		PostResponseDto response = postService.findBy(id);
-		return ResponseEntity.ok(response);
 
+		PostResponseDto response = postService.findBy(id);
+
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping()
 	ResponseEntity<PostSaveRequestDto> create(@RequestBody PostRequestDto postRequestDto) {
+
 		PostSaveRequestDto postSaveRequestDto = postService.create(postRequestDto);
+
 		return ResponseEntity.ok(postSaveRequestDto);
 	}
 
 	@PatchMapping("/{id}")
 	ResponseEntity<PostSaveRequestDto> update(@PathVariable("id") Long id, @RequestBody PostRequestDto postRequestDto) {
+
 		PostSaveRequestDto postSaveRequestDto = postService.update(id, postRequestDto);
+
 		return ResponseEntity.ok(postSaveRequestDto);
 	}
 }

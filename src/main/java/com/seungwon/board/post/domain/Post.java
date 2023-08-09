@@ -61,11 +61,13 @@ public class Post extends BaseEntity {
 
 	public void modify(@NonNull String title, String content, Long updater) {
 		Long initialWriter = this.writer.getId();
+
 		if (updater != initialWriter) {
 			throw new InvalidRequestException(
 					MessageFormat.format("작성자는 변경 불가능합니다[기존 작성자 id={0}, 요청된 작성자 id={1}] ", initialWriter, updater)
 			);
 		}
+
 		this.title = title;
 		this.content = content;
 	}

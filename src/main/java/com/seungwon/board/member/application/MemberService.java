@@ -22,7 +22,9 @@ public class MemberService {
 				.hobby(memberRequestDto.hobby())
 				.name(memberRequestDto.name())
 				.build();
+
 		Member result = memberRepository.save(member);
+
 		return result.getId();
 	}
 
