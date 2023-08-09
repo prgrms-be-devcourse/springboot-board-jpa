@@ -4,6 +4,7 @@ import com.jpaboard.domain.user.application.UserService;
 import com.jpaboard.domain.user.dto.request.UserCreationRequest;
 import com.jpaboard.domain.user.dto.request.UserUpdateRequest;
 import com.jpaboard.domain.user.dto.response.UserResponse;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

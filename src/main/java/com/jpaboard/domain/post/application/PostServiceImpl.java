@@ -10,6 +10,7 @@ import com.jpaboard.domain.post.dto.response.PostResponse;
 import com.jpaboard.domain.post.infrastructure.PostRepository;
 import com.jpaboard.domain.user.User;
 import com.jpaboard.domain.user.infrastructure.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,12 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    // Repository를 주입 받는 게 좋은지, Service를 주입 받는게 좋은지
     private final UserRepository userRepository;
 
     @Transactional
     public Long createPost(PostCreateRequest request) {
-        User user = userRepository.findById(request.userId()).orElseThrow(IllegalArgumentException::new);
+        User user = userRepository.findById(request.userId()).orElseThrow(EntityNotFoundException::new);
         Post post = PostConverter.convertRequestToEntity(request, user);
         return postRepository.save(post).getId();
     }

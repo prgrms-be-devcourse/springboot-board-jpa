@@ -1,6 +1,6 @@
 package com.jpaboard.domain.user;
 
-import com.jpaboard.common.BaseEntity;
+import com.jpaboard.global.common.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

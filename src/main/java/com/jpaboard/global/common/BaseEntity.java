@@ -1,4 +1,4 @@
-package com.jpaboard.common;
+package com.jpaboard.global.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
