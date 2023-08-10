@@ -1,0 +1,9 @@
+[[Post-Find-All]]
+== 게시판 모두 조회
+==== Http Request
+include::{snippets}/post-find-all/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/post-find-all/http-response.adoc[]
+
+include::{snippets}/post-find-all/response-fields.adoc[]

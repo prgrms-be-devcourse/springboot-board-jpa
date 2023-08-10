@@ -1,0 +1,21 @@
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+= JPA Board REST API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[Post-API]]
+== Post API
+
+include::api/post/create.adoc[]
+
+include::api/post/update.adoc[]
+
+include::api/post/find-all.adoc[]
+
+include::api/post/find-one.adoc[]

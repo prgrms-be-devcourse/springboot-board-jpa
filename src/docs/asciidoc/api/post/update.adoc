@@ -1,0 +1,11 @@
+[[Post-Update]]
+== 게시판 수정
+==== Http Request
+include::{snippets}/post-update/http-request.adoc[]
+
+include::{snippets}/post-update/path-parameters.adoc[]
+
+include::{snippets}/post-update/request-fields.adoc[]
+
+==== Http Response
+include::{snippets}/post-update/http-response.adoc[]
