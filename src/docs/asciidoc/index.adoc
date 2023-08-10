@@ -1,0 +1,74 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+= post
+
+== post-save
+
+==== /posts
+
+.Request
+
+include::{snippets}/post-save/http-request.adoc[]
+
+.Request Fields
+
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-save/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-save/response-fields.adoc[]
+
+== find by id
+
+==== /posts/{id}
+
+.Request
+
+include::{snippets}/post-findById/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-findById/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-findById/response-fields.adoc[]
+
+== find all
+
+==== /posts
+
+.Request
+
+include::{snippets}/post-findAll/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-findAll/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-findAll/response-fields.adoc[]
+
+
+== post update
+
+==== /posts/{postId}
+
+.Request
+
+include::{snippets}/post-update/http-request.adoc[]
+
+.Response
+
+include::{snippets}/post-update/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-update/response-fields.adoc[]
