@@ -13,6 +13,7 @@ java {
 }
 
 configurations {
+	asciidoctorExt
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
@@ -27,6 +28,7 @@ ext {
 }
 
 dependencies {
+	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -42,7 +44,29 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-tasks.named('asciidoctor') {
+asciidoctor {
 	inputs.dir snippetsDir
+	configurations 'asciidoctorExt'
 	dependsOn test
+}
+
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	doFirst{
+		delete file('src/main/resources/static/docs')
+	}
+	from file("build/docs/asciidoc")
+	into file("src/main/resources/static/docs")
+}
+
+build {
+	dependsOn copyDocument
+}
+
+bootJar {
+	dependsOn asciidoctor
+	from ("${asciidoctor.outputDir}") {
+		into 'static/docs'
+	}
+	dependsOn copyDocument
 }
