@@ -2,9 +2,10 @@ package com.programmers.jpa_board.post.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.programmers.jpa_board.post.application.PostService;
-import com.programmers.jpa_board.post.domain.dto.request.CreatePostRequest;
-import com.programmers.jpa_board.post.domain.dto.request.UpdatePostRequest;
-import com.programmers.jpa_board.post.domain.dto.response.PostResponse;
+import com.programmers.jpa_board.post.domain.dto.CreatePostRequest;
+import com.programmers.jpa_board.post.domain.dto.PostDto;
+import com.programmers.jpa_board.post.domain.dto.UpdatePostRequest;
+import com.programmers.jpa_board.post.domain.dto.CommonResponse;
 import com.programmers.jpa_board.post.infra.PostRepository;
 import com.programmers.jpa_board.user.domain.User;
 import com.programmers.jpa_board.user.infra.UserRepository;
@@ -59,7 +60,7 @@ class PostControllerTest {
     @Test
     void 저장_성공() throws Exception {
         //given
-        CreatePostRequest request = new CreatePostRequest("제목-범철", "내용이야", user.getId());
+        PostDto.CreatePostRequest request = new PostDto.CreatePostRequest("제목-범철", "내용이야", user.getId());
 
         //when & then
         this.mockMvc.perform(post("/posts")
@@ -89,8 +90,8 @@ class PostControllerTest {
     @Test
     void 단건_조회_성공() throws Exception {
         //given
-        CreatePostRequest request = new CreatePostRequest("제목-범철", "내용이야", user.getId());
-        PostResponse response = postService.save(request);
+        PostDto.CreatePostRequest request = new PostDto.CreatePostRequest("제목-범철", "내용이야", user.getId());
+        PostDto.CommonResponse response = postService.save(request);
 
         //when & then
         this.mockMvc.perform(get("/posts/{id}", response.id())
@@ -113,9 +114,9 @@ class PostControllerTest {
     @Test
     void 페이징_조회_성공() throws Exception {
         //given
-        CreatePostRequest request = new CreatePostRequest("제목-범철", "내용이야", user.getId());
+        PostDto.CreatePostRequest request = new PostDto.CreatePostRequest("제목-범철", "내용이야", user.getId());
         postService.save(request);
-        CreatePostRequest request2 = new CreatePostRequest("제목-범철2", "내용이야2", user.getId());
+        PostDto.CreatePostRequest request2 = new PostDto.CreatePostRequest("제목-범철2", "내용이야2", user.getId());
         postService.save(request2);
 
         //when & then
@@ -160,8 +161,8 @@ class PostControllerTest {
     @Test
     void 수정_성공() throws Exception {
         //given
-        CreatePostRequest request = new CreatePostRequest("제목-범철", "내용이야", user.getId());
-        PostResponse response = postService.save(request);
+        PostDto.CreatePostRequest request = new PostDto.CreatePostRequest("제목-범철", "내용이야", user.getId());
+        PostDto.CommonResponse response = postService.save(request);
 
         UpdatePostRequest updateRequest = new UpdatePostRequest("변경-범철", "변경내용");
 

@@ -1,9 +1,7 @@
 package com.programmers.jpa_board.post.application;
 
 import com.programmers.jpa_board.post.domain.Post;
-import com.programmers.jpa_board.post.domain.dto.request.CreatePostRequest;
-import com.programmers.jpa_board.post.domain.dto.request.UpdatePostRequest;
-import com.programmers.jpa_board.post.domain.dto.response.PostResponse;
+import com.programmers.jpa_board.post.domain.dto.PostDto;
 import com.programmers.jpa_board.global.exception.NotFoundException;
 import com.programmers.jpa_board.post.infra.PostRepository;
 import com.programmers.jpa_board.post.util.PostConverter;
@@ -29,7 +27,7 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public PostResponse save(CreatePostRequest request) {
+    public PostDto.CommonResponse save(PostDto.CreatePostRequest request) {
         Post post = PostConverter.toEntity(request);
         User user = userService.getOne(request.userId());
         post.addUser(user);
@@ -40,7 +38,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getOne(Long postId) {
+    public PostDto.CommonResponse getOne(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_POST.getMessage()));
 
@@ -48,14 +46,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostResponse> getPage(Pageable pageable) {
+    public Page<PostDto.CommonResponse> getPage(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(PostConverter::toDto);
     }
 
     @Transactional
     @Override
-    public PostResponse update(Long postId, UpdatePostRequest request) {
+    public PostDto.CommonResponse update(Long postId, PostDto.UpdatePostRequest request) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_POST.getMessage()));
 

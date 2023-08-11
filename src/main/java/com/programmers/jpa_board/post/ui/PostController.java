@@ -2,9 +2,7 @@ package com.programmers.jpa_board.post.ui;
 
 import com.programmers.jpa_board.global.ApiResponse;
 import com.programmers.jpa_board.post.application.PostService;
-import com.programmers.jpa_board.post.domain.dto.request.CreatePostRequest;
-import com.programmers.jpa_board.post.domain.dto.request.UpdatePostRequest;
-import com.programmers.jpa_board.post.domain.dto.response.PostResponse;
+import com.programmers.jpa_board.post.domain.dto.PostDto;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,29 +24,29 @@ public class PostController {
     }
 
     @PostMapping
-    public ApiResponse<PostResponse> save(@RequestBody @Valid CreatePostRequest request) {
-        PostResponse response = postService.save(request);
+    public ApiResponse<PostDto.CommonResponse> save(@RequestBody @Valid PostDto.CreatePostRequest request) {
+        PostDto.CommonResponse response = postService.save(request);
 
         return ApiResponse.created(response);
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<PostResponse> getOne(@PathVariable("id") Long id) {
-        PostResponse response = postService.getOne(id);
+    public ApiResponse<PostDto.CommonResponse> getOne(@PathVariable("id") Long id) {
+        PostDto.CommonResponse response = postService.getOne(id);
 
         return ApiResponse.ok(response);
     }
 
     @GetMapping
-    public ApiResponse<Page<PostResponse>> getPage(Pageable pageable) {
-        Page<PostResponse> responses = postService.getPage(pageable);
+    public ApiResponse<Page<PostDto.CommonResponse>> getPage(Pageable pageable) {
+        Page<PostDto.CommonResponse> responses = postService.getPage(pageable);
 
         return ApiResponse.ok(responses);
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<PostResponse> update(@PathVariable("id") Long id, @RequestBody @Valid UpdatePostRequest request) {
-        PostResponse response = postService.update(id, request);
+    public ApiResponse<PostDto.CommonResponse> update(@PathVariable("id") Long id, @RequestBody @Valid PostDto.UpdatePostRequest request) {
+        PostDto.CommonResponse response = postService.update(id, request);
 
         return ApiResponse.ok(response);
     }

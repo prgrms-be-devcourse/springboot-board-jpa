@@ -1,4 +1,4 @@
-package com.programmers.jpa_board.post.domain.dto.request;
+package com.programmers.jpa_board.post.domain.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,5 +13,5 @@ public record CreatePostRequest(
         @NotNull
         @Positive(message = "양수를 입력해주세요.")
         Long userId
-) {
+) implements PostDto {
 }

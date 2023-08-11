@@ -1,4 +1,4 @@
-package com.programmers.jpa_board.user.domain.dto.request;
+package com.programmers.jpa_board.user.domain.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
@@ -16,5 +16,5 @@ public record CreateUserRequest(
         @NotBlank
         @Size(max = 100, message = "최대 사이즈는 100자입니다.")
         String hobby
-) {
+) implements UserDto {
 }

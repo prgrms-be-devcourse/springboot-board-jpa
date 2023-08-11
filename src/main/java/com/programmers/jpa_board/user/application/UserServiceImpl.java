@@ -1,8 +1,7 @@
 package com.programmers.jpa_board.user.application;
 
 import com.programmers.jpa_board.user.domain.User;
-import com.programmers.jpa_board.user.domain.dto.request.CreateUserRequest;
-import com.programmers.jpa_board.user.domain.dto.response.UserResponse;
+import com.programmers.jpa_board.user.domain.dto.UserDto;
 import com.programmers.jpa_board.global.exception.NotFoundException;
 import com.programmers.jpa_board.user.infra.UserRepository;
 import com.programmers.jpa_board.user.util.UserConverter;
@@ -21,7 +20,7 @@ public class UserServiceImpl implements UserProviderService {
     }
 
     @Transactional
-    public UserResponse save(CreateUserRequest request) {
+    public UserDto.UserResponse save(UserDto.CreateUserRequest request) {
         User user = UserConverter.toEntity(request);
         User saved = userRepository.save(user);
 
