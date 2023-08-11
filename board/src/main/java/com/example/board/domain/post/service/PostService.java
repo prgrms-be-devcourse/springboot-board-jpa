@@ -36,7 +36,8 @@ public class PostService {
   @Transactional(readOnly = true)
   public PostResponse getPost(Long postId) {
 
-    Post foundPost = postRepository.findById(postId).orElseThrow(NoSuchElementException::new);
+    Post foundPost = postRepository.findById(postId)
+        .orElseThrow(NoSuchElementException::new);
 
     return PostResponse.from(foundPost);
   }
@@ -51,7 +52,8 @@ public class PostService {
   @Transactional
   public void updatePost(Long postId, PostUpdateRequest postUpdateRequest) {
 
-    Post foundPost = postRepository.findById(postId).orElseThrow(NoSuchElementException::new);
+    Post foundPost = postRepository.findById(postId)
+        .orElseThrow(NoSuchElementException::new);
 
     foundPost.updateTitle(postUpdateRequest.title());
     foundPost.updateContent(postUpdateRequest.content());
