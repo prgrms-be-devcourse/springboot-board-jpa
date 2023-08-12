@@ -1,10 +1,9 @@
 package org.prgms.boardservice.domain.post;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.prgms.boardservice.domain.post.vo.PostUpdateVo;
+import org.prgms.boardservice.domain.post.vo.PostUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -26,7 +25,7 @@ class PostServiceTest {
     @Autowired
     PostService postService;
 
-    private final Post post = new Post("title", "content", 1L);
+    private final Post post = new Post(new Title("title"), new Content("content"), 1L);
 
     @BeforeEach
     void setUp() {
@@ -36,7 +35,7 @@ class PostServiceTest {
     @Test
     @DisplayName("게시글이 성공적으로 생성된다.")
     void success_Create_Post() {
-        Long id =  postService.create(new Post("title", "content", 1L));
+        Long id =  postService.create(new Post(new Title("title"), new Content("content"), 1L));
 
         Post get = postService.getById(id);
 
@@ -48,23 +47,23 @@ class PostServiceTest {
     @Test
     @DisplayName("게시글이 성공적으로 수정된다.")
     void success_Update_Post() {
-        PostUpdateVo postUpdateVo = new PostUpdateVo(post.getId(), "new-title", "new-content");
+        PostUpdate postUpdate = new PostUpdate(post.getId(), "new-title", "new-content");
 
-        Long id = postService.update(postUpdateVo);
+        Long id = postService.update(postUpdate);
 
         Post updated = postService.getById(id);
 
         assertThat(updated).usingRecursiveComparison()
                 .comparingOnlyFields("id", "title", "content")
-                .isEqualTo(postUpdateVo);
+                .isEqualTo(postUpdate);
     }
 
     @Test
     @DisplayName("존재하지 않는 게시글은 수정에 실패한다.")
     void fail_Update_Post() {
-        PostUpdateVo postUpdateVo = new PostUpdateVo(Long.MAX_VALUE, "title", "content");
+        PostUpdate postUpdate = new PostUpdate(Long.MAX_VALUE, "title", "content");
 
-        assertThatThrownBy(() -> postService.update(postUpdateVo))
+        assertThatThrownBy(() -> postService.update(postUpdate))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage(NOT_FOUND_POST.getMessage());
     }
@@ -90,8 +89,8 @@ class PostServiceTest {
     @Test
     @DisplayName("게시글을 페이징하여 조회할 수 있다.")
     void success_Get_By_Page() {
-        Post post1 = new Post("title1", "content1", 1L);
-        Post post2 = new Post("title2", "content2", 1L);
+        Post post1 = new Post(1L, new Title("title1"), new Content("content1"), 1L);
+        Post post2 = new Post(2L, new Title("title2"), new Content("content2"), 1L);
 
         postService.create(post1);
         postService.create(post2);

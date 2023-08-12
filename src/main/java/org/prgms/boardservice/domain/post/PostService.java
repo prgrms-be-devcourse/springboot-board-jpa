@@ -1,6 +1,6 @@
 package org.prgms.boardservice.domain.post;
 
-import org.prgms.boardservice.domain.post.vo.PostUpdateVo;
+import org.prgms.boardservice.domain.post.vo.PostUpdate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,11 +24,11 @@ public class PostService {
         return postRepository.save(post).getId();
     }
 
-    public Long update(PostUpdateVo postUpdateVo) {
-        Post findPost = postRepository.findById(postUpdateVo.id())
+    public Long update(PostUpdate postUpdate) {
+        Post findPost = postRepository.findById(postUpdate.id())
                 .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_POST.getMessage()));
 
-        findPost.update(postUpdateVo.title(), postUpdateVo.content());
+        findPost.update(new Title(postUpdate.title()), new Content(postUpdate.content()));
 
         return postRepository.save(findPost).getId();
     }
@@ -45,6 +45,7 @@ public class PostService {
     }
 
     public void deleteById(Long id) {
+        postRepository.findById(id).orElseThrow(() -> new NoSuchElementException(NOT_FOUND_POST.getMessage()));
         postRepository.deleteById(id);
     }
 

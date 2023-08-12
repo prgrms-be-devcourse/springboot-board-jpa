@@ -1,59 +1,41 @@
 package org.prgms.boardservice.domain.post;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 import org.prgms.boardservice.domain.BaseTime;
 
-import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_CONTENT;
-import static org.prgms.boardservice.util.ErrorMessage.INVALID_POST_TITLE;
-
+@Builder
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@DynamicUpdate
+@EqualsAndHashCode(of = "id", callSuper = false)
 public class Post extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 20)
-    @NotBlank
-    private String title;
+    @Embedded
+    private Title title;
 
-    @Lob
-    @NotBlank
-    private String content;
+    @Embedded
+    private Content content;
 
+    @NotNull
     private Long userId;
 
-    public Post(String title, String content) {
-        validateTitleLength(title);
-        validateContentLength(content);
-
+    public Post(Title title, Content content, Long userId) {
         this.title = title;
         this.content = content;
+        this.userId = userId;
     }
 
-    public void update(String title, String content) {
-        validateTitleLength(title);
-        validateContentLength(content);
-
+    public void update(Title title, Content content) {
         this.title = title;
         this.content = content;
-    }
-
-    private void validateTitleLength(String title) {
-        if (!hasText(title) || title.length() > 20) {
-            throw new IllegalArgumentException(INVALID_POST_TITLE.getMessage());
-        }
-    }
-
-    private void validateContentLength(String content) {
-        if (!hasText(content) || content.length() > 500) {
-            throw new IllegalArgumentException(INVALID_POST_CONTENT.getMessage());
-        }
     }
 }
