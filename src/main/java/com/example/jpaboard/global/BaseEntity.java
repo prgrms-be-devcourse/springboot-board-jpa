@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @MappedSuperclass
 @EntityListeners(value = {AuditingEntityListener.class})
@@ -18,8 +17,7 @@ public class BaseEntity {
     protected BaseEntity() { }
 
     @CreatedDate
-    @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss")
-    @Column(updatable = false)
+    @Column(updatable = false, columnDefinition = "DATE")
     private LocalDateTime createdAt;
 
     @CreatedBy
@@ -32,4 +30,5 @@ public class BaseEntity {
     public String getCreatedBy() {
         return createdBy;
     }
+
 }

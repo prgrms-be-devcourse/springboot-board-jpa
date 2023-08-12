@@ -1,7 +1,8 @@
 package com.example.jpaboard.post.controller;
 
-import com.example.jpaboard.post.controller.dto.SaveApiRequest;
+import com.example.jpaboard.post.controller.dto.PostSaveApiRequest;
 
+import com.example.jpaboard.post.controller.dto.PostUpdateApiRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
@@ -84,9 +85,12 @@ class PostControllerTest {
                 fieldWithPath("resultMsg").description("The result message of the response")
         };
 
+
+        String requestBody = objectMapper.writeValueAsString(new PostUpdateApiRequest("흑구팀 화이팅팅", "언제나 응원해 흑구팀팀", 1L));
+
         this.mockMvc.perform(
-                        patch("/posts/{id}", 1L)  // 실제 ID 값으로 대체해주세요
-                                .content("{\"title\": \"흑구팀 화이팅팅\", \"content\": \"언제나 응원해 흑구팀팀\", \"memberId\": 1}")  // 업데이트할 내용 전달
+                        patch("/posts/{id}", 1L)
+                                .content(requestBody)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
@@ -108,7 +112,7 @@ class PostControllerTest {
         };
 
         this.mockMvc.perform(
-                        get("/posts/{id}", 1L)  // 실제 ID 값으로 대체해주세요
+                        get("/posts/{id}", 1L)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("post-findById",
@@ -118,7 +122,7 @@ class PostControllerTest {
 
     @Test
     void savePost() throws Exception {
-        SaveApiRequest saveApiRequest = new SaveApiRequest(1L,"흑구영수팀 화이팅","흑구영수팀팀팀");
+        PostSaveApiRequest postSaveApiRequest = new PostSaveApiRequest(1L,"흑구영수팀 화이팅","흑구영수팀팀팀");
 
         FieldDescriptor[] requestFields = new FieldDescriptor[] {
                 fieldWithPath("title").description("Saved title of the post"),
@@ -135,7 +139,7 @@ class PostControllerTest {
 
         this.mockMvc.perform(
                 post("/posts")
-                        .content(objectMapper.writeValueAsString(saveApiRequest))
+                        .content(objectMapper.writeValueAsString(postSaveApiRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(document("post-save",

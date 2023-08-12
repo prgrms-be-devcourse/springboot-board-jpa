@@ -1,32 +1,33 @@
 package com.example.jpaboard.post.controller.mapper;
 
-import com.example.jpaboard.post.controller.dto.FindAllApiRequest;
-import com.example.jpaboard.post.controller.dto.SaveApiRequest;
-import com.example.jpaboard.post.controller.dto.UpdateApiRequest;
-import com.example.jpaboard.post.service.dto.FindAllRequest;
-import com.example.jpaboard.post.service.dto.SaveRequest;
-import com.example.jpaboard.post.service.dto.UpdateRequest;
+import com.example.jpaboard.post.controller.dto.PostFindApiRequest;
+import com.example.jpaboard.post.controller.dto.PostSaveApiRequest;
+import com.example.jpaboard.post.controller.dto.PostUpdateApiRequest;
+import com.example.jpaboard.post.service.dto.PostFindRequest;
+import com.example.jpaboard.post.service.dto.PostSaveRequest;
+import com.example.jpaboard.post.service.dto.PostUpdateRequest;
 
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostApiMapper {
 
-    public FindAllRequest toFindAllRequest(FindAllApiRequest findAllApiRequest) {
+    public PostFindRequest toFindAllRequest(PostFindApiRequest postRetrieveApiRequest) {
 
-        return new FindAllRequest(findAllApiRequest.title(), findAllApiRequest.content());
+        return new PostFindRequest(postRetrieveApiRequest.title(), postRetrieveApiRequest.content());
     }
 
-    public UpdateRequest toUpdateRequest(UpdateApiRequest updateApiRequest) {
-        return new UpdateRequest(updateApiRequest.title(),
-                updateApiRequest.content(),
-                updateApiRequest.memberId());
+    public PostUpdateRequest toUpdateRequest(PostUpdateApiRequest postUpdateApiRequest) {
+        return new PostUpdateRequest(postUpdateApiRequest.title(),
+                postUpdateApiRequest.content(),
+                postUpdateApiRequest.memberId());
     }
 
-    public SaveRequest toSaveRequest(SaveApiRequest saveApiRequest) {
-        return new SaveRequest(saveApiRequest.memberId(),
-                saveApiRequest.title(),
-                saveApiRequest.content());
+    public PostSaveRequest toSaveRequest(PostSaveApiRequest postSaveApiRequest) {
+        return new PostSaveRequest(postSaveApiRequest.memberId(),
+                postSaveApiRequest.title(),
+                postSaveApiRequest.content());
+
     }
 
 }

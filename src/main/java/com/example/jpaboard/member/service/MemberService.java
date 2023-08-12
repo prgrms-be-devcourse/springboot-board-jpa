@@ -2,7 +2,7 @@ package com.example.jpaboard.member.service;
 
 import com.example.jpaboard.global.exception.EntityNotFoundException;
 import com.example.jpaboard.member.domain.Member;
-import com.example.jpaboard.member.service.dto.FindMemberResponse;
+import com.example.jpaboard.member.service.dto.MemberFindResponse;
 import com.example.jpaboard.member.service.mapper.MemberMapper;
 
 import org.springframework.stereotype.Service;
@@ -18,10 +18,10 @@ public class MemberService {
         this.memberMapper = memberMapper;
     }
 
-    public FindMemberResponse findById(Long id) {
+    public MemberFindResponse findById(Long id) {
         Member member = memberRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않은 고객입니다."));
 
-        return new FindMemberResponse(member);
+        return new MemberFindResponse(member);
     }
 
 }

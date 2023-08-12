@@ -3,9 +3,9 @@ package com.example.jpaboard.post.controller;
 import com.example.jpaboard.global.ApiResponse;
 import com.example.jpaboard.global.SliceResponse;
 import com.example.jpaboard.global.SuccessCode;
-import com.example.jpaboard.post.controller.dto.FindAllApiRequest;
-import com.example.jpaboard.post.controller.dto.SaveApiRequest;
-import com.example.jpaboard.post.controller.dto.UpdateApiRequest;
+import com.example.jpaboard.post.controller.dto.PostFindApiRequest;
+import com.example.jpaboard.post.controller.dto.PostSaveApiRequest;
+import com.example.jpaboard.post.controller.dto.PostUpdateApiRequest;
 import com.example.jpaboard.post.controller.mapper.PostApiMapper;
 import com.example.jpaboard.post.service.PostService;
 import com.example.jpaboard.post.service.dto.*;
@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,29 +34,29 @@ public class PostController {
     }
 
     @GetMapping
-    SliceResponse<PostResponse> findAllBy(@ModelAttribute FindAllApiRequest findAllApiRequest, Pageable pageable) {
-        FindAllRequest findAllRequest = postApiMapper.toFindAllRequest(findAllApiRequest);
+    public SliceResponse<PostResponse> findAllBy(@ModelAttribute PostFindApiRequest postRetrieveApiRequest, Pageable pageable) {
+        PostFindRequest postFindRequest = postApiMapper.toFindAllRequest(postRetrieveApiRequest);
 
-        Slice<PostResponse> postAllByFilter = postService.findAllByFilter(findAllRequest, pageable);
+        Slice<PostResponse> postAllByFilter = postService.findAllByFilter(postFindRequest, pageable);
         SliceResponse<PostResponse> postResponseSliceResponse = new SliceResponse<>(postAllByFilter, SuccessCode.SELECT_SUCCESS);
         return postResponseSliceResponse;
     }
 
-    @PatchMapping("/{id}")
-    ApiResponse<PostResponse> updatePost(@PathVariable Long id, @RequestBody @Valid UpdateApiRequest updateApiRequest) {
-        UpdateRequest updateRequest = postApiMapper.toUpdateRequest(updateApiRequest);
-        return new ApiResponse<>(postService.updatePost(id, updateRequest), SuccessCode.UPDATE_SUCCESS);
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<PostResponse> updatePost(@PathVariable Long id, @RequestBody @Valid PostUpdateApiRequest postUpdateApiRequest) {
+        PostUpdateRequest postUpdateRequest = postApiMapper.toUpdateRequest(postUpdateApiRequest);
+        return new ApiResponse<>(postService.updatePost(id, postUpdateRequest), SuccessCode.UPDATE_SUCCESS);
     }
 
     @GetMapping("/{id}")
-    ApiResponse<PostResponse> findById(@PathVariable Long id) {
+    public ApiResponse<PostResponse> findById(@PathVariable Long id) {
         return new ApiResponse<>(postService.findById(id), SuccessCode.SELECT_SUCCESS);
     }
 
-    @PostMapping
-    ResponseEntity<PostResponse> savePost(@RequestBody @Valid SaveApiRequest saveApiRequest) {
-        SaveRequest saveRequest = postApiMapper.toSaveRequest(saveApiRequest);
-        PostResponse saveResponse = postService.savePost(saveRequest);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PostResponse> savePost(@RequestBody @Valid PostSaveApiRequest postSaveApiRequest) {
+        PostSaveRequest postSaveRequest = postApiMapper.toSaveRequest(postSaveApiRequest);
+        PostResponse saveResponse = postService.savePost(postSaveRequest);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

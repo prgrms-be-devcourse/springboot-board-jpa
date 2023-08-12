@@ -2,7 +2,8 @@ package com.example.jpaboard.member.service;
 
 import com.example.jpaboard.member.domain.Age;
 import com.example.jpaboard.member.domain.Member;
-import com.example.jpaboard.member.service.dto.FindMemberResponse;
+import com.example.jpaboard.member.domain.Name;
+import com.example.jpaboard.member.service.dto.MemberFindResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ class MemberServiceTest {
 
     @BeforeEach
     void setUp() {
-        Member member = new Member("김별", new Age(26), "산책");
+        Member member = new Member(new Name("김별"), new Age(26), "산책");
         memberRepository.save(member);
         id = member.getId();
     }
@@ -36,10 +37,10 @@ class MemberServiceTest {
     @Test
     void findById_Member_Equals() {
         //when
-        FindMemberResponse response = memberService.findById(id);
+        MemberFindResponse response = memberService.findById(id);
 
         //then
-        assertThat(response.getName()).isEqualTo("김별");
+        assertThat(response.getName().getValue()).isEqualTo("김별");
         assertThat(response.getHobby()).isEqualTo("산책");
         assertThat(response.getAge()).usingRecursiveComparison().isEqualTo(new Age(26));
     }

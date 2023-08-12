@@ -8,11 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.stereotype.Component;
 
 @EnableJpaAuditing
 @Configuration
-@Component
 public class AuditorAwareConfig implements AuditorAware<String>, DateTimeProvider {
 
     @Override

@@ -2,22 +2,23 @@ package com.example.jpaboard.member.service.dto;
 
 import com.example.jpaboard.member.domain.Age;
 import com.example.jpaboard.member.domain.Member;
+import com.example.jpaboard.member.domain.Name;
 
-public class FindMemberResponse {
+public class MemberFindResponse {
 
     private final Long id;
-    private final String name;
+    private final Name name;
     private final Age age;
     private final String hobby;
 
-    public FindMemberResponse(Long id, String name, Age age, String hobby) {
+    public MemberFindResponse(Long id, Name name, Age age, String hobby) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.hobby = hobby;
     }
 
-    public FindMemberResponse(Member member) {
+    public MemberFindResponse(Member member) {
         this(member.getId(), member.getName(), member.getAge(), member.getHobby());
     }
 
@@ -25,7 +26,7 @@ public class FindMemberResponse {
         return id;
     }
 
-    public String getName() {
+    public Name getName() {
         return name;
     }
 

@@ -1,16 +1,16 @@
 package com.example.jpaboard.post.controller.dto;
 
-public class FindAllApiRequest {
+public class PostFindApiRequest {
 
     private String title;
     private String content;
 
-    public FindAllApiRequest() {
+    public PostFindApiRequest() {
         title = "";
         content = "";
     }
 
-    public FindAllApiRequest(String title, String content) {
+    public PostFindApiRequest(String title, String content) {
         this.title = title;
         this.content = content;
     }
