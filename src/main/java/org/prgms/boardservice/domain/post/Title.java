@@ -1,9 +1,8 @@
 package org.prgms.boardservice.domain.post;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,13 +16,12 @@ import static org.springframework.util.StringUtils.hasText;
 @Getter
 public class Title {
 
-    @Column(length = 20)
-    @NotNull
-    private String value;
+    @Column(length = 20, nullable = false)
+    private String title;
 
-    public Title(String value) {
-        validateTitleLength(value);
-        this.value = value;
+    public Title(String title) {
+        validateTitleLength(title);
+        this.title = title;
     }
 
     private void validateTitleLength(String value) {
