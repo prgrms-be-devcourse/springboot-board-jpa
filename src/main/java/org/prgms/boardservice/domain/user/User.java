@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.prgms.boardservice.domain.BaseTime;
 
-import java.util.regex.Pattern;
-
-import static org.prgms.boardservice.util.ErrorMessage.*;
+import static org.prgms.boardservice.util.ErrorMessage.INVALID_USER_NICKNAME_LENGTH;
 
 @Getter
 @Entity
@@ -18,46 +16,28 @@ import static org.prgms.boardservice.util.ErrorMessage.*;
 @EqualsAndHashCode(of = "id", callSuper = false)
 public class User extends BaseTime {
 
-    private static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-    private static final String PASSWORD_REGEX = "^.*(?=^.{8,15}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
-    @Column(length = 20, unique = true)
-    @NotBlank
-    private String email;
+    @Embedded
+    private Email email;
 
-    @Column(length = 100)
-    @NotBlank
-    private String password;
+    @Embedded
+    private Password password;
 
     @Column(length = 10, unique = true)
     @NotBlank
     private String nickname;
 
-    public User(String email, String password, String nickname) {
-        validateEmailPattern(email);
-        validatePasswordPattern(password);
+    public User(Email email, Password password, String nickname) {
         validateNicknameLength(nickname);
 
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-    }
-
-    private void validateEmailPattern(String email) {
-        if (!Pattern.matches(EMAIL_REGEX, email)) {
-            throw new IllegalArgumentException(INVALID_USER_EMAIL_PATTERN.getMessage());
-        }
-    }
-
-    private void validatePasswordPattern(String password) {
-        if (!Pattern.matches(PASSWORD_REGEX, password)) {
-            throw new IllegalArgumentException(INVALID_USER_PASSWORD_PATTERN.getMessage());
-        }
     }
 
     private void validateNicknameLength(String nickname) {
