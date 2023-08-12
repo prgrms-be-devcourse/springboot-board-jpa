@@ -4,6 +4,7 @@ import com.example.jpaboard.member.domain.Age;
 import com.example.jpaboard.member.domain.Member;
 import com.example.jpaboard.member.domain.Name;
 import com.example.jpaboard.member.service.MemberRepository;
+import com.example.jpaboard.member.service.dto.MemberFindResponse;
 import com.example.jpaboard.post.domain.Post;
 import com.example.jpaboard.post.domain.PostRepository;
 import com.example.jpaboard.global.exception.EntityNotFoundException;
@@ -96,9 +97,10 @@ class PostServiceTest {
     void savePost_correctSaveRequest_postResponse() {
         //given
         PostSaveRequest postSaveRequest = new PostSaveRequest(setupMemberId3, "산책의 정석", "산책의 정석 내용");
+        MemberFindResponse member = new MemberFindResponse(setupMemberId3,new Name("박세영"), new Age(27), "산책");
 
         //when
-        PostResponse postResponse = postService.savePost(postSaveRequest);
+        PostResponse postResponse = postService.savePost(member, postSaveRequest);
 
         //then
         String savedTitle = postResponse.title();

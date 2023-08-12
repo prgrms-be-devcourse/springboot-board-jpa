@@ -1,6 +1,5 @@
 package com.example.jpaboard.post.service;
 
-import com.example.jpaboard.member.service.MemberService;
 import com.example.jpaboard.member.service.dto.MemberFindResponse;
 import com.example.jpaboard.post.domain.Post;
 import com.example.jpaboard.post.domain.PostRepository;
@@ -22,12 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final MemberService memberService;
     private final PostMapper mapper;
 
-    public PostService(PostRepository postRepository, MemberService memberService, PostMapper mapper) {
+    public PostService(PostRepository postRepository, PostMapper mapper) {
         this.postRepository = postRepository;
-        this.memberService = memberService;
         this.mapper = mapper;
     }
 
@@ -43,9 +40,8 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponse savePost(PostSaveRequest request) {
-        MemberFindResponse findMember = memberService.findById(request.memberId());
-        Post post = mapper.to(request, findMember);
+    public PostResponse savePost(MemberFindResponse member ,PostSaveRequest request) {
+        Post post = mapper.to(request, member);
 
         return new PostResponse(postRepository.save(post));
     }

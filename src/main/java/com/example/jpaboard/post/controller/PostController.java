@@ -7,7 +7,7 @@ import com.example.jpaboard.post.controller.dto.PostFindApiRequest;
 import com.example.jpaboard.post.controller.dto.PostSaveApiRequest;
 import com.example.jpaboard.post.controller.dto.PostUpdateApiRequest;
 import com.example.jpaboard.post.controller.mapper.PostApiMapper;
-import com.example.jpaboard.post.service.PostService;
+import com.example.jpaboard.post.service.PostFacade;
 import com.example.jpaboard.post.service.dto.*;
 
 import jakarta.validation.Valid;
@@ -25,19 +25,19 @@ import java.net.URI;
 @RequestMapping("/posts")
 public class PostController {
 
-    private final PostService postService;
     private final PostApiMapper postApiMapper;
+    private final PostFacade postFacade;
 
-    public PostController(PostService postService, PostApiMapper postApiMapper) {
-        this.postService = postService;
+    public PostController( PostApiMapper postApiMapper, PostFacade postFacade) {
         this.postApiMapper = postApiMapper;
+        this.postFacade = postFacade;
     }
 
     @GetMapping
     public SliceResponse<PostResponse> findAllBy(@ModelAttribute PostFindApiRequest postRetrieveApiRequest, Pageable pageable) {
         PostFindRequest postFindRequest = postApiMapper.toFindAllRequest(postRetrieveApiRequest);
 
-        Slice<PostResponse> postAllByFilter = postService.findAllByFilter(postFindRequest, pageable);
+        Slice<PostResponse> postAllByFilter = postFacade.findAllByFilter(postFindRequest, pageable);
         SliceResponse<PostResponse> postResponseSliceResponse = new SliceResponse<>(postAllByFilter, SuccessCode.SELECT_SUCCESS);
         return postResponseSliceResponse;
     }
@@ -45,18 +45,18 @@ public class PostController {
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<PostResponse> updatePost(@PathVariable Long id, @RequestBody @Valid PostUpdateApiRequest postUpdateApiRequest) {
         PostUpdateRequest postUpdateRequest = postApiMapper.toUpdateRequest(postUpdateApiRequest);
-        return new ApiResponse<>(postService.updatePost(id, postUpdateRequest), SuccessCode.UPDATE_SUCCESS);
+        return new ApiResponse<>(postFacade.updatePost(id, postUpdateRequest), SuccessCode.UPDATE_SUCCESS);
     }
 
     @GetMapping("/{id}")
     public ApiResponse<PostResponse> findById(@PathVariable Long id) {
-        return new ApiResponse<>(postService.findById(id), SuccessCode.SELECT_SUCCESS);
+        return new ApiResponse<>(postFacade.findById(id), SuccessCode.SELECT_SUCCESS);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PostResponse> savePost(@RequestBody @Valid PostSaveApiRequest postSaveApiRequest) {
         PostSaveRequest postSaveRequest = postApiMapper.toSaveRequest(postSaveApiRequest);
-        PostResponse saveResponse = postService.savePost(postSaveRequest);
+        PostResponse saveResponse = postFacade.createPost(postSaveRequest);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
