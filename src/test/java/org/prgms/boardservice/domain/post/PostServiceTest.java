@@ -1,10 +1,9 @@
 package org.prgms.boardservice.domain.post;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.prgms.boardservice.domain.post.vo.PostUpdateVo;
+import org.prgms.boardservice.domain.post.vo.PostUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -48,23 +47,23 @@ class PostServiceTest {
     @Test
     @DisplayName("게시글이 성공적으로 수정된다.")
     void success_Update_Post() {
-        PostUpdateVo postUpdateVo = new PostUpdateVo(post.getId(), "new-title", "new-content");
+        PostUpdate postUpdate = new PostUpdate(post.getId(), "new-title", "new-content");
 
-        Long id = postService.update(postUpdateVo);
+        Long id = postService.update(postUpdate);
 
         Post updated = postService.getById(id);
 
         assertThat(updated).usingRecursiveComparison()
                 .comparingOnlyFields("id", "title", "content")
-                .isEqualTo(postUpdateVo);
+                .isEqualTo(postUpdate);
     }
 
     @Test
     @DisplayName("존재하지 않는 게시글은 수정에 실패한다.")
     void fail_Update_Post() {
-        PostUpdateVo postUpdateVo = new PostUpdateVo(Long.MAX_VALUE, "title", "content");
+        PostUpdate postUpdate = new PostUpdate(Long.MAX_VALUE, "title", "content");
 
-        assertThatThrownBy(() -> postService.update(postUpdateVo))
+        assertThatThrownBy(() -> postService.update(postUpdate))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage(NOT_FOUND_POST.getMessage());
     }

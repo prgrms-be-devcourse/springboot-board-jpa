@@ -4,11 +4,11 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public record PageDto<E>(
+public record PageResponse<E>(
         List<E> data,
         PageableResponse<E> pageable
 ) {
-    public PageDto(Page<E> page) {
+    public PageResponse(Page<E> page) {
         this(page.getContent(), new PageableResponse<>(page));
     }
 

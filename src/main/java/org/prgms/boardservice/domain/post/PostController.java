@@ -1,10 +1,10 @@
 package org.prgms.boardservice.domain.post;
 
-import org.prgms.boardservice.domain.post.dto.PageDto;
-import org.prgms.boardservice.domain.post.dto.PostCreateRequestDto;
-import org.prgms.boardservice.domain.post.dto.PostResponseDto;
-import org.prgms.boardservice.domain.post.dto.PostUpdateRequestDto;
-import org.prgms.boardservice.domain.post.vo.PostUpdateVo;
+import org.prgms.boardservice.domain.post.dto.PageResponse;
+import org.prgms.boardservice.domain.post.dto.PostCreateRequest;
+import org.prgms.boardservice.domain.post.dto.PostResponse;
+import org.prgms.boardservice.domain.post.dto.PostUpdateRequest;
+import org.prgms.boardservice.domain.post.vo.PostUpdate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -30,31 +30,31 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody PostCreateRequestDto postCreateRequestDto) {
-        Long postId = postService.create(postCreateRequestDto.toEntity());
+    public ResponseEntity<Void> create(@RequestBody PostCreateRequest postCreateRequest) {
+        Long postId = postService.create(postCreateRequest.toEntity());
 
         return ResponseEntity.created(URI.create("/api/v1/posts/" + postId))
                 .build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponseDto> getOne(@PathVariable Long id) throws NoSuchElementException {
-        PostResponseDto postResponseDto = new PostResponseDto(postService.getById(id));
+    public ResponseEntity<PostResponse> getOne(@PathVariable Long id) throws NoSuchElementException {
+        PostResponse postResponse = new PostResponse(postService.getById(id));
 
-        return ResponseEntity.ok(postResponseDto);
+        return ResponseEntity.ok(postResponse);
     }
 
     @GetMapping
-    public ResponseEntity<PageDto<PostResponseDto>> getPage(Pageable pageable) throws NoSuchElementException {
+    public ResponseEntity<PageResponse<PostResponse>> getPage(Pageable pageable) throws NoSuchElementException {
         Page<Post> page = postService.getByPage(pageable);
-        Page<PostResponseDto> postResponseDtoPage = page.map(PostResponseDto::new);
+        Page<PostResponse> postResponseDtoPage = page.map(PostResponse::new);
 
-        return ResponseEntity.ok(new PageDto<>(postResponseDtoPage));
+        return ResponseEntity.ok(new PageResponse<>(postResponseDtoPage));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> update(@RequestBody PostUpdateRequestDto postUpdateRequestDto, @PathVariable Long id) {
-        Long postId = postService.update(new PostUpdateVo(id, postUpdateRequestDto.title(), postUpdateRequestDto.content()));
+    public ResponseEntity<Void> update(@RequestBody PostUpdateRequest postUpdateRequest, @PathVariable Long id) {
+        Long postId = postService.update(new PostUpdate(id, postUpdateRequest.title(), postUpdateRequest.content()));
 
         return ResponseEntity.noContent()
                 .location(URI.create("/api/v1/posts/" + postId))

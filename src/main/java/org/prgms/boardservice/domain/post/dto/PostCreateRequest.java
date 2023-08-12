@@ -4,7 +4,7 @@ import org.prgms.boardservice.domain.post.Content;
 import org.prgms.boardservice.domain.post.Post;
 import org.prgms.boardservice.domain.post.Title;
 
-public record PostCreateRequestDto(String title, String content, Long userId) {
+public record PostCreateRequest(String title, String content, Long userId) {
 
     public Post toEntity() {
         return Post.builder()

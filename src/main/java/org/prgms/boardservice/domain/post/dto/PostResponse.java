@@ -2,9 +2,9 @@ package org.prgms.boardservice.domain.post.dto;
 
 import org.prgms.boardservice.domain.post.Post;
 
-public record PostResponseDto(Long id, String title, String content, Long userId) {
+public record PostResponse(Long id, String title, String content, Long userId) {
 
-    public PostResponseDto(Post post) {
+    public PostResponse(Post post) {
         this(post.getId(), post.getTitle().getTitle(), post.getContent().getContent(), post.getUserId());
     }
 }

@@ -3,9 +3,9 @@ package org.prgms.boardservice.domain.post;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.prgms.boardservice.domain.post.dto.PostCreateRequestDto;
-import org.prgms.boardservice.domain.post.dto.PostUpdateRequestDto;
-import org.prgms.boardservice.domain.post.vo.PostUpdateVo;
+import org.prgms.boardservice.domain.post.dto.PostCreateRequest;
+import org.prgms.boardservice.domain.post.dto.PostUpdateRequest;
+import org.prgms.boardservice.domain.post.vo.PostUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -50,7 +50,7 @@ class PostControllerTest {
     @Test
     @DisplayName("게시글이 성공적으로 생성된다.")
     void success_Save_Post() throws Exception {
-        PostCreateRequestDto requestDto = new PostCreateRequestDto("title", "content", 1L);
+        PostCreateRequest requestDto = new PostCreateRequest("title", "content", 1L);
 
         // given
         given(postService.create(any(Post.class))).willReturn(1L);
@@ -164,10 +164,10 @@ class PostControllerTest {
     @DisplayName("게시글이 성공적으로 수정된다.")
     void success_Update_Post() throws Exception {
         Long postId = 1L;
-        PostUpdateRequestDto requestDto = new PostUpdateRequestDto("new-title", "new-content");
+        PostUpdateRequest requestDto = new PostUpdateRequest("new-title", "new-content");
 
         // given
-        given(postService.update(any(PostUpdateVo.class))).willReturn(1L);
+        given(postService.update(any(PostUpdate.class))).willReturn(1L);
 
         // when
         ResultActions resultActions = mockMvc.perform(patch("/api/v1/posts/{id}", postId)
