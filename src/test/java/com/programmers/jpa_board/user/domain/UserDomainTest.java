@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class UserValidateTest {
+class UserDomainTest {
     @Test
     void 이름이_한글_또는_영어가_아닐시_예외() {
         //when & then
