@@ -3,7 +3,6 @@ package org.prgms.boardservice.domain.post;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Lob;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
