@@ -21,8 +21,8 @@ import java.util.NoSuchElementException;
 @Transactional(readOnly = true)
 public class PostServiceImpl implements PostService{
 
-    private static final String USER_NOT_FOUND = "유저를 찾을 수 없습니다.";
-    private static final String POST_NOT_FOUND = "게시글을 찾을 수 없습니다.";
+    private static final String USER_NOT_FOUND = "유저를 찾을 수 없습니다. {} ";
+    private static final String POST_NOT_FOUND = "게시글을 찾을 수 없습니다. {} ";
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final PostConverter postConverter;
@@ -31,7 +31,7 @@ public class PostServiceImpl implements PostService{
     @Transactional
     public Long createPost(PostCreateDto postCreateDto) {
         User user = userRepository.findById(postCreateDto.userId())
-                .orElseThrow(() -> new NoSuchElementException(USER_NOT_FOUND));
+                .orElseThrow(() -> new NoSuchElementException(String.format(USER_NOT_FOUND, postCreateDto.userId())));
         Post post = postConverter.convertPost(postCreateDto, user);
         Post savedPost = postRepository.save(post);
         return savedPost.getId();
@@ -40,7 +40,7 @@ public class PostServiceImpl implements PostService{
     @Override
     public PostResponseDto findPost(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NoSuchElementException(POST_NOT_FOUND));
+                .orElseThrow(() -> new NoSuchElementException(String.format(POST_NOT_FOUND, postId)));
         return postConverter.convertEntityToPostResponseDto(post);
     }
 
@@ -56,7 +56,7 @@ public class PostServiceImpl implements PostService{
     @Transactional
     public PostResponseDto updatePost(PostUpdateDto postUpdateDto, Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NoSuchElementException(POST_NOT_FOUND));
+                .orElseThrow(() -> new NoSuchElementException(String.format(POST_NOT_FOUND, postId)));
         post.changeTitleAndContent(postUpdateDto.title(), postUpdateDto.content());
         return postConverter.convertEntityToPostResponseDto(post);
     }

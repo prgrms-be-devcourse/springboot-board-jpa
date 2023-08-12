@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
 
-    private static final String USER_NOT_FOUND = "유저를 찾을 수 없습니다.";
+    private static final String USER_NOT_FOUND = "유저를 찾을 수 없습니다. {} ";
     private final UserRepository userRepository;
     private final UserConverter userConverter;
 
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto findUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException(USER_NOT_FOUND));
+                .orElseThrow(() -> new NoSuchElementException(String.format(USER_NOT_FOUND, userId)));
         return userConverter.convertUserDto(user);
     }
 }
