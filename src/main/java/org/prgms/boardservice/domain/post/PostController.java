@@ -24,7 +24,7 @@ public class PostController {
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    private ResponseEntity<String> exceptionHandle(Exception exception) {
+    private ResponseEntity<String> noSuchElementExceptionHandle(NoSuchElementException exception) {
         return ResponseEntity.badRequest()
                 .body(exception.getMessage());
     }
