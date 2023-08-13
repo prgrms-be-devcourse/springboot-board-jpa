@@ -3,11 +3,13 @@ package com.programmers.board.aop;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 @Slf4j
 @Aspect
+@Component
 public class LogAspect {
     @Pointcut("execution(* com.programmers.board.service..*(..))")
     private void logService() {}
