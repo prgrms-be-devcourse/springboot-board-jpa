@@ -33,12 +33,12 @@ class UserControllerTest {
     private UserServiceImpl userService;
 
     @Test
-    void API_POST_유저_저장() throws Exception {
+    void API_POST_유저_저장_성공() throws Exception {
         //given
         UserDto.CreateUserRequest request = new UserDto.CreateUserRequest("신범철", 26, "운동");
         UserDto.UserResponse response = new UserDto.UserResponse(1L, "신범철", 26, "운동", null, LocalDateTime.now());
 
-        given(userService.save(any(UserDto.CreateUserRequest.class)))
+        given(userService.save(request))
                 .willReturn(response);
 
         //when & then
@@ -47,10 +47,10 @@ class UserControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("CREATED"))
-                .andExpect(jsonPath("data.name").value("신범철"))
-                .andExpect(jsonPath("data.age").value(26))
-                .andExpect(jsonPath("data.hobby").value("운동"))
-                .andExpect(jsonPath("data.id").value(1L))
+                .andExpect(jsonPath("data.name").value(response.name()))
+                .andExpect(jsonPath("data.age").value(response.age()))
+                .andExpect(jsonPath("data.hobby").value(response.hobby()))
+                .andExpect(jsonPath("data.id").value(response.id()))
                 .andExpect(jsonPath("data.createAt").isNotEmpty())
                 .andExpect(jsonPath("data.posts").isEmpty())
                 .andDo(print());
