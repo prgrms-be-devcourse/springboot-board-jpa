@@ -3,8 +3,11 @@ package com.jpaboard.post.application;
 import com.jpaboard.exception.NotFoundPostException;
 import com.jpaboard.post.domain.Post;
 import com.jpaboard.post.infra.JpaPostRepository;
-import com.jpaboard.post.ui.PostConverter;
-import com.jpaboard.post.ui.dto.PostDto;
+import com.jpaboard.post.ui.PostCommon;
+import com.jpaboard.post.ui.PostCreate;
+import com.jpaboard.post.ui.PostUpdate;
+import com.jpaboard.user.domain.User;
+import com.jpaboard.user.ui.dto.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,31 +24,53 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Page<PostDto.Response> findPostAll(Pageable pageable) {
+    public Page<PostCommon.Response> findPostAll(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(PostConverter::convertPostResponse);
+                .map(this::toResponse);
+
     }
 
-    public PostDto.Response findPost(long id) {
+    public PostCommon.Response findPost(long id) {
         Post post = findBydId(id);
-        return PostConverter.convertPostResponse(post);
+        return toResponse(post);
+    }
+
+
+    @Transactional
+    public PostCreate.Response createPost(PostCreate.Request request) {
+        UserDto.Request userRequest = request.user();
+        User user = new User(userRequest.name(), userRequest.age(), userRequest.hobby());
+
+        Post post = postRepository.save(
+                new Post(request.title(), request.content(), user)
+        );
+
+        return new PostCreate.Response(post.getId(), post.getTitle(), post.getContent());
     }
 
     @Transactional
-    public Long createPost(PostDto.Request request) {
-        Post post = postRepository.save(PostConverter.convertPostRequest(request));
-        return post.getId();
-    }
-
-    @Transactional
-    public Long updatePost(long id, PostDto.PostUpdateRequest postUpdateRequest) {
+    public PostUpdate.Response updatePost(long id, PostUpdate.Request postUpdateRequest) {
         Post post = findBydId(id);
         post.updatePost(postUpdateRequest.title(), postUpdateRequest.content());
-        return post.getId();
+
+        return new PostUpdate.Response(post.getId(), post.getTitle(), post.getContent());
     }
 
     private Post findBydId(long id) {
         return postRepository.findById(id)
                 .orElseThrow(NotFoundPostException::new);
     }
+
+    private PostCommon.Response toResponse(Post post) {
+        User user = post.getUser();
+
+        UserDto.Response userDto = new UserDto.Response(
+                user.getName(),
+                user.getAge(),
+                user.getHobby()
+        );
+
+        return new PostCommon.Response(post.getId(), post.getTitle(), post.getContent(), userDto);
+    }
+
 }
