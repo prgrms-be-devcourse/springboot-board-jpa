@@ -38,13 +38,15 @@ public class Post extends BaseEntity {
     }
 
     private void validateTitle(String title) {
-        if (title.length() > 30) {
+        boolean validatedTitle = title.length() > 30;
+        if (validatedTitle) {
             throw new IllegalArgumentException("제목은 30자를 넘을 수 없습니다.");
         }
     }
 
     private void validateContent(String content) {
-        if (content.length() > 2000) {
+        boolean validatedContent = content.length() > 2000;
+        if (validatedContent) {
             throw new IllegalArgumentException("내용은 2000자를 넘을 수 없습니다.");
         }
     }

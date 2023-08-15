@@ -3,7 +3,6 @@ package com.jpaboard.user.domain;
 import com.jpaboard.entity.BaseEntity;
 import com.jpaboard.post.domain.Post;
 import jakarta.persistence.*;
-import lombok.Builder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,20 +45,23 @@ public class User extends BaseEntity {
     }
 
     private void validateName(String name) {
-        if (name.length() > 10) {
+        boolean validatedName = name.length() > 10;
+        if (validatedName) {
             throw new IllegalArgumentException("이름은 10자를 넘을 수 없습니다.");
         }
     }
 
     private void validateHobby(String hobby) {
-        if (hobby.length() > 10) {
+        boolean validatedHobby = hobby.length() > 10;
+        if (validatedHobby) {
             throw new IllegalArgumentException("취미는 10자를 넘을 수 없습니다.");
         }
     }
 
     private void validateAge(int age) {
-        if (age < 0 || age > 150) {
-            throw new IllegalArgumentException("나이는 0세부터 150까지 입니다.");
+        boolean validatedAge = (0 > age || age > 150);
+        if (validatedAge) {
+            throw new IllegalArgumentException("나이는 0세부터 150세까지 입니다.");
         }
     }
 
