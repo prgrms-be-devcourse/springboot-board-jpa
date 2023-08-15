@@ -16,7 +16,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name", nullable = false, length = 30)
+    @Column(name = "name", nullable = false, length = 10)
     private String name;
 
     @Column(name = "age", nullable = false)
@@ -31,17 +31,36 @@ public class User extends BaseEntity {
     protected User() {
     }
 
-    @Builder
-    private User(long id, String name, int age, String hobby, List<Post> postList) {
-        this.id = id;
+    public User(String name, int age, String hobby) {
+        validateName(name);
+        validateAge(age);
+        validateHobby(hobby);
+
         this.name = name;
         this.age = age;
         this.hobby = hobby;
-        this.postList = postList;
     }
 
     public void addPost(Post post) {
         post.assignWriter(this);
+    }
+
+    private void validateName(String name) {
+        if (name.length() > 10) {
+            throw new IllegalArgumentException("이름은 10자를 넘을 수 없습니다.");
+        }
+    }
+
+    private void validateHobby(String hobby) {
+        if (hobby.length() > 10) {
+            throw new IllegalArgumentException("취미는 10자를 넘을 수 없습니다.");
+        }
+    }
+
+    private void validateAge(int age) {
+        if (age < 0 || age > 150) {
+            throw new IllegalArgumentException("나이는 0세부터 150까지 입니다.");
+        }
     }
 
     public long getId() {

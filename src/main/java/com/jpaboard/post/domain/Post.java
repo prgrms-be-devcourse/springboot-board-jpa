@@ -3,7 +3,6 @@ package com.jpaboard.post.domain;
 import com.jpaboard.entity.BaseEntity;
 import com.jpaboard.user.domain.User;
 import jakarta.persistence.*;
-import lombok.Builder;
 
 import java.util.Objects;
 
@@ -15,7 +14,7 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 30)
     private String title;
 
     @Lob
@@ -29,12 +28,33 @@ public class Post extends BaseEntity {
     protected Post() {
     }
 
-    @Builder
-    private Post(long id, String title, String content, User user) {
-        this.id = id;
+    public Post(String title, String content, User user) {
+        this.validateTitle(title);
+        this.validateContent(content);
+
         this.title = title;
         this.content = content;
         this.user = user;
+    }
+
+    private void validateTitle(String title) {
+        if (title.length() > 30) {
+            throw new IllegalArgumentException("제목은 30자를 넘을 수 없습니다.");
+        }
+    }
+
+    private void validateContent(String content) {
+        if (content.length() > 2000) {
+            throw new IllegalArgumentException("내용은 2000자를 넘을 수 없습니다.");
+        }
+    }
+
+    public void updatePost(String title, String content) {
+        this.validateTitle(title);
+        this.validateContent(content);
+
+        this.title = title;
+        this.content = content;
     }
 
     public void assignWriter(User user) {
@@ -46,10 +66,6 @@ public class Post extends BaseEntity {
         user.getPostList().add(this);
     }
 
-    public void updatePost(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
 
     public long getId() {
         return id;

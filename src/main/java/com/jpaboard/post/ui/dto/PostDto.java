@@ -1,16 +1,14 @@
 package com.jpaboard.post.ui.dto;
 
 import com.jpaboard.user.ui.dto.UserDto;
-import lombok.Builder;
 
-public sealed interface PostDto permits Request, Response, UpdateRequest  {
-    @Builder
-    record Request(String title, String content, UserDto.Request user){ }
+public sealed interface PostDto permits PostDto.Request, PostDto.Response, PostDto.PostUpdateRequest {
+    record Request(String title, String content, UserDto.Request user) implements PostDto {
+    }
 
-    @Builder
-    record Response(String title, String content, UserDto.Response user){ }
+    record Response(String title, String content, UserDto.Response user) implements PostDto {
+    }
 
-    @Builder
-    record PostUpdateRequest(String title, String content) { }
-
+    record PostUpdateRequest(String title, String content) implements PostDto {
+    }
 }

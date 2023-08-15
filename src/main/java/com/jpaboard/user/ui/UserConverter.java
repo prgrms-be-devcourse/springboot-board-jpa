@@ -6,35 +6,19 @@ import com.jpaboard.user.ui.dto.UserDto;
 public class UserConverter {
 
     public static User convertUser(UserDto.Request response) {
-        return User.builder()
-                .name(response.name())
-                .age(response.age())
-                .hobby(response.hobby())
-                .build();
+        return new User(response.name(), response.age(), response.hobby());
     }
 
     public static User convertUser(UserDto.Response response) {
-        return User.builder()
-                .name(response.name())
-                .age(response.age())
-                .hobby(response.hobby())
-                .build();
+        return new User(response.name(), response.age(), response.hobby());
     }
 
     public static UserDto.Response convertUserResponse(User user) {
-        return UserDto.Response.builder()
-                .name(user.getName())
-                .age(user.getAge())
-                .hobby(user.getHobby())
-                .build();
+        return new UserDto.Response(user.getName(), user.getAge(), user.getHobby());
     }
 
     public static UserDto.Request convertUserRequest(User user) {
-        return UserDto.Request.builder()
-                .name(user.getName())
-                .age(user.getAge())
-                .hobby(user.getHobby())
-                .build();
+        return new UserDto.Request(user.getName(), user.getAge(), user.getHobby());
     }
 
 }

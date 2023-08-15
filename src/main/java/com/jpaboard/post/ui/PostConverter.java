@@ -12,40 +12,24 @@ public class PostConverter {
     public static Post convertPostRequest(PostDto.Request request) {
         User user = UserConverter.convertUser(request.user());
 
-        return Post.builder()
-                .title(request.title())
-                .content(request.content())
-                .user(user)
-                .build();
+        return new Post(request.title(), request.content(), user);
     }
 
     public static Post convertPostResponse(PostDto.Response response) {
         User user = UserConverter.convertUser(response.user());
 
-        return Post.builder()
-                .title(response.title())
-                .content(response.content())
-                .user(user)
-                .build();
+        return new Post(response.title(), response.content(), user);
     }
 
     public static PostDto.Request convertPostRequest(Post post) {
         UserDto.Request user = UserConverter.convertUserRequest(post.getUser());
 
-        return PostDto.Request.builder()
-                .title(post.getTitle())
-                .content(post.getContent())
-                .user(user)
-                .build();
+        return new PostDto.Request(post.getTitle(), post.getContent(), user);
     }
 
     public static PostDto.Response convertPostResponse(Post post) {
         UserDto.Response user = UserConverter.convertUserResponse(post.getUser());
 
-        return PostDto.Response.builder()
-                .title(post.getTitle())
-                .content(post.getContent())
-                .user(user)
-                .build();
+        return new PostDto.Response(post.getTitle(), post.getContent(), user);
     }
 }

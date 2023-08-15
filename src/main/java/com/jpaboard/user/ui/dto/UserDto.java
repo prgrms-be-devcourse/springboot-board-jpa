@@ -1,12 +1,12 @@
 package com.jpaboard.user.ui.dto;
 
-import lombok.Builder;
 
-public sealed interface UserDto permits Request, Response {
-    @Builder
-    record Request(String name, int age, String hobby){ }
+public sealed interface UserDto permits UserDto.Request, UserDto.Response {
 
-    @Builder
-    record Response(String name, int age, String hobby){ }
+    record Request(String name, int age, String hobby) implements UserDto {
+    }
+
+    record Response(String name, int age, String hobby) implements UserDto {
+    }
 
 }
