@@ -3,8 +3,9 @@ package com.jpaboard.ui;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpaboard.post.application.PostService;
 import com.jpaboard.post.infra.JpaPostRepository;
+import com.jpaboard.post.ui.PostCreate;
 import com.jpaboard.post.ui.dto.PageParam;
-import com.jpaboard.post.ui.dto.PostDto;
+import com.jpaboard.post.ui.PostUpdate;
 import com.jpaboard.user.ui.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -56,11 +57,11 @@ class PostControllerTest {
         return new UserDto.Request(name, age, hobby);
     }
 
-    private PostDto.Request getPostRequest(String title, String content, UserDto.Request response) {
-        return new PostDto.Request(title, content, response);
+    private PostCreate.Request getPostCreateRequest(String title, String content, UserDto.Request response) {
+        return new PostCreate.Request(title, content, response);
     }
 
-    private List<PostDto.Request> createPostRequestList(int number) {
+    private List<PostCreate.Request> createPostRequestList(int number) {
         return IntStream.range(0, number)
                 .boxed()
                 .map((i) -> {
@@ -72,7 +73,7 @@ class PostControllerTest {
                     String content = "내용" + (111 * i);
 
                     UserDto.Request userRequest = getUserRequest(name, age, hobby);
-                    return getPostRequest(title, content, userRequest);
+                    return getPostCreateRequest(title, content, userRequest);
                 }).toList();
     }
 
@@ -80,9 +81,9 @@ class PostControllerTest {
     @DisplayName("모든 id를 조회하고 rest doc객체를 생성한다")
     void findPostAll_Test() throws Exception {
         // Given
-        List<PostDto.Request> postRequestList = createPostRequestList(3);
+        List<PostCreate.Request> postRequestList = createPostRequestList(3);
 
-        for (PostDto.Request postRequest : postRequestList) {
+        for (PostCreate.Request postRequest : postRequestList) {
             postService.createPost(postRequest);
         }
 
@@ -100,6 +101,7 @@ class PostControllerTest {
                                 fieldWithPath("size").type(JsonFieldType.NUMBER).description("페이지 글 사이즈")
                         ),
                         responseFields(
+                                fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("게시글 작성자"),
                                 fieldWithPath("content[].title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content[].content").type(JsonFieldType.STRING).description("내용"),
 
@@ -144,19 +146,20 @@ class PostControllerTest {
     void findPostById_Test() throws Exception {
         // Given
         UserDto.Request userRequest = getUserRequest("이름이름", 11, "사진찍기");
-        PostDto.Request postRequest = getPostRequest("제목22", "내용3124213", userRequest);
+        PostCreate.Request postRequest = getPostCreateRequest("제목22", "내용3124213", userRequest);
 
-        Long postId = postService.createPost(postRequest);
+        PostCreate.Response post = postService.createPost(postRequest);
 
         // When, Then
-        this.mockMvc.perform(get("/api/posts/{id}", postId)
+        this.mockMvc.perform(get("/api/posts/{id}", post.id())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-get",
                         responseFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글제목"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글내용"),
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("아이디"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
 
                                 fieldWithPath("user.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("user.age").type(JsonFieldType.NUMBER).description("나이"),
@@ -170,7 +173,7 @@ class PostControllerTest {
     void createPost_Test() throws Exception {
         // Given
         UserDto.Request userRequest = getUserRequest("이름이름", 11, "사진찍기");
-        PostDto.Request postRequest = getPostRequest("제목22", "내용3124213", userRequest);
+        PostCreate.Request postRequest = getPostCreateRequest("제목22", "내용3124213", userRequest);
 
         postService.createPost(postRequest);
 
@@ -190,8 +193,9 @@ class PostControllerTest {
                                 fieldWithPath("user.hobby").type(JsonFieldType.STRING).description("취미")
                         ),
                         responseFields(
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("데이터")
-                        )
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("아이디"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용"))
                 ));
     }
 
@@ -200,14 +204,14 @@ class PostControllerTest {
     void updatePost_Test() throws Exception {
         // Given
         UserDto.Request userRequest = getUserRequest("susuyeon", 24, "shopping");
-        PostDto.Request postRequest = getPostRequest("제목22", "내용3124213", userRequest);
+        PostCreate.Request postRequest = getPostCreateRequest("제목22", "내용3124213", userRequest);
 
-        Long postId = postService.createPost(postRequest);
+        PostCreate.Response post = postService.createPost(postRequest);
 
-        PostDto.PostUpdateRequest postUpdateRequest = new PostDto.PostUpdateRequest("수정한 제목", "수정한 제목들");
+        PostUpdate.Request postUpdateRequest = new PostUpdate.Request("수정한 제목", "수정한 제목들");
 
         // When, Then
-        this.mockMvc.perform(patch("/api/posts/{id}", postId)
+        this.mockMvc.perform(patch("/api/posts/{id}", post.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postUpdateRequest)))
                 .andExpect(status().isOk())
@@ -218,7 +222,9 @@ class PostControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
                         ),
                         responseFields(
-                                fieldWithPath("data").type(JsonFieldType.ARRAY).description("데이터")
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("아이디"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
                         )
                 ));
     }
@@ -229,11 +235,12 @@ class PostControllerTest {
     void updatePost_Fail_Test() throws Exception {
         // Given
         UserDto.Request userRequest = getUserRequest("이름이름", 11, "사진찍기");
-        PostDto.Request postRequest = getPostRequest("제목22", "내용3124213", userRequest);
+        PostCreate.Request postRequest = getPostCreateRequest("제목22", "내용3124213", userRequest);
 
-        Long postId = postService.createPost(postRequest);
+        PostCreate.Response post = postService.createPost(postRequest);
+        Long postId = post.id();
 
-        PostDto.PostUpdateRequest postUpdateRequest = new PostDto.PostUpdateRequest("수정한 제목", "수정한 제목들");
+        PostUpdate.Request postUpdateRequest = new PostUpdate.Request("수정한 제목", "수정한 제목들");
 
         // When, Then
         this.mockMvc.perform(patch("/api/posts/{id}", postId + 1)
