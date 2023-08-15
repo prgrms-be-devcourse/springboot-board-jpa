@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class PostService {
 
     private final JpaPostRepository postRepository;
@@ -21,23 +21,23 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    @Transactional(readOnly = true)
     public Page<PostDto.Response> findPostAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(PostConverter::convertPostResponse);
     }
 
-    @Transactional(readOnly = true)
     public PostDto.Response findPost(long id) {
         Post post = findBydId(id);
         return PostConverter.convertPostResponse(post);
     }
 
+    @Transactional
     public Long createPost(PostDto.Request request) {
         Post post = postRepository.save(PostConverter.convertPostRequest(request));
         return post.getId();
     }
 
+    @Transactional
     public Long updatePost(long id, PostDto.PostUpdateRequest postUpdateRequest) {
         Post post = findBydId(id);
         post.updatePost(postUpdateRequest.title(), postUpdateRequest.content());
