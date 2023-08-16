@@ -29,7 +29,7 @@ public class Post extends BaseEntity {
 	private static final int TITLE_MAX_LENGTH = 100;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	Long id;
 
 	@Column(nullable = false, length = TITLE_MAX_LENGTH)
@@ -64,7 +64,7 @@ public class Post extends BaseEntity {
 
 		if (updater != initialWriter) {
 			throw new InvalidRequestException(
-					MessageFormat.format("작성자는 변경 불가능합니다[기존 작성자 id={0}, 요청된 작성자 id={1}] ", initialWriter, updater)
+					MessageFormat.format("작성자가 아닌 경우 글 수정이 불가능합니다[기존 작성자 id={0}, 요청된 작성자 id={1}] ", initialWriter, updater)
 			);
 		}
 

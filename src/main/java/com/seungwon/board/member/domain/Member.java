@@ -24,7 +24,7 @@ public class Member extends BaseEntity {
 	private static final int MAX_AGE = 120;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	Long id;
 
 	@Column(nullable = false, length = 10)
