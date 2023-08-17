@@ -43,3 +43,14 @@ include::{snippets}/post-update/request-fields.adoc[]
 .Response
 include::{snippets}/post-update/http-response.adoc[]
 include::{snippets}/post-update/response-fields.adoc[]
+
+
+=== 유저 생성
+
+.Request
+include::{snippets}/user-save/http-request.adoc[]
+include::{snippets}/user-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/user-save/http-response.adoc[]
+include::{snippets}/user-save/response-fields.adoc[]
