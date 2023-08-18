@@ -1,17 +1,22 @@
 package com.programmers.jpa_board.user.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.programmers.jpa_board.user.application.UserServiceImpl;
 import com.programmers.jpa_board.user.domain.dto.UserDto;
-import com.programmers.jpa_board.user.infra.UserRepository;
+import com.programmers.jpa_board.user.ui.UserController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -23,9 +28,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@WebMvcTest(UserController.class)
 @AutoConfigureRestDocs
-@AutoConfigureMockMvc
+@MockBean(JpaMetamodelMappingContext.class)
 public class UserRestDocsTest {
 
     @Autowired
@@ -34,13 +39,17 @@ public class UserRestDocsTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    UserRepository repository;
+    @MockBean
+    private UserServiceImpl userService;
 
     @Test
     void 저장_성공() throws Exception {
         //given
         UserDto.CreateUserRequest request = new UserDto.CreateUserRequest("신범철", 26, "헬스");
+        UserDto.UserResponse response = new UserDto.UserResponse(1L, "신범철", 26, "운동", null, LocalDateTime.now());
+
+        given(userService.save(request))
+                .willReturn(response);
 
         //when & then
         mockMvc.perform(post("/users")
@@ -62,7 +71,7 @@ public class UserRestDocsTest {
                                 fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("data.age").type(JsonFieldType.NUMBER).description("나이"),
                                 fieldWithPath("data.hobby").type(JsonFieldType.STRING).description("취미"),
-                                fieldWithPath("data.posts").type(JsonFieldType.ARRAY).description("게시물 목록"),
+                                fieldWithPath("data.posts").type(JsonFieldType.ARRAY).description("게시물 목록").optional(),
                                 fieldWithPath("data.createAt").type(JsonFieldType.STRING).description("생성 일시")
                         ))
                 );

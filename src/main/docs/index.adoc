@@ -10,7 +10,7 @@ include::{snippets}/post-save/request-fields.adoc[]
 include::{snippets}/post-save/http-response.adoc[]
 include::{snippets}/post-save/response-fields.adoc[]
 
-
+---
 
 === 게시글 단건 조회
 
@@ -21,7 +21,18 @@ include::{snippets}/post-get/http-request.adoc[]
 include::{snippets}/post-get/http-response.adoc[]
 include::{snippets}/post-get/response-fields.adoc[]
 
+---
 
+=== 게시글 단건 조회 실패
+
+.Request
+include::{snippets}/post-get-fail/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get-fail/http-response.adoc[]
+include::{snippets}/post-get-fail/response-fields.adoc[]
+
+---
 
 === 게시글 페이징 조회
 
@@ -32,7 +43,7 @@ include::{snippets}/post-getPages/http-request.adoc[]
 include::{snippets}/post-getPages/http-response.adoc[]
 include::{snippets}/post-getPages/response-fields.adoc[]
 
-
+---
 
 === 게시글 수정
 
@@ -44,6 +55,7 @@ include::{snippets}/post-update/request-fields.adoc[]
 include::{snippets}/post-update/http-response.adoc[]
 include::{snippets}/post-update/response-fields.adoc[]
 
+---
 
 === 유저 생성
 

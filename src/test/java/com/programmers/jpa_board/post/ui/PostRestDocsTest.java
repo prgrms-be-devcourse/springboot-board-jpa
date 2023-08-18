@@ -1,23 +1,34 @@
 package com.programmers.jpa_board.post.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.programmers.jpa_board.global.exception.NotFoundException;
 import com.programmers.jpa_board.post.application.PostService;
 import com.programmers.jpa_board.post.domain.dto.PostDto;
-import com.programmers.jpa_board.post.domain.dto.UpdatePostRequest;
-import com.programmers.jpa_board.post.infra.PostRepository;
-import com.programmers.jpa_board.user.domain.User;
-import com.programmers.jpa_board.user.infra.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.programmers.jpa_board.global.exception.ExceptionMessage.NOT_FOUND_POST;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -25,11 +36,12 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.subsecti
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@WebMvcTest(PostController.class)
+@MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-@AutoConfigureMockMvc
 class PostRestDocsTest {
 
     @Autowired
@@ -38,34 +50,27 @@ class PostRestDocsTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
+    @MockBean
     private PostService postService;
-
-    @Autowired
-    PostRepository postRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    private User user;
-
-    @BeforeEach
-    void init() {
-        user = new User("신범철", 26, "헬스");
-        userRepository.save(user);
-    }
 
     @Test
     void 저장_성공() throws Exception {
         //given
-        PostDto.CreatePostRequest request = new PostDto.CreatePostRequest("제목-범철", "내용이야", user.getId());
+        PostDto.CreatePostRequest request = new PostDto.CreatePostRequest("제목-범철", "내용이야", 1L);
+        PostDto.CommonResponse response = new PostDto.CommonResponse(1L, "제목", "내용", 1L, "신범철", LocalDateTime.now());
+
+        given(postService.save(request))
+                .willReturn(response);
 
         //when & then
         this.mockMvc.perform(post("/posts")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andDo(document("post-save",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
@@ -88,14 +93,20 @@ class PostRestDocsTest {
     @Test
     void 단건_조회_성공() throws Exception {
         //given
-        PostDto.CreatePostRequest request = new PostDto.CreatePostRequest("제목-범철", "내용이야", user.getId());
-        PostDto.CommonResponse response = postService.save(request);
+        Long postId = 3L;
+        PostDto.CommonResponse response = new PostDto.CommonResponse(postId, "제목", "내용", 1L, "신범철", LocalDateTime.now());
+
+        given(postService.getOne(postId))
+                .willReturn(response);
 
         //when & then
-        this.mockMvc.perform(get("/posts/{id}", response.id())
+        this.mockMvc.perform(get("/posts/{id}", postId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andDo(document("post-get",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.STRING).description("상태코드"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("데이터"),
@@ -110,18 +121,47 @@ class PostRestDocsTest {
     }
 
     @Test
+    void 게시물_단건_조회_실패() throws Exception {
+        //given
+        Long postId = 1L;
+
+        given(postService.getOne(postId))
+                .willThrow(new NotFoundException(NOT_FOUND_POST.getMessage()));
+
+        //when & then
+        mockMvc.perform(get("/posts/{id}", postId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andDo(document("post-get-fail",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("status").type(JsonFieldType.STRING).description("상태코드"),
+                                fieldWithPath("data").type(JsonFieldType.STRING).description("데이터")
+                                )
+                ));
+    }
+
+    @Test
     void 페이징_조회_성공() throws Exception {
         //given
-        PostDto.CreatePostRequest request = new PostDto.CreatePostRequest("제목-범철", "내용이야", user.getId());
-        postService.save(request);
-        PostDto.CreatePostRequest request2 = new PostDto.CreatePostRequest("제목-범철2", "내용이야2", user.getId());
-        postService.save(request2);
+        PostDto.CommonResponse response1 = new PostDto.CommonResponse(1L, "제목1", "내용1", 1L, "신범철", LocalDateTime.now());
+        PostDto.CommonResponse response2 = new PostDto.CommonResponse(2L, "제목2", "내용2", 1L, "신범철", LocalDateTime.now());
+
+        PageRequest pageable = PageRequest.of(0, 10);
+        PageImpl<PostDto.CommonResponse> responses = new PageImpl<>(List.of(response1, response2), pageable, 2);
+
+        given(postService.getPage(any(Pageable.class)))
+                .willReturn(responses);
 
         //when & then
         this.mockMvc.perform(get("/posts")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andDo(document("post-getPages",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
                                 subsectionWithPath("data").description("데이터"),
@@ -159,18 +199,21 @@ class PostRestDocsTest {
     @Test
     void 수정_성공() throws Exception {
         //given
-        PostDto.CreatePostRequest request = new PostDto.CreatePostRequest("제목-범철", "내용이야", user.getId());
-        PostDto.CommonResponse response = postService.save(request);
+        Long postId = 1L;
+        PostDto.UpdatePostRequest updatePostRequest = new PostDto.UpdatePostRequest("변경-제목", "변경-내용");
+        PostDto.CommonResponse response = new PostDto.CommonResponse(postId, "변경-제목", "변경-내용", 1L, "신범철", LocalDateTime.now());
 
-        UpdatePostRequest updateRequest = new UpdatePostRequest("변경-범철", "변경내용");
-
+        when(postService.update(eq(postId), any())).thenReturn(response);
 
         //when & then
         this.mockMvc.perform(put("/posts/{id}", response.id())
-                        .content(objectMapper.writeValueAsString(updateRequest))
+                        .content(objectMapper.writeValueAsString(updatePostRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andDo(document("post-update",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
