@@ -28,11 +28,10 @@ public class PostController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public String createPost(@RequestBody @Valid PostCreateRequest postCreateRequest) {
+  public URI createPost(@RequestBody @Valid PostCreateRequest postCreateRequest) {
     PostResponse postResponse = postService.createPost(postCreateRequest);
-    URI location = URI.create("/api/posts/" + postResponse.id());
 
-    return location.toString();
+    return URI.create("/api/posts/" + postResponse.id());
   }
 
   @GetMapping("/{postId}")
