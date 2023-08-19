@@ -48,15 +48,11 @@ public class Post extends BaseEntity {
   private User user;
 
   public void updateTitle(String title) {
-    if (nonNull(title) && !title.isBlank()) {
-      this.title = title;
-    }
+    this.title = title;
   }
 
   public void updateContent(String content) {
-    if (nonNull(content) && !content.isBlank()) {
-      this.content = content;
-    }
+    this.content = content;
   }
 
   public Post(String title, String content, User user) {
