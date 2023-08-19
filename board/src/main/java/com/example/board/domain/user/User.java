@@ -49,6 +49,13 @@ public class User extends BaseEntity {
   @Column(nullable = false, length = HOBBY_MAX)
   private String hobby;
 
+  public User(String name, int age, String hobby) {
+    validateName(name);
+    this.name = name;
+    this.age = age;
+    this.hobby = hobby;
+  }
+
   public void updateName(String name) {
     if (nonNull(name) && !name.isBlank()) {
       validateName(name);
@@ -72,12 +79,5 @@ public class User extends BaseEntity {
     boolean valid = NAME_PATTERN.matcher(name).matches();
 
     return !valid;
-  }
-
-  public User(String name, int age, String hobby) {
-    validateName(name);
-    this.name = name;
-    this.age = age;
-    this.hobby = hobby;
   }
 }

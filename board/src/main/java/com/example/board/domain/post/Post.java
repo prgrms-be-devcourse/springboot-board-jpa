@@ -47,14 +47,6 @@ public class Post extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private User user;
 
-  public void updateTitle(String title) {
-    this.title = title;
-  }
-
-  public void updateContent(String content) {
-    this.content = content;
-  }
-
   public Post(String title, String content, User user) {
     if (nonNull(title) && nonNull(content) && nonNull(user)) {
       this.title = title;
@@ -62,5 +54,13 @@ public class Post extends BaseEntity {
       this.user = user;
       this.setCreatedBy(user.getName());
     }
+  }
+
+  public void updateTitle(String title) {
+    this.title = title;
+  }
+
+  public void updateContent(String content) {
+    this.content = content;
   }
 }
