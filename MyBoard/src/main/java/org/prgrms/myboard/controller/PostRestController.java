@@ -10,10 +10,16 @@ import org.prgrms.myboard.dto.PostCreateRequestDto;
 import org.prgrms.myboard.dto.PostResponseDto;
 import org.prgrms.myboard.dto.PostUpdateRequestDto;
 import org.prgrms.myboard.service.PostService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -23,7 +29,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 public class PostRestController {
-    private static final int BASE_OFFSET = 1;
+
     private final PostService postService;
 
     @PostMapping
@@ -33,8 +39,8 @@ public class PostRestController {
 
     @GetMapping("/cursor")
     public ResponseEntity<CursorResult<PostResponseDto>> getPostsByCursorId(
-        @Min(value = 1, message = "cursorId는 최소 1입니다.") @RequestParam(value = "cursorId") long cursorId,
-        @Min(value = 1, message = "pageSize는 최소 1입니다.") @RequestParam(value = "pageSize") int pageSize) {
+        @RequestParam(value = "cursorId") Long cursorId,
+        @RequestParam(value = "pageSize") Integer pageSize) {
         return ResponseEntity.ok(postService.findPostsByCursorPagination(cursorId, pageSize));
     }
 
@@ -53,19 +59,20 @@ public class PostRestController {
     public ResponseEntity<OffsetResult<PostResponseDto>> getPostsByOffsetPagination(
         @Min(value = 1, message = "page값은 최소 1입니다.") @RequestParam(value = "page") int page,
         @Min(value = 1, message = "pageSize값은 최소 1입니다.") @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        int baseIndex = page - BASE_OFFSET;
         return ResponseEntity.ok(postService.findPostsByOffsetPagination(
-            baseIndex, pageSize));
+            page, pageSize)
+        );
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}/posts")
     public ResponseEntity<List<PostResponseDto>> getPostsByUserId(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(postService.findAllByUserId(userId));
     }
 
-    @DeleteMapping("{postId}")
-    public ResponseEntity deletePostById(@PathVariable("postId") Long postId) {
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePostById(@PathVariable("postId") Long postId) {
         postService.deleteById(postId);
-        return new ResponseEntity(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
+
 }
