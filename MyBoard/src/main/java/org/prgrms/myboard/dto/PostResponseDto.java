@@ -1,5 +1,7 @@
 package org.prgrms.myboard.dto;
 
+import org.prgrms.myboard.domain.Post;
+
 import java.time.LocalDateTime;
 
 public record PostResponseDto(
@@ -10,4 +12,7 @@ public record PostResponseDto(
     LocalDateTime createdAt,
     LocalDateTime updatedAt
 ) {
+    public static PostResponseDto from(Post post) {
+        return new PostResponseDto(post.getId(), post.getTitle(), post.getContent(), post.getCreatedBy(), post.getCreatedAt(), post.getUpdatedAt());
+    }
 }

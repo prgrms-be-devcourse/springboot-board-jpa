@@ -57,10 +57,6 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public PostResponseDto toPostResponseDto() {
-        return new PostResponseDto(id, title, content, createdBy, getCreatedAt(), getUpdatedAt());
-    }
-
     private void validateTitle(String title) {
         if(title.length() >= MAX_TITLE_LENGTH) {
             throw new IllegalArgumentException("제목의 길이는 30글자 이하입니다.");
