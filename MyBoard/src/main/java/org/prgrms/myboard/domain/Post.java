@@ -1,12 +1,18 @@
 package org.prgrms.myboard.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.prgrms.myboard.dto.PostResponseDto;
-
-import java.util.Objects;
 
 @Getter
 @Entity
@@ -17,7 +23,7 @@ public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(nullable = false)
@@ -41,21 +47,14 @@ public class Post extends BaseEntity {
     }
 
     private void allocateUser(User user) {
-        if(Objects.nonNull(this.user)) {
-            user.removePost(this);
-        }
         this.user = user;
         this.createdBy = user.getName();
         user.writePost(this);
     }
 
     public void update(String title, String content) {
-        if(title != null) {
-            this.title = title;
-        }
-        if(content != null) {
-            this.content = content;
-        }
+        this.title = title;
+        this.content = content;
     }
 
     public PostResponseDto toPostResponseDto() {
@@ -67,4 +66,5 @@ public class Post extends BaseEntity {
             throw new IllegalArgumentException("제목의 길이는 30글자 이하입니다.");
         }
     }
+
 }
