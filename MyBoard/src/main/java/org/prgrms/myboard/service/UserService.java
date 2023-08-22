@@ -17,6 +17,7 @@ public class UserService {
     public UserResponseDto createUser(UserCreateRequestDto userCreateRequestDto) {
         User user = userCreateRequestDto.toUser();
         userRepository.save(user);
-        return user.toUserResponseDto();
+        return UserResponseDto.from(user);
     }
+
 }

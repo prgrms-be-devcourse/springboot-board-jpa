@@ -26,6 +26,7 @@ import static org.prgrms.myboard.util.ErrorMessage.WRONG_NAME_MESSAGE;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
+    
     private static final int MAX_NAME_LENGTH = 4;
     private static final int MIN_AGE = 0;
     private static final int MAX_AGE = 30;
@@ -69,10 +70,6 @@ public class User extends BaseEntity {
         }
     }
 
-    public UserResponseDto toUserResponseDto() {
-        return new UserResponseDto(id, name, age, hobby, posts, getCreatedAt(), getUpdatedAt());
-    }
-
     public void writePost(Post post) {
         posts.add(post);
     }
@@ -80,4 +77,5 @@ public class User extends BaseEntity {
     public void removePost(Post post) {
         posts.remove(post);
     }
+
 }
