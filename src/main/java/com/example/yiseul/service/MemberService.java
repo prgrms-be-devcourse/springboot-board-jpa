@@ -6,8 +6,8 @@ import com.example.yiseul.dto.member.MemberCreateRequestDto;
 import com.example.yiseul.dto.member.MemberPageResponseDto;
 import com.example.yiseul.dto.member.MemberResponseDto;
 import com.example.yiseul.dto.member.MemberUpdateRequestDto;
+import com.example.yiseul.global.exception.BaseException;
 import com.example.yiseul.global.exception.ErrorCode;
-import com.example.yiseul.global.exception.MemberException;
 import com.example.yiseul.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class MemberService {
                 .orElseThrow(() -> {
                     log.error("MemberService : Member {} is not found",memberId);
 
-                    return new MemberException(ErrorCode.MEMBER_NOT_FOUND);
+                    return new BaseException(ErrorCode.MEMBER_NOT_FOUND);
                 });
 
         return MemberConverter.convertMemberResponseDto(member);
@@ -61,7 +61,7 @@ public class MemberService {
                 .orElseThrow(() -> {
                     log.error("MemberService : Member {} is not found",memberId);
 
-                    return new MemberException(ErrorCode.MEMBER_NOT_FOUND);
+                    return new BaseException(ErrorCode.MEMBER_NOT_FOUND);
                 });
 
         member.updateInfo(updateRequestDto.name(), updateRequestDto.age(), updateRequestDto.hobby());
@@ -72,7 +72,7 @@ public class MemberService {
         if (!memberRepository.existsById(memberId)) {
             log.error("MemberService : Member {} is not found",memberId);
 
-            throw new MemberException(ErrorCode.MEMBER_NOT_FOUND);
+            throw new BaseException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
         memberRepository.deleteById(memberId);

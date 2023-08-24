@@ -7,7 +7,6 @@ import com.example.yiseul.domain.Post;
 import com.example.yiseul.dto.post.PostCreateRequestDto;
 import com.example.yiseul.dto.post.PostResponseDto;
 import com.example.yiseul.dto.post.PostUpdateRequestDto;
-import com.example.yiseul.global.exception.PostException;
 import com.example.yiseul.repository.MemberRepository;
 import com.example.yiseul.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
