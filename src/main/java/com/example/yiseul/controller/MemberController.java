@@ -1,9 +1,6 @@
 package com.example.yiseul.controller;
 
-import com.example.yiseul.dto.member.MemberCreateRequestDto;
-import com.example.yiseul.dto.member.MemberPageResponseDto;
-import com.example.yiseul.dto.member.MemberResponseDto;
-import com.example.yiseul.dto.member.MemberUpdateRequestDto;
+import com.example.yiseul.dto.member.*;
 import com.example.yiseul.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/members")
 public class MemberController {
-
-    private static final int DEFAULT_SIZE = 2;
 
     private final MemberService memberService;
 
@@ -57,8 +52,8 @@ public class MemberController {
     }
 
     @GetMapping("/cursor") // 커서 방식
-    public List<MemberResponseDto> getMembersByCursor(@RequestParam(defaultValue = "0") Long cursor){
+    public MemberCursorResponseDto getMembersByCursor(@RequestParam(defaultValue = "0") Long cursorId){
 
-        return memberService.findMembersByCursor(cursor, DEFAULT_SIZE);
+        return memberService.findMemberByCursor(cursorId);
     }
 }

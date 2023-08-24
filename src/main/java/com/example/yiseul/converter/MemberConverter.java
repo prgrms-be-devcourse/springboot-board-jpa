@@ -2,13 +2,16 @@ package com.example.yiseul.converter;
 
 import com.example.yiseul.domain.Member;
 import com.example.yiseul.dto.member.MemberCreateRequestDto;
+import com.example.yiseul.dto.member.MemberCursorResponseDto;
 import com.example.yiseul.dto.member.MemberPageResponseDto;
 import com.example.yiseul.dto.member.MemberResponseDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class MemberConverter {
 
     public static Member convertMember(MemberCreateRequestDto createRequestDto) {
@@ -39,5 +42,15 @@ public class MemberConverter {
                 page.getTotalElements(),
                 page.isFirst(),
                 page.isLast());
+    }
+
+    public static MemberCursorResponseDto convertMemberCursorResponseDto(List<Member> members)  {
+        List<MemberResponseDto> memberResponseDtos = members.stream()
+                .map(member -> MemberConverter.convertMemberResponseDto(member))
+                .collect(Collectors.toList());
+
+        Long nextCursorId = memberResponseDtos.get(memberResponseDtos.size()-1).memberId();
+
+        return new MemberCursorResponseDto(memberResponseDtos, nextCursorId);
     }
 }

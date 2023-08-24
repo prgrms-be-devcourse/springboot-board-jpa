@@ -7,6 +7,7 @@ import com.example.yiseul.domain.Post;
 import com.example.yiseul.dto.post.PostCreateRequestDto;
 import com.example.yiseul.dto.post.PostResponseDto;
 import com.example.yiseul.dto.post.PostUpdateRequestDto;
+import com.example.yiseul.global.exception.BaseException;
 import com.example.yiseul.repository.MemberRepository;
 import com.example.yiseul.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,7 +96,7 @@ public class PostServiceTest {
 
         // when & then
         assertThatThrownBy(() -> postService.getPost(id))
-                .isInstanceOf(PostException.class);
+                .isInstanceOf(BaseException.class);
     }
 
     @Test

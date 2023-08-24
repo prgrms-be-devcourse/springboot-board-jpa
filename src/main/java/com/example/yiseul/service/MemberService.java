@@ -2,10 +2,7 @@ package com.example.yiseul.service;
 
 import com.example.yiseul.converter.MemberConverter;
 import com.example.yiseul.domain.Member;
-import com.example.yiseul.dto.member.MemberCreateRequestDto;
-import com.example.yiseul.dto.member.MemberPageResponseDto;
-import com.example.yiseul.dto.member.MemberResponseDto;
-import com.example.yiseul.dto.member.MemberUpdateRequestDto;
+import com.example.yiseul.dto.member.*;
 import com.example.yiseul.global.exception.BaseException;
 import com.example.yiseul.global.exception.ErrorCode;
 import com.example.yiseul.repository.MemberRepository;
@@ -14,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,26 +74,9 @@ public class MemberService {
         memberRepository.deleteById(memberId);
     }
 
-    public List<MemberResponseDto> findMembersByCursor(Long cursor, int size) {
-        Pageable pageable = buildCursorPageable(cursor, size);
-        List<Member> members = getMemberList(cursor, pageable);
+    public MemberCursorResponseDto findMemberByCursor(Long cursorId) {
+        List<Member> members = memberRepository.findTop2ByIdGreaterThanOrderByIdAsc(cursorId);
 
-        return members.stream()
-                .map(member -> MemberConverter.convertMemberResponseDto(member))
-                .collect(Collectors.toList());
-    }
-
-    private Pageable buildCursorPageable(Long cursor, int size) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        //일반 페이징 : 커서페이징 : 수정 필요 다시해보기!!
-        return cursor.equals(0L) ? PageRequest.of(0, size, sort) : CursorPageRequest.of(cursor, size, sort);
-    }
-
-    private List<Member> getMemberList(Long id, Pageable page) {
-
-        return id.equals(0L)
-                ? memberRepository.findByOrderByIdAsc(page)  // 기준이 없는 첫 조회라면 일반 조회
-                : memberRepository.findByIdGreaterThanOrderByIdAsc(id); // 이후의 조회라면 커서 조회 (리미트 조건만 추가하면 될듯?)
-        //https://devfunny.tistory.com/571
+        return MemberConverter.convertMemberCursorResponseDto(members);
     }
 }

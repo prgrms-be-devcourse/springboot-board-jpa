@@ -4,6 +4,7 @@ import com.example.yiseul.domain.Member;
 import com.example.yiseul.dto.member.MemberCreateRequestDto;
 import com.example.yiseul.dto.member.MemberResponseDto;
 import com.example.yiseul.dto.member.MemberUpdateRequestDto;
+import com.example.yiseul.global.exception.BaseException;
 import com.example.yiseul.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -83,7 +84,7 @@ class MemberServiceTest {
 
         // when & then
         assertThatThrownBy(() -> memberService.getMember(id))
-                .isInstanceOf(MemberException.class);
+                .isInstanceOf(BaseException.class);
     }
 
     @Test
