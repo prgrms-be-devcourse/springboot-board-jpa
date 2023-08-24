@@ -12,9 +12,16 @@ import java.util.stream.Collectors;
 
 public class PostConverter {
 
-    public static Post convertPost(Member member, PostCreateRequestDto createRequestDto){
+    public static Post convertPost(
+            Member member,
+            PostCreateRequestDto createRequestDto
+    ){
 
-        return new Post(member, createRequestDto.title(), createRequestDto.content());
+        return new Post(
+                member,
+                createRequestDto.title(),
+                createRequestDto.content()
+        );
     }
 
     public static PostResponseDto convertPostResponseDto(Post post){

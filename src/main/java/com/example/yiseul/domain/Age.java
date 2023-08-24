@@ -29,11 +29,4 @@ public class Age {
             throw new IllegalArgumentException("나이는 0세 이상이어야 합니다.");
         }
     }
-
-    public void changeAge(Integer updateAge) {
-        if (updateAge != null) {
-            validationPositiveAge(updateAge);
-            this.age = updateAge;
-        }
-    }
 }

@@ -34,22 +34,10 @@ public class Member extends BaseEntity {
         this.hobby = hobby;
     }
 
-    public void updateInfo(String updateName, Integer updateAge, String updateHobby) {
-        changeName(updateName);
-        this.age.changeAge(updateAge);
-        changeHobby(updateHobby);
-    }
-
-    private void changeName(String updateName) {
-        if (updateName != null) {
-            this.name =  updateName;
-        }
-    }
-
-    private void changeHobby(String updateHobby) {
-        if (updateHobby != null) {
-            this.hobby = updateHobby;
-        }
+    public void updateInfo(String name, Integer age, String hobby) {
+        this.name = name;
+        this.age = Age.from(age);
+        this.hobby = hobby;
     }
 
     public int getAge() {

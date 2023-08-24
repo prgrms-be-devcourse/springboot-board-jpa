@@ -30,20 +30,9 @@ public class Post extends BaseEntity {
         setCreatedBy(member.getName());
     }
 
-    public void updatePost(String updateTitle, String updateContent) {
-        changeTitle(updateTitle);
-        changeContent(updateContent);
+    public void updatePost(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
-    private void changeTitle(String updateTitle) {
-        if (updateTitle != null) {
-            this.title = updateTitle;
-        }
-    }
-
-    private void changeContent(String updateContent) {
-        if (updateContent != null) {
-            this.content = updateContent;
-        }
-    }
 }
