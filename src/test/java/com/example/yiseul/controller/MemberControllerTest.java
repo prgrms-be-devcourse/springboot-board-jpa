@@ -1,16 +1,14 @@
 package com.example.yiseul.controller;
 
-import com.example.yiseul.dto.member.MemberCreateRequestDto;
-import com.example.yiseul.dto.member.MemberPageResponseDto;
-import com.example.yiseul.dto.member.MemberResponseDto;
-import com.example.yiseul.dto.member.MemberUpdateRequestDto;
+import com.example.yiseul.dto.member.*;
 import com.example.yiseul.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.restdocs.RestDocsAutoConfiguration;
@@ -26,10 +24,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -54,6 +52,7 @@ class MemberControllerTest {
     private MemberResponseDto responseDto1;
     private MemberResponseDto responseDto2;
     private List<MemberResponseDto> responseDtos;
+    private MemberCursorResponseDto cursorResponseDto;
 
     @BeforeEach
     void setUp(){
@@ -193,29 +192,31 @@ class MemberControllerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"null","1"})
+    @NullSource
+    @ValueSource(strings = {"1"})
     @DisplayName("커서 방식 조회에 성공한다.")
     void getMembersCursor(String cursorId) throws Exception{
         //given
-        given(memberService.findMembersByCursor(anyLong(), anyInt())).willReturn(responseDtos);
+        given(memberService.findMemberByCursor(anyLong())).willReturn(new MemberCursorResponseDto(responseDtos, 1L));
 
-        //when,then 이슬확인
+        //when & then
         mvc.perform(get("/api/members/cursor")
                 .param("cursorId", cursorId != null ? cursorId : "0"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(responseDtos)))
+                .andExpect(content().string(objectMapper.writeValueAsString(new MemberCursorResponseDto(responseDtos, 1L))))
 
                 .andDo(document("member-getMembersByCursor",
                         responseFields(
-                                fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
-                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("name"),
-                                fieldWithPath("[].age").type(JsonFieldType.NUMBER).description("age"),
-                                fieldWithPath("[].hobby").type(JsonFieldType.STRING).description("hobby"),
-                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("생성시각"),
-                                fieldWithPath("[].createdBy").type(JsonFieldType.STRING).description("생성자")
+                                fieldWithPath("memberResponseDto.[].memberId").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("memberResponseDto.[].name").type(JsonFieldType.STRING).description("name"),
+                                fieldWithPath("memberResponseDto.[].age").type(JsonFieldType.NUMBER).description("age"),
+                                fieldWithPath("memberResponseDto.[].hobby").type(JsonFieldType.STRING).description("hobby"),
+                                fieldWithPath("memberResponseDto.[].createdAt").type(JsonFieldType.STRING).description("createdAt"),
+                                fieldWithPath("memberResponseDto.[].createdBy").type(JsonFieldType.STRING).description("createdBy"),
+
+                                fieldWithPath("cursorId").type(JsonFieldType.NUMBER).description("cursorId")
                         )
                 ));
-
     }
 
 }
