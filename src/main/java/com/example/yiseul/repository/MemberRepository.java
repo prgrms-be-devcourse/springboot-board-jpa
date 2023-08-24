@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+// 공유하기 simplejparepository
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findByOrderByIdAsc(Pageable pageable);
 
-    List<Member> findByIdGreaterThanOrderByIdAsc(Long id, Pageable pageable);
+    List<Member> findByIdGreaterThanOrderByIdAsc(Long id);
 
 }

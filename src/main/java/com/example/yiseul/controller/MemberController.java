@@ -25,7 +25,6 @@ public class MemberController {
 
     @PostMapping
     public MemberResponseDto signUp(@RequestBody @Valid MemberCreateRequestDto createRequestDto){
-        log.info(createRequestDto.name());
 
         return memberService.createMember(createRequestDto);
     }
@@ -43,8 +42,10 @@ public class MemberController {
     }
 
     @PatchMapping("/{memberId}")
-    public void updateMember(@PathVariable Long memberId,
-                             @RequestBody @Valid MemberUpdateRequestDto updateRequestDto) {
+    public void updateMember(
+            @PathVariable Long memberId,
+            @RequestBody @Valid MemberUpdateRequestDto updateRequestDto
+    ) {
 
         memberService.updateMember(memberId, updateRequestDto);
     }
@@ -57,6 +58,7 @@ public class MemberController {
 
     @GetMapping("/cursor") // 커서 방식
     public List<MemberResponseDto> getMembersByCursor(@RequestParam(defaultValue = "0") Long cursor){
+
         return memberService.findMembersByCursor(cursor, DEFAULT_SIZE);
     }
 }

@@ -31,7 +31,8 @@ public class MemberConverter {
                 .map(member -> convertMemberResponseDto(member))
                 .collect(Collectors.toList());
 
-        return new MemberPageResponseDto(memberResponseDtos,
+        return new MemberPageResponseDto(
+                memberResponseDtos,
                 page.getNumber(),
                 page.getSize(),
                 page.getTotalPages(),

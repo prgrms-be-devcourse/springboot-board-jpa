@@ -40,7 +40,8 @@ public class PostController {
     @PatchMapping("/{postId}")
     public void updatePost(
             @PathVariable Long postId,
-            @RequestBody @Valid PostUpdateRequestDto updateRequestDto) {
+            @RequestBody @Valid PostUpdateRequestDto updateRequestDto
+    ) {
 
         postService.updatePost(postId, updateRequestDto);
 

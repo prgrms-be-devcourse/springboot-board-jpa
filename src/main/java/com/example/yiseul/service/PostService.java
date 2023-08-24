@@ -19,7 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service @Slf4j
+@Service
+@Slf4j
 @RequiredArgsConstructor
 public class PostService {
 
@@ -49,6 +50,7 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> {
                     log.error("PostService : Post {} is not found", postId);
+
                     return new PostException(ErrorCode.POST_NOT_FOUND);
                 });
 
@@ -60,6 +62,7 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> {
                             log.error("PostService : Post {} is not found", postId);
+
                             return new PostException(ErrorCode.POST_NOT_FOUND);
                 });
 
@@ -69,6 +72,7 @@ public class PostService {
     @Transactional
     public void deletePost(Long postId) {
         if (!postRepository.existsById(postId)) {
+
             throw new PostException(ErrorCode.POST_NOT_FOUND);
         }
 

@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-
+// data jpa test 를 사용해서 서비스-레포 테스트 시도해보기 : 수정
 class MemberServiceSpringBootTest {
 
     @Autowired

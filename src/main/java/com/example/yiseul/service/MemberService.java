@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -36,6 +37,7 @@ public class MemberService {
         return MemberConverter.convertMemberResponseDto(savedMember);
     }
 
+
     public MemberPageResponseDto getMembers(Pageable pageable) {
         Page<Member> page = memberRepository.findAll(pageable);
 
@@ -46,6 +48,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> {
                     log.error("MemberService : Member {} is not found",memberId);
+
                     return new MemberException(ErrorCode.MEMBER_NOT_FOUND);
                 });
 
@@ -57,6 +60,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> {
                     log.error("MemberService : Member {} is not found",memberId);
+
                     return new MemberException(ErrorCode.MEMBER_NOT_FOUND);
                 });
 
@@ -67,6 +71,7 @@ public class MemberService {
     public void deleteMember(Long memberId) {
         if (!memberRepository.existsById(memberId)) {
             log.error("MemberService : Member {} is not found",memberId);
+
             throw new MemberException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
@@ -84,7 +89,7 @@ public class MemberService {
 
     private Pageable buildCursorPageable(Long cursor, int size) {
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        //일반 페이징 : 커서페이징
+        //일반 페이징 : 커서페이징 : 수정 필요 다시해보기!!
         return cursor.equals(0L) ? PageRequest.of(0, size, sort) : CursorPageRequest.of(cursor, size, sort);
     }
 
@@ -92,6 +97,7 @@ public class MemberService {
 
         return id.equals(0L)
                 ? memberRepository.findByOrderByIdAsc(page)  // 기준이 없는 첫 조회라면 일반 조회
-                : memberRepository.findByIdGreaterThanOrderByIdAsc(id, page); // 이후의 조회라면 커서 조회
+                : memberRepository.findByIdGreaterThanOrderByIdAsc(id); // 이후의 조회라면 커서 조회 (리미트 조건만 추가하면 될듯?)
+        //https://devfunny.tistory.com/571
     }
 }

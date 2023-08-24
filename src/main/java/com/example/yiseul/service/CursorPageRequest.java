@@ -3,7 +3,7 @@ package com.example.yiseul.service;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-public class CursorPageRequest extends PageRequest {
+public class CursorPageRequest extends PageRequest { //대수정
 
     private final long cursor;
 

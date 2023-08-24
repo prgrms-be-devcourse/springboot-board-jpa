@@ -19,7 +19,13 @@ public class PostConverter {
 
     public static PostResponseDto convertPostResponseDto(Post post){
 
-        return new PostResponseDto(post.getId(), post.getTitle(), post.getContent(), post.getCreatedAt(), post.getCreatedBy());
+        return new PostResponseDto(
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                post.getCreatedAt(),
+                post.getCreatedBy()
+        );
     }
 
     public static PostPageResponseDto convertPostPageResponseDto(Page<Post> page) {
@@ -27,7 +33,8 @@ public class PostConverter {
                 .map(post -> convertPostResponseDto(post))
                 .collect(Collectors.toList());
 
-        return new PostPageResponseDto(postResponseDtos,
+        return new PostPageResponseDto(
+                postResponseDtos,
                 page.getNumber(),
                 page.getSize(),
                 page.getTotalPages(),
