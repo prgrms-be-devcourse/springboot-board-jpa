@@ -44,12 +44,10 @@ public class MemberConverter {
                 page.isLast());
     }
 
-    public static MemberCursorResponseDto convertMemberCursorResponseDto(List<Member> members)  {
+    public static MemberCursorResponseDto convertMemberCursorResponseDto(List<Member> members, Long nextCursorId) {
         List<MemberResponseDto> memberResponseDtos = members.stream()
                 .map(member -> MemberConverter.convertMemberResponseDto(member))
                 .collect(Collectors.toList());
-
-        Long nextCursorId = memberResponseDtos.get(memberResponseDtos.size()-1).memberId();
 
         return new MemberCursorResponseDto(memberResponseDtos, nextCursorId);
     }

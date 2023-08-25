@@ -76,7 +76,12 @@ public class MemberService {
 
     public MemberCursorResponseDto findMemberByCursor(Long cursorId) {
         List<Member> members = memberRepository.findTop2ByIdGreaterThanOrderByIdAsc(cursorId);
+        if(members.size() == 0) {
 
-        return MemberConverter.convertMemberCursorResponseDto(members);
+            return MemberConverter.convertMemberCursorResponseDto(members, 0L);
+        }
+        Long nextCursorId = members.get(members.size() - 1).getId();
+
+        return MemberConverter.convertMemberCursorResponseDto(members,nextCursorId);
     }
 }
