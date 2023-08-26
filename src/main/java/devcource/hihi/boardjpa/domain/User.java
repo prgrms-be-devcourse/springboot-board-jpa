@@ -1,6 +1,6 @@
 package devcource.hihi.boardjpa.domain;
 
-import devcource.hihi.boardjpa.dto.user.CreateUserDto;
+import devcource.hihi.boardjpa.dto.user.CreateRequestDto;
 import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -56,8 +56,8 @@ public class User extends BaseEntity{
     public static ResponseUserDto toDtoForResponse(User user) {
         return new ResponseUserDto(user.getId(), user.getName(), user.getAge(), user.getHobby());
     }
-    public static CreateUserDto toDtoForCreate(User user) {
-        return new CreateUserDto(user.getName(), user.getAge(), user.getHobby());
+    public static CreateRequestDto toDtoForCreate(User user) {
+        return new CreateRequestDto(user.getName(), user.getAge(), user.getHobby());
     }
 
     public void addPost(Post post) {

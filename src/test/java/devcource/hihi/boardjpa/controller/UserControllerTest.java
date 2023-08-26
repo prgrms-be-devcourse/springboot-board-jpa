@@ -1,8 +1,7 @@
 package devcource.hihi.boardjpa.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import devcource.hihi.boardjpa.dto.user.CreateUserDto;
-import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
+import devcource.hihi.boardjpa.dto.user.CreateRequestDto;
 import devcource.hihi.boardjpa.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +38,7 @@ class UserControllerTest {
     @BeforeEach
     public void save_test() throws Exception {
         //given
-        CreateUserDto userDto = CreateUserDto.builder()
+        CreateRequestDto userDto = CreateRequestDto.builder()
                         .name("신예진")
                                 .age(25)
                                         .hobby("수영")

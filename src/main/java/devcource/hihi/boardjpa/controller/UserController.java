@@ -1,9 +1,9 @@
 package devcource.hihi.boardjpa.controller;
 
 import devcource.hihi.boardjpa.domain.User;
-import devcource.hihi.boardjpa.dto.user.CreateUserDto;
+import devcource.hihi.boardjpa.dto.user.CreateRequestDto;
 import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
-import devcource.hihi.boardjpa.dto.user.UpdateUserDto;
+import devcource.hihi.boardjpa.dto.user.UpdateRequestDto;
 import devcource.hihi.boardjpa.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseUserDto> createUser(@Valid @RequestBody CreateUserDto userDto) {
+    public ResponseEntity<ResponseUserDto> createUser(@Valid @RequestBody CreateRequestDto userDto) {
         return ResponseEntity.ok(userService.createUser(userDto));
     }
 
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<ResponseUserDto> updateUser(@PathVariable Long id, @RequestBody UpdateUserDto userDto) {
+    public ResponseEntity<ResponseUserDto> updateUser(@PathVariable Long id, @RequestBody UpdateRequestDto userDto) {
         return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 

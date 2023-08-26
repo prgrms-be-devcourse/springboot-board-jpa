@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public record CreateUserDto(@NotNull String name, @NotNull Integer age, String hobby) {
+public record CreateRequestDto(@NotNull String name, @NotNull Integer age, String hobby) {
 
     public User toEntity() {
         return User.builder()
