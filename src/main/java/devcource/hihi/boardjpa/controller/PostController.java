@@ -31,17 +31,17 @@ public class PostController {
         return ResponseEntity.ok(postService.createPost(postDto));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{postIid}")
     public ResponseEntity<ResponsePostDto> findByPostId(@PathVariable Long id) {
         return ResponseEntity.ok(postService.findPost(id));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{postIid}")
     public ResponseEntity<ResponsePostDto> updatePost(@PathVariable Long id, UpdateRequestDto postDto) {
         return ResponseEntity.ok(postService.updatePost(id, postDto));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{postIid}")
     public void deletePost(@PathVariable Long id) {
         postService.deletePost(id);
     }

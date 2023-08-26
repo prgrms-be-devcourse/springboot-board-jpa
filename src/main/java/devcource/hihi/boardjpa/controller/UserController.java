@@ -29,17 +29,17 @@ public class UserController {
         return ResponseEntity.ok(userService.createUser(userDto));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{userId}")
     public ResponseEntity<ResponseUserDto> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUser(id));
     }
 
-    @PutMapping ("/{id}")
+    @PutMapping ("/{userId}")
     public ResponseEntity<ResponseUserDto> updateUser(@PathVariable Long id, @RequestBody UpdateRequestDto userDto) {
         return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
