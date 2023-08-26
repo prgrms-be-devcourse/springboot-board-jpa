@@ -2,7 +2,7 @@ package devcource.hihi.boardjpa.service;
 
 import devcource.hihi.boardjpa.domain.Post;
 import devcource.hihi.boardjpa.domain.User;
-import devcource.hihi.boardjpa.dto.post.CreatePostDto;
+import devcource.hihi.boardjpa.dto.post.CreateRequestDto;
 import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -25,17 +25,13 @@ public class PostServiceBasicTest {
         //given
         User user = new User("테스트용 고객",45,"숨쉬기");
 
-        Post post = Post.builder()
-                .title("테스트용")
-                .content("테스트 컨텐츠")
-                .user
-                .build();
+        Post post = new Post("테스트용","테스트 컨텐츠");
 
         post.allocateUser(user);
         log.info("{}", post.getUser().getId());
-        CreatePostDto postDto = Post.toCreateDto(post);
+        CreateRequestDto postDto = Post.toCreateDto(post);
         //when
-        ResponsePostDto dto = postService.createDto(postDto);
+        ResponsePostDto dto = postService.createPost(postDto);
 
         //then
         assertEquals(dto.content(),post.getContent());
