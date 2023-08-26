@@ -1,12 +1,9 @@
 package devcource.hihi.boardjpa.domain;
 
-import devcource.hihi.boardjpa.dto.post.CreatePostDto;
+import devcource.hihi.boardjpa.dto.post.CreateRequestDto;
 import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -15,10 +12,9 @@ public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
     private Long id;
 
-    @NotNull
+    @Column(name = "title",nullable = false,updatable = true)
     private String title;
 
     private String content;
@@ -48,19 +44,14 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public void allocateUser(User user) {
-        if(Objects.nonNull(user)) {
-            this.user.removePost(this);
-        }
-        this.user = user;
-        this.user.addPost(this);
-    }
 
     public static ResponsePostDto toResponseDto(Post post) {
         return new ResponsePostDto(post.getId(),post.getTitle(), post.getContent(), post.getUser(),post.getCreated_at(),post.getUpdated_at());
     }
-    public static CreatePostDto toCreateDto(Post post) {
-        return new CreatePostDto(post.getTitle(), post.getContent(),  post.getUser());
+    public static CreateRequestDto toCreateDto(Post post) {
+        return new CreateRequestDto(post.getTitle(), post.getContent(),  post.getUser());
     }
 
+    public void allocateUser(User user) {
+    }
 }

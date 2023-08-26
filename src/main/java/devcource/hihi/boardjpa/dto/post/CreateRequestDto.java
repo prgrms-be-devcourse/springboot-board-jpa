@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
-public record CreatePostDto(@NotNull String title, String content, @NotNull User user) {
+public record CreateRequestDto(@NotNull String title, String content, @NotNull User user) {
 
     public Post toEntity() {
         return new Post(title, content,user);

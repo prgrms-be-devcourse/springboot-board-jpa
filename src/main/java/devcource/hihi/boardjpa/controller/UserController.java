@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserRestController {
+public class UserController {
 
     private final UserService userService;
 
@@ -30,12 +30,12 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseUserDto> findByUserId(@PathVariable Long id) {
+    public ResponseEntity<ResponseUserDto> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUser(id));
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<ResponseUserDto> updateUser(@PathVariable Long id, UpdateUserDto userDto) {
+    public ResponseEntity<ResponseUserDto> updateUser(@PathVariable Long id, @RequestBody UpdateUserDto userDto) {
         return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 

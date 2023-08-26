@@ -28,6 +28,7 @@ public class PostServiceBasicTest {
         Post post = Post.builder()
                 .title("테스트용")
                 .content("테스트 컨텐츠")
+                .user
                 .build();
 
         post.allocateUser(user);

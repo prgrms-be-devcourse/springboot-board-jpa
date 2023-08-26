@@ -20,7 +20,7 @@ public class UserService {
     }
 
 
-    public Page<User> getUsersWithPagination(int pageNumber, int pageSize) {
+    public Page<User> getUsers(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return userRepository.findAll(pageable);
     }

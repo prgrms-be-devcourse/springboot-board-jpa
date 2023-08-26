@@ -1,7 +1,6 @@
 package devcource.hihi.boardjpa.service;
 
 import devcource.hihi.boardjpa.domain.User;
-import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
 import devcource.hihi.boardjpa.repository.UserRepository;
 import devcource.hihi.boardjpa.test.UserRepositoryTestHelper;
 import org.junit.jupiter.api.BeforeEach;
