@@ -50,7 +50,7 @@ class UserServicePagenationTest {
         when(userRepository.findAll(pageable)).thenReturn(samplePage);
 
         // when
-        Page<User> resultPage = userService.getUsersWithPagination(0, 5);
+        Page<User> resultPage = userService.getUsers(0, 5);
 
         // then
         assertEquals(samplePage, resultPage);
