@@ -19,6 +19,7 @@ public class PostController {
     public PostController(PostService postService) {
         this.postService = postService;
     }
+
     @GetMapping
     public SearchResponseDto<Post> getPostsByCursor(@RequestParam(value = "cursor", required = false) Long cursor,
                                                     @RequestParam(value = "limit", defaultValue = "10") int limit) {
