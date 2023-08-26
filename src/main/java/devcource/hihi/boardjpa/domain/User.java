@@ -3,7 +3,6 @@ package devcource.hihi.boardjpa.domain;
 import devcource.hihi.boardjpa.dto.user.CreateRequestDto;
 import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,6 +18,7 @@ import java.util.List;
 public class User extends BaseEntity{
 
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -26,7 +26,6 @@ public class User extends BaseEntity{
     private String name;
 
     @NotNull
-    @Min(value = 1)
     private Integer age;
 
     private String hobby;

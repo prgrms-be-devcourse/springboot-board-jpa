@@ -11,6 +11,7 @@ import lombok.*;
 public class Post extends BaseEntity {
 
     @Id
+    @Column(name="post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -53,5 +54,6 @@ public class Post extends BaseEntity {
     }
 
     public void allocateUser(User user) {
+        this.user = user;
     }
 }
