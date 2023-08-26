@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
 @Builder
 public record CreateRequestDto(@NotNull String name, @NotNull Integer age, String hobby) {
 
