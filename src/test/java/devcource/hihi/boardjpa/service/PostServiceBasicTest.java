@@ -2,7 +2,7 @@ package devcource.hihi.boardjpa.service;
 
 import devcource.hihi.boardjpa.domain.Post;
 import devcource.hihi.boardjpa.domain.User;
-import devcource.hihi.boardjpa.dto.post.CreateRequestDto;
+제import devcource.hihi.boardjpa.dto.post.CreateRequestDto;
 import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
