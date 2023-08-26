@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<Page<User>> getUsers(@RequestParam int pageNumber, @RequestParam int pageSize) {
-        return ResponseEntity.ok(userService.getUsersWithPagination(pageNumber, pageSize));
+        return ResponseEntity.ok(userService.getUsers(pageNumber, pageSize));
     }
 
     @PostMapping
