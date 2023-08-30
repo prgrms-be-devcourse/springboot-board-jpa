@@ -1,0 +1,51 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 게시판 API
+
+=== 게시글 생성
+
+/api/posts
+
+.Request
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+=== 게시글 단건 조회
+
+/api/posts/{postId}
+
+.Request
+include::{snippets}/post-get/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get/http-response.adoc[]
+include::{snippets}/post-get/response-fields.adoc[]
+
+=== 게시글 전체 조회
+
+/api/posts
+
+.Request
+include::{snippets}/post-get-page/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get-page/http-response.adoc[]
+include::{snippets}/post-get-page/response-fields.adoc[]
+
+=== 게시글 수정
+
+/api/posts/{postId}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
