@@ -15,14 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 
 @RequiredArgsConstructor
 public class MemberService {
-
     private final MemberRepository memberRepository;
 
     @Transactional
@@ -74,14 +72,30 @@ public class MemberService {
         memberRepository.deleteById(memberId);
     }
 
-    public MemberCursorResponseDto findMemberByCursor(Long cursorId) {
-        List<Member> members = memberRepository.findTop2ByIdGreaterThanOrderByIdAsc(cursorId);
+    public MemberCursorResponseDto findMemberByCursor(Long cursorId, int size) {
+        List<Member> members = getMembers(cursorId, size);
+
         if(members.size() == 0) {
 
-            return MemberConverter.convertMemberCursorResponseDto(members, 0L);
+            return MemberConverter.convertMemberCursorResponseDto(members,null);
         }
+
         Long nextCursorId = members.get(members.size() - 1).getId();
 
         return MemberConverter.convertMemberCursorResponseDto(members,nextCursorId);
+    }
+
+    private List<Member> getMembers(Long cursorId, int size){
+        if (cursorId == null) {
+
+            return memberRepository.findFirstPage(size);
+        }
+
+        if (cursorId < 0) {
+
+            throw new BaseException(ErrorCode.CURSOR_ID_NEGATIVE);
+        }
+
+        return memberRepository.findByIdGreaterThanOrderByIdAsc(cursorId,size);
     }
 }

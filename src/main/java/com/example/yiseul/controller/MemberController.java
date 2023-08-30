@@ -52,8 +52,11 @@ public class MemberController {
     }
 
     @GetMapping("/cursor") // 커서 방식
-    public MemberCursorResponseDto getMembersByCursor(@RequestParam(defaultValue = "0") Long cursorId){
+    public MemberCursorResponseDto getMembersByCursor(
+            @RequestParam(required = false) Long cursorId,
+            @RequestParam int size
+            ){
 
-        return memberService.findMemberByCursor(cursorId);
+        return memberService.findMemberByCursor(cursorId, size);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.yiseul.domain;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +12,6 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor
 public class Member extends BaseEntity {
-
     @Id
     @GeneratedValue
     private Long id;
