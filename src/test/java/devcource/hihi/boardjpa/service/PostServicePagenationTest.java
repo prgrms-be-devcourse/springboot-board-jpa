@@ -1,62 +1,55 @@
 package devcource.hihi.boardjpa.service;
 
 import devcource.hihi.boardjpa.domain.Post;
-import devcource.hihi.boardjpa.dto.post.SearchResponseDto;
-import devcource.hihi.boardjpa.repository.PostRepository;
+import devcource.hihi.boardjpa.domain.User;
+import devcource.hihi.boardjpa.dto.CursorResult;
 import devcource.hihi.boardjpa.test.PostRepositoryTestHelper;
+import devcource.hihi.boardjpa.test.UserRepositoryTestHelper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.mockito.Mockito.when;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class PostServicePagenationTest {
+@ExtendWith(SpringExtension.class)
+class PostServicePagenationTest {
 
-    private final int postSize = 10;
-    private final Long cursor = 10L;
+    private static final Pageable page = PageRequest.of(0, 10);
 
-    @Mock
-    private PostRepository postRepository;
-
-    @InjectMocks
+    @Autowired
     private PostService postService;
 
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+    @Test
+    void testGetPostsWithPagenation() {
+        CursorResult<Post> firstPage = this.postService.get(null, page);
+        Long cursorId = firstPage.getValues().get(9).getId();
+        assertThat(firstPage.getValues().size()).isEqualTo(10);
+        assertTrue(firstPage.getHasNext());
+
+        CursorResult<Post> secondPage = this.postService.get(cursorId, page);
+        Long nextCursorId = secondPage.getValues().get(9).getId();
+        assertThat(secondPage.getValues().size()).isEqualTo(10);
+        assertTrue(secondPage.getHasNext());
+
+        CursorResult<Post> thirdPage = this.postService.get(nextCursorId, page);
+        assertFalse(thirdPage.getHasNext());
     }
 
     @Test
-    @DisplayName("커서 방식으로 페이지를 조회한다.")
-    public void testGetPostsByCursor() {
-
-        List<Post> samplePosts = PostRepositoryTestHelper.createSamplePosts(postSize);
-
-        // Repository 메소드 호출 시 테스트용 데이터 반환하도록 설정
-        when(postRepository.findByCursor(null, postSize + 1)).thenReturn(samplePosts.subList(0, 11));
-        when(postRepository.findByCursor(cursor, postSize + 1)).thenReturn(samplePosts.subList(10, 15));
-
-        // 첫 페이지 조회 테스트
-        SearchResponseDto<Post> firstPage = postService.getPostsByCursor(null, 10);
-        assertThat(firstPage.getData()).hasSize(10);
-        assertThat(firstPage.getPrevCursor()).isNull();
-        assertThat(firstPage.getNextCursor()).isEqualTo("10");
-
-        // 두 번째 페이지 조회 테스트
-        SearchResponseDto<Post> secondPage = postService.getPostsByCursor(10L, 10);
-        assertThat(secondPage.getData()).hasSize(5);
-        assertThat(secondPage.getPrevCursor()).isEqualTo("10");
-        assertThat(secondPage.getNextCursor()).isNull();
+    void testGetPosts() {
+        final CursorResult<Post> result = this.postService.get(0L, page);
+        assertThat(result.getValues()).isEmpty();
+        assertFalse(result.getHasNext());
     }
+
 }

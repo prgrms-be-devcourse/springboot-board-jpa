@@ -2,8 +2,9 @@ package devcource.hihi.boardjpa.service;
 
 import devcource.hihi.boardjpa.domain.Post;
 import devcource.hihi.boardjpa.domain.User;
-제import devcource.hihi.boardjpa.dto.post.CreateRequestDto;
+import devcource.hihi.boardjpa.dto.post.CreateRequestDto;
 import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
+import devcource.hihi.boardjpa.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,19 +20,24 @@ public class PostServiceBasicTest {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Test
     @DisplayName("post를 저장한다.")
     public void saveTest(){
         //given
         User user = new User("테스트용 고객",45,"숨쉬기");
+        userRepository.save(user);
 
         Post post = new Post("테스트용","테스트 컨텐츠");
 
         post.allocateUser(user);
         log.info("{}", post.getUser().getId());
         CreateRequestDto postDto = Post.toCreateDto(post);
+
         //when
-        ResponsePostDto dto = postService.createPost(postDto);
+        ResponsePostDto dto = postService.createPost(user.getId(),postDto);
 
         //then
         assertEquals(dto.content(),post.getContent());
