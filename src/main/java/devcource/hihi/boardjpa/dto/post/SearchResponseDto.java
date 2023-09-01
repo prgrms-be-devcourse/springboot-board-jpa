@@ -9,7 +9,6 @@ import java.util.List;
 @Getter
 public class SearchResponseDto<T> {
     private List<T> data;
-    private Long prevCursor;
-    private Long nextCursor;
+    private Long cursor;
 }
 

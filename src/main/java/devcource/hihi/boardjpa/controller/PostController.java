@@ -1,12 +1,11 @@
 package devcource.hihi.boardjpa.controller;
 
 import devcource.hihi.boardjpa.domain.Post;
-import devcource.hihi.boardjpa.dto.post.CreateRequestDto;
-import devcource.hihi.boardjpa.dto.post.SearchResponseDto;
-import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
-import devcource.hihi.boardjpa.dto.post.UpdateRequestDto;
+import devcource.hihi.boardjpa.dto.CursorResult;
+import devcource.hihi.boardjpa.dto.post.*;
 import devcource.hihi.boardjpa.service.PostService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,19 +15,21 @@ public class PostController {
 
     private final PostService postService;
 
+    private static final int DEFAULT_SIZE = 10;
     public PostController(PostService postService) {
         this.postService = postService;
     }
 
     @GetMapping
-    public SearchResponseDto<Post> getPostsByCursor(@RequestParam(value = "cursor", required = false) Long cursor,
-                                                    @RequestParam(value = "limit", defaultValue = "10") int limit) {
-        return postService.getPostsByCursor(cursor, limit);
+    public CursorResult<Post> getPostsByCursor(@RequestParam(value = "cursor", required = false) Long cursorId,
+                                               @RequestParam(value = "size") Integer size) {
+        if (size == null) size = DEFAULT_SIZE;
+        return this.postService.get(cursorId, PageRequest.of(0, size));
     }
 
-    @PostMapping
-    public ResponseEntity<ResponsePostDto> createPost(@Valid @RequestBody CreateRequestDto postDto) {
-        return ResponseEntity.ok(postService.createPost(postDto));
+    @PostMapping("/{userId}")
+    public ResponseEntity<ResponsePostDto> createPost(@PathVariable Long userId,@Valid @RequestBody CreateRequestDto postDto) {
+        return ResponseEntity.ok(postService.createPost(userId, postDto));
     }
 
     @GetMapping("/{postIid}")

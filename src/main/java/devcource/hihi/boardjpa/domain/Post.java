@@ -30,13 +30,6 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    @Builder
-    public Post(String title, String content,User user) {
-        this.title = title;
-        this.content = content;
-        this.user = user;
-    }
-
     public void changeTitle(String title) {
         this.title = title;
     }
@@ -47,10 +40,10 @@ public class Post extends BaseEntity {
 
 
     public static ResponsePostDto toResponseDto(Post post) {
-        return new ResponsePostDto(post.getId(),post.getTitle(), post.getContent(), post.getUser(),post.getCreated_at(),post.getUpdated_at());
+        return new ResponsePostDto(post.getId(),post.getTitle(), post.getContent(), post.getUser().getId(),post.getCreated_at(),post.getUpdated_at());
     }
     public static CreateRequestDto toCreateDto(Post post) {
-        return new CreateRequestDto(post.getTitle(), post.getContent(),  post.getUser());
+        return new CreateRequestDto(post.getTitle(), post.getContent());
     }
 
     public void allocateUser(User user) {
