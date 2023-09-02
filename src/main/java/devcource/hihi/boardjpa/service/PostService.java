@@ -5,7 +5,6 @@ import devcource.hihi.boardjpa.domain.User;
 import devcource.hihi.boardjpa.dto.CursorResult;
 import devcource.hihi.boardjpa.dto.post.CreateRequestDto;
 import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
-import devcource.hihi.boardjpa.dto.post.SearchResponseDto;
 import devcource.hihi.boardjpa.dto.post.UpdateRequestDto;
 import devcource.hihi.boardjpa.repository.PostRepository;
 import devcource.hihi.boardjpa.repository.UserRepository;
@@ -36,6 +35,8 @@ public class PostService {
 
         return Post.toResponseDto(save);
     }
+
+    @Transactional(readOnly = true)
     public ResponsePostDto findPost(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("id에 해당하는 post가 없습니다."));
         return Post.toResponseDto(post);
@@ -54,24 +55,27 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public CursorResult<Post> get(Long cursorId, Pageable page) {
-        final List<Post> posts = getPosts(cursorId, page);
-        final Long lastIdOfList = posts.isEmpty() ?
-                null : posts.get(posts.size() - 1).getId();
+        if (cursorId < 0) {
+            throw new RuntimeException("커서 아이디는 음수가 될 수 없습니다.");
+        }
+        List<Post> posts = getPosts(cursorId, page);
+        Long lastIdOfList = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
 
         return new CursorResult<>(posts, hasNext(lastIdOfList));
     }
 
-    public List<Post> getPosts(Long id, Pageable page) {
-        return id == null ?
-                this.postRepository.findAllByOrderByIdDesc(page) :
-                this.postRepository.findByIdLessThanOrderByIdDesc(id, page);
+    @Transactional(readOnly = true)
+    public List<Post> getPosts(Long cursorId, Pageable page) {
+        return cursorId == null ? this.postRepository.findAllByOrderByIdDesc(page)
+                : this.postRepository.findByIdLessThanOrderByIdDesc(cursorId, page);
     }
 
+    @Transactional(readOnly = true)
     public Boolean hasNext(Long id) {
         if (id == null) return false;
         return this.postRepository.existsByIdLessThan(id);
     }
-
 
 }

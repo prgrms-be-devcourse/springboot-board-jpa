@@ -1,5 +1,6 @@
 package devcource.hihi.boardjpa.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import devcource.hihi.boardjpa.dto.post.CreateRequestDto;
 import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import jakarta.persistence.*;
@@ -20,6 +21,8 @@ public class Post extends BaseEntity {
 
     private String content;
 
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
