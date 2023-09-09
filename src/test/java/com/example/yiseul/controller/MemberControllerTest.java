@@ -36,7 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureRestDocs
-@Import(RestDocsAutoConfiguration.class)
 @WebMvcTest(MemberController.class)
 class MemberControllerTest {
 
@@ -191,17 +190,19 @@ class MemberControllerTest {
                 .andDo(document("member-delete"));
     }
 
-    @ParameterizedTest
-    @NullSource
-    @ValueSource(strings = {"1"})
+    @Test
     @DisplayName("커서 방식 조회에 성공한다.")
-    void getMembersCursor(String cursorId) throws Exception{
+    void getMembersCursor() throws Exception{
         //given
-        given(memberService.findMemberByCursor(anyLong())).willReturn(new MemberCursorResponseDto(responseDtos, 1L));
+        Long cursorId = 1L;
+        int size = 2;
+
+        given(memberService.findMemberByCursor(cursorId,size)).willReturn(new MemberCursorResponseDto(responseDtos, 1L));
 
         //when & then
         mvc.perform(get("/api/members/cursor")
-                .param("cursorId", cursorId != null ? cursorId : "0"))
+                .param("cursorId", String.valueOf(cursorId))
+                .param("size", String.valueOf(size)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(new MemberCursorResponseDto(responseDtos, 1L))))
 
@@ -214,7 +215,7 @@ class MemberControllerTest {
                                 fieldWithPath("memberResponseDto.[].createdAt").type(JsonFieldType.STRING).description("createdAt"),
                                 fieldWithPath("memberResponseDto.[].createdBy").type(JsonFieldType.STRING).description("createdBy"),
 
-                                fieldWithPath("cursorId").type(JsonFieldType.NUMBER).description("cursorId")
+                                fieldWithPath("nextCursorId").type(JsonFieldType.NUMBER).description("nextCursorId")
                         )
                 ));
     }
