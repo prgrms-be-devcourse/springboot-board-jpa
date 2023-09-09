@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostService {
 
@@ -70,7 +71,7 @@ public class PostService {
 
     @Transactional
     public void deletePost(Long postId) {
-        if (!postRepository.existsById(postId)) {
+        if (isPostNotExist(postId)) {
 
             throw new BaseException(ErrorCode.POST_NOT_FOUND);
         }
@@ -78,4 +79,7 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
+  private boolean isPostNotExist(Long postId) {
+    return !postRepository.existsById(postId);
+  }
 }

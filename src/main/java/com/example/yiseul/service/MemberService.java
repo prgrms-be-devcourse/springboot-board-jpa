@@ -9,7 +9,6 @@ import com.example.yiseul.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
@@ -30,7 +29,6 @@ public class MemberService {
 
         return MemberConverter.convertMemberResponseDto(savedMember);
     }
-
 
     public MemberPageResponseDto getMembers(Pageable pageable) {
         Page<Member> page = memberRepository.findAll(pageable);
@@ -63,7 +61,7 @@ public class MemberService {
 
     @Transactional
     public void deleteMember(Long memberId) {
-        if (!memberRepository.existsById(memberId)) {
+        if (isMemberNotExist(memberId)) {
             log.error("MemberService : Member {} is not found",memberId);
 
             throw new BaseException(ErrorCode.MEMBER_NOT_FOUND);
@@ -98,4 +96,9 @@ public class MemberService {
 
         return memberRepository.findByIdGreaterThanOrderByIdAsc(cursorId,size);
     }
+
+    private boolean isMemberNotExist(Long memberId) {
+        return memberRepository.existsById(memberId);
+    }
+
 }
