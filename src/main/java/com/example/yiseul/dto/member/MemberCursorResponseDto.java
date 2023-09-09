@@ -4,6 +4,6 @@ import java.util.List;
 
 public record MemberCursorResponseDto (
   List<MemberResponseDto> memberResponseDto,
-  Long cursorId
+  Long nextCursorId
 ) {
 }

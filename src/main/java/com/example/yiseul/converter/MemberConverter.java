@@ -21,12 +21,14 @@ public class MemberConverter {
 
     public static MemberResponseDto convertMemberResponseDto(Member member) {
 
-        return new MemberResponseDto(member.getId(),
+        return new MemberResponseDto(
+                member.getId(),
                 member.getName(),
                 member.getAge(),
                 member.getHobby(),
                 member.getCreatedAt(),
-                member.getCreatedBy());
+                member.getCreatedBy()
+        );
     }
 
     public static MemberPageResponseDto convertMemberPageResponseDto(Page<Member> page) {
@@ -41,12 +43,13 @@ public class MemberConverter {
                 page.getTotalPages(),
                 page.getTotalElements(),
                 page.isFirst(),
-                page.isLast());
+                page.isLast()
+        );
     }
 
     public static MemberCursorResponseDto convertMemberCursorResponseDto(List<Member> members, Long nextCursorId) {
         List<MemberResponseDto> memberResponseDtos = members.stream()
-                .map(member -> MemberConverter.convertMemberResponseDto(member))
+                .map(MemberConverter::convertMemberResponseDto)
                 .collect(Collectors.toList());
 
         return new MemberCursorResponseDto(memberResponseDtos, nextCursorId);

@@ -3,6 +3,7 @@ package com.example.yiseul.global;
 import com.example.yiseul.global.exception.BaseException;
 import com.example.yiseul.global.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
@@ -21,11 +23,14 @@ public class GlobalExceptionHandler {
         MethodArgumentNotValidException exception
     ) {
         Map<String, String> errors = new HashMap<>();
-        exception.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
+
+        exception.getBindingResult().getAllErrors().stream()
+                        .map(error -> (FieldError) error)
+                        .collect(
+                            Collectors.toMap(
+                                FieldError::getField,
+                                DefaultMessageSourceResolvable::getDefaultMessage
+                            ));
 
         return ResponseEntity.badRequest().body(errors);
     }

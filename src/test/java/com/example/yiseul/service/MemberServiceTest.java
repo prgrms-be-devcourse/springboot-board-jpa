@@ -55,6 +55,7 @@ class MemberServiceTest {
         assertThat(responseDto).isNotNull();
     }
 
+
     @Test
     @DisplayName("멤버 조회에 성공한다.")
     void getMemberSuccess() {

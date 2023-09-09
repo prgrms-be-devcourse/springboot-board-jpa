@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@Builder
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class ErrorResponse {
 
@@ -16,10 +15,11 @@ public class ErrorResponse {
     private final String message;
 
     public static ErrorResponse of(ErrorCode errorCode) {
-        return ErrorResponse.builder()
-                .error(errorCode.name())
-                .code(errorCode.getCode())
-                .message(errorCode.getMessage())
-                .build();
+
+        return new ErrorResponse(
+                errorCode.name(),
+                errorCode.getCode(),
+                errorCode.getMessage()
+        );
     }
 }

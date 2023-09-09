@@ -37,7 +37,7 @@ public class PostConverter {
 
     public static PostPageResponseDto convertPostPageResponseDto(Page<Post> page) {
         List<PostResponseDto> postResponseDtos = page.getContent().stream()
-                .map(post -> convertPostResponseDto(post))
+                .map(PostConverter::convertPostResponseDto)
                 .collect(Collectors.toList());
 
         return new PostPageResponseDto(

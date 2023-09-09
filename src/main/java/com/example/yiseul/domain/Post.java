@@ -10,11 +10,13 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @NoArgsConstructor(access = PROTECTED)
 public class Post extends BaseEntity {
+    public static final int MAX_TITLE_LENGTH = 30;
+
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = MAX_TITLE_LENGTH, nullable = false)
     private String title;
 
     @Column(columnDefinition = "text", nullable = false)
@@ -25,6 +27,7 @@ public class Post extends BaseEntity {
     private Member member;
 
     public Post(Member member, String title, String content) {
+        validationTitle(title);
         this.title = title;
         this.content = content;
         setCreatedBy(member.getName());
@@ -33,6 +36,13 @@ public class Post extends BaseEntity {
     public void updatePost(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    private void validationTitle(String title) {
+        if (title.length() <= MAX_TITLE_LENGTH || title == null) {
+
+            throw new IllegalArgumentException("제목은 50자 아니래 입력되어야만 합니다.");
+        }
     }
 
 }
