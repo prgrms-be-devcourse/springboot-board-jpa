@@ -21,4 +21,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findAllByUserId(Long userId);
 
+    boolean existsPostByIdAfter(Long postId);
 }

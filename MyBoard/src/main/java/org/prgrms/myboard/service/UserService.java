@@ -17,7 +17,6 @@ public class UserService {
     @Transactional
     public UserResponseDto createUser(UserCreateRequestDto userCreateRequestDto) {
         User user = userCreateRequestDto.toUser();
-        Post post = new Post("ti", "ti", user);
         userRepository.save(user);
         return UserResponseDto.from(user);
     }

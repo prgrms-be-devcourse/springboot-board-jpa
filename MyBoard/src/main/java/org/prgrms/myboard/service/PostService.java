@@ -28,9 +28,9 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    private static final long DEFAULT_CURSOR_ID = 10L;
     private static final int DEFAULT_PAGE_SIZE = 10;
     private static final int MAX_PAGE_SIZE = 100;
+    private static final int MIN_PAGE_SIZE = 1;
 
     @Transactional
     public PostResponseDto createPost(PostCreateRequestDto postCreateRequestDto) {
@@ -91,6 +91,9 @@ public class PostService {
         if(pageSize > MAX_PAGE_SIZE) {
             pageSize = MAX_PAGE_SIZE;
         }
+        if(pageSize < MIN_PAGE_SIZE) {
+            pageSize = MIN_PAGE_SIZE;
+        }
 
         List<Post> posts = cursorId == null ?
             postRepository.findAllByOrderByIdAsc(PageRequest.of(0, pageSize)) :
@@ -100,9 +103,9 @@ public class PostService {
             .map(PostResponseDto::from)
             .toList();
 
-        long nextCursorId = cursorId == null ?
-            DEFAULT_CURSOR_ID :
-            cursorId + pageSize;
+        Long nextCursorId = postRepository.existsPostByIdAfter(posts.get(posts.size() - 1).getId()) ?
+            posts.get(posts.size() - 1).getId() + 1L:
+            null;
 
         return new CursorResult<>(values, nextCursorId);
     }
@@ -126,6 +129,5 @@ public class PostService {
             .values(values)
             .build();
     }
-
 }
 
