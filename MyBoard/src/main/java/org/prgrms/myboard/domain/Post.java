@@ -1,5 +1,6 @@
 package org.prgrms.myboard.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,7 +13,6 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.prgrms.myboard.dto.PostResponseDto;
 
 @Getter
 @Entity
@@ -35,6 +35,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String createdBy;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

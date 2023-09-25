@@ -30,7 +30,7 @@ public class SimpleEntityTest {
 
     @BeforeAll
     void setup() {
-        entityManager = entityManagerFactory.createEntityManager();;
+        entityManager = entityManagerFactory.createEntityManager();
         entityTransaction = entityManager.getTransaction();
     }
 
@@ -98,4 +98,5 @@ public class SimpleEntityTest {
             () -> entityManager.persist(post));
         entityTransaction.commit();
     }
+
 }

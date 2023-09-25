@@ -6,7 +6,10 @@ import org.prgrms.myboard.dto.UserCreateRequestDto;
 import org.prgrms.myboard.dto.UserResponseDto;
 import org.prgrms.myboard.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/users")
 @RestController

@@ -39,8 +39,8 @@ public class PostRestController {
 
     @GetMapping("/cursor")
     public ResponseEntity<CursorResult<PostResponseDto>> getPostsByCursorId(
-        @RequestParam(value = "cursorId") Long cursorId,
-        @RequestParam(value = "pageSize") Integer pageSize) {
+        @RequestParam(value = "cursorId", required = false) Long cursorId,
+        @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         return ResponseEntity.ok(postService.findPostsByCursorPagination(cursorId, pageSize));
     }
 

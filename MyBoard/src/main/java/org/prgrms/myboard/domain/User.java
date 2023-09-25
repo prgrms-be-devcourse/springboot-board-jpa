@@ -26,7 +26,7 @@ import static org.prgrms.myboard.util.ErrorMessage.WRONG_NAME_MESSAGE;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
-    
+
     private static final int MAX_NAME_LENGTH = 4;
     private static final int MIN_AGE = 0;
     private static final int MAX_AGE = 30;

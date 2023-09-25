@@ -7,16 +7,21 @@ import java.util.List;
 
 @Getter
 public class OffsetResult<T> {
+
     private final int currentPage;
-    private final int lastPageIndex;
+
+    private final long totalPageCount;
+
     private final int postCount;
+
     private final List<T> values;
 
     @Builder
-    public OffsetResult(int currentPage, int lastPageIndex, int postCount, List<T> values) {
+    public OffsetResult(int currentPage, long totalPageCount, int postCount, List<T> values) {
         this.currentPage = currentPage;
-        this.lastPageIndex = lastPageIndex;
+        this.totalPageCount = totalPageCount;
         this.postCount = postCount;
         this.values = values;
     }
+
 }

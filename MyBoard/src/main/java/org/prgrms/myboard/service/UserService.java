@@ -1,6 +1,7 @@
 package org.prgrms.myboard.service;
 
 import lombok.RequiredArgsConstructor;
+import org.prgrms.myboard.domain.Post;
 import org.prgrms.myboard.domain.User;
 import org.prgrms.myboard.dto.UserCreateRequestDto;
 import org.prgrms.myboard.dto.UserResponseDto;
@@ -16,6 +17,7 @@ public class UserService {
     @Transactional
     public UserResponseDto createUser(UserCreateRequestDto userCreateRequestDto) {
         User user = userCreateRequestDto.toUser();
+        Post post = new Post("ti", "ti", user);
         userRepository.save(user);
         return UserResponseDto.from(user);
     }

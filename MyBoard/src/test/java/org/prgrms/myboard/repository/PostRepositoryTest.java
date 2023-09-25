@@ -1,13 +1,19 @@
 package org.prgrms.myboard.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.prgrms.myboard.domain.Post;
 import org.prgrms.myboard.domain.User;
+import org.prgrms.myboard.dto.PostResponseDto;
+import org.prgrms.myboard.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
@@ -16,12 +22,14 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 @DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.yml")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@EnableJpaAuditing
-class PostRepositoryTest {
+//@EnableJpaAuditing
+class
+PostRepositoryTest {
 
     @Autowired
     private PostRepository postRepository;
@@ -41,7 +49,7 @@ class PostRepositoryTest {
 
     @BeforeEach
     void setupPost() {
-        post = new Post("testPost", "testPostContent");
+        post = new Post("testPost", "testPostContent", user);
     }
 
     @AfterEach
@@ -63,12 +71,9 @@ class PostRepositoryTest {
     void find_by_id_test() {
         // given
         entityManager.persist(user);
-//        Post post = new Post("testPost", "testPostContent");
-        post.allocateUser(user);
 
         // when
         postRepository.save(post);
-//        entityManager.clear();
         Optional<Post> retrievedPost = postRepository.findById(post.getId());
 
         // then
@@ -80,7 +85,6 @@ class PostRepositoryTest {
     void insert_post_test() {
         // given
         entityManager.persist(user);
-        post.allocateUser(user);
 
         // when
         // 여기서 1차캐싱만 이루어지고, 실제 DB는 저장 x.
@@ -97,12 +101,11 @@ class PostRepositoryTest {
     void update_post_test() {
         // given
         entityManager.persist(user);
-        post.allocateUser(user);
         postRepository.save(post);
 
         // when
-        post.changeContent("updateContent");
-        postRepository.save(post);
+        post.update("updateTitle", "updateContent");
+//        postRepository.save(post);
 
         // then
         Post retrievedPost = entityManager.find(Post.class, post.getId());
@@ -114,7 +117,6 @@ class PostRepositoryTest {
     void delete_post_test() {
         // given
         entityManager.persist(user);
-        post.allocateUser(user);
         postRepository.save(post);
 
         // when
@@ -129,7 +131,6 @@ class PostRepositoryTest {
     void find_by_created_by_test() {
         // given
         entityManager.persist(user);
-        post.allocateUser(user);
         postRepository.save(post);
 
         // when
@@ -138,4 +139,19 @@ class PostRepositoryTest {
         // then
         assertThat(userPosts).containsExactlyInAnyOrderElementsOf(user.getPosts());
     }
+
+    @Test
+    void findTest() {
+        // given
+        entityManager.persist(user);
+        postRepository.save(post);
+
+        // when
+        Pageable pageable = PageRequest.ofSize(20);
+        Slice<Post> posts = postRepository.findTest(10L, PageRequest.of(1, 10));
+
+        // then
+        assertThat(posts).hasSize(1);
+    }
+
 }
