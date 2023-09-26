@@ -7,7 +7,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class SearchResponseDto<T> {
+public class SearchPostResponseDto<T> {
     private List<T> data;
     private Long cursor;
 }

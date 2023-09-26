@@ -1,7 +1,5 @@
 package devcource.hihi.boardjpa.domain;
 
-import devcource.hihi.boardjpa.dto.user.CreateRequestDto;
-import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

@@ -10,6 +10,13 @@ import java.time.LocalDateTime;
 public record ResponsePostDto(Long id, String title, String content,
                               Long userId, LocalDateTime createdAt, LocalDateTime updatedAt) {
     public static ResponsePostDto toResponseDto(Post post) {
-        return new ResponsePostDto(post.getId(),post.getTitle(), post.getContent(), post.getUser().getId(),post.getCreated_at(),post.getUpdated_at());
+        return new ResponsePostDto(
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                post.getUser().getId(),
+                post.getCreated_at(),
+                post.getUpdated_at()
+        );
     }
 }

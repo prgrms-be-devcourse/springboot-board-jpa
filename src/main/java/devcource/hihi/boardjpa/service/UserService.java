@@ -1,9 +1,9 @@
 package devcource.hihi.boardjpa.service;
 
 import devcource.hihi.boardjpa.domain.User;
-import devcource.hihi.boardjpa.dto.user.CreateRequestDto;
+import devcource.hihi.boardjpa.dto.user.CreateUserRequestDto;
 import devcource.hihi.boardjpa.dto.user.ResponseUserDto;
-import devcource.hihi.boardjpa.dto.user.UpdateRequestDto;
+import devcource.hihi.boardjpa.dto.user.UpdateUserRequestDto;
 import devcource.hihi.boardjpa.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +25,7 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
-    public ResponseUserDto createUser(CreateRequestDto userDto) {
+    public ResponseUserDto createUser(CreateUserRequestDto userDto) {
         User user = userDto.toEntity();
         User savedUser = userRepository.save(user);
         return ResponseUserDto.toDtoForResponse(savedUser);
@@ -37,7 +37,7 @@ public class UserService {
         return ResponseUserDto.toDtoForResponse(findUser);
     }
 
-    public ResponseUserDto updateUser(Long id, UpdateRequestDto userDto) {
+    public ResponseUserDto updateUser(Long id, UpdateUserRequestDto userDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() ->  new RuntimeException("id에 해당하는 user는 없습니다."));
         user.changeName(userDto.name());

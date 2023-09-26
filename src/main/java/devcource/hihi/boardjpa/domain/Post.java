@@ -1,8 +1,6 @@
 package devcource.hihi.boardjpa.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import devcource.hihi.boardjpa.dto.post.CreateRequestDto;
-import devcource.hihi.boardjpa.dto.post.ResponsePostDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,9 +14,10 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title",nullable = false,updatable = true)
+    @Column(name = "title",nullable = false, updatable = true, length = 300)
     private String title;
 
+    @Column(name = "content",nullable = false, updatable = true, length = 300)
     private String content;
 
 
@@ -28,9 +27,10 @@ public class Post extends BaseEntity {
     private User user;
 
     @Builder
-    public Post(String title, String content) {
+    public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
+        this.user = user;
     }
 
     public void changeTitle(String title) {
@@ -41,10 +41,4 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-
-
-
-    public void allocateUser(User user) {
-        this.user = user;
-    }
 }
