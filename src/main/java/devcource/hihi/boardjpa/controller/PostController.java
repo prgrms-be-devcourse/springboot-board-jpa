@@ -33,18 +33,18 @@ public class PostController {
     }
 
     @GetMapping("/{postIid}")
-    public ResponseEntity<ResponsePostDto> findByPostId(@PathVariable Long id) {
-        return ResponseEntity.ok(postService.findPost(id));
+    public ResponseEntity<ResponsePostDto> findByPostId(@PathVariable Long postId) {
+        return ResponseEntity.ok(postService.findPost(postId));
     }
 
     @PutMapping("/{postIid}")
-    public ResponseEntity<ResponsePostDto> updatePost(@PathVariable Long id, UpdateRequestDto postDto) {
-        return ResponseEntity.ok(postService.updatePost(id, postDto));
+    public ResponseEntity<ResponsePostDto> updatePost(@PathVariable Long postId, UpdateRequestDto postDto) {
+        return ResponseEntity.ok(postService.updatePost(postId, postDto));
     }
 
     @DeleteMapping("/{postIid}")
-    public void deletePost(@PathVariable Long id) {
-        postService.deletePost(id);
+    public void deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
     }
 
 
