@@ -38,13 +38,15 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public ResponsePostDto findPost(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("id에 해당하는 post가 없습니다."));
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("id에 해당하는 post가 없습니다."));
         return ResponsePostDto.toResponseDto(post);
     }
 
     @Transactional
     public ResponsePostDto updatePost(Long id, UpdateRequestDto dto) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("id에 해당하는 post가 없습니다."));
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("id에 해당하는 post가 없습니다."));
         post.changeTitle(dto.title());
         post.changeContent(dto.content());
         return ResponsePostDto.toResponseDto(post);
@@ -56,20 +58,15 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public CursorResult<Post> get(Long cursorId, Pageable page) {
+    public List<Post> getPosts(Long cursorId, int size) {
+        if (cursorId == null) {
+            return postRepository.findFirstPage(size);
+        }
         if (cursorId < 0) {
             throw new RuntimeException("커서 아이디는 음수가 될 수 없습니다.");
         }
-        List<Post> posts = getPosts(cursorId, page);
-        Long lastIdOfList = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
 
-        return new CursorResult<>(posts, hasNext(lastIdOfList));
-    }
-
-    @Transactional(readOnly = true)
-    public List<Post> getPosts(Long cursorId, Pageable page) {
-        return cursorId == null ? this.postRepository.findAllByOrderByIdDesc(page)
-                : this.postRepository.findByIdLessThanOrderByIdDesc(cursorId, page);
+        return postRepository.findByIdLessThanOrderByIdDesc(cursorId, size);
     }
 
     @Transactional(readOnly = true)

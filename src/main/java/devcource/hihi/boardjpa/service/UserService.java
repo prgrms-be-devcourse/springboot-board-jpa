@@ -32,12 +32,14 @@ public class UserService {
     }
 
     public ResponseUserDto getUser(Long id) {
-        User findUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("id에 해당하는 user는 없습니다."));
+        User findUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("id에 해당하는 user는 없습니다."));
         return ResponseUserDto.toDtoForResponse(findUser);
     }
 
     public ResponseUserDto updateUser(Long id, UpdateRequestDto userDto) {
-        User user = userRepository.findById(id).orElseThrow(() ->  new RuntimeException("id에 해당하는 user는 없습니다."));
+        User user = userRepository.findById(id)
+                .orElseThrow(() ->  new RuntimeException("id에 해당하는 user는 없습니다."));
         user.changeName(userDto.name());
         user.changeAge(userDto.age());
         user.changeHobby(userDto.hobby());
