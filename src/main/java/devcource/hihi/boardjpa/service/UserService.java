@@ -28,12 +28,12 @@ public class UserService {
     public ResponseUserDto createUser(CreateRequestDto userDto) {
         User user = userDto.toEntity();
         User savedUser = userRepository.save(user);
-        return User.toDtoForResponse(savedUser);
+        return ResponseUserDto.toDtoForResponse(savedUser);
     }
 
     public ResponseUserDto getUser(Long id) {
         User findUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("id에 해당하는 user는 없습니다."));
-        return User.toDtoForResponse(findUser);
+        return ResponseUserDto.toDtoForResponse(findUser);
     }
 
     public ResponseUserDto updateUser(Long id, UpdateRequestDto userDto) {
@@ -41,7 +41,7 @@ public class UserService {
         user.changeName(userDto.name());
         user.changeAge(userDto.age());
         user.changeHobby(userDto.hobby());
-        return User.toDtoForResponse(userRepository.save(user));
+        return ResponseUserDto.toDtoForResponse(userRepository.save(user));
     }
 
     public void deleteUser(Long id) {

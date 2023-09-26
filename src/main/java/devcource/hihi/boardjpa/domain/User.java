@@ -52,12 +52,7 @@ public class User extends BaseEntity{
         this.hobby = hobby;
     }
 
-    public static ResponseUserDto toDtoForResponse(User user) {
-        return new ResponseUserDto(user.getId(), user.getName(), user.getAge(), user.getHobby());
-    }
-    public static CreateRequestDto toDtoForCreate(User user) {
-        return new CreateRequestDto(user.getName(), user.getAge(), user.getHobby());
-    }
+
 
     public void addPost(Post post) {
         this.getPostList().add(post);
