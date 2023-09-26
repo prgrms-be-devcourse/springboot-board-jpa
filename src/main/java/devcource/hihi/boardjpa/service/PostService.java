@@ -33,13 +33,13 @@ public class PostService {
         post.allocateUser(user);
         Post save = postRepository.save(post);
 
-        return Post.toResponseDto(save);
+        return ResponsePostDto.toResponseDto(save);
     }
 
     @Transactional(readOnly = true)
     public ResponsePostDto findPost(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("id에 해당하는 post가 없습니다."));
-        return Post.toResponseDto(post);
+        return ResponsePostDto.toResponseDto(post);
     }
 
     @Transactional
@@ -47,7 +47,7 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("id에 해당하는 post가 없습니다."));
         post.changeTitle(dto.title());
         post.changeContent(dto.content());
-        return Post.toResponseDto(post);
+        return ResponsePostDto.toResponseDto(post);
     }
 
     @Transactional

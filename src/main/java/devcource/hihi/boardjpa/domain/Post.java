@@ -42,12 +42,7 @@ public class Post extends BaseEntity {
     }
 
 
-    public static ResponsePostDto toResponseDto(Post post) {
-        return new ResponsePostDto(post.getId(),post.getTitle(), post.getContent(), post.getUser().getId(),post.getCreated_at(),post.getUpdated_at());
-    }
-    public static CreateRequestDto toCreateDto(Post post) {
-        return new CreateRequestDto(post.getTitle(), post.getContent());
-    }
+
 
     public void allocateUser(User user) {
         this.user = user;

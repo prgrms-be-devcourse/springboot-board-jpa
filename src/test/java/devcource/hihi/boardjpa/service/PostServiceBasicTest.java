@@ -34,7 +34,7 @@ public class PostServiceBasicTest {
 
         post.allocateUser(user);
         log.info("{}", post.getUser().getId());
-        CreateRequestDto postDto = Post.toCreateDto(post);
+        CreateRequestDto postDto = CreateRequestDto.toCreateDto(post);
 
         //when
         ResponsePostDto dto = postService.createPost(user.getId(),postDto);
