@@ -10,6 +10,9 @@ gradlew
 gradlew.bat
 HELP.md
 
+src/test/java/com/blackdog/springbootBoardJpa/global/JasyptTest.java
+src/main/resources/jasypt-encryptor-password.txt
+
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
