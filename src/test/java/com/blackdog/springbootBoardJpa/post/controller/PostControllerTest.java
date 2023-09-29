@@ -13,8 +13,10 @@ import com.blackdog.springbootBoardJpa.domain.user.model.User;
 import com.blackdog.springbootBoardJpa.domain.user.model.vo.Age;
 import com.blackdog.springbootBoardJpa.domain.user.model.vo.Name;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -30,7 +32,10 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -44,6 +49,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -105,6 +111,25 @@ class PostControllerTest {
         verify(service, times(1)).savePost(any(), any());
     }
 
+    @Test
+    @DisplayName("Dto의 필드가 valid하지 않다면 유효성 검사에 실패한다.")
+    void savePost_Dto_ThrowMethodArgumentNotValidException() throws Exception {
+        PostCreateDto dto = new PostCreateDto("", "내용");
+        MockHttpServletRequestBuilder builder = post("/posts/{userId}", 1L)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(dto));
+
+        MvcResult result = mockMvc.perform(builder)
+                .andDo(print())
+                .andReturn();
+
+        String message = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        Assertions.assertThat(message).contains("Method Argument가 적절하지 않습니다.");
+
+    }
+
+
     @ParameterizedTest
     @DisplayName("존재하는 게시글을 수정하면 성공한다.")
     @MethodSource("provideTestData")
@@ -154,7 +179,7 @@ class PostControllerTest {
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.delete("/posts/{postId}/user/{userId}", 1L, 1L))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andDo(document("post - delete",
                         pathParameters(
                                 parameterWithName("postId").description("게시글 아이디"),
@@ -164,51 +189,6 @@ class PostControllerTest {
 
         // then
         verify(service, times(1)).deletePostById(any(), any());
-    }
-
-    @ParameterizedTest
-    @DisplayName("모든 게시글을 조회하면 성공한다.")
-    @MethodSource("provideTestData")
-    void getAllPosts_Void_ReturnResponses() throws Exception {
-        // given
-        given(service.findAllPosts(pageable)).willReturn(responses);
-
-        // when
-        mockMvc.perform(get("/posts")
-                        .param("page", "0")
-                        .param("size", "5"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.postResponses.content", Matchers.hasSize(2)))
-                .andDo(print())
-                .andDo(document("posts - get", preprocessResponse(prettyPrint()),
-                        responseFields(
-
-                                fieldWithPath("postResponses").type(JsonFieldType.OBJECT).description("게시물 응답"),
-                                fieldWithPath("postResponses.content").type(JsonFieldType.ARRAY).description("게시물 정보 배열"),
-                                fieldWithPath("postResponses.content[].id").type(JsonFieldType.NUMBER).description("게시물 ID"),
-                                fieldWithPath("postResponses.content[].title").type(JsonFieldType.STRING).description("게시물 제목"),
-                                fieldWithPath("postResponses.content[].content").type(JsonFieldType.STRING).description("게시물 내용"),
-                                fieldWithPath("postResponses.content[].name").type(JsonFieldType.STRING).description("게시물 작성자 이름"),
-                                fieldWithPath("postResponses.content[].createdAt").type(JsonFieldType.STRING).description("게시물 생성일"),
-                                fieldWithPath("postResponses.content[].updatedAt").type(JsonFieldType.STRING).description("게시물 갱신일"),
-
-                                fieldWithPath("postResponses.pageable").type(JsonFieldType.OBJECT).description("pageable").ignored(),
-                                fieldWithPath("postResponses.last").type(JsonFieldType.BOOLEAN).description("last").ignored(),
-                                fieldWithPath("postResponses.totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
-                                fieldWithPath("postResponses.totalPages").type(JsonFieldType.NUMBER).description("totalPages"),
-                                fieldWithPath("postResponses.size").type(JsonFieldType.NUMBER).description("size").ignored(),
-                                fieldWithPath("postResponses.number").type(JsonFieldType.NUMBER).description("number").ignored(),
-                                fieldWithPath("postResponses.sort.empty").type(JsonFieldType.BOOLEAN).description("sort.empty").ignored(),
-                                fieldWithPath("postResponses.sort.sorted").type(JsonFieldType.BOOLEAN).description("sort.sorted").ignored(),
-                                fieldWithPath("postResponses.sort.unsorted").type(JsonFieldType.BOOLEAN).description("sort.unsorted").ignored(),
-                                fieldWithPath("postResponses.first").type(JsonFieldType.BOOLEAN).description("first").ignored(),
-                                fieldWithPath("postResponses.numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements").ignored(),
-                                fieldWithPath("postResponses.empty").type(JsonFieldType.BOOLEAN).description("empty").ignored()
-                        )));
-
-        // then
-        verify(service, times(1)).findAllPosts(pageable);
     }
 
     @ParameterizedTest
@@ -245,6 +225,50 @@ class PostControllerTest {
     }
 
     @ParameterizedTest
+    @DisplayName("모든 게시글을 조회하면 성공한다.")
+    @MethodSource("provideTestData")
+    void getAllPosts_Void_ReturnResponses() throws Exception {
+        // given
+        given(service.findAllPosts(pageable)).willReturn(responses);
+
+        // when
+        mockMvc.perform(get("/posts")
+                        .param("page", "0")
+                        .param("size", "5"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.postResponses.content", Matchers.hasSize(2)))
+                .andDo(print())
+                .andDo(document("posts - get", preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("postResponses").type(JsonFieldType.OBJECT).description("게시물 응답"),
+                                fieldWithPath("postResponses.content").type(JsonFieldType.ARRAY).description("게시물 정보 배열"),
+                                fieldWithPath("postResponses.content[].id").type(JsonFieldType.NUMBER).description("게시물 ID"),
+                                fieldWithPath("postResponses.content[].title").type(JsonFieldType.STRING).description("게시물 제목"),
+                                fieldWithPath("postResponses.content[].content").type(JsonFieldType.STRING).description("게시물 내용"),
+                                fieldWithPath("postResponses.content[].name").type(JsonFieldType.STRING).description("게시물 작성자 이름"),
+                                fieldWithPath("postResponses.content[].createdAt").type(JsonFieldType.STRING).description("게시물 생성일"),
+                                fieldWithPath("postResponses.content[].updatedAt").type(JsonFieldType.STRING).description("게시물 갱신일"),
+
+                                fieldWithPath("postResponses.pageable").type(JsonFieldType.OBJECT).description("pageable").ignored(),
+                                fieldWithPath("postResponses.last").type(JsonFieldType.BOOLEAN).description("last").ignored(),
+                                fieldWithPath("postResponses.totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
+                                fieldWithPath("postResponses.totalPages").type(JsonFieldType.NUMBER).description("totalPages"),
+                                fieldWithPath("postResponses.size").type(JsonFieldType.NUMBER).description("size").ignored(),
+                                fieldWithPath("postResponses.number").type(JsonFieldType.NUMBER).description("number").ignored(),
+                                fieldWithPath("postResponses.sort.empty").type(JsonFieldType.BOOLEAN).description("sort.empty").ignored(),
+                                fieldWithPath("postResponses.sort.sorted").type(JsonFieldType.BOOLEAN).description("sort.sorted").ignored(),
+                                fieldWithPath("postResponses.sort.unsorted").type(JsonFieldType.BOOLEAN).description("sort.unsorted").ignored(),
+                                fieldWithPath("postResponses.first").type(JsonFieldType.BOOLEAN).description("first").ignored(),
+                                fieldWithPath("postResponses.numberOfElements").type(JsonFieldType.NUMBER).description("numberOfElements").ignored(),
+                                fieldWithPath("postResponses.empty").type(JsonFieldType.BOOLEAN).description("empty").ignored()
+                        )));
+
+        // then
+        verify(service, times(1)).findAllPosts(pageable);
+    }
+
+    @ParameterizedTest
     @DisplayName("존재하는 게시글을 유저로 조회하면 성공한다.")
     @MethodSource("provideTestData")
     void getPostsByUserId_id_ReturnResponse(PostCreateDto dto, PostResponse response) throws Exception {
@@ -252,9 +276,10 @@ class PostControllerTest {
         given(service.findPostsByUserId(any(), any())).willReturn(responses);
 
         // when
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/user/{userId}", 1L)
+        mockMvc.perform(get("/posts")
                         .param("page", "0")
                         .param("size", "5")
+                        .param("userId", "1")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
@@ -265,10 +290,8 @@ class PostControllerTest {
                         preprocessResponse(prettyPrint()),
                         queryParameters(
                                 parameterWithName("page").description("페이지"),
-                                parameterWithName("size").description("사이즈")
-                        ),
-                        pathParameters(
-                                parameterWithName("userId").description("회원 아이디")
+                                parameterWithName("size").description("사이즈"),
+                                parameterWithName("userId").description("회원ID")
                         ),
                         responseFields(
                                 fieldWithPath("postResponses").type(JsonFieldType.OBJECT).description("게시글 응답"),
