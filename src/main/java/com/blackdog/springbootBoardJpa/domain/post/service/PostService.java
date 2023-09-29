@@ -47,7 +47,8 @@ public class PostService {
 
         Post post = converter.toEntity(request, user);
 
-        return converter.toResponse(postRepository.save(post));
+        return converter.toResponse(
+                postRepository.save(post));
     }
 
     @Transactional
@@ -61,7 +62,7 @@ public class PostService {
             throw new PermissionDeniedException(PERMISSION_DENIED);
         }
 
-        targetPost.changePost(dto);
+        targetPost.changePost(dto.title(), dto.content());
         return converter.toResponse(targetPost);
     }
 
@@ -82,7 +83,8 @@ public class PostService {
     }
 
     public PostResponses findPostsByUserId(Long userId, Pageable pageable) {
-        return converter.toResponses(postRepository.findPostsByUserId(userId, pageable));
+        return converter.toResponses(
+                postRepository.findPostsByUserId(userId, pageable));
     }
 
 }
