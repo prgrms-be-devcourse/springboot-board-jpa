@@ -33,7 +33,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -88,6 +87,23 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("유효하지 않은 유저는 생성 못한다.")
+    void saveUser_Dto_ReturnFailResponse() throws Exception {
+        //given
+        UserCreateDto createDto = new UserCreateDto("", -1, "");
+        UserResponse response = new UserResponse(1L, "", -1, "", LocalDateTime.now(), LocalDateTime.now());
+        given(userService.saveUser(any())).willReturn(response);
+
+        //when & then
+        mockMvc.perform(post("/users")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(createDto)))
+                .andExpect(status().is4xxClientError())
+                .andDo(print());
+    }
+
+    @Test
     @DisplayName("유저를 삭제한다.")
     void deleteUser_Id_ReturnMessage() throws Exception {
         //given
@@ -95,7 +111,7 @@ class UserControllerTest {
 
         //when & then
         mockMvc.perform(RestDocumentationRequestBuilders.delete("/users/{userId}", 1L))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("user-delete",
                         pathParameters(
