@@ -30,7 +30,8 @@ public class UserService {
 
     @Transactional
     public UserResponse saveUser(@Valid UserCreateRequest dto) {
-        return converter.toResponse(repository.save(converter.toEntity(dto)));
+        return converter.toResponse(
+                repository.save(converter.toEntity(dto)));
     }
 
     @Transactional
