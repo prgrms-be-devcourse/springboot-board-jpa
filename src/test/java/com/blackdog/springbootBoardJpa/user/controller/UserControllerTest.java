@@ -3,18 +3,13 @@ package com.blackdog.springbootBoardJpa.user.controller;
 import com.blackdog.springbootBoardJpa.domain.user.controller.UserController;
 import com.blackdog.springbootBoardJpa.domain.user.controller.converter.UserControllerConverter;
 import com.blackdog.springbootBoardJpa.domain.user.controller.dto.UserCreateDto;
-import com.blackdog.springbootBoardJpa.domain.user.model.vo.Age;
-import com.blackdog.springbootBoardJpa.domain.user.model.vo.Name;
 import com.blackdog.springbootBoardJpa.domain.user.service.UserService;
-import com.blackdog.springbootBoardJpa.domain.user.service.dto.UserCreateRequest;
 import com.blackdog.springbootBoardJpa.domain.user.service.dto.UserResponse;
 import com.blackdog.springbootBoardJpa.domain.user.service.dto.UserResponses;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -28,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -141,10 +135,9 @@ class UserControllerTest {
         verify(userService, times(1)).findUserById(anyLong());
     }
 
-    @ParameterizedTest
+    @Test
     @DisplayName("유저를 전체 조회한다.")
-    @MethodSource("userCreateRequest_Data")
-    void getAllUsers_Pageable_ReturnResponses(List<UserCreateRequest> requests) throws Exception {
+    void getAllUsers_Pageable_ReturnResponses() throws Exception {
         //given
         UserResponse response1 = new UserResponse(1L, "Park", 26, "여행", LocalDateTime.now(), LocalDateTime.now());
         UserResponse response2 = new UserResponse(2L, "Park", 26, "여행", LocalDateTime.now(), LocalDateTime.now());
@@ -189,9 +182,4 @@ class UserControllerTest {
                 ));
     }
 
-    private static Stream<List<UserCreateRequest>> userCreateRequest_Data() {
-        UserCreateRequest request1 = new UserCreateRequest(new Name("Kim"), new Age(23), "축구");
-        UserCreateRequest request2 = new UserCreateRequest(new Name("Park"), new Age(44), "배구");
-        return Stream.of(List.of(request1, request2));
-    }
 }
