@@ -5,12 +5,15 @@ import com.blackdog.springbootBoardJpa.domain.user.controller.dto.UserCreateDto;
 import com.blackdog.springbootBoardJpa.domain.user.service.UserService;
 import com.blackdog.springbootBoardJpa.domain.user.service.dto.UserResponse;
 import com.blackdog.springbootBoardJpa.domain.user.service.dto.UserResponses;
+import com.blackdog.springbootBoardJpa.global.response.SuccessResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.blackdog.springbootBoardJpa.global.response.SuccessCode.USER_DELETE_SUCCESS;
 
 @RestController
 @RequestMapping("/users")
@@ -37,7 +40,9 @@ public class UserController {
     @DeleteMapping(value = "/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable long userId) {
         service.deleteUserById(userId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(SuccessResponse.of(USER_DELETE_SUCCESS));
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
