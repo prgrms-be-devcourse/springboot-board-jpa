@@ -1,7 +1,6 @@
 package com.blackdog.springbootBoardJpa.global.response;
 
 public class ErrorResponse {
-
     private final String code;
     private final String message;
 
@@ -28,4 +27,11 @@ public class ErrorResponse {
                 '}';
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }
