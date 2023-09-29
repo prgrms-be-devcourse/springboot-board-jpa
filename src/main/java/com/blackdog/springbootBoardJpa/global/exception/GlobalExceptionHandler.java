@@ -15,7 +15,7 @@ import static com.blackdog.springbootBoardJpa.global.response.ErrorCode.*;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
         log.warn("{}", errorResponse);
         log.warn("{}", e.getCause());
         return ResponseEntity
-                .status(HttpStatus.NON_AUTHORITATIVE_INFORMATION)
+                .status(HttpStatus.FORBIDDEN)
                 .body(errorResponse);
     }
 
