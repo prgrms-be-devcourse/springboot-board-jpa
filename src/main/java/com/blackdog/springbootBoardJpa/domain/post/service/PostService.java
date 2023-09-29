@@ -56,7 +56,8 @@ public class PostService {
                 .findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(NOT_FOUND_POST));
 
-        if (!Objects.equals(targetPost.getUser().getId(), userId)) {
+        boolean isOwner = Objects.equals(targetPost.getUser().getId(), userId);
+        if (!isOwner) {
             throw new PermissionDeniedException(PERMISSION_DENIED);
         }
 
@@ -70,7 +71,8 @@ public class PostService {
     }
 
     public PostResponses findAllPosts(Pageable pageable) {
-        return converter.toResponses(postRepository.findAll(pageable));
+        return converter.toResponses(
+                postRepository.findAll(pageable));
     }
 
     public PostResponse findPostById(Long id) {
