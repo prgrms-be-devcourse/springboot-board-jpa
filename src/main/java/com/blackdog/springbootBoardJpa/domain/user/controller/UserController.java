@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.blackdog.springbootBoardJpa.global.response.SuccessCode.USER_DELETE_SUCCESS;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
     private final UserService service;
@@ -30,29 +30,58 @@ public class UserController {
         this.converter = converter;
     }
 
+    /**
+     * register or update user data
+     *
+     * @param createDto
+     * @return ResponseEntity<UserResponse>
+     * HttpStatus 201
+     */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> saveUser(@Valid @RequestBody UserCreateDto createDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(service.saveUser(converter.toRequest(createDto)));
+                .body(service.saveUser(
+                        converter.toRequest(createDto)));
     }
 
-    @DeleteMapping(value = "/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable long userId) {
+    /**
+     * delete user by userId
+     *
+     * @param userId
+     * @return ResponseEntity<SuccessResponse>
+     * HttpStatus 200
+     */
+    @DeleteMapping(path = "/{userId}")
+    public ResponseEntity<SuccessResponse> deleteUser(@PathVariable long userId) {
         service.deleteUserById(userId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(SuccessResponse.of(USER_DELETE_SUCCESS));
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * search all users with pagination
+     *
+     * @param pageable
+     * @return ResponseEntity<UserResponses>
+     * HttpStatus 200
+     */
+    @GetMapping
     public ResponseEntity<UserResponses> getAllUsers(Pageable pageable) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(service.findAllUsers(pageable));
     }
 
-    @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * search user by userId
+     *
+     * @param userId
+     * @return ResponseEntity<UserResponse>
+     * HttpStatus 200
+     */
+    @GetMapping(path = "/{userId}")
     public ResponseEntity<UserResponse> getUser(@PathVariable Long userId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
