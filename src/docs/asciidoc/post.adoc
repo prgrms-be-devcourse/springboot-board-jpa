@@ -1,0 +1,54 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= API docs
+:doctype: book
+:source-highlighter:: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== Post
+
+=== 게시물 생성
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+---
+
+=== 게시물 전체 조회
+
+.Request
+include::{snippets}/posts - get/http-request.adoc[]
+
+.Response
+include::{snippets}/posts - get/http-response.adoc[]
+include::{snippets}/posts - get/response-fields.adoc[]
+
+---
+
+=== 게시글 단건 조회
+
+.Request
+include::{snippets}/post-get/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get/http-response.adoc[]
+include::{snippets}/post-get/response-fields.adoc[]
+
+=== 게시물 작성자로 조회
+
+.Request
+include::{snippets}/post-get-by-user/http-request.adoc[]
+
+.Response
+include::{snippets}/post-get-by-user/http-response.adoc[]
+include::{snippets}/post-get-by-user/response-fields.adoc[]

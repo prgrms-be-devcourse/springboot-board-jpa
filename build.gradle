@@ -1,0 +1,80 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.2'
+    id 'io.spring.dependency-management' version '1.1.2'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+}
+
+group = 'com.blackdog'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // jasypt
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    dependsOn test
+    inputs.dir snippetsDir
+}
+
+//기존에 존재하는 docs 삭제
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+//bootJar 설정을 통해 html 파일을 BOOT-INF/classes/static/docs로 복사
+bootJar {
+    dependsOn asciidoctor
+    copy {
+        from "${asciidoctor.outputDir}"
+        into 'BOOT-INF/classes/static/docs'
+    }
+}
+
+// build/docs/asciidocs 파일을 src/main/resources/static/docs로 복사
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/doc")
+}
+
+build {
+    dependsOn copyDocument
+}

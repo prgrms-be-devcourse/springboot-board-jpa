@@ -1,0 +1,9 @@
+= Spring Boot JPA Board
+
+== Post API docs
+
+xref:post.adoc[Post API]
+
+== User API docs
+
+xref:user.adoc[User API]

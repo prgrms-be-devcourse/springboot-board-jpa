@@ -1,0 +1,34 @@
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    provider-name: SunJCE
+    pool-size: 2
+    key-obtention-iterations: 1000
+    string-output-type: base64
+
+spring:
+  datasource:
+    url: ENC(NG45wSV57jwBic94bKgq+HcjwGxbDE7Mht8GAr5SI4byEIZ6GT+ieKinVbZk2FC5keTWRJVqsFM=)
+    username: ENC(VzS/i/YnWH1aKINeKZElTw==)
+    password: ENC(4ZgFCYri6aT5EMvyXPdAwWPXDkrYIZHO)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+  logging:
+    level:
+      org:
+        hibernate:
+          type:
+            descriptor:
+              sql: trace
