@@ -1,10 +1,12 @@
 package com.blackdog.springbootBoardJpa.domain.post.model;
 
-import com.blackdog.springbootBoardJpa.domain.post.service.dto.PostUpdateRequest;
 import com.blackdog.springbootBoardJpa.domain.user.model.User;
 import com.blackdog.springbootBoardJpa.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
+import org.springframework.util.Assert;
 
+@Getter
 @Entity
 @Table(name = "posts")
 public class Post extends BaseEntity {
@@ -43,7 +45,7 @@ public class Post extends BaseEntity {
         this.user = user;
         return this;
     }
-    
+
     public Post build() {
         return new Post(
                 this.title,
@@ -57,6 +59,9 @@ public class Post extends BaseEntity {
             String content,
             User user
     ) {
+        Assert.notNull(title, "title은 공백일 수 없습니다.");
+        Assert.notNull(content, "content는 공백일 수 없습니다.");
+
         this.title = title;
         this.content = content;
         this.user = user;
@@ -86,8 +91,9 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public void changePost(PostUpdateRequest post) {
-        changeTitle(post.title());
-        changeContent(post.content());
+    public void changePost(String title, String content) {
+        changeTitle(title);
+        changeContent(content);
     }
+
 }
