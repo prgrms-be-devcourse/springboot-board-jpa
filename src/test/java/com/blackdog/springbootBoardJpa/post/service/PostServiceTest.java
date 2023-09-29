@@ -13,9 +13,11 @@ import com.blackdog.springbootBoardJpa.global.exception.PostNotFoundException;
 import com.blackdog.springbootBoardJpa.global.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ArgumentsProvider;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
@@ -51,7 +53,7 @@ class PostServiceTest {
 
     @ParameterizedTest
     @DisplayName("존재하는 유저로 게시글을 생성하면 성공한다.")
-    @MethodSource("providePostCreateRequest")
+    @ArgumentsSource(value = PostCreateRequestDataProvider.class)
     void savePost_Dto_SaveReturnResponse(PostCreateRequest request) {
         // when
         PostResponse savedPost = postService.savePost(savedUser.getId(), request);
@@ -63,7 +65,7 @@ class PostServiceTest {
 
     @ParameterizedTest
     @DisplayName("존재하지 않는 유저로 게시글을 생성하면 실패한다.")
-    @MethodSource("providePostCreateRequest")
+    @ArgumentsSource(value = PostCreateRequestDataProvider.class)
     void savePost_Dto_Exception(PostCreateRequest request) {
         // given
         Long userId = Long.MAX_VALUE;
@@ -77,7 +79,7 @@ class PostServiceTest {
 
     @ParameterizedTest
     @DisplayName("존재하는 게시글을 수정하면 성공한다.")
-    @MethodSource("providePostCreateRequest")
+    @ArgumentsSource(value = PostCreateRequestDataProvider.class)
     void updatePost_Dto_UpdateReturnResponse(PostCreateRequest request) {
         // given
         PostResponse savedPost = postService.savePost(savedUser.getId(), request);
@@ -93,7 +95,7 @@ class PostServiceTest {
 
     @ParameterizedTest
     @DisplayName("존재하는 게시글을 삭제하면 성공한다.")
-    @MethodSource("providePostCreateRequest")
+    @ArgumentsSource(value = PostCreateRequestDataProvider.class)
     void deletePostById_Dto_Delete(PostCreateRequest request) {
         // given
         PostResponse savedPost = postService.savePost(savedUser.getId(), request);
@@ -108,7 +110,7 @@ class PostServiceTest {
 
     @ParameterizedTest
     @DisplayName("모든 게시글을 조회하면 성공한다.")
-    @MethodSource("providePostCreateRequest")
+    @ArgumentsSource(value = PostCreateRequestDataProvider.class)
     void findAllPosts_Void_ReturnResponses(PostCreateRequest request) {
         // given
         postService.savePost(savedUser.getId(), request);
@@ -124,7 +126,7 @@ class PostServiceTest {
 
     @ParameterizedTest
     @DisplayName("존재하는 게시글을 조회하면 성공한다.")
-    @MethodSource("providePostCreateRequest")
+    @ArgumentsSource(value = PostCreateRequestDataProvider.class)
     void findPostById_id_ReturnResponse(PostCreateRequest request) {
         // given
         PostResponse savedPost = postService.savePost(savedUser.getId(), request);
@@ -138,7 +140,7 @@ class PostServiceTest {
 
     @ParameterizedTest
     @DisplayName("존재하지 않는 게시글을 조회하면 실패한다.")
-    @MethodSource("providePostCreateRequest")
+    @ArgumentsSource(value = PostCreateRequestDataProvider.class)
     void findPostById_id_Exception(PostCreateRequest request) {
 
         // when
@@ -150,7 +152,7 @@ class PostServiceTest {
 
     @ParameterizedTest
     @DisplayName("존재하는 게시글을 조회하면 성공한다.")
-    @MethodSource("providePostCreateRequest")
+    @ArgumentsSource(value = PostCreateRequestDataProvider.class)
     void findPostsByUserId_id_ReturnResponse(PostCreateRequest request) {
         // given
         PostResponse savedPost = postService.savePost(savedUser.getId(), request);
@@ -164,14 +166,19 @@ class PostServiceTest {
         assertThat(result.postResponses()).isNotEmpty();
     }
 
-    static List<PostCreateRequest> postCreateRequests = List.of(
-            new PostCreateRequest("subject1", "content1"),
-            new PostCreateRequest("subject2", "content2")
-    );
+    static class PostCreateRequestDataProvider implements ArgumentsProvider {
 
-    static Stream<Arguments> providePostCreateRequest() {
-        return postCreateRequests.stream()
-                .map(Arguments::of);
+        static List<PostCreateRequest> postCreateRequests = List.of(
+                new PostCreateRequest("subject1", "content1"),
+                new PostCreateRequest("subject2", "content2")
+        );
+
+        @Override
+        public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
+            return postCreateRequests.stream()
+                    .map(Arguments::of);
+        }
+
     }
 
 }
