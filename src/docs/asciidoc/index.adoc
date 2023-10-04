@@ -1,0 +1,7 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets:
+endif::[]
+
+include::user.adoc[]
+include::post.adoc[]
