@@ -28,4 +28,7 @@ public class Response<T> {
         return new Response<>(e.getMessage(), 500, "fail");
     }
 
+    public static Response<String> fail(String bindingErrors) {
+        return new Response<>(bindingErrors, 400, "fail");
+    }
 }
