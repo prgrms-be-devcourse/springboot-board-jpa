@@ -2,29 +2,36 @@ package com.example.board.exception;
 
 import com.example.board.response.Response;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+// TODO: httpstatus 상태 코드도 함께 전달하는 방법 찾기
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BaseException.class)
-    public Response<?> customExceptionHandle(BaseException e){
+    public Response<?> customExceptionHandle(BaseException e) {
+        log.info("error: {}", e.getMessage());
         return Response.fail(e);
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public Response<?> customExceptionHandle(RuntimeException e){
+    public Response<?> customExceptionHandle(RuntimeException e) {
+        log.info("error: {}", e.getMessage());
         return Response.fail(e);
     }
 
     @ExceptionHandler(Exception.class)
-    public Response<?> customExceptionHandle(Exception e){
+    public Response<?> customExceptionHandle(Exception e) {
+        log.info("error: {}", e.getMessage());
         return Response.fail(e);
     }
 
     @ExceptionHandler(MismatchedInputException.class)
-    public Response<?> customExceptionHandle(MismatchedInputException e){
+    public Response<?> customExceptionHandle(MismatchedInputException e) {
+        log.info("error: {}", e.getMessage());
         return Response.fail(e);
     }
 }
