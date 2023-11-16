@@ -1,4 +1,4 @@
-package com.example.exception;
+package com.example.board.exception;
 
 import com.example.board.response.Response;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;

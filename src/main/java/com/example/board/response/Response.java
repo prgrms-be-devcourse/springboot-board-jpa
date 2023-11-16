@@ -1,6 +1,6 @@
 package com.example.board.response;
 
-import com.example.exception.BaseException;
+import com.example.board.exception.BaseException;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

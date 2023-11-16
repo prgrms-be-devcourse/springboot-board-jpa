@@ -1,7 +1,6 @@
-package com.example.exception;
+package com.example.board.exception;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
