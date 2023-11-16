@@ -16,16 +16,16 @@ class UserTest {
         String hobby = "낮잠 자기";
 
         // when
-        User created = User.builder()
+        User savedUser = User.builder()
                 .name(name)
                 .age(age)
                 .hobby(hobby)
                 .build();
 
         // then
-        assertThat(created.getCratedAt()).isNotNull();
-        assertThat(created.getCreatedBy()).isEqualTo(name);
-        assertThat(created).extracting("name", "age", "hobby")
+        assertThat(savedUser.getCratedAt()).isNotNull();
+        assertThat(savedUser.getCreatedBy()).isEqualTo(name);
+        assertThat(savedUser).extracting("name", "age", "hobby")
                 .containsExactly(name, age, hobby);
     }
 

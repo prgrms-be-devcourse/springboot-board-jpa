@@ -18,16 +18,16 @@ class PostTest {
                 .build();
 
         // when
-        Post created = Post.builder()
+        Post savedPost = Post.builder()
                 .title(title)
                 .content(content)
                 .user(user)
                 .build();
 
         // then
-        assertThat(created.getCratedAt()).isNotNull();
-        assertThat(created.getCreatedBy()).isEqualTo(user.getName());
-        assertThat(created).extracting("title", "content")
+        assertThat(savedPost.getCratedAt()).isNotNull();
+        assertThat(savedPost.getCreatedBy()).isEqualTo(user.getName());
+        assertThat(savedPost).extracting("title", "content")
                 .containsExactly(title, content);
     }
 
