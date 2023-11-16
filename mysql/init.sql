@@ -24,3 +24,5 @@ create table posts
 
     constraint post_user_fk FOREIGN key (user_id) references users(user_id)
 );
+
+insert into users (name, age, hobby, created_at, updated_at) values ('test', 20, 'coding', now(), now());
