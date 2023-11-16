@@ -1,5 +1,6 @@
 package com.example.board.model;
 
+import com.example.board.dto.PostDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,4 +25,18 @@ public class Post extends BaseEntity {
 
     @Lob
     private String contents;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    private Post(User user, PostDto postDto) {
+        this.user = user;
+        this.title = postDto.title();
+        this.contents = postDto.contents();
+        this.createdBy = user.getName();
+    }
+
+    public static Post from(User user, PostDto postDto) {
+        return new Post(user, postDto);
+    }
 }
