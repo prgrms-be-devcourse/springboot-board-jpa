@@ -2,6 +2,9 @@ package com.example.board.model;
 
 import com.example.board.dto.PostDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,13 +19,16 @@ public class Post extends BaseEntity {
     @Column(name = "post_id")
     private long id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Size(max = 20)
     @Column(name = "title", length = 30)
     private String title;
 
+    @NotBlank
     @Lob
     private String contents;
 
