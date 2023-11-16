@@ -1,9 +1,13 @@
 package org.prgms.springbootboardjpayu.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,12 +24,15 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column(name = "name", nullable = false, length = 30)
+    @Length(min = 2, max = 30)
     private String name;
 
     @Column(name = "age")
+    @Range(min = 0, max = 200)
     private Integer age;
 
     @Column(name = "hobby")
+    @Length(max = 100)
     private String hobby;
 
     @Column(name = "posts")
@@ -40,4 +47,7 @@ public class User extends BaseEntity {
         this.setCratedAt(LocalDateTime.now());
         this.setCreatedBy(name);
     }
+
+
+
 }

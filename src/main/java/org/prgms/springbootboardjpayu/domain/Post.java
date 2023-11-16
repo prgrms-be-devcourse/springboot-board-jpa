@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -19,6 +20,7 @@ public class Post extends BaseEntity {
     private Long id;
 
     @Column(name = "title", nullable = false, length = 30)
+    @Length(min = 1, max = 30)
     private String title;
 
     @Column(name = "content")
