@@ -6,3 +6,17 @@ spring:
     password: root
   jpa:
     show-sql: true
+
+---
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/board_test
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+  config:
+    activate:
+      on-profile: test
