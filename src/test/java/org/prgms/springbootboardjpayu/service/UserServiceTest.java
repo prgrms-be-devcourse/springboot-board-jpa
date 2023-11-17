@@ -1,15 +1,12 @@
 package org.prgms.springbootboardjpayu.service;
 
 import jakarta.validation.ConstraintViolationException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.prgms.springbootboardjpayu.dto.request.CreateUserRequest;
 import org.prgms.springbootboardjpayu.dto.response.UserResponse;
-import org.prgms.springbootboardjpayu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,9 +18,6 @@ class UserServiceTest {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @DisplayName("유저 생성에 성공한다.")
     @Test
@@ -50,7 +44,7 @@ class UserServiceTest {
         // given
         CreateUserRequest request = new CreateUserRequest(name, 23, "낮잠 자기");
 
-        // then
+        // when then
         assertThatThrownBy(() -> userService.createUser(request))
                 .isInstanceOf(ConstraintViolationException.class);
 
@@ -63,7 +57,7 @@ class UserServiceTest {
         // given
         CreateUserRequest request = new CreateUserRequest(name, 23, "낮잠 자기");
 
-        // then
+        // when then
         assertThatThrownBy(() -> userService.createUser(request))
                 .isInstanceOf(ConstraintViolationException.class);
 
@@ -76,7 +70,7 @@ class UserServiceTest {
         // given
         CreateUserRequest request = new CreateUserRequest("의진", age, "낮잠 자기");
 
-        // then
+        // when then
         assertThatThrownBy(() -> userService.createUser(request))
                 .isInstanceOf(ConstraintViolationException.class);
 
