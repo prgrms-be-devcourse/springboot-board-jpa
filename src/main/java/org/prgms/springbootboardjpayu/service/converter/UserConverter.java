@@ -2,11 +2,13 @@ package org.prgms.springbootboardjpayu.service.converter;
 
 import org.prgms.springbootboardjpayu.domain.User;
 import org.prgms.springbootboardjpayu.dto.request.CreateUserRequest;
+import org.prgms.springbootboardjpayu.dto.response.UserProfile;
 import org.prgms.springbootboardjpayu.dto.response.UserResponse;
 
 public final class UserConverter {
 
-    private UserConverter() {}
+    private UserConverter() {
+    }
 
     public static User toUser(CreateUserRequest request) {
         return User.builder()
@@ -26,4 +28,10 @@ public final class UserConverter {
                 .build();
     }
 
+    public static UserProfile toUserProfile(User user) {
+        return UserProfile.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .build();
+    }
 }
