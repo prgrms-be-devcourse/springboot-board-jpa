@@ -1,6 +1,7 @@
 package org.prgms.springbootboardjpayu.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class Post extends BaseEntity {
     private Long id;
 
     @Column(name = "title", nullable = false, length = 30)
+    @NotBlank
     @Length(min = 1, max = 30)
     private String title;
 
@@ -27,7 +29,7 @@ public class Post extends BaseEntity {
     @Lob
     private String content;
 
-    @JoinColumn(name = "user", referencedColumnName = "id")
+    @JoinColumn(name = "user", referencedColumnName = "id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
