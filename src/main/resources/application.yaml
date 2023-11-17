@@ -1,1 +1,14 @@
-
+spring:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    generate-ddl: true
+    database: h2
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        hbm2ddl:
+          auto: create-drop
