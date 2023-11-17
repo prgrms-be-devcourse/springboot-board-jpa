@@ -29,6 +29,6 @@ public class PostService {
     }
 
     public Page<PostResponseDto> readAllPost(Pageable pageable) {
-        return postRepository.findAll(pageable).map(PostResponseDto::from);
+        return postRepository.findAllByEntityGraph(pageable).map(PostResponseDto::from);
     }
 }
