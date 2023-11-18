@@ -31,4 +31,12 @@ public class PostController {
                 .status(HttpStatus.OK)
                 .body(response);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostResponse> getPost(@PathVariable Long id) {
+        PostResponse response = postService.getPost(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
 }

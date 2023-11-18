@@ -41,4 +41,11 @@ public class PostService {
         return PostConverter.toPostResponse(post);
     }
 
+    @Transactional(readOnly = true)
+    public PostResponse getPost(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+
+        return PostConverter.toPostResponse(post);
+    }
 }
