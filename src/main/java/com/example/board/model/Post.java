@@ -1,6 +1,7 @@
 package com.example.board.model;
 
 import com.example.board.dto.PostDto;
+import com.example.board.dto.PostUpdateDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -44,5 +45,11 @@ public class Post extends BaseEntity {
 
     public static Post from(User user, PostDto postDto) {
         return new Post(user, postDto);
+    }
+
+    public Long update(PostUpdateDto postUpdateDto) {
+        this.title = postUpdateDto.title();
+        this.contents = postUpdateDto.contents();
+        return this.id;
     }
 }
