@@ -1,7 +1,6 @@
 package org.prgms.springbootboardjpayu.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,8 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -124,6 +122,21 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(updateRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("게시물 ID로 게시물 조회에 성공한다.")
+    @Test
+    void getPost() throws Exception {
+        // given
+        Long id = 1L;
+        PostResponse response = createPostResponse();
+        given(postService.getPost(id)).willReturn(response);
+
+        // when then
+        mockMvc.perform(
+                get("/api/v1/posts/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
     }
 
     private static PostResponse createPostResponse() {

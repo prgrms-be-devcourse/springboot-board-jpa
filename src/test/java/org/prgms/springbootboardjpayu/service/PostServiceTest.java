@@ -89,8 +89,7 @@ class PostServiceTest {
     void updatePost() {
         // given
         User user = createUser("예림");
-        CreatePostRequest request = new CreatePostRequest("제목", "내용", user.getId());
-        PostResponse savedPost = postService.createPost(request);
+        PostResponse savedPost = createPost("제목", "내용", user);
 
         String newTitle = "제목 수정";
         String newContent = "내용 수정";
@@ -123,8 +122,7 @@ class PostServiceTest {
     void updatePostWithOutOfRangeTitle(String title) {
         // given
         User user = createUser("예림");
-        CreatePostRequest request = new CreatePostRequest("제목", "내용", user.getId());
-        PostResponse savedPost = postService.createPost(request);
+        PostResponse savedPost = createPost(title, "내용", user);
 
         UpdatePostRequest updateRequest = new UpdatePostRequest(title, "내용 수정");
 
@@ -133,9 +131,42 @@ class PostServiceTest {
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
+    @DisplayName("게시물 ID로 게시물 조회에 성공한다.")
+    @Test
+    void getPost() {
+        // given
+        User user = createUser("의진");
+        PostResponse post = createPost("제목", "내용", user);
+
+        // when
+        PostResponse retrievedPost = postService.getPost(post.id());
+
+        // then
+        assertThat(retrievedPost).extracting("title", "content", "createdAt")
+                .containsExactly(post.title(), post.content(), post.createdAt());
+    }
+
+    @DisplayName("존재하지 않는 ID로 게시물 조회에 실패한다.")
+    @Test
+    void getPostWithNonExistPost() {
+        // given
+        Long invalidId = 0L;
+
+        // when then
+        assertThatThrownBy(() -> postService.getPost(invalidId))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage("존재하지 않는 게시글입니다.");
+    }
+
     private User createUser(String name) {
         User user = User.builder().name(name).build();
         return userRepository.save(user);
+    }
+
+    private PostResponse createPost(String title, String content, User user) {
+        CreatePostRequest request = new CreatePostRequest(title, content, user.getId());
+        PostResponse savedPost = postService.createPost(request);
+        return savedPost;
     }
 
 }
