@@ -12,7 +12,8 @@ public enum ErrorMessage {
     USER_NOT_FOUND(1000, HttpStatus.NOT_FOUND, "찾으시는 사용자가 없습니다."),
 
     //2xxx post exception
-    POST_NOT_FOUND(2000, HttpStatus.NOT_FOUND, "찾으시는 게시글이 없습니다.");
+    POST_NOT_FOUND(2000, HttpStatus.NOT_FOUND, "찾으시는 게시글이 없습니다."),
+    WRITER_NOT_MATCHED(2001, HttpStatus.BAD_REQUEST, "작성자가 일치하지 않습니다.");
 
     private int code;
     private HttpStatus httpStatus;
