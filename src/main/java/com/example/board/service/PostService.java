@@ -34,7 +34,7 @@ public class PostService {
     }
 
     public PostDetailResponseDto readPostDetail(Long postId) {
-        return PostDetailResponseDto.from(postRepository.findById(postId)
+        return PostDetailResponseDto.from(postRepository.findByIdEntityGraph(postId)
                 .orElseThrow(() -> new BaseException(ErrorMessage.POST_NOT_FOUND)));
     }
 }
