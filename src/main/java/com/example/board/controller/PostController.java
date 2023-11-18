@@ -1,5 +1,6 @@
 package com.example.board.controller;
 
+import com.example.board.dto.PostDetailResponseDto;
 import com.example.board.dto.PostDto;
 import com.example.board.dto.PostResponseDto;
 import com.example.board.exception.BindingException;
@@ -28,9 +29,14 @@ public class PostController {
 
     @GetMapping
     public Response<Page<PostResponseDto>> readAllPost(
-            @PageableDefault(page = 0, size = 10) Pageable pageable
+            @PageableDefault Pageable pageable
     ){
         return Response.success(postService.readAllPost(pageable));
+    }
+
+    @GetMapping("/{postId}")
+    public Response<PostDetailResponseDto> readDetailPost(@PathVariable Long postId){
+        return Response.success(postService.readPostDetail(postId));
     }
 
     private static void bindChecking(BindingResult bindingResult) {
@@ -44,8 +50,8 @@ public class PostController {
                 System.out.println("field :" + field.getField());
                 System.out.println("message :" + message);
 
-                sb.append("field :" + field.getField());
-                sb.append("message :" + message);
+                sb.append("field :").append(field.getField());
+                sb.append("message :").append(message);
 
             });
 
