@@ -1,5 +1,6 @@
 package org.prgms.springbootboardjpayu.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.prgms.springbootboardjpayu.domain.Post;
@@ -23,7 +24,7 @@ public class PostService {
     @Transactional
     public PostResponse createPost(@Valid CreatePostRequest request) {
         User user = userRepository.findById(request.userId()).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 유저입니다.")
+                () -> new EntityNotFoundException("존재하지 않는 유저입니다.")
         );
 
         Post post = PostConverter.toPost(request, user);
