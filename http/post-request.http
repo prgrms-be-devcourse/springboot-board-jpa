@@ -18,3 +18,8 @@ Content-Type: application/json
   "title": "제목 수정",
   "content": "내용 수정"
 }
+
+### 게시물 단건 조회
+GET http://localhost:8080/api/v1/posts/1
+Accept: application/json
+Content-Type: application/json
