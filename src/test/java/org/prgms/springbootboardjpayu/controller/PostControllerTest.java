@@ -1,9 +1,12 @@
 package org.prgms.springbootboardjpayu.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.prgms.springbootboardjpayu.dto.request.CreatePostRequest;
 import org.prgms.springbootboardjpayu.dto.response.PostResponse;
@@ -47,6 +50,41 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated());
+    }
+
+    @DisplayName("작성자가 없으면 게시글 생성에 실패한다.")
+    @Test
+    void createPostWithoutUser() throws Exception {
+        // given
+        PostResponse response = createPostResponse();
+        given(postService.createPost(any())).willReturn(response);
+
+        CreatePostRequest request = new CreatePostRequest("제목", "내용", null);
+
+        // when then
+        mockMvc.perform(
+                post("/api/v1/posts")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("제목이 1 ~ 30자 범위를 초과로 게시글 생성에 실패한다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"", "  ", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"})
+    void createPostWithOutOfRangeTitle(String title) throws Exception {
+        // given
+        PostResponse response = createPostResponse();
+        given(postService.createPost(any())).willReturn(response);
+
+        CreatePostRequest request = new CreatePostRequest(title, "내용", null);
+
+        // when then
+        mockMvc.perform(
+                post("/api/v1/posts")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest());
     }
 
     private static PostResponse createPostResponse() {
