@@ -1,5 +1,6 @@
 package com.example.board.service;
 
+import com.example.board.dto.PostDetailResponseDto;
 import com.example.board.dto.PostDto;
 import com.example.board.dto.PostResponseDto;
 import com.example.board.exception.BaseException;
@@ -30,5 +31,10 @@ public class PostService {
 
     public Page<PostResponseDto> readAllPost(Pageable pageable) {
         return postRepository.findAllByEntityGraph(pageable).map(PostResponseDto::from);
+    }
+
+    public PostDetailResponseDto readPostDetail(Long postId) {
+        return PostDetailResponseDto.from(postRepository.findById(postId)
+                .orElseThrow(() -> new BaseException(ErrorMessage.POST_NOT_FOUND)));
     }
 }
