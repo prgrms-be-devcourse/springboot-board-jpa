@@ -25,11 +25,11 @@ public class Post extends BaseEntity {
     private String content;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "userId")
+    @JoinColumn(referencedColumnName = "id")
     private User user;
 
-    public void setUser(User user){
-        if(Objects.nonNull(this.user)){
+    public void setUser(User user) {
+        if (Objects.nonNull(this.user)) {
             this.user.getPostList().remove(this);
         }
         this.user = user;
@@ -42,6 +42,14 @@ public class Post extends BaseEntity {
         this.content = content;
         setUser(user);
         this.createdBy = user.getName();
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
     }
 
     @Override
