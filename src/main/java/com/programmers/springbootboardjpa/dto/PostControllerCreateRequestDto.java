@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class PostControllerRequestDto {
+public class PostControllerCreateRequestDto {
     private final String title;
     private final String content;
     private final Long userId;

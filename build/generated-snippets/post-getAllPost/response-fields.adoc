@@ -1,0 +1,124 @@
+|===
+|Path|Type|Description
+
+|`+code+`
+|`+Number+`
+|응답 코드
+
+|`+data.content[].postId+`
+|`+Number+`
+|포스트 ID
+
+|`+data.content[].title+`
+|`+String+`
+|제목
+
+|`+data.content[].content+`
+|`+String+`
+|컨텐츠
+
+|`+data.content[].user.userId+`
+|`+Number+`
+|유저 ID
+
+|`+data.content[].user.name+`
+|`+String+`
+|유저 이름
+
+|`+data.content[].user.age+`
+|`+Number+`
+|유저 나이
+
+|`+data.content[].user.hobby+`
+|`+String+`
+|유저 취미
+
+|`+data.content[].createdAt+`
+|`+String+`
+|작성 시간
+
+|`+data.content[].createdBy+`
+|`+String+`
+|작성자
+
+|`+data.pageable.pageNumber+`
+|`+Number+`
+|페이지 번호
+
+|`+data.pageable.pageSize+`
+|`+Number+`
+|페이지 크기
+
+|`+data.pageable.sort.empty+`
+|`+Boolean+`
+|공백 여부
+
+|`+data.pageable.sort.sorted+`
+|`+Boolean+`
+|정렬 여부(O)
+
+|`+data.pageable.sort.unsorted+`
+|`+Boolean+`
+|정렬 여부 (X)
+
+|`+data.pageable.offset+`
+|`+Number+`
+|오프셋
+
+|`+data.pageable.paged+`
+|`+Boolean+`
+|페이지 여부(O)
+
+|`+data.pageable.unpaged+`
+|`+Boolean+`
+|페이지 여부(X)
+
+|`+data.last+`
+|`+Boolean+`
+|마지막 여부
+
+|`+data.totalPages+`
+|`+Number+`
+|전체 페이지 
+
+|`+data.totalElements+`
+|`+Number+`
+|전체 원소 개수
+
+|`+data.first+`
+|`+Boolean+`
+|처음 여부
+
+|`+data.size+`
+|`+Number+`
+|크기
+
+|`+data.number+`
+|`+Number+`
+|번호
+
+|`+data.sort.empty+`
+|`+Boolean+`
+|정렬 공백 여부
+
+|`+data.sort.sorted+`
+|`+Boolean+`
+|정렬 여부(O)
+
+|`+data.sort.unsorted+`
+|`+Boolean+`
+|정렬 여부(X)
+
+|`+data.numberOfElements+`
+|`+Number+`
+|원소 갯수
+
+|`+data.empty+`
+|`+Boolean+`
+|공백 여부
+
+|`+success+`
+|`+Boolean+`
+|성공 여부
+
+|===

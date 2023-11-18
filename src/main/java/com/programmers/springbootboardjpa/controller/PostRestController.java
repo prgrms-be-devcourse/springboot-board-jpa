@@ -1,6 +1,7 @@
 package com.programmers.springbootboardjpa.controller;
 
-import com.programmers.springbootboardjpa.dto.PostControllerRequestDto;
+import com.programmers.springbootboardjpa.dto.PostControllerCreateRequestDto;
+import com.programmers.springbootboardjpa.dto.PostControllerUpdateRequestDto;
 import com.programmers.springbootboardjpa.dto.PostServiceRequestDto;
 import com.programmers.springbootboardjpa.dto.PostServiceResponseDto;
 import com.programmers.springbootboardjpa.exception.ErrorMsg;
@@ -33,7 +34,7 @@ public class PostRestController {
     }
 
     @GetMapping
-    public CommonResult<Page<PostServiceResponseDto>> getAllPost(@RequestParam Pageable pageable) {
+    public CommonResult<Page<PostServiceResponseDto>> getAllPost(Pageable pageable) {
         return CommonResult.getResult(postService.findAll(pageable));
     }
 
@@ -43,7 +44,7 @@ public class PostRestController {
     }
 
     @PostMapping
-    public CommonResult<PostServiceResponseDto> createPost(@RequestBody PostControllerRequestDto requestDto) {
+    public CommonResult<PostServiceResponseDto> createPost(@RequestBody PostControllerCreateRequestDto requestDto) {
         return CommonResult.getResult(postService.create(PostServiceRequestDto.builder()
                 .title(requestDto.getTitle())
                 .content(requestDto.getContent())
@@ -52,7 +53,7 @@ public class PostRestController {
     }
 
     @PostMapping("/{id}")
-    public CommonResult<String> updatePost(@PathVariable Long id, @RequestBody PostControllerRequestDto requestDto) {
+    public CommonResult<String> updatePost(@PathVariable Long id, @RequestBody PostControllerUpdateRequestDto requestDto) {
         postService.update(id, PostServiceRequestDto.builder()
                 .title(requestDto.getTitle())
                 .content(requestDto.getContent())
