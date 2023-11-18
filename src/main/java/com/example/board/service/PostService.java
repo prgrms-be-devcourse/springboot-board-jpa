@@ -3,6 +3,7 @@ package com.example.board.service;
 import com.example.board.dto.PostDetailResponseDto;
 import com.example.board.dto.PostDto;
 import com.example.board.dto.PostResponseDto;
+import com.example.board.dto.PostUpdateDto;
 import com.example.board.exception.BaseException;
 import com.example.board.exception.ErrorMessage;
 import com.example.board.model.Post;
@@ -36,5 +37,19 @@ public class PostService {
     public PostDetailResponseDto readPostDetail(Long postId) {
         return PostDetailResponseDto.from(postRepository.findByIdEntityGraph(postId)
                 .orElseThrow(() -> new BaseException(ErrorMessage.POST_NOT_FOUND)));
+    }
+
+    @Transactional
+    public Long update(Long postId, PostUpdateDto postUpdateDto, Long userId) {
+        Post post = postRepository.findByIdEntityGraph(postId)
+                .orElseThrow(() -> new BaseException(ErrorMessage.POST_NOT_FOUND));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
+
+        if (!post.getUser().equals(user)) {
+            throw new BaseException(ErrorMessage.WRITER_NOT_MATCHED);
+        }
+        return post.update(postUpdateDto);
+
     }
 }
