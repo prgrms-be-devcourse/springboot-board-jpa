@@ -19,26 +19,26 @@ public class PostRestController {
 
     @GetMapping("/")
     public ResponseEntity<List<PostDto.Response>> findAll() {
-        response = service.findAll();
-        return ResponseEntity.ok(response);
+        List<PostDto.Response> responses = service.findAll();
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PostDto.Response> findById(@PathVariable Long id) {
-        service.findById();
+        PostDto.Response response = service.findById(id);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/")
     public ResponseEntity<PostDto.Response> save(@RequestBody PostDto.Request request) {
-        response = service.save(request);
+        PostDto.Response response = service.save(request);
         return ResponseEntity.status(201).body(response);
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<PostDto.Response> update(@PathVariable Long id,
+    public ResponseEntity<Void> update(@PathVariable Long id,
                                                    @RequestBody PostDto.Request request) {
-        response = service.update();
-        return ResponseEntity.ok(response);
+        service.update(id, request);
+        return ResponseEntity.ok().build();
     }
 }
