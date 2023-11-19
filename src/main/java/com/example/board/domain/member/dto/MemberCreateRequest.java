@@ -8,7 +8,6 @@ public record MemberCreateRequest(
     int age,
     String hobby
 ) {
-
     public Member toEntity() {
         return Member.builder()
             .email(email)
@@ -18,4 +17,3 @@ public record MemberCreateRequest(
             .build();
     }
 }
-
