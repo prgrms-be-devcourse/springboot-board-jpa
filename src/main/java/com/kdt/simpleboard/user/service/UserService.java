@@ -20,10 +20,10 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserResponse.SignUpRes createUser(UserRequest.SignUpReq request) {
-        User user = userRepository.save(UserMapper.toUser(request));
         if (userRepository.existsByName(request.name())){
             throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
         }
+        User user = userRepository.save(UserMapper.toUser(request));
         return UserMapper.toSignUpRes(user);
     }
 
