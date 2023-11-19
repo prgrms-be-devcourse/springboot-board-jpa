@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.kdt.simpleboard.common.exception.ErrorCode.NOT_EXIST_USER_ID;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -23,5 +25,9 @@ public class UserService {
             throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
         }
         return UserMapper.toSignUpRes(user);
+    }
+
+    public User getUserEntity(Long userId){
+        return userRepository.findById(userId).orElseThrow(() -> new CustomException(NOT_EXIST_USER_ID));
     }
 }
