@@ -1,7 +1,7 @@
 spring:
   datasource:
     #    url: jdbc:h2:tcp://localhost/~/gym
-    url: jdbc:mysql://localhost:3306/simple-board
+    url: jdbc:mysql://localhost:3306/simple_board
     username : root
     password : root
     #    driver-class-name: org.h2.Driver
