@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    #    url: jdbc:h2:tcp://localhost/~/gym
+    url: jdbc:mysql://localhost:3306/simple-board
+    username : root
+    password : root
+    #    driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    #      table? ???? ???? ??
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 10
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.orm.jdbc.bind: trace
