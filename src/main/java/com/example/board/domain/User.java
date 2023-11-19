@@ -28,4 +28,10 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
+
+    public void update(String name, Integer age, String hobby) {
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+    }
 }
