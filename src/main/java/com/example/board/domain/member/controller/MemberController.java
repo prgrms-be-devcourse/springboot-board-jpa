@@ -6,6 +6,8 @@ import com.example.board.domain.member.dto.MemberUpdateRequest;
 import com.example.board.domain.member.service.MemberService;
 import java.net.URI;
 import java.util.List;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,12 +28,12 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity<MemberResponse> createMember(@RequestBody MemberCreateRequest request) {
+    public ResponseEntity<MemberResponse> createMember(@Valid @RequestBody MemberCreateRequest request) {
         MemberResponse member = memberService.createMember(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-            .path("/{id}")
-            .buildAndExpand(member.id())
-            .toUri();
+                .path("/{id}")
+                .buildAndExpand(member.id())
+                .toUri();
         return ResponseEntity.created(location).body(member);
     }
 
@@ -46,19 +48,19 @@ public class MemberController {
         List<MemberResponse> members = memberService.findAllMembers();
         return ResponseEntity.ok(members);
     }
-    
+
     @PatchMapping("/{id}")
-    public ResponseEntity<MemberResponse> updateMember(@PathVariable Long id, @RequestBody MemberUpdateRequest request) {
+    public ResponseEntity<MemberResponse> updateMember(@PathVariable Long id, @Valid @RequestBody MemberUpdateRequest request) {
         MemberResponse member = memberService.updateMember(id, request);
         return ResponseEntity.ok(member);
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMemberById(@PathVariable Long id) {
         memberService.deleteMemberById(id);
         return ResponseEntity.noContent().build();
     }
-    
+
     @DeleteMapping
     public ResponseEntity<Void> deleteAllMembers() {
         memberService.deleteAllMembers();

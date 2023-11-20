@@ -6,6 +6,8 @@ import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.service.PostService;
 import java.net.URI;
 import java.util.List;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,12 +29,12 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<PostResponse> createPost(@RequestParam String email, @RequestBody PostCreateRequest request) {
+    public ResponseEntity<PostResponse> createPost(@RequestParam String email, @Valid @RequestBody PostCreateRequest request) {
         PostResponse post = postService.createPost(email, request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-            .path("/{id}")
-            .buildAndExpand(post.id())
-            .toUri();
+                .path("/{id}")
+                .buildAndExpand(post.id())
+                .toUri();
         return ResponseEntity.created(location).body(post);
     }
 
@@ -50,9 +52,9 @@ public class PostController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<PostResponse> updatePost(
-        @PathVariable Long id,
-        @RequestParam String email,
-        @RequestBody PostUpdateRequest request) {
+            @PathVariable Long id,
+            @RequestParam String email,
+            @Valid @RequestBody PostUpdateRequest request) {
 
         PostResponse post = postService.updatePost(id, email, request);
         return ResponseEntity.ok(post);
