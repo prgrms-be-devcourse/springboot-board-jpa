@@ -13,5 +13,4 @@ public abstract class Base {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime created_at;
 
-    private String created_by;
 }
