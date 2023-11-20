@@ -39,10 +39,10 @@ public class ExceptionAdvisor extends ResponseEntityExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException ex) {
         log.info("Element Not Found : {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.NOT_FOUND.value(),
                 ex.getMessage()
         );
-        return ResponseEntity.badRequest().body(errorResponse);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -52,7 +52,7 @@ public class ExceptionAdvisor extends ResponseEntityExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage()
         );
-        return ResponseEntity.badRequest().body(errorResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(Exception.class)
@@ -62,6 +62,6 @@ public class ExceptionAdvisor extends ResponseEntityExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 ex.getMessage()
         );
-        return ResponseEntity.internalServerError().body(errorResponse);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 }
