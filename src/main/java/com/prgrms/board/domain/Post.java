@@ -30,4 +30,13 @@ public class Post extends Base {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Post(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
+        this.user = user;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }
