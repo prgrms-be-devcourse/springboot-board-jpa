@@ -13,6 +13,8 @@ import org.prgms.springbootboardjpayu.dto.response.PostResponse;
 import org.prgms.springbootboardjpayu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -156,6 +158,22 @@ class PostServiceTest {
         assertThatThrownBy(() -> postService.getPost(invalidId))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("존재하지 않는 게시글입니다.");
+    }
+
+    @DisplayName("전체 게시물을 조회에 성공한다.")
+    @Test
+    void getPosts() {
+        // given
+        User user = createUser("예림");
+        PostResponse post1 = createPost("제목1", "내용1", user);
+        PostResponse post2 = createPost("제목2", "내용2", user);
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        // when
+        Page<PostResponse> retrievedPosts = postService.getPosts(pageRequest);
+
+        // then
+        assertThat(retrievedPosts).hasSize(2);
     }
 
     private User createUser(String name) {

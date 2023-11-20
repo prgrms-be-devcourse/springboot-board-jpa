@@ -15,6 +15,8 @@ import org.prgms.springbootboardjpayu.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -135,6 +137,22 @@ class PostControllerTest {
         // when then
         mockMvc.perform(
                 get("/api/v1/posts/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
+    }
+
+    @DisplayName("전체 게시물 조회에 성공한다.")
+    @Test
+    void getPosts() throws Exception {
+        // given
+        Page<PostResponse> responses = Page.empty();
+        given(postService.getPosts(any())).willReturn(responses);
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        // when then
+        mockMvc.perform(
+                get("/api/v1/posts")
+                        .content(objectMapper.writeValueAsString(pageRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
     }
