@@ -1,10 +1,10 @@
 package com.example.board.controller;
 
+import com.example.board.dto.ApiResult;
 import com.example.board.dto.PostDto;
 import com.example.board.dto.UserDto;
 import com.example.board.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,27 +16,27 @@ public class UserRestController {
     private final UserService service;
 
     @GetMapping
-    public ResponseEntity<List<UserDto.Response>> findAll() {
+    public ApiResult<List<UserDto.Response>> findAll() {
         List<UserDto.Response> responses = service.findAll();
-        return ResponseEntity.ok(responses);
+        return ApiResult.successOf(responses);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto.Response> findById(@PathVariable Long id) {
+    public ApiResult<UserDto.Response> findById(@PathVariable Long id) {
         UserDto.Response response = service.findById(id);
-        return ResponseEntity.ok(response);
+        return ApiResult.successOf(response);
     }
 
     @PostMapping
-    public ResponseEntity<UserDto.Response> save(@RequestBody UserDto.Request request) {
+    public ApiResult<UserDto.Response> save(@RequestBody UserDto.Request request) {
         UserDto.Response response = service.save(request);
-        return ResponseEntity.status(201).body(response);
+        return ApiResult.successOf(response);
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id,
+    public ApiResult<Void> update(@PathVariable Long id,
                                        @RequestBody UserDto.Request request) {
         service.update(id, request);
-        return ResponseEntity.ok().build();
+        return ApiResult.successOf();
     }
 }
