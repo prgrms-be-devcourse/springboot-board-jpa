@@ -1,0 +1,25 @@
+spring:
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/board_jpa?useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root1234!
+  batch:
+    jdbc:
+      schema: classpath:schema.sql
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+
+  sql:
+    init:
+      mode: always
