@@ -5,12 +5,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.prgms.springbootboardjpayu.dto.request.CreateUserRequest;
 import org.prgms.springbootboardjpayu.dto.response.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -55,7 +58,8 @@ class UserServiceTest {
 
     @DisplayName("이름을 2 ~ 30자 범위를 초과 입력해 유저 생성에 실패한다.")
     @ParameterizedTest(name = "{0}는 이름 범위를 벗어난다.")
-    @ValueSource(strings = {"a", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"})
+    @ValueSource(strings = {"a"})
+    @MethodSource("provideLongName")
     void createUserWithOutOfRangeName(String name) {
         // given
         CreateUserRequest request = new CreateUserRequest(name, 23, "낮잠 자기");
@@ -79,4 +83,8 @@ class UserServiceTest {
 
     }
 
+    private static List<String> provideLongName() {
+        String string = "a";
+        return List.of(string.repeat(31));
+    }
 }

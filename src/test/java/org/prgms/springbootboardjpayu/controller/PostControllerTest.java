@@ -5,7 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.prgms.springbootboardjpayu.dto.request.CreatePostRequest;
 import org.prgms.springbootboardjpayu.dto.request.UpdatePostRequest;
@@ -19,6 +20,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -73,7 +76,8 @@ class PostControllerTest {
 
     @DisplayName("제목이 1 ~ 30자 범위를 초과로 게시글 생성에 실패한다.")
     @ParameterizedTest(name = "{index}. {0} 제목의 글자 수 범위를 초과한다.")
-    @ValueSource(strings = {"", "  ", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"})
+    @EmptySource
+    @MethodSource("provideLongTitle")
     void createPostWithOutOfRangeTitle(String title) throws Exception {
         // given
         PostResponse response = createPostResponse();
@@ -109,7 +113,8 @@ class PostControllerTest {
 
     @DisplayName("수정된 제목이 1 ~ 30자 범위를 초과로 게시글 수정에 실패한다.")
     @ParameterizedTest
-    @ValueSource(strings = {"", "  ", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"})
+    @EmptySource
+    @MethodSource("provideLongTitle")
     void updatePostWithOutOfRangeTitle(String title) throws Exception {
         // given
         Long id = 1L;
@@ -164,5 +169,10 @@ class PostControllerTest {
                 .user(UserProfile.builder().build())
                 .build();
         return response;
+    }
+
+    private static List<String> provideLongTitle() {
+        String string = "a";
+        return List.of(string.repeat(31));
     }
 }
