@@ -6,6 +6,8 @@ import com.example.board.dto.PostDto;
 import com.example.board.repository.PostRepository;
 import com.example.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +29,9 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostDto.Response> findAll() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream().map(PostDto::toResponse).toList();
+    public Page<PostDto.Response> findAll(Pageable pageable) {
+        Page<Post> posts = postRepository.findAll(pageable);
+        return posts.map(PostDto::toResponse);
     }
 
     @Transactional(readOnly = true)

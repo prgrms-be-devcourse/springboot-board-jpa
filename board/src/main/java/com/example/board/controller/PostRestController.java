@@ -2,6 +2,9 @@ package com.example.board.controller;
 import com.example.board.dto.PostDto;
 import com.example.board.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +18,8 @@ public class PostRestController {
     private final PostService service;
 
     @GetMapping
-    public ResponseEntity<List<PostDto.Response>> findAll() {
-        List<PostDto.Response> responses = service.findAll();
+    public ResponseEntity<Page<PostDto.Response>> findAll(@PageableDefault(page=0,size = 10) Pageable pageable) {
+        Page<PostDto.Response> responses = service.findAll(pageable);
         return ResponseEntity.ok(responses);
     }
 
