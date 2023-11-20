@@ -1,2 +1,29 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    hikari:
+      jdbc-url: jdbc:h2:tcp://localhost/./board;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      password: 1234
+  h2:
+    console:
+      enabled: true
+  jpa:
+    generate-ddl: true
+    database: h2
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        query.in_clause_parameter_padding: true
+        hbm2ddl:
+          auto: create
+        format_sql: true
 server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   port: 8090
