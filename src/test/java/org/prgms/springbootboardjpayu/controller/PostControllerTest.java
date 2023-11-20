@@ -72,7 +72,7 @@ class PostControllerTest {
     }
 
     @DisplayName("제목이 1 ~ 30자 범위를 초과로 게시글 생성에 실패한다.")
-    @ParameterizedTest
+    @ParameterizedTest(name = "{index}. {0} 제목의 글자 수 범위를 초과한다.")
     @ValueSource(strings = {"", "  ", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"})
     void createPostWithOutOfRangeTitle(String title) throws Exception {
         // given

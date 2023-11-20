@@ -74,7 +74,7 @@ class PostServiceTest {
     }
 
     @DisplayName("제목이 1 ~ 30자 범위를 초과로 게시글 생성에 실패한다.")
-    @ParameterizedTest
+    @ParameterizedTest(name = "{index}. {0} 제목의 글자 수 범위를 초과한다.")
     @ValueSource(strings = {"", "  ", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"})
     void createPostWithOutOfRangeTitle(String title) {
         // given
@@ -119,12 +119,12 @@ class PostServiceTest {
     }
 
     @DisplayName("수정된 제목이 1 ~ 30자 범위를 초과로 게시글 수정에 실패한다.")
-    @ParameterizedTest
+    @ParameterizedTest(name = "{index}. {0}은 제목의 범위를 초과한다.")
     @ValueSource(strings = {"", "  ", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"})
     void updatePostWithOutOfRangeTitle(String title) {
         // given
         User user = createUser("예림");
-        PostResponse savedPost = createPost(title, "내용", user);
+        PostResponse savedPost = createPost("제목", "내용", user);
 
         UpdatePostRequest updateRequest = new UpdatePostRequest(title, "내용 수정");
 
@@ -186,5 +186,4 @@ class PostServiceTest {
         PostResponse savedPost = postService.createPost(request);
         return savedPost;
     }
-
 }
