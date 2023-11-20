@@ -13,16 +13,15 @@ import java.time.LocalDateTime;
 public class ApiResponse<T> {
     private int statusCode;
     private T data;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime datetime;
 
-    public ApiResponse(int statusCode) {
+    private ApiResponse(int statusCode) {
         this.statusCode = statusCode;
         this.datetime = LocalDateTime.now();
     }
 
-    public ApiResponse(int statusCode, T data) {
+    private ApiResponse(int statusCode, T data) {
         this.statusCode = statusCode;
         this.data = data;
         this.datetime = LocalDateTime.now();
@@ -36,7 +35,7 @@ public class ApiResponse<T> {
         return new ApiResponse<>(status.value(), data);
     }
 
-    public static <T> ApiResponse<T> fail(int statusCode, T errData) {
-        return new ApiResponse<>(statusCode, errData);
+    public static <T> ApiResponse<T> fail(HttpStatus status, T data) {
+        return new ApiResponse<>(status.value(), data);
     }
 }
