@@ -11,6 +11,8 @@ import org.prgms.springbootboardjpayu.dto.response.PostResponse;
 import org.prgms.springbootboardjpayu.repository.PostRepository;
 import org.prgms.springbootboardjpayu.repository.UserRepository;
 import org.prgms.springbootboardjpayu.service.converter.PostConverter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -47,5 +49,11 @@ public class PostService {
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
 
         return PostConverter.toPostResponse(post);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostResponse> getPosts(Pageable pageable) {
+        return postRepository.findAll(pageable)
+                .map(PostConverter::toPostResponse);
     }
 }
