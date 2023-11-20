@@ -30,7 +30,7 @@ public class User extends BaseEntity {
     @Column(name = "age", nullable = false)
     private int age;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Post> posts = new ArrayList<>();
 
     @Builder
