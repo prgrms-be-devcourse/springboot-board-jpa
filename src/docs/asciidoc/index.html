@@ -447,9 +447,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#Post-API">Post API</a>
+<li><a href="#Product-API">Post API</a>
 <ul class="sectlevel2">
-<li><a href="#post-create">게시글 생성</a></li>
+<li><a href="#product-create">게시글 생성</a></li>
 <li><a href="#post-update">게시글 수정</a></li>
 <li><a href="#post-retrieve">게시글 단건 조회</a></li>
 <li><a href="#posts-retrieve">게시글 다건 조회</a></li>
@@ -460,10 +460,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="Post-API"><a class="link" href="#Post-API">Post API</a></h2>
+<h2 id="Product-API"><a class="link" href="#Product-API">Post API</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="post-create"><a class="link" href="#post-create">게시글 생성</a></h3>
+<h3 id="product-create"><a class="link" href="#product-create">게시글 생성</a></h3>
 <div class="sect3">
 <h4 id="_http_request"><a class="link" href="#_http_request">HTTP request</a></h4>
 <div class="listingblock">
@@ -518,13 +518,13 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
 Content-Type: application/json
-Content-Length: 171
+Content-Length: 158
 
 {
   "id" : 1,
   "title" : "제목",
   "content" : "내용",
-  "createdAt" : [ 2023, 11, 21, 19, 43, 34, 621879000 ],
+  "createdAt" : "2023-11-21T21:54:53.549Z",
   "user" : {
     "id" : 1,
     "name" : "의진"
@@ -563,7 +563,7 @@ Content-Length: 171
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Created At</p></td>
 </tr>
 <tr>
@@ -589,6 +589,19 @@ Content-Length: 171
 <h3 id="post-update"><a class="link" href="#post-update">게시글 수정</a></h3>
 <div class="sect3">
 <h4 id="_http_request_2"><a class="link" href="#_http_request_2">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/v1/posts/1 HTTP/1.1
+Content-Type: application/json
+Content-Length: 62
+Host: localhost:8080
+
+{
+  "title" : "제목 수정",
+  "content" : "내용 수정"
+}</code></pre>
+</div>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. /api/v1/posts/{id}</caption>
 <colgroup>
@@ -608,19 +621,6 @@ Content-Length: 171
 </tr>
 </tbody>
 </table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/v1/posts/1 HTTP/1.1
-Content-Type: application/json
-Content-Length: 62
-Host: localhost:8080
-
-{
-  "title" : "제목 수정",
-  "content" : "내용 수정"
-}</code></pre>
-</div>
-</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -654,13 +654,13 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 171
+Content-Length: 158
 
 {
   "id" : 1,
   "title" : "제목",
   "content" : "내용",
-  "createdAt" : [ 2023, 11, 21, 19, 43, 34, 553718000 ],
+  "createdAt" : "2023-11-21T21:54:53.492Z",
   "user" : {
     "id" : 1,
     "name" : "의진"
@@ -699,7 +699,7 @@ Content-Length: 171
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Created At</p></td>
 </tr>
 <tr>
@@ -725,6 +725,13 @@ Content-Length: 171
 <h3 id="post-retrieve"><a class="link" href="#post-retrieve">게시글 단건 조회</a></h3>
 <div class="sect3">
 <h4 id="_http_request_3"><a class="link" href="#_http_request_3">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/posts/1 HTTP/1.1
+Content-Type: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 2. /api/v1/posts/{id}</caption>
 <colgroup>
@@ -744,13 +751,6 @@ Content-Length: 171
 </tr>
 </tbody>
 </table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/posts/1 HTTP/1.1
-Content-Type: application/json
-Host: localhost:8080</code></pre>
-</div>
-</div>
 </div>
 <div class="sect3">
 <h4 id="_http_response_3"><a class="link" href="#_http_response_3">HTTP response</a></h4>
@@ -758,13 +758,13 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 171
+Content-Length: 158
 
 {
   "id" : 1,
   "title" : "제목",
   "content" : "내용",
-  "createdAt" : [ 2023, 11, 21, 19, 43, 34, 607637000 ],
+  "createdAt" : "2023-11-21T21:54:53.534Z",
   "user" : {
     "id" : 1,
     "name" : "의진"
@@ -803,7 +803,7 @@ Content-Length: 171
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Created At</p></td>
 </tr>
 <tr>
@@ -832,10 +832,32 @@ Content-Length: 171
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/posts?page=0&amp;size=5 HTTP/1.1
-Content-Type: application/json
+Accept: application/json
 Host: localhost:8080</code></pre>
 </div>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이지 크기</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_http_response_4"><a class="link" href="#_http_response_4">HTTP response</a></h4>
@@ -843,22 +865,32 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 266
+Content-Length: 457
 
 {
-  "data" : [ {
+  "content" : [ {
     "id" : 1,
     "title" : "제목",
     "content" : "내용",
-    "createdAt" : [ 2023, 11, 21, 19, 43, 34, 640927000 ],
+    "createdAt" : "2023-11-21T21:54:53.568Z",
+    "user" : {
+      "id" : 1,
+      "name" : "의진"
+    }
+  }, {
+    "id" : 2,
+    "title" : "제목",
+    "content" : "내용",
+    "createdAt" : "2023-11-21T21:54:53.568Z",
     "user" : {
       "id" : 1,
       "name" : "의진"
     }
   } ],
   "pageNumber" : 0,
-  "pageSize" : 4,
-  "totalPages" : 1
+  "pageSize" : 5,
+  "totalPages" : 1,
+  "totalElements" : 2
 }</code></pre>
 </div>
 </div>
@@ -877,54 +909,59 @@ Content-Length: 266
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Post Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Title</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].content</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Content</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].createdAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Created At</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].user</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].user</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">User</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].user.id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].user.id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">User Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].user.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].user.name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">User Name</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageNumber</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Page Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pageNumber</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageSize</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Page Size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pageSize</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalPages</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Total Pages</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">totalPages</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalElements</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">totalElements</p></td>
 </tr>
 </tbody>
 </table>
@@ -936,7 +973,7 @@ Content-Length: 266
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-11-21 19:42:09 +0900
+Last updated 2023-11-21 20:32:15 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
