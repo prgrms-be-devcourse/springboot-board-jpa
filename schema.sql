@@ -6,7 +6,7 @@ create table posts
     created_by varchar(255) not null,
     title      varchar(255) not null,
     updated_by varchar(255) not null,
-    content    tinytext     not null,
+    content    tinytext     not null
 );
 
 create table users
@@ -18,5 +18,5 @@ create table users
     created_by varchar(255) not null,
     hobby      varchar(255),
     name       varchar(255) not null,
-    updated_by varchar(255) not null,
+    updated_by varchar(255) not null
 );
