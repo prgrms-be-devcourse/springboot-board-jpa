@@ -1,0 +1,81 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 게시글
+=== 게시글 등록
+==== /api/v1/posts
+
+.Request
+
+include::{snippets}/post-save/http-request.adoc[]
+
+.Request Fields
+
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-save/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-save/response-fields.adoc[]
+
+=== 게시글 전체조회
+==== /api/v1/posts
+
+.Request
+
+include::{snippets}/post-getAll/http-request.adoc[]
+
+.Request Fields
+
+include::{snippets}/post-getAll/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-getAll/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-getAll/response-fields.adoc[]
+
+=== 게시글 단건 조회
+==== /api/v1/posts/{postId}
+
+.Request
+
+include::{snippets}/post-getById/http-request.adoc[]
+
+.Request Fields
+
+include::{snippets}/post-getById/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-getById/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-getById/response-fields.adoc[]
+
+=== 게시글 수정
+==== /api/v1/posts/{postId}
+
+.Request
+
+include::{snippets}/post-update/http-request.adoc[]
+
+.Request Fields
+
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-update/http-response.adoc[]
+
+.Response Fields
+
+include::{snippets}/post-update/response-fields.adoc[]
