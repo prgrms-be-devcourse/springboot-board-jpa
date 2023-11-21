@@ -41,7 +41,11 @@ public class Member extends BaseEntity {
     }
 
     public void update(String name, String hobby) {
-        this.name = name;
-        this.hobby = hobby;
+        if(name != null) {
+            this.name = name;
+        }
+        if(hobby != null) {
+            this.hobby = hobby;
+        }
     }
 }

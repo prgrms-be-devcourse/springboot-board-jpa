@@ -1,11 +1,13 @@
 package com.example.board.global.advisor;
 
 import com.example.board.global.exception.DuplicateEmailException;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -20,8 +22,11 @@ public class ExceptionAdvisor extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        log.info("validation Failed : {}", ex.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(status.value(), ex.getMessage());
+        BindingResult bindingResult = ex.getBindingResult();
+        String errorMessage = Objects.requireNonNull(bindingResult.getFieldError())
+            .getDefaultMessage();
+        log.info("validation Failed : {}", errorMessage);
+        ErrorResponse errorResponse = new ErrorResponse(status.value(), errorMessage);
         return ResponseEntity.status(status).body(errorResponse);
     }
 
@@ -46,7 +51,7 @@ public class ExceptionAdvisor extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    protected ResponseEntity<ErrorResponse> handleNoSuchElementException(IllegalArgumentException ex) {
+    protected ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
         log.info("IllegalArgumentException occurred: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
