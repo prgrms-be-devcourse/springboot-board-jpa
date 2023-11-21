@@ -1,6 +1,7 @@
 package com.programmers.springboard.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,26 +34,25 @@ public class PostController {
 		return postService.getPostById(id);
 	}
 
-	@GetMapping("/")
-	public PostResponse getPosts(@RequestParam(required = false, value = "1", name = "page") Integer page){
-		postService.getPosts(page);
-		return null;
+	@GetMapping
+	public List<PostResponse> getPosts(@RequestParam(required = false, value = "page", defaultValue = "1") Integer page){
+		return postService.getPosts(page);
 	}
 
 	@PostMapping
-	public ResponseEntity<Long> createPost(@Valid @RequestBody CreatePostRequest createPostRequest){
-		Long postId = postService.createPost(createPostRequest);
+	public ResponseEntity<PostResponse> createPost(@Valid @RequestBody CreatePostRequest createPostRequest){
+		PostResponse post = postService.createPost(createPostRequest);
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequest()
 			.path("/{postId}")
-			.buildAndExpand(postId)
+			.buildAndExpand(post.postId())
 			.toUri();
-		return ResponseEntity.created(location).body(postId);
+		return ResponseEntity.created(location).body(post);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Long> updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequest updatePostRequest){
-		Long postId = postService.updatePost(id, updatePostRequest);
-		return ResponseEntity.ok().body(postId);
+	public ResponseEntity<PostResponse> updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequest updatePostRequest){
+		PostResponse post = postService.updatePost(id, updatePostRequest);
+		return ResponseEntity.ok().body(post);
 	}
 }

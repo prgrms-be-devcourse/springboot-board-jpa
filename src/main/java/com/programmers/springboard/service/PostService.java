@@ -40,20 +40,20 @@ public class PostService {
 		return PostResponse.of(post);
 	}
 
-	public Long createPost(CreatePostRequest request) {
+	public PostResponse createPost(CreatePostRequest request) {
 		Member member = memberService.getMemberById(request.memberId());
 		Post post = postRepository.save(Post.builder()
 			.content(request.content())
 			.title(request.title())
 			.member(member)
 			.build());
-		return post.getId();
+		return PostResponse.of(post);
 	}
 
-	public Long updatePost(Long id, UpdatePostRequest request) {
+	public PostResponse updatePost(Long id, UpdatePostRequest request) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(PostNotFoundException::new);
 		post.changePost(request.title(), request.content());
-		return post.getId();
+		return PostResponse.of(post);
 	}
 }

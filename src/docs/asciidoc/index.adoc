@@ -1,0 +1,30 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+== 게시글
+:toc: left
+:toclevels: 2
+
+== 게시글 작성
+
+=== /posts
+
+.Request
+include::{snippets}/post-save/http-request.adoc[]
+include::{snippets}/post-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-save/http-response.adoc[]
+include::{snippets}/post-save/response-fields.adoc[]
+
+== 게시글 페이지 조회
+=== /api/v1/posts
+
+.Request
+include::{snippets}/get-posts-with-paging/http-request.adoc[]
+include::{snippets}/get-posts-with-paging/query-parameters.adoc[]
+
+.Response
+include::{snippets}/get-posts-with-paging/http-response.adoc[]
+include::{snippets}/get-posts-with-paging/response-fields.adoc[]

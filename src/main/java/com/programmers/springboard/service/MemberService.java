@@ -1,7 +1,5 @@
 package com.programmers.springboard.service;
 
-import java.util.NoSuchElementException;
-
 import org.springframework.stereotype.Service;
 
 import com.programmers.springboard.entity.Member;
