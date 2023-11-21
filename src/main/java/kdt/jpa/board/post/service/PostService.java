@@ -36,12 +36,14 @@ public class PostService {
     public PostResponse getById(long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new BoardException("존재하지 않는 포스트입니다"));
+
         return PostMapper.toPostResponse(post);
     }
 
     @Transactional(readOnly = true)
     public PostListResponse getPosts(Pageable pageable) {
         Page<Post> pagedPost = postRepository.findAll(pageable);
+
         return PostMapper.toPostListResponse(pagedPost);
     }
 
