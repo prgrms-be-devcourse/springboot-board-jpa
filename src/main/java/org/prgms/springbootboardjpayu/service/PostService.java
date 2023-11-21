@@ -7,6 +7,7 @@ import org.prgms.springbootboardjpayu.domain.Post;
 import org.prgms.springbootboardjpayu.domain.User;
 import org.prgms.springbootboardjpayu.dto.request.CreatePostRequest;
 import org.prgms.springbootboardjpayu.dto.request.UpdatePostRequest;
+import org.prgms.springbootboardjpayu.dto.response.ListResponse;
 import org.prgms.springbootboardjpayu.dto.response.PostResponse;
 import org.prgms.springbootboardjpayu.repository.PostRepository;
 import org.prgms.springbootboardjpayu.repository.UserRepository;
@@ -52,8 +53,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostResponse> getPosts(Pageable pageable) {
-        return postRepository.findAll(pageable)
-                .map(PostConverter::toPostResponse);
+    public ListResponse getPosts(Pageable pageable) {
+        Page<PostResponse> page = postRepository.findAll(pageable).map(PostConverter::toPostResponse);
+        return PostConverter.toPostListResponse(page);
     }
 }

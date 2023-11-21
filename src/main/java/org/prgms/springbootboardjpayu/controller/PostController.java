@@ -4,9 +4,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.prgms.springbootboardjpayu.dto.request.CreatePostRequest;
 import org.prgms.springbootboardjpayu.dto.request.UpdatePostRequest;
+import org.prgms.springbootboardjpayu.dto.response.ListResponse;
 import org.prgms.springbootboardjpayu.dto.response.PostResponse;
 import org.prgms.springbootboardjpayu.service.PostService;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +43,8 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PostResponse>> getPosts(Pageable pageable) {
-        Page<PostResponse> response = postService.getPosts(pageable);
+    public ResponseEntity<ListResponse> getPosts(Pageable pageable) {
+        ListResponse response = postService.getPosts(pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
