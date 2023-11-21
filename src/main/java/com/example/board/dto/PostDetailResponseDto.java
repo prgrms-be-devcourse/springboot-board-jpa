@@ -4,7 +4,7 @@ import com.example.board.model.Post;
 
 public record PostDetailResponseDto(
         Long postId,
-        Long userID,
+        Long userId,
         String userName,
         String title,
         String contents
