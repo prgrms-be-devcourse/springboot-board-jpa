@@ -1,14 +1,3 @@
-create table posts
-(
-    id         bigint      	  	not null auto_increment primary key,
-    title      varchar(255)   	not null,
-    content    tinytext    	  	not null,
-    created_at datetime(6)		not null,
-    created_by varchar (255),
-    updated_at datetime(6)		not null,
-    updated_by varchar(255)
-);
-
 create table users
 (
     id         bigint       	not null auto_increment primary key,
@@ -19,4 +8,17 @@ create table users
     created_by varchar (255),
     updated_at datetime(6)		not null,
     updated_by varchar(255)
+);
+
+create table posts
+(
+    id         bigint      	  	not null auto_increment primary key,
+    title      varchar(255)   	not null,
+    content    tinytext    	  	not null,
+    created_at datetime(6)		not null,
+    created_by varchar (255),
+    updated_at datetime(6)		not null,
+    updated_by varchar(255),
+    user_id    bigint           not null,
+    foreign Key (user_id) references users(id) on delete restrict
 );
