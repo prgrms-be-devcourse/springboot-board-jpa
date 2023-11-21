@@ -1,6 +1,10 @@
 package com.devcourse.springbootboardjpahi.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatException;
+
 import com.github.javafaker.Faker;
+import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.hibernate.PropertyValueException;
 import org.junit.jupiter.api.DisplayName;
@@ -10,9 +14,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatException;
 
 @DataJpaTest
 @EnableJpaAuditing
@@ -48,7 +49,7 @@ class UserTest {
 
     @DisplayName("이름이 null일 경우 예외가 발생한다.")
     @Test
-    void createNullName() throws Throwable {
+    void createNullName() {
         // given
         int age = faker.number().randomDigitNotZero();
         String hobby = faker.esports().game();
@@ -71,7 +72,7 @@ class UserTest {
 
     @DisplayName("나이가 null일 경우 예외가 발생한다.")
     @Test
-    void createNullAge() throws Throwable {
+    void createNullAge() {
         // given
         String name = faker.name().firstName();
         String hobby = faker.esports().game();
@@ -90,5 +91,49 @@ class UserTest {
                 .isInstanceOf(PropertyValueException.class)
                 .withMessageContaining("not-null property references a null or transient value")
                 .withMessageContaining("domain.User.age");
+    }
+
+    @DisplayName("")
+    @Test
+    void mappingPostsTest() {
+        // given
+        String name = faker.name().firstName();
+        int age = faker.number().randomDigitNotZero();
+        String hobby = faker.esports().game();
+        User author = User.builder()
+                .name(name)
+                .age(age)
+                .hobby(hobby)
+                .build();
+
+        entityManager.persistAndFlush(author);
+
+        // when
+        String title = faker.book().title();
+        String content = faker.harryPotter().quote();
+        Post firstPost = Post.builder()
+                .title(title)
+                .content(content)
+                .user(author)
+                .build();
+        Post secondPost = Post.builder()
+                .title(title)
+                .content(content)
+                .user(author)
+                .build();
+
+        entityManager.persistAndFlush(firstPost);
+        entityManager.persistAndFlush(secondPost);
+
+        //then
+        entityManager.clear();
+
+        User actualUser = entityManager.find(User.class, author.getId());
+        List<Long> actualPostIds = actualUser.getPosts()
+                .stream()
+                .map(Post::getId)
+                .toList();
+
+        assertThat(actualPostIds).containsExactlyInAnyOrder(firstPost.getId(), secondPost.getId());
     }
 }
