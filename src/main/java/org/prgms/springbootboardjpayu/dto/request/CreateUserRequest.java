@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 public record CreateUserRequest(
-        @NotBlank(message = "이름을 입력해주세요.")
+        @NotBlank
         @Length(min = 2, max = 30)
         String name,
         @Range(min = 0, max = 200)

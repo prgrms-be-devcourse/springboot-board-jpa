@@ -2,6 +2,7 @@ package org.prgms.springbootboardjpayu.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class Post extends BaseEntity {
 
     @JoinColumn(name = "user", referencedColumnName = "id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
     private User user;
 
     @Builder

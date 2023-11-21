@@ -1,8 +1,7 @@
 package org.prgms.springbootboardjpayu.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +24,7 @@ public class User extends BaseEntity {
 
     @Column(name = "name", nullable = false, length = 30)
     @Length(min = 2, max = 30)
+    @NotBlank
     private String name;
 
     @Column(name = "age")
@@ -47,7 +47,4 @@ public class User extends BaseEntity {
         this.setCratedAt(LocalDateTime.now());
         this.setCreatedBy(name);
     }
-
-
-
 }
