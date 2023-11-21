@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "title", nullable = false)
     private String title;
