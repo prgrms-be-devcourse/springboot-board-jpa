@@ -5,7 +5,7 @@ import lombok.Builder;
 
 import java.time.LocalDateTime;
 
-@Builder
+
 public record PostResponse(
         Long id,
         String title,
@@ -14,4 +14,8 @@ public record PostResponse(
         LocalDateTime createdAt,
         UserProfile user
 ) {
+
+        @Builder
+        public PostResponse {
+        }
 }
