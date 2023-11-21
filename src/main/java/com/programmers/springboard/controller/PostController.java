@@ -1,6 +1,7 @@
 package com.programmers.springboard.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,10 +34,9 @@ public class PostController {
 		return postService.getPostById(id);
 	}
 
-	@GetMapping("/")
-	public PostResponse getPosts(@RequestParam(required = false, value = "1", name = "page") Integer page){
-		postService.getPosts(page);
-		return null;
+	@GetMapping
+	public List<PostResponse> getPosts(@RequestParam(required = false, value = "page", defaultValue = "1") Integer page){
+		return postService.getPosts(page);
 	}
 
 	@PostMapping

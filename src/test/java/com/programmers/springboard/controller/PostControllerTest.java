@@ -7,6 +7,7 @@ import com.programmers.springboard.entity.Post;
 import com.programmers.springboard.repository.MemberRepository;
 import com.programmers.springboard.request.CreatePostRequest;
 import com.programmers.springboard.service.PostService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,18 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -32,6 +39,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest
+@Transactional
 public class PostControllerTest {
 
     @Autowired
@@ -84,11 +92,32 @@ public class PostControllerTest {
     }
 
     @Test
-    void 포스트_페이징_조회() {
+    void 포스트_페이징_조회() throws Exception {
         // given
+        Member member = memberRepository.save(Member.builder().name("홍길동").age(20).hobby("축구").build());
+
+        for(int i=0; i<11; i++) {
+            postService.createPost(new CreatePostRequest("test", "test", member.getId()));
+        }
 
         // when // then
-        mockMvc.perform()
+        mockMvc.perform(get("/api/v1/posts")
+                        .param("page", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", Matchers.is(10)))
+                .andDo(print())
+                .andDo(document("get-posts-with-paging",
+                        queryParameters(
+                                parameterWithName("page").description("page")
+                        ),
+                        responseFields(
+                                fieldWithPath("[].postId").type(JsonFieldType.NUMBER).description("postId"),
+                                fieldWithPath("[].title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("[].content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("memberId"),
+                                fieldWithPath("[].memberName").type(JsonFieldType.STRING).description("memberName")
+                        )
+                ));
     }
 
 }

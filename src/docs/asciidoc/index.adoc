@@ -18,5 +18,13 @@ include::{snippets}/post-save/request-fields.adoc[]
 include::{snippets}/post-save/http-response.adoc[]
 include::{snippets}/post-save/response-fields.adoc[]
 
-== 게시글 수정
+== 게시글 페이지 조회
+=== /api/v1/posts
 
+.Request
+include::{snippets}/get-posts-with-paging/http-request.adoc[]
+include::{snippets}/get-posts-with-paging/query-parameters.adoc[]
+
+.Response
+include::{snippets}/get-posts-with-paging/http-response.adoc[]
+include::{snippets}/get-posts-with-paging/response-fields.adoc[]
