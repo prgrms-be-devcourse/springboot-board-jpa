@@ -15,3 +15,6 @@ spring:
         query.in_clause_parameter_padding: true
         hbm2ddl:
           auto: create
+
+  messages:
+    basename: errors
