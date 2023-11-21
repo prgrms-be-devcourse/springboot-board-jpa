@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.prgms.springbootboardjpayu.controller.PostController;
 import org.prgms.springbootboardjpayu.dto.request.CreatePostRequest;
+import org.prgms.springbootboardjpayu.dto.request.UpdatePostRequest;
 import org.prgms.springbootboardjpayu.dto.response.ListResponse;
 import org.prgms.springbootboardjpayu.dto.response.PostResponse;
 import org.prgms.springbootboardjpayu.dto.response.UserProfile;
@@ -24,15 +25,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class PostControllerDocsTest extends RestDocsSupport{
-
+class PostControllerDocsTest extends RestDocsSupport {
     private final PostService postService = mock(PostService.class);
 
     @Override
@@ -51,12 +51,14 @@ class PostControllerDocsTest extends RestDocsSupport{
 
         // when then
         mockMvc.perform(
-                post("/api/v1/posts")
-                        .content(objectMapper.writeValueAsString(request))
-                        .contentType(MediaType.APPLICATION_JSON)
-            )
-            .andExpect(status().isCreated())
+                        post("/api/v1/posts")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isCreated())
                 .andDo(document("post-create",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("title").type(STRING).description("Title"),
                                 fieldWithPath("content").type(STRING).description("Content"),
@@ -71,7 +73,78 @@ class PostControllerDocsTest extends RestDocsSupport{
                                 fieldWithPath("user.id").type(NUMBER).description("User Id"),
                                 fieldWithPath("user.name").type(STRING).description("User Name")
                         )
-                        ));
+                ));
+    }
+
+    @DisplayName("게시물 수정 API")
+    @Test
+    void updatePost() throws Exception {
+        // given
+        Long id = 1L;
+        UpdatePostRequest updateRequest = new UpdatePostRequest("제목 수정", "내용 수정");
+
+        PostResponse response = createPostResponse(1L);
+        given(postService.updatePost(id, updateRequest)).willReturn(response);
+
+        // when then
+        mockMvc.perform(
+                        patch("/api/v1/posts/{id}", response.id())
+                                .content(objectMapper.writeValueAsString(updateRequest))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("post-update",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                requestFields(
+                                        fieldWithPath("title").type(STRING).description("Title"),
+                                        fieldWithPath("content").type(STRING).description("Content")
+                                ),
+                                responseFields(
+                                        fieldWithPath("id").type(NUMBER).description("Post Id"),
+                                        fieldWithPath("title").type(STRING).description("Title"),
+                                        fieldWithPath("content").type(STRING).description("Content"),
+                                        fieldWithPath("createdAt").type(ARRAY).description("Created At"),
+                                        fieldWithPath("user").type(OBJECT).description("User"),
+                                        fieldWithPath("user.id").type(NUMBER).description("User Id"),
+                                        fieldWithPath("user.name").type(STRING).description("User Name")
+                                ),
+                                pathParameters(
+                                        parameterWithName("id").description("Post ID")
+                                )
+                        )
+                );
+    }
+
+    @DisplayName("게시물 단건 조회 API")
+    @Test
+    void getPost() throws Exception {
+        // given
+        PostResponse response = createPostResponse(1L);
+        given(postService.getPost(response.id())).willReturn(response);
+
+        // when then
+        mockMvc.perform(
+                        get("/api/v1/posts/{id}", response.id())
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("post-retrieve",
+                                preprocessResponse(prettyPrint()),
+                                responseFields(
+                                        fieldWithPath("id").type(NUMBER).description("Post Id"),
+                                        fieldWithPath("title").type(STRING).description("Title"),
+                                        fieldWithPath("content").type(STRING).description("Content"),
+                                        fieldWithPath("createdAt").type(ARRAY).description("Created At"),
+                                        fieldWithPath("user").type(OBJECT).description("User"),
+                                        fieldWithPath("user.id").type(NUMBER).description("User Id"),
+                                        fieldWithPath("user.name").type(STRING).description("User Name")
+                                ),
+                                pathParameters(
+                                        parameterWithName("id").description("Post ID")
+                                )
+                        )
+                );
     }
 
     @DisplayName("게시물 다건 조회 API")
@@ -79,8 +152,8 @@ class PostControllerDocsTest extends RestDocsSupport{
     void getPosts() throws Exception {
         // given
         List<PostResponse> posts = Arrays.asList(
-            createPostResponse(1L),
-            createPostResponse(2L)
+                createPostResponse(1L),
+                createPostResponse(2L)
         );
         Pageable pageable = PageRequest.of(0, 5);
         Page<PostResponse> response = new PageImpl<>(posts, pageable, posts.size());
@@ -94,12 +167,14 @@ class PostControllerDocsTest extends RestDocsSupport{
                 .build());
 
         // when then
-        mockMvc.perform(get("/api/v1/posts")
-                        .param("page", String.valueOf(pageable.getPageNumber()))
-                        .param("size", String.valueOf(pageable.getPageSize()))
-                        .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                        get("/api/v1/posts")
+                                .param("page", String.valueOf(pageable.getPageNumber()))
+                                .param("size", String.valueOf(pageable.getPageSize()))
+                                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("posts-retrieve",
+                        preprocessResponse(prettyPrint()),
                         queryParameters(
                                 parameterWithName("page").description("페이지"),
                                 parameterWithName("size").description("페이지 크기")
