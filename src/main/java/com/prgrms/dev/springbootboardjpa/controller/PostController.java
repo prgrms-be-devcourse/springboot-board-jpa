@@ -34,9 +34,8 @@ public class PostController {
     }
 
     //수정
-    @PostMapping
-    public void update(@RequestBody PostRequestDto requestDto, @RequestParam Long id) {
+    @PostMapping("/{id}")
+    public void update(@RequestBody PostRequestDto requestDto, @PathVariable Long id) {
         PostDto update = postService.update(requestDto, id);
     }
-
 }
