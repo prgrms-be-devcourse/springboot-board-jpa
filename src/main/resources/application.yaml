@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:33306/jpa_board
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
