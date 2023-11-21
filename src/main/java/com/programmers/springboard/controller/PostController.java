@@ -40,19 +40,19 @@ public class PostController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Long> createPost(@Valid @RequestBody CreatePostRequest createPostRequest){
-		Long postId = postService.createPost(createPostRequest);
+	public ResponseEntity<PostResponse> createPost(@Valid @RequestBody CreatePostRequest createPostRequest){
+		PostResponse post = postService.createPost(createPostRequest);
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequest()
 			.path("/{postId}")
-			.buildAndExpand(postId)
+			.buildAndExpand(post.postId())
 			.toUri();
-		return ResponseEntity.created(location).body(postId);
+		return ResponseEntity.created(location).body(post);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Long> updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequest updatePostRequest){
-		Long postId = postService.updatePost(id, updatePostRequest);
-		return ResponseEntity.ok().body(postId);
+	public ResponseEntity<PostResponse> updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequest updatePostRequest){
+		PostResponse post = postService.updatePost(id, updatePostRequest);
+		return ResponseEntity.ok().body(post);
 	}
 }
