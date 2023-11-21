@@ -53,7 +53,9 @@ public class PostService {
     }
 
     public ListResponse getPosts(Pageable pageable) {
-        Page<PostResponse> page = postRepository.findAll(pageable).map(PostConverter::toPostResponse);
+        Page<PostResponse> page = postRepository
+                .findAll(pageable)
+                .map(PostConverter::toPostResponse);
         return PostConverter.toPostListResponse(page);
     }
 }

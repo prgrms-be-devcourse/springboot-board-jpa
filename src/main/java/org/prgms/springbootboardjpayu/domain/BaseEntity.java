@@ -1,5 +1,6 @@
 package org.prgms.springbootboardjpayu.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -15,5 +16,6 @@ public class BaseEntity {
     private String createdBy;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP", updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime cratedAt;
 }
