@@ -10,13 +10,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.prgms.springbootboardjpayu.dto.request.CreatePostRequest;
 import org.prgms.springbootboardjpayu.dto.request.UpdatePostRequest;
+import org.prgms.springbootboardjpayu.dto.response.ListResponse;
 import org.prgms.springbootboardjpayu.dto.response.PostResponse;
 import org.prgms.springbootboardjpayu.dto.response.UserProfile;
 import org.prgms.springbootboardjpayu.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -150,7 +150,7 @@ class PostControllerTest {
     @Test
     void getPosts() throws Exception {
         // given
-        Page<PostResponse> responses = Page.empty();
+        ListResponse responses = ListResponse.builder().build();
         given(postService.getPosts(any())).willReturn(responses);
         PageRequest pageRequest = PageRequest.of(0, 5);
 

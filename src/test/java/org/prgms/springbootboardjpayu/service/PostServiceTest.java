@@ -10,11 +10,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.prgms.springbootboardjpayu.domain.User;
 import org.prgms.springbootboardjpayu.dto.request.CreatePostRequest;
 import org.prgms.springbootboardjpayu.dto.request.UpdatePostRequest;
+import org.prgms.springbootboardjpayu.dto.response.ListResponse;
 import org.prgms.springbootboardjpayu.dto.response.PostResponse;
 import org.prgms.springbootboardjpayu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -175,10 +175,10 @@ class PostServiceTest {
         PageRequest pageRequest = PageRequest.of(0, 5);
 
         // when
-        Page<PostResponse> retrievedPosts = postService.getPosts(pageRequest);
+        ListResponse retrievedPosts = postService.getPosts(pageRequest);
 
         // then
-        assertThat(retrievedPosts).hasSize(2);
+        assertThat(retrievedPosts.content()).hasSize(2);
     }
 
     private User createUser(String name) {
