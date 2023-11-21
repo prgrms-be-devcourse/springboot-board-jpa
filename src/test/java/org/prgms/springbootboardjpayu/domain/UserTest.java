@@ -1,10 +1,9 @@
 package org.prgms.springbootboardjpayu.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class UserTest {
     @DisplayName("사용자를 생성할 수 있다.")

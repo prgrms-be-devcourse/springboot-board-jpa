@@ -65,7 +65,7 @@ class PostServiceTest {
                 .hasMessage("존재하지 않는 유저입니다.");
     }
 
-    @DisplayName("작성자가 없으면 게시글 생성에 실패한다.")
+    @DisplayName("작성자를 입력하지 않아 게시글 생성에 실패한다.")
     @Test
     void createPostWithoutUser() {
         // given
@@ -76,14 +76,14 @@ class PostServiceTest {
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
-    @DisplayName("제목이 1 ~ 30자 범위를 초과로 게시글 생성에 실패한다.")
+    @DisplayName("제목이 1 ~ 30자 범위를 초과해 게시글 생성에 실패한다.")
     @ParameterizedTest(name = "{index}. {0} 제목의 글자 수 범위를 초과한다.")
     @EmptySource
     @MethodSource("provideLongTitle")
-    void createPostWithOutOfRangeTitle(String title) {
+    void createPostWithOutOfRangeTitle(String outOfLengthTitle) {
         // given
         User user = createUser("예림");
-        CreatePostRequest request = new CreatePostRequest(title, "내용", user.getId());
+        CreatePostRequest request = new CreatePostRequest(outOfLengthTitle, "내용", user.getId());
 
         // when then
         assertThatThrownBy(() -> postService.createPost(request))
@@ -109,7 +109,7 @@ class PostServiceTest {
                 .containsExactly(newTitle, newContent);
     }
 
-    @DisplayName("게시글이 없으면 게시글 수정에 실패한다.")
+    @DisplayName("게시글이 존재하지 않아 게시글 수정에 실패한다.")
     @Test
     void updatePostWithNonExistPost() {
         // given
@@ -122,16 +122,16 @@ class PostServiceTest {
                 .hasMessage("존재하지 않는 게시글입니다.");
     }
 
-    @DisplayName("수정된 제목이 1 ~ 30자 범위를 초과로 게시글 수정에 실패한다.")
+    @DisplayName("수정된 제목이 1 ~ 30자 범위를 초과해 게시글 수정에 실패한다.")
     @ParameterizedTest(name = "{index}. {0}은 제목의 범위를 초과한다.")
     @EmptySource
     @MethodSource("provideLongTitle")
-    void updatePostWithOutOfRangeTitle(String title) {
+    void updatePostWithOutOfRangeTitle(String outOfLengthTitle) {
         // given
         User user = createUser("예림");
         PostResponse savedPost = createPost("제목", "내용", user);
 
-        UpdatePostRequest updateRequest = new UpdatePostRequest(title, "내용 수정");
+        UpdatePostRequest updateRequest = new UpdatePostRequest(outOfLengthTitle, "내용 수정");
 
         // when then
         assertThatThrownBy(() -> postService.updatePost(savedPost.id(), updateRequest))
@@ -170,8 +170,8 @@ class PostServiceTest {
     void getPosts() {
         // given
         User user = createUser("예림");
-        PostResponse post1 = createPost("제목1", "내용1", user);
-        PostResponse post2 = createPost("제목2", "내용2", user);
+        createPost("제목1", "내용1", user);
+        createPost("제목2", "내용2", user);
         PageRequest pageRequest = PageRequest.of(0, 5);
 
         // when
@@ -188,8 +188,7 @@ class PostServiceTest {
 
     private PostResponse createPost(String title, String content, User user) {
         CreatePostRequest request = new CreatePostRequest(title, content, user.getId());
-        PostResponse savedPost = postService.createPost(request);
-        return savedPost;
+        return postService.createPost(request);
     }
 
     private static List<String> provideLongTitle() {

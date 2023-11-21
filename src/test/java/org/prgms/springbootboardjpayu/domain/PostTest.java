@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PostTest {
-
     @DisplayName("게시글을 생성할 수 있다.")
     @Test
     void createPost() {
@@ -30,5 +29,4 @@ class PostTest {
         assertThat(savedPost).extracting("title", "content")
                 .containsExactly(title, content);
     }
-
 }

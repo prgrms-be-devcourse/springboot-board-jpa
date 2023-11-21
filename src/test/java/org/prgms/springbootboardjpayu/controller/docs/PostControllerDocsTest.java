@@ -45,7 +45,7 @@ class PostControllerDocsTest extends RestDocsSupport {
     void createPost() throws Exception {
         // given
         PostResponse response = createPostResponse(1L);
-        given(postService.createPost(any())).willReturn(response);
+        given(postService.createPost(any(CreatePostRequest.class))).willReturn(response);
 
         CreatePostRequest request = new CreatePostRequest("제목", "내용", 1L);
 
@@ -68,7 +68,7 @@ class PostControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("id").type(NUMBER).description("Post Id"),
                                 fieldWithPath("title").type(STRING).description("Title"),
                                 fieldWithPath("content").type(STRING).description("Content"),
-                                fieldWithPath("createdAt").type(ARRAY).description("Created At"),
+                                fieldWithPath("createdAt").type(STRING).description("Created At"),
                                 fieldWithPath("user").type(OBJECT).description("User"),
                                 fieldWithPath("user.id").type(NUMBER).description("User Id"),
                                 fieldWithPath("user.name").type(STRING).description("User Name")
@@ -80,11 +80,10 @@ class PostControllerDocsTest extends RestDocsSupport {
     @Test
     void updatePost() throws Exception {
         // given
-        Long id = 1L;
         UpdatePostRequest updateRequest = new UpdatePostRequest("제목 수정", "내용 수정");
 
         PostResponse response = createPostResponse(1L);
-        given(postService.updatePost(id, updateRequest)).willReturn(response);
+        given(postService.updatePost(response.id(), updateRequest)).willReturn(response);
 
         // when then
         mockMvc.perform(
@@ -104,7 +103,7 @@ class PostControllerDocsTest extends RestDocsSupport {
                                         fieldWithPath("id").type(NUMBER).description("Post Id"),
                                         fieldWithPath("title").type(STRING).description("Title"),
                                         fieldWithPath("content").type(STRING).description("Content"),
-                                        fieldWithPath("createdAt").type(ARRAY).description("Created At"),
+                                        fieldWithPath("createdAt").type(STRING).description("Created At"),
                                         fieldWithPath("user").type(OBJECT).description("User"),
                                         fieldWithPath("user.id").type(NUMBER).description("User Id"),
                                         fieldWithPath("user.name").type(STRING).description("User Name")
@@ -131,17 +130,17 @@ class PostControllerDocsTest extends RestDocsSupport {
                 .andExpect(status().isOk())
                 .andDo(document("post-retrieve",
                                 preprocessResponse(prettyPrint()),
+                                pathParameters(
+                                        parameterWithName("id").description("Post ID")
+                                ),
                                 responseFields(
                                         fieldWithPath("id").type(NUMBER).description("Post Id"),
                                         fieldWithPath("title").type(STRING).description("Title"),
                                         fieldWithPath("content").type(STRING).description("Content"),
-                                        fieldWithPath("createdAt").type(ARRAY).description("Created At"),
+                                        fieldWithPath("createdAt").type(STRING).description("Created At"),
                                         fieldWithPath("user").type(OBJECT).description("User"),
                                         fieldWithPath("user.id").type(NUMBER).description("User Id"),
                                         fieldWithPath("user.name").type(STRING).description("User Name")
-                                ),
-                                pathParameters(
-                                        parameterWithName("id").description("Post ID")
                                 )
                         )
                 );
@@ -183,7 +182,7 @@ class PostControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("content[].id").type(NUMBER).description("Post Id"),
                                 fieldWithPath("content[].title").type(STRING).description("Title"),
                                 fieldWithPath("content[].content").type(STRING).description("Content"),
-                                fieldWithPath("content[].createdAt").type(ARRAY).description("Created At"),
+                                fieldWithPath("content[].createdAt").type(STRING).description("Created At"),
                                 fieldWithPath("content[].user").type(OBJECT).description("User"),
                                 fieldWithPath("content[].user.id").type(NUMBER).description("User Id"),
                                 fieldWithPath("content[].user.name").type(STRING).description("User Name"),
@@ -197,13 +196,12 @@ class PostControllerDocsTest extends RestDocsSupport {
 
 
     private static PostResponse createPostResponse(Long id) {
-        PostResponse response = PostResponse.builder()
+        return PostResponse.builder()
                 .id(id)
                 .title("제목")
                 .content("내용")
                 .createdAt(LocalDateTime.now())
                 .user(UserProfile.builder().id(1L).name("의진").build())
                 .build();
-        return response;
     }
 }

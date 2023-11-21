@@ -18,9 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -40,12 +42,12 @@ class PostControllerTest {
     @MockBean
     private PostService postService;
 
-    @DisplayName("게시물을 생성할 수 있다.")
+    @DisplayName("게시물 생성에 성공한다.")
     @Test
     void createPost() throws Exception {
         // given
-        PostResponse response = createPostResponse();
-        given(postService.createPost(any())).willReturn(response);
+        PostResponse response = createPostResponse(1L);
+        given(postService.createPost(any(CreatePostRequest.class))).willReturn(response);
 
         CreatePostRequest request = new CreatePostRequest("제목", "내용", 1L);
 
@@ -61,8 +63,8 @@ class PostControllerTest {
     @Test
     void createPostWithoutUser() throws Exception {
         // given
-        PostResponse response = createPostResponse();
-        given(postService.createPost(any())).willReturn(response);
+        PostResponse response = createPostResponse(1L);
+        given(postService.createPost(any(CreatePostRequest.class))).willReturn(response);
 
         CreatePostRequest request = new CreatePostRequest("제목", "내용", null);
 
@@ -74,16 +76,16 @@ class PostControllerTest {
         ).andExpect(status().isBadRequest());
     }
 
-    @DisplayName("제목이 1 ~ 30자 범위를 초과로 게시글 생성에 실패한다.")
+    @DisplayName("제목이 1 ~ 30자 범위를 초과해 게시글 생성에 실패한다.")
     @ParameterizedTest(name = "{index}. {0} 제목의 글자 수 범위를 초과한다.")
     @EmptySource
     @MethodSource("provideLongTitle")
-    void createPostWithOutOfRangeTitle(String title) throws Exception {
+    void createPostWithOutOfRangeTitle(String outOfLengthTitle) throws Exception {
         // given
-        PostResponse response = createPostResponse();
-        given(postService.createPost(any())).willReturn(response);
+        PostResponse response = createPostResponse(1L);
+        given(postService.createPost(any(CreatePostRequest.class))).willReturn(response);
 
-        CreatePostRequest request = new CreatePostRequest(title, "내용", null);
+        CreatePostRequest request = new CreatePostRequest(outOfLengthTitle, "내용", null);
 
         // when then
         mockMvc.perform(
@@ -97,15 +99,14 @@ class PostControllerTest {
     @Test
     void updatePost() throws Exception {
         // given
-        Long id = 1L;
         UpdatePostRequest updateRequest = new UpdatePostRequest("제목 수정", "내용 수정");
 
-        PostResponse response = createPostResponse();
-        given(postService.updatePost(id, updateRequest)).willReturn(response);
+        PostResponse response = createPostResponse(1L);
+        given(postService.updatePost(response.id(), updateRequest)).willReturn(response);
 
         // when then
         mockMvc.perform(
-                patch("/api/v1/posts/{id}", id)
+                patch("/api/v1/posts/{id}", response.id())
                         .content(objectMapper.writeValueAsString(updateRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
@@ -115,17 +116,16 @@ class PostControllerTest {
     @ParameterizedTest
     @EmptySource
     @MethodSource("provideLongTitle")
-    void updatePostWithOutOfRangeTitle(String title) throws Exception {
+    void updatePostWithOutOfRangeTitle(String outOfLengthTitle) throws Exception {
         // given
-        Long id = 1L;
-        UpdatePostRequest updateRequest = new UpdatePostRequest(title, "내용 수정");
+        UpdatePostRequest updateRequest = new UpdatePostRequest(outOfLengthTitle, "내용 수정");
 
-        PostResponse response = createPostResponse();
-        given(postService.updatePost(id, updateRequest)).willReturn(response);
+        PostResponse response = createPostResponse(1L);
+        given(postService.updatePost(response.id(), updateRequest)).willReturn(response);
 
         // when then
         mockMvc.perform(
-                patch("/api/v1/posts/{id}", id)
+                patch("/api/v1/posts/{id}", response.id())
                         .content(objectMapper.writeValueAsString(updateRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest());
@@ -135,13 +135,12 @@ class PostControllerTest {
     @Test
     void getPost() throws Exception {
         // given
-        Long id = 1L;
-        PostResponse response = createPostResponse();
-        given(postService.getPost(id)).willReturn(response);
+        PostResponse response = createPostResponse(1L);
+        given(postService.getPost(response.id())).willReturn(response);
 
         // when then
         mockMvc.perform(
-                get("/api/v1/posts/{id}", id)
+                get("/api/v1/posts/{id}", response.id())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
     }
@@ -151,7 +150,7 @@ class PostControllerTest {
     void getPosts() throws Exception {
         // given
         ListResponse responses = ListResponse.builder().build();
-        given(postService.getPosts(any())).willReturn(responses);
+        given(postService.getPosts(any(Pageable.class))).willReturn(responses);
         PageRequest pageRequest = PageRequest.of(0, 5);
 
         // when then
@@ -162,13 +161,14 @@ class PostControllerTest {
         ).andExpect(status().isOk());
     }
 
-    private static PostResponse createPostResponse() {
-        PostResponse response = PostResponse.builder()
-                .id(1L)
+    private static PostResponse createPostResponse(Long id) {
+        return PostResponse.builder()
+                .id(id)
                 .title("제목")
-                .user(UserProfile.builder().build())
+                .content("내용")
+                .createdAt(LocalDateTime.now())
+                .user(UserProfile.builder().id(1L).name("의진").build())
                 .build();
-        return response;
     }
 
     private static List<String> provideLongTitle() {
