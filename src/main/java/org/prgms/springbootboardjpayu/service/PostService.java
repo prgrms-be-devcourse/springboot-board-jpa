@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Validated
 public class PostService {
@@ -44,7 +45,6 @@ public class PostService {
         return PostConverter.toPostResponse(post);
     }
 
-    @Transactional(readOnly = true)
     public PostResponse getPost(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
@@ -52,7 +52,6 @@ public class PostService {
         return PostConverter.toPostResponse(post);
     }
 
-    @Transactional(readOnly = true)
     public ListResponse getPosts(Pageable pageable) {
         Page<PostResponse> page = postRepository.findAll(pageable).map(PostConverter::toPostResponse);
         return PostConverter.toPostListResponse(page);
