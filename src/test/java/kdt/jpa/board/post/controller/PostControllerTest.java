@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.PayloadDocumentation;
 import org.springframework.restdocs.request.RequestDocumentation;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
@@ -79,7 +78,7 @@ class PostControllerTest extends ApiTestSupport {
         //when
         ResultActions perform = mockMvc.perform(
                 RestDocumentationRequestBuilders
-                        .get("/api/posts/" + post.getId())
+                        .get("/api/posts/{id}", post.getId())
         );
 
         //then
