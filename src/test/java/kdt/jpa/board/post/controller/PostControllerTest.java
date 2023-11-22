@@ -1,40 +1,30 @@
 package kdt.jpa.board.post.controller;
 
-import kdt.jpa.board.common.TestContainerSupport;
-import kdt.jpa.board.post.domain.Post;
-import kdt.jpa.board.post.fixture.PostFixture;
-import kdt.jpa.board.post.repository.PostRepository;
-import kdt.jpa.board.post.service.PostService;
-import kdt.jpa.board.post.service.dto.request.CreatePostRequest;
-import kdt.jpa.board.post.service.dto.request.EditPostRequest;
-import kdt.jpa.board.post.service.dto.response.PostResponse;
-import kdt.jpa.board.user.domain.User;
-import kdt.jpa.board.user.fixture.UserFixture;
-import kdt.jpa.board.user.repository.UserRepository;
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import kdt.jpa.board.common.TestContainerSupport;
+import kdt.jpa.board.post.domain.Post;
+import kdt.jpa.board.post.repository.PostRepository;
+import kdt.jpa.board.post.service.dto.request.CreatePostRequest;
+import kdt.jpa.board.post.service.dto.request.EditPostRequest;
+import kdt.jpa.board.user.domain.User;
+import kdt.jpa.board.user.fixture.UserFixture;
+import kdt.jpa.board.user.repository.UserRepository;
 
 @SpringBootTest
 @Transactional
@@ -127,7 +117,7 @@ class PostControllerTest extends TestContainerSupport {
         //when
         ResultActions perform = mockMvc.perform(
                 MockMvcRequestBuilders
-                        .post("/api/posts" + post.getId())
+                        .patch("/api/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
         );
