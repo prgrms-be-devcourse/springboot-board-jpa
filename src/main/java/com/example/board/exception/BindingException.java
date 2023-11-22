@@ -1,13 +1,21 @@
 package com.example.board.exception;
 
-import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
-public class BindingException extends RuntimeException{
-    private String bindingMessages;
+import java.util.List;
+
+@RequiredArgsConstructor
+@Getter
+public class BindingException extends RuntimeException {
+    private final List<String> bindingMessages;
 
     @Override
     public String getMessage() {
-        return this.bindingMessages;
+        String errorMessages = "";
+        for (String message : bindingMessages) {
+            errorMessages += (message + System.lineSeparator());
+        }
+        return errorMessages;
     }
 }
