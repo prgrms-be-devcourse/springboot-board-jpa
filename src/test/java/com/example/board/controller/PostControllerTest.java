@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureRestDocs
@@ -46,12 +44,12 @@ class PostControllerTest {
     @Transactional
     void postSuccess() throws Exception {
         //given
-        PostDto postDto = new PostDto(1, "test2", "test Contents2");
+        PostDto postDto = new PostDto(1L, "test2", "test Contents2");
 
         //when, then
         mockMvc.perform(post("http://localhost:8080/api/v1/posts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(postDto)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(postDto)))
                 .andExpect(status().isOk())
                 .andDo(document("post-save",
                         requestFields(
@@ -72,8 +70,8 @@ class PostControllerTest {
     @Transactional
     void getSuccess() throws Exception {
         //given
-        postService.save(new PostDto(1, "testTitle1", "hihihihihihihih1"));
-        postService.save(new PostDto(1, "testTitle2", "hihihihihihihih2"));
+        postService.save(new PostDto(1L, "testTitle1", "hihihihihihihih1"));
+        postService.save(new PostDto(1L, "testTitle2", "hihihihihihihih2"));
 
         //when, then
         mockMvc.perform(get("http://localhost:8080/api/v1/posts")
@@ -84,8 +82,10 @@ class PostControllerTest {
                                 fieldWithPath("code").type(JsonFieldType.NUMBER).description("statusCode"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("contents-list"),
                                 fieldWithPath("data.content[]").type(JsonFieldType.ARRAY).description("contents-list"),
+                                fieldWithPath("data.content[].postId").type(JsonFieldType.NUMBER).description("postId"),
                                 fieldWithPath("data.content[].userName").type(JsonFieldType.STRING).description("username"),
                                 fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("data.content[].postId").type(JsonFieldType.NUMBER).description("postId"),
                                 fieldWithPath("data.content[].userName").type(JsonFieldType.STRING).description("username"),
                                 fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("title"),
                                 fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("pageable"),
@@ -94,7 +94,7 @@ class PostControllerTest {
                                 fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("sort"),
                                 fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("empty"),
                                 fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("unsorted"),
-                                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN   ).description("sorted"),
+                                fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("sorted"),
                                 fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("offset"),
                                 fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("paged"),
                                 fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("unpaged"),
@@ -111,7 +111,7 @@ class PostControllerTest {
                                 fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("first"),
                                 fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("unpaged"),
                                 fieldWithPath("isSuccess").type(JsonFieldType.STRING).description("isSuccess")
-                                )
+                        )
                 ));
     }
 
@@ -120,7 +120,7 @@ class PostControllerTest {
     @Transactional
     void getPostByIdSuccess() throws Exception {
         //given
-        Long savedContentsId = postService.save(new PostDto(1, "testTitle", "hihihihihihihih"));
+        Long savedContentsId = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
 
         //when, then
         mockMvc.perform(get("http://localhost:8080/api/v1/posts/" + savedContentsId)
@@ -145,7 +145,7 @@ class PostControllerTest {
     @Transactional
     void updatePostSuccess() throws Exception {
         //given
-        Long savedContents = postService.save(new PostDto(1, "testTitle", "hihihihihihihih"));
+        Long savedContents = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
 
         PostUpdateDto postUpdateDto = new PostUpdateDto(1L, "test2", "test Contents2");
 

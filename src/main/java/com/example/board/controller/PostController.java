@@ -11,10 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static com.example.board.util.Validation.bindChecking;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts")
@@ -22,29 +26,12 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
     private final PostService postService;
 
-    private static void bindChecking(BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            StringBuilder sb = new StringBuilder();
-            bindingResult.getAllErrors().forEach(objectError -> {
-
-                FieldError field = (FieldError) objectError;
-                String message = objectError.getDefaultMessage();
-
-                System.out.println("field :" + field.getField());
-                System.out.println("message :" + message);
-
-                sb.append("field :").append(field.getField());
-                sb.append("message :").append(message);
-
-            });
-
-            throw new BindingException(sb.toString());
-        }
-    }
-
     @PostMapping
     public Response<Long> save(@RequestBody @Validated PostDto postDto, BindingResult bindingResult) {
-        bindChecking(bindingResult);
+        List<String> bindingErrors = bindChecking(bindingResult);
+        if (!bindingErrors.isEmpty()) {
+            throw new BindingException(bindingErrors);
+        }
         return Response.success(postService.save(postDto));
     }
 
