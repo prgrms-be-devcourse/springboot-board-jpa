@@ -13,4 +13,9 @@ public class GlobalExceptionHandler {
         return ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
+    @ExceptionHandler(CustomException.class)
+    public ApiResponse<String> handleUserException(CustomException e) {
+        return ApiResponse.fail(e.getErrorCode().getStatus(), e.getErrorCode().getMessage());
+    }
+
 }
