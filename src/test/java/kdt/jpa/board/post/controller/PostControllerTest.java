@@ -9,8 +9,6 @@ import kdt.jpa.board.common.support.ApiTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.PayloadDocumentation;
@@ -18,10 +16,8 @@ import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
-import kdt.jpa.board.common.TestContainerSupport;
 import kdt.jpa.board.post.domain.Post;
 import kdt.jpa.board.post.repository.PostRepository;
 import kdt.jpa.board.post.service.dto.request.CreatePostRequest;
@@ -82,17 +78,29 @@ class PostControllerTest extends ApiTestSupport {
 
         //when
         ResultActions perform = mockMvc.perform(
-                MockMvcRequestBuilders
+                RestDocumentationRequestBuilders
                         .get("/api/posts/" + post.getId())
         );
 
         //then
         perform.andExpectAll(
-                status().isOk(),
-                jsonPath("$.title").value(post.getTitle()),
-                jsonPath("$.content").value(post.getContent()),
-                jsonPath("$.userName").value(user.getName())
-        );
+                        status().isOk(),
+                        jsonPath("$.title").value(post.getTitle()),
+                        jsonPath("$.content").value(post.getContent()),
+                        jsonPath("$.userName").value(user.getName()))
+                .andDo(
+                        document
+                                .document(
+                                        RequestDocumentation.pathParameters(
+                                                RequestDocumentation.parameterWithName("id").description("검색할 게시물 아이디")
+                                        ),
+                                        PayloadDocumentation.responseFields(
+                                                PayloadDocumentation.fieldWithPath("title").description("제목"),
+                                                PayloadDocumentation.fieldWithPath("content").description("내용"),
+                                                PayloadDocumentation.fieldWithPath("userName").description("작성자 이름")
+                                        )
+                                )
+                );
     }
 
     @Test

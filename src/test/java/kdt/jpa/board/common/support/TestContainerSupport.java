@@ -1,4 +1,4 @@
-package kdt.jpa.board.common;
+package kdt.jpa.board.common.support;
 
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.MySQLContainer;

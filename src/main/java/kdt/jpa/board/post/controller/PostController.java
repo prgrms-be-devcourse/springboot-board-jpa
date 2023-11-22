@@ -6,6 +6,7 @@ import kdt.jpa.board.post.service.dto.request.EditPostRequest;
 import kdt.jpa.board.post.service.dto.response.PostListResponse;
 import kdt.jpa.board.post.service.dto.response.PostResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class PostController {
         return ResponseEntity.ok(postId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path = "id")
     public ResponseEntity<PostResponse> getPost(@PathVariable Long id) {
         PostResponse postResponse = postService.getById(id);
 
