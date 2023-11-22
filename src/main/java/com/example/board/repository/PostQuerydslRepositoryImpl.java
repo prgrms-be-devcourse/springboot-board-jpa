@@ -1,16 +1,17 @@
 package com.example.board.repository;
 
 import com.example.board.domain.Post;
-import com.example.board.domain.QUser;
 import com.example.board.dto.request.PostSearchCondition;
-import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.example.board.domain.QPost.post;
 import static com.example.board.domain.QUser.user;
@@ -18,36 +19,37 @@ import static com.example.board.domain.QUser.user;
 @Repository
 public class PostQuerydslRepositoryImpl implements PostQuerydslRepository {
 
-    private final JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory queryFactory;
 
-    public PostQuerydslRepositoryImpl(EntityManager em) {
-        this.jpaQueryFactory = new JPAQueryFactory(em);
+    public PostQuerydslRepositoryImpl(JPAQueryFactory queryFactory) {
+        this.queryFactory = queryFactory;
     }
 
     @Override
     public Page<Post> findAll(PostSearchCondition condition, Pageable pageable) {
-        JPAQuery<Post> query = jpaQueryFactory.selectFrom(post);
-        BooleanBuilder builder = new BooleanBuilder();
-        QUser author = new QUser("author");
+        JPAQuery<Post> query = queryFactory
+                .selectFrom(post)
+                .leftJoin(post.author, user)
+                .where(createdAtBetween(condition.createdAtFrom(), condition.createdAtTo()));
 
-        if (condition.title() != null) {
-            builder.and(post.title.contains(condition.title()));
-        }
-
-        if (condition.content() != null) {
-            builder.and(post.content.contains(condition.content()));
-        }
-
-        if (condition.authorName() != null) {
-            query.leftJoin(author).on(user.name.contains(condition.authorName()));
-        }
-
-        query
-                .where(builder)
+        List<Post> posts = query
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch();
+                .fetchResults()
+                .getResults();
 
-        return PageableExecutionUtils.getPage(query.fetch(), pageable, () -> query.fetchCount());
+        return PageableExecutionUtils.getPage(posts, pageable, () -> query.fetchCount());
+    }
+
+    private BooleanExpression createdAtBetween(LocalDateTime createdAtFrom, LocalDateTime createdAtTo) {
+        return createdAtGoe(createdAtFrom).and(createdAtLoe(createdAtTo));
+    }
+
+    private BooleanExpression createdAtGoe(LocalDateTime createdAt) {
+        return createdAt != null ? post.createdAt.goe(createdAt) : null;
+    }
+
+    private BooleanExpression createdAtLoe(LocalDateTime createdAt) {
+        return createdAt != null ? post.createdAt.loe(createdAt) : null;
     }
 }

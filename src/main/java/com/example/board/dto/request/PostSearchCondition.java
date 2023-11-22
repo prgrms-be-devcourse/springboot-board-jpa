@@ -1,4 +1,6 @@
 package com.example.board.dto.request;
 
-public record PostSearchCondition(String title, String content, String authorName) {
+import java.time.LocalDateTime;
+
+public record PostSearchCondition(LocalDateTime createdAtFrom, LocalDateTime createdAtTo) {
 }
