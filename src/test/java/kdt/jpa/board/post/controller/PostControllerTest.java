@@ -5,12 +5,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import kdt.jpa.board.common.support.ApiTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.PayloadDocumentation;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -26,14 +30,9 @@ import kdt.jpa.board.user.domain.User;
 import kdt.jpa.board.user.fixture.UserFixture;
 import kdt.jpa.board.user.repository.UserRepository;
 
-@SpringBootTest
-@Transactional
-@AutoConfigureMockMvc
 @DisplayName("[Post Api 테스트]")
-class PostControllerTest extends TestContainerSupport {
+class PostControllerTest extends ApiTestSupport {
 
-    @Autowired
-    private MockMvc mockMvc;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -57,9 +56,20 @@ class PostControllerTest extends TestContainerSupport {
         );
 
         //then
-        perform.andExpect(status().isOk());
         List<Post> all = postRepository.findAll();
         assertThat(all).hasSize(1);
+
+        perform.andExpect(status().isOk())
+                .andDo(
+                        document
+                                .document(
+                                        PayloadDocumentation.requestFields(
+                                                PayloadDocumentation.fieldWithPath("title").description("제목"),
+                                                PayloadDocumentation.fieldWithPath("content").description("내용"),
+                                                PayloadDocumentation.fieldWithPath("userId").description("작성자 아이디")
+                                        )
+                                )
+                );
     }
 
     @Test
