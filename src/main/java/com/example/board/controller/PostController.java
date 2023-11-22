@@ -50,8 +50,13 @@ public class PostController {
     @PatchMapping("/{postId}")
     public Response<Long> update(
             @PathVariable Long postId,
-            @RequestBody @Validated PostUpdateDto postUpdateDto
+            @RequestBody @Validated PostUpdateDto postUpdateDto,
+            BindingResult bindingResult
     ) {
+        List<String> bindingErrors = bindChecking(bindingResult);
+        if (!bindingErrors.isEmpty()) {
+            throw new BindingException(bindingErrors);
+        }
         return Response.success(postService.update(postId, postUpdateDto, postUpdateDto.userId()));
     }
 }
