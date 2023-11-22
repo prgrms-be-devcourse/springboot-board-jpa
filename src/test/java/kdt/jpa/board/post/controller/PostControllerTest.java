@@ -122,6 +122,8 @@ class PostControllerTest extends ApiTestSupport {
         perform.andExpect(status().isOk());
     }
 
+
+
     @Test
     @DisplayName("[게시물 수정 API 를 호출한다]")
     void updatePost() throws Exception {
@@ -140,6 +142,16 @@ class PostControllerTest extends ApiTestSupport {
         );
 
         //then
-        perform.andExpect(status().isOk());
+        perform.andExpect(status().isOk())
+                .andDo(
+                        document
+                                .document(
+                                        PayloadDocumentation.requestFields(
+                                                PayloadDocumentation.fieldWithPath("postId").description("게시물 id"),
+                                                PayloadDocumentation.fieldWithPath("title").description("제목"),
+                                                PayloadDocumentation.fieldWithPath("content").description("내용")
+                                        )
+                                )
+                );
     }
 }
