@@ -24,12 +24,16 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "age", nullable = false)
     private Integer age;
+
     @Column(name = "hobby")
     private String hobby;
+
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
 }
