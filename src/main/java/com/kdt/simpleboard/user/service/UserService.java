@@ -19,12 +19,12 @@ import static com.kdt.simpleboard.common.exception.ErrorCode.NOT_EXIST_USER_ID;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserResponse.SignUpRes createUser(UserRequest.SignUpReq request) {
+    public UserResponse.CreateUserRes createUser(UserRequest.CreateUserReq request) {
         if (userRepository.existsByName(request.name())){
             throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
         }
         User user = userRepository.save(UserMapper.toUser(request));
-        return UserMapper.toSignUpRes(user);
+        return UserMapper.toCreateUserRes(user);
     }
 
     public User getUserEntity(Long userId){
