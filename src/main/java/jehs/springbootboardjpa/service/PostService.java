@@ -25,6 +25,14 @@ public class PostService {
         User user = userService.getUserById(postCreateRequest.getUserId());
         postRepository.save(postCreateRequest.toEntity(user));
     }
+
+    @Transactional
+    public void updatePost(Long postId, PostUpdateRequest postUpdateRequest) {
+        Post post = getPostById(postId);
+        User user = userService.getUserById(postUpdateRequest.getUserId());
+        post.updatePost(postUpdateRequest, user);
+    }
+
     public Post getPostById(Long postId) {
         return postRepository.findById(postId).orElseThrow(() -> new RuntimeException("존재하지 않는 게시글입니다."));
     }

@@ -32,6 +32,12 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PostType postType;
 
+    public void updatePost(PostUpdateRequest postUpdateRequest, User user) {
+        validateUser(user);
+        this.title = postUpdateRequest.getTitle();
+        this.content = postUpdateRequest.getContent();
+    }
+
     private void validateUser(User updateUser) {
         if (!updateUser.getId().equals(this.user.getId())) {
             throw new RuntimeException("작성자의 게시글이 아닙니다.");
