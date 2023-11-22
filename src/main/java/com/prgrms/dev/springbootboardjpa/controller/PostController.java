@@ -35,7 +35,8 @@ public class PostController {
 
     //수정
     @PostMapping("/{id}")
-    public void update(@RequestBody PostRequestDto requestDto, @PathVariable Long id) {
+    public ApiResponse<PostDto> update(@RequestBody PostRequestDto requestDto, @PathVariable Long id) {
         PostDto update = postService.update(requestDto, id);
+        return ApiResponse.ok(update);
     }
 }
