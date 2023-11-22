@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class BoardApiExceptionHandler {
 
     @ExceptionHandler(BoardException.class)
-    public ResponseEntity<ErrorResponse> handleCustomException(BoardException e) {
+    private ResponseEntity<ErrorResponse> handleCustomException(BoardException e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 }
