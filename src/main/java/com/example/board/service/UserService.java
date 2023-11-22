@@ -2,8 +2,8 @@ package com.example.board.service;
 
 import com.example.board.converter.UserConverter;
 import com.example.board.domain.User;
-import com.example.board.dto.request.CreateUserRequest;
-import com.example.board.dto.request.UpdateUserRequest;
+import com.example.board.dto.request.user.CreateUserRequest;
+import com.example.board.dto.request.user.UpdateUserRequest;
 import com.example.board.dto.response.UserResponse;
 import com.example.board.exception.CustomException;
 import com.example.board.exception.ErrorCode;

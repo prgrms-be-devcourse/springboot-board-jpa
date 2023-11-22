@@ -24,7 +24,7 @@ public class User extends BaseEntity {
     @Column
     private Integer age;
 
-    @Column
+    @Column(nullable = true)
     private String hobby;
 
     @Column

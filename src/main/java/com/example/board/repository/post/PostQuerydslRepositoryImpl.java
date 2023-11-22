@@ -1,7 +1,7 @@
 package com.example.board.repository.post;
 
 import com.example.board.domain.Post;
-import com.example.board.dto.request.PostSearchCondition;
+import com.example.board.dto.request.post.PostSearchCondition;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;

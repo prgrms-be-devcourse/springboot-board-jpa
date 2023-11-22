@@ -2,7 +2,7 @@ package com.example.board.converter;
 
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
-import com.example.board.dto.request.CreatePostRequest;
+import com.example.board.dto.request.post.CreatePostRequest;
 import com.example.board.dto.response.PostResponse;
 
 public class PostConverter {

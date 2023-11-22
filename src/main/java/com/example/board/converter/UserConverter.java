@@ -1,7 +1,7 @@
 package com.example.board.converter;
 
 import com.example.board.domain.User;
-import com.example.board.dto.request.CreateUserRequest;
+import com.example.board.dto.request.user.CreateUserRequest;
 import com.example.board.dto.response.UserResponse;
 
 public class UserConverter {

@@ -1,7 +1,7 @@
 package com.example.board.controller;
 
-import com.example.board.dto.request.CreateUserRequest;
-import com.example.board.dto.request.UpdateUserRequest;
+import com.example.board.dto.request.user.CreateUserRequest;
+import com.example.board.dto.request.user.UpdateUserRequest;
 import com.example.board.dto.response.ApiResponse;
 import com.example.board.dto.response.UserResponse;
 import com.example.board.service.UserService;

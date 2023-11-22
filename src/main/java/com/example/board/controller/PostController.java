@@ -1,8 +1,8 @@
 package com.example.board.controller;
 
-import com.example.board.dto.request.CreatePostRequest;
-import com.example.board.dto.request.PostSearchCondition;
-import com.example.board.dto.request.UpdatePostRequest;
+import com.example.board.dto.request.post.CreatePostRequest;
+import com.example.board.dto.request.post.PostSearchCondition;
+import com.example.board.dto.request.post.UpdatePostRequest;
 import com.example.board.dto.response.ApiResponse;
 import com.example.board.dto.response.PostResponse;
 import com.example.board.service.PostService;
@@ -41,7 +41,7 @@ public class PostController {
     }
 
     @GetMapping
-    public ApiResponse<Page<PostResponse>> getPosts(@ModelAttribute PostSearchCondition condition, Pageable pageable) {
+    public ApiResponse<Page<PostResponse>> getPosts(@ModelAttribute @Valid PostSearchCondition condition, Pageable pageable) {
         Page<PostResponse> post = postService.getPosts(condition, pageable);
         return ApiResponse.success(HttpStatus.OK, post);
     }
