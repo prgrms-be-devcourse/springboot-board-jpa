@@ -1,22 +1,22 @@
 package kdt.jpa.board.post.controller;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
 
-import kdt.jpa.board.common.support.ApiTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.PayloadDocumentation;
 import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
+import kdt.jpa.board.common.support.ApiTestSupport;
 import kdt.jpa.board.post.domain.Post;
 import kdt.jpa.board.post.repository.PostRepository;
 import kdt.jpa.board.post.service.dto.request.CreatePostRequest;
@@ -58,10 +58,10 @@ class PostControllerTest extends ApiTestSupport {
                 .andDo(
                         document
                                 .document(
-                                        PayloadDocumentation.requestFields(
-                                                PayloadDocumentation.fieldWithPath("title").description("제목"),
-                                                PayloadDocumentation.fieldWithPath("content").description("내용"),
-                                                PayloadDocumentation.fieldWithPath("userId").description("작성자 아이디")
+                                        requestFields(
+                                                fieldWithPath("title").description("제목"),
+                                                fieldWithPath("content").description("내용"),
+                                                fieldWithPath("userId").description("작성자 아이디")
                                         )
                                 )
                 );
@@ -93,10 +93,10 @@ class PostControllerTest extends ApiTestSupport {
                                         RequestDocumentation.pathParameters(
                                                 RequestDocumentation.parameterWithName("id").description("검색할 게시물 아이디")
                                         ),
-                                        PayloadDocumentation.responseFields(
-                                                PayloadDocumentation.fieldWithPath("title").description("제목"),
-                                                PayloadDocumentation.fieldWithPath("content").description("내용"),
-                                                PayloadDocumentation.fieldWithPath("userName").description("작성자 이름")
+                                        responseFields(
+                                                fieldWithPath("title").description("제목"),
+                                                fieldWithPath("content").description("내용"),
+                                                fieldWithPath("userName").description("작성자 이름")
                                         )
                                 )
                 );
@@ -114,12 +114,43 @@ class PostControllerTest extends ApiTestSupport {
 
         //when
         ResultActions perform = mockMvc.perform(
-                MockMvcRequestBuilders
+                RestDocumentationRequestBuilders
                         .get("/api/posts")
+                    .queryParam("page", String.valueOf(1))
+                    .queryParam("size", String.valueOf(5))
         );
 
         //then
-        perform.andExpect(status().isOk());
+        perform.andExpect(status().isOk())
+            .andDo(
+                document
+                    .document(
+                        RequestDocumentation.queryParameters(
+                            RequestDocumentation.parameterWithName("page").description("요청 페이지"),
+                            RequestDocumentation.parameterWithName("size").description("페이지 사이즈")
+                        ),
+                        responseFields(
+                            fieldWithPath("responses.pageable.pageNumber").description("Page number"),
+                            fieldWithPath("responses.pageable.pageSize").description("Page size"),
+                            fieldWithPath("responses.pageable.sort.empty").description("Indicates if the sort is empty"),
+                            fieldWithPath("responses.pageable.sort.unsorted").description("Indicates if the sort is unsorted"),
+                            fieldWithPath("responses.pageable.sort.sorted").description("Indicates if the sort is sorted"),
+                            fieldWithPath("responses.pageable.offset").description("Offset of the current page"),
+                            fieldWithPath("responses.pageable.paged").description("Indicates if it's a paged result"),
+                            fieldWithPath("responses.pageable.unpaged").description("Indicates if it's an unpaged result"),
+                            fieldWithPath("responses.last").description("Indicates if this is the last page"),
+                            fieldWithPath("responses.totalPages").description("Total number of pages"),
+                            fieldWithPath("responses.totalElements").description("Total number of elements"),
+                            fieldWithPath("responses.first").description("Indicates if this is the first page"),
+                            fieldWithPath("responses.size").description("Page size"),
+                            subsectionWithPath("responses.sort").ignored(),
+                            fieldWithPath("responses.empty").description("Indicates if the response is empty"),
+                            fieldWithPath("responses.number").description("Page number"),
+                            fieldWithPath("responses.numberOfElements").description("Number of elements in the current page"),
+                            fieldWithPath("responses.content[]").description("게시물")
+                        )
+                    )
+            );
     }
 
 
@@ -146,10 +177,10 @@ class PostControllerTest extends ApiTestSupport {
                 .andDo(
                         document
                                 .document(
-                                        PayloadDocumentation.requestFields(
-                                                PayloadDocumentation.fieldWithPath("postId").description("게시물 id"),
-                                                PayloadDocumentation.fieldWithPath("title").description("제목"),
-                                                PayloadDocumentation.fieldWithPath("content").description("내용")
+                                        requestFields(
+                                                fieldWithPath("postId").description("게시물 id"),
+                                                fieldWithPath("title").description("제목"),
+                                                fieldWithPath("content").description("내용")
                                         )
                                 )
                 );
