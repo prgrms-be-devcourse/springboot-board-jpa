@@ -1,8 +1,10 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:33306/jpa_board
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/prod
+    username:
+    password:
 
   jpa:
-    show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
