@@ -11,8 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
+
+import static com.example.board.dto.PostDto.*;
 
 @RequiredArgsConstructor
 @Service
@@ -22,25 +23,25 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public PostDto.Response save(PostDto.Request request) {
+    public Response save(Request request) {
         User user = userRepository.findById(request.userId()).orElseThrow(NoSuchElementException::new);
         Post post = Post.toEntity(user, request);
-        return PostDto.toResponse(postRepository.save(post));
+        return toResponse(postRepository.save(post));
     }
 
     @Transactional(readOnly = true)
-    public Page<PostDto.Response> findAll(Pageable pageable) {
+    public Page<Response> findAll(Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
         return posts.map(PostDto::toResponse);
     }
 
     @Transactional(readOnly = true)
-    public PostDto.Response findById(Long id) {
+    public Response findById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(NoSuchElementException::new);
-        return PostDto.toResponse(post);
+        return toResponse(post);
     }
 
-    public void update(Long postId, PostDto.Request request) {
+    public void update(Long postId, Request request) {
         Post post = postRepository.findById(postId).orElseThrow(NoSuchElementException::new);
         post.changePost(request.title(), request.content());
     }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,23 +23,23 @@ public class PostRestController {
         return ApiResult.successOf(responses);
     }
 
-    @GetMapping("/{id}")
-    public ApiResult<PostDto.Response> findById(@PathVariable Long id) {
-        PostDto.Response response = service.findById(id);
+    @GetMapping("/{postId}")
+    public ApiResult<PostDto.Response> findById(@PathVariable Long postId) {
+        PostDto.Response response = service.findById(postId);
         return ApiResult.successOf(response);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResult<PostDto.Response> save(@RequestBody PostDto.Request request) {
+    public ApiResult<PostDto.Response> save(@Validated @RequestBody PostDto.Request request) {
         PostDto.Response response = service.save(request);
         return ApiResult.successOf(response);
     }
 
-    @PostMapping("/{id}")
-    public ApiResult<Void> update(@PathVariable Long id,
-                                                   @RequestBody PostDto.Request request) {
-        service.update(id, request);
+    @PostMapping("/{postId}")
+    public ApiResult<Void> update(@PathVariable Long postId,
+                                  @Validated @RequestBody PostDto.Request request) {
+        service.update(postId, request);
         return ApiResult.successOf();
     }
 }

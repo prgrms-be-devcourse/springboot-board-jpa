@@ -1,14 +1,13 @@
 package com.example.board.dto;
 
-import com.example.board.domain.Post;
 import com.example.board.domain.User;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-
-import java.time.LocalDateTime;
 
 public class UserDto {
     @Builder
-    public record Request(String name, int age, String hobby) {}
+    public record Request(@NotEmpty String name, @NotNull Integer age, @NotEmpty String hobby) {}
 
     @Builder
     public record Response(Long userId, String name, int age, String hobby) {}
