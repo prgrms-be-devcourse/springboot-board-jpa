@@ -2,10 +2,9 @@ package com.example.board.model;
 
 import com.example.board.dto.PostDto;
 import com.example.board.dto.PostUpdateDto;
+import com.example.board.exception.BaseException;
+import com.example.board.exception.ErrorMessage;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,18 +17,15 @@ public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
-    private long id;
+    private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Size(max = 20)
     @Column(name = "title", length = 30)
     private String title;
 
-    @NotBlank
     @Lob
     private String contents;
 
@@ -37,10 +33,26 @@ public class Post extends BaseEntity {
     private String createdBy;
 
     private Post(User user, PostDto postDto) {
+        postSaveValidate(user, postDto);
         this.user = user;
         this.title = postDto.title();
         this.contents = postDto.contents();
         this.createdBy = user.getName();
+    }
+
+    private static void postSaveValidate(User user, PostDto postDto) {
+        if (user == null) {
+            throw new BaseException(ErrorMessage.USER_NOT_FOUND);
+        }
+        if (postDto.title().isBlank() || (postDto.title().length() > 20)) {
+            throw new BaseException(ErrorMessage.WRONG_TITLE_VALUE);
+        }
+        if (postDto.contents().isBlank()) {
+            throw new BaseException(ErrorMessage.WRONG_CONTENTS_VALUE);
+        }
+        if (user.getName().isBlank()) {
+            throw new BaseException(ErrorMessage.WRONG_USER_NAME);
+        }
     }
 
     public static Post from(User user, PostDto postDto) {
