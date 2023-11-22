@@ -52,7 +52,7 @@ class PostServiceTest {
     class createPost {
 
         @Test
-        @DisplayName("[성공적으로 만든다")
+        @DisplayName("[성공적으로 만든다]")
         void success() {
             //given
             Post post = PostFixture.getPost(1L);
@@ -130,7 +130,7 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("게시물을 페이징하요 조회한다")
+    @DisplayName("게시물을 페이징하고 조회한다")
     void getPosts() {
         //given
         Pageable pageable = PageRequest.of(0, 5);
