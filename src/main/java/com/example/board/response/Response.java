@@ -4,6 +4,8 @@ import com.example.board.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 public class Response<T> {
@@ -28,7 +30,7 @@ public class Response<T> {
         return new Response<>(e.getMessage(), 500, "fail");
     }
 
-    public static Response<String> fail(String bindingErrors) {
+    public static Response<List<String>> fail(List<String> bindingErrors) {
         return new Response<>(bindingErrors, 400, "fail");
     }
 }

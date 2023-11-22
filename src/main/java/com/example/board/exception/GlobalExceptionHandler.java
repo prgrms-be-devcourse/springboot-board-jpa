@@ -25,6 +25,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Response.fail(e));
     }
 
+    @ExceptionHandler(BindingException.class)
+    public ResponseEntity<Response<?>> bindingExceptionHandle(BindingException e) {
+        log.info("error: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Response.fail(e.getBindingMessages()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Response<?>> customExceptionHandle(Exception e) {
         log.info("error: {}", e.getMessage());
