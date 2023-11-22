@@ -54,7 +54,7 @@ public class BoardService {
         return PageResponse.fromPage(pagedFindBoardRes);
     }
 
-    public Board getBoardEntity(Long boardId){
+    private Board getBoardEntity(Long boardId){
         return boardRepository.findById(boardId).orElseThrow(() -> new CustomException(Not_EXIST_BOARD));
     }
 
