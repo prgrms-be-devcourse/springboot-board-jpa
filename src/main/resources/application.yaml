@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/jpa_board?serverTimeZone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 비밀번호
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        ddl-auto: update
+        format_sql: true
+    database: mysql
+    show-sql: true
+    open-in-view: false
