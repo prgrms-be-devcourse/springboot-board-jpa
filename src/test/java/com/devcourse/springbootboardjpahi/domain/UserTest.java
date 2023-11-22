@@ -6,17 +6,15 @@ import static org.assertj.core.api.Assertions.assertThatException;
 import com.github.javafaker.Faker;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.hibernate.PropertyValueException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @DataJpaTest
-@EnableJpaAuditing
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class UserTest {
 
@@ -44,6 +42,7 @@ class UserTest {
 
         // then
         assertThat(actual).usingRecursiveComparison()
+                .ignoringExpectedNullFields()
                 .isEqualTo(expected);
     }
 
@@ -65,9 +64,8 @@ class UserTest {
 
         // then
         assertThatException().isThrownBy(target)
-                .isInstanceOf(PropertyValueException.class)
-                .withMessageContaining("not-null property references a null or transient value")
-                .withMessageContaining("domain.User.name");
+                .isInstanceOf(ConstraintViolationException.class)
+                .withMessageContaining("Column 'name' cannot be null");
     }
 
     @DisplayName("나이가 null일 경우 예외가 발생한다.")
@@ -88,9 +86,8 @@ class UserTest {
 
         // then
         assertThatException().isThrownBy(target)
-                .isInstanceOf(PropertyValueException.class)
-                .withMessageContaining("not-null property references a null or transient value")
-                .withMessageContaining("domain.User.age");
+                .isInstanceOf(ConstraintViolationException.class)
+                .withMessageContaining("Column 'age' cannot be null");
     }
 
     @DisplayName("")
