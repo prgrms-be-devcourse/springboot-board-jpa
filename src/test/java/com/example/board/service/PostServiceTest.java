@@ -35,7 +35,7 @@ class PostServiceTest {
     @Test
     @DisplayName("정상적으로 PostDto를 받아 글 작성을 완료하는 경우")
     void postSuccessInService(){
-        PostDto postDto = new PostDto(1, "test", "test Contents");
+        PostDto postDto = new PostDto(1L, "test", "test Contents");
 
         Long save = postService.save(postDto);
         Optional<Post> savedPosts = postRepository.findById(save);
@@ -46,7 +46,7 @@ class PostServiceTest {
     @Test
     @DisplayName("존재하지 않는 유저가 글을 작성하는 경우 예외를 발생시킨다.")
     void postFailWithAnonymousUser(){
-        PostDto postDto = new PostDto(2, "test", "test Contents");
+        PostDto postDto = new PostDto(2L, "test", "test Contents");
 
         Assertions.assertThatThrownBy(() ->postService.save(postDto))
                 .isInstanceOf(BaseException.class)
