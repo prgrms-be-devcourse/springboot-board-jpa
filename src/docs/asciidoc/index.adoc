@@ -28,3 +28,33 @@ include::{snippets}/get-posts-with-paging/query-parameters.adoc[]
 .Response
 include::{snippets}/get-posts-with-paging/http-response.adoc[]
 include::{snippets}/get-posts-with-paging/response-fields.adoc[]
+
+== 게시글 개별 조회
+=== /api/v1/posts/{id}
+
+.Request
+include::{snippets}/get-post-by-id/http-request.adoc[]
+
+.Response
+include::{snippets}/get-post-by-id/http-response.adoc[]
+include::{snippets}/get-post-by-id/response-fields.adoc[]
+
+== 게시글 수정
+=== /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+== 게시글 삭제
+=== /api/v1/posts/{id}
+
+.Request
+include::{snippets}/post-delete/http-request.adoc[]
+
+.Response
+include::{snippets}/post-delete/http-response.adoc[]
