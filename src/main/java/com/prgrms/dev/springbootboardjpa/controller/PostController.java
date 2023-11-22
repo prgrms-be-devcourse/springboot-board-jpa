@@ -1,5 +1,6 @@
 package com.prgrms.dev.springbootboardjpa.controller;
 
+import com.prgrms.dev.springbootboardjpa.ApiResponse;
 import com.prgrms.dev.springbootboardjpa.dto.PostDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostRequestDto;
 import com.prgrms.dev.springbootboardjpa.service.PostService;
@@ -17,20 +18,23 @@ public class PostController {
 
     //단건 조회 -> find
     @GetMapping("/{id}")
-    public void findById(@PathVariable Long id) {
+    public ApiResponse<PostDto> findById(@PathVariable Long id) {
         PostDto postDto = postService.findById(id);
+        return ApiResponse.ok(postDto);
     }
 
     //페이지 조회 -> get
     @GetMapping
-    public void getAll(Pageable pageable) {
+    public ApiResponse<Page<PostDto>> getAll(Pageable pageable) {
         Page<PostDto> postDto = postService.getAll(pageable);
+        return ApiResponse.ok(postDto);
     }
 
     //생성
     @PostMapping
-    public void create(@RequestBody PostRequestDto postRequestDto, @RequestParam Long userId) {
+    public ApiResponse<PostDto> create(@RequestBody PostRequestDto postRequestDto, @RequestParam Long userId) {
         PostDto postDto = postService.create(postRequestDto, userId);
+        return ApiResponse.ok(postDto);
     }
 
     //수정
