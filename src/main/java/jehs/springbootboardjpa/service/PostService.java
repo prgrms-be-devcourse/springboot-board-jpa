@@ -25,4 +25,11 @@ public class PostService {
         User user = userService.getUserById(postCreateRequest.getUserId());
         postRepository.save(postCreateRequest.toEntity(user));
     }
+    public Post getPostById(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() -> new RuntimeException("존재하지 않는 게시글입니다."));
+    }
+
+    public Page<Post> getAllPosts(Pageable pageable) {
+        return postRepository.findAll(pageable);
+    }
 }
