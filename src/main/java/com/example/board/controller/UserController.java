@@ -37,8 +37,6 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, headers, apiResponse.getStatusCode());
     }
 
-    //TODO: 전체 조회
-
     @GetMapping("/{id}")
     public ApiResponse<UserResponse> getUser(@PathVariable Long id) {
         UserResponse user = userService.getUser(id);

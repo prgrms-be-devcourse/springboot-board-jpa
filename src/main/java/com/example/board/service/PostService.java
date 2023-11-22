@@ -4,11 +4,14 @@ import com.example.board.converter.PostConverter;
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
 import com.example.board.dto.request.CreatePostRequest;
+import com.example.board.dto.request.PostSearchCondition;
 import com.example.board.dto.request.UpdatePostRequest;
 import com.example.board.dto.response.PostResponse;
 import com.example.board.repository.PostRepository;
 import com.example.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +31,9 @@ public class PostService {
         return post.getId();
     }
 
-    //TODO: getPosts
+    public Page<PostResponse> getPosts(PostSearchCondition condition, Pageable pageable) {
+        return postRepository.findAll(condition, pageable).map(PostConverter::toPostResponse);
+    }
 
     @Transactional(readOnly = true)
     public PostResponse getPost(Long id) {

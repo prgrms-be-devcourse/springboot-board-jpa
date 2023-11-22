@@ -1,12 +1,15 @@
 package com.example.board.controller;
 
 import com.example.board.dto.request.CreatePostRequest;
+import com.example.board.dto.request.PostSearchCondition;
 import com.example.board.dto.request.UpdatePostRequest;
 import com.example.board.dto.response.ApiResponse;
 import com.example.board.dto.response.PostResponse;
 import com.example.board.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +40,11 @@ public class PostController {
         return new ResponseEntity<>(apiResponse, headers, apiResponse.getStatusCode());
     }
 
-    //TODO: 전체 조회
+    @GetMapping
+    public ApiResponse<Page<PostResponse>> getPosts(@ModelAttribute PostSearchCondition condition, Pageable pageable) {
+        Page<PostResponse> post = postService.getPosts(condition, pageable);
+        return ApiResponse.success(HttpStatus.OK, post);
+    }
 
     @GetMapping("/{id}")
     public ApiResponse<PostResponse> getPost(@PathVariable Long id) {
