@@ -1,4 +1,6 @@
 package com.example.board.dto.request;
 
-public record CreatePostRequest(String title, String content, Long authorId) {
+import jakarta.validation.constraints.NotBlank;
+
+public record CreatePostRequest(@NotBlank String title, String content, Long authorId) {
 }
