@@ -26,7 +26,7 @@ public class PostService {
     @Transactional
     public Long createPost(CreatePostRequest request) {
         User user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new BoardException("존재하지 않는 회원입니다"));
+            .orElseThrow(() -> new BoardException("존재하지 않는 회원입니다"));
         Post post = new Post(request.title(), request.content(), user);
 
         return postRepository.save(post).getId();
@@ -35,7 +35,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponse getById(long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new BoardException("존재하지 않는 포스트입니다"));
+            .orElseThrow(() -> new BoardException("존재하지 않는 포스트입니다"));
 
         return PostMapper.toPostResponse(post);
     }
@@ -50,7 +50,7 @@ public class PostService {
     @Transactional
     public boolean editPost(EditPostRequest request) {
         Post post = postRepository.findById(request.postId())
-                .orElseThrow(() -> new BoardException("존재하지 않는 포스트입니다"));
+            .orElseThrow(() -> new BoardException("존재하지 않는 포스트입니다"));
 
         post.edit(request.title(), request.content());
         return true;

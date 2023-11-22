@@ -31,17 +31,17 @@ public abstract class ApiTestSupport extends TestContainerSupport {
 
     @BeforeEach
     void setup(
-            WebApplicationContext webApplicationContext,
-            RestDocumentationContextProvider restDocumentation
+        WebApplicationContext webApplicationContext,
+        RestDocumentationContextProvider restDocumentation
     ) {
         this.document = MockMvcRestDocumentation.document("{class-name}/{method-name}",
-                Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
-                Preprocessors.preprocessResponse(Preprocessors.prettyPrint()));
+            Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
+            Preprocessors.preprocessResponse(Preprocessors.prettyPrint()));
 
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .addFilter(new CharacterEncodingFilter(StandardCharsets.UTF_8.name(), true))
-                .apply(MockMvcRestDocumentation.documentationConfiguration(restDocumentation))
-                .alwaysDo(document)
-                .build();
+            .addFilter(new CharacterEncodingFilter(StandardCharsets.UTF_8.name(), true))
+            .apply(MockMvcRestDocumentation.documentationConfiguration(restDocumentation))
+            .alwaysDo(document)
+            .build();
     }
 }

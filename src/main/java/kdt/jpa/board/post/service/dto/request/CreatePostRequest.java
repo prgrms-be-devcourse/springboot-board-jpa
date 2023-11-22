@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public record CreatePostRequest(
-        String title,
-        String content,
-        long userId
+    String title,
+    String content,
+    long userId
 ) {
+
 }

@@ -60,9 +60,9 @@ class PostServiceTest {
             CreatePostRequest request = new CreatePostRequest(post.getTitle(), post.getContent(), 1L);
 
             given(postRepository.save(any(Post.class)))
-                    .willReturn(post);
+                .willReturn(post);
             given(userRepository.findById(1L))
-                    .willReturn(Optional.of(user));
+                .willReturn(Optional.of(user));
 
             //when
             Long result = postService.createPost(request);
@@ -77,15 +77,15 @@ class PostServiceTest {
             //given
             CreatePostRequest request = new CreatePostRequest("title", "content", 1L);
             given(userRepository.findById(1L))
-                    .willReturn(Optional.empty());
+                .willReturn(Optional.empty());
 
             //when
             ThrowingCallable when = () -> postService.createPost(request);
 
             //then
             assertThatThrownBy(when)
-                    .isInstanceOf(BoardException.class)
-                    .hasMessageContaining("존재하지 않는 회원입니다");
+                .isInstanceOf(BoardException.class)
+                .hasMessageContaining("존재하지 않는 회원입니다");
         }
     }
 
@@ -99,16 +99,16 @@ class PostServiceTest {
             //given
             Post post = PostFixture.getPost();
             given(postRepository.findById(1L))
-                    .willReturn(Optional.of(post));
+                .willReturn(Optional.of(post));
 
             //when
             PostResponse postResponse = postService.getById(1L);
 
             //then
             assertAll(
-                    () -> assertThat(postResponse.title()).isEqualTo(post.getTitle()),
-                    () -> assertThat(postResponse.content()).isEqualTo(post.getContent()),
-                    () -> assertThat(postResponse.userName()).isEqualTo(post.getUserName())
+                () -> assertThat(postResponse.title()).isEqualTo(post.getTitle()),
+                () -> assertThat(postResponse.content()).isEqualTo(post.getContent()),
+                () -> assertThat(postResponse.userName()).isEqualTo(post.getUserName())
             );
         }
 
@@ -117,15 +117,15 @@ class PostServiceTest {
         void fail() {
             //given
             given(postRepository.findById(1L))
-                    .willReturn(Optional.empty());
+                .willReturn(Optional.empty());
 
             //when
             ThrowingCallable when = () -> postService.getById(1L);
 
             //then
             assertThatThrownBy(when)
-                    .isInstanceOf(BoardException.class)
-                    .hasMessageContaining("존재하지 않는 포스트입니다");
+                .isInstanceOf(BoardException.class)
+                .hasMessageContaining("존재하지 않는 포스트입니다");
         }
     }
 
@@ -137,7 +137,7 @@ class PostServiceTest {
         List<Post> posts = List.of(PostFixture.getPost(), PostFixture.getPost());
         Page<Post> pagedPost = new PageImpl<>(posts);
         given(postRepository.findAll(pageable))
-                .willReturn(pagedPost);
+            .willReturn(pagedPost);
 
         //when
         PostListResponse result = postService.getPosts(pageable);
@@ -145,13 +145,13 @@ class PostServiceTest {
         //then
         Page<PostResponse> responses = result.responses();
         assertAll(
-                () -> assertThat(responses.getTotalPages()).isEqualTo(pagedPost.getTotalPages()),
-                () -> assertThat(responses.getTotalElements()).isEqualTo(pagedPost.getTotalElements()),
-                () -> assertThat(responses.getNumber()).isEqualTo(pagedPost.getNumber()),
-                () -> {
-                    List<PostResponse> postResponses = posts.stream().map(PostMapper::toPostResponse).toList();
-                    assertThat(responses.getContent()).containsAll(postResponses);
-                }
+            () -> assertThat(responses.getTotalPages()).isEqualTo(pagedPost.getTotalPages()),
+            () -> assertThat(responses.getTotalElements()).isEqualTo(pagedPost.getTotalElements()),
+            () -> assertThat(responses.getNumber()).isEqualTo(pagedPost.getNumber()),
+            () -> {
+                List<PostResponse> postResponses = posts.stream().map(PostMapper::toPostResponse).toList();
+                assertThat(responses.getContent()).containsAll(postResponses);
+            }
         );
     }
 
@@ -167,7 +167,7 @@ class PostServiceTest {
             EditPostRequest request = new EditPostRequest(post.getId(), post.getTitle(), post.getContent());
 
             given(postRepository.findById(request.postId()))
-                    .willReturn(Optional.of(post));
+                .willReturn(Optional.of(post));
 
             //when
             boolean edited = postService.editPost(request);
@@ -184,15 +184,15 @@ class PostServiceTest {
             EditPostRequest editPostRequest = new EditPostRequest(post.getId(), post.getTitle(), post.getContent());
 
             given(postRepository.findById(1L))
-                    .willReturn(Optional.empty());
+                .willReturn(Optional.empty());
 
             //when
             ThrowingCallable when = () -> postService.editPost(editPostRequest);
 
             //then
             assertThatThrownBy(when)
-                    .isInstanceOf(BoardException.class)
-                    .hasMessageContaining("존재하지 않는 포스트입니다");
+                .isInstanceOf(BoardException.class)
+                .hasMessageContaining("존재하지 않는 포스트입니다");
         }
     }
 }

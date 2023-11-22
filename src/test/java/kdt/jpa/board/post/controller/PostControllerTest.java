@@ -44,10 +44,10 @@ class PostControllerTest extends ApiTestSupport {
 
         //when
         ResultActions perform = mockMvc.perform(
-                MockMvcRequestBuilders
-                        .post("/api/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
+            MockMvcRequestBuilders
+                .post("/api/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
         );
 
         //then
@@ -55,16 +55,16 @@ class PostControllerTest extends ApiTestSupport {
         assertThat(all).hasSize(1);
 
         perform.andExpect(status().isOk())
-                .andDo(
-                        document
-                                .document(
-                                        requestFields(
-                                                fieldWithPath("title").description("제목"),
-                                                fieldWithPath("content").description("내용"),
-                                                fieldWithPath("userId").description("작성자 아이디")
-                                        )
-                                )
-                );
+            .andDo(
+                document
+                    .document(
+                        requestFields(
+                            fieldWithPath("title").description("제목"),
+                            fieldWithPath("content").description("내용"),
+                            fieldWithPath("userId").description("작성자 아이디")
+                        )
+                    )
+            );
     }
 
     @Test
@@ -77,29 +77,29 @@ class PostControllerTest extends ApiTestSupport {
 
         //when
         ResultActions perform = mockMvc.perform(
-                RestDocumentationRequestBuilders
-                        .get("/api/posts/{id}", post.getId())
+            RestDocumentationRequestBuilders
+                .get("/api/posts/{id}", post.getId())
         );
 
         //then
         perform.andExpectAll(
-                        status().isOk(),
-                        jsonPath("$.title").value(post.getTitle()),
-                        jsonPath("$.content").value(post.getContent()),
-                        jsonPath("$.userName").value(user.getName()))
-                .andDo(
-                        document
-                                .document(
-                                        RequestDocumentation.pathParameters(
-                                                RequestDocumentation.parameterWithName("id").description("검색할 게시물 아이디")
-                                        ),
-                                        responseFields(
-                                                fieldWithPath("title").description("제목"),
-                                                fieldWithPath("content").description("내용"),
-                                                fieldWithPath("userName").description("작성자 이름")
-                                        )
-                                )
-                );
+                status().isOk(),
+                jsonPath("$.title").value(post.getTitle()),
+                jsonPath("$.content").value(post.getContent()),
+                jsonPath("$.userName").value(user.getName()))
+            .andDo(
+                document
+                    .document(
+                        RequestDocumentation.pathParameters(
+                            RequestDocumentation.parameterWithName("id").description("검색할 게시물 아이디")
+                        ),
+                        responseFields(
+                            fieldWithPath("title").description("제목"),
+                            fieldWithPath("content").description("내용"),
+                            fieldWithPath("userName").description("작성자 이름")
+                        )
+                    )
+            );
     }
 
     @Test
@@ -114,10 +114,10 @@ class PostControllerTest extends ApiTestSupport {
 
         //when
         ResultActions perform = mockMvc.perform(
-                RestDocumentationRequestBuilders
-                        .get("/api/posts")
-                    .queryParam("page", String.valueOf(1))
-                    .queryParam("size", String.valueOf(5))
+            RestDocumentationRequestBuilders
+                .get("/api/posts")
+                .queryParam("page", String.valueOf(1))
+                .queryParam("size", String.valueOf(5))
         );
 
         //then
@@ -132,12 +132,16 @@ class PostControllerTest extends ApiTestSupport {
                         responseFields(
                             fieldWithPath("responses.pageable.pageNumber").description("Page number"),
                             fieldWithPath("responses.pageable.pageSize").description("Page size"),
-                            fieldWithPath("responses.pageable.sort.empty").description("Indicates if the sort is empty"),
-                            fieldWithPath("responses.pageable.sort.unsorted").description("Indicates if the sort is unsorted"),
-                            fieldWithPath("responses.pageable.sort.sorted").description("Indicates if the sort is sorted"),
+                            fieldWithPath("responses.pageable.sort.empty").description(
+                                "Indicates if the sort is empty"),
+                            fieldWithPath("responses.pageable.sort.unsorted").description(
+                                "Indicates if the sort is unsorted"),
+                            fieldWithPath("responses.pageable.sort.sorted").description(
+                                "Indicates if the sort is sorted"),
                             fieldWithPath("responses.pageable.offset").description("Offset of the current page"),
                             fieldWithPath("responses.pageable.paged").description("Indicates if it's a paged result"),
-                            fieldWithPath("responses.pageable.unpaged").description("Indicates if it's an unpaged result"),
+                            fieldWithPath("responses.pageable.unpaged").description(
+                                "Indicates if it's an unpaged result"),
                             fieldWithPath("responses.last").description("Indicates if this is the last page"),
                             fieldWithPath("responses.totalPages").description("Total number of pages"),
                             fieldWithPath("responses.totalElements").description("Total number of elements"),
@@ -146,13 +150,13 @@ class PostControllerTest extends ApiTestSupport {
                             subsectionWithPath("responses.sort").ignored(),
                             fieldWithPath("responses.empty").description("Indicates if the response is empty"),
                             fieldWithPath("responses.number").description("Page number"),
-                            fieldWithPath("responses.numberOfElements").description("Number of elements in the current page"),
+                            fieldWithPath("responses.numberOfElements").description(
+                                "Number of elements in the current page"),
                             fieldWithPath("responses.content[]").description("게시물")
                         )
                     )
             );
     }
-
 
 
     @Test
@@ -166,23 +170,23 @@ class PostControllerTest extends ApiTestSupport {
 
         //when
         ResultActions perform = mockMvc.perform(
-                MockMvcRequestBuilders
-                        .patch("/api/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
+            MockMvcRequestBuilders
+                .patch("/api/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
         );
 
         //then
         perform.andExpect(status().isOk())
-                .andDo(
-                        document
-                                .document(
-                                        requestFields(
-                                                fieldWithPath("postId").description("게시물 id"),
-                                                fieldWithPath("title").description("제목"),
-                                                fieldWithPath("content").description("내용")
-                                        )
-                                )
-                );
+            .andDo(
+                document
+                    .document(
+                        requestFields(
+                            fieldWithPath("postId").description("게시물 id"),
+                            fieldWithPath("title").description("제목"),
+                            fieldWithPath("content").description("내용")
+                        )
+                    )
+            );
     }
 }
