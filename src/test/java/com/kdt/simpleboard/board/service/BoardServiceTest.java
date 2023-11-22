@@ -105,7 +105,7 @@ class BoardServiceTest {
         assertAll(
                 () -> assertThat(boardRes.content()).isEqualTo(board.getContent()),
                 () -> assertThat(boardRes.title()).isEqualTo(board.getTitle()),
-                () -> assertThat(boardRes.memberId()).isEqualTo(board.getUser().getId())
+                () -> assertThat(boardRes.userId()).isEqualTo(board.getUser().getId())
         );
     }
 

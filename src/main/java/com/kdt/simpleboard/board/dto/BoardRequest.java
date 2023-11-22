@@ -10,7 +10,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Getter
 public class BoardRequest {
     public record CreateBoardRequest(
-            Long memberId,
+            Long userId,
 
             @NotBlank(message = "제목을 입력해주세요")
             String title,

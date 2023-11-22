@@ -19,7 +19,7 @@ public class BoardMapper {
     }
     public static BoardResponse.FindBoardRes toFindBoardRes(Board board){
         return FindBoardRes.builder()
-                .memberId(board.getId())
+                .userId(board.getId())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .build();

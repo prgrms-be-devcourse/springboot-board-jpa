@@ -15,7 +15,7 @@ public class BoardResponse {
 
     @Builder
     public record FindBoardRes(
-            Long memberId,
+            Long userId,
             String title,
             String content
     ){}

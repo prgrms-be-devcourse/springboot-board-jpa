@@ -29,7 +29,7 @@ public class BoardService {
 
     @Transactional
     public CreateBoardRes createBoard(BoardRequest.CreateBoardRequest request){
-        User user = userService.getUserEntity(request.memberId());
+        User user = userService.getUserEntity(request.userId());
         Board board = toBoardEntity(request, user);
         Board savedBoard = boardRepository.save(board);
         return toCreateBoardRes(savedBoard);
