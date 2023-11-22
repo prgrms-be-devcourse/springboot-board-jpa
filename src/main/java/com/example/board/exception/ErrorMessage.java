@@ -18,7 +18,7 @@ public enum ErrorMessage {
     WRONG_TITLE_VALUE(2002, HttpStatus.BAD_REQUEST, "게시글 제목은 1자~20자 이내로 작성해주십시오."),
     WRONG_CONTENTS_VALUE(2003, HttpStatus.BAD_REQUEST, "게시글 내용을 작성해주십시오.");
 
-    private int code;
-    private HttpStatus httpStatus;
-    private String message;
+    private final int code;
+    private final HttpStatus httpStatus;
+    private final String message;
 }

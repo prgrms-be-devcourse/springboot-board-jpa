@@ -18,10 +18,6 @@ public class Response<T> {
         return new Response<>(data, 200, "ok");
     }
 
-    public static <T> Response<T> success() {
-        return new Response<>(null, 200, "ok");
-    }
-
     public static Response<String> fail(BaseException e) {
         return new Response<>(e.getMessage(), e.getCode(), "fail");
     }
