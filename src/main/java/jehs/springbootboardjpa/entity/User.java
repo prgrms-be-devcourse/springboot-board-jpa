@@ -23,6 +23,6 @@ public class User extends BaseEntity {
     @Column(name = "hobby", length = 59)
     private String hobby;
 
-    @OneToMany(mappedBy = "user")
-    private List<Post> posts;
+//    @OneToMany(mappedBy = "user")
+//    private List<Post> posts;
 }
