@@ -2,6 +2,8 @@ package com.programmers.springboard.entity;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,6 +24,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Getter
+@SQLDelete(sql = "UPDATE post SET is_deleted = true WHERE id = ?")
+@Where(clause = "is_deleted = FALSE")
 public class Post extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,8 +38,10 @@ public class Post extends BaseEntity {
 	@Lob
 	private String content;
 
+	@Builder.Default
+	private Boolean isDeleted = false;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	// todo : @OnDelete 찾아보기
  	private Member member;
 
 	public void changePost(String title, String content) {
