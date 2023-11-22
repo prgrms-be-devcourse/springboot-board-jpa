@@ -1,7 +1,7 @@
 package com.devcourse.springbootboardjpahi.controller;
 
-import com.devcourse.springbootboardjpahi.domain.User;
 import com.devcourse.springbootboardjpahi.dto.CreateUserRequest;
+import com.devcourse.springbootboardjpahi.dto.UserResponse;
 import com.devcourse.springbootboardjpahi.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +20,15 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll() {
-        List<User> users = userService.findAll();
+    public ResponseEntity<List<UserResponse>> findAll() {
+        List<UserResponse> users = userService.findAll();
 
         return ResponseEntity.ok(users);
     }
 
     @PostMapping
-    public ResponseEntity<User> create(CreateUserRequest request) {
-        User user = userService.create(request);
+    public ResponseEntity<UserResponse> create(CreateUserRequest request) {
+        UserResponse user = userService.create(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(user);

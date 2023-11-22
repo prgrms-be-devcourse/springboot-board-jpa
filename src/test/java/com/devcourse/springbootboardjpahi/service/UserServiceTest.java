@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.devcourse.springbootboardjpahi.domain.User;
 import com.devcourse.springbootboardjpahi.dto.CreateUserRequest;
+import com.devcourse.springbootboardjpahi.dto.UserResponse;
 import com.devcourse.springbootboardjpahi.repository.UserRepository;
 import com.github.javafaker.Faker;
 import java.util.List;
@@ -43,15 +44,17 @@ class UserServiceTest {
         CreateUserRequest createUserRequest = generateUserDto();
 
         // when
-        User created = userService.create(createUserRequest);
+        UserResponse created = userService.create(createUserRequest);
 
         // then
-        Optional<User> actual = userRepository.findById(created.getId());
+        Optional<User> actual = userRepository.findById(created.id());
 
         assertThat(actual).isNotEmpty();
-        assertThat(actual.get()).usingRecursiveComparison()
-                .ignoringExpectedNullFields()
-                .isEqualTo(created);
+        assertThat(actual.get()).hasFieldOrPropertyWithValue("id", created.id())
+                .hasFieldOrPropertyWithValue("name", created.name())
+                .hasFieldOrPropertyWithValue("age", created.age())
+                .hasFieldOrPropertyWithValue("hobby", created.hobby())
+                .hasFieldOrPropertyWithValue("createdAt", created.createdAt());
     }
 
     @DisplayName("전체 유저 목록을 조회한다.")
@@ -63,7 +66,7 @@ class UserServiceTest {
         saveUsers(userCount);
 
         // when
-        List<User> users = userService.findAll();
+        List<UserResponse> users = userService.findAll();
 
         // then
         assertThat(users).hasSize(userCount);
