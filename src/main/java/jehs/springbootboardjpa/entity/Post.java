@@ -1,6 +1,7 @@
 package jehs.springbootboardjpa.entity;
 
 import jakarta.persistence.*;
+import jehs.springbootboardjpa.dto.PostUpdateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,7 +32,13 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PostType postType;
 
-    enum PostType {
+    private void validateUser(User updateUser) {
+        if (!updateUser.getId().equals(this.user.getId())) {
+            throw new RuntimeException("작성자의 게시글이 아닙니다.");
+        }
+    }
+
+    public enum PostType {
         FREE, INFO, MARKET, EMPLOYMENT
     }
 }
