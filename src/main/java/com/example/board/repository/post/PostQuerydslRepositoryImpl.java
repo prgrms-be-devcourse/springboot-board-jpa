@@ -2,6 +2,7 @@ package com.example.board.repository.post;
 
 import com.example.board.domain.Post;
 import com.example.board.dto.request.post.PostSearchCondition;
+import com.example.board.dto.request.post.SortType;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -27,22 +28,21 @@ public class PostQuerydslRepositoryImpl implements PostQuerydslRepository {
 
     @Override
     public Page<Post> findAll(PostSearchCondition condition, Pageable pageable) {
+
         JPAQuery<Post> query = queryFactory
                 .selectFrom(post)
                 .leftJoin(post.author, user)
-                .where(createdAtBetween(condition.createdAtFrom(), condition.createdAtTo()));
+                .where(
+                        createdAtGoe(condition.createdAtFrom()),
+                        createdAtLoe(condition.createdAtTo()));
 
         List<Post> posts = query
+                .orderBy(condition.sortType().equals(SortType.LATEST) ? post.createdAt.desc() : post.createdAt.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetchResults()
-                .getResults();
+                .fetch();
 
-        return PageableExecutionUtils.getPage(posts, pageable, () -> query.fetchCount());
-    }
-
-    private BooleanExpression createdAtBetween(LocalDateTime createdAtFrom, LocalDateTime createdAtTo) {
-        return createdAtGoe(createdAtFrom).and(createdAtLoe(createdAtTo));
+        return PageableExecutionUtils.getPage(posts, pageable, query::fetchCount);
     }
 
     private BooleanExpression createdAtGoe(LocalDateTime createdAt) {
