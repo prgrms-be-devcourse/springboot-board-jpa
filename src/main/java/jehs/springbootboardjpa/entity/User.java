@@ -2,14 +2,12 @@ package jehs.springbootboardjpa.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
 @Table(name = "users")
+@Getter
 public class User extends BaseEntity {
 
     @Id

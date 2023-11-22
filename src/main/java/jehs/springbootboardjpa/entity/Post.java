@@ -1,13 +1,17 @@
 package jehs.springbootboardjpa.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "posts")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post extends BaseEntity {
 
     @Id
