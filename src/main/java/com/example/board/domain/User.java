@@ -18,13 +18,13 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private Integer age;
 
-    @Column(nullable = true)
+    @Column
     private String hobby;
 
     @Column
