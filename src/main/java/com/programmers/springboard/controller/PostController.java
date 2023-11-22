@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,17 +31,20 @@ public class PostController {
 	private final PostService postService;
 
 	@GetMapping("/{id}")
-	public PostResponse getPost(@PathVariable Long id){
-		return postService.getPostById(id);
+	public ResponseEntity<PostResponse> getPost(@PathVariable Long id) {
+		PostResponse postResponse = postService.getPostById(id);
+		return ResponseEntity.ok(postResponse);
 	}
 
 	@GetMapping
-	public List<PostResponse> getPosts(@RequestParam(required = false, value = "page", defaultValue = "1") Integer page){
-		return postService.getPosts(page);
+	public ResponseEntity<List<PostResponse>> getPosts(
+		@RequestParam(required = false, value = "page", defaultValue = "1") Integer page) {
+		List<PostResponse> postResponseList = postService.getPosts(page);
+		return ResponseEntity.ok(postResponseList);
 	}
 
 	@PostMapping
-	public ResponseEntity<PostResponse> createPost(@Valid @RequestBody CreatePostRequest createPostRequest){
+	public ResponseEntity<PostResponse> createPost(@Valid @RequestBody CreatePostRequest createPostRequest) {
 		PostResponse post = postService.createPost(createPostRequest);
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequest()
@@ -51,8 +55,15 @@ public class PostController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<PostResponse> updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequest updatePostRequest){
+	public ResponseEntity<PostResponse> updatePost(@PathVariable Long id,
+		@Valid @RequestBody UpdatePostRequest updatePostRequest) {
 		PostResponse post = postService.updatePost(id, updatePostRequest);
 		return ResponseEntity.ok().body(post);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+		postService.deletePost(id);
+		return ResponseEntity.noContent().build();
 	}
 }
