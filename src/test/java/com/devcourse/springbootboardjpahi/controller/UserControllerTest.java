@@ -107,7 +107,6 @@ class UserControllerTest {
     @ValueSource(strings = {" ", "\n", "\r\n"})
     void testCreateInvalidName(String name) throws Exception {
         // given
-        System.out.println(name);
         int age = faker.number().randomDigitNotZero();
         String hobby = faker.zelda().game();
         CreateUserRequest createUserRequest = new CreateUserRequest(name, age, hobby);
@@ -120,6 +119,25 @@ class UserControllerTest {
         // then
         actions.andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", is("이름은 공백일 수 없습니다.")));
+    }
+
+    @DisplayName("나이는 음수일 수 없다.")
+    @Test
+    void testCreateNegativeAge() throws Exception {
+        // given
+        String name = faker.name().firstName();
+        int age = faker.number().numberBetween(-100, -1);
+        String hobby = faker.zelda().game();
+        CreateUserRequest createUserRequest = new CreateUserRequest(name, age, hobby);
+
+        // when
+        ResultActions actions = mockMvc.perform(post("/api/v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createUserRequest)));
+
+        // then
+        actions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("나이는 음수가 될 수 없습니다.")));
     }
 
     CreateUserRequest generateCreateUserRequest() {
