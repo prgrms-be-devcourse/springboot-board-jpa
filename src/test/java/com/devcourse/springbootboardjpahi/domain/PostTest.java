@@ -29,7 +29,7 @@ class PostTest {
     @BeforeEach
     void setUp() {
         String name = faker.name().firstName();
-        int age = faker.number().randomDigitNotZero();
+        int age = faker.number().numberBetween(0, 120);
         String hobby = faker.esports().game();
         author = User.builder()
                 .name(name)
@@ -66,7 +66,7 @@ class PostTest {
     @Test
     void testCreateNullName() {
         // given
-        String content = faker.hitchhikersGuideToTheGalaxy().quote();
+        String content = faker.shakespeare().romeoAndJulietQuote();
 
         // when
         Post expected = Post.builder()

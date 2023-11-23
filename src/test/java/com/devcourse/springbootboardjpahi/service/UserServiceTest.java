@@ -74,7 +74,7 @@ class UserServiceTest {
 
     private CreateUserRequest generateCreateUserRequest() {
         String name = faker.name().firstName();
-        int age = faker.number().randomDigitNotZero();
+        int age = faker.number().numberBetween(0, 120);
         String hobby = faker.esports().game();
 
         return new CreateUserRequest(name, age, hobby);

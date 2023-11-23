@@ -70,7 +70,7 @@ class PostControllerTest {
     @Test
     void testFindById() throws Exception {
         // given
-        long id = faker.number().randomDigitNotZero();
+        long id = Math.abs(faker.number().randomDigitNotZero());
         String title = faker.book().title();
         String content = faker.shakespeare().kingRichardIIIQuote();
         String authorName = faker.name().firstName();
@@ -102,7 +102,7 @@ class PostControllerTest {
         // given
         UpdatePostRequest updatePostRequest = generateUpdateRequest();
 
-        long id = faker.number().randomDigitNotZero();
+        long id = Math.abs(faker.number().randomDigitNotZero());
         String authorName = faker.name().firstName();
         PostDetailResponse postDetailResponse = PostDetailResponse.builder()
                 .id(id)
@@ -141,11 +141,13 @@ class PostControllerTest {
     }
 
     private User generateAuthor() {
+        long id = Math.abs(faker.number().randomDigitNotZero());
         String name = faker.name().firstName();
-        int age = faker.number().randomDigitNotZero();
+        int age = faker.number().numberBetween(0, 120);
         String hobby = faker.esports().game();
 
         return User.builder()
+                .id(id)
                 .name(name)
                 .age(age)
                 .hobby(hobby)

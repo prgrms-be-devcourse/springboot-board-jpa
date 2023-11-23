@@ -107,7 +107,7 @@ class UserControllerTest {
     @ValueSource(strings = {" ", "\n", "\r\n"})
     void testCreateInvalidName(String name) throws Exception {
         // given
-        int age = faker.number().randomDigitNotZero();
+        int age = faker.number().numberBetween(0, 120);
         String hobby = faker.zelda().game();
         CreateUserRequest createUserRequest = new CreateUserRequest(name, age, hobby);
 
@@ -137,12 +137,12 @@ class UserControllerTest {
 
         // then
         actions.andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("나이는 음수가 될 수 없습니다.")));
+                .andExpect(jsonPath("$.message", is("나이는 음수일 수 없습니다.")));
     }
 
     CreateUserRequest generateCreateUserRequest() {
         String name = faker.name().firstName();
-        int age = faker.number().randomDigitNotZero();
+        int age = faker.number().numberBetween(0, 120);
         String hobby = faker.esports().game();
 
         return new CreateUserRequest(name, age, hobby);
@@ -151,7 +151,7 @@ class UserControllerTest {
     UserResponse generateUserResponse() {
         long id = faker.number().randomNumber();
         String name = faker.name().firstName();
-        int age = faker.number().randomDigitNotZero();
+        int age = faker.number().numberBetween(0, 120);
         String hobby = faker.esports().game();
         LocalDateTime createdAt = LocalDateTime.now();
 

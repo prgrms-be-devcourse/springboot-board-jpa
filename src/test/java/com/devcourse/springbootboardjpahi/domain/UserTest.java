@@ -28,7 +28,7 @@ class UserTest {
     void testCreate() {
         // given
         String name = faker.name().firstName();
-        int age = faker.number().randomDigitNotZero();
+        int age = faker.number().numberBetween(0, 120);
         String hobby = faker.esports().game();
 
         // when
@@ -50,7 +50,7 @@ class UserTest {
     @Test
     void testCreateNullName() {
         // given
-        int age = faker.number().randomDigitNotZero();
+        int age = faker.number().numberBetween(0, 120);
         String hobby = faker.esports().game();
 
         // when
@@ -95,7 +95,7 @@ class UserTest {
     void testMappingPosts() {
         // given
         String name = faker.name().firstName();
-        int age = faker.number().randomDigitNotZero();
+        int age = faker.number().numberBetween(0, 120);
         String hobby = faker.esports().game();
         User author = User.builder()
                 .name(name)

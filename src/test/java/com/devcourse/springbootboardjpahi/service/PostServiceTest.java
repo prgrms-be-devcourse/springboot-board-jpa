@@ -104,7 +104,7 @@ class PostServiceTest {
     @Test
     void testFindByIdNonExistentId() {
         // given
-        long id = faker.number().randomDigitNotZero();
+        long id = Math.abs(faker.number().randomDigitNotZero());
 
         // when
         ThrowingCallable target = () -> postService.findById(id);
@@ -155,11 +155,13 @@ class PostServiceTest {
     }
 
     private User generateAuthor() {
+        long id = Math.abs(faker.number().randomDigitNotZero());
         String name = faker.name().firstName();
-        int age = faker.number().randomDigitNotZero();
+        int age = faker.number().numberBetween(0, 120);
         String hobby = faker.esports().game();
 
         return User.builder()
+                .id(id)
                 .name(name)
                 .age(age)
                 .hobby(hobby)
