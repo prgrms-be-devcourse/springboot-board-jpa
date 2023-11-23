@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatException;
 
 import com.github.javafaker.Faker;
+import java.time.LocalDateTime;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
@@ -142,6 +143,7 @@ class PostTest {
 
         entityManager.persistAndFlush(post);
 
+        LocalDateTime beforeUpdated = post.getUpdatedAt();
         String expected = faker.book().title();
 
         // when
@@ -154,8 +156,10 @@ class PostTest {
 
         Post actualPost = entityManager.find(Post.class, post.getId());
         String actual = actualPost.getTitle();
+        LocalDateTime afterUpdated = actualPost.getUpdatedAt();
 
         assertThat(actual).isEqualTo(expected);
+        assertThat(afterUpdated).isAfter(beforeUpdated);
     }
 
     @DisplayName("포스트의 내용을 수정한다.")
@@ -172,6 +176,7 @@ class PostTest {
 
         entityManager.persistAndFlush(post);
 
+        LocalDateTime beforeUpdated = post.getUpdatedAt();
         String expected = faker.gameOfThrones().quote();
 
         // when
@@ -184,7 +189,9 @@ class PostTest {
 
         Post actualPost = entityManager.find(Post.class, post.getId());
         String actual = actualPost.getContent();
+        LocalDateTime afterUpdated = actualPost.getUpdatedAt();
 
         assertThat(actual).isEqualTo(expected);
+        assertThat(afterUpdated).isAfter(beforeUpdated);
     }
 }
