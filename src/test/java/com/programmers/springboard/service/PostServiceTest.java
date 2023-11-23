@@ -20,8 +20,8 @@ import com.programmers.springboard.entity.Post;
 import com.programmers.springboard.exception.PostNotFoundException;
 import com.programmers.springboard.repository.PostCustomRepository;
 import com.programmers.springboard.repository.PostRepository;
-import com.programmers.springboard.request.CreatePostRequest;
-import com.programmers.springboard.request.UpdatePostRequest;
+import com.programmers.springboard.request.PostCreateRequest;
+import com.programmers.springboard.request.PostUpdateRequest;
 import com.programmers.springboard.response.PostResponse;
 
 class PostServiceTest {
@@ -44,7 +44,7 @@ class PostServiceTest {
 	@Test
 	void 포스트를_작성합니다() {
 		// Given
-		CreatePostRequest request = new CreatePostRequest("test", "test", 0L);
+		PostCreateRequest request = new PostCreateRequest("test", "test", 0L);
 		Member member = Member.builder().id(1L).build();
 		Post post = new Post(1L, "title", "content", false, member);
 
@@ -61,7 +61,7 @@ class PostServiceTest {
 	@Test
 	void 포스트를_수정합니다() {
 		// Given
-		UpdatePostRequest request = new UpdatePostRequest("test", "test");
+		PostUpdateRequest request = new PostUpdateRequest("test", "test");
 		Member member = Member.builder().id(1L).build();
 		Post post = new Post(1L, "title", "content", false, member);
 
@@ -142,7 +142,7 @@ class PostServiceTest {
 		// given
 		Member member = Member.builder().id(1L).build();
 		Post post = new Post(1L, "title", "content", false, member);
-		UpdatePostRequest request = new UpdatePostRequest("test", "test");
+		PostUpdateRequest request = new PostUpdateRequest("test", "test");
 
 		when(postRepository.findById(any())).thenReturn(Optional.empty());
 

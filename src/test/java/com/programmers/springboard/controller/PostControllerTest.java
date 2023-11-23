@@ -1,6 +1,5 @@
 package com.programmers.springboard.controller;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -17,15 +16,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.programmers.springboard.entity.Member;
 import com.programmers.springboard.repository.MemberRepository;
-import com.programmers.springboard.request.CreatePostRequest;
-import com.programmers.springboard.request.UpdatePostRequest;
+import com.programmers.springboard.request.PostCreateRequest;
+import com.programmers.springboard.request.PostUpdateRequest;
 import com.programmers.springboard.response.PostResponse;
 import com.programmers.springboard.service.PostService;
 
@@ -53,7 +51,7 @@ public class PostControllerTest {
 	void set_up() {
 		Member member = memberRepository.save(Member.builder().name("홍길동").age(20).hobby("축구").build());
 
-		CreatePostRequest request = new CreatePostRequest("제목입니다", "내용입니다", member.getId());
+		PostCreateRequest request = new PostCreateRequest("제목입니다", "내용입니다", member.getId());
 
 	}
 
@@ -61,7 +59,7 @@ public class PostControllerTest {
 	void 포스트_작성_성공() throws Exception {
 		// given
 		Member member = memberRepository.save(Member.builder().name("홍길동").age(20).hobby("축구").build());
-		CreatePostRequest request = new CreatePostRequest("test", "test", member.getId());
+		PostCreateRequest request = new PostCreateRequest("test", "test", member.getId());
 
 		// when // then
 		mockMvc.perform(post("/api/v1/posts")
@@ -91,7 +89,7 @@ public class PostControllerTest {
 		Member member = memberRepository.save(Member.builder().name("홍길동").age(20).hobby("축구").build());
 
 		for (int i = 0; i < 11; i++) {
-			postService.createPost(new CreatePostRequest("test", "test", member.getId()));
+			postService.createPost(new PostCreateRequest("test", "test", member.getId()));
 		}
 
 		// when // then
@@ -120,7 +118,7 @@ public class PostControllerTest {
 	void 포스트_개별_조회() throws Exception {
 		// given
 		Member member = memberRepository.save(Member.builder().name("홍길동").age(20).hobby("축구").build());
-		PostResponse post = postService.createPost(new CreatePostRequest("test", "test", member.getId()));
+		PostResponse post = postService.createPost(new PostCreateRequest("test", "test", member.getId()));
 
 		// when // then
 		mockMvc.perform(get("/api/v1/posts/{id}", post.postId()))
@@ -146,17 +144,17 @@ public class PostControllerTest {
 	void 포스트_수정_성공() throws Exception {
 		// given
 		Member member = memberRepository.save(Member.builder().name("홍길동").age(20).hobby("축구").build());
-		PostResponse post = postService.createPost(new CreatePostRequest("test", "test", member.getId()));
+		PostResponse post = postService.createPost(new PostCreateRequest("test", "test", member.getId()));
 
-		UpdatePostRequest updatePostRequest = new UpdatePostRequest("fix!", "fix!");
+		PostUpdateRequest postUpdateRequest = new PostUpdateRequest("fix!", "fix!");
 
 		// when // then
 		mockMvc.perform(put("/api/v1/posts/{id}",post.postId())
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(updatePostRequest)))
+				.content(objectMapper.writeValueAsString(postUpdateRequest)))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.title", Matchers.is(updatePostRequest.title())))
-				.andExpect(jsonPath("$.content", Matchers.is(updatePostRequest.content())))
+				.andExpect(jsonPath("$.title", Matchers.is(postUpdateRequest.title())))
+				.andExpect(jsonPath("$.content", Matchers.is(postUpdateRequest.content())))
 				.andDo(print())
 				.andDo(document("post-update",
 				requestFields(
@@ -177,7 +175,7 @@ public class PostControllerTest {
 	void 포스트_삭제_성공() throws Exception {
 		// given
 		Member member = memberRepository.save(Member.builder().name("홍길동").age(20).hobby("축구").build());
-		PostResponse post = postService.createPost(new CreatePostRequest("test", "test", member.getId()));
+		PostResponse post = postService.createPost(new PostCreateRequest("test", "test", member.getId()));
 
 		// when // then
 		mockMvc.perform(delete("/api/v1/posts/{id}",post.postId()))
