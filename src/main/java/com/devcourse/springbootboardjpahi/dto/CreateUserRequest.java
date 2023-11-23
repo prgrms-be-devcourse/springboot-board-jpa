@@ -1,5 +1,13 @@
 package com.devcourse.springbootboardjpahi.dto;
 
-public record CreateUserRequest(String name, Integer age, String hobby) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
+
+public record CreateUserRequest(
+        @NotBlank
+        String name,
+        @PositiveOrZero
+        Integer age,
+        String hobby) {
 
 }

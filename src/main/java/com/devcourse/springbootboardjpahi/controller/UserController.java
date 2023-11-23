@@ -3,6 +3,7 @@ package com.devcourse.springbootboardjpahi.controller;
 import com.devcourse.springbootboardjpahi.dto.CreateUserRequest;
 import com.devcourse.springbootboardjpahi.dto.UserResponse;
 import com.devcourse.springbootboardjpahi.service.UserService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> create(CreateUserRequest request) {
+    public ResponseEntity<UserResponse> create(@Valid CreateUserRequest request) {
         UserResponse user = userService.create(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
