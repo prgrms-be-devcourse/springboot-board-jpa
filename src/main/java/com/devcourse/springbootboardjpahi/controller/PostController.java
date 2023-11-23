@@ -5,6 +5,7 @@ import com.devcourse.springbootboardjpahi.dto.PostDetailResponse;
 import com.devcourse.springbootboardjpahi.dto.PostResponse;
 import com.devcourse.springbootboardjpahi.dto.UpdatePostRequest;
 import com.devcourse.springbootboardjpahi.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<PostResponse> create(@RequestBody CreatePostRequest request) {
+    public ResponseEntity<PostResponse> create(@Valid @RequestBody CreatePostRequest request) {
         PostResponse post = postService.create(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -40,7 +41,7 @@ public class PostController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PostDetailResponse> updateById(@PathVariable Long id,
-                                                         @RequestBody UpdatePostRequest request) {
+                                                         @Valid @RequestBody UpdatePostRequest request) {
         PostDetailResponse postDetailResponse = postService.updateById(id, request);
 
         return ResponseEntity.ok(postDetailResponse);
