@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -35,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 class PostControllerTest {
 
     @Autowired
@@ -52,7 +53,6 @@ class PostControllerTest {
     class PostNew {
         @Test
         @DisplayName("정상적으로 게시글을 등록된다.")
-        @Transactional
         void postSuccess() throws Exception {
             //given
             PostDto postDto = new PostDto(1L, "test2", "test Contents2");
@@ -78,7 +78,6 @@ class PostControllerTest {
 
         @Test
         @DisplayName("userId를 포함하지 않고 보낼 경우 예외가 발생한다.")
-        @Transactional
         void postFailWithAnonymousUser() throws Exception {
             //given
             PostDto postDto = new PostDto(null, "test2", "test Contents2");
@@ -99,7 +98,6 @@ class PostControllerTest {
 
         @Test
         @DisplayName("존재하지 않는 userId를 보낼 경우 예외가 발생한다.")
-        @Transactional
         void postFailWithWrongUser() throws Exception {
             //given
             PostDto postDto = new PostDto(0L, "test2", "test Contents2");
@@ -119,7 +117,6 @@ class PostControllerTest {
 
         @Test
         @DisplayName("제목이 20자 이상인 경우 예외를 발생시킨다.")
-        @Transactional
         void postFailWithLongTitle() throws Exception {
             //given
             PostDto postDto = new PostDto(1L, "test222222222222222222222222", "test Contents2");
@@ -143,7 +140,6 @@ class PostControllerTest {
         @ValueSource(strings = {" "})
         @NullAndEmptySource
         @DisplayName("제목이 없는 경우 예외를 발생시킨다.")
-        @Transactional
         void postFailWithNoTitle(String input) throws Exception {
             //given
             PostDto postDto = new PostDto(1L, input, "test Contents2");
@@ -166,7 +162,6 @@ class PostControllerTest {
         @ValueSource(strings = {" "})
         @NullAndEmptySource
         @DisplayName("내용이 없는 경우 예외를 발생시킨다.")
-        @Transactional
         void postFailWithNoContents(String input) throws Exception {
             //given
             PostDto postDto = new PostDto(1L, "title", input);
@@ -191,7 +186,6 @@ class PostControllerTest {
     class PostGetAll {
         @Test
         @DisplayName("정상적으로 모든 게시물들을 받아온다.")
-        @Transactional
         void getSuccess() throws Exception {
             //given
             postService.save(new PostDto(1L, "testTitle1", "hihihihihihihih1"));
@@ -245,7 +239,6 @@ class PostControllerTest {
     class PostGetOne {
         @Test
         @DisplayName("정상적으로 특정 게시물 하나를 받아온다.")
-        @Transactional
         void getPostByIdSuccess() throws Exception {
             //given
             Long savedContentsId = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
@@ -270,7 +263,6 @@ class PostControllerTest {
 
         @Test
         @DisplayName("존재하지 않는 게시물을 호출하여 예외가 발생하였다.")
-        @Transactional
         void getPostByIdNotFoundFail() throws Exception {
             //given
 
@@ -295,7 +287,6 @@ class PostControllerTest {
     class PostUpdate {
         @Test
         @DisplayName("정상적으로 게시글을 수정한다.")
-        @Transactional
         void updatePostSuccess() throws Exception {
             //given
             Long savedContents = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
@@ -323,7 +314,6 @@ class PostControllerTest {
 
         @Test
         @DisplayName("수정 시 제목이 20자 이상인 경우 예외를 발생시킨다.")
-        @Transactional
         void updateFailWithLongTitle() throws Exception {
             //given
             Long savedContents = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
@@ -348,7 +338,6 @@ class PostControllerTest {
         @ValueSource(strings = {" "})
         @NullAndEmptySource
         @DisplayName("수정 시 제목이 없는 경우 예외를 발생시킨다.")
-        @Transactional
         void updateFailWithNoTitle(String input) throws Exception {
             //given
             Long savedContents = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
@@ -372,7 +361,6 @@ class PostControllerTest {
         @ValueSource(strings = {" "})
         @NullAndEmptySource
         @DisplayName("수정 시 내용이 없는 경우 예외를 발생시킨다.")
-        @Transactional
         void updateFailWithNoContents(String input) throws Exception {
             //given
             Long savedContents = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
