@@ -1,7 +1,5 @@
 package com.programmers.springboard.entity;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
