@@ -22,6 +22,7 @@ public class UserConverter {
                 .age(user.getAge())
                 .hobby(user.getHobby())
                 .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
                 .build();
     }
 

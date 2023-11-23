@@ -63,3 +63,9 @@ tasks.named('asciidoctor') {
     inputs.dir snippetsDir
     dependsOn test
 }
+
+asciidoctor {
+    sourceDir 'src/docs/asciidoc'
+    outputDir 'src/main/resources/static/docs'
+    attributes 'snippets': file('build/generated-snippets')
+}
