@@ -8,6 +8,6 @@ public record CreateUserRequest(
         String name,
         @PositiveOrZero(message = "나이는 음수일 수 없습니다.")
         Integer age,
-        String hobby) {
-
+        String hobby
+) {
 }

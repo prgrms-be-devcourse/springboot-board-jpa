@@ -7,7 +7,7 @@ import lombok.Builder;
 
 @Builder
 public record PostDetailResponse(
-        long id,
+        Long id,
         String title,
         String content,
         String authorName,
