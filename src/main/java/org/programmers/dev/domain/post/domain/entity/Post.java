@@ -39,6 +39,8 @@ public class Post extends BaseEntity {
 
     @Builder
     private Post(Long id, String title, String content, User user, LocalDateTime createdAt) {
+        validateTitle(title);
+        validateContent(content);
         this.id = id;
         this.title = title;
         this.content = content;
@@ -48,16 +50,12 @@ public class Post extends BaseEntity {
     }
 
     public void updateTitle(String title) {
-        if (title.length() > 50) {
-            throw new PostValidationException("제목은 50자를 넘을 수 없습니다.");
-        }
+        validateTitle(title);
         this.title = title;
     }
 
     public void updateContent(String content) {
-        if (content.length() > 1000) {
-            throw new PostValidationException("내용은 1000자를 넘을 수 없습니다.");
-        }
+        validateContent(content);
         this.content = content;
     }
 
@@ -67,5 +65,23 @@ public class Post extends BaseEntity {
         }
         this.user = user;
         user.getPosts().add(this);
+    }
+
+    private void validateTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            throw new PostValidationException("제목은 비어있을 수 없습니다.");
+        }
+        if (title.length() > 50) {
+            throw new PostValidationException("제목은 50자를 넘을 수 없습니다.");
+        }
+    }
+
+    private void validateContent(String content) {
+        if (content == null || content.isEmpty()) {
+            throw new PostValidationException("내용은 비어있을 수 없습니다.");
+        }
+        if (content.length() > 1000) {
+            throw new PostValidationException("내용은 1000자를 넘을 수 없습니다.");
+        }
     }
 }
