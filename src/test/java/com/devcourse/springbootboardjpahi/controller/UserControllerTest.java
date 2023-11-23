@@ -19,6 +19,9 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -96,6 +99,27 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.age", is(createUserRequest.age())))
                 .andExpect(jsonPath("$.hobby", is(createUserRequest.hobby())))
                 .andDo(print());
+    }
+
+    @DisplayName("이름에 null과 공백이 들어가면 예외가 발생한다.")
+    @ParameterizedTest(name = "이름 입력: {0}")
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "\n", "\r\n"})
+    void testCreateInvalidName(String name) throws Exception {
+        // given
+        System.out.println(name);
+        int age = faker.number().randomDigitNotZero();
+        String hobby = faker.zelda().game();
+        CreateUserRequest createUserRequest = new CreateUserRequest(name, age, hobby);
+
+        // when
+        ResultActions actions = mockMvc.perform(post("/api/v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createUserRequest)));
+
+        // then
+        actions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("이름은 공백일 수 없습니다.")));
     }
 
     CreateUserRequest generateCreateUserRequest() {
