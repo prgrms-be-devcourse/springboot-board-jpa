@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.programmers.springboard.request.CreatePostRequest;
-import com.programmers.springboard.request.UpdatePostRequest;
+import com.programmers.springboard.request.PostCreateRequest;
+import com.programmers.springboard.request.PostUpdateRequest;
 import com.programmers.springboard.response.PostResponse;
 import com.programmers.springboard.service.PostService;
 
@@ -44,8 +44,8 @@ public class PostController {
 	}
 
 	@PostMapping
-	public ResponseEntity<PostResponse> createPost(@Valid @RequestBody CreatePostRequest createPostRequest) {
-		PostResponse post = postService.createPost(createPostRequest);
+	public ResponseEntity<PostResponse> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest) {
+		PostResponse post = postService.createPost(postCreateRequest);
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequest()
 			.path("/{postId}")
@@ -56,8 +56,8 @@ public class PostController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<PostResponse> updatePost(@PathVariable Long id,
-		@Valid @RequestBody UpdatePostRequest updatePostRequest) {
-		PostResponse post = postService.updatePost(id, updatePostRequest);
+		@Valid @RequestBody PostUpdateRequest postUpdateRequest) {
+		PostResponse post = postService.updatePost(id, postUpdateRequest);
 		return ResponseEntity.ok().body(post);
 	}
 

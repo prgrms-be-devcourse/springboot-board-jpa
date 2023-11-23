@@ -3,7 +3,6 @@ package com.programmers.springboard.response;
 import com.programmers.springboard.entity.Member;
 import com.programmers.springboard.entity.Post;
 
-
 public record PostResponse(Long postId, String title, String content, Long memberId, String memberName) {
 	public static PostResponse of(Post post) {
 		Member member = post.getMember();

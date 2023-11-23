@@ -10,8 +10,8 @@ import com.programmers.springboard.entity.Post;
 import com.programmers.springboard.exception.PostNotFoundException;
 import com.programmers.springboard.repository.PostCustomRepository;
 import com.programmers.springboard.repository.PostRepository;
-import com.programmers.springboard.request.CreatePostRequest;
-import com.programmers.springboard.request.UpdatePostRequest;
+import com.programmers.springboard.request.PostCreateRequest;
+import com.programmers.springboard.request.PostUpdateRequest;
 import com.programmers.springboard.response.PostResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class PostService {
 		return PostResponse.of(post);
 	}
 
-	public PostResponse createPost(CreatePostRequest request) {
+	public PostResponse createPost(PostCreateRequest request) {
 		Member member = memberService.getMemberById(request.memberId());
 		Post post = postRepository.save(Post.builder()
 			.content(request.content())
@@ -50,7 +50,7 @@ public class PostService {
 		return PostResponse.of(post);
 	}
 
-	public PostResponse updatePost(Long id, UpdatePostRequest request) {
+	public PostResponse updatePost(Long id, PostUpdateRequest request) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(PostNotFoundException::new);
 		post.changePost(request.title(), request.content());
