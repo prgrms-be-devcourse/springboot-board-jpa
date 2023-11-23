@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -64,6 +66,60 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.content", is(postResponse.content())))
                 .andExpect(jsonPath("$.authorName", is(postResponse.authorName())))
                 .andDo(print());
+    }
+
+    @DisplayName("[POST] 포스트 제목은 공백일 수 없다.")
+    @ParameterizedTest
+    @NullAndEmptySource
+    void testCreateBlankTitle(String title) throws Exception {
+        // given
+        User author = generateAuthor();
+        String content = faker.esports().player();
+        CreatePostRequest createPostRequest = new CreatePostRequest(title, content, author.getId());
+
+        // when
+        ResultActions actions = mockMvc.perform(post("/api/v1/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createPostRequest)));
+
+        // then
+        actions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("제목은 공백일 수 없습니다.")));
+    }
+
+    @DisplayName("[POST] 포스트 내용은 null일 수 없다.")
+    @Test
+    void testCreateNullContent() throws Exception {
+        // given
+        User author = generateAuthor();
+        String title = faker.esports().player();
+        CreatePostRequest createPostRequest = new CreatePostRequest(title, null, author.getId());
+
+        // when
+        ResultActions actions = mockMvc.perform(post("/api/v1/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createPostRequest)));
+
+        // then
+        actions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("내용이 존재하지 않습니다.")));
+    }
+
+    @DisplayName("[POST] 포스트 작성자 id는 음수일 수 없다.")
+    @Test
+    void testCreateNegativeId() throws Exception {
+        // given
+        long id = faker.number().numberBetween(-1000, -1);
+        CreatePostRequest createPostRequest = generateCreateRequest(id);
+
+        // when
+        ResultActions actions = mockMvc.perform(post("/api/v1/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createPostRequest)));
+
+        // then
+        actions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("유효하지 않은 유저 아이디입니다.")));
     }
 
     @DisplayName("[GET] 포스트를 상세 조회한다.")
