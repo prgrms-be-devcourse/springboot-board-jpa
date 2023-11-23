@@ -6,13 +6,11 @@ import lombok.Builder;
 
 @Builder
 public record UserResponse(
-
         long id,
         String name,
         int age,
         String hobby,
-        LocalDateTime createdAt
-) {
+        LocalDateTime createdAt) {
 
     public static UserResponse from(User user) {
         return UserResponse.builder()

@@ -6,7 +6,12 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 
 @Builder
-public record PostResponse(Long id, String title, String content, String authorName, LocalDateTime createdAt) {
+public record PostResponse(
+        long id,
+        String title,
+        String content,
+        String authorName,
+        LocalDateTime createdAt) {
 
     public static PostResponse from(Post post) {
         User author = post.getUser();
