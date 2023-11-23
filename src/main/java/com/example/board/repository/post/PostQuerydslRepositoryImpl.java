@@ -2,7 +2,6 @@ package com.example.board.repository.post;
 
 import com.example.board.domain.Post;
 import com.example.board.dto.request.post.PostSearchCondition;
-import com.example.board.dto.request.post.SortType;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -32,15 +31,19 @@ public class PostQuerydslRepositoryImpl implements PostQuerydslRepository {
         JPAQuery<Post> query = queryFactory
                 .selectFrom(post)
                 .leftJoin(post.author, user)
-                .where(
-                        createdAtGoe(condition.createdAtFrom()),
+                .where(createdAtGoe(condition.createdAtFrom()),
                         createdAtLoe(condition.createdAtTo()));
 
         List<Post> posts = query
-                .orderBy(condition.sortType().equals(SortType.LATEST) ? post.createdAt.desc() : post.createdAt.asc())
+                .orderBy(condition.sortType() == null ? post.id.desc() :
+                        switch (condition.sortType()) {
+                            case LATEST -> post.id.desc();
+                            case OLDEST -> post.id.asc();
+                        })
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch();
+                .fetchResults()
+                .getResults();
 
         return PageableExecutionUtils.getPage(posts, pageable, query::fetchCount);
     }

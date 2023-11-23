@@ -12,9 +12,19 @@ spring:
     properties:
       hibernate.format_sql: true
     database-platform: org.hibernate.dialect.H2Dialect
+
 server:
   servlet:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
+        sql: debug
+        orm:
+          jdbc.bind: trace

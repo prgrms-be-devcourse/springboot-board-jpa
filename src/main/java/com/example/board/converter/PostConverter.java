@@ -21,7 +21,7 @@ public class PostConverter {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .createdAt(post.getCreatedAt())
-                .author(UserConverter.toUserResponse(post.getAuthor()))
+                .author(UserConverter.toAuthorResponse(post.getAuthor()))
                 .build();
     }
 }

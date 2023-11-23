@@ -1,0 +1,62 @@
+### 유저 생성
+POST http://localhost:8080/v1/users
+Content-Type: application/json
+
+{
+  "name": "빙봉씨",
+  "age": 30
+}
+
+### 게시글 생성
+POST http://localhost:8080/v1/posts
+Content-Type: application/json
+
+{
+  "title": "제목 111",
+  "content": "게시글 1",
+  "authorId": 1
+}
+
+### 게시글 생성
+POST http://localhost:8080/v1/posts
+Content-Type: application/json
+
+{
+  "title": "제목 222",
+  "content": "게시글 2",
+  "authorId": 1
+}
+
+### 게시글 생성
+POST http://localhost:8080/v1/posts
+Content-Type: application/json
+
+{
+  "title": "제목 333",
+  "content": "게시글 3",
+  "authorId": 1
+}
+
+### 게시글 생성
+POST http://localhost:8080/v1/posts
+Content-Type: application/json
+
+{
+  "title": "제목 444",
+  "content": "게시글 4",
+  "authorId": 1
+}
+
+### 잘못된 게시글 생성
+POST http://localhost:8080/v1/posts
+Content-Type: application/json
+
+{
+  "title": "제목",
+  "content": "게시글",
+  "authorId": 1
+}
+
+### 게시글 전체 조회
+GET http://localhost:8080/v1/posts?sortType=LATEST
+Content-Type: application/json

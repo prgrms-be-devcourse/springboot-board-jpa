@@ -6,6 +6,7 @@ import com.example.board.domain.User;
 import com.example.board.dto.request.post.CreatePostRequest;
 import com.example.board.dto.request.post.PostSearchCondition;
 import com.example.board.dto.request.post.UpdatePostRequest;
+import com.example.board.dto.response.PageResponse;
 import com.example.board.dto.response.PostResponse;
 import com.example.board.exception.CustomException;
 import com.example.board.exception.ErrorCode;
@@ -31,8 +32,9 @@ public class PostService {
         return post.getId();
     }
 
-    public Page<PostResponse> getPosts(PostSearchCondition condition, Pageable pageable) {
-        return postRepository.findAll(condition, pageable).map(PostConverter::toPostResponse);
+    public PageResponse<PostResponse> getPosts(PostSearchCondition condition, Pageable pageable) {
+        Page<PostResponse> posts = postRepository.findAll(condition, pageable).map(PostConverter::toPostResponse);
+        return PageResponse.of(posts);
     }
 
     @Transactional(readOnly = true)

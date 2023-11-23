@@ -1,14 +1,16 @@
 package com.example.board.controller;
 
 import com.example.board.dto.request.post.CreatePostRequest;
+import com.example.board.dto.request.post.PageCondition;
 import com.example.board.dto.request.post.PostSearchCondition;
 import com.example.board.dto.request.post.UpdatePostRequest;
 import com.example.board.dto.response.ApiResponse;
+import com.example.board.dto.response.PageResponse;
 import com.example.board.dto.response.PostResponse;
 import com.example.board.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,8 +43,12 @@ public class PostController {
     }
 
     @GetMapping
-    public ApiResponse<Page<PostResponse>> getPosts(@ModelAttribute @Valid PostSearchCondition condition, Pageable pageable) {
-        Page<PostResponse> post = postService.getPosts(condition, pageable);
+    public ApiResponse<PageResponse<PostResponse>> getPosts(@ModelAttribute @Valid PostSearchCondition searchCondition,
+                                                            @ModelAttribute @Valid PageCondition pageCondition) {
+        pageCondition.updateValidPageCondition(); //? 질문
+        System.out.println(pageCondition.getPage() + " " + pageCondition.getSize());
+        Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
+        PageResponse<PostResponse> post = postService.getPosts(searchCondition, pageable);
         return ApiResponse.success(HttpStatus.OK, post);
     }
 
