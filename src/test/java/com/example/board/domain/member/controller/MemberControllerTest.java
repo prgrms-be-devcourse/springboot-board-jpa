@@ -2,6 +2,7 @@ package com.example.board.domain.member.controller;
 
 import com.example.board.domain.member.dto.MemberCreateRequest;
 import com.example.board.domain.member.dto.MemberResponse;
+import com.example.board.domain.member.dto.MemberUpdateRequest;
 import com.example.board.domain.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -21,7 +22,9 @@ import java.util.List;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -141,5 +144,65 @@ class MemberControllerTest {
                                 fieldWithPath("[].hobby").type(JsonFieldType.STRING).description("회원 취미")
                         )
                 ));
+    }
+
+    @Test
+    void 회원_수정_호출_테스트() throws Exception {
+        // Given
+        Long id = 1L;
+        MemberUpdateRequest request = new MemberUpdateRequest("길동이", "수영");
+        MemberResponse memberResponse = new MemberResponse(
+            id,
+            "test@gmail.com",
+            request.name(),
+            22,
+            request.hobby());
+
+        given(memberService.updateMember(id,request)).willReturn(memberResponse);
+
+        // When & Then
+        mvc.perform(patch("/api/v1/members/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("member-update",
+                    requestFields(
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
+                        fieldWithPath("hobby").type(JsonFieldType.STRING).description("회원 취미")
+                    ),
+                    responseFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("회원 아이디"),
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("회원 이메일"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
+                        fieldWithPath("age").type(JsonFieldType.NUMBER).description("회원 나이"),
+                        fieldWithPath("hobby").type(JsonFieldType.STRING).description("회원 취미")
+                    )
+            ));
+    }
+
+    @Test
+    void 회원_아이디로_삭제_호출_테스트() throws Exception {
+        // Given
+        Long id = 1L;
+
+        // When & Then
+        mvc.perform(delete("/api/v1/members/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent())
+            .andDo(print())
+            .andDo(document("member-deleteById"));
+    }
+
+    @Test
+    void 회원_전체_삭제_호출_테스트() throws Exception {
+        // Given
+
+        // When & Then
+        mvc.perform(delete("/api/v1/members")
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent())
+            .andDo(print())
+            .andDo(document("member-deleteAll"));
     }
 }
