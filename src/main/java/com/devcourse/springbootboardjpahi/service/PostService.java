@@ -3,6 +3,7 @@ package com.devcourse.springbootboardjpahi.service;
 import com.devcourse.springbootboardjpahi.domain.Post;
 import com.devcourse.springbootboardjpahi.domain.User;
 import com.devcourse.springbootboardjpahi.dto.CreatePostRequest;
+import com.devcourse.springbootboardjpahi.dto.PostDetailResponse;
 import com.devcourse.springbootboardjpahi.dto.PostResponse;
 import com.devcourse.springbootboardjpahi.repository.PostRepository;
 import com.devcourse.springbootboardjpahi.repository.UserRepository;
@@ -28,5 +29,12 @@ public class PostService {
         Post savedPost = postRepository.save(post);
 
         return PostResponse.from(savedPost);
+    }
+
+    public PostDetailResponse findById(long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow();
+
+        return PostDetailResponse.from(post);
     }
 }
