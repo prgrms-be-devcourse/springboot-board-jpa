@@ -101,7 +101,7 @@ class UserControllerTest {
                 .andDo(print());
     }
 
-    @DisplayName("이름에 null과 공백이 들어가면 예외가 발생한다.")
+    @DisplayName("[POST] 이름에 null과 공백이 들어가면 예외가 발생한다.")
     @ParameterizedTest(name = "이름 입력: {0}")
     @NullAndEmptySource
     @ValueSource(strings = {" ", "\n", "\r\n"})
@@ -121,7 +121,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.message", is("이름은 공백일 수 없습니다.")));
     }
 
-    @DisplayName("나이는 음수일 수 없다.")
+    @DisplayName("[POST] 나이는 음수일 수 없다.")
     @Test
     void testCreateNegativeAge() throws Exception {
         // given
