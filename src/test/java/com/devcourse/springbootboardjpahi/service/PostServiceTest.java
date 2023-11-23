@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import com.devcourse.springbootboardjpahi.domain.Post;
 import com.devcourse.springbootboardjpahi.domain.User;
 import com.devcourse.springbootboardjpahi.dto.CreatePostRequest;
+import com.devcourse.springbootboardjpahi.dto.PostDetailResponse;
 import com.devcourse.springbootboardjpahi.dto.PostResponse;
 import com.devcourse.springbootboardjpahi.repository.PostRepository;
 import com.devcourse.springbootboardjpahi.repository.UserRepository;
@@ -73,6 +74,39 @@ class PostServiceTest {
 
         // when
         ThrowingCallable target = () -> postService.create(request);
+
+        // then
+        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(target);
+    }
+
+    @DisplayName("포스트를 상세 조회한다.")
+    @Test
+    void testFindById() {
+        // given
+        User author = generateAuthor();
+        userRepository.save(author);
+        CreatePostRequest createPostRequest = generateRequest(author.getId());
+        PostResponse post = postService.create(createPostRequest);
+
+        // when
+        PostDetailResponse postDetailResponse = postService.findById(post.id());
+
+        // then
+        assertThat(postDetailResponse)
+                .hasFieldOrPropertyWithValue("id", post.id())
+                .hasFieldOrPropertyWithValue("title", post.title())
+                .hasFieldOrPropertyWithValue("content", post.content())
+                .hasFieldOrPropertyWithValue("authorName", post.authorName());
+    }
+
+    @DisplayName("존재하지 않는 포스트의 조회를 실패한다.")
+    @Test
+    void testFindByIdNonExistentId() {
+        // given
+        long id = faker.number().randomDigitNotZero();
+
+        // when
+        ThrowingCallable target = () -> postService.findById(id);
 
         // then
         assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(target);
