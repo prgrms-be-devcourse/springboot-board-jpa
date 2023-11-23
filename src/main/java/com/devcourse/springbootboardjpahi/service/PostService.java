@@ -3,6 +3,7 @@ package com.devcourse.springbootboardjpahi.service;
 import com.devcourse.springbootboardjpahi.domain.Post;
 import com.devcourse.springbootboardjpahi.domain.User;
 import com.devcourse.springbootboardjpahi.dto.CreatePostRequest;
+import com.devcourse.springbootboardjpahi.dto.PageResponse;
 import com.devcourse.springbootboardjpahi.dto.PostDetailResponse;
 import com.devcourse.springbootboardjpahi.dto.PostResponse;
 import com.devcourse.springbootboardjpahi.dto.UpdatePostRequest;
@@ -54,8 +55,10 @@ public class PostService {
         return PostDetailResponse.from(post);
     }
 
-    public Page<PostResponse> getPage(Pageable pageable) {
-        return postRepository.findAll(pageable)
+    public PageResponse<PostResponse> getPage(Pageable pageable) {
+        Page<PostResponse> page = postRepository.findAll(pageable)
                 .map(PostResponse::from);
+
+        return PageResponse.from(page);
     }
 }

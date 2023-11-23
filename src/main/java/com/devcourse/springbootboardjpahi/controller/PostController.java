@@ -1,14 +1,13 @@
 package com.devcourse.springbootboardjpahi.controller;
 
 import com.devcourse.springbootboardjpahi.dto.CreatePostRequest;
+import com.devcourse.springbootboardjpahi.dto.PageResponse;
 import com.devcourse.springbootboardjpahi.dto.PostDetailResponse;
 import com.devcourse.springbootboardjpahi.dto.PostResponse;
 import com.devcourse.springbootboardjpahi.dto.UpdatePostRequest;
 import com.devcourse.springbootboardjpahi.service.PostService;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -29,16 +28,15 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> find(@PageableDefault Pageable pageable) {
-        Page<PostResponse> page = postService.getPage(pageable);
-        List<PostResponse> content = page.getContent();
+    public ResponseEntity<PageResponse<PostResponse>> find(@PageableDefault Pageable pageable) {
+        PageResponse<PostResponse> page = postService.getPage(pageable);
 
-        if (content.isEmpty()) {
+        if (page.isEmpty()) {
             return ResponseEntity.noContent()
                     .build();
         }
 
-        return ResponseEntity.ok(content);
+        return ResponseEntity.ok(page);
     }
 
     @PostMapping
