@@ -3,10 +3,13 @@ package com.programmers.springboard.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public class ErrorResponse {
 	private Integer code;
 	private String message;
-	private Map<String, String> result = new HashMap<>();
+	private Map<String, String> validation = new HashMap<>();
 
 	public ErrorResponse(Integer code, String message) {
 		this.code = code;
@@ -14,6 +17,6 @@ public class ErrorResponse {
 	}
 
 	public void addValidation(String field, String message) {
-		result.put(field, message);
+		validation.put(field, message);
 	}
 }
