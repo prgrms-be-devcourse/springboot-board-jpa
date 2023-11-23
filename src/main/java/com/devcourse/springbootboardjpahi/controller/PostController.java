@@ -6,7 +6,11 @@ import com.devcourse.springbootboardjpahi.dto.PostResponse;
 import com.devcourse.springbootboardjpahi.dto.UpdatePostRequest;
 import com.devcourse.springbootboardjpahi.service.PostService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +27,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
     private final PostService postService;
+
+    @GetMapping
+    public ResponseEntity<List<PostResponse>> find(@PageableDefault Pageable pageable) {
+        Page<PostResponse> page = postService.getPage(pageable);
+        List<PostResponse> content = page.getContent();
+
+        if (content.isEmpty()) {
+            return ResponseEntity.noContent()
+                    .build();
+        }
+
+        return ResponseEntity.ok(content);
+    }
 
     @PostMapping
     public ResponseEntity<PostResponse> create(@Valid @RequestBody CreatePostRequest request) {

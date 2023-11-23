@@ -9,6 +9,8 @@ import com.devcourse.springbootboardjpahi.dto.UpdatePostRequest;
 import com.devcourse.springbootboardjpahi.repository.PostRepository;
 import com.devcourse.springbootboardjpahi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +36,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostDetailResponse findById(long id) {
+    public PostDetailResponse findById(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow();
 
@@ -50,5 +52,10 @@ public class PostService {
         post.updateContent(request.content());
 
         return PostDetailResponse.from(post);
+    }
+
+    public Page<PostResponse> getPage(Pageable pageable) {
+        return postRepository.findAll(pageable)
+                .map(PostResponse::from);
     }
 }
