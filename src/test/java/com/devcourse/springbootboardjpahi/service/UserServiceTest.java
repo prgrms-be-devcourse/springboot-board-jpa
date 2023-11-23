@@ -41,7 +41,7 @@ class UserServiceTest {
     @Test
     void testCreate() {
         // given
-        CreateUserRequest createUserRequest = generateUserDto();
+        CreateUserRequest createUserRequest = generateCreateUserRequest();
 
         // when
         UserResponse created = userService.create(createUserRequest);
@@ -72,7 +72,7 @@ class UserServiceTest {
         assertThat(users).hasSize(userCount);
     }
 
-    private CreateUserRequest generateUserDto() {
+    private CreateUserRequest generateCreateUserRequest() {
         String name = faker.name().firstName();
         int age = faker.number().randomDigitNotZero();
         String hobby = faker.esports().game();
@@ -81,7 +81,7 @@ class UserServiceTest {
     }
 
     private void saveUser() {
-        CreateUserRequest createUserRequest = generateUserDto();
+        CreateUserRequest createUserRequest = generateCreateUserRequest();
         User user = User.builder()
                 .name(createUserRequest.name())
                 .age(createUserRequest.age())
