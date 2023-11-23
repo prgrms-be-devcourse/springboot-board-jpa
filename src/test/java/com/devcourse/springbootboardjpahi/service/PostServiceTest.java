@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import com.devcourse.springbootboardjpahi.domain.Post;
 import com.devcourse.springbootboardjpahi.domain.User;
 import com.devcourse.springbootboardjpahi.dto.CreatePostRequest;
+import com.devcourse.springbootboardjpahi.dto.PageResponse;
 import com.devcourse.springbootboardjpahi.dto.PostDetailResponse;
 import com.devcourse.springbootboardjpahi.dto.PostResponse;
 import com.devcourse.springbootboardjpahi.dto.UpdatePostRequest;
@@ -24,6 +25,8 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -140,6 +143,41 @@ class PostServiceTest {
                 .hasFieldOrPropertyWithValue("content", expected.content());
     }
 
+    @DisplayName("포스트가 없을 때 비어있는 페이지를 반환한다.")
+    @Test
+    void testGetPageEmpty() {
+        // given // when
+        PageResponse<PostResponse> page = postService.getPage(Pageable.unpaged());
+
+        // then
+        assertThat(page.isEmpty()).isTrue();
+        assertThat(page.totalPages()).isEqualTo(1);
+        assertThat(page.totalElements()).isEqualTo(0);
+        assertThat(page.content()).isEmpty();
+    }
+
+    @DisplayName("포스트를 페이징 조회한다.")
+    @Test
+    void testGetPage() {
+        // given
+        int totalCount = 30;
+        int pageSize = 10;
+
+        savePosts(totalCount);
+
+        // when
+        PageRequest pageRequest = PageRequest.ofSize(pageSize);
+        PageResponse<PostResponse> page = postService.getPage(pageRequest);
+
+        // then
+        int expectedPages = (int) Math.ceil((double) totalCount / pageSize);
+
+        assertThat(page.isEmpty()).isFalse();
+        assertThat(page.totalPages()).isEqualTo(expectedPages);
+        assertThat(page.totalElements()).isEqualTo(totalCount);
+        assertThat(page.content()).hasSize(pageSize);
+    }
+
     private CreatePostRequest generateCreateRequest(Long userId) {
         String title = faker.book().title();
         String content = faker.shakespeare().hamletQuote();
@@ -166,5 +204,25 @@ class PostServiceTest {
                 .age(age)
                 .hobby(hobby)
                 .build();
+    }
+
+    private void savePosts(int count) {
+        for (int i = 0; i < count; i++) {
+            savePost();
+        }
+    }
+
+    private Post savePost() {
+        User author = generateAuthor();
+        userRepository.save(author);
+        String title = faker.book().title();
+        String content = faker.shakespeare().asYouLikeItQuote();
+        Post post = Post.builder()
+                .title(title)
+                .content(content)
+                .user(author)
+                .build();
+
+        return postRepository.save(post);
     }
 }
