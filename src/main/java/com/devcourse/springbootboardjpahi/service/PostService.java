@@ -9,6 +9,7 @@ import com.devcourse.springbootboardjpahi.repository.PostRepository;
 import com.devcourse.springbootboardjpahi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class PostService {
         return PostResponse.from(savedPost);
     }
 
+    @Transactional(readOnly = true)
     public PostDetailResponse findById(long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow();
