@@ -1,10 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/prod
+    url: jdbc:mysql://localhost:33366/prod
     username:
     password:
-
   jpa:
     hibernate:
       ddl-auto: validate
+  data:
+    web:
+      pageable:
+        default-page-size: 10
