@@ -14,12 +14,11 @@ public class BaseEntity {
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
+
     @Column(name = "updated_at", nullable = false)
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
     @Column(name = "created_by")
     private String createdBy;
-    @Column(name = "updated_by")
-    private String updatedBy;
-
 }
