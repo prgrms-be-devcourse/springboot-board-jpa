@@ -27,7 +27,7 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<SuccessMessage> getAllPosts(@PageableDefault Pageable pageable) {
-        Page<PostResponse> postResponses = postService.getAllPosts(pageable);
+        Page<PostResponse> postResponses = postService.getAllPostsWithUser(pageable);
         return new ResponseEntity<>(new SuccessMessage("성공적으로 모든 게시글이 조회되었습니다.", postResponses), HttpStatus.OK);
     }
 

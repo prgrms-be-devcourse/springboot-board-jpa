@@ -28,25 +28,25 @@ public class PostService {
 
     @Transactional
     public void updatePost(Long postId, PostUpdateRequest postUpdateRequest) {
-        Post post = getPostById(postId);
+        Post post = getPostByIdWithUser(postId);
         User user = userService.getUserById(postUpdateRequest.getUserId());
         post.updatePost(postUpdateRequest, user);
     }
 
     @Transactional(readOnly = true)
     public PostResponse getPostResponseById(Long postId) {
-        Post postById = getPostById(postId);
+        Post postById = getPostByIdWithUser(postId);
         return new PostResponse(postById);
     }
 
-    public Post getPostById(Long postId) {
-        return postRepository.findById(postId)
+    public Post getPostByIdWithUser(Long postId) {
+        return postRepository.findByIdWithUser(postId)
                 .orElseThrow(() -> new PostException(PostErrorMessage.NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
-    public Page<PostResponse> getAllPosts(Pageable pageable) {
-        return postRepository.findAll(pageable)
+    public Page<PostResponse> getAllPostsWithUser(Pageable pageable) {
+        return postRepository.findAllWithUser(pageable)
                 .map(PostResponse::new);
     }
 }
