@@ -127,4 +127,64 @@ class PostTest {
                 .hasFieldOrPropertyWithValue("name", author.getName())
                 .hasFieldOrPropertyWithValue("age", author.getAge());
     }
+
+    @DisplayName("포스트의 제목을 수정한다.")
+    @Test
+    void testUpdateTitle() {
+        // given
+        String title = faker.book().title();
+        String content = faker.gameOfThrones().quote();
+        Post post = Post.builder()
+                .title(title)
+                .content(content)
+                .user(author)
+                .build();
+
+        entityManager.persistAndFlush(post);
+
+        String expected = faker.book().title();
+
+        // when
+        post.updateTitle(expected);
+
+        entityManager.flush();
+
+        // then
+        entityManager.clear();
+
+        Post actualPost = entityManager.find(Post.class, post.getId());
+        String actual = actualPost.getTitle();
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("포스트의 내용을 수정한다.")
+    @Test
+    void testUpdateContent() {
+        // given
+        String title = faker.book().title();
+        String content = faker.gameOfThrones().quote();
+        Post post = Post.builder()
+                .title(title)
+                .content(content)
+                .user(author)
+                .build();
+
+        entityManager.persistAndFlush(post);
+
+        String expected = faker.gameOfThrones().quote();
+
+        // when
+        post.updateContent(expected);
+
+        entityManager.flush();
+
+        // then
+        entityManager.clear();
+
+        Post actualPost = entityManager.find(Post.class, post.getId());
+        String actual = actualPost.getContent();
+
+        assertThat(actual).isEqualTo(expected);
+    }
 }
