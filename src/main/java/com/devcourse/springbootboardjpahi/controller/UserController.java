@@ -24,6 +24,11 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> findAll() {
         List<UserResponse> users = userService.findAll();
 
+        if (users.isEmpty()) {
+            return ResponseEntity.noContent()
+                    .build();
+        }
+
         return ResponseEntity.ok(users);
     }
 
