@@ -8,6 +8,7 @@ import com.devcourse.springbootboardjpahi.domain.User;
 import com.devcourse.springbootboardjpahi.dto.CreatePostRequest;
 import com.devcourse.springbootboardjpahi.dto.PostDetailResponse;
 import com.devcourse.springbootboardjpahi.dto.PostResponse;
+import com.devcourse.springbootboardjpahi.dto.UpdatePostRequest;
 import com.devcourse.springbootboardjpahi.repository.PostRepository;
 import com.devcourse.springbootboardjpahi.repository.UserRepository;
 import com.github.javafaker.Faker;
@@ -51,7 +52,7 @@ class PostServiceTest {
         // given
         User user = generateAuthor();
         userRepository.save(user);
-        CreatePostRequest request = generateRequest(user.getId());
+        CreatePostRequest request = generateCreateRequest(user.getId());
 
         // when
         PostResponse response = postService.create(request);
@@ -70,7 +71,7 @@ class PostServiceTest {
     void testCreateNonExistentUser() {
         // given
         long fakeId = faker.random().nextLong();
-        CreatePostRequest request = generateRequest(fakeId);
+        CreatePostRequest request = generateCreateRequest(fakeId);
 
         // when
         ThrowingCallable target = () -> postService.create(request);
@@ -85,7 +86,7 @@ class PostServiceTest {
         // given
         User author = generateAuthor();
         userRepository.save(author);
-        CreatePostRequest createPostRequest = generateRequest(author.getId());
+        CreatePostRequest createPostRequest = generateCreateRequest(author.getId());
         PostResponse post = postService.create(createPostRequest);
 
         // when
@@ -112,11 +113,45 @@ class PostServiceTest {
         assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(target);
     }
 
-    private CreatePostRequest generateRequest(Long userId) {
+    @DisplayName("포스트의 제목과 내용을 수정한다.")
+    @Test
+    void testUpdateById() {
+        // given
+        User user = generateAuthor();
+
+        userRepository.save(user);
+
+        CreatePostRequest createPostRequest = generateCreateRequest(user.getId());
+
+        postService.create(createPostRequest);
+
+        UpdatePostRequest expected = generateUpdateRequest();
+        Post post = postRepository.findAll()
+                .stream()
+                .findFirst()
+                .orElseThrow();
+
+        // when
+        PostDetailResponse actual = postService.updateById(post.getId(), expected);
+
+        // then
+        assertThat(actual)
+                .hasFieldOrPropertyWithValue("title", expected.title())
+                .hasFieldOrPropertyWithValue("content", expected.content());
+    }
+
+    private CreatePostRequest generateCreateRequest(Long userId) {
         String title = faker.book().title();
         String content = faker.shakespeare().hamletQuote();
 
         return new CreatePostRequest(title, content, userId);
+    }
+
+    private UpdatePostRequest generateUpdateRequest() {
+        String title = faker.book().title();
+        String content = faker.shakespeare().hamletQuote();
+
+        return new UpdatePostRequest(title, content);
     }
 
     private User generateAuthor() {
