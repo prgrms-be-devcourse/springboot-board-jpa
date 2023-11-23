@@ -182,6 +182,43 @@ class PostControllerTest {
                 .andDo(print());
     }
 
+    @DisplayName("[PUT] 포스트 제목은 공백일 수 없다.")
+    @ParameterizedTest
+    @NullAndEmptySource
+    void testUpdateBlankTitle(String title) throws Exception {
+        // given
+        long id = Math.abs(faker.number().randomDigitNotZero());
+        String content = faker.shakespeare().hamletQuote();
+        UpdatePostRequest updatePostRequest = new UpdatePostRequest(title, content);
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/api/v1/posts/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatePostRequest)));
+
+        // then
+        actions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("제목은 공백일 수 없습니다.")));
+    }
+
+    @DisplayName("[PUT] 포스트 내용은 null일 수 없다.")
+    @Test
+    void testUpdateNullContent() throws Exception {
+        // given
+        long id = Math.abs(faker.number().randomDigitNotZero());
+        String title = faker.book().title();
+        UpdatePostRequest updatePostRequest = new UpdatePostRequest(title, null);
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/api/v1/posts/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatePostRequest)));
+
+        // then
+        actions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("내용이 존재하지 않습니다.")));
+    }
+
     private CreatePostRequest generateCreateRequest(Long userId) {
         String title = faker.book().title();
         String content = faker.shakespeare().hamletQuote();
