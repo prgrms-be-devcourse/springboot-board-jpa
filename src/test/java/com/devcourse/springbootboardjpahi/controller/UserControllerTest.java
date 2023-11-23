@@ -2,7 +2,7 @@ package com.devcourse.springbootboardjpahi.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -44,8 +44,8 @@ class UserControllerTest {
         // given
         List<UserResponse> mockResponses = List.of(generateUserResponse(), generateUserResponse());
 
-        when(userService.findAll())
-                .thenReturn(mockResponses);
+        given(userService.findAll())
+                .willReturn(mockResponses);
 
         // when
         ResultActions actions = mockMvc.perform(get("/api/v1/users"));
@@ -60,8 +60,8 @@ class UserControllerTest {
     @Test
     void testFindAllNoContent() throws Exception {
         // given
-        when(userService.findAll())
-                .thenReturn(Collections.emptyList());
+        given(userService.findAll())
+                .willReturn(Collections.emptyList());
 
         // when
         ResultActions actions = mockMvc.perform(get("/api/v1/users"));
@@ -82,8 +82,8 @@ class UserControllerTest {
                 .hobby(createUserRequest.hobby())
                 .build();
 
-        when(userService.create(createUserRequest))
-                .thenReturn(userResponse);
+        given(userService.create(createUserRequest))
+                .willReturn(userResponse);
 
         // when
         ResultActions actions = mockMvc.perform(post("/api/v1/users")
@@ -96,7 +96,6 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.age", is(createUserRequest.age())))
                 .andExpect(jsonPath("$.hobby", is(createUserRequest.hobby())))
                 .andDo(print());
-
     }
 
     CreateUserRequest generateCreateUserRequest() {

@@ -127,5 +127,4 @@ class PostTest {
                 .hasFieldOrPropertyWithValue("name", author.getName())
                 .hasFieldOrPropertyWithValue("age", author.getAge());
     }
-
 }

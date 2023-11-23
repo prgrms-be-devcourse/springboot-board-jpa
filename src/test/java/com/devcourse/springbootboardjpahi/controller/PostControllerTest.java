@@ -1,7 +1,7 @@
 package com.devcourse.springbootboardjpahi.controller;
 
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -48,8 +48,8 @@ class PostControllerTest {
                 .authorName(author.getName())
                 .build();
 
-        when(postService.create(createPostRequest))
-                .thenReturn(postResponse);
+        given(postService.create(createPostRequest))
+                .willReturn(postResponse);
 
         // when
         ResultActions actions = mockMvc.perform(post("/api/v1/posts")
@@ -79,7 +79,7 @@ class PostControllerTest {
                 .authorName(authorName)
                 .build();
 
-        when(postService.findById(id)).thenReturn(postDetailResponse);
+        given(postService.findById(id)).willReturn(postDetailResponse);
 
         // when
         ResultActions actions = mockMvc.perform(get("/api/v1/posts/" + id));
