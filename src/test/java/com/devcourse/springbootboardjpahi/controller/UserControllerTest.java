@@ -87,10 +87,8 @@ class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(post("/api/v1/users")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("name", createUserRequest.name())
-                .param("age", createUserRequest.age().toString())
-                .param("hobby", createUserRequest.hobby()));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createUserRequest)));
 
         // then
         actions.andExpect(status().isCreated())
