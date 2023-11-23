@@ -4,6 +4,7 @@ import com.example.board.dto.PostDto;
 import com.example.board.dto.PostUpdateDto;
 import com.example.board.exception.BaseException;
 import com.example.board.exception.ErrorMessage;
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -40,28 +41,38 @@ public class Post extends BaseEntity {
         this.createdBy = user.getName();
     }
 
-    private static void postSaveValidate(User user, PostDto postDto) {
-        if (user == null) {
-            throw new BaseException(ErrorMessage.USER_NOT_FOUND);
-        }
-        if (postDto.title().isBlank() || (postDto.title().length() > 20)) {
-            throw new BaseException(ErrorMessage.WRONG_TITLE_VALUE);
-        }
-        if (postDto.contents().isBlank()) {
-            throw new BaseException(ErrorMessage.WRONG_CONTENTS_VALUE);
-        }
-        if (user.getName().isBlank()) {
-            throw new BaseException(ErrorMessage.WRONG_USER_NAME);
-        }
-    }
-
     public static Post from(User user, PostDto postDto) {
         return new Post(user, postDto);
     }
 
     public Long update(PostUpdateDto postUpdateDto) {
+        postUpdateValidate(postUpdateDto);
         this.title = postUpdateDto.title();
         this.contents = postUpdateDto.contents();
         return this.id;
+    }
+
+    private static void postSaveValidate(User user, PostDto postDto) {
+        if (user == null) {
+            throw new BaseException(ErrorMessage.USER_NOT_FOUND);
+        }
+        if (StringUtils.isBlank(postDto.title()) || (postDto.title().length() > 20)) {
+            throw new BaseException(ErrorMessage.WRONG_TITLE_VALUE);
+        }
+        if (StringUtils.isBlank(postDto.contents())) {
+            throw new BaseException(ErrorMessage.WRONG_CONTENTS_VALUE);
+        }
+        if (StringUtils.isBlank(user.getName())) {
+            throw new BaseException(ErrorMessage.WRONG_USER_NAME);
+        }
+    }
+
+    private static void postUpdateValidate(PostUpdateDto postUpdateDto) {
+        if (StringUtils.isBlank(postUpdateDto.title()) || (postUpdateDto.title().length() > 20)) {
+            throw new BaseException(ErrorMessage.WRONG_TITLE_VALUE);
+        }
+        if (StringUtils.isBlank(postUpdateDto.contents())) {
+            throw new BaseException(ErrorMessage.WRONG_CONTENTS_VALUE);
+        }
     }
 }
