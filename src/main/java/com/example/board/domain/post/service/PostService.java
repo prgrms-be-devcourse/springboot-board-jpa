@@ -8,11 +8,14 @@ import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.entity.Post;
 import com.example.board.domain.post.repository.PostRepository;
-import java.util.NoSuchElementException;
+
+import com.example.board.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.example.board.global.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +26,7 @@ public class PostService {
     private final MemberRepository memberRepository;
 
     public PostResponse createPost(String email, PostCreateRequest request) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new NoSuchElementException("회원이 존재하지 않습니다."));
+        Member member = getMemberEntity(email);
         Post post = postRepository.save(request.toEntity(member));
         return PostResponse.from(post);
     }
@@ -64,19 +66,24 @@ public class PostService {
     }
 
     public void deleteAllPostsByWriter(String email) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new NoSuchElementException("회원이 존재하지 않습니다."));
+        Member member = getMemberEntity(email);
         postRepository.deleteAllByMember(member);
     }
 
-    private static void validateWriter(String email, Post post) {
+    private void validateWriter(String email, Post post) {
+        getMemberEntity(email);
         if (!post.isSameMember(email)) {
-            throw new IllegalArgumentException("작성자가 아닙니다.");
+            throw new BusinessException(WRITER_MISMATCH);
         }
     }
 
     private Post getPostEntity(Long id) {
         return postRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new BusinessException(POST_NOT_FOUND));
+    }
+
+    private Member getMemberEntity(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
     }
 }

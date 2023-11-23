@@ -1,20 +1,20 @@
 package com.example.board.domain.member.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import com.example.board.domain.member.dto.MemberCreateRequest;
 import com.example.board.domain.member.dto.MemberResponse;
 import com.example.board.domain.member.dto.MemberUpdateRequest;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.repository.MemberRepository;
-import com.example.board.global.exception.DuplicateEmailException;
-import java.util.List;
-import java.util.NoSuchElementException;
+import com.example.board.global.exception.BusinessException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class MemberServiceTest {
@@ -53,7 +53,7 @@ class MemberServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> memberService.createMember(request))
-            .isInstanceOf(DuplicateEmailException.class);
+            .isInstanceOf(BusinessException.class);
     }
     
     @Test
@@ -78,7 +78,7 @@ class MemberServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> memberService.findMemberById(notExistId))
-            .isInstanceOf(NoSuchElementException.class);
+            .isInstanceOf(BusinessException.class);
     }
 
     @Test

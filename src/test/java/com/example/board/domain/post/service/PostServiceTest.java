@@ -1,8 +1,5 @@
 package com.example.board.domain.post.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.repository.MemberRepository;
 import com.example.board.domain.post.dto.PostCreateRequest;
@@ -10,13 +7,16 @@ import com.example.board.domain.post.dto.PostPageCondition;
 import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.repository.PostRepository;
-import java.util.NoSuchElementException;
+import com.example.board.global.exception.BusinessException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class PostServiceTest {
@@ -72,7 +72,7 @@ class PostServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> postService.createPost(notExistEmail, postCreateRequest))
-            .isInstanceOf(NoSuchElementException.class);
+            .isInstanceOf(BusinessException.class);
     }
 
     @Test
@@ -96,7 +96,7 @@ class PostServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> postService.findPostById(notExistId))
-            .isInstanceOf(NoSuchElementException.class);
+            .isInstanceOf(BusinessException.class);
     }
 
     @Test
@@ -180,7 +180,7 @@ class PostServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> postService.updatePost(originPost.id(), notExistEmail, request))
-            .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(BusinessException.class);
     }
 
     @Test
@@ -193,6 +193,16 @@ class PostServiceTest {
 
         // Then
         assertThat(postRepository.findAll()).hasSize(0);
+    }
+
+    @Test
+    void 게시글_아이디로_삭제_실패_테스트() {
+        // Given
+        Long notExistId = 2L;
+
+        // When & Then
+        assertThatThrownBy(() -> postService.deletePostById(notExistId, member.getEmail()))
+                .isInstanceOf(BusinessException.class);
     }
 
     @Test

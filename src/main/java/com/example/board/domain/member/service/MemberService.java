@@ -5,13 +5,15 @@ import com.example.board.domain.member.dto.MemberResponse;
 import com.example.board.domain.member.dto.MemberUpdateRequest;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.repository.MemberRepository;
-import com.example.board.global.exception.DuplicateEmailException;
+import com.example.board.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+
+import static com.example.board.global.exception.ErrorCode.DUPLICATE_EMAIL;
+import static com.example.board.global.exception.ErrorCode.MEMBER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -54,12 +56,12 @@ public class MemberService {
 
     private void validateDuplicateEmail(String email) {
         if (memberRepository.existsMemberByEmail(email)) {
-            throw new DuplicateEmailException("중복된 이메일입니다.");
+            throw new BusinessException(DUPLICATE_EMAIL);
         }
     }
 
     private Member getMemberEntity(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("회원이 존재하지 않습니다."));
+                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
     }
 }

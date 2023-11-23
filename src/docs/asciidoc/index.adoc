@@ -26,7 +26,6 @@ include::{snippets}/member-findAll/http-request.adoc[]
 **Response-Fields**
 include::{snippets}/member-findAll/response-fields.adoc[]
 
-
 == 게시글
 ---
 === 게시글 생성
