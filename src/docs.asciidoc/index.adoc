@@ -1,0 +1,49 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets:build/generated-snippets
+endif::[]
+
+== 페이징 조회
+== /posts
+
+.Request
+include::{snippets}/get-posts/http-request.adoc[]
+
+.Response
+include::{snippets}/get-posts/http-response.adoc[]
+include::{snippets}/get-posts/response-fields.adoc[]
+
+
+== 단건 조회
+== /posts/++{id}++
+
+.Request
+include::{snippets}/get-post/http-request.adoc[]
+
+.Response
+include::{snippets}/get-post/http-response.adoc[]
+include::{snippets}/get-post/response-fields.adoc[]
+
+
+== 게시글 작성
+== /posts
+
+.Request
+include::{snippets}/insert-post/http-request.adoc[]
+include::{snippets}/insert-post/request-fields.adoc[]
+
+.Response
+include::{snippets}/insert-post/http-response.adoc[]
+include::{snippets}/insert-post/response-fields.adoc[]
+
+
+== 게시글 수정
+== /posts
+
+.Request
+include::{snippets}/update-post/http-request.adoc[]
+include::{snippets}/update-post/request-fields.adoc[]
+
+.Response
+include::{snippets}/update-post/http-response.adoc[]
+include::{snippets}/update-post/response-fields.adoc[]
