@@ -25,7 +25,7 @@ class UserTest {
 
     @DisplayName("유저 인스턴스를 생성한다.")
     @Test
-    void create() {
+    void testCreate() {
         // given
         String name = faker.name().firstName();
         int age = faker.number().randomDigitNotZero();
@@ -48,7 +48,7 @@ class UserTest {
 
     @DisplayName("이름이 null일 경우 예외가 발생한다.")
     @Test
-    void createNullName() {
+    void testCreateNullName() {
         // given
         int age = faker.number().randomDigitNotZero();
         String hobby = faker.esports().game();
@@ -70,7 +70,7 @@ class UserTest {
 
     @DisplayName("나이가 null일 경우 예외가 발생한다.")
     @Test
-    void createNullAge() {
+    void testCreateNullAge() {
         // given
         String name = faker.name().firstName();
         String hobby = faker.esports().game();
@@ -90,9 +90,9 @@ class UserTest {
                 .withMessageContaining("Column 'age' cannot be null");
     }
 
-    @DisplayName("")
+    @DisplayName("유저의 포스트들을 가져온다.")
     @Test
-    void mappingPostsTest() {
+    void testMappingPosts() {
         // given
         String name = faker.name().firstName();
         int age = faker.number().randomDigitNotZero();
