@@ -27,10 +27,15 @@ public class PostQuerydslRepositoryImpl implements PostQuerydslRepository {
 
     @Override
     public Page<Post> findAll(PostSearchCondition condition, Pageable pageable) {
-
         JPAQuery<Post> query = queryFactory
                 .selectFrom(post)
                 .leftJoin(post.author, user)
+                .where(createdAtGoe(condition.createdAtFrom()),
+                        createdAtLoe(condition.createdAtTo()));
+
+        JPAQuery<Long> pagingQuery = queryFactory
+                .select(post.id)
+                .from(post)
                 .where(createdAtGoe(condition.createdAtFrom()),
                         createdAtLoe(condition.createdAtTo()));
 
@@ -42,10 +47,9 @@ public class PostQuerydslRepositoryImpl implements PostQuerydslRepository {
                         })
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetchResults()
-                .getResults();
+                .fetch();
 
-        return PageableExecutionUtils.getPage(posts, pageable, query::fetchCount);
+        return PageableExecutionUtils.getPage(posts, pageable, pagingQuery::fetchOne);
     }
 
     private BooleanExpression createdAtGoe(LocalDateTime createdAt) {
