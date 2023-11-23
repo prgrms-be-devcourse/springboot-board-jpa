@@ -5,6 +5,8 @@ import jehs.springbootboardjpa.dto.PostResponse;
 import jehs.springbootboardjpa.dto.PostUpdateRequest;
 import jehs.springbootboardjpa.entity.Post;
 import jehs.springbootboardjpa.entity.User;
+import jehs.springbootboardjpa.exception.PostErrorMessage;
+import jehs.springbootboardjpa.exception.PostException;
 import jehs.springbootboardjpa.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -39,7 +41,7 @@ public class PostService {
 
     public Post getPostById(Long postId) {
         return postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 게시글입니다."));
+                .orElseThrow(() -> new PostException(PostErrorMessage.NOT_FOUND));
     }
 
     @Transactional(readOnly = true)

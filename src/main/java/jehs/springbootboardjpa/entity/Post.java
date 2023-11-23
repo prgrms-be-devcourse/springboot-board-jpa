@@ -2,6 +2,8 @@ package jehs.springbootboardjpa.entity;
 
 import jakarta.persistence.*;
 import jehs.springbootboardjpa.dto.PostUpdateRequest;
+import jehs.springbootboardjpa.exception.PostErrorMessage;
+import jehs.springbootboardjpa.exception.PostException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,7 +42,7 @@ public class Post extends BaseEntity {
 
     private void validateUser(User updateUser) {
         if (!updateUser.getId().equals(this.user.getId())) {
-            throw new RuntimeException("작성자의 게시글이 아닙니다.");
+            throw new PostException(PostErrorMessage.NOT_POST_BY_USER);
         }
     }
 
