@@ -6,8 +6,10 @@ import com.prgrms.dev.springbootboardjpa.domain.user.User;
 import com.prgrms.dev.springbootboardjpa.domain.user.UserRepository;
 import com.prgrms.dev.springbootboardjpa.dto.PostDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostRequestDto;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,9 +52,16 @@ class PostServiceTest {
     }
 
     @Test
-    void find_test() {
+    @DisplayName("게시글이 존재하는 경우")
+    void find_success_test() {
         PostDto findDto = postService.findById(postDto.id());
         assertThat(findDto.id()).isEqualTo(postDto.id());
+    }
+
+    @Test
+    @DisplayName("게시글이 존재하지 않는 경우")
+    void find_fail_test() {
+        assertThrows(EntityNotFoundException.class, () -> postService.findById(100L));
     }
 
     @Test
