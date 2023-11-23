@@ -74,6 +74,7 @@ class UserControllerTest {
     @DisplayName("[POST] 사용자를 추가한다.")
     @Test
     void testCreate() throws Exception {
+        // given
         CreateUserRequest createUserRequest = generateCreateUserRequest();
         UserResponse userResponse = UserResponse.builder()
                 .name(createUserRequest.name())
