@@ -1,6 +1,8 @@
 package com.devcourse.springbootboardjpahi.controller;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -11,12 +13,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.devcourse.springbootboardjpahi.domain.User;
 import com.devcourse.springbootboardjpahi.dto.CreatePostRequest;
+import com.devcourse.springbootboardjpahi.dto.PageResponse;
 import com.devcourse.springbootboardjpahi.dto.PostDetailResponse;
 import com.devcourse.springbootboardjpahi.dto.PostResponse;
 import com.devcourse.springbootboardjpahi.dto.UpdatePostRequest;
 import com.devcourse.springbootboardjpahi.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -219,6 +226,60 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.message", is("내용이 존재하지 않습니다.")));
     }
 
+    @DisplayName("[GET] 포스트가 없을 때 204 상태 코드를 반환한다.")
+    @Test
+    void testFindNoContent() throws Exception {
+        // given
+        PageResponse<PostResponse> page = PageResponse.<PostResponse>builder()
+                .isEmpty(true)
+                .totalPages(1)
+                .totalElements(0L)
+                .content(Collections.emptyList())
+                .build();
+
+        given(postService.getPage(any()))
+                .willReturn(page);
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/api/v1/posts"));
+
+        // then
+        actions.andExpect(status().isNoContent());
+    }
+
+    @DisplayName("[GET] 포스트를 페이징 조회한다.")
+    @Test
+    void testFind() throws Exception {
+        // given
+        long totalCount = 35;
+        int defaultPageSize = 10;
+        int totalPages = (int) Math.ceil((double) totalCount / defaultPageSize);
+        long contentSize = totalCount % defaultPageSize;
+        List<PostResponse> postResponses = generatePostResponses(contentSize);
+        PageResponse<PostResponse> page = PageResponse.<PostResponse>builder()
+                .isEmpty(false)
+                .totalPages(totalPages)
+                .totalElements(totalCount)
+                .content(postResponses)
+                .build();
+
+        given(postService.getPage(any()))
+                .willReturn(page);
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/api/v1/posts")
+                .param("page", "3")
+                .param("size", "10"));
+
+        // then
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.isEmpty", is(false)))
+                .andExpect(jsonPath("$.totalPages", is(totalPages)))
+                .andExpect(jsonPath("$.totalElements", is(totalCount), Long.class))
+                .andExpect(jsonPath("$.content", hasSize((int) contentSize)))
+                .andDo(print());
+    }
+
     private CreatePostRequest generateCreateRequest(Long userId) {
         String title = faker.book().title();
         String content = faker.shakespeare().hamletQuote();
@@ -245,5 +306,30 @@ class PostControllerTest {
                 .age(age)
                 .hobby(hobby)
                 .build();
+    }
+
+    private PostResponse generatePostResponse() {
+        long id = Math.abs(faker.number().randomDigitNotZero());
+        String title = faker.book().title();
+        String content = faker.shakespeare().hamletQuote();
+        User author = generateAuthor();
+
+        return PostResponse.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .authorName(author.getName())
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    private List<PostResponse> generatePostResponses(long count) {
+        List<PostResponse> postResponses = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            postResponses.add(generatePostResponse());
+        }
+
+        return postResponses;
     }
 }
