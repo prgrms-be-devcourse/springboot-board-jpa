@@ -39,3 +39,28 @@ include::{snippets}/post-create/request-fields.adoc[]
 include::{snippets}/post-create/response-fields.adoc[]
 
 === 게시글 아이디로 조회
+include::{snippets}/post-findById/http-request.adoc[]
+
+**Response-Fields**
+include::{snippets}/post-findById/response-fields.adoc[]
+
+=== 게시글 전체 조회
+include::{snippets}/post-findAll/http-request.adoc[]
+
+**Response-Fields**
+include::{snippets}/post-findAll/response-fields.adoc[]
+
+=== 게시글 수정
+include::{snippets}/post-update/http-request.adoc[]
+
+**Request-Fields**
+include::{snippets}/post-update/request-fields.adoc[]
+
+**Response-Fields**
+include::{snippets}/post-update/response-fields.adoc[]
+
+=== 게시글 아이디로 삭제
+include::{snippets}/post-deleteById/http-request.adoc[]
+
+=== 게시글 전체 삭제
+include::{snippets}/post-deleteAll/http-request.adoc[]
