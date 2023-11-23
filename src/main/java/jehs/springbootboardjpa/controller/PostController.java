@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -19,22 +20,26 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/{id}")
-    public PostResponse getPost(@PathVariable(name = "id") Long postId) {
-        return postService.getPostResponseById(postId);
+    public ResponseEntity<SuccessMessage> getPost(@PathVariable(name = "id") Long postId) {
+        PostResponse postResponse = postService.getPostResponseById(postId);
+        return new ResponseEntity<>(new SuccessMessage("성공적으로 게시글이 조회되었습니다.", postResponse), HttpStatus.OK);
     }
 
     @GetMapping
-    public Page<PostResponse> getAllPosts(@PageableDefault Pageable pageable) {
-        return postService.getAllPosts(pageable);
+    public ResponseEntity<SuccessMessage> getAllPosts(@PageableDefault Pageable pageable) {
+        Page<PostResponse> postResponses = postService.getAllPosts(pageable);
+        return new ResponseEntity<>(new SuccessMessage("성공적으로 모든 게시글이 조회되었습니다.", postResponses), HttpStatus.OK);
     }
 
     @PostMapping
-    public void createPost(@RequestBody PostCreateRequest postCreateRequest) {
+    public ResponseEntity<SuccessMessage> createPost(@RequestBody PostCreateRequest postCreateRequest) {
         postService.createPost(postCreateRequest);
+        return new ResponseEntity<>(new SuccessMessage("성공적으로 게시글이 생성되었습니다."), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
-    public void updatePost(@PathVariable(name = "id") Long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
+    public ResponseEntity<SuccessMessage> updatePost(@PathVariable(name = "id") Long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
         postService.updatePost(postId, postUpdateRequest);
+        return new ResponseEntity<>(new SuccessMessage("성공적으로 게시글이 수정되었습니다."), HttpStatus.OK);
     }
 }
