@@ -30,6 +30,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -85,6 +86,8 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.data.userResponse.hobby").value(user.getHobby()))
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andDo(document("getPostById",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("postId").description("게시글 아이디")),
                         responseFields(
                                 fieldWithPath("message").description("성공 메시지"),
@@ -151,6 +154,8 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.data.content", Matchers.hasSize(size)))
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andDo(document("getAllPosts",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("message").description("성공 메시지"),
                                 fieldWithPath("data.content[].id").description("게시글 아이디"),
@@ -212,6 +217,8 @@ class PostControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.message").value("성공적으로 게시글이 생성되었습니다."))
                 .andDo(document("createPost",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
                                 requestFields(
                                         fieldWithPath("title").description("게시글 제목"),
                                         fieldWithPath("content").description("게시글 내용"),
@@ -257,6 +264,8 @@ class PostControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("성공적으로 게시글이 수정되었습니다."))
                 .andDo(document("updatePost",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
                                 requestFields(
                                         fieldWithPath("title").description("게시글 제목"),
                                         fieldWithPath("content").description("게시글 내용"),
