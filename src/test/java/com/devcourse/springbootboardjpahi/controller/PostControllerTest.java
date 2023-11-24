@@ -4,20 +4,9 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,17 +28,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-@AutoConfigureRestDocs
 @WebMvcTest(PostController.class)
 class PostControllerTest {
 
@@ -68,7 +52,7 @@ class PostControllerTest {
         // given
         User author = generateAuthor();
         CreatePostRequest createPostRequest = generateCreateRequest(author.getId());
-        long id = Math.abs(faker.number().randomDigitNotZero());
+        long id = generateId();
         PostResponse postResponse = PostResponse.builder()
                 .id(id)
                 .title(createPostRequest.title())
@@ -90,25 +74,6 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.title", is(createPostRequest.title())))
                 .andExpect(jsonPath("$.content", is(createPostRequest.content())))
                 .andExpect(jsonPath("$.authorName", is(author.getName())));
-
-        // docs
-        actions.andDo(print())
-                .andDo(document("post-create",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content"),
-                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("User ID")
-                        ),
-                        responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content"),
-                                fieldWithPath("authorName").type(JsonFieldType.STRING).description("Author Name"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("Creation Datetime")
-                        )
-                ));
     }
 
     @DisplayName("[POST] 포스트 제목은 공백일 수 없다.")
@@ -169,7 +134,7 @@ class PostControllerTest {
     @Test
     void testFindById() throws Exception {
         // given
-        long id = Math.abs(faker.number().randomDigitNotZero());
+        long id = generateId();
         String title = faker.book().title();
         String content = faker.shakespeare().kingRichardIIIQuote();
         String authorName = faker.name().firstName();
@@ -186,8 +151,7 @@ class PostControllerTest {
                 .willReturn(postDetailResponse);
 
         // when
-        MockHttpServletRequestBuilder docsGetRequest = RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", id);
-        ResultActions actions = mockMvc.perform(docsGetRequest);
+        ResultActions actions = mockMvc.perform(get("/api/v1/posts/{id}", id));
 
         // then
         actions.andExpect(status().isOk())
@@ -195,24 +159,6 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.title", is(postDetailResponse.title())))
                 .andExpect(jsonPath("$.content", is(postDetailResponse.content())))
                 .andExpect(jsonPath("$.authorName", is(postDetailResponse.authorName())));
-
-        // docs
-        actions.andDo(print())
-                .andDo(document("post-find-single",
-                        preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("id").description("ID")
-                        ),
-                        responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content"),
-                                fieldWithPath("authorName").type(JsonFieldType.STRING).description("Author Name"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("Creation Datetime"),
-                                fieldWithPath("updatedAt").type(JsonFieldType.STRING)
-                                        .description("Last Update Datetime")
-                        )
-                ));
     }
 
     @DisplayName("[PUT] 포스트 제목과 내용을 수정한다.")
@@ -221,7 +167,7 @@ class PostControllerTest {
         // given
         UpdatePostRequest updatePostRequest = generateUpdateRequest();
 
-        long id = Math.abs(faker.number().randomDigitNotZero());
+        long id = generateId();
         String authorName = faker.name().firstName();
         PostDetailResponse postDetailResponse = PostDetailResponse.builder()
                 .id(id)
@@ -236,36 +182,14 @@ class PostControllerTest {
                 .willReturn(postDetailResponse);
 
         // when
-        MockHttpServletRequestBuilder docsPutRequest = RestDocumentationRequestBuilders.put("/api/v1/posts/{id}", id);
-        ResultActions actions = mockMvc.perform(docsPutRequest.contentType(MediaType.APPLICATION_JSON)
+        ResultActions actions = mockMvc.perform(put("/api/v1/posts/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatePostRequest)));
 
         // then
         actions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.title", is(updatePostRequest.title())))
                 .andExpect(jsonPath("$.content", is(updatePostRequest.content())));
-
-        // docs
-        actions.andDo(print())
-                .andDo(document("post-update",
-                        preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("id").description("ID")
-                        ),
-                        requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content")
-                        ),
-                        responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content"),
-                                fieldWithPath("authorName").type(JsonFieldType.STRING).description("Author Name"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("Creation Datetime"),
-                                fieldWithPath("updatedAt").type(JsonFieldType.STRING)
-                                        .description("Last Update Datetime")
-                        )
-                ));
     }
 
     @DisplayName("[PUT] 포스트 제목은 공백일 수 없다.")
@@ -273,7 +197,7 @@ class PostControllerTest {
     @NullAndEmptySource
     void testUpdateBlankTitle(String title) throws Exception {
         // given
-        long id = Math.abs(faker.number().randomDigitNotZero());
+        long id = generateId();
         String content = faker.shakespeare().hamletQuote();
         UpdatePostRequest updatePostRequest = new UpdatePostRequest(title, content);
 
@@ -291,7 +215,7 @@ class PostControllerTest {
     @Test
     void testUpdateNullContent() throws Exception {
         // given
-        long id = Math.abs(faker.number().randomDigitNotZero());
+        long id = generateId();
         String title = faker.book().title();
         UpdatePostRequest updatePostRequest = new UpdatePostRequest(title, null);
 
@@ -324,10 +248,6 @@ class PostControllerTest {
 
         // then
         actions.andExpect(status().isNoContent());
-
-        // docs
-        actions.andDo(print())
-                .andDo(document("post-page-no-content"));
     }
 
     @DisplayName("[GET] 포스트를 페이징 조회한다.")
@@ -338,7 +258,7 @@ class PostControllerTest {
         int defaultPageSize = 10;
         int totalPages = (int) Math.ceil((double) totalCount / defaultPageSize);
         long contentSize = totalCount % defaultPageSize;
-        List<PostResponse> postResponses = generatePostResponses(contentSize);
+        List<PostResponse> postResponses = generatePostResponsesOrderByAsc(contentSize);
         PageResponse<PostResponse> page = PageResponse.<PostResponse>builder()
                 .isEmpty(false)
                 .totalPages(totalPages)
@@ -360,31 +280,6 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.totalPages", is(totalPages)))
                 .andExpect(jsonPath("$.totalElements", is(totalCount), Long.class))
                 .andExpect(jsonPath("$.content", hasSize((int) contentSize)));
-
-        // docs
-        actions.andDo(print())
-                .andDo(document("post-page",
-                        preprocessResponse(prettyPrint()),
-                        queryParameters(
-                                parameterWithName("page").description("Page"),
-                                parameterWithName("size").description("Contents per Page")
-                        ),
-                        responseFields(
-                                fieldWithPath("isEmpty").type(JsonFieldType.BOOLEAN)
-                                        .description("True if no post is found"),
-                                fieldWithPath("totalPages").type(JsonFieldType.NUMBER)
-                                        .description("Total number of pages"),
-                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
-                                        .description("Total number of all posts"),
-                                fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("Post Id"),
-                                fieldWithPath("content[].title").type(JsonFieldType.STRING).description("Title"),
-                                fieldWithPath("content[].content").type(JsonFieldType.STRING).description("Content"),
-                                fieldWithPath("content[].authorName").type(JsonFieldType.STRING)
-                                        .description("Author Name"),
-                                fieldWithPath("content[].createdAt").type(JsonFieldType.STRING)
-                                        .description("Creation Datetime")
-                        )
-                ));
     }
 
     private CreatePostRequest generateCreateRequest(Long userId) {
@@ -402,7 +297,7 @@ class PostControllerTest {
     }
 
     private User generateAuthor() {
-        long id = Math.abs(faker.number().randomDigitNotZero());
+        long id = generateId();
         String name = faker.name().firstName();
         int age = faker.number().numberBetween(0, 120);
         String hobby = faker.esports().game();
@@ -416,7 +311,7 @@ class PostControllerTest {
     }
 
     private PostResponse generatePostResponse() {
-        long id = Math.abs(faker.number().randomDigitNotZero());
+        long id = generateId();
         String title = faker.book().title();
         String content = faker.shakespeare().hamletQuote();
         User author = generateAuthor();
@@ -430,13 +325,29 @@ class PostControllerTest {
                 .build();
     }
 
-    private List<PostResponse> generatePostResponses(long count) {
+    private List<PostResponse> generatePostResponsesOrderByAsc(long count) {
         List<PostResponse> postResponses = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
-            postResponses.add(generatePostResponse());
+        for (long id = 1; id <= count; id++) {
+            String title = faker.book().title();
+            String content = faker.shakespeare().hamletQuote();
+            User author = generateAuthor();
+
+            PostResponse postResponse = PostResponse.builder()
+                    .id(id)
+                    .title(title)
+                    .content(content)
+                    .authorName(author.getName())
+                    .createdAt(LocalDateTime.now())
+                    .build();
+
+            postResponses.add(postResponse);
         }
 
         return postResponses;
+    }
+
+    private long generateId() {
+        return Math.abs(faker.number().randomDigitNotZero());
     }
 }
