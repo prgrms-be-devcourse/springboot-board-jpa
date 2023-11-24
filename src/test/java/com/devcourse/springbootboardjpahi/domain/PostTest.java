@@ -166,7 +166,7 @@ class PostTest {
 
     @DisplayName("포스트의 내용을 수정한다.")
     @Test
-    void testUpdateContent() {
+    void testUpdateContent() throws InterruptedException {
         // given
         String title = faker.book().title();
         String content = faker.gameOfThrones().quote();
@@ -180,6 +180,8 @@ class PostTest {
 
         LocalDateTime beforeUpdated = post.getUpdatedAt();
         String expected = faker.gameOfThrones().quote();
+
+        Thread.sleep(100);
 
         // when
         post.updateContent(expected);
