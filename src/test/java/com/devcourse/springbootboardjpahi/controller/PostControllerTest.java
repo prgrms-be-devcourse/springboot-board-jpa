@@ -4,6 +4,16 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -29,12 +39,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+@AutoConfigureRestDocs
 @WebMvcTest(PostController.class)
 class PostControllerTest {
 
@@ -53,10 +68,13 @@ class PostControllerTest {
         // given
         User author = generateAuthor();
         CreatePostRequest createPostRequest = generateCreateRequest(author.getId());
+        long id = Math.abs(faker.number().randomDigitNotZero());
         PostResponse postResponse = PostResponse.builder()
+                .id(id)
                 .title(createPostRequest.title())
                 .content(createPostRequest.content())
                 .authorName(author.getName())
+                .createdAt(LocalDateTime.now())
                 .build();
 
         given(postService.create(createPostRequest))
@@ -69,10 +87,28 @@ class PostControllerTest {
 
         // then
         actions.andExpect(status().isCreated())
-                .andExpect(jsonPath("$.title", is(postResponse.title())))
-                .andExpect(jsonPath("$.content", is(postResponse.content())))
-                .andExpect(jsonPath("$.authorName", is(postResponse.authorName())))
-                .andDo(print());
+                .andExpect(jsonPath("$.title", is(createPostRequest.title())))
+                .andExpect(jsonPath("$.content", is(createPostRequest.content())))
+                .andExpect(jsonPath("$.authorName", is(author.getName())));
+
+        // docs
+        actions.andDo(print())
+                .andDo(document("post-create",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("User ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content"),
+                                fieldWithPath("authorName").type(JsonFieldType.STRING).description("Author Name"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("Creation Datetime")
+                        )
+                ));
     }
 
     @DisplayName("[POST] 포스트 제목은 공백일 수 없다.")
@@ -142,21 +178,41 @@ class PostControllerTest {
                 .title(title)
                 .content(content)
                 .authorName(authorName)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         given(postService.findById(id))
                 .willReturn(postDetailResponse);
 
         // when
-        ResultActions actions = mockMvc.perform(get("/api/v1/posts/" + id));
+        MockHttpServletRequestBuilder docsGetRequest = RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", id);
+        ResultActions actions = mockMvc.perform(docsGetRequest);
 
         // then
         actions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(postDetailResponse.id()), Long.class))
                 .andExpect(jsonPath("$.title", is(postDetailResponse.title())))
                 .andExpect(jsonPath("$.content", is(postDetailResponse.content())))
-                .andExpect(jsonPath("$.authorName", is(postDetailResponse.authorName())))
-                .andDo(print());
+                .andExpect(jsonPath("$.authorName", is(postDetailResponse.authorName())));
+
+        // docs
+        actions.andDo(print())
+                .andDo(document("post-find-single",
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content"),
+                                fieldWithPath("authorName").type(JsonFieldType.STRING).description("Author Name"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("Creation Datetime"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING)
+                                        .description("Last Update Datetime")
+                        )
+                ));
     }
 
     @DisplayName("[PUT] 포스트 제목과 내용을 수정한다.")
@@ -172,21 +228,44 @@ class PostControllerTest {
                 .title(updatePostRequest.title())
                 .content(updatePostRequest.content())
                 .authorName(authorName)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         given(postService.updateById(id, updatePostRequest))
                 .willReturn(postDetailResponse);
 
         // when
-        ResultActions actions = mockMvc.perform(put("/api/v1/posts/" + id)
-                .contentType(MediaType.APPLICATION_JSON)
+        MockHttpServletRequestBuilder docsPutRequest = RestDocumentationRequestBuilders.put("/api/v1/posts/{id}", id);
+        ResultActions actions = mockMvc.perform(docsPutRequest.contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatePostRequest)));
 
         // then
         actions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.title", is(updatePostRequest.title())))
-                .andExpect(jsonPath("$.content", is(updatePostRequest.content())))
-                .andDo(print());
+                .andExpect(jsonPath("$.content", is(updatePostRequest.content())));
+
+        // docs
+        actions.andDo(print())
+                .andDo(document("post-update",
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("ID")
+                        ),
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content"),
+                                fieldWithPath("authorName").type(JsonFieldType.STRING).description("Author Name"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("Creation Datetime"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING)
+                                        .description("Last Update Datetime")
+                        )
+                ));
     }
 
     @DisplayName("[PUT] 포스트 제목은 공백일 수 없다.")
@@ -245,6 +324,10 @@ class PostControllerTest {
 
         // then
         actions.andExpect(status().isNoContent());
+
+        // docs
+        actions.andDo(print())
+                .andDo(document("post-page-no-content"));
     }
 
     @DisplayName("[GET] 포스트를 페이징 조회한다.")
@@ -276,8 +359,32 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.isEmpty", is(false)))
                 .andExpect(jsonPath("$.totalPages", is(totalPages)))
                 .andExpect(jsonPath("$.totalElements", is(totalCount), Long.class))
-                .andExpect(jsonPath("$.content", hasSize((int) contentSize)))
-                .andDo(print());
+                .andExpect(jsonPath("$.content", hasSize((int) contentSize)));
+
+        // docs
+        actions.andDo(print())
+                .andDo(document("post-page",
+                        preprocessResponse(prettyPrint()),
+                        queryParameters(
+                                parameterWithName("page").description("Page"),
+                                parameterWithName("size").description("Contents per Page")
+                        ),
+                        responseFields(
+                                fieldWithPath("isEmpty").type(JsonFieldType.BOOLEAN)
+                                        .description("True if no post is found"),
+                                fieldWithPath("totalPages").type(JsonFieldType.NUMBER)
+                                        .description("Total number of pages"),
+                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
+                                        .description("Total number of all posts"),
+                                fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("Post Id"),
+                                fieldWithPath("content[].title").type(JsonFieldType.STRING).description("Title"),
+                                fieldWithPath("content[].content").type(JsonFieldType.STRING).description("Content"),
+                                fieldWithPath("content[].authorName").type(JsonFieldType.STRING)
+                                        .description("Author Name"),
+                                fieldWithPath("content[].createdAt").type(JsonFieldType.STRING)
+                                        .description("Creation Datetime")
+                        )
+                ));
     }
 
     private CreatePostRequest generateCreateRequest(Long userId) {
