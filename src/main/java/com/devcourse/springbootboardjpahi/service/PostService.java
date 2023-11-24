@@ -7,8 +7,10 @@ import com.devcourse.springbootboardjpahi.dto.PageResponse;
 import com.devcourse.springbootboardjpahi.dto.PostDetailResponse;
 import com.devcourse.springbootboardjpahi.dto.PostResponse;
 import com.devcourse.springbootboardjpahi.dto.UpdatePostRequest;
+import com.devcourse.springbootboardjpahi.message.PostExceptionMessage;
 import com.devcourse.springbootboardjpahi.repository.PostRepository;
 import com.devcourse.springbootboardjpahi.repository.UserRepository;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +26,7 @@ public class PostService {
 
     public PostResponse create(CreatePostRequest request) {
         User author = userRepository.findById(request.userId())
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException(PostExceptionMessage.NO_SUCH_USER));
         Post post = Post.builder()
                 .title(request.title())
                 .content(request.content())
@@ -39,7 +41,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostDetailResponse findById(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException(PostExceptionMessage.NO_SUCH_POST));
 
         return PostDetailResponse.from(post);
     }
@@ -47,7 +49,7 @@ public class PostService {
     @Transactional
     public PostDetailResponse updateById(Long id, UpdatePostRequest request) {
         Post post = postRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException(PostExceptionMessage.NO_SUCH_POST));
 
         post.updateTitle(request.title());
         post.updateContent(request.content());

@@ -2,6 +2,7 @@ package com.devcourse.springbootboardjpahi.advice;
 
 import com.devcourse.springbootboardjpahi.message.ControllerAdviceExceptionMessage;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,14 @@ public class ControllerAdvice {
                 .orElse(ControllerAdviceExceptionMessage.INVALID_ARGUMENT);
 
         ErrorResponse errorResponse = new ErrorResponse(message);
+
+        return ResponseEntity.badRequest()
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
 
         return ResponseEntity.badRequest()
                 .body(errorResponse);
