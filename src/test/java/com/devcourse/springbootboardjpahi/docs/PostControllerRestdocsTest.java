@@ -88,12 +88,12 @@ public class PostControllerRestdocsTest {
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 field("title", JsonFieldType.STRING, "Title"),
-                                nullableField("content", JsonFieldType.STRING, "Content"),
+                                field("content", JsonFieldType.STRING, "Content"),
                                 field("userId", JsonFieldType.NUMBER, "User ID")),
                         responseFields(
                                 field("id", JsonFieldType.NUMBER, "ID"),
                                 field("title", JsonFieldType.STRING, "Title"),
-                                nullableField("content", JsonFieldType.STRING, "Content"),
+                                field("content", JsonFieldType.STRING, "Content"),
                                 field("authorName", JsonFieldType.STRING, "Author Name"),
                                 field("createdAt", JsonFieldType.STRING, "Creation Datetime"))))
                 .andDo(print());
@@ -132,7 +132,7 @@ public class PostControllerRestdocsTest {
                         responseFields(
                                 field("id", JsonFieldType.NUMBER, "ID"),
                                 field("title", JsonFieldType.STRING, "Title"),
-                                nullableField("content", JsonFieldType.STRING, "Content"),
+                                field("content", JsonFieldType.STRING, "Content"),
                                 field("authorName", JsonFieldType.STRING, "Author Name"),
                                 field("createdAt", JsonFieldType.STRING, "Creation Datetime"),
                                 field("updatedAt", JsonFieldType.STRING, "Last Update Datetime"))))
@@ -197,11 +197,11 @@ public class PostControllerRestdocsTest {
                                 parameterWithName("id").description("ID")),
                         requestFields(
                                 field("title", JsonFieldType.STRING, "Title"),
-                                nullableField("content", JsonFieldType.STRING, "Content")),
+                                field("content", JsonFieldType.STRING, "Content")),
                         responseFields(
                                 field("id", JsonFieldType.NUMBER, "ID"),
                                 field("title", JsonFieldType.STRING, "Title"),
-                                nullableField("content", JsonFieldType.STRING, "Content"),
+                                field("content", JsonFieldType.STRING, "Content"),
                                 field("authorName", JsonFieldType.STRING, "Author Name"),
                                 field("createdAt", JsonFieldType.STRING, "Creation Datetime"),
                                 field("updatedAt", JsonFieldType.STRING, "Last Update Datetime"))))
@@ -267,7 +267,7 @@ public class PostControllerRestdocsTest {
                                 field("totalElements", JsonFieldType.NUMBER, "Total number of all posts"),
                                 field("content[].id", JsonFieldType.NUMBER, "Post Id"),
                                 field("content[].title", JsonFieldType.STRING, "Title"),
-                                nullableField("content[].content", JsonFieldType.STRING, "Content"),
+                                field("content[].content", JsonFieldType.STRING, "Content"),
                                 field("content[].authorName", JsonFieldType.STRING, "Author Name"),
                                 field("content[].createdAt", JsonFieldType.STRING, "Creation Datetime"))))
                 .andDo(print());
@@ -346,12 +346,5 @@ public class PostControllerRestdocsTest {
         return fieldWithPath(name)
                 .type(type)
                 .description(description);
-    }
-
-    private FieldDescriptor nullableField(String name, Object type, String description) {
-        return fieldWithPath(name)
-                .type(type)
-                .description(description)
-                .optional();
     }
 }
