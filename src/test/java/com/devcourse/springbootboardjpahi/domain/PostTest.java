@@ -131,7 +131,7 @@ class PostTest {
 
     @DisplayName("포스트의 제목을 수정한다.")
     @Test
-    void testUpdateTitle() {
+    void testUpdateTitle() throws InterruptedException {
         // given
         String title = faker.book().title();
         String content = faker.gameOfThrones().quote();
@@ -145,6 +145,8 @@ class PostTest {
 
         LocalDateTime beforeUpdated = post.getUpdatedAt();
         String expected = faker.book().title();
+
+        Thread.sleep(100);
 
         // when
         post.updateTitle(expected);
