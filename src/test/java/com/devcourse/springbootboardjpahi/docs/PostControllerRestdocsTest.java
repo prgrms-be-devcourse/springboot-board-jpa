@@ -3,9 +3,6 @@ package com.devcourse.springbootboardjpahi.docs;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -38,6 +35,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -80,23 +78,19 @@ public class PostControllerRestdocsTest {
                 .content(objectMapper.writeValueAsString(createPostRequest)));
 
         // then
-        actions.andDo(print())
-                .andDo(document("post-create",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
+        actions.andDo(document("post-create",
                         requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content"),
-                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("User ID")
-                        ),
+                                field("title", JsonFieldType.STRING, "Title"),
+                                field("title", JsonFieldType.STRING, "Title"),
+                                field("content", JsonFieldType.STRING, "Content"),
+                                field("userId", JsonFieldType.NUMBER, "User ID")),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content"),
-                                fieldWithPath("authorName").type(JsonFieldType.STRING).description("Author Name"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("Creation Datetime")
-                        )
-                ));
+                                field("id", JsonFieldType.NUMBER, "ID"),
+                                field("title", JsonFieldType.STRING, "Title"),
+                                field("content", JsonFieldType.STRING, "Content"),
+                                field("authorName", JsonFieldType.STRING, "Author Name"),
+                                field("createdAt", JsonFieldType.STRING, "Creation Datetime"))))
+                .andDo(print());
     }
 
     @DisplayName("[GET] 포스트를 상세 조회 API")
@@ -124,22 +118,17 @@ public class PostControllerRestdocsTest {
         ResultActions actions = mockMvc.perform(docsGetRequest);
 
         // then
-        actions.andDo(print())
-                .andDo(document("post-find-single",
-                        preprocessResponse(prettyPrint()),
+        actions.andDo(document("post-find-single",
                         pathParameters(
-                                parameterWithName("id").description("ID")
-                        ),
+                                parameterWithName("id").description("ID")),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content"),
-                                fieldWithPath("authorName").type(JsonFieldType.STRING).description("Author Name"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("Creation Datetime"),
-                                fieldWithPath("updatedAt").type(JsonFieldType.STRING)
-                                        .description("Last Update Datetime")
-                        )
-                ));
+                                field("id", JsonFieldType.NUMBER, "ID"),
+                                field("title", JsonFieldType.STRING, "Title"),
+                                field("content", JsonFieldType.STRING, "Content"),
+                                field("authorName", JsonFieldType.STRING, "Author Name"),
+                                field("createdAt", JsonFieldType.STRING, "Creation Datetime"),
+                                field("updatedAt", JsonFieldType.STRING, "Last Update Datetime"))))
+                .andDo(print());
     }
 
     @DisplayName("[PUT] 포스트 수정 API")
@@ -164,30 +153,25 @@ public class PostControllerRestdocsTest {
 
         // when
         MockHttpServletRequestBuilder docsPutRequest = RestDocumentationRequestBuilders.put("/api/v1/posts/{id}", id);
-        ResultActions actions = mockMvc.perform(docsPutRequest.contentType(MediaType.APPLICATION_JSON)
+        ResultActions actions = mockMvc.perform(docsPutRequest
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatePostRequest)));
 
         // then
-        actions.andDo(print())
-                .andDo(document("post-update",
-                        preprocessResponse(prettyPrint()),
+        actions.andDo(document("post-update",
                         pathParameters(
-                                parameterWithName("id").description("ID")
-                        ),
+                                parameterWithName("id").description("ID")),
                         requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content")
-                        ),
+                                field("title", JsonFieldType.STRING, "Title"),
+                                field("content", JsonFieldType.STRING, "Content")),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("Title"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("Content"),
-                                fieldWithPath("authorName").type(JsonFieldType.STRING).description("Author Name"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("Creation Datetime"),
-                                fieldWithPath("updatedAt").type(JsonFieldType.STRING)
-                                        .description("Last Update Datetime")
-                        )
-                ));
+                                field("id", JsonFieldType.NUMBER, "ID"),
+                                field("title", JsonFieldType.STRING, "Title"),
+                                field("content", JsonFieldType.STRING, "Content"),
+                                field("authorName", JsonFieldType.STRING, "Author Name"),
+                                field("createdAt", JsonFieldType.STRING, "Creation Datetime"),
+                                field("updatedAt", JsonFieldType.STRING, "Last Update Datetime"))))
+                .andDo(print());
     }
 
     @DisplayName("[GET] 포스트 NoContent 조회 API")
@@ -237,29 +221,20 @@ public class PostControllerRestdocsTest {
                 .param("size", "10"));
 
         // then
-        actions.andDo(print())
-                .andDo(document("post-page",
-                        preprocessResponse(prettyPrint()),
+        actions.andDo(document("post-page",
                         queryParameters(
                                 parameterWithName("page").description("Page"),
-                                parameterWithName("size").description("Contents per Page")
-                        ),
+                                parameterWithName("size").description("Contents per Page")),
                         responseFields(
-                                fieldWithPath("isEmpty").type(JsonFieldType.BOOLEAN)
-                                        .description("True if no post is found"),
-                                fieldWithPath("totalPages").type(JsonFieldType.NUMBER)
-                                        .description("Total number of pages"),
-                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
-                                        .description("Total number of all posts"),
-                                fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("Post Id"),
-                                fieldWithPath("content[].title").type(JsonFieldType.STRING).description("Title"),
-                                fieldWithPath("content[].content").type(JsonFieldType.STRING).description("Content"),
-                                fieldWithPath("content[].authorName").type(JsonFieldType.STRING)
-                                        .description("Author Name"),
-                                fieldWithPath("content[].createdAt").type(JsonFieldType.STRING)
-                                        .description("Creation Datetime")
-                        )
-                ));
+                                field("isEmpty", JsonFieldType.BOOLEAN, "True if no post is found"),
+                                field("totalPages", JsonFieldType.NUMBER, "Total number of pages"),
+                                field("totalElements", JsonFieldType.NUMBER, "Total number of all posts"),
+                                field("content[].id", JsonFieldType.NUMBER, "Post Id"),
+                                field("content[].title", JsonFieldType.STRING, "Title"),
+                                field("content[].content", JsonFieldType.STRING, "Content"),
+                                field("content[].authorName", JsonFieldType.STRING, "Author Name"),
+                                field("content[].createdAt", JsonFieldType.STRING, "Creation Datetime"))))
+                .andDo(print());
     }
 
     private CreatePostRequest generateCreateRequest(Long userId) {
@@ -329,5 +304,11 @@ public class PostControllerRestdocsTest {
 
     private long generateId() {
         return Math.abs(faker.number().randomDigitNotZero());
+    }
+
+    private FieldDescriptor field(String name, Object type, String description) {
+        return fieldWithPath(name)
+                .type(type)
+                .description(description);
     }
 }
