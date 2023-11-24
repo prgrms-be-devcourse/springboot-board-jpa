@@ -69,7 +69,7 @@ class PostServiceTest {
                     .hasMessage(ErrorMessage.WRONG_TITLE_VALUE.getMessage());
         }
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "title이 `{0}`인 경우 저장 로직에서 실패한다.")
         @ValueSource(strings = {" ", "   "})
         @NullAndEmptySource
         @DisplayName("제목이 null이거나 빈 공백인 경우 실패한다.")
@@ -83,7 +83,7 @@ class PostServiceTest {
                     .hasMessage(ErrorMessage.WRONG_TITLE_VALUE.getMessage());
         }
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "contents가 `{0}`인 경우 저장 로직에서 실패한다.")
         @ValueSource(strings = {" ", "   "})
         @NullAndEmptySource
         @DisplayName("내용이 null이거나 빈 공백인 경우 실패한다.")
@@ -199,7 +199,7 @@ class PostServiceTest {
                     .hasMessage(ErrorMessage.WRONG_TITLE_VALUE.getMessage());
         }
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "title이 `{0}`인 경우 수정 로직에서 실패한다.")
         @ValueSource(strings = {" ", "   "})
         @NullAndEmptySource
         @DisplayName("제목이 null이거나 빈 공백인 경우 수정에 실패한다.")
@@ -216,7 +216,7 @@ class PostServiceTest {
                     .hasMessage(ErrorMessage.WRONG_TITLE_VALUE.getMessage());
         }
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "contents가 `{0}`인 경우 수정 로직에서 실패한다.")
         @ValueSource(strings = {" ", "   "})
         @NullAndEmptySource
         @DisplayName("내용이 null이거나 빈 공백인 경우 실패한다.")
