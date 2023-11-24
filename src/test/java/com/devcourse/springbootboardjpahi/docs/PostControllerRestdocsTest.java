@@ -208,6 +208,36 @@ public class PostControllerRestdocsTest {
                 .andDo(print());
     }
 
+    @DisplayName("[PUT] 존재하지 않는 포스트 수정 API")
+    @Test
+    void testUpdateByIdNotExistAPI() throws Exception {
+        // given
+        UpdatePostRequest updatePostRequest = generateUpdateRequest();
+        long id = generateId();
+
+        given(postService.updateById(id, updatePostRequest))
+                .willThrow(new NoSuchElementException(NO_SUCH_POST));
+
+        // when
+        MockHttpServletRequestBuilder docsPutRequest = RestDocumentationRequestBuilders.put("/api/v1/posts/{id}", id);
+        ResultActions actions = mockMvc.perform(docsPutRequest
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatePostRequest)));
+
+        // then
+        actions.andDo(document("post-update-not-exist",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("ID")),
+                        requestFields(
+                                field("title", JsonFieldType.STRING, "Title"),
+                                field("content", JsonFieldType.STRING, "Content")),
+                        responseFields(
+                                field("message", JsonFieldType.STRING, "Error Message"))))
+                .andDo(print());
+    }
+
     @DisplayName("[GET] 포스트 NoContent 조회 API")
     @Test
     void testFindNoContentAPI() throws Exception {

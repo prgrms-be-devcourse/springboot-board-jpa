@@ -84,8 +84,6 @@ include::{snippets}/post-page/response-fields.adoc[]
 
 === `*POST /posts*`
 
-TIP: 포스트 상세 정보 조회 성공
-
 ==== Request
 
 include::{snippets}/post-create/http-request.adoc[]
@@ -99,6 +97,8 @@ include::{snippets}/post-create/response-fields.adoc[]
 == 포스트 단건 조회
 
 === `*GET /posts/\{id}*`
+
+TIP: 포스트 상세 정보 조회 성공
 
 ==== Request
 
@@ -124,6 +124,8 @@ include::{snippets}/post-find-single-not-exist/response-fields.adoc[]
 
 === `*PUT /posts/\{id}*`
 
+TIP: 포스트 정보 수정 성공
+
 ==== Request
 
 include::{snippets}/post-update/http-request.adoc[]
@@ -133,3 +135,14 @@ include::{snippets}/post-update/request-fields.adoc[]
 
 include::{snippets}/post-update/http-response.adoc[]
 include::{snippets}/post-update/response-fields.adoc[]
+
+WARNING: 포스트가 존재하지 않는 경우
+
+==== Request
+
+include::{snippets}/post-update-not-exist/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post-update-not-exist/http-response.adoc[]
+include::{snippets}/post-update-not-exist/response-fields.adoc[]
