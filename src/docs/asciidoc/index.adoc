@@ -84,6 +84,8 @@ include::{snippets}/post-page/response-fields.adoc[]
 
 === `*POST /posts*`
 
+TIP: 포스트 상세 정보 조회 성공
+
 ==== Request
 
 include::{snippets}/post-create/http-request.adoc[]
@@ -106,6 +108,17 @@ include::{snippets}/post-find-single/http-request.adoc[]
 
 include::{snippets}/post-find-single/http-response.adoc[]
 include::{snippets}/post-find-single/response-fields.adoc[]
+
+WARNING: 포스트가 존재하지 않는 경우
+
+==== Request
+
+include::{snippets}/post-find-single-not-exist/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post-find-single-not-exist/http-response.adoc[]
+include::{snippets}/post-find-single-not-exist/response-fields.adoc[]
 
 == 포스트 수정
 

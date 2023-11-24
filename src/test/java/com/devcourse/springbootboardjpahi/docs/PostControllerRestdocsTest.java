@@ -1,5 +1,6 @@
 package com.devcourse.springbootboardjpahi.docs;
 
+import static com.devcourse.springbootboardjpahi.message.PostExceptionMessage.NO_SUCH_POST;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -30,6 +31,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,6 +136,30 @@ public class PostControllerRestdocsTest {
                                 field("authorName", JsonFieldType.STRING, "Author Name"),
                                 field("createdAt", JsonFieldType.STRING, "Creation Datetime"),
                                 field("updatedAt", JsonFieldType.STRING, "Last Update Datetime"))))
+                .andDo(print());
+    }
+
+    @DisplayName("[GET] 존재하지 않는 포스트 상세 조회 API")
+    @Test
+    void testFindByIdNotExistAPI() throws Exception {
+        // given
+        long id = generateId();
+
+        given(postService.findById(id))
+                .willThrow(new NoSuchElementException(NO_SUCH_POST));
+
+        // when
+        MockHttpServletRequestBuilder docsGetRequest = RestDocumentationRequestBuilders.get("/api/v1/posts/{id}", id);
+        ResultActions actions = mockMvc.perform(docsGetRequest);
+
+        // then
+        actions.andDo(document("post-find-single-not-exist",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("ID")),
+                        responseFields(
+                                field("message", JsonFieldType.STRING, "Error Message"))))
                 .andDo(print());
     }
 
