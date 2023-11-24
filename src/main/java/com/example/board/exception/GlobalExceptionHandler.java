@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BaseException.class)
-    public ResponseEntity<Response<?>> customExceptionHandle(BaseException e) {
+    public ResponseEntity<Response<?>> baseExceptionHandle(BaseException e) {
         log.info("error: {}", e.getMessage());
         return ResponseEntity.status(e.getHttpStatus()).body(Response.fail(e));
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<Response<?>> customExceptionHandle(RuntimeException e) {
+    public ResponseEntity<Response<?>> runtimeExceptionHandle(RuntimeException e) {
         log.info("error: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Response.fail(e));
     }
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Response<?>> customExceptionHandle(Exception e) {
+    public ResponseEntity<Response<?>> exceptionHandle(Exception e) {
         log.info("error: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Response.fail(e));
     }

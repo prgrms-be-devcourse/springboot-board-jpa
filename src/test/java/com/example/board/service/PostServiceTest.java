@@ -42,13 +42,12 @@ class PostServiceTest {
     @Autowired
     UserRepository userRepository;
 
-    // TODO: user 생성 후 그 id 적용해보기, userName 유효성 검사
     @Nested
     @DisplayName("게시글 생성")
     class PostNew {
         @Test
         @DisplayName("정상적으로 PostDto를 받아 글 작성을 완료하는 경우")
-        void postSuccessInService() {
+        void saveSuccessInService() {
             PostDto postDto = new PostDto(1L, "test", "test Contents");
 
             Long save = postService.save(postDto);
@@ -59,7 +58,7 @@ class PostServiceTest {
 
         @Test
         @DisplayName("제목이 20자 이상인 경우 실패한다.")
-        void postFailByTitleLength() {
+        void saveFailByTitleLength() {
             // given
             PostDto postDto = new PostDto(1L, "testtesttesttesttesttesttest", "test Contents");
 
@@ -73,7 +72,7 @@ class PostServiceTest {
         @ValueSource(strings = {" ", "   "})
         @NullAndEmptySource
         @DisplayName("제목이 null이거나 빈 공백인 경우 실패한다.")
-        void postFailByTitleNullOrBlank(String input) {
+        void saveFailByTitleNullOrBlank(String input) {
             // given
             PostDto postDto = new PostDto(1L, input, "test Contents");
 
@@ -87,7 +86,7 @@ class PostServiceTest {
         @ValueSource(strings = {" ", "   "})
         @NullAndEmptySource
         @DisplayName("내용이 null이거나 빈 공백인 경우 실패한다.")
-        void postFailByContents(String input) {
+        void saveFailByContents(String input) {
             // given
             PostDto postDto = new PostDto(1L, "title", input);
 
@@ -99,7 +98,7 @@ class PostServiceTest {
 
         @Test
         @DisplayName("존재하지 않는 유저가 글을 작성하는 경우 예외를 발생시킨다.")
-        void postFailWithAnonymousUser() {
+        void saveFailWithAnonymousUser() {
             PostDto postDto = new PostDto(0L, "test", "test Contents");
 
             assertThatThrownBy(() -> postService.save(postDto))
@@ -113,7 +112,7 @@ class PostServiceTest {
     class PostGetAll {
         @Test
         @DisplayName("정상적으로 모든 게시물들을 받아온다.")
-        void readAllSuccess() {
+        void getAllSuccess() {
             for (int i = 0; i < 15; i++) {
                 PostDto postDto = new PostDto(1L, "title" + i, "contents" + i);
                 postService.save(postDto);

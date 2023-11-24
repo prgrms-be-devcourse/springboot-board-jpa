@@ -53,7 +53,7 @@ class PostControllerTest {
     class PostNew {
         @Test
         @DisplayName("정상적으로 게시글을 등록된다.")
-        void postSuccess() throws Exception {
+        void saveSuccess() throws Exception {
             //given
             PostDto postDto = new PostDto(1L, "test2", "test Contents2");
 
@@ -78,7 +78,7 @@ class PostControllerTest {
 
         @Test
         @DisplayName("userId를 포함하지 않고 보낼 경우 예외가 발생한다.")
-        void postFailWithAnonymousUser() throws Exception {
+        void saveFailWithAnonymousUser() throws Exception {
             //given
             PostDto postDto = new PostDto(null, "test2", "test Contents2");
 
@@ -98,7 +98,7 @@ class PostControllerTest {
 
         @Test
         @DisplayName("존재하지 않는 userId를 보낼 경우 예외가 발생한다.")
-        void postFailWithWrongUser() throws Exception {
+        void saveFailWithWrongUser() throws Exception {
             //given
             PostDto postDto = new PostDto(0L, "test2", "test Contents2");
 
@@ -117,7 +117,7 @@ class PostControllerTest {
 
         @Test
         @DisplayName("제목이 20자 이상인 경우 예외를 발생시킨다.")
-        void postFailWithLongTitle() throws Exception {
+        void saveFailWithLongTitle() throws Exception {
             //given
             PostDto postDto = new PostDto(1L, "test222222222222222222222222", "test Contents2");
 
@@ -140,7 +140,7 @@ class PostControllerTest {
         @ValueSource(strings = {" "})
         @NullAndEmptySource
         @DisplayName("제목이 없는 경우 예외를 발생시킨다.")
-        void postFailWithNoTitle(String input) throws Exception {
+        void saveFailWithNoTitle(String input) throws Exception {
             //given
             PostDto postDto = new PostDto(1L, input, "test Contents2");
 
@@ -162,7 +162,7 @@ class PostControllerTest {
         @ValueSource(strings = {" "})
         @NullAndEmptySource
         @DisplayName("내용이 없는 경우 예외를 발생시킨다.")
-        void postFailWithNoContents(String input) throws Exception {
+        void saveFailWithNoContents(String input) throws Exception {
             //given
             PostDto postDto = new PostDto(1L, "title", input);
 
@@ -239,7 +239,7 @@ class PostControllerTest {
     class PostGetOne {
         @Test
         @DisplayName("정상적으로 특정 게시물 하나를 받아온다.")
-        void getPostByIdSuccess() throws Exception {
+        void getByIdSuccess() throws Exception {
             //given
             Long savedContentsId = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
 
@@ -263,7 +263,7 @@ class PostControllerTest {
 
         @Test
         @DisplayName("존재하지 않는 게시물을 호출하여 예외가 발생하였다.")
-        void getPostByIdNotFoundFail() throws Exception {
+        void getByIdNotFoundFail() throws Exception {
             //given
 
             //when
@@ -287,7 +287,7 @@ class PostControllerTest {
     class PostUpdate {
         @Test
         @DisplayName("정상적으로 게시글을 수정한다.")
-        void updatePostSuccess() throws Exception {
+        void updateSuccess() throws Exception {
             //given
             Long savedContents = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
 
