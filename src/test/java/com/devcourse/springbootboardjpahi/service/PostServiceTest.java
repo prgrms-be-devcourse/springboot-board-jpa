@@ -10,6 +10,7 @@ import com.devcourse.springbootboardjpahi.dto.PageResponse;
 import com.devcourse.springbootboardjpahi.dto.PostDetailResponse;
 import com.devcourse.springbootboardjpahi.dto.PostResponse;
 import com.devcourse.springbootboardjpahi.dto.UpdatePostRequest;
+import com.devcourse.springbootboardjpahi.message.PostExceptionMessage;
 import com.devcourse.springbootboardjpahi.repository.PostRepository;
 import com.devcourse.springbootboardjpahi.repository.UserRepository;
 import com.github.javafaker.Faker;
@@ -80,7 +81,8 @@ class PostServiceTest {
         ThrowingCallable target = () -> postService.create(request);
 
         // then
-        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(target);
+        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(target)
+                .withMessage(PostExceptionMessage.NO_SUCH_USER);
     }
 
     @DisplayName("포스트를 상세 조회한다.")
@@ -113,7 +115,8 @@ class PostServiceTest {
         ThrowingCallable target = () -> postService.findById(id);
 
         // then
-        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(target);
+        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(target)
+                .withMessage(PostExceptionMessage.NO_SUCH_POST);
     }
 
     @DisplayName("포스트의 제목과 내용을 수정한다.")
