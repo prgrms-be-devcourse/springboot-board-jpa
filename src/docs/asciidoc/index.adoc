@@ -11,53 +11,112 @@ Doc Writers - 김현우 송인재
 :toclevels: 2
 :sectlinks:
 
-== 포스트
----
-=== 포스트 다건 페이지 조회
-GET /posts
+= 유저
 
-==== 포스트가 없을 경우
+'''
+== 유저 조회
+
+=== `*GET /users*`
+
+NOTE: 유저가 없을 경우
+
 ==== Request
+
+include::{snippets}/user-find-all-no-content/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/user-find-all-no-content/http-response.adoc[]
+
+TIP: 유저 조회 성공
+
+==== Request
+
+include::{snippets}/user-find-all/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/user-find-all/http-response.adoc[]
+include::{snippets}/user-find-all/response-fields.adoc[]
+
+== 유저 생성
+
+=== `*POST /users*`
+
+==== Request
+
+include::{snippets}/user-create/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/user-create/http-response.adoc[]
+include::{snippets}/user-create/response-fields.adoc[]
+
+= 포스트
+
+'''
+== 포스트 다건 페이지 조회
+
+=== `*GET /posts*`
+
+NOTE: 포스트가 없을 경우
+
+==== Request
+
 include::{snippets}/post-page-no-content/http-request.adoc[]
 
 ==== Response
+
 include::{snippets}/post-page-no-content/http-response.adoc[]
 
-==== 포스트 페이지 조회 성공
+TIP: 포스트 페이지 조회 성공
+
 ==== Request
+
 include::{snippets}/post-page/http-request.adoc[]
 
 ==== Response
-include::{snippets}/post-page/http-response.adoc[]
 
-=== 포스트 생성
-POST /posts
+include::{snippets}/post-page/http-response.adoc[]
+include::{snippets}/post-page/response-fields.adoc[]
+
+== 포스트 생성
+
+=== `*POST /posts*`
 
 ==== Request
+
 include::{snippets}/post-create/http-request.adoc[]
 include::{snippets}/post-create/request-fields.adoc[]
 
 ==== Response
+
 include::{snippets}/post-create/http-response.adoc[]
 include::{snippets}/post-create/response-fields.adoc[]
 
-=== 포스트 단건 조회
-GET /posts/{id}
+== 포스트 단건 조회
+
+=== `*GET /posts/\{id}*`
 
 ==== Request
+
 include::{snippets}/post-find-single/http-request.adoc[]
 
 ==== Response
+
 include::{snippets}/post-find-single/http-response.adoc[]
 include::{snippets}/post-find-single/response-fields.adoc[]
 
-=== 포스트 수정
-PUT /posts/{id}
+== 포스트 수정
+
+=== `*PUT /posts/\{id}*`
 
 ==== Request
+
 include::{snippets}/post-update/http-request.adoc[]
 include::{snippets}/post-update/request-fields.adoc[]
 
 ==== Response
+
 include::{snippets}/post-update/http-response.adoc[]
 include::{snippets}/post-update/response-fields.adoc[]
