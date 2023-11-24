@@ -1,5 +1,6 @@
 package com.devcourse.springbootboardjpahi.advice;
 
+import com.devcourse.springbootboardjpahi.message.ControllerAdviceExceptionMessage;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -19,7 +20,7 @@ public class ControllerAdvice {
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .filter(Objects::nonNull)
                 .findFirst()
-                .orElse("temporary error message");
+                .orElse(ControllerAdviceExceptionMessage.INVALID_ARGUMENT);
 
         ErrorResponse errorResponse = new ErrorResponse(message);
 

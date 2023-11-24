@@ -1,5 +1,7 @@
 package com.devcourse.springbootboardjpahi.controller;
 
+import static com.devcourse.springbootboardjpahi.message.UserExceptionMessage.BLANK_NAME;
+import static com.devcourse.springbootboardjpahi.message.UserExceptionMessage.NEGATIVE_AGE;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
@@ -114,7 +116,7 @@ class UserControllerTest {
 
         // then
         actions.andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("이름은 공백일 수 없습니다.")));
+                .andExpect(jsonPath("$.message", is(BLANK_NAME)));
     }
 
     @DisplayName("[POST] 나이는 음수일 수 없다.")
@@ -133,7 +135,7 @@ class UserControllerTest {
 
         // then
         actions.andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("나이는 음수일 수 없습니다.")));
+                .andExpect(jsonPath("$.message", is(NEGATIVE_AGE)));
     }
 
     CreateUserRequest generateCreateUserRequest() {

@@ -1,5 +1,8 @@
 package com.devcourse.springbootboardjpahi.controller;
 
+import static com.devcourse.springbootboardjpahi.message.PostExceptionMessage.BLANK_TITLE;
+import static com.devcourse.springbootboardjpahi.message.PostExceptionMessage.INVALID_USER_ID;
+import static com.devcourse.springbootboardjpahi.message.PostExceptionMessage.NULL_CONTENT;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -92,7 +95,7 @@ class PostControllerTest {
 
         // then
         actions.andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("제목은 공백일 수 없습니다.")));
+                .andExpect(jsonPath("$.message", is(BLANK_TITLE)));
     }
 
     @DisplayName("[POST] 포스트 내용은 null일 수 없다.")
@@ -110,7 +113,7 @@ class PostControllerTest {
 
         // then
         actions.andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("내용이 존재하지 않습니다.")));
+                .andExpect(jsonPath("$.message", is(NULL_CONTENT)));
     }
 
     @DisplayName("[POST] 포스트 작성자 id는 음수일 수 없다.")
@@ -127,7 +130,7 @@ class PostControllerTest {
 
         // then
         actions.andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("유효하지 않은 유저 아이디입니다.")));
+                .andExpect(jsonPath("$.message", is(INVALID_USER_ID)));
     }
 
     @DisplayName("[GET] 포스트를 상세 조회한다.")
@@ -208,7 +211,7 @@ class PostControllerTest {
 
         // then
         actions.andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("제목은 공백일 수 없습니다.")));
+                .andExpect(jsonPath("$.message", is(BLANK_TITLE)));
     }
 
     @DisplayName("[PUT] 포스트 내용은 null일 수 없다.")
@@ -226,7 +229,7 @@ class PostControllerTest {
 
         // then
         actions.andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("내용이 존재하지 않습니다.")));
+                .andExpect(jsonPath("$.message", is(NULL_CONTENT)));
     }
 
     @DisplayName("[GET] 포스트가 없을 때 204 상태 코드를 반환한다.")
