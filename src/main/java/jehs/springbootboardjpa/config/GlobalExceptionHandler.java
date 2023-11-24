@@ -25,4 +25,11 @@ public class GlobalExceptionHandler {
         ExceptionMessage exceptionMessage = new ExceptionMessage(e.getClass().getSimpleName(), e.getMessage());
         return new ResponseEntity<>(exceptionMessage, e.getHttpStatus());
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionMessage> handleException(Exception e) {
+        log.error(e.getMessage());
+        ExceptionMessage exceptionMessage = new ExceptionMessage(e.getClass().getSimpleName(), e.getMessage());
+        return new ResponseEntity<>(exceptionMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
