@@ -46,7 +46,7 @@ public class PostService {
     public void updatePost(Long id, UpdatePostRequest requestDto) {
         final Post post = postRepository.findByIdWithAuthor(id).orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
-        if (!isAuthor(post, requestDto.authorId()))
+        if (!post.isSameAuthorId(requestDto.authorId()))
             throw new CustomException(ErrorCode.AUTHOR_NOT_MATCH);
 
         post.update(requestDto.title(), requestDto.content());
@@ -55,13 +55,10 @@ public class PostService {
     public void deletePost(Long id, DeletePostRequest requestDto) {
         final Post post = postRepository.findByIdWithAuthor(id).orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
-        if (!isAuthor(post, requestDto.authorId()))
+        if (!post.isSameAuthorId(requestDto.authorId()))
             throw new CustomException(ErrorCode.AUTHOR_NOT_MATCH);
 
         postRepository.delete(post);
     }
 
-    private Boolean isAuthor(Post post, Long authorId) {
-        return post.getAuthor().getId().equals(authorId);
-    }
 }

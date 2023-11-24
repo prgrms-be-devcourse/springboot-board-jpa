@@ -91,7 +91,7 @@ class PostServiceTest {
         Post mockPost = mock(Post.class);
         UpdatePostRequest requestDto = new UpdatePostRequest("마라톤 꿀팁", "매일매일 달리고 러닝화도 사세요", post.getAuthor().getId());
         given(postRepository.findByIdWithAuthor(any(Long.class))).willReturn(Optional.ofNullable(mockPost));
-        given(mockPost.getAuthor()).willReturn(post.getAuthor());
+        given(mockPost.isSameAuthorId(requestDto.authorId())).willReturn(true);
 
         // when
         postService.updatePost(post.getId(), requestDto);
