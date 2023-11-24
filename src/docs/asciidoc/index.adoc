@@ -1,0 +1,161 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+= JPA 게시판 API 문서
+Doc Writers - 김현우 송인재
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+= 유저
+
+'''
+== 유저 조회
+
+=== `*GET /users*`
+
+NOTE: 유저가 없을 경우
+
+==== Request
+
+include::{snippets}/user-find-all-no-content/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/user-find-all-no-content/http-response.adoc[]
+
+TIP: 유저 조회 성공
+
+==== Request
+
+include::{snippets}/user-find-all/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/user-find-all/http-response.adoc[]
+include::{snippets}/user-find-all/response-fields.adoc[]
+
+== 유저 생성
+
+=== `*POST /users*`
+
+==== Request
+
+include::{snippets}/user-create/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/user-create/http-response.adoc[]
+include::{snippets}/user-create/response-fields.adoc[]
+
+= 포스트
+
+'''
+== 포스트 다건 페이지 조회
+
+=== `*GET /posts*`
+
+NOTE: 포스트가 없을 경우
+
+==== Request
+
+include::{snippets}/post-page-no-content/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post-page-no-content/http-response.adoc[]
+
+TIP: 포스트 페이지 조회 성공
+
+==== Request
+
+include::{snippets}/post-page/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post-page/http-response.adoc[]
+include::{snippets}/post-page/response-fields.adoc[]
+
+== 포스트 생성
+
+=== `*POST /posts*`
+
+TIP: 포스트 생성 성공
+
+==== Request
+
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/request-fields.adoc[]
+
+==== Response
+
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+WARNING: 존재하지 않는 유저의 포스트를 생성하는 경우
+
+==== Request
+
+include::{snippets}/post-create-not-exist-user/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post-create-not-exist-user/http-response.adoc[]
+include::{snippets}/post-create-not-exist-user/response-fields.adoc[]
+
+== 포스트 단건 조회
+
+=== `*GET /posts/\{id}*`
+
+TIP: 포스트 상세 정보 조회 성공
+
+==== Request
+
+include::{snippets}/post-find-single/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post-find-single/http-response.adoc[]
+include::{snippets}/post-find-single/response-fields.adoc[]
+
+WARNING: 포스트가 존재하지 않는 경우
+
+==== Request
+
+include::{snippets}/post-find-single-not-exist/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post-find-single-not-exist/http-response.adoc[]
+include::{snippets}/post-find-single-not-exist/response-fields.adoc[]
+
+== 포스트 수정
+
+=== `*PUT /posts/\{id}*`
+
+TIP: 포스트 정보 수정 성공
+
+==== Request
+
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/request-fields.adoc[]
+
+==== Response
+
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+WARNING: 포스트가 존재하지 않는 경우
+
+==== Request
+
+include::{snippets}/post-update-not-exist/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post-update-not-exist/http-response.adoc[]
+include::{snippets}/post-update-not-exist/response-fields.adoc[]
