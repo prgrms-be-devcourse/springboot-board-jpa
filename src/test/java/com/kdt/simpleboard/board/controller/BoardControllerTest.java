@@ -34,27 +34,24 @@ class BoardControllerTest extends BaseIntegrationTest {
     @Test
     @DisplayName("게시물 생성 api 호출에 성공한다")
     void createBoard() throws Exception {
-        User user = UserData.user();
-        userRepository.save(user);
+        User savedUser = userRepository.save(UserData.user());
+        CreateBoardRequest createBoardRequest = BoardData.createBoardRequest(savedUser.getId());
         mvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(BoardData.createBoardRequest())))
+                        .content(asJsonString(createBoardRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.createdId").value(1L));
+                .andExpect(jsonPath("$.createdId").isNotEmpty());
     }
 
     @Test
     @DisplayName("게시물 업데이트 api 호출에 성공한다")
     void updateBoard() throws Exception {
-        User user = UserData.user();
-        Board board = BoardData.board();
-
-        boardRepository.save(board);
-        userRepository.save(user);
+        Board savedBoard = boardRepository.save(BoardData.board());
+        userRepository.save(UserData.user());
 
         ModifyBoard modifyBoardRequest = BoardData.modifyBoardRequest();
-        mvc.perform(post("/posts/{id}", 1L)
+        mvc.perform(post("/posts/{id}", savedBoard.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(asJsonString(modifyBoardRequest)))
@@ -69,7 +66,7 @@ class BoardControllerTest extends BaseIntegrationTest {
     void findBoardById() throws Exception{
         Board board = BoardData.board();
         boardRepository.save(board);
-        mvc.perform(get("/posts/{id}", 1L)
+        mvc.perform(get("/posts/{id}", board.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -97,6 +94,7 @@ class BoardControllerTest extends BaseIntegrationTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalItems", is(boards.size())))
+                .andExpect(jsonPath("$.items[0].title",is(boards.get(0).getTitle()) ))
         ;
     }
 }

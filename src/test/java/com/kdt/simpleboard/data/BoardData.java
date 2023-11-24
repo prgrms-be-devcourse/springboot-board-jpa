@@ -12,6 +12,9 @@ public class BoardData {
     public static BoardRequest.CreateBoardRequest createBoardRequest(){
         return new BoardRequest.CreateBoardRequest(1L, "titleA", "contentA");
     }
+    public static BoardRequest.CreateBoardRequest createBoardRequest(Long userId){
+        return new BoardRequest.CreateBoardRequest(userId, "titleA", "contentA");
+    }
     public static BoardRequest.ModifyBoard modifyBoardRequest(){
         return new BoardRequest.ModifyBoard("titleAChanged", "contentAChanged");
     }

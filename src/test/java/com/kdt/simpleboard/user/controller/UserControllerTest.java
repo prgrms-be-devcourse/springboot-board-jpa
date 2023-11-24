@@ -6,8 +6,7 @@ import com.kdt.simpleboard.user.UserData;
 import com.kdt.simpleboard.user.domain.User;
 import com.kdt.simpleboard.user.dto.UserRequest;
 import com.kdt.simpleboard.user.repository.UserRepository;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -25,17 +26,21 @@ class UserControllerTest extends BaseIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
+    @BeforeEach
+    void clear(){
+        userRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("회원 생성 api 호출에 성공한다.")
     void createUser() throws Exception{
-        UserRequest.CreateUserReq userReq = UserData.createUserReq();
-
+        UserRequest.CreateUserReq createUserReq = UserData.createUserReq();
         mvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userReq))
+                .content(asJsonString(createUserReq))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.createdId").value(1L));
+                .andExpect(jsonPath("$.createdId").isNotEmpty());
     }
 
     @Test
