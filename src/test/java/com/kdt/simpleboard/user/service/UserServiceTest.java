@@ -29,7 +29,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("회원을 생성할 수 있다.")
-    void createUserSuccess(){
+    void createUserSuccess() {
         //given
         CreateUserRequest requestDto = createUserReq();
         User user = user();
@@ -46,7 +46,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("이미 존재하는 회원에 대해서 생성 시 예외가 발생한다.")
-    void createUserFail(){
+    void createUserFail() {
         //given
         CreateUserRequest requestDto = createUserReq();
 

@@ -26,7 +26,7 @@ public class BoardController {
 
     @Operation(summary = "보드 생성")
     @PostMapping
-    public ResponseEntity<CreateBoardResponse> createBoard(@Valid @RequestBody CreateBoardRequest request){
+    public ResponseEntity<CreateBoardResponse> createBoard(@Valid @RequestBody CreateBoardRequest request) {
         CreateBoardResponse response = boardService.createBoard(request);
         return ResponseEntity.ok(response);
     }
@@ -48,7 +48,7 @@ public class BoardController {
                     content = @Content(mediaType = "application/json"))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<FindBoardResponse> findBoard(@PathVariable("id") Long boardId){
+    public ResponseEntity<FindBoardResponse> findBoard(@PathVariable("id") Long boardId) {
         FindBoardResponse response = boardService.findById(boardId);
         return ResponseEntity.ok(response);
     }
@@ -59,7 +59,7 @@ public class BoardController {
                     content = @Content(mediaType = "application/json"))
     })
     @GetMapping
-    public ResponseEntity<PageResponse<FindBoardResponse>> findAll(Pageable pageable){
+    public ResponseEntity<PageResponse<FindBoardResponse>> findAll(Pageable pageable) {
         PageResponse<FindBoardResponse> response = boardService.findAll(pageable);
         return ResponseEntity.ok(response);
     }

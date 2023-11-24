@@ -29,7 +29,7 @@ public class BoardService {
     private final UserService userService;
 
     @Transactional
-    public CreateBoardResponse createBoard(CreateBoardRequest request){
+    public CreateBoardResponse createBoard(CreateBoardRequest request) {
         User user = userService.getUserEntity(request.userId());
         Board board = toBoardEntity(request, user);
         Board savedBoard = boardRepository.save(board);
@@ -37,7 +37,7 @@ public class BoardService {
     }
 
     @Transactional
-    public FindBoardResponse updateBoard(Long boardId, ModifyBoardRequest request){
+    public FindBoardResponse updateBoard(Long boardId, ModifyBoardRequest request) {
         Board board = getBoardEntity(boardId);
         Board updatedBoard = board.updateBoardInfo(request.title(), request.content());
         return toFindBoardRes(updatedBoard);
@@ -49,13 +49,13 @@ public class BoardService {
         return toFindBoardRes(board);
     }
 
-    public PageResponse<FindBoardResponse> findAll(Pageable pageable){
+    public PageResponse<FindBoardResponse> findAll(Pageable pageable) {
         Page<Board> pagedBoards = boardRepository.findAll(pageable);
         Page<FindBoardResponse> pagedFindBoardRes = pagedBoards.map(BoardMapper::toFindBoardRes);
         return PageResponse.fromPage(pagedFindBoardRes);
     }
 
-    private Board getBoardEntity(Long boardId){
+    private Board getBoardEntity(Long boardId) {
         return boardRepository.findById(boardId).orElseThrow(() -> new CustomException(Not_EXIST_BOARD));
     }
 

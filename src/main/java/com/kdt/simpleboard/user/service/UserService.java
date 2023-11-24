@@ -21,14 +21,14 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserResponse.CreateUserResponse createUser(CreateUserRequest request) {
-        if (userRepository.existsByName(request.name())){
+        if (userRepository.existsByName(request.name())) {
             throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
         }
         User user = userRepository.save(UserMapper.toUser(request));
         return UserMapper.toCreateUserRes(user);
     }
 
-    public User getUserEntity(Long userId){
+    public User getUserEntity(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new CustomException(NOT_EXIST_USER_ID));
     }
 }

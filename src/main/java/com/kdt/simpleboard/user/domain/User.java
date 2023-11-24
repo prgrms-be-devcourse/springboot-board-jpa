@@ -13,7 +13,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
-@NoArgsConstructor(access = PROTECTED) @Getter
+@NoArgsConstructor(access = PROTECTED)
+@Getter
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)

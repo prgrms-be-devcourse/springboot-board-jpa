@@ -22,25 +22,25 @@ class UserControllerTest extends BaseIntegrationTest {
     private UserRepository userRepository;
 
     @BeforeEach
-    void clear(){
+    void clear() {
         userRepository.deleteAll();
     }
 
     @Test
     @DisplayName("회원 생성 api 호출에 성공한다.")
-    void createUser() throws Exception{
+    void createUser() throws Exception {
         CreateUserRequest createUserRequest = UserData.createUserReq();
         mvc.perform(post("/users")
-                .contentType(APPLICATION_JSON)
-                .content(asJsonString(createUserRequest))
-                .accept(APPLICATION_JSON))
+                        .contentType(APPLICATION_JSON)
+                        .content(asJsonString(createUserRequest))
+                        .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.createdId").isNotEmpty());
     }
 
     @Test
     @DisplayName("중복 이름의 회원이 존재하면 회원 api 생성 호출에 실패한다.")
-    void createUserWithFail() throws Exception{
+    void createUserWithFail() throws Exception {
         User user = UserData.user();
         userRepository.save(user);
         CreateUserRequest userReq = UserData.createUserReq();

@@ -27,7 +27,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "회원 생성 성공",
                     content = @Content(mediaType = "application/json"))
     })
-    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest request){
+    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         CreateUserResponse response = userService.createUser(request);
         return ResponseEntity.ok(response);
     }

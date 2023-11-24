@@ -9,11 +9,11 @@ import static lombok.AccessLevel.*;
 
 @NoArgsConstructor(access = PRIVATE)
 public class UserMapper {
-    public static CreateUserResponse toCreateUserRes(User user){
+    public static CreateUserResponse toCreateUserRes(User user) {
         return new CreateUserResponse(user.getId());
     }
 
-    public static User toUser(UserRequest.CreateUserRequest request){
+    public static User toUser(UserRequest.CreateUserRequest request) {
         return User.builder()
                 .name(request.name())
                 .hobby(request.hobby())

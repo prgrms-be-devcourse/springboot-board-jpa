@@ -10,7 +10,7 @@ import static lombok.AccessLevel.*;
 public class UserResponse {
     @Builder
     public record CreateUserResponse(
-        Long createdId
-    )
-    {}
+            Long createdId
+    ) {
+    }
 }

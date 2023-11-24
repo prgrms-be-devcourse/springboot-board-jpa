@@ -19,7 +19,8 @@ public class UserRequest {
             @Min(0)
             int age,
 
-           @NotBlank(message = "취미를 입력해주세요.")
-           String hobby
-    ){}
+            @NotBlank(message = "취미를 입력해주세요.")
+            String hobby
+    ) {
+    }
 }

@@ -61,7 +61,7 @@ class BoardControllerTest extends BaseIntegrationTest {
 
     @Test
     @DisplayName("게시물 단건 조회 api 호출에 성공한다")
-    void findBoardById() throws Exception{
+    void findBoardById() throws Exception {
         Board board = BoardData.board();
         boardRepository.save(board);
         mvc.perform(get("/posts/{id}", board.getId())
@@ -75,7 +75,7 @@ class BoardControllerTest extends BaseIntegrationTest {
 
     @Test
     @DisplayName("전체 게시물을 조회할 수 있다.")
-    void findAll() throws Exception{
+    void findAll() throws Exception {
         User user = UserData.user();
         userRepository.save(user);
 
@@ -86,13 +86,13 @@ class BoardControllerTest extends BaseIntegrationTest {
 
 
         mvc.perform(get("/posts")
-                        .param("page","0")
+                        .param("page", "0")
                         .param("size", "10")
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalItems", is(boards.size())))
-                .andExpect(jsonPath("$.items[0].title",is(boards.get(0).getTitle()) ))
+                .andExpect(jsonPath("$.items[0].title", is(boards.get(0).getTitle())))
         ;
     }
 }
