@@ -3,6 +3,9 @@ package com.devcourse.springbootboardjpahi.docs;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -79,15 +82,16 @@ public class PostControllerRestdocsTest {
 
         // then
         actions.andDo(document("post-create",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 field("title", JsonFieldType.STRING, "Title"),
-                                field("title", JsonFieldType.STRING, "Title"),
-                                field("content", JsonFieldType.STRING, "Content"),
+                                nullableField("content", JsonFieldType.STRING, "Content"),
                                 field("userId", JsonFieldType.NUMBER, "User ID")),
                         responseFields(
                                 field("id", JsonFieldType.NUMBER, "ID"),
                                 field("title", JsonFieldType.STRING, "Title"),
-                                field("content", JsonFieldType.STRING, "Content"),
+                                nullableField("content", JsonFieldType.STRING, "Content"),
                                 field("authorName", JsonFieldType.STRING, "Author Name"),
                                 field("createdAt", JsonFieldType.STRING, "Creation Datetime"))))
                 .andDo(print());
@@ -119,12 +123,14 @@ public class PostControllerRestdocsTest {
 
         // then
         actions.andDo(document("post-find-single",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("ID")),
                         responseFields(
                                 field("id", JsonFieldType.NUMBER, "ID"),
                                 field("title", JsonFieldType.STRING, "Title"),
-                                field("content", JsonFieldType.STRING, "Content"),
+                                nullableField("content", JsonFieldType.STRING, "Content"),
                                 field("authorName", JsonFieldType.STRING, "Author Name"),
                                 field("createdAt", JsonFieldType.STRING, "Creation Datetime"),
                                 field("updatedAt", JsonFieldType.STRING, "Last Update Datetime"))))
@@ -159,15 +165,17 @@ public class PostControllerRestdocsTest {
 
         // then
         actions.andDo(document("post-update",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("ID")),
                         requestFields(
                                 field("title", JsonFieldType.STRING, "Title"),
-                                field("content", JsonFieldType.STRING, "Content")),
+                                nullableField("content", JsonFieldType.STRING, "Content")),
                         responseFields(
                                 field("id", JsonFieldType.NUMBER, "ID"),
                                 field("title", JsonFieldType.STRING, "Title"),
-                                field("content", JsonFieldType.STRING, "Content"),
+                                nullableField("content", JsonFieldType.STRING, "Content"),
                                 field("authorName", JsonFieldType.STRING, "Author Name"),
                                 field("createdAt", JsonFieldType.STRING, "Creation Datetime"),
                                 field("updatedAt", JsonFieldType.STRING, "Last Update Datetime"))))
@@ -222,6 +230,8 @@ public class PostControllerRestdocsTest {
 
         // then
         actions.andDo(document("post-page",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         queryParameters(
                                 parameterWithName("page").description("Page"),
                                 parameterWithName("size").description("Contents per Page")),
@@ -231,7 +241,7 @@ public class PostControllerRestdocsTest {
                                 field("totalElements", JsonFieldType.NUMBER, "Total number of all posts"),
                                 field("content[].id", JsonFieldType.NUMBER, "Post Id"),
                                 field("content[].title", JsonFieldType.STRING, "Title"),
-                                field("content[].content", JsonFieldType.STRING, "Content"),
+                                nullableField("content[].content", JsonFieldType.STRING, "Content"),
                                 field("content[].authorName", JsonFieldType.STRING, "Author Name"),
                                 field("content[].createdAt", JsonFieldType.STRING, "Creation Datetime"))))
                 .andDo(print());
@@ -310,5 +320,12 @@ public class PostControllerRestdocsTest {
         return fieldWithPath(name)
                 .type(type)
                 .description(description);
+    }
+
+    private FieldDescriptor nullableField(String name, Object type, String description) {
+        return fieldWithPath(name)
+                .type(type)
+                .description(description)
+                .optional();
     }
 }
