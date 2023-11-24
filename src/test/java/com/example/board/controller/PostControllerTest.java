@@ -26,6 +26,7 @@ import java.util.Collections;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,6 +67,8 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isCreated())
                 .andDo(document("post/create",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
@@ -89,6 +92,8 @@ class PostControllerTest {
         mockMvc.perform(get("/v1/posts/{id}", post.getId()))
                 .andExpect(status().isOk())
                 .andDo(document("post/get",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("게시 ID")
                         ),
@@ -123,6 +128,8 @@ class PostControllerTest {
                         ))
                 .andExpect(status().isOk())
                 .andDo(document("post/getAll",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         queryParameters(
                                 parameterWithName("page").optional().description("페이지"),
                                 parameterWithName("size").optional().description("가져올 로우 수"),
@@ -161,6 +168,8 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(updateRequestDto)))
                 .andExpect(status().isNoContent())
                 .andDo(document("post/update",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("게시글 ID")
                         ),
@@ -189,6 +198,8 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(deletePostRequest)))
                 .andExpect(status().isNoContent())
                 .andDo(document("post/delete",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("게시글 ID")
                         ),

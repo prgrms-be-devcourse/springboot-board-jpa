@@ -69,3 +69,7 @@ asciidoctor {
     outputDir 'src/main/resources/static/docs'
     attributes 'snippets': file('build/generated-snippets')
 }
+
+bootJar {
+    dependsOn asciidoctor
+}

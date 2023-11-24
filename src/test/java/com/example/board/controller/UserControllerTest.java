@@ -83,6 +83,7 @@ class UserControllerTest {
         mockMvc.perform(get("/v1/users/{id}", user.getId()))
                 .andExpect(status().isOk())
                 .andDo(document("user/get",
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("유저 ID")
                         ),
@@ -114,6 +115,7 @@ class UserControllerTest {
                         .content(objectMapper.writeValueAsString(updateDto)))
                 .andExpect(status().isNoContent())
                 .andDo(document("user/update",
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("유저 ID")
                         ),
@@ -137,6 +139,7 @@ class UserControllerTest {
         mockMvc.perform(delete("/v1/users/{id}", user.getId()))
                 .andExpect(status().isNoContent())
                 .andDo(document("user/delete",
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("유저 ID")
                         ),

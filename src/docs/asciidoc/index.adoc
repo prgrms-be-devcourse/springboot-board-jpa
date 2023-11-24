@@ -5,6 +5,7 @@ endif::[]
 
 = API 문서 v1
 
-include::./user.adoc[]
+include::src/docs/asciidoc/user.adoc[]
 
-include::post.adoc[]
+include::src/docs/asciidoc/post.adoc[]
+
