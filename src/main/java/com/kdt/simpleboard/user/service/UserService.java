@@ -19,7 +19,7 @@ import static com.kdt.simpleboard.common.exception.ErrorCode.NOT_EXIST_USER_ID;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserResponse.CreateUserRes createUser(UserRequest.CreateUserReq request) {
+    public UserResponse.CreateUserResponse createUser(UserRequest.CreateUserRequest request) {
         if (userRepository.existsByName(request.name())){
             throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
         }

@@ -3,7 +3,6 @@ package com.kdt.simpleboard.user.service;
 import com.kdt.simpleboard.common.exception.CustomException;
 import com.kdt.simpleboard.common.exception.ErrorCode;
 import com.kdt.simpleboard.user.domain.User;
-import com.kdt.simpleboard.user.dto.UserRequest;
 import com.kdt.simpleboard.user.dto.UserResponse;
 import com.kdt.simpleboard.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -31,14 +30,14 @@ class UserServiceTest {
     @DisplayName("회원을 생성할 수 있다.")
     void createUserSuccess(){
         //given
-        CreateUserReq requestDto = createUserReq();
+        CreateUserRequest requestDto = createUserReq();
         User user = user();
 
         given(userRepository.existsByName(requestDto.name())).willReturn(false);
         given(userRepository.save(ArgumentMatchers.any(User.class))).willReturn(user);
 
         //when
-        UserResponse.CreateUserRes responseDto = userService.createUser(requestDto);
+        UserResponse.CreateUserResponse responseDto = userService.createUser(requestDto);
 
         //then
         assertEquals(user.getId(), responseDto.createdId());
@@ -48,7 +47,7 @@ class UserServiceTest {
     @DisplayName("이미 존재하는 회원에 대해서 생성 시 예외가 발생한다.")
     void createUserFail(){
         //given
-        UserRequest.CreateUserReq requestDto = createUserReq();
+        CreateUserRequest requestDto = createUserReq();
 
         given(userRepository.existsByName(requestDto.name())).willReturn(true);
 

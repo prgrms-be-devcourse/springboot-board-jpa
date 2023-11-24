@@ -15,16 +15,16 @@ public class UserData {
                 .build();
     }
 
-    public static UserRequest.CreateUserReq createUserReq(){
-        return UserRequest.CreateUserReq.builder()
+    public static UserRequest.CreateUserRequest createUserReq(){
+        return UserRequest.CreateUserRequest.builder()
                 .name(NAME)
                 .hobby(HOBBY)
                 .age(AGE)
                 .build();
     }
 
-    public static UserResponse.CreateUserRes createUserRes(){
-        return UserResponse.CreateUserRes.builder()
+    public static UserResponse.CreateUserResponse createUserRes(){
+        return UserResponse.CreateUserResponse.builder()
                 .createdId(1L)
                 .build();
 

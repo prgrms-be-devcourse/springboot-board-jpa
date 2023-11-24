@@ -1,7 +1,6 @@
 package com.kdt.simpleboard.user.controller;
 
 import com.kdt.simpleboard.user.dto.UserRequest;
-import com.kdt.simpleboard.user.dto.UserResponse;
 import com.kdt.simpleboard.user.service.UserService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.kdt.simpleboard.user.dto.UserRequest.*;
 import static com.kdt.simpleboard.user.dto.UserResponse.*;
 
 @RestController
@@ -28,8 +26,8 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "회원 생성 성공",
                     content = @Content(mediaType = "application/json"))
     })
-    public ResponseEntity<CreateUserRes> createUser(@Valid @RequestBody CreateUserReq request){
-        CreateUserRes response = userService.createUser(request);
+    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody UserRequest.CreateUserRequest request){
+        CreateUserResponse response = userService.createUser(request);
         return ResponseEntity.ok(response);
     }
 }

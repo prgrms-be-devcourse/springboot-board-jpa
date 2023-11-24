@@ -12,7 +12,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Getter
 public class UserRequest {
     @Builder
-    public record CreateUserReq(
+    public record CreateUserRequest(
             @NotBlank(message = "이름을 입력해주세요.")
             String name,
 

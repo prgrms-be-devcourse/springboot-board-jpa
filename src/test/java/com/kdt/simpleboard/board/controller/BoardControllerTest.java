@@ -2,14 +2,11 @@ package com.kdt.simpleboard.board.controller;
 
 import com.kdt.simpleboard.BaseIntegrationTest;
 import com.kdt.simpleboard.board.domain.Board;
-import com.kdt.simpleboard.board.dto.BoardRequest;
-import com.kdt.simpleboard.board.dto.BoardResponse;
 import com.kdt.simpleboard.board.repository.BoardRepository;
 import com.kdt.simpleboard.data.BoardData;
 import com.kdt.simpleboard.user.UserData;
 import com.kdt.simpleboard.user.domain.User;
 import com.kdt.simpleboard.user.repository.UserRepository;
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +47,7 @@ class BoardControllerTest extends BaseIntegrationTest {
         Board savedBoard = boardRepository.save(BoardData.board());
         userRepository.save(UserData.user());
 
-        ModifyBoard modifyBoardRequest = BoardData.modifyBoardRequest();
+        ModifyBoardRequest modifyBoardRequest = BoardData.modifyBoardRequest();
         mvc.perform(post("/posts/{id}", savedBoard.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)

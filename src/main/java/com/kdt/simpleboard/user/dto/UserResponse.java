@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserResponse {
     @Builder
-    public record CreateUserRes(
+    public record CreateUserResponse(
         Long createdId
     )
     {}

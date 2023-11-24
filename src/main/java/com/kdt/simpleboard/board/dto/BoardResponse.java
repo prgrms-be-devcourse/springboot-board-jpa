@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class BoardResponse {
 
-    public record CreateBoardRes(
+    public record CreateBoardResponse(
             Long createdId
     )
     {}
 
     @Builder
-    public record FindBoardRes(
+    public record FindBoardResponse(
             Long userId,
             String title,
             String content

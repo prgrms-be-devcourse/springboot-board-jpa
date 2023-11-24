@@ -15,14 +15,14 @@ public class BoardData {
     public static BoardRequest.CreateBoardRequest createBoardRequest(Long userId){
         return new BoardRequest.CreateBoardRequest(userId, "titleA", "contentA");
     }
-    public static BoardRequest.ModifyBoard modifyBoardRequest(){
-        return new BoardRequest.ModifyBoard("titleAChanged", "contentAChanged");
+    public static BoardRequest.ModifyBoardRequest modifyBoardRequest(){
+        return new BoardRequest.ModifyBoardRequest("titleAChanged", "contentAChanged");
     }
-    public static BoardResponse.CreateBoardRes createBoardResponse(){
-        return new BoardResponse.CreateBoardRes(1L);
+    public static BoardResponse.CreateBoardResponse createBoardResponse(){
+        return new BoardResponse.CreateBoardResponse(1L);
     }
-    public static BoardResponse.FindBoardRes findBoardResponse(){
-        return new BoardResponse.FindBoardRes(1L, "titleA", "contentA");
+    public static BoardResponse.FindBoardResponse findBoardResponse(){
+        return new BoardResponse.FindBoardResponse(1L, "titleA", "contentA");
     }
 
     public static Board board(){
