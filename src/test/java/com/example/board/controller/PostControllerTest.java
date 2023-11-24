@@ -26,8 +26,7 @@ import java.util.Collections;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -89,6 +88,9 @@ class PostControllerTest {
         mockMvc.perform(get("/v1/posts/{id}", post.getId()))
                 .andExpect(status().isOk())
                 .andDo(document("post/get",
+                        pathParameters(
+                                parameterWithName("id").description("게시 ID")
+                        ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공 여부"),
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
@@ -158,6 +160,9 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(updateRequestDto)))
                 .andExpect(status().isNoContent())
                 .andDo(document("post/update",
+                        pathParameters(
+                                parameterWithName("id").description("게시글 ID")
+                        ),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("게시글 내용"),
@@ -181,6 +186,9 @@ class PostControllerTest {
         mockMvc.perform(delete("/v1/posts/{id}", post.getId()))
                 .andExpect(status().isNoContent())
                 .andDo(document("post/delete",
+                        pathParameters(
+                                parameterWithName("id").description("게시글 ID")
+                        ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공 여부"),
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),

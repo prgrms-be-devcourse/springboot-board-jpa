@@ -3,53 +3,8 @@ ifndef::snippets[]
 :snippets: /build/generated-snippets
 endif::[]
 
+= API 문서 v1
 
+include::user.adoc[]
 
-= API 문서
-
-== 회원
-
-=== 회원등록
-
-==== /v1/users
-
-.Request
-include::{snippets}/user/create/http-request.adoc[]
-
-.Request Fields
-include::{snippets}/user/create/request-fields.adoc[]
-
-.Response
-include::{snippets}/user/create/http-response.adoc[]
-
-.Response Fields
-include::{snippets}/user/create/response-fields.adoc[]
-
-// === 회원조회
-//
-// ==== /member/{id}
-//
-// .Request
-// include::{snippets}/user/get/http-request.adoc[]
-//
-// .Response
-// include::{snippets}/user/get/http-response.adoc[]
-//
-// .Response Fields
-// include::{snippets}/user/get/response-fields.adoc[]
-//
-// === 회원수정
-//
-// ==== /member/{id}
-//
-// .Request
-// include::{snippets}/member-update/http-request.adoc[]
-//
-// .Request Fields
-// include::{snippets}/member-update/request-fields.adoc[]
-//
-// .Response
-// include::{snippets}/member-update/http-response.adoc[]
-//
-// .Response Fields
-// include::{snippets}/member-update/response-fields.adoc[]
+include::post.adoc[]
