@@ -1,12 +1,12 @@
 package com.example.board.dto.request.post;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record PostSearchCondition(
 
-        LocalDateTime createdAtFrom,
+        LocalDate createdAtFrom,
 
-        LocalDateTime createdAtTo,
+        LocalDate createdAtTo,
 
         SortType sortType
 ) {

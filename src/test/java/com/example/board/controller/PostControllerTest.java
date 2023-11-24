@@ -5,6 +5,7 @@ import com.example.board.converter.UserConverter;
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
 import com.example.board.dto.request.post.CreatePostRequest;
+import com.example.board.dto.request.post.DeletePostRequest;
 import com.example.board.dto.request.post.UpdatePostRequest;
 import com.example.board.dto.request.user.CreateUserRequest;
 import com.example.board.repository.post.PostRepository;
@@ -181,13 +182,18 @@ class PostControllerTest {
     void 게시글을_삭제한다() throws Exception {
         // given
         Post post = generatePost();
-
+        DeletePostRequest deletePostRequest = new DeletePostRequest(post.getAuthor().getId());
         // when & then
-        mockMvc.perform(delete("/v1/posts/{id}", post.getId()))
+        mockMvc.perform(delete("/v1/posts/{id}", post.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(deletePostRequest)))
                 .andExpect(status().isNoContent())
                 .andDo(document("post/delete",
                         pathParameters(
                                 parameterWithName("id").description("게시글 ID")
+                        ),
+                        requestFields(
+                                fieldWithPath("authorId").type(JsonFieldType.NUMBER).description("게시글 작성자 ID")
                         ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공 여부"),

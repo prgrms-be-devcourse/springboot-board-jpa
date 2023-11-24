@@ -1,9 +1,6 @@
 package com.example.board.controller;
 
-import com.example.board.dto.request.post.CreatePostRequest;
-import com.example.board.dto.request.post.PageCondition;
-import com.example.board.dto.request.post.PostSearchCondition;
-import com.example.board.dto.request.post.UpdatePostRequest;
+import com.example.board.dto.request.post.*;
 import com.example.board.dto.response.ApiResponse;
 import com.example.board.dto.response.PageResponse;
 import com.example.board.dto.response.PostResponse;
@@ -68,8 +65,9 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public ApiResponse<Void> deletePost(@PathVariable Long id) {
-        postService.deletePost(id);
+    public ApiResponse<Void> deletePost(@PathVariable Long id,
+                                        @RequestBody @Valid DeletePostRequest requestDto) {
+        postService.deletePost(id, requestDto);
         return ApiResponse.success(HttpStatus.NO_CONTENT);
     }
 }
