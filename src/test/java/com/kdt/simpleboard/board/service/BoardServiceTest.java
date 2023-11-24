@@ -1,18 +1,13 @@
 package com.kdt.simpleboard.board.service;
 
 import com.kdt.simpleboard.board.domain.Board;
-import com.kdt.simpleboard.board.dto.BoardRequest;
-import com.kdt.simpleboard.board.dto.BoardResponse;
 import com.kdt.simpleboard.board.repository.BoardRepository;
 import com.kdt.simpleboard.common.dto.PageResponse;
 import com.kdt.simpleboard.common.exception.CustomException;
 import com.kdt.simpleboard.common.exception.ErrorCode;
 import com.kdt.simpleboard.data.BoardData;
 import com.kdt.simpleboard.user.UserData;
-import com.kdt.simpleboard.user.domain.User;
-import com.kdt.simpleboard.user.repository.UserRepository;
 import com.kdt.simpleboard.user.service.UserService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +30,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.ReflectionTestUtils.*;
 
 @ExtendWith(MockitoExtension.class)
 class BoardServiceTest {
@@ -51,30 +47,30 @@ class BoardServiceTest {
     @Test
     @DisplayName("게시판 글 생성에 성공한다.")
     void createBoardSuccess() {
-        CreateBoardRequest requestDto = BoardData.createBoardRequest();
+        CreateBoardRequest createBoardRequest = BoardData.createBoardRequest();
         Board board = BoardData.board();
 
         when(boardRepository.save(any(Board.class))).thenReturn(board);
         when(userService.getUserEntity(any(Long.class))).thenReturn(UserData.user());
 
-        CreateBoardRes createdBoardRes = boardService.createBoard(requestDto);
+        CreateBoardResponse createBoardResponse = boardService.createBoard(createBoardRequest);
 
-        assertEquals(board.getId(), createdBoardRes.createdId());
+        assertEquals(board.getId(), createBoardResponse.createdId());
     }
 
     @Test
     @DisplayName("게시물 수정에 성공한다.")
     void update() {
         Board board = BoardData.board();
-        ReflectionTestUtils.setField(board, "id", 1L);
-        ModifyBoard modifyBoard = BoardData.modifyBoardRequest();
+        setField(board, "id", 1L);
+        ModifyBoardRequest modifyBoardRequest = BoardData.modifyBoardRequest();
         when(boardRepository.findById(any(Long.class))).thenReturn(Optional.of(board));
 
-        FindBoardRes findBoardRes = boardService.updateBoard(board.getId(), modifyBoard);
+        FindBoardResponse findBoardResponse = boardService.updateBoard(board.getId(), modifyBoardRequest);
 
         assertAll(
-                () -> assertThat(findBoardRes.title()).isEqualTo(modifyBoard.title()),
-                () -> assertThat(findBoardRes.content()).isEqualTo(modifyBoard.content())
+                () -> assertThat(findBoardResponse.title()).isEqualTo(modifyBoardRequest.title()),
+                () -> assertThat(findBoardResponse.content()).isEqualTo(modifyBoardRequest.content())
         );
     }
 
@@ -82,13 +78,13 @@ class BoardServiceTest {
     @DisplayName("게시물 수정에 실패한다.")
     void updateFail() {
         Board board = BoardData.board();
-        ReflectionTestUtils.setField(board, "id", 1L);
+        setField(board, "id", 1L);
 
-        ModifyBoard modifyBoard = BoardData.modifyBoardRequest();
+        ModifyBoardRequest modifyBoardRequest = BoardData.modifyBoardRequest();
         when(boardRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
         CustomException exception = assertThrows(CustomException.class, ()
-                -> boardService.updateBoard(board.getId(), modifyBoard));
+                -> boardService.updateBoard(board.getId(), modifyBoardRequest));
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.Not_EXIST_BOARD);
     }
 
@@ -96,12 +92,12 @@ class BoardServiceTest {
     @DisplayName("id로 게시물을 조회할 수 있다.")
     void findById() {
         Board board = BoardData.board();
-        ReflectionTestUtils.setField(board, "id", 1L);
-        ReflectionTestUtils.setField(board.getUser(), "id", 1L);
+        setField(board, "id", 1L);
+        setField(board.getUser(), "id", 1L);
 
         when(boardRepository.findById(1L)).thenReturn(Optional.of(board));
 
-        FindBoardRes boardRes = boardService.findById(1L);
+        FindBoardResponse boardRes = boardService.findById(1L);
         assertAll(
                 () -> assertThat(boardRes.content()).isEqualTo(board.getContent()),
                 () -> assertThat(boardRes.title()).isEqualTo(board.getTitle()),
@@ -119,7 +115,7 @@ class BoardServiceTest {
 
         when(boardRepository.findAll(pageable)).thenReturn(pagedBoards);
 
-        PageResponse<FindBoardRes> response = boardService.findAll(pageable);
+        PageResponse<FindBoardResponse> response = boardService.findAll(pageable);
         assertEquals(boards.size(), response.getItems().size());
         assertEquals(pagedBoards.getTotalElements(), response.getTotalItems());
 

@@ -15,9 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.kdt.simpleboard.board.dto.BoardMapper.*;
-import static com.kdt.simpleboard.board.dto.BoardRequest.ModifyBoard;
-import static com.kdt.simpleboard.board.dto.BoardResponse.CreateBoardRes;
-import static com.kdt.simpleboard.board.dto.BoardResponse.FindBoardRes;
+import static com.kdt.simpleboard.board.dto.BoardRequest.*;
+import static com.kdt.simpleboard.board.dto.BoardRequest.ModifyBoardRequest;
+import static com.kdt.simpleboard.board.dto.BoardResponse.CreateBoardResponse;
+import static com.kdt.simpleboard.board.dto.BoardResponse.FindBoardResponse;
 import static com.kdt.simpleboard.common.exception.ErrorCode.Not_EXIST_BOARD;
 
 @Service
@@ -28,7 +29,7 @@ public class BoardService {
     private final UserService userService;
 
     @Transactional
-    public CreateBoardRes createBoard(BoardRequest.CreateBoardRequest request){
+    public CreateBoardResponse createBoard(CreateBoardRequest request) {
         User user = userService.getUserEntity(request.userId());
         Board board = toBoardEntity(request, user);
         Board savedBoard = boardRepository.save(board);
@@ -36,25 +37,25 @@ public class BoardService {
     }
 
     @Transactional
-    public FindBoardRes updateBoard(Long boardId, ModifyBoard request){
+    public FindBoardResponse updateBoard(Long boardId, ModifyBoardRequest request) {
         Board board = getBoardEntity(boardId);
         Board updatedBoard = board.updateBoardInfo(request.title(), request.content());
         return toFindBoardRes(updatedBoard);
     }
 
 
-    public FindBoardRes findById(Long boardId) {
+    public FindBoardResponse findById(Long boardId) {
         Board board = getBoardEntity(boardId);
         return toFindBoardRes(board);
     }
 
-    public PageResponse<FindBoardRes> findAll(Pageable pageable){
+    public PageResponse<FindBoardResponse> findAll(Pageable pageable) {
         Page<Board> pagedBoards = boardRepository.findAll(pageable);
-        Page<FindBoardRes> pagedFindBoardRes = pagedBoards.map(BoardMapper::toFindBoardRes);
+        Page<FindBoardResponse> pagedFindBoardRes = pagedBoards.map(BoardMapper::toFindBoardRes);
         return PageResponse.fromPage(pagedFindBoardRes);
     }
 
-    private Board getBoardEntity(Long boardId){
+    private Board getBoardEntity(Long boardId) {
         return boardRepository.findById(boardId).orElseThrow(() -> new CustomException(Not_EXIST_BOARD));
     }
 

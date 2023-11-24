@@ -17,12 +17,15 @@ public class BoardRequest {
 
             @NotBlank(message = "내용을 입력해주세요")
             String content
-    ){}
-    public record ModifyBoard(
+    ) {
+    }
+
+    public record ModifyBoardRequest(
             @NotBlank(message = "제목을 입력해주세요")
             String title,
 
             @NotBlank(message = "내용을 입력해주세요")
             String content
-    ){}
+    ) {
+    }
 }

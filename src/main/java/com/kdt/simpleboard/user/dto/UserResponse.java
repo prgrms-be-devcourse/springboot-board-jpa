@@ -4,11 +4,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+import static lombok.AccessLevel.*;
+
+@NoArgsConstructor(access = PRIVATE)
 public class UserResponse {
     @Builder
-    public record CreateUserRes(
-        Long createdId
-    )
-    {}
+    public record CreateUserResponse(
+            Long createdId
+    ) {
+    }
 }

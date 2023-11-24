@@ -12,14 +12,15 @@ import static lombok.AccessLevel.PRIVATE;
 @Getter
 public class UserRequest {
     @Builder
-    public record CreateUserReq(
+    public record CreateUserRequest(
             @NotBlank(message = "이름을 입력해주세요.")
             String name,
 
             @Min(0)
             int age,
 
-           @NotBlank(message = "취미를 입력해주세요.")
-           String hobby
-    ){}
+            @NotBlank(message = "취미를 입력해주세요.")
+            String hobby
+    ) {
+    }
 }

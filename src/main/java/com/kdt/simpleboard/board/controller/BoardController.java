@@ -1,23 +1,22 @@
 package com.kdt.simpleboard.board.controller;
 
+import com.kdt.simpleboard.board.dto.BoardRequest;
 import com.kdt.simpleboard.board.service.BoardService;
 import com.kdt.simpleboard.common.dto.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.kdt.simpleboard.board.dto.BoardRequest.*;
 import static com.kdt.simpleboard.board.dto.BoardRequest.CreateBoardRequest;
-import static com.kdt.simpleboard.board.dto.BoardRequest.ModifyBoard;
-import static com.kdt.simpleboard.board.dto.BoardResponse.CreateBoardRes;
-import static com.kdt.simpleboard.board.dto.BoardResponse.FindBoardRes;
+import static com.kdt.simpleboard.board.dto.BoardResponse.CreateBoardResponse;
+import static com.kdt.simpleboard.board.dto.BoardResponse.FindBoardResponse;
 
 @RestController
 @RequestMapping("/posts")
@@ -27,8 +26,8 @@ public class BoardController {
 
     @Operation(summary = "보드 생성")
     @PostMapping
-    public ResponseEntity<CreateBoardRes> createBoard(@Valid @RequestBody CreateBoardRequest request){
-        CreateBoardRes response = boardService.createBoard(request);
+    public ResponseEntity<CreateBoardResponse> createBoard(@Valid @RequestBody CreateBoardRequest request) {
+        CreateBoardResponse response = boardService.createBoard(request);
         return ResponseEntity.ok(response);
     }
 
@@ -38,8 +37,8 @@ public class BoardController {
                     content = @Content(mediaType = "application/json"))
     })
     @PostMapping("/{id}")
-    public ResponseEntity<FindBoardRes> updateBoard(@PathVariable("id") Long boardId, @Valid @RequestBody ModifyBoard request) {
-        FindBoardRes response = boardService.updateBoard(boardId, request);
+    public ResponseEntity<FindBoardResponse> updateBoard(@PathVariable("id") Long boardId, @Valid @RequestBody ModifyBoardRequest request) {
+        FindBoardResponse response = boardService.updateBoard(boardId, request);
         return ResponseEntity.ok(response);
     }
 
@@ -49,8 +48,8 @@ public class BoardController {
                     content = @Content(mediaType = "application/json"))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<FindBoardRes> findBoard(@PathVariable("id") Long boardId){
-        FindBoardRes response = boardService.findById(boardId);
+    public ResponseEntity<FindBoardResponse> findBoard(@PathVariable("id") Long boardId) {
+        FindBoardResponse response = boardService.findById(boardId);
         return ResponseEntity.ok(response);
     }
 
@@ -60,8 +59,8 @@ public class BoardController {
                     content = @Content(mediaType = "application/json"))
     })
     @GetMapping
-    public ResponseEntity<PageResponse<FindBoardRes>> findAll(Pageable pageable){
-        PageResponse<FindBoardRes> response = boardService.findAll(pageable);
+    public ResponseEntity<PageResponse<FindBoardResponse>> findAll(Pageable pageable) {
+        PageResponse<FindBoardResponse> response = boardService.findAll(pageable);
         return ResponseEntity.ok(response);
     }
 }

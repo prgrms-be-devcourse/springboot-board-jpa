@@ -7,18 +7,20 @@ import static com.kdt.simpleboard.board.dto.BoardRequest.*;
 import static com.kdt.simpleboard.board.dto.BoardResponse.*;
 
 public class BoardMapper {
-    public static CreateBoardRes toCreateBoardRes(Board board){
-        return new CreateBoardRes(board.getId());
+    public static CreateBoardResponse toCreateBoardRes(Board board) {
+        return new CreateBoardResponse(board.getId());
     }
-    public static Board toBoardEntity(CreateBoardRequest request, User user){
+
+    public static Board toBoardEntity(CreateBoardRequest request, User user) {
         return Board.builder()
                 .title(request.title())
                 .content(request.content())
                 .user(user)
                 .build();
     }
-    public static BoardResponse.FindBoardRes toFindBoardRes(Board board){
-        return FindBoardRes.builder()
+
+    public static FindBoardResponse toFindBoardRes(Board board) {
+        return FindBoardResponse.builder()
                 .userId(board.getId())
                 .title(board.getTitle())
                 .content(board.getContent())

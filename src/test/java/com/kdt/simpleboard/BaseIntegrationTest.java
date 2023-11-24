@@ -1,5 +1,6 @@
 package com.kdt.simpleboard;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,11 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class BaseIntegrationTest {
     @Autowired
     public MockMvc mvc;
-    public static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+    @Autowired
+    public ObjectMapper objectMapper;
+
+    public String asJsonString(final Object obj) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(obj);
     }
 }

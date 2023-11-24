@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex){
+    protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex) {
         log.error("handleMethodArgumentNotValidException", ex);
         StringBuilder sb = new StringBuilder();
-        for (FieldError e: ex.getBindingResult().getFieldErrors()){
+        for (FieldError e : ex.getBindingResult().getFieldErrors()) {
             sb.append(e.getDefaultMessage());
             sb.append(", ");
         }
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CustomException.class)
-    protected ResponseEntity<ErrorResponse> handleCustomException(final CustomException ex){
+    protected ResponseEntity<ErrorResponse> handleCustomException(final CustomException ex) {
         log.error("handleCustomException", ex);
         return ResponseEntity
                 .badRequest()

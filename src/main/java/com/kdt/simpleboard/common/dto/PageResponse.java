@@ -14,7 +14,7 @@ public class PageResponse<T> {
     private long totalItems;
     private List<T> items;
 
-    public static <T> PageResponse<T> fromPage(Page<T> page){
+    public static <T> PageResponse<T> fromPage(Page<T> page) {
         return new PageResponse<>(
                 page.getNumber(),
                 page.getTotalPages(),
