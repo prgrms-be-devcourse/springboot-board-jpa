@@ -58,6 +58,7 @@ public class PostController {
         return ApiResponse.success(HttpStatus.OK, post);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
     public ApiResponse<Void> updatePost(@PathVariable Long id,
                                         @RequestBody @Valid UpdatePostRequest requestDto) {
@@ -65,6 +66,7 @@ public class PostController {
         return ApiResponse.success(HttpStatus.NO_CONTENT);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deletePost(@PathVariable Long id) {
         postService.deletePost(id);

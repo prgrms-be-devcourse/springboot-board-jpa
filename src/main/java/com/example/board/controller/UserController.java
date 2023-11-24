@@ -43,6 +43,7 @@ public class UserController {
         return ApiResponse.success(HttpStatus.OK, user);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
     public ApiResponse<Void> updateUser(@PathVariable Long id,
                                         @RequestBody @Valid UpdateUserRequest requestDto) {
@@ -50,6 +51,7 @@ public class UserController {
         return ApiResponse.success(HttpStatus.NO_CONTENT);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);

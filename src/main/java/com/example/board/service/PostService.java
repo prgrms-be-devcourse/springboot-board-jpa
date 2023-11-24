@@ -46,7 +46,7 @@ public class PostService {
     public void updatePost(Long id, UpdatePostRequest requestDto) {
         final Post post = postRepository.findByIdWithAuthor(id).orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
-        if (isAuthor(post, requestDto.authorId()))
+        if (!isAuthor(post, requestDto.authorId()))
             throw new CustomException(ErrorCode.AUTHOR_NOT_MATCH);
 
         post.update(requestDto.title(), requestDto.content());
