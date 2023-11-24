@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,8 +54,7 @@ class UserControllerTest {
 
         // then
         actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(mockResponses.size())))
-                .andDo(print());
+                .andExpect(jsonPath("$.*", hasSize(mockResponses.size())));
     }
 
     @DisplayName("[GET] 등록된 사용자가 없으면 204 상태 코드를 반환한다.")
@@ -70,8 +68,7 @@ class UserControllerTest {
         ResultActions actions = mockMvc.perform(get("/api/v1/users"));
 
         // then
-        actions.andExpect(status().isNoContent())
-                .andDo(print());
+        actions.andExpect(status().isNoContent());
     }
 
     @DisplayName("[POST] 사용자를 추가한다.")
@@ -97,8 +94,7 @@ class UserControllerTest {
         actions.andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is(createUserRequest.name())))
                 .andExpect(jsonPath("$.age", is(createUserRequest.age())))
-                .andExpect(jsonPath("$.hobby", is(createUserRequest.hobby())))
-                .andDo(print());
+                .andExpect(jsonPath("$.hobby", is(createUserRequest.hobby())));
     }
 
     @DisplayName("[POST] 이름에 null과 공백이 들어가면 예외가 발생한다.")
