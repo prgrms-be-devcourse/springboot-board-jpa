@@ -136,7 +136,7 @@ class PostControllerTest {
         }
 
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "title이 `{0}`인 경우 저장 요청에 실패한다.")
         @ValueSource(strings = {" "})
         @NullAndEmptySource
         @DisplayName("제목이 없는 경우 예외를 발생시킨다.")
@@ -158,7 +158,7 @@ class PostControllerTest {
             assertThat(exception.getCode()).isEqualTo(400);
         }
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "contents가 `{0}`인 경우 저장 요청에 실패한다.")
         @ValueSource(strings = {" "})
         @NullAndEmptySource
         @DisplayName("내용이 없는 경우 예외를 발생시킨다.")
@@ -334,7 +334,7 @@ class PostControllerTest {
         }
 
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "title이 `{0}`인 경우 수정 요청에 실패한다.")
         @ValueSource(strings = {" "})
         @NullAndEmptySource
         @DisplayName("수정 시 제목이 없는 경우 예외를 발생시킨다.")
@@ -357,7 +357,7 @@ class PostControllerTest {
             assertThat(exception.getCode()).isEqualTo(400);
         }
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "contents가 `{0}`인 경우 수정 요청에 실패한다.")
         @ValueSource(strings = {" "})
         @NullAndEmptySource
         @DisplayName("수정 시 내용이 없는 경우 예외를 발생시킨다.")
