@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.kdt.simpleboard.user.dto.UserRequest.*;
 import static com.kdt.simpleboard.user.dto.UserResponse.*;
 
 @RestController
@@ -26,7 +27,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "회원 생성 성공",
                     content = @Content(mediaType = "application/json"))
     })
-    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody UserRequest.CreateUserRequest request){
+    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest request){
         CreateUserResponse response = userService.createUser(request);
         return ResponseEntity.ok(response);
     }

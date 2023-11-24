@@ -30,6 +30,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.ReflectionTestUtils.*;
 
 @ExtendWith(MockitoExtension.class)
 class BoardServiceTest {
@@ -61,7 +62,7 @@ class BoardServiceTest {
     @DisplayName("게시물 수정에 성공한다.")
     void update() {
         Board board = BoardData.board();
-        ReflectionTestUtils.setField(board, "id", 1L);
+        setField(board, "id", 1L);
         ModifyBoardRequest modifyBoardRequest = BoardData.modifyBoardRequest();
         when(boardRepository.findById(any(Long.class))).thenReturn(Optional.of(board));
 
@@ -77,7 +78,7 @@ class BoardServiceTest {
     @DisplayName("게시물 수정에 실패한다.")
     void updateFail() {
         Board board = BoardData.board();
-        ReflectionTestUtils.setField(board, "id", 1L);
+        setField(board, "id", 1L);
 
         ModifyBoardRequest modifyBoardRequest = BoardData.modifyBoardRequest();
         when(boardRepository.findById(any(Long.class))).thenReturn(Optional.empty());
@@ -91,8 +92,8 @@ class BoardServiceTest {
     @DisplayName("id로 게시물을 조회할 수 있다.")
     void findById() {
         Board board = BoardData.board();
-        ReflectionTestUtils.setField(board, "id", 1L);
-        ReflectionTestUtils.setField(board.getUser(), "id", 1L);
+        setField(board, "id", 1L);
+        setField(board.getUser(), "id", 1L);
 
         when(boardRepository.findById(1L)).thenReturn(Optional.of(board));
 

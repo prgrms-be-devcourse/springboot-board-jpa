@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.kdt.simpleboard.common.exception.ErrorCode.NOT_EXIST_USER_ID;
+import static com.kdt.simpleboard.user.dto.UserRequest.*;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ import static com.kdt.simpleboard.common.exception.ErrorCode.NOT_EXIST_USER_ID;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserResponse.CreateUserResponse createUser(UserRequest.CreateUserRequest request) {
+    public UserResponse.CreateUserResponse createUser(CreateUserRequest request) {
         if (userRepository.existsByName(request.name())){
             throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
         }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.kdt.simpleboard.board.dto.BoardMapper.*;
+import static com.kdt.simpleboard.board.dto.BoardRequest.*;
 import static com.kdt.simpleboard.board.dto.BoardRequest.ModifyBoardRequest;
 import static com.kdt.simpleboard.board.dto.BoardResponse.CreateBoardResponse;
 import static com.kdt.simpleboard.board.dto.BoardResponse.FindBoardResponse;
@@ -28,7 +29,7 @@ public class BoardService {
     private final UserService userService;
 
     @Transactional
-    public CreateBoardResponse createBoard(BoardRequest.CreateBoardRequest request){
+    public CreateBoardResponse createBoard(CreateBoardRequest request){
         User user = userService.getUserEntity(request.userId());
         Board board = toBoardEntity(request, user);
         Board savedBoard = boardRepository.save(board);

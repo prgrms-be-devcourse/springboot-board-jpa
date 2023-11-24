@@ -5,8 +5,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import static com.kdt.simpleboard.user.dto.UserResponse.*;
+import static lombok.AccessLevel.*;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = PRIVATE)
 public class UserMapper {
     public static CreateUserResponse toCreateUserRes(User user){
         return new CreateUserResponse(user.getId());

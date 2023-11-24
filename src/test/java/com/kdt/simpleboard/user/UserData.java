@@ -3,6 +3,9 @@ import com.kdt.simpleboard.user.domain.User;
 import com.kdt.simpleboard.user.dto.UserRequest;
 import com.kdt.simpleboard.user.dto.UserResponse;
 
+import static com.kdt.simpleboard.user.dto.UserRequest.*;
+import static com.kdt.simpleboard.user.dto.UserResponse.*;
+
 public class UserData {
     private static final String NAME = "hyun";
     private static final String HOBBY = "hiking";
@@ -15,16 +18,16 @@ public class UserData {
                 .build();
     }
 
-    public static UserRequest.CreateUserRequest createUserReq(){
-        return UserRequest.CreateUserRequest.builder()
+    public static CreateUserRequest createUserReq(){
+        return CreateUserRequest.builder()
                 .name(NAME)
                 .hobby(HOBBY)
                 .age(AGE)
                 .build();
     }
 
-    public static UserResponse.CreateUserResponse createUserRes(){
-        return UserResponse.CreateUserResponse.builder()
+    public static CreateUserResponse createUserRes(){
+        return CreateUserResponse.builder()
                 .createdId(1L)
                 .build();
 

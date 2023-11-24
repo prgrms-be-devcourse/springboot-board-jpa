@@ -7,22 +7,25 @@ import com.kdt.simpleboard.user.UserData;
 
 import java.util.List;
 
+import static com.kdt.simpleboard.board.dto.BoardRequest.*;
+import static com.kdt.simpleboard.board.dto.BoardResponse.*;
+
 public class BoardData {
 
-    public static BoardRequest.CreateBoardRequest createBoardRequest(){
-        return new BoardRequest.CreateBoardRequest(1L, "titleA", "contentA");
+    public static CreateBoardRequest createBoardRequest(){
+        return new CreateBoardRequest(1L, "titleA", "contentA");
     }
-    public static BoardRequest.CreateBoardRequest createBoardRequest(Long userId){
-        return new BoardRequest.CreateBoardRequest(userId, "titleA", "contentA");
+    public static CreateBoardRequest createBoardRequest(Long userId){
+        return new CreateBoardRequest(userId, "titleA", "contentA");
     }
-    public static BoardRequest.ModifyBoardRequest modifyBoardRequest(){
-        return new BoardRequest.ModifyBoardRequest("titleAChanged", "contentAChanged");
+    public static ModifyBoardRequest modifyBoardRequest(){
+        return new ModifyBoardRequest("titleAChanged", "contentAChanged");
     }
-    public static BoardResponse.CreateBoardResponse createBoardResponse(){
-        return new BoardResponse.CreateBoardResponse(1L);
+    public static CreateBoardResponse createBoardResponse(){
+        return new CreateBoardResponse(1L);
     }
-    public static BoardResponse.FindBoardResponse findBoardResponse(){
-        return new BoardResponse.FindBoardResponse(1L, "titleA", "contentA");
+    public static FindBoardResponse findBoardResponse(){
+        return new FindBoardResponse(1L, "titleA", "contentA");
     }
 
     public static Board board(){

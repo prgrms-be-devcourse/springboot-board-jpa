@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.kdt.simpleboard.user.UserData.*;
 import static com.kdt.simpleboard.user.dto.UserRequest.*;
+import static com.kdt.simpleboard.user.dto.UserResponse.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -37,7 +38,7 @@ class UserServiceTest {
         given(userRepository.save(ArgumentMatchers.any(User.class))).willReturn(user);
 
         //when
-        UserResponse.CreateUserResponse responseDto = userService.createUser(requestDto);
+        CreateUserResponse responseDto = userService.createUser(requestDto);
 
         //then
         assertEquals(user.getId(), responseDto.createdId());

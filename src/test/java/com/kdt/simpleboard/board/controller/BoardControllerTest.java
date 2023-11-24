@@ -17,6 +17,7 @@ import java.util.List;
 
 import static com.kdt.simpleboard.board.dto.BoardRequest.*;
 import static org.hamcrest.CoreMatchers.*;
+import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -34,8 +35,8 @@ class BoardControllerTest extends BaseIntegrationTest {
         User savedUser = userRepository.save(UserData.user());
         CreateBoardRequest createBoardRequest = BoardData.createBoardRequest(savedUser.getId());
         mvc.perform(post("/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
                         .content(asJsonString(createBoardRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.createdId").isNotEmpty());
@@ -49,8 +50,8 @@ class BoardControllerTest extends BaseIntegrationTest {
 
         ModifyBoardRequest modifyBoardRequest = BoardData.modifyBoardRequest();
         mvc.perform(post("/posts/{id}", savedBoard.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
                         .content(asJsonString(modifyBoardRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value(modifyBoardRequest.title()))
@@ -64,8 +65,8 @@ class BoardControllerTest extends BaseIntegrationTest {
         Board board = BoardData.board();
         boardRepository.save(board);
         mvc.perform(get("/posts/{id}", board.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value(board.getTitle()))
                 .andExpect(jsonPath("$.content").value(board.getContent()))
@@ -87,8 +88,8 @@ class BoardControllerTest extends BaseIntegrationTest {
         mvc.perform(get("/posts")
                         .param("page","0")
                         .param("size", "10")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalItems", is(boards.size())))
                 .andExpect(jsonPath("$.items[0].title",is(boards.get(0).getTitle()) ))

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.kdt.simpleboard.board.dto.BoardRequest.*;
 import static com.kdt.simpleboard.board.dto.BoardRequest.CreateBoardRequest;
 import static com.kdt.simpleboard.board.dto.BoardResponse.CreateBoardResponse;
 import static com.kdt.simpleboard.board.dto.BoardResponse.FindBoardResponse;
@@ -36,7 +37,7 @@ public class BoardController {
                     content = @Content(mediaType = "application/json"))
     })
     @PostMapping("/{id}")
-    public ResponseEntity<FindBoardResponse> updateBoard(@PathVariable("id") Long boardId, @Valid @RequestBody BoardRequest.ModifyBoardRequest request) {
+    public ResponseEntity<FindBoardResponse> updateBoard(@PathVariable("id") Long boardId, @Valid @RequestBody ModifyBoardRequest request) {
         FindBoardResponse response = boardService.updateBoard(boardId, request);
         return ResponseEntity.ok(response);
     }
