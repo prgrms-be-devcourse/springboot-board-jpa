@@ -46,12 +46,8 @@ public class Post extends BaseEntity {
     }
 
     public void updatePost(String title, String content) {
-        if(title != null) {
-            this.title = title;
-        }
-        if(content != null) {
-            this.content = content;
-        }
+        this.title = title;
+        this.content = content;
     }
 
     public void increaseView() {
