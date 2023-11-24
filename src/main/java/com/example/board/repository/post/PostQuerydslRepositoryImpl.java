@@ -2,6 +2,8 @@ package com.example.board.repository.post;
 
 import com.example.board.domain.Post;
 import com.example.board.dto.request.post.PostSearchCondition;
+import com.example.board.dto.request.post.SortType;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -30,26 +32,37 @@ public class PostQuerydslRepositoryImpl implements PostQuerydslRepository {
         JPAQuery<Post> query = queryFactory
                 .selectFrom(post)
                 .leftJoin(post.author, user)
-                .where(createdAtGoe(condition.createdAtFrom()),
-                        createdAtLoe(condition.createdAtTo()));
+                .where(createFilterCondition(condition));
 
-        JPAQuery<Long> pagingQuery = queryFactory
-                .select(post.id)
+        JPAQuery<Long> countQuery = queryFactory
+                .select(post.count())
                 .from(post)
-                .where(createdAtGoe(condition.createdAtFrom()),
-                        createdAtLoe(condition.createdAtTo()));
+                .where(createFilterCondition(condition));
 
         List<Post> posts = query
-                .orderBy(condition.sortType() == null ? post.id.desc() :
-                        switch (condition.sortType()) {
-                            case LATEST -> post.id.desc();
-                            case OLDEST -> post.id.asc();
-                        })
+                .orderBy(createSortCondition(condition.sortType()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        return PageableExecutionUtils.getPage(posts, pageable, pagingQuery::fetchOne);
+        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
+    }
+
+    private OrderSpecifier<?> createSortCondition(SortType sortType) {
+        if (sortType == null) {
+            return post.id.desc();
+        }
+        return switch (sortType) {
+            case LATEST -> post.id.desc();
+            case OLDEST -> post.id.asc();
+        };
+    }
+
+    private BooleanExpression[] createFilterCondition(PostSearchCondition condition) {
+        return new BooleanExpression[]{
+                createdAtGoe(condition.createdAtFrom()),
+                createdAtLoe(condition.createdAtTo())
+        };
     }
 
     private BooleanExpression createdAtGoe(LocalDateTime createdAt) {
