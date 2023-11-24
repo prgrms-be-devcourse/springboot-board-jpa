@@ -1,6 +1,7 @@
 package com.devcourse.springbootboardjpahi.docs;
 
 import static com.devcourse.springbootboardjpahi.message.PostExceptionMessage.NO_SUCH_POST;
+import static com.devcourse.springbootboardjpahi.message.PostExceptionMessage.NO_SUCH_USER;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -96,6 +97,34 @@ public class PostControllerRestdocsTest {
                                 field("content", JsonFieldType.STRING, "Content"),
                                 field("authorName", JsonFieldType.STRING, "Author Name"),
                                 field("createdAt", JsonFieldType.STRING, "Creation Datetime"))))
+                .andDo(print());
+    }
+
+    @DisplayName("[POST] 존재하지 않는 유저의 포스트 생성 API")
+    @Test
+    void testCreateNotExistAPI() throws Exception {
+        // given
+        long id = generateId();
+        CreatePostRequest createPostRequest = generateCreateRequest(id);
+
+        given(postService.create(createPostRequest))
+                .willThrow(new NoSuchElementException(NO_SUCH_USER));
+
+        // when
+        ResultActions actions = mockMvc.perform(post("/api/v1/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createPostRequest)));
+
+        // then
+        actions.andDo(document("post-create-not-exist-user",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                field("title", JsonFieldType.STRING, "Title"),
+                                field("content", JsonFieldType.STRING, "Content"),
+                                field("userId", JsonFieldType.NUMBER, "User ID")),
+                        responseFields(
+                                field("message", JsonFieldType.STRING, "Error Message"))))
                 .andDo(print());
     }
 

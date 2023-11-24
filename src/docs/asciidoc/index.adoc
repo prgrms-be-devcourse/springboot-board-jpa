@@ -84,6 +84,8 @@ include::{snippets}/post-page/response-fields.adoc[]
 
 === `*POST /posts*`
 
+TIP: 포스트 생성 성공
+
 ==== Request
 
 include::{snippets}/post-create/http-request.adoc[]
@@ -93,6 +95,17 @@ include::{snippets}/post-create/request-fields.adoc[]
 
 include::{snippets}/post-create/http-response.adoc[]
 include::{snippets}/post-create/response-fields.adoc[]
+
+WARNING: 존재하지 않는 유저의 포스트를 생성하는 경우
+
+==== Request
+
+include::{snippets}/post-create-not-exist-user/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post-create-not-exist-user/http-response.adoc[]
+include::{snippets}/post-create-not-exist-user/response-fields.adoc[]
 
 == 포스트 단건 조회
 
