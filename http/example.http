@@ -3,7 +3,7 @@ POST http://localhost:8080/v1/users
 Content-Type: application/json
 
 {
-  "name": "빙봉씨",
+  "name": "빙봉빙",
   "age": 30
 }
 
@@ -59,4 +59,3 @@ Content-Type: application/json
 
 ### 게시글 전체 조회
 GET http://localhost:8080/v1/posts?createdAtTo=2023-11-23
-
