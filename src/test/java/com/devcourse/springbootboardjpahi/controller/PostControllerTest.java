@@ -2,6 +2,8 @@ package com.devcourse.springbootboardjpahi.controller;
 
 import static com.devcourse.springbootboardjpahi.message.PostExceptionMessage.BLANK_TITLE;
 import static com.devcourse.springbootboardjpahi.message.PostExceptionMessage.INVALID_USER_ID;
+import static com.devcourse.springbootboardjpahi.message.PostExceptionMessage.NO_SUCH_POST;
+import static com.devcourse.springbootboardjpahi.message.PostExceptionMessage.NO_SUCH_USER;
 import static com.devcourse.springbootboardjpahi.message.PostExceptionMessage.NULL_CONTENT;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -26,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -77,6 +80,26 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.title", is(createPostRequest.title())))
                 .andExpect(jsonPath("$.content", is(createPostRequest.content())))
                 .andExpect(jsonPath("$.authorName", is(author.getName())));
+    }
+
+    @DisplayName("[POST] 존재하지 않는 유저의 포스트를 생성할 수 없다.")
+    @Test
+    void testCreateNoSuchUser() throws Exception {
+        // given
+        long id = generateId();
+        CreatePostRequest createPostRequest = generateCreateRequest(id);
+
+        given(postService.create(createPostRequest))
+                .willThrow(new NoSuchElementException(NO_SUCH_USER));
+
+        // when
+        ResultActions actions = mockMvc.perform(post("/api/v1/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createPostRequest)));
+
+        // then
+        actions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is(NO_SUCH_USER)));
     }
 
     @DisplayName("[POST] 포스트 제목은 공백일 수 없다.")
@@ -164,6 +187,23 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.authorName", is(postDetailResponse.authorName())));
     }
 
+    @DisplayName("[GET] 존재하지 않는 포스트를 조회할 수 없다.")
+    @Test
+    void testFindByIdNoSuchPost() throws Exception {
+        // given
+        long id = generateId();
+
+        given(postService.findById(id))
+                .willThrow(new NoSuchElementException(NO_SUCH_POST));
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/api/v1/posts/{id}", id));
+
+        // then
+        actions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is(NO_SUCH_POST)));
+    }
+
     @DisplayName("[PUT] 포스트 제목과 내용을 수정한다.")
     @Test
     void testUpdateById() throws Exception {
@@ -193,6 +233,26 @@ class PostControllerTest {
         actions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.title", is(updatePostRequest.title())))
                 .andExpect(jsonPath("$.content", is(updatePostRequest.content())));
+    }
+
+    @DisplayName("[PUT] 존재하지 않는 포스트를 수정할 수 없다.")
+    @Test
+    void testUpdateByIdNoSuchPost() throws Exception {
+        // given
+        long id = generateId();
+        UpdatePostRequest updatePostRequest = generateUpdateRequest();
+
+        given(postService.updateById(id, updatePostRequest))
+                .willThrow(new NoSuchElementException(NO_SUCH_POST));
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/api/v1/posts/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatePostRequest)));
+
+        // then
+        actions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is(NO_SUCH_POST)));
     }
 
     @DisplayName("[PUT] 포스트 제목은 공백일 수 없다.")
