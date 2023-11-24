@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -27,12 +28,17 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 class PostControllerTest {
 
     @Autowired
@@ -77,7 +83,23 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.data.userResponse.name").value(user.getName()))
                 .andExpect(jsonPath("$.data.userResponse.age").value(user.getAge()))
                 .andExpect(jsonPath("$.data.userResponse.hobby").value(user.getHobby()))
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andDo(document("getPostById",
+                        pathParameters(parameterWithName("postId").description("게시글 아이디")),
+                        responseFields(
+                                fieldWithPath("message").description("성공 메시지"),
+                                fieldWithPath("data.id").description("게시글 아이디"),
+                                fieldWithPath("data.title").description("게시글 제목"),
+                                fieldWithPath("data.content").description("게시글 내용"),
+                                fieldWithPath("data.postType").description("게시글 종류"),
+                                fieldWithPath("data.createdAt").description("게시글 생성시간"),
+                                fieldWithPath("data.updatedAt").description("게시글 수정시간"),
+                                fieldWithPath("data.userResponse.id").description("게시자 아이디"),
+                                fieldWithPath("data.userResponse.name").description("게시자 이름"),
+                                fieldWithPath("data.userResponse.age").description("게시자 나이"),
+                                fieldWithPath("data.userResponse.hobby").description("게시자 취미")
+                        ))
+                );
     }
 
     @DisplayName("페이지네이션을 통해 모든 게시글을 조회할 수 있습니다")
@@ -127,7 +149,44 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.data.content[0].userResponse.age").value(user.getAge()))
                 .andExpect(jsonPath("$.data.content[0].userResponse.hobby").value(user.getHobby()))
                 .andExpect(jsonPath("$.data.content", Matchers.hasSize(size)))
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andDo(document("getAllPosts",
+                        responseFields(
+                                fieldWithPath("message").description("성공 메시지"),
+                                fieldWithPath("data.content[].id").description("게시글 아이디"),
+                                fieldWithPath("data.content[].title").description("게시글 제목"),
+                                fieldWithPath("data.content[].content").description("게시글 내용"),
+                                fieldWithPath("data.content[].postType").description("게시글 종류"),
+                                fieldWithPath("data.content[].createdAt").description("게시글 생성시간"),
+                                fieldWithPath("data.content[].updatedAt").description("게시글 수정시간"),
+                                fieldWithPath("data.content[].userResponse.id").description("게시자 아이디"),
+                                fieldWithPath("data.content[].userResponse.name").description("게시자 이름"),
+                                fieldWithPath("data.content[].userResponse.age").description("게시자 나이"),
+                                fieldWithPath("data.content[].userResponse.hobby").description("게시자 취미"),
+                                fieldWithPath("data.pageable").description("페이징 정보").optional(),
+                                fieldWithPath("data.pageable.pageNumber").description("현재 페이지 번호"),
+                                fieldWithPath("data.pageable.pageSize").description("페이지 크기"),
+                                fieldWithPath("data.pageable.sort").description("정렬 정보").optional(),
+                                fieldWithPath("data.pageable.sort.empty").description("정렬이 비어있는지 여부"),
+                                fieldWithPath("data.pageable.sort.unsorted").description("정렬되지 않았는지 여부"),
+                                fieldWithPath("data.pageable.sort.sorted").description("정렬되었는지 여부"),
+                                fieldWithPath("data.pageable.offset").description("현재 페이지의 시작 오프셋"),
+                                fieldWithPath("data.pageable.unpaged").description("페이징되지 않은지 여부"),
+                                fieldWithPath("data.pageable.paged").description("페이징된지 여부"),
+                                fieldWithPath("data.last").description("마지막 페이지 여부"),
+                                fieldWithPath("data.totalPages").description("전체 페이지 수"),
+                                fieldWithPath("data.totalElements").description("전체 엘리먼트 수"),
+                                fieldWithPath("data.first").description("첫 번째 페이지 여부"),
+                                fieldWithPath("data.size").description("현재 페이지의 엘리먼트 수"),
+                                fieldWithPath("data.number").description("현재 페이지 번호"),
+                                fieldWithPath("data.sort").description("정렬 정보").optional(),
+                                fieldWithPath("data.sort.empty").description("정렬이 비어있는지 여부"),
+                                fieldWithPath("data.sort.unsorted").description("정렬되지 않았는지 여부"),
+                                fieldWithPath("data.sort.sorted").description("정렬되었는지 여부"),
+                                fieldWithPath("data.numberOfElements").description("현재 페이지의 엘리먼트 수"),
+                                fieldWithPath("data.empty").description("데이터가 비어있는지 여부")
+                        ))
+                );
     }
 
     @Test
@@ -151,7 +210,19 @@ class PostControllerTest {
         // Then
         perform
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.message").value("성공적으로 게시글이 생성되었습니다."));
+                .andExpect(jsonPath("$.message").value("성공적으로 게시글이 생성되었습니다."))
+                .andDo(document("createPost",
+                                requestFields(
+                                        fieldWithPath("title").description("게시글 제목"),
+                                        fieldWithPath("content").description("게시글 내용"),
+                                        fieldWithPath("userId").description("게시자 아이디"),
+                                        fieldWithPath("postType").description("게시글 종류")
+                                ),
+                                responseFields(
+                                        fieldWithPath("message").description("성공 메시지")
+                                )
+                        )
+                );
         List<Post> postList = postRepository.findAll();
         assertThat(postList).hasSize(1);
     }
@@ -184,7 +255,18 @@ class PostControllerTest {
         // Then
         perform
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("성공적으로 게시글이 수정되었습니다."));
+                .andExpect(jsonPath("$.message").value("성공적으로 게시글이 수정되었습니다."))
+                .andDo(document("updatePost",
+                                requestFields(
+                                        fieldWithPath("title").description("게시글 제목"),
+                                        fieldWithPath("content").description("게시글 내용"),
+                                        fieldWithPath("userId").description("게시자 아이디")
+                                ),
+                                responseFields(
+                                        fieldWithPath("message").description("성공 메시지")
+                                )
+                        )
+                );
         Optional<Post> foundPost = postRepository.findById(post.getId());
         assertThat(foundPost).isNotEmpty();
         assertThat(foundPost.get().getTitle()).isEqualTo(updatedTitle);
