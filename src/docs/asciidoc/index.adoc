@@ -1,0 +1,47 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+=== 게시글 작성
+
+
+.Request
+include::{snippets}/create-post/http-request.adoc[]
+
+.Response
+include::{snippets}/create-post/response-body.adoc[]
+include::{snippets}/create-post/response-fields.adoc[]
+
+---
+=== 게시글 수정
+
+
+.Request
+include::{snippets}/update-post/http-request.adoc[]
+
+.Response
+include::{snippets}/update-post/response-body.adoc[]
+include::{snippets}/update-post/response-fields.adoc[]
+
+---
+=== 게시글 전체 조회
+
+
+.Request
+include::{snippets}/get-posts/http-request.adoc[]
+
+.Response
+include::{snippets}/get-posts/response-body.adoc[]
+include::{snippets}/get-posts/response-fields.adoc[]
+
+---
+=== 게시글 단건 조회
+
+
+.Request
+include::{snippets}/get-post/http-request.adoc[]
+
+.Response
+include::{snippets}/get-post/response-body.adoc[]
+include::{snippets}/get-post/response-fields.adoc[]
