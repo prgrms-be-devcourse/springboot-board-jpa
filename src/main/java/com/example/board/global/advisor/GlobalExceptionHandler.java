@@ -26,29 +26,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         BindingResult bindingResult = ex.getBindingResult();
         String errorMessage = Objects.requireNonNull(bindingResult.getFieldError())
             .getDefaultMessage();
-        log.info("validation Failed : {}", errorMessage);
-        ErrorResponse errorResponse = new ErrorResponse(status.value(), errorMessage);
+        log.warn("validation Failed : {}", errorMessage);
+        ErrorResponse errorResponse = new ErrorResponse(errorMessage);
         return ResponseEntity.status(status).body(errorResponse);
-    }
-
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
-        log.info("Internal Server Error : {}", ex.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                ex.getMessage()
-        );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex) {
-        log.info("Business Exception : {}", ex.getMessage());
+        log.warn("Business Exception : {}", ex.getMessage());
         ErrorCode errorCode = ex.getErrorCode();
-        ErrorResponse errorResponse = new ErrorResponse(
-                errorCode.getStatus().value(),
-                errorCode.getMessage()
-        );
+        ErrorResponse errorResponse = new ErrorResponse(errorCode.getMessage());
         return ResponseEntity.status(errorCode.getStatus()).body(errorResponse);
+    }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
+        log.error("Internal Server Error : {}", ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 }
