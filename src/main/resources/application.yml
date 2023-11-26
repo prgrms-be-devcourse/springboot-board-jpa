@@ -15,19 +15,17 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/board_jpa?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3307/board_jpa?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: root1234!
-  batch:
-    jdbc:
-      schema: classpath:schema.sql
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false
+        default_batch_fetch_size: 100
 
 ---
 
@@ -42,9 +40,8 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false
         default_batch_fetch_size: 100
-        format_sql: true
