@@ -14,14 +14,14 @@ import static javax.persistence.GenerationType.*;
 
 @Getter
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends Base {
 
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = AUTO)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @Column(name = "user_name")
