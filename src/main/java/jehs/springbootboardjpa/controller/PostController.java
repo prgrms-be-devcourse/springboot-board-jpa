@@ -31,6 +31,12 @@ public class PostController {
         return new ResponseEntity<>(new SuccessMessage("성공적으로 모든 게시글이 조회되었습니다.", postResponses), HttpStatus.OK);
     }
 
+    @GetMapping("/cursor")
+    public ResponseEntity<SuccessMessage> getAllPostsByCursor(@PageableDefault Pageable pageable, @RequestParam(name = "cursorId") Long cursorId) {
+        Page<PostResponse> postResponses = postService.getAllPostsWithUserByCursor(pageable, cursorId);
+        return new ResponseEntity<>(new SuccessMessage("성공적으로 모든 게시글이 조회되었습니다.", postResponses), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<SuccessMessage> createPost(@RequestBody PostCreateRequest postCreateRequest) {
         postService.createPost(postCreateRequest);

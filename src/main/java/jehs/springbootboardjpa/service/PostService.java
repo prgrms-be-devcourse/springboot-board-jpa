@@ -49,4 +49,10 @@ public class PostService {
         return postRepository.findAllWithUser(pageable)
                 .map(PostResponse::new);
     }
+
+    @Transactional(readOnly = true)
+    public Page<PostResponse> getAllPostsWithUserByCursor(Pageable pageable, Long cursorId) {
+        return postRepository.findAllWithUserByCursor(cursorId, pageable)
+                .map(PostResponse::new);
+    }
 }

@@ -15,4 +15,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("select p from Post p join fetch p.user")
     Page<Post> findAllWithUser(Pageable pageable);
+
+    @Query("select p from Post p join fetch p.user where p.id > :cursorId")
+    Page<Post> findAllWithUserByCursor(Long cursorId, Pageable pageable);
 }
