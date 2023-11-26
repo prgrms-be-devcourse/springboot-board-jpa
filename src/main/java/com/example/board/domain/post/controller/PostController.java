@@ -6,7 +6,6 @@ import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.service.PostService;
 import java.net.URI;
-import java.util.List;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

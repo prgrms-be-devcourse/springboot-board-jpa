@@ -22,11 +22,6 @@ public record MemberCreateRequest(
         String hobby
 ) {
     public Member toEntity() {
-        return Member.builder()
-                .email(email)
-                .name(name)
-                .age(age)
-                .hobby(hobby)
-                .build();
+        return new Member(email, name, age, hobby);
     }
 }

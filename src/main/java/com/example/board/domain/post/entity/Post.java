@@ -11,39 +11,36 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.util.Objects;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Post extends BaseEntity {
-    
+
+    public static final int DEFAULT_VIEW = 0;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(name = "content", nullable = false)
     private String content;
 
-    private int view;
+    @Builder.Default
+    @Column(name = "view")
+    private int view = DEFAULT_VIEW;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @Builder
-    public Post(String title, String content, Member member) {
-        this.title = title;
-        this.content = content;
-        this.view = 0;
-        this.member = member;
-    }
 
     public void updatePost(String title, String content) {
         this.title = title;
@@ -55,6 +52,6 @@ public class Post extends BaseEntity {
     }
 
     public boolean isSameMember(String email) {
-        return Objects.equals(this.member.getEmail(), email);
+        return member.isSameEmail(email);
     }
 }

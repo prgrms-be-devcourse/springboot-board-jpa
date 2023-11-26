@@ -12,8 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.example.board.global.exception.ErrorCode.DUPLICATE_EMAIL;
-import static com.example.board.global.exception.ErrorCode.MEMBER_NOT_FOUND;
+import static com.example.board.global.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,14 +33,18 @@ public class MemberService {
         return MemberResponse.from(member);
     }
 
+    @Transactional(readOnly = true)
     public List<MemberResponse> findAllMembers() {
         List<Member> members = memberRepository.findAll();
-        return members.stream().map(MemberResponse::from).toList();
+        return members.stream()
+                .map(MemberResponse::from)
+                .toList();
     }
 
     public MemberResponse updateMember(Long id, MemberUpdateRequest request) {
-        Member member = getMemberEntity(id);
-        member.update(request.name(), request.hobby());
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(MEMBER_UPDATE_FAILED));
+        member.updateNameAndHobby(request.name(), request.hobby());
         return MemberResponse.from(member);
     }
 

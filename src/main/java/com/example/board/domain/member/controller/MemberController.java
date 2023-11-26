@@ -34,7 +34,8 @@ public class MemberController {
                 .path("/{id}")
                 .buildAndExpand(member.id())
                 .toUri();
-        return ResponseEntity.created(location).body(member);
+        return ResponseEntity.created(location)
+                .body(member);
     }
 
     @GetMapping("/{id}")

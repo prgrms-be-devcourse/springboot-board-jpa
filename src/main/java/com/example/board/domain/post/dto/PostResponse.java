@@ -12,6 +12,9 @@ public record PostResponse(
     String createdAt,
     String updatedAt
 ) {
+
+    public static final DateTimeFormatter FORMATTER_YYYY_MM_DD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     public static PostResponse from(Post post) {
         return new PostResponse(
             post.getId(),
@@ -19,8 +22,8 @@ public record PostResponse(
             post.getContent(),
             post.getView(),
             post.getMember().getName(),
-            post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-            post.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            post.getCreatedAt().format(FORMATTER_YYYY_MM_DD),
+            post.getUpdatedAt().format(FORMATTER_YYYY_MM_DD)
         );
     }
 }
