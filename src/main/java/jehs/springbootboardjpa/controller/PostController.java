@@ -7,6 +7,7 @@ import jehs.springbootboardjpa.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class PostController {
 
     @GetMapping("/cursor")
     public ResponseEntity<SuccessMessage> getAllPostsByCursor(@PageableDefault Pageable pageable, @RequestParam(name = "cursorId") Long cursorId) {
-        Page<PostResponse> postResponses = postService.getAllPostsWithUserByCursor(pageable, cursorId);
+        Slice<PostResponse> postResponses = postService.getAllPostsWithUserByCursor(pageable, cursorId);
         return new ResponseEntity<>(new SuccessMessage("성공적으로 모든 게시글이 조회되었습니다.", postResponses), HttpStatus.OK);
     }
 
