@@ -48,7 +48,7 @@ jobs: # 워크플로우에서 실행할 작업들 정의
           mkdir -p deploy
           cp build/libs/*.jar deploy/application.jar
           cp Procfile deploy/Procfile
-          cp -r .ebextensions-prod deploy/.ebextensions
+          cp -r .ebextensions-dev deploy/.ebextensions
           cp -r .platform deploy/.platform
           cd deploy && zip -r deploy.zip .
 
