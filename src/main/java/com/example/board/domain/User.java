@@ -2,7 +2,6 @@ package com.example.board.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,10 +13,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@EntityListeners(AuditingEntityListener.class)
 public class User extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -33,7 +31,7 @@ public class User extends BaseEntity {
     private LocalDateTime deletedAt;
 
     @Builder.Default
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
     public void update(String name, Integer age, String hobby) {
