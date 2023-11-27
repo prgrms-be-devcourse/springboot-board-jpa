@@ -73,3 +73,7 @@ asciidoctor {
 bootJar {
     dependsOn asciidoctor
 }
+
+jar {
+    enabled = true
+}
