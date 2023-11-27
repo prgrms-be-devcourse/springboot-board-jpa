@@ -40,6 +40,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		HttpStatusCode statusCode, WebRequest request) {
 		logger.error("exception occured : ", ex);
 		ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버 장애가 발생했습니다.");
-		return createResponseEntity(errorResponse, headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
+		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
