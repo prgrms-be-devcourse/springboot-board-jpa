@@ -39,19 +39,19 @@ public class PostController {
 	@GetMapping
 	public ResponseEntity<List<PostResponse>> getPosts(
 		@RequestParam(required = false, value = "page", defaultValue = "1") Integer page) {
-		List<PostResponse> postResponseList = postService.getPosts(page);
-		return ResponseEntity.ok(postResponseList);
+		List<PostResponse> postResponses = postService.getPosts(page);
+		return ResponseEntity.ok(postResponses);
 	}
 
 	@PostMapping
 	public ResponseEntity<PostResponse> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest) {
 		PostResponse post = postService.createPost(postCreateRequest);
 		URI location = ServletUriComponentsBuilder
-			.fromCurrentRequest()
-			.path("/{postId}")
+			.fromCurrentRequestUri()
+			.path("/{id}")
 			.buildAndExpand(post.postId())
 			.toUri();
-		return ResponseEntity.created(location).body(post);
+		return ResponseEntity.created(location).build();
 	}
 
 	@PutMapping("/{id}")

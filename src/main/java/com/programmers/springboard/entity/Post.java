@@ -42,7 +42,7 @@ public class Post extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
  	private Member member;
 
-	public void changePost(String title, String content) {
+	public void changePostTitleAndContent(String title, String content) {
 		this.title = title;
 		this.content = content;
 	}

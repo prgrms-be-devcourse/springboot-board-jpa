@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.programmers.springboard.entity.Member;
 import com.programmers.springboard.entity.Post;
+import com.programmers.springboard.exception.MemberNotFoundException;
 import com.programmers.springboard.exception.PostNotFoundException;
+import com.programmers.springboard.repository.MemberRepository;
 import com.programmers.springboard.repository.PostCustomRepository;
 import com.programmers.springboard.repository.PostRepository;
 import com.programmers.springboard.request.PostCreateRequest;
@@ -25,23 +27,25 @@ public class PostService {
 
 	private final PostRepository postRepository;
 	private final PostCustomRepository postCustomRepository;
-	private final MemberService memberService;
+	private final MemberRepository memberRepository;
 
 	@Transactional(readOnly = true)
 	public List<PostResponse> getPosts(int page) {
-		List<Post> posts = postCustomRepository.getPosts(page);
-		return posts.stream().map(PostResponse::of).toList();
+		return postCustomRepository.getPosts(page)
+			.stream()
+			.map(PostResponse::of)
+			.toList();
 	}
 
 	@Transactional(readOnly = true)
 	public PostResponse getPostById(Long id) {
-		Post post = postRepository.findById(id)
+		return postRepository.findById(id)
+			.map(PostResponse::of)
 			.orElseThrow(PostNotFoundException::new);
-		return PostResponse.of(post);
 	}
 
 	public PostResponse createPost(PostCreateRequest request) {
-		Member member = memberService.getMemberById(request.memberId());
+		Member member = memberRepository.findById(request.memberId()).orElseThrow(MemberNotFoundException::new);
 		Post post = postRepository.save(Post.builder()
 			.content(request.content())
 			.title(request.title())
@@ -53,7 +57,7 @@ public class PostService {
 	public PostResponse updatePost(Long id, PostUpdateRequest request) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(PostNotFoundException::new);
-		post.changePost(request.title(), request.content());
+		post.changePostTitleAndContent(request.title(), request.content());
 		return PostResponse.of(post);
 	}
 
