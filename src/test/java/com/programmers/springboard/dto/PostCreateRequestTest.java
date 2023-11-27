@@ -15,7 +15,6 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PostCreateRequestTest {
 
 	private static ValidatorFactory factory;
