@@ -9,13 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PageCondition {
+    private static final Integer DEFAULT_PAGE = 1;
+    private static final Integer DEFAULT_SIZE = 10;
 
     private Integer page;
     private Integer size;
 
     public void updateValidPageCondition() {
-        page = isValidPage(page) ? page : Integer.valueOf(1);
-        size = isValidSize(size) ? size : Integer.valueOf(10);
+        page = isValidPage(page) ? page : DEFAULT_PAGE;
+        size = isValidSize(size) ? size : DEFAULT_SIZE;
     }
 
     private Boolean isValidPage(Integer page) {
