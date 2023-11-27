@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -60,11 +59,9 @@ public class PostQuerydslRepositoryImpl implements PostQuerydslRepository {
     }
 
     private BooleanExpression[] createFilterCondition(PostSearchCondition condition) {
-        LocalDate createdAtFrom = condition.createdAtFrom();
-        LocalDate createdAtTo = condition.createdAtTo();
         return new BooleanExpression[]{
-                createdAtGoe(createdAtFrom != null ? createdAtFrom.atStartOfDay() : null),
-                createdAtLoe(createdAtTo != null ? createdAtTo.atTime(23, 59, 59) : null)
+                createdAtGoe(condition.createdAtFrom() == null ? null : condition.startOfDayFrom()),
+                createdAtLoe(condition.createdAtTo() == null ? null : condition.endOfDayTo())
         };
     }
 
