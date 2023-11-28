@@ -25,7 +25,7 @@ class PostTest {
 		Member member = new Member();
 		Post post = new Post(1L, "Original Title", "Original Content", false, member);
 
-		post.changePost("Updated Title", "Updated Content");
+		post.changePostTitleAndContent("Updated Title", "Updated Content");
 
 		assertThat(post.getTitle(), is("Updated Title"));
 		assertThat(post.getContent(), is("Updated Content"));

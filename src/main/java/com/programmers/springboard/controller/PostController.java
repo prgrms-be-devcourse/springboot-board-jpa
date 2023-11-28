@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.programmers.springboard.request.PostCreateRequest;
 import com.programmers.springboard.request.PostUpdateRequest;
+import com.programmers.springboard.response.ApiResponse;
 import com.programmers.springboard.response.PostResponse;
 import com.programmers.springboard.service.PostService;
 
@@ -31,20 +32,20 @@ public class PostController {
 	private final PostService postService;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<PostResponse> getPost(@PathVariable Long id) {
+	public ResponseEntity<ApiResponse<PostResponse>> getPost(@PathVariable Long id) {
 		PostResponse postResponse = postService.getPostById(id);
-		return ResponseEntity.ok(postResponse);
+		return ResponseEntity.ok(ApiResponse.ok(postResponse));
 	}
 
 	@GetMapping
-	public ResponseEntity<List<PostResponse>> getPosts(
+	public ResponseEntity<ApiResponse<List<PostResponse>>> getPosts(
 		@RequestParam(required = false, value = "page", defaultValue = "1") Integer page) {
 		List<PostResponse> postResponses = postService.getPosts(page);
-		return ResponseEntity.ok(postResponses);
+		return ResponseEntity.ok(ApiResponse.ok(postResponses));
 	}
 
 	@PostMapping
-	public ResponseEntity<PostResponse> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest) {
+	public ResponseEntity<Void> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest) {
 		PostResponse post = postService.createPost(postCreateRequest);
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequestUri()
@@ -55,10 +56,10 @@ public class PostController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<PostResponse> updatePost(@PathVariable Long id,
+	public ResponseEntity<ApiResponse<PostResponse>> updatePost(@PathVariable Long id,
 		@Valid @RequestBody PostUpdateRequest postUpdateRequest) {
 		PostResponse post = postService.updatePost(id, postUpdateRequest);
-		return ResponseEntity.ok().body(post);
+		return ResponseEntity.ok(ApiResponse.ok(post));
 	}
 
 	@DeleteMapping("/{id}")
