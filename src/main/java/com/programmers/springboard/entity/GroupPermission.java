@@ -1,8 +1,10 @@
 package com.programmers.springboard.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class GroupPermission {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 
 @Entity
+@Getter
 public class Permission {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

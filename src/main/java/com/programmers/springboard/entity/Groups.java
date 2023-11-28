@@ -1,13 +1,33 @@
 package com.programmers.springboard.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
+@Getter
 public class Groups {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    @OneToMany(mappedBy = "groups")
+    private List<GroupPermission> groupPermissions = new ArrayList<>();
+
+    public void addGroupPermissions(GroupPermission groupPermission){
+        if(!groupPermissions.contains(groupPermission)){
+            groupPermissions.add(groupPermission);
+        }
+    }
+
+    public List<GrantedAuthority> getAuthorities(){
+        return groupPermissions
+                .stream()
+                .map(gp -> new SimpleGrantedAuthority(gp.getPermission().getName()))
+                .collect(Collectors.toList());
+    }
 }
