@@ -14,7 +14,6 @@ import jakarta.persistence.MappedSuperclass;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
-
 	@CreatedDate
 	private LocalDateTime createdAt;
 	@CreatedBy

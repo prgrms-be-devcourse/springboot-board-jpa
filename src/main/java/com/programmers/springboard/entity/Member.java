@@ -1,10 +1,6 @@
 package com.programmers.springboard.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,4 +24,7 @@ public class Member extends BaseEntity {
 	private int age;
 
 	private String hobby;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Group group;
 }
