@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import com.programmers.springboard.entity.Member;
 import com.programmers.springboard.entity.Post;
 import com.programmers.springboard.exception.PostNotFoundException;
+import com.programmers.springboard.repository.MemberRepository;
 import com.programmers.springboard.repository.PostCustomRepository;
 import com.programmers.springboard.repository.PostRepository;
 import com.programmers.springboard.request.PostCreateRequest;
@@ -31,7 +32,7 @@ class PostServiceTest {
 	@Mock
 	private PostRepository postRepository;
 	@Mock
-	private MemberService memberService;
+	private MemberRepository memberRepository;
 
 	@InjectMocks
 	private PostService postService;
@@ -49,7 +50,7 @@ class PostServiceTest {
 		Post post = new Post(1L, "title", "content", false, member);
 
 		when(postRepository.save(any())).thenReturn(post);
-		when(memberService.getMemberById(any())).thenReturn(member);
+		when(memberRepository.findById(any())).thenReturn(Optional.of(member));
 
 		// When
 		PostResponse response = postService.createPost(request);

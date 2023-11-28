@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: prod
+    active: dev
 
 ---
 
@@ -9,16 +9,20 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:devdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  sql:
+    init:
+      mode: embedded
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
-
+      ddl-auto: none
 
 ---
 
@@ -31,14 +35,17 @@ spring:
     username: root
     password: prodpassword
     driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
   jpa:
     open-in-view: false
     properties:
         hibernate:
           dialect: org.hibernate.dialect.MySQL8Dialect
-          show_sql: true
     hibernate:
-      ddl-auto: update
-    generate-ddl: true
+      ddl-auto: none
 
 
