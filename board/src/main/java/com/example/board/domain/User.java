@@ -29,13 +29,7 @@ public class User {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public static User toEntity(UserDto.Request request) {
-        return User.builder()
-                .name(request.name())
-                .age(request.age())
-                .hobby(request.hobby())
-                .build();
-    }
+
 
     public void changeUserInfo(String name, int age, String hobby) {
         this.name = name;

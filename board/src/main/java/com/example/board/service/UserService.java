@@ -17,7 +17,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserDto.Response save(UserDto.Request request) {
-        User user = User.toEntity(request);
+        User user = UserDto.toEntity(request);
         return UserDto.toResponse(userRepository.save(user));
     }
 

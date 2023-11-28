@@ -1,6 +1,7 @@
 package com.example.board.dto;
 
 import com.example.board.domain.Post;
+import com.example.board.domain.User;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -14,6 +15,13 @@ public class PostDto {
     @Builder
     public record Response(Long userId, String title, String content, LocalDateTime createdAt) {}
 
+    public static Post toEntity(User user, PostDto.Request request) {
+        return Post.builder()
+                .title(request.title())
+                .content(request.content())
+                .user(user)
+                .build();
+    }
     public static Response toResponse(Post post) {
         return Response.builder()
                 .userId(post.getUser().getId())

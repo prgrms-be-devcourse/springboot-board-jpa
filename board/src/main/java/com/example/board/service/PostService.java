@@ -25,7 +25,7 @@ public class PostService {
 
     public Response save(Request request) {
         User user = userRepository.findById(request.userId()).orElseThrow(NoSuchElementException::new);
-        Post post = Post.toEntity(user, request);
+        Post post = PostDto.toEntity(user, request);
         return toResponse(postRepository.save(post));
     }
 

@@ -34,13 +34,7 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public static Post toEntity(User user, PostDto.Request request) {
-        return Post.builder()
-                .title(request.title())
-                .content(request.content())
-                .user(user)
-                .build();
-    }
+
 
     public void changePost(String title, String content) {
         this.title = title;

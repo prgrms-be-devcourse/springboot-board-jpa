@@ -11,7 +11,13 @@ public class UserDto {
 
     @Builder
     public record Response(Long userId, String name, int age, String hobby) {}
-
+    public static User toEntity(UserDto.Request request) {
+        return User.builder()
+                .name(request.name())
+                .age(request.age())
+                .hobby(request.hobby())
+                .build();
+    }
     public static UserDto.Response toResponse(User user) {
         return Response.builder()
                 .userId(user.getId())
