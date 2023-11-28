@@ -22,13 +22,11 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
 		QPost post = QPost.post;
 		QMember member = QMember.member;
 
-		List<Post> posts = jpaQueryFactory
+		return jpaQueryFactory
 			.selectFrom(post)
 			.leftJoin(post.member, member).fetchJoin()
 			.offset((long)(page - 1) * PAGEOFFSET)
 			.limit(PAGEOFFSET)
 			.fetch();
-
-		return posts;
 	}
 }

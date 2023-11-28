@@ -19,14 +19,16 @@ import lombok.NoArgsConstructor;
 public class Member extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	private Long id;
 
-	@Column(nullable = false, length = 30)
+	@Column(name = "name", nullable = false, length = 30)
 	private String name;
 
-	@Column(nullable = false)
+	@Column(name = "age", nullable = false)
 	private int age;
 
+	@Column(name = "hobby")
 	private String hobby;
 
 	public void updateMemberNameAndHobby(String name, String hobby) {
