@@ -17,11 +17,15 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+    defer-datasource-initialization: true
   h2:
     console:
       enabled: true
       path: /h2-console
+  sql:
+    init:
+      mode: always
 
 ---
 

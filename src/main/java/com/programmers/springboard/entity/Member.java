@@ -17,14 +17,16 @@ public class Member extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(nullable = false, length = 30)
+	private String loginId;
+
+	private String passwd;
+
 	private String name;
 
-	@Column(nullable = false)
-	private int age;
+	private Integer age;
 
 	private String hobby;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Group group;
+	private Groups groups;
 }
