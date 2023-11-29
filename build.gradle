@@ -52,6 +52,9 @@ dependencies {
 	// spring security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// java jwt
+	implementation 'com.auth0:java-jwt:4.4.0'
 }
 
 tasks.named('bootBuildImage') {
