@@ -42,8 +42,6 @@ public class PostController {
     @GetMapping
     public ApiResponse<PageResponse<PostResponse>> getPosts(@ModelAttribute @Valid PostSearchCondition searchCondition,
                                                             @ModelAttribute @Valid PageCondition pageCondition) {
-        pageCondition.updateValidPageCondition(); //? 질문
-        System.out.println(pageCondition.getPage() + " " + pageCondition.getSize());
         Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
         PageResponse<PostResponse> post = postService.getPosts(searchCondition, pageable);
         return ApiResponse.success(HttpStatus.OK, post);
