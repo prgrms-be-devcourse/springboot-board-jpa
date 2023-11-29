@@ -12,21 +12,22 @@ import lombok.*;
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Lob
-    @Column(nullable = false)
+    @Column(name = "content", nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User author;
 
-    public void update(String title, String content) {
+    public void updateTitleAndContent(String title, String content) {
         this.title = title;
         this.content = content;
     }

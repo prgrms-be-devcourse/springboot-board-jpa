@@ -56,7 +56,7 @@ public class PostService {
         if (!post.isSameAuthorId(requestDto.authorId()))
             throw new CustomException(ErrorCode.AUTHOR_NOT_MATCH);
 
-        post.update(requestDto.title(), requestDto.content());
+        post.updateTitleAndContent(requestDto.title(), requestDto.content());
     }
 
     public void deletePost(Long id, DeletePostRequest requestDto) {

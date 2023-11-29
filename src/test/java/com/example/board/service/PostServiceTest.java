@@ -97,7 +97,7 @@ class PostServiceTest {
         postService.updatePost(post.getId(), requestDto);
 
         // then
-        verify(mockPost).update(requestDto.title(), requestDto.content());
+        verify(mockPost).updateTitleAndContent(requestDto.title(), requestDto.content());
     }
 
     @Test

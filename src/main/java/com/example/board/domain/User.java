@@ -15,19 +15,20 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "age", nullable = false)
     private Integer age;
 
-    @Column
+    @Column(name = "hobby")
     private String hobby;
 
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(name = "deleted_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime deletedAt;
 
     @Builder.Default
