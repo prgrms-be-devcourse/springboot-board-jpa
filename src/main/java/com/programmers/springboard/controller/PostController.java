@@ -3,6 +3,7 @@ package com.programmers.springboard.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,9 +63,10 @@ public class PostController {
 		return ResponseEntity.ok(ApiResponse.ok(post));
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletePost(@PathVariable Long id) {
-		postService.deletePost(id);
-		return ResponseEntity.noContent().build();
+	@DeleteMapping
+	public ResponseEntity<ApiResponse<Void>> deletePosts(@RequestParam List<Long> ids) {
+		postService.deletePosts(ids);
+		ApiResponse<Void> response = ApiResponse.noContent();
+		return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
 	}
 }

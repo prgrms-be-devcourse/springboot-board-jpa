@@ -23,4 +23,8 @@ public class ApiResponse<T> {
 		return new ApiResponse<>(200, data);
 	}
 
+	public static ApiResponse<Void> noContent() {
+		return new ApiResponse<>(204, null);
+	}
+
 }

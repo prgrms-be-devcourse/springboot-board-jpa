@@ -80,15 +80,18 @@ class PostServiceTest {
 	void 포스트를_삭제합니다() {
 		// Given
 		Member member = Member.builder().id(1L).build();
-		Post post = new Post(1L, "title", "content", false, member);
+		Post post1 = new Post(1L, "title", "content", false, member);
+		Post post2 = new Post(1L, "title", "content", false, member);
 
-		when(postRepository.findById(any())).thenReturn(Optional.of(post));
+		List<Post> posts = List.of(post1, post2);
+		when(postRepository.findAllById(any())).thenReturn(posts);
 
 		// When
-		postService.deletePost(post.getId());
+		List<Long> ids = List.of(post1.getId(), post2.getId());
+		postService.deletePosts(ids);
 
 		// Then
-		verify(postRepository).delete(any());
+		verify(postRepository).deleteAll(posts);
 	}
 
 	@Test
@@ -153,17 +156,4 @@ class PostServiceTest {
 		});
 	}
 
-	@Test
-	void 존재하지_않는_포스트를_삭제합니다_실패() {
-		// given
-		Member member = Member.builder().id(1L).build();
-		Post post = new Post(1L, "title", "content", false, member);
-
-		when(postRepository.findById(any())).thenReturn(Optional.empty());
-
-		// when // then
-		assertThrows(PostNotFoundException.class, () -> {
-			postService.deletePost(post.getId());
-		});
-	}
 }
