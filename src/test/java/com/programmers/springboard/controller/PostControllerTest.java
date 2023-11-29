@@ -149,14 +149,14 @@ public class PostControllerTest {
 		PostUpdateRequest postUpdateRequest = new PostUpdateRequest("fix!", "fix!");
 
 		// when // then
-		mockMvc.perform(put("/api/v1/posts/{id}",post.postId())
+		mockMvc.perform(put("/api/v1/posts/{id}", post.postId())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(postUpdateRequest)))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.title", Matchers.is(postUpdateRequest.title())))
-				.andExpect(jsonPath("$.content", Matchers.is(postUpdateRequest.content())))
-				.andDo(print())
-				.andDo(document("post-update",
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.title", Matchers.is(postUpdateRequest.title())))
+			.andExpect(jsonPath("$.content", Matchers.is(postUpdateRequest.content())))
+			.andDo(print())
+			.andDo(document("post-update",
 				requestFields(
 					fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
 					fieldWithPath("content").type(JsonFieldType.STRING).description("content")
@@ -178,7 +178,7 @@ public class PostControllerTest {
 		PostResponse post = postService.createPost(new PostCreateRequest("test", "test", member.getId()));
 
 		// when // then
-		mockMvc.perform(delete("/api/v1/posts/{id}",post.postId()))
+		mockMvc.perform(delete("/api/v1/posts/{id}", post.postId()))
 			.andExpect(status().isNoContent())
 			.andDo(print())
 			.andDo(document("post-delete"));

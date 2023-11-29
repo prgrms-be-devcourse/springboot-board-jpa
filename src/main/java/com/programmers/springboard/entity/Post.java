@@ -44,7 +44,7 @@ public class Post extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id", referencedColumnName = "id")
- 	private Member member;
+	private Member member;
 
 	public void changePostTitleAndContent(String title, String content) {
 		this.title = title;
