@@ -1,0 +1,71 @@
+[[Member]]
+== 회원 API
+
+==== 회원 생성
+
+**HTTP request**
+include::{snippets}/member-create/http-request.adoc[]
+
+**HTTP Response**
+include::{snippets}/member-create/http-response.adoc[]
+
+**Request-Fields**
+include::{snippets}/member-create/request-fields.adoc[]
+
+**Response-Fields**
+include::{snippets}/member-create/response-fields.adoc[]
+
+
+==== 회원 아이디로 조회
+**HTTP request**
+include::{snippets}/member-findById/http-request.adoc[]
+
+**HTTP Response**
+include::{snippets}/member-findById/http-response.adoc[]
+
+**Response-Fields**
+include::{snippets}/member-findById/response-fields.adoc[]
+
+
+==== 회원 전체 조회
+
+**HTTP request**
+include::{snippets}/member-findAll/http-request.adoc[]
+
+**HTTP Response**
+include::{snippets}/member-findAll/http-response.adoc[]
+
+**Response-Fields**
+include::{snippets}/member-findAll/response-fields.adoc[]
+
+
+==== 회원 수정
+
+**HTTP request**
+include::{snippets}/member-update/http-request.adoc[]
+
+**HTTP Response**
+include::{snippets}/member-update/http-response.adoc[]
+
+**Request-Fields**
+include::{snippets}/member-update/request-fields.adoc[]
+
+**Response-Fields**
+include::{snippets}/member-update/response-fields.adoc[]
+
+
+==== 회원 아이디로 삭제
+
+**HTTP request**
+include::{snippets}/member-deleteById/http-request.adoc[]
+
+**HTTP Response**
+include::{snippets}/member-deleteById/http-response.adoc[]
+
+==== 회원 전체 삭제
+
+**HTTP request**
+include::{snippets}/member-deleteAll/http-request.adoc[]
+
+**HTTP Response**
+include::{snippets}/member-deleteAll/http-response.adoc[]
