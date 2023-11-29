@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import com.programmers.springboard.request.PostUpdateRequest;
 
@@ -14,18 +15,16 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 
-public class PostUpdateRequestTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class PostUpdateRequestTest {
 
-
-	private static ValidatorFactory factory;
-	private static Validator validator;
+	private Validator validator;
 
 	@BeforeAll
-	public static void init() {
-		factory = Validation.buildDefaultValidatorFactory();
+	public void init() {
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 	}
-
 
 	@Test
 	void 제목_길이_60자_이상_검증_실패() {

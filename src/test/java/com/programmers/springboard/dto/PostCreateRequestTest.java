@@ -16,17 +16,15 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class PostCreateRequestTest {
+class PostCreateRequestTest {
 
-	private static ValidatorFactory factory;
-	private static Validator validator;
+	private Validator validator;
 
 	@BeforeAll
-	public static void init() {
-		factory = Validation.buildDefaultValidatorFactory();
+	public void init() {
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 	}
-
 
 	@Test
 	void 제목_길이_60자_이상_검증_실패() {
@@ -34,7 +32,7 @@ public class PostCreateRequestTest {
 		sb.append("가".repeat(70));
 
 		// Given
-		PostCreateRequest request = new PostCreateRequest(sb.toString(), "content",1L);
+		PostCreateRequest request = new PostCreateRequest(sb.toString(), "content", 1L);
 
 		// When
 		Set<ConstraintViolation<PostCreateRequest>> violations = validator.validate(request);
