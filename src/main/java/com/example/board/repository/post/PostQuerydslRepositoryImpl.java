@@ -53,6 +53,7 @@ public class PostQuerydslRepositoryImpl implements PostQuerydslRepository {
         if (sortType == null) {
             return post.id.desc();
         }
+
         return switch (sortType) {
             case LATEST -> post.id.desc();
             case OLDEST -> post.id.asc();
@@ -62,17 +63,18 @@ public class PostQuerydslRepositoryImpl implements PostQuerydslRepository {
     private BooleanExpression[] createFilterCondition(PostSearchCondition condition) {
         LocalDate createdAtFrom = condition.createdAtFrom();
         LocalDate createdAtTo = condition.createdAtTo();
+
         return new BooleanExpression[]{
-                createdAtGoe(createdAtFrom != null ? createdAtFrom.atStartOfDay() : null),
-                createdAtLoe(createdAtTo != null ? createdAtTo.atTime(23, 59, 59) : null)
+                createdAtGoe(createdAtFrom == null ? null : condition.startOfDayFrom()),
+                createdAtLoe(createdAtTo == null ? null : condition.endOfDayTo())
         };
     }
 
     private BooleanExpression createdAtGoe(LocalDateTime createdAt) {
-        return createdAt != null ? post.createdAt.goe(createdAt) : null;
+        return createdAt == null ? null : post.createdAt.goe(createdAt);
     }
 
     private BooleanExpression createdAtLoe(LocalDateTime createdAt) {
-        return createdAt != null ? post.createdAt.loe(createdAt) : null;
+        return createdAt == null ? null : post.createdAt.loe(createdAt);
     }
 }
