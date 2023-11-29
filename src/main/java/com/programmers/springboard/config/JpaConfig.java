@@ -10,11 +10,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
-public class AuditConfig implements AuditorAware<String> {
+public class JpaConfig implements AuditorAware<String> {
 	@Override
 	public Optional<String> getCurrentAuditor() {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-		String uid = request.getHeader("uid");
-		return Optional.ofNullable(uid);
+		String memberId = request.getHeader("Member-Id");
+		return Optional.ofNullable(memberId);
 	}
 }
