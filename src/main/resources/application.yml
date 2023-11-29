@@ -5,6 +5,29 @@ server:
       enabled: true
       force: true
 
+spring:
+  profiles:
+    default: prod
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/board;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+
 logging:
   level:
     org:
@@ -12,11 +35,8 @@ logging:
         type: trace
         sql: debug
         orm:
-          jdbc.bind: trace
-
-spring:
-  profiles:
-    default: dev
+          jdbc:
+            bind: trace
 
 ---
 
@@ -30,30 +50,17 @@ spring:
     username: root
     password: rootpassword
   jpa:
-    open-in-view: false
     hibernate:
-      ddl-auto: create
-    show-sql: true
+      ddl-auto: none
+    show-sql: false
     properties:
-      hibernate.format_sql: true
+      hibernate:
+        format_sql: true
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
----
-
-spring:
-  config:
-    activate:
-      on-profile: dev
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/board;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password:
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    properties:
-      hibernate.format_sql: true
-    database-platform: org.hibernate.dialect.H2Dialect
+logging:
+  level:
+    org:
+      hibernate:
+        type: info
+        sql: info
