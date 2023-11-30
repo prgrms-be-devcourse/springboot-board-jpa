@@ -1,27 +1,19 @@
 package com.example.board.domain.post.controller;
 
+import com.example.board.domain.common.dto.PageResponseDto;
 import com.example.board.domain.post.dto.PostCreateRequest;
 import com.example.board.domain.post.dto.PostPageCondition;
 import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.service.PostService;
-import java.net.URI;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,7 +40,7 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PostResponse>> getPostsByCondition(
+    public ResponseEntity<PageResponseDto<PostResponse>> getPostsByCondition(
         @RequestParam(defaultValue = "1") Integer page,
         @RequestParam(defaultValue = "10") Integer size,
         @RequestParam(value = "email", defaultValue = "", required = false) String email,
@@ -56,7 +48,7 @@ public class PostController {
     ) {
         PostPageCondition condition = new PostPageCondition(page, size, email, title);
         Page<PostResponse> posts = postService.findPostsByCondition(condition);
-        return ResponseEntity.ok(posts);
+        return ResponseEntity.ok(PageResponseDto.of(posts));
     }
 
     @PatchMapping("/{id}")
