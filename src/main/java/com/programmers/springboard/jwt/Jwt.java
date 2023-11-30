@@ -6,12 +6,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import lombok.AllArgsConstructor;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class Jwt {
     private final String issuer;
@@ -20,7 +18,7 @@ public class Jwt {
     private final Algorithm algorithm;
     private final JWTVerifier jwtVerifier;
 
-    public Jwt(String issuer, String clientSecret, int expirySeconds, JWTVerifier jwtVerifier) {
+    public Jwt(String issuer, String clientSecret, int expirySeconds) {
         this.issuer = issuer;
         this.clientSecret = clientSecret;
         this.expirySeconds = expirySeconds;
