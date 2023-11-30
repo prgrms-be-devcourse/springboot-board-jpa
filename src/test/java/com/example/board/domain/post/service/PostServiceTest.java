@@ -36,13 +36,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        member = Member.builder()
-            .email("test@gmail.com")
-            .name("홍길동")
-            .age(22)
-            .hobby("배드민턴")
-            .build();
-
+        member = new Member("test@gmail.com", "홍길동", 22, "배드민턴");
         memberRepository.save(member);
     }
 
@@ -104,8 +98,6 @@ class PostServiceTest {
         // Given
         postService.createPost(member.getEmail(), postCreateRequest);
         PostPageCondition condition = PostPageCondition.builder()
-            .page(1)
-            .size(10)
             .build();
 
         // When
@@ -124,8 +116,6 @@ class PostServiceTest {
         postService.createPost(member.getEmail(), postCreateRequest);
         postService.createPost(member.getEmail(), request);
         PostPageCondition condition = PostPageCondition.builder()
-            .page(1)
-            .size(10)
             .title("제목1")
             .build();
 
@@ -143,8 +133,6 @@ class PostServiceTest {
         // Given
         postService.createPost(member.getEmail(), postCreateRequest);
         PostPageCondition condition = PostPageCondition.builder()
-            .page(1)
-            .size(10)
             .email("test@gmail.com")
             .build();
 
