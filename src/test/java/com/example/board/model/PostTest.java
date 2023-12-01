@@ -31,6 +31,7 @@ class PostTest {
         when(mockUser.getName()).thenReturn("mockUser");
         featurePost = Post.from(mockUser, new PostCreateDto(mockUser.getId(), "title", "contents"));
     }
+    
     @Nested
     @DisplayName("Post save 시 생성하는 객체 유효성 검사 테스트")
     class PostCreate {
