@@ -1,19 +1,8 @@
 package com.example.board.response;
-
 import com.example.board.exception.BaseException;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.util.List;
 
-@Getter
-@AllArgsConstructor
-public class Response<T> {
-
-    private T data;
-    private int code;
-    private String isSuccess;
-
+public record Response<T>(T data, int code, String isSuccess) {
     public static <T> Response<T> success(T data) {
         return new Response<>(data, 200, "ok");
     }

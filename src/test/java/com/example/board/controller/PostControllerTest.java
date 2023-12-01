@@ -91,8 +91,8 @@ class PostControllerTest {
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8);
             Response<List<String>> exception = objectMapper.readValue(response, Response.class);
-            assertThat(exception.getData().get(0)).isEqualTo("사용자 id를 입력해주세요.");
-            assertThat(exception.getCode()).isEqualTo(400);
+            assertThat(exception.data().get(0)).isEqualTo("사용자 id를 입력해주세요.");
+            assertThat(exception.code()).isEqualTo(400);
         }
 
         @Test
@@ -111,7 +111,7 @@ class PostControllerTest {
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8);
             Response<String> exception = objectMapper.readValue(response, Response.class);
-            assertThat(exception.getCode()).isEqualTo(1000);
+            assertThat(exception.code()).isEqualTo(1000);
         }
 
         @Test
@@ -130,8 +130,8 @@ class PostControllerTest {
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8);
             Response<List<String>> exception = objectMapper.readValue(response, Response.class);
-            assertThat(exception.getData().get(0)).isEqualTo("제목은 최대 20자까지만 입력해주세요.");
-            assertThat(exception.getCode()).isEqualTo(400);
+            assertThat(exception.data().get(0)).isEqualTo("제목은 최대 20자까지만 입력해주세요.");
+            assertThat(exception.code()).isEqualTo(400);
         }
 
 
@@ -153,8 +153,8 @@ class PostControllerTest {
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8);
             Response<List<String>> exception = objectMapper.readValue(response, Response.class);
-            assertThat(exception.getData().get(0)).isEqualTo("게시글 제목을 입력해주세요.");
-            assertThat(exception.getCode()).isEqualTo(400);
+            assertThat(exception.data().get(0)).isEqualTo("게시글 제목을 입력해주세요.");
+            assertThat(exception.code()).isEqualTo(400);
         }
 
         @ParameterizedTest(name = "contents가 `{0}`인 경우 저장 요청에 실패한다.")
@@ -175,8 +175,8 @@ class PostControllerTest {
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8);
             Response<List<String>> exception = objectMapper.readValue(response, Response.class);
-            assertThat(exception.getData().get(0)).isEqualTo("게시글 내용을 입력해주세요.");
-            assertThat(exception.getCode()).isEqualTo(400);
+            assertThat(exception.data().get(0)).isEqualTo("게시글 내용을 입력해주세요.");
+            assertThat(exception.code()).isEqualTo(400);
         }
     }
 
@@ -276,7 +276,7 @@ class PostControllerTest {
             Response<String> exception = objectMapper.readValue(response, Response.class);
 
             //then
-            assertThat(exception.getCode()).isEqualTo(2000);
+            assertThat(exception.code()).isEqualTo(2000);
 
         }
     }
@@ -328,8 +328,8 @@ class PostControllerTest {
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8);
             Response<List<String>> exception = objectMapper.readValue(response, Response.class);
-            assertThat(exception.getData().get(0)).isEqualTo("제목은 최대 20자까지만 입력해주세요.");
-            assertThat(exception.getCode()).isEqualTo(400);
+            assertThat(exception.data().get(0)).isEqualTo("제목은 최대 20자까지만 입력해주세요.");
+            assertThat(exception.code()).isEqualTo(400);
         }
 
 
@@ -352,8 +352,8 @@ class PostControllerTest {
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8);
             Response<List<String>> exception = objectMapper.readValue(response, Response.class);
-            assertThat(exception.getData().get(0)).isEqualTo("게시글 제목을 입력해주세요.");
-            assertThat(exception.getCode()).isEqualTo(400);
+            assertThat(exception.data().get(0)).isEqualTo("게시글 제목을 입력해주세요.");
+            assertThat(exception.code()).isEqualTo(400);
         }
 
         @ParameterizedTest(name = "contents가 `{0}`인 경우 수정 요청에 실패한다.")
@@ -375,8 +375,8 @@ class PostControllerTest {
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8);
             Response<List<String>> exception = objectMapper.readValue(response, Response.class);
-            assertThat(exception.getData().get(0)).isEqualTo("게시글 내용을 입력해주세요.");
-            assertThat(exception.getCode()).isEqualTo(400);
+            assertThat(exception.data().get(0)).isEqualTo("게시글 내용을 입력해주세요.");
+            assertThat(exception.code()).isEqualTo(400);
         }
     }
 }
