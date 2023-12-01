@@ -46,9 +46,9 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDto updatePost(PostUpdateRequestDto postUpdateRequestDto) {
-        Post post = postRepository.findById(postUpdateRequestDto.postId())
-                .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND, postUpdateRequestDto.postId()));
+    public PostResponseDto updatePost(Long id, PostUpdateRequestDto postUpdateRequestDto) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND, id));
 
         post.changeTitleAndContent(postUpdateRequestDto.title(), postUpdateRequestDto.content());
 

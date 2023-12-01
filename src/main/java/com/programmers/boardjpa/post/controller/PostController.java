@@ -32,8 +32,8 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.insertPost(postInsertRequestDto));
     }
 
-    @PatchMapping
-    public ResponseEntity<PostResponseDto> updatePost(@RequestBody PostUpdateRequestDto postUpdateRequestDto){
-        return ResponseEntity.ok(postService.updatePost(postUpdateRequestDto));
+    @PatchMapping("/{id}")
+    public ResponseEntity<PostResponseDto> updatePost(@PathVariable(name = "id") Long postId, @RequestBody PostUpdateRequestDto postUpdateRequestDto){
+        return ResponseEntity.ok(postService.updatePost(postId, postUpdateRequestDto));
     }
 }
