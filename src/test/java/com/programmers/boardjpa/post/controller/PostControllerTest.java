@@ -48,7 +48,7 @@ public class PostControllerTest {
         
         userId = user.getId();
 
-        PostInsertRequestDto postInsertRequestDto = new PostInsertRequestDto(1L, "제목", "내용", user.getId());
+        PostInsertRequestDto postInsertRequestDto = new PostInsertRequestDto("제목", "내용", user.getId());
         PostResponseDto postResponseDto = postService.insertPost(postInsertRequestDto);
 
         postId = postResponseDto.postId();
