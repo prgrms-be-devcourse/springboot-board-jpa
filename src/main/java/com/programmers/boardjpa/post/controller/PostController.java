@@ -12,27 +12,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/posts/{id}")
     public ResponseEntity<PostResponseDto> getPost(@PathVariable(name = "id") Long postId) {
         return ResponseEntity.ok(postService.getPost(postId));
     }
 
-    @GetMapping
+    @GetMapping("/posts")
     public ResponseEntity<PostPageResponseDto> getPosts(@RequestParam int page, @RequestParam int size) {
         return ResponseEntity.ok(postService.getPosts(PageRequest.of(page, size)));
     }
 
-    @PostMapping
+    @PostMapping("/posts")
     public ResponseEntity<PostResponseDto> insertPost(@RequestBody PostInsertRequestDto postInsertRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.insertPost(postInsertRequestDto));
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/posts/{id}")
     public ResponseEntity<PostResponseDto> updatePost(@PathVariable(name = "id") Long postId, @RequestBody PostUpdateRequestDto postUpdateRequestDto){
         return ResponseEntity.ok(postService.updatePost(postId, postUpdateRequestDto));
     }
