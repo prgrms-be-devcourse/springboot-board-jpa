@@ -60,4 +60,9 @@ public class PostService {
 
         return PostMapper.toPostPageResponseDto(postList);
     }
+
+    @Transactional
+    public void deleteAllPosts() {
+        postRepository.deleteAll();
+    }
 }
