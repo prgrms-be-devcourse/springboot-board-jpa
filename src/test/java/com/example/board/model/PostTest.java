@@ -25,12 +25,14 @@ class PostTest {
     User mockUser;
 
     static Post featurePost;
+
     @BeforeEach
     void setup(){
         when(mockUser.getId()).thenReturn(1L);
         when(mockUser.getName()).thenReturn("mockUser");
         featurePost = Post.from(mockUser, new PostCreateDto(mockUser.getId(), "title", "contents"));
     }
+
     @Nested
     @DisplayName("Post save 시 생성하는 객체 유효성 검사 테스트")
     class PostCreate {
@@ -120,11 +122,6 @@ class PostTest {
             return List.of(string.repeat(6));
         }
 
-
-
-
-
-
         @Test
         @DisplayName("post 수정 시 정상적으로 수정을 위한 Post 객체가 생성되는 경우")
         void saveEntitySuccess() {
@@ -134,7 +131,6 @@ class PostTest {
 
             PostCreateDto postDto = new PostCreateDto(mockUser.getId(), "title", "contents");
 
-            //when
             Post post = Post.from(mockUser, postDto);
 
             PostUpdateDto updateDto = new PostUpdateDto(mockUser.getId(), "title", "contents");
@@ -146,7 +142,6 @@ class PostTest {
             assertThat(post.getTitle()).isEqualTo(updateDto.title());
             assertThat(post.getContents()).isEqualTo(updateDto.contents());
         }
-
 
         @ParameterizedTest(name = "title이 `{0}`인 경우 저장을 위한 객체 생성이 실패한다.")
         @ValueSource(strings = {" "})
