@@ -11,7 +11,7 @@ public record PostResponseDto(
 ) {
     public static PostResponseDto from(Post post) {
         postResponseValidate(post);
-        return new PostResponseDto(post.getId(), post.getTitle(), post.getUser().getName());
+        return new PostResponseDto(post.getId(), post.getUser().getName(), post.getTitle());
     }
 
     private static void postResponseValidate(Post post) {
