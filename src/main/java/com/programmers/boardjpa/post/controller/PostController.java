@@ -1,16 +1,15 @@
 package com.programmers.boardjpa.post.controller;
 
 import com.programmers.boardjpa.post.dto.PostInsertRequestDto;
+import com.programmers.boardjpa.post.dto.PostPageResponseDto;
 import com.programmers.boardjpa.post.dto.PostResponseDto;
 import com.programmers.boardjpa.post.dto.PostUpdateRequestDto;
 import com.programmers.boardjpa.post.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/posts")

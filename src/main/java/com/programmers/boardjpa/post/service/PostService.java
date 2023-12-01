@@ -1,6 +1,7 @@
 package com.programmers.boardjpa.post.service;
 
 import com.programmers.boardjpa.post.dto.PostInsertRequestDto;
+import com.programmers.boardjpa.post.dto.PostPageResponseDto;
 import com.programmers.boardjpa.post.dto.PostResponseDto;
 import com.programmers.boardjpa.post.dto.PostUpdateRequestDto;
 import com.programmers.boardjpa.post.entity.Post;
@@ -13,11 +14,10 @@ import com.programmers.boardjpa.user.exception.UserErrorCode;
 import com.programmers.boardjpa.user.exception.UserException;
 import com.programmers.boardjpa.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -56,11 +56,9 @@ public class PostService {
         return postMapper.toPostResponseDto(post);
     }
 
-    public List<PostResponseDto> getPosts(Pageable pageable) {
-        List<Post> postList = postRepository.findAllWithUser(pageable).stream().toList();
+    public PostPageResponseDto getPosts(PageRequest pageRequest) {
+        Page<Post> postList = postRepository.findAllWithUser(pageRequest);
 
-        return postList.stream()
-                .map(postMapper::toPostResponseDto)
-                .toList();
+        return postMapper.toPostPageResponseDto(postList);
     }
 }
