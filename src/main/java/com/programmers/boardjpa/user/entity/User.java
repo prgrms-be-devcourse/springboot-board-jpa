@@ -1,15 +1,11 @@
 package com.programmers.boardjpa.user.entity;
 
 import com.programmers.boardjpa.global.common.BaseEntity;
-import com.programmers.boardjpa.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Table(name = "users")
 @Entity

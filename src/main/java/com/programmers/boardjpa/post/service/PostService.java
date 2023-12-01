@@ -37,8 +37,7 @@ public class PostService {
         User user = userRepository.findById(postInsertRequestDto.userId())
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 user가 존재하지 않습니다. ID : " + postInsertRequestDto.userId()));
 
-        Post post = postMapper.postInsertRequestDtoToPost(postInsertRequestDto);
-        post.addUser(user);
+        Post post = postMapper.postInsertRequestDtoToPost(postInsertRequestDto, user);
 
         postRepository.save(post);
 

@@ -3,6 +3,7 @@ package com.programmers.boardjpa.post.mapper;
 import com.programmers.boardjpa.post.dto.PostInsertRequestDto;
 import com.programmers.boardjpa.post.dto.PostResponseDto;
 import com.programmers.boardjpa.post.entity.Post;
+import com.programmers.boardjpa.user.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,7 +20,7 @@ public class PostMapper {
                 .build();
     }
 
-    public Post postInsertRequestDtoToPost(PostInsertRequestDto postInsertRequestDto) {
+    public Post postInsertRequestDtoToPost(PostInsertRequestDto postInsertRequestDto, User user) {
         return Post.builder()
                 .title(postInsertRequestDto.title())
                 .content(postInsertRequestDto.content())

@@ -3,10 +3,7 @@ package com.programmers.boardjpa.post.entity;
 import com.programmers.boardjpa.global.common.BaseEntity;
 import com.programmers.boardjpa.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -29,18 +26,14 @@ public class Post extends BaseEntity {
     private User user;
 
     @Builder
-    public Post(String title, String content) {
+    public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
+        this.user = user;
     }
 
     public void changeTitleAndContent(String title, String content) {
         this.title = title;
         this.content = content;
-    }
-
-    public void addUser(User user) {
-        this.user = user;
-        user.getPosts().add(this);
     }
 }
