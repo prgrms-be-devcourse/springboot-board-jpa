@@ -10,7 +10,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
-public class JpaConfig implements AuditorAware<String> {
+public class JpaAuditingConfig implements AuditorAware<String> {
 	@Override
 	public Optional<String> getCurrentAuditor() {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
