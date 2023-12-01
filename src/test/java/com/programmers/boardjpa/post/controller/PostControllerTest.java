@@ -2,14 +2,13 @@ package com.programmers.boardjpa.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.programmers.boardjpa.post.dto.PostInsertRequestDto;
+import com.programmers.boardjpa.post.dto.PostResponseDto;
 import com.programmers.boardjpa.post.dto.PostUpdateRequestDto;
 import com.programmers.boardjpa.post.service.PostService;
-import com.programmers.boardjpa.user.entity.Hobby;
 import com.programmers.boardjpa.user.entity.User;
 import com.programmers.boardjpa.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -43,15 +42,15 @@ public class PostControllerTest {
 
     @BeforeAll
     void setUp() {
-        User user = new User("user", 10, Hobby.SLEEP);
+        User user = new User("user", 10, "SLEEP");
         userRepository.save(user);
         
         userId = user.getId();
 
         PostInsertRequestDto postInsertRequestDto = new PostInsertRequestDto(1L, "제목", "내용", user.getId());
-        postService.insertPost(postInsertRequestDto);
+        PostResponseDto postResponseDto = postService.insertPost(postInsertRequestDto);
 
-        postId = postInsertRequestDto.postId();
+        postId = postResponseDto.postId();
     }
 
 
@@ -137,7 +136,7 @@ public class PostControllerTest {
     @Test
     void updatePostInService() throws Exception {
         // given
-        PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto(postId, "새로운 제목", "새로운 내용");
+        PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto("새로운 제목", "새로운 내용");
 
 
         // when - then
