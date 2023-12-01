@@ -23,9 +23,10 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public Response<Long> save(@RequestBody @Valid PostDto postDto, BindingResult bindingResult) {
+    public ResponseEntity<Response<Long>> save(@RequestBody @Valid PostCreateDto postDto, BindingResult bindingResult) {
         bindChecking(bindingResult);
-        return Response.success(postService.save(postDto));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Response.success(postService.save(postDto)));
     }
 
     @GetMapping
