@@ -4,11 +4,12 @@ import com.programmers.boardjpa.post.dto.PostInsertRequestDto;
 import com.programmers.boardjpa.post.dto.PostResponseDto;
 import com.programmers.boardjpa.post.dto.PostUpdateRequestDto;
 import com.programmers.boardjpa.post.entity.Post;
+import com.programmers.boardjpa.post.exception.PostErrorCode;
+import com.programmers.boardjpa.post.exception.PostException;
 import com.programmers.boardjpa.post.mapper.PostMapper;
 import com.programmers.boardjpa.post.repository.PostRepository;
 import com.programmers.boardjpa.user.entity.User;
 import com.programmers.boardjpa.user.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class PostService {
 
     public PostResponseDto getPost(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 post가 존재하지 않습니다. ID : " + id));
+                .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND, id));
 
         return postMapper.toPostResponseDto(post);
     }
@@ -47,7 +48,7 @@ public class PostService {
     @Transactional
     public PostResponseDto updatePost(PostUpdateRequestDto postUpdateRequestDto) {
         Post post = postRepository.findById(postUpdateRequestDto.postId())
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 post가 존재하지 않습니다. ID : " + postUpdateRequestDto.postId()));
+                .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND, postUpdateRequestDto.postId()));
 
         post.changeTitleAndContent(postUpdateRequestDto.title(), postUpdateRequestDto.content());
 
