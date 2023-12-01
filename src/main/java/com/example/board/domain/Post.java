@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "posts", indexes = @Index(name = "idx_created_at", columnList = "createdAt"))
+@Table(name = "posts", indexes = @Index(name = "idx_created_at", columnList = "created_at"))
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
