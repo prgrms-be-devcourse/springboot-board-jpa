@@ -15,5 +15,4 @@ public class BaseException extends RuntimeException {
         this.message = message.getMessage();
         this.httpStatus = message.getHttpStatus();
     }
-
 }
