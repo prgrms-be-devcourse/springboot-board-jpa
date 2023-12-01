@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "users")
