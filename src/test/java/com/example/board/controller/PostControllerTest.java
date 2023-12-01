@@ -47,7 +47,6 @@ class PostControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-
     @Nested
     @DisplayName("게시글 등록")
     class PostNew {
