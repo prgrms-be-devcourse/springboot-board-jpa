@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
+    private static final int MIN_AGE = 0;
+    private static final int MAX_AGE = 110;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -38,7 +40,7 @@ public class User extends BaseEntity {
     }
 
     private void validateAge(int age) {
-        if (age < 0 || age > 110) {
+        if (age < MIN_AGE || age > MAX_AGE) {
             throw new UserException(UserErrorCode.INVALID_AGE_RANGE);
         }
     }
