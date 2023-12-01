@@ -116,7 +116,7 @@ public class PostControllerTest {
     @DisplayName("PostService에 컨트롤러에서 받은 값들에 대한 Post를 생성하고 그 Post를 보여줄 수 있다.")
     void insertPostInService() throws Exception {
         // given
-        PostInsertRequestDto postInsertRequestDto = new PostInsertRequestDto(postId, "제목2", "내용2", userId);
+        PostInsertRequestDto postInsertRequestDto = new PostInsertRequestDto("제목2", "내용2", userId);
 
         // when - then
         mockMvc.perform(post("/posts")
