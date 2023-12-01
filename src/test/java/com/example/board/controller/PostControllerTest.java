@@ -1,6 +1,6 @@
 package com.example.board.controller;
 
-import com.example.board.dto.PostDto;
+import com.example.board.dto.PostCreateDto;
 import com.example.board.dto.PostUpdateDto;
 import com.example.board.response.Response;
 import com.example.board.service.PostService;
@@ -55,7 +55,7 @@ class PostControllerTest {
         @DisplayName("정상적으로 게시글을 등록된다.")
         void saveSuccess() throws Exception {
             //given
-            PostDto postDto = new PostDto(1L, "test2", "test Contents2");
+            PostCreateDto postDto = new PostCreateDto(1L, "test2", "test Contents2");
 
             //when, then
             mockMvc.perform(post("http://localhost:8080/api/v1/posts")
@@ -80,7 +80,7 @@ class PostControllerTest {
         @DisplayName("userId를 포함하지 않고 보낼 경우 예외가 발생한다.")
         void saveFailWithAnonymousUser() throws Exception {
             //given
-            PostDto postDto = new PostDto(null, "test2", "test Contents2");
+            PostCreateDto postDto = new PostCreateDto(null, "test2", "test Contents2");
 
             //when, then
             String response = mockMvc.perform(post("http://localhost:8080/api/v1/posts")
@@ -100,7 +100,7 @@ class PostControllerTest {
         @DisplayName("존재하지 않는 userId를 보낼 경우 예외가 발생한다.")
         void saveFailWithWrongUser() throws Exception {
             //given
-            PostDto postDto = new PostDto(0L, "test2", "test Contents2");
+            PostCreateDto postDto = new PostCreateDto(0L, "test2", "test Contents2");
 
             //when, then
             String response = mockMvc.perform(post("http://localhost:8080/api/v1/posts")
@@ -119,7 +119,7 @@ class PostControllerTest {
         @DisplayName("제목이 20자 이상인 경우 예외를 발생시킨다.")
         void saveFailWithLongTitle() throws Exception {
             //given
-            PostDto postDto = new PostDto(1L, "test222222222222222222222222", "test Contents2");
+            PostCreateDto postDto = new PostCreateDto(1L, "test222222222222222222222222", "test Contents2");
 
             //when, then
             String response = mockMvc.perform(post("http://localhost:8080/api/v1/posts")
@@ -142,7 +142,7 @@ class PostControllerTest {
         @DisplayName("제목이 없는 경우 예외를 발생시킨다.")
         void saveFailWithNoTitle(String input) throws Exception {
             //given
-            PostDto postDto = new PostDto(1L, input, "test Contents2");
+            PostCreateDto postDto = new PostCreateDto(1L, input, "test Contents2");
 
             //when, then
             String response = mockMvc.perform(post("http://localhost:8080/api/v1/posts")
@@ -164,7 +164,7 @@ class PostControllerTest {
         @DisplayName("내용이 없는 경우 예외를 발생시킨다.")
         void saveFailWithNoContents(String input) throws Exception {
             //given
-            PostDto postDto = new PostDto(1L, "title", input);
+            PostCreateDto postDto = new PostCreateDto(1L, "title", input);
 
             //when, then
             String response = mockMvc.perform(post("http://localhost:8080/api/v1/posts")
@@ -188,8 +188,8 @@ class PostControllerTest {
         @DisplayName("정상적으로 모든 게시물들을 받아온다.")
         void getSuccess() throws Exception {
             //given
-            postService.save(new PostDto(1L, "testTitle1", "hihihihihihihih1"));
-            postService.save(new PostDto(1L, "testTitle2", "hihihihihihihih2"));
+            postService.save(new PostCreateDto(1L, "testTitle1", "hihihihihihihih1"));
+            postService.save(new PostCreateDto(1L, "testTitle2", "hihihihihihihih2"));
 
             //when, then
             mockMvc.perform(get("http://localhost:8080/api/v1/posts")
@@ -241,7 +241,7 @@ class PostControllerTest {
         @DisplayName("정상적으로 특정 게시물 하나를 받아온다.")
         void getByIdSuccess() throws Exception {
             //given
-            Long savedContentsId = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
+            Long savedContentsId = postService.save(new PostCreateDto(1L, "testTitle", "hihihihihihihih"));
 
             //when, then
             mockMvc.perform(get("http://localhost:8080/api/v1/posts/" + savedContentsId)
@@ -289,7 +289,7 @@ class PostControllerTest {
         @DisplayName("정상적으로 게시글을 수정한다.")
         void updateSuccess() throws Exception {
             //given
-            Long savedContents = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
+            Long savedContents = postService.save(new PostCreateDto(1L, "testTitle", "hihihihihihihih"));
 
             PostUpdateDto postUpdateDto = new PostUpdateDto(1L, "test2", "test Contents2");
 
@@ -316,7 +316,7 @@ class PostControllerTest {
         @DisplayName("수정 시 제목이 20자 이상인 경우 예외를 발생시킨다.")
         void updateFailWithLongTitle() throws Exception {
             //given
-            Long savedContents = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
+            Long savedContents = postService.save(new PostCreateDto(1L, "testTitle", "hihihihihihihih"));
             PostUpdateDto postDto = new PostUpdateDto(1L, "test222222222222222222222222", "test Contents2");
 
             //when, then
@@ -340,8 +340,8 @@ class PostControllerTest {
         @DisplayName("수정 시 제목이 없는 경우 예외를 발생시킨다.")
         void updateFailWithNoTitle(String input) throws Exception {
             //given
-            Long savedContents = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
-            PostDto postDto = new PostDto(1L, input, "test Contents2");
+            Long savedContents = postService.save(new PostCreateDto(1L, "testTitle", "hihihihihihihih"));
+            PostCreateDto postDto = new PostCreateDto(1L, input, "test Contents2");
 
             //when, then
             String response = mockMvc.perform(patch("http://localhost:8080/api/v1/posts/" + savedContents)
@@ -363,8 +363,8 @@ class PostControllerTest {
         @DisplayName("수정 시 내용이 없는 경우 예외를 발생시킨다.")
         void updateFailWithNoContents(String input) throws Exception {
             //given
-            Long savedContents = postService.save(new PostDto(1L, "testTitle", "hihihihihihihih"));
-            PostDto postDto = new PostDto(1L, "title", input);
+            Long savedContents = postService.save(new PostCreateDto(1L, "testTitle", "hihihihihihihih"));
+            PostCreateDto postDto = new PostCreateDto(1L, "title", input);
 
             //when, then
             String response = mockMvc.perform(patch("http://localhost:8080/api/v1/posts/" + savedContents)

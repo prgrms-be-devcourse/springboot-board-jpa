@@ -1,7 +1,7 @@
 package com.example.board.service;
 
 import com.example.board.dto.PostDetailResponseDto;
-import com.example.board.dto.PostDto;
+import com.example.board.dto.PostCreateDto;
 import com.example.board.dto.PostResponseDto;
 import com.example.board.dto.PostUpdateDto;
 import com.example.board.exception.BaseException;
@@ -48,7 +48,7 @@ class PostServiceTest {
         @Test
         @DisplayName("정상적으로 PostDto를 받아 글 작성을 완료하는 경우")
         void saveSuccessInService() {
-            PostDto postDto = new PostDto(1L, "test", "test Contents");
+            PostCreateDto postDto = new PostCreateDto(1L, "test", "test Contents");
 
             Long save = postService.save(postDto);
             Optional<Post> savedPosts = postRepository.findById(save);
@@ -60,7 +60,7 @@ class PostServiceTest {
         @DisplayName("제목이 20자 이상인 경우 실패한다.")
         void saveFailByTitleLength() {
             // given
-            PostDto postDto = new PostDto(1L, "testtesttesttesttesttesttest", "test Contents");
+            PostCreateDto postDto = new PostCreateDto(1L, "testtesttesttesttesttesttest", "test Contents");
 
             // when, then
             assertThatThrownBy(() -> postService.save(postDto))
@@ -74,7 +74,7 @@ class PostServiceTest {
         @DisplayName("제목이 null이거나 빈 공백인 경우 실패한다.")
         void saveFailByTitleNullOrBlank(String input) {
             // given
-            PostDto postDto = new PostDto(1L, input, "test Contents");
+            PostCreateDto postDto = new PostCreateDto(1L, input, "test Contents");
 
             // when, then
             assertThatThrownBy(() -> postService.save(postDto))
@@ -88,7 +88,7 @@ class PostServiceTest {
         @DisplayName("내용이 null이거나 빈 공백인 경우 실패한다.")
         void saveFailByContents(String input) {
             // given
-            PostDto postDto = new PostDto(1L, "title", input);
+            PostCreateDto postDto = new PostCreateDto(1L, "title", input);
 
             // when, then
             assertThatThrownBy(() -> postService.save(postDto))
@@ -99,7 +99,7 @@ class PostServiceTest {
         @Test
         @DisplayName("존재하지 않는 유저가 글을 작성하는 경우 예외를 발생시킨다.")
         void saveFailWithAnonymousUser() {
-            PostDto postDto = new PostDto(0L, "test", "test Contents");
+            PostCreateDto postDto = new PostCreateDto(0L, "test", "test Contents");
 
             assertThatThrownBy(() -> postService.save(postDto))
                     .isInstanceOf(BaseException.class)
@@ -114,7 +114,7 @@ class PostServiceTest {
         @DisplayName("정상적으로 모든 게시물들을 받아온다.")
         void getAllSuccess() {
             for (int i = 0; i < 15; i++) {
-                PostDto postDto = new PostDto(1L, "title" + i, "contents" + i);
+                PostCreateDto postDto = new PostCreateDto(1L, "title" + i, "contents" + i);
                 postService.save(postDto);
             }
             // TODO: pageable 직접 설정하는 것이 괜찮을까?
@@ -135,7 +135,7 @@ class PostServiceTest {
         @Test
         @DisplayName("정상적으로 특정 게시물 하나를 받아온다.")
         void getPostByIdSuccess() {
-            PostDto postDto = new PostDto(1L, "title", "contents");
+            PostCreateDto postDto = new PostCreateDto(1L, "title", "contents");
             Long savedId = postService.save(postDto);
 
             PostDetailResponseDto postDetailResponseDto = postService.readPostDetail(savedId);
@@ -157,7 +157,7 @@ class PostServiceTest {
         @Test
         @DisplayName("정상적으로 PostDto를 받아 글 수정을 완료하는 경우")
         void updateSuccessInService() {
-            PostDto postDto = new PostDto(1L, "test", "test Contents");
+            PostCreateDto postDto = new PostCreateDto(1L, "test", "test Contents");
             Long savedId = postService.save(postDto);
 
             String updatedTitle = "test update";
@@ -187,7 +187,7 @@ class PostServiceTest {
         @DisplayName("제목이 20자 이상인 경우 수정에 실패한다.")
         void updateFailByTitleLength() {
             // given
-            PostDto postDto = new PostDto(1L, "test", "test Contents");
+            PostCreateDto postDto = new PostCreateDto(1L, "test", "test Contents");
             Long savedId = postService.save(postDto);
 
             PostUpdateDto postUpdateDto = new PostUpdateDto(1L, "testtesttesttesttesttesttest", "test Contents");
@@ -204,7 +204,7 @@ class PostServiceTest {
         @DisplayName("제목이 null이거나 빈 공백인 경우 수정에 실패한다.")
         void updateFailByTitleNullOrBlank(String input) {
             // given
-            PostDto postDto = new PostDto(1L, "test", "test Contents");
+            PostCreateDto postDto = new PostCreateDto(1L, "test", "test Contents");
             Long savedId = postService.save(postDto);
 
             PostUpdateDto postUpdateDto = new PostUpdateDto(1L, input, "test Contents");
@@ -221,7 +221,7 @@ class PostServiceTest {
         @DisplayName("내용이 null이거나 빈 공백인 경우 실패한다.")
         void updateFailByContents(String input) {
             // given
-            PostDto postDto = new PostDto(1L, "test", "test Contents");
+            PostCreateDto postDto = new PostCreateDto(1L, "test", "test Contents");
             Long savedId = postService.save(postDto);
 
             PostUpdateDto postUpdateDto = new PostUpdateDto(1L, "title", input);
@@ -236,7 +236,7 @@ class PostServiceTest {
         @DisplayName("존재하지 않는 유저가 글을 수정하는 경우 예외를 발생시킨다.")
         void updateFailWithAnonymousUser() {
             // given
-            PostDto postDto = new PostDto(1L, "test", "test Contents");
+            PostCreateDto postDto = new PostCreateDto(1L, "test", "test Contents");
             Long savedId = postService.save(postDto);
 
             PostUpdateDto postUpdateDto = new PostUpdateDto(0L, "title update", "test Contents update");

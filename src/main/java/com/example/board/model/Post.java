@@ -1,6 +1,6 @@
 package com.example.board.model;
 
-import com.example.board.dto.PostDto;
+import com.example.board.dto.PostCreateDto;
 import com.example.board.dto.PostUpdateDto;
 import com.example.board.exception.BaseException;
 import com.example.board.exception.ErrorMessage;
@@ -33,7 +33,7 @@ public class Post extends BaseEntity {
     @Column(name = "created_by")
     private String createdBy;
 
-    private Post(User user, PostDto postDto) {
+    private Post(User user, PostCreateDto postDto) {
         postSaveValidate(user, postDto);
         this.user = user;
         this.title = postDto.title();
@@ -41,7 +41,7 @@ public class Post extends BaseEntity {
         this.createdBy = user.getName();
     }
 
-    public static Post from(User user, PostDto postDto) {
+    public static Post from(User user, PostCreateDto postDto) {
         return new Post(user, postDto);
     }
 
@@ -52,7 +52,7 @@ public class Post extends BaseEntity {
         return this.id;
     }
 
-    private static void postSaveValidate(User user, PostDto postDto) {
+    private static void postSaveValidate(User user, PostCreateDto postDto) {
         if (user == null) {
             throw new BaseException(ErrorMessage.USER_NOT_FOUND);
         }

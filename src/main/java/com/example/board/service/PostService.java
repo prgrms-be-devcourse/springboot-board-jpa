@@ -1,7 +1,7 @@
 package com.example.board.service;
 
 import com.example.board.dto.PostDetailResponseDto;
-import com.example.board.dto.PostDto;
+import com.example.board.dto.PostCreateDto;
 import com.example.board.dto.PostResponseDto;
 import com.example.board.dto.PostUpdateDto;
 import com.example.board.exception.BaseException;
@@ -23,7 +23,7 @@ public class PostService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long save(PostDto postDto) {
+    public Long save(PostCreateDto postDto) {
         User user = userRepository.findById(postDto.userId()).orElseThrow(() ->
                 new BaseException(ErrorMessage.USER_NOT_FOUND)
         );

@@ -1,6 +1,6 @@
 package com.example.board.model;
 
-import com.example.board.dto.PostDto;
+import com.example.board.dto.PostCreateDto;
 import com.example.board.dto.PostUpdateDto;
 import com.example.board.exception.BaseException;
 import com.example.board.exception.ErrorMessage;
@@ -29,7 +29,7 @@ class PostTest {
     void setup(){
         when(mockUser.getId()).thenReturn(1L);
         when(mockUser.getName()).thenReturn("mockUser");
-        featurePost = Post.from(mockUser, new PostDto(mockUser.getId(), "title", "contents"));
+        featurePost = Post.from(mockUser, new PostCreateDto(mockUser.getId(), "title", "contents"));
     }
     @Nested
     @DisplayName("Post save 시 생성하는 객체 유효성 검사 테스트")
@@ -43,7 +43,7 @@ class PostTest {
         @DisplayName("post 생성 시 정상적으로 저장을 위한 Post 객체가 생성되는 경우")
         void saveEntitySuccess() {
             // given
-            PostDto postDto = new PostDto(mockUser.getId(), "title", "contents");
+            PostCreateDto postDto = new PostCreateDto(mockUser.getId(), "title", "contents");
 
             //when
             Post post = Post.from(mockUser, postDto);
@@ -57,7 +57,7 @@ class PostTest {
         @Test
         @DisplayName("post 생성 시 User 객체가 null 값이라 불러올 수 없는 경우")
         void saveEntityFailWithNullUser() {
-            PostDto postDto = new PostDto(mockUser.getId(), "title", "contents");
+            PostCreateDto postDto = new PostCreateDto(mockUser.getId(), "title", "contents");
             mockUser = null;
 
             //when
@@ -74,7 +74,7 @@ class PostTest {
         @DisplayName("post 생성 시 제목이 null, 빈 공백, 20자 이상인 경우 post 객체 생성에 실패한다.")
         void saveEntityFailWithInvalidTitle(String input) {
             // given
-            PostDto postDto = new PostDto(1L, input, "test Contents");
+            PostCreateDto postDto = new PostCreateDto(1L, input, "test Contents");
 
             // when, then
             assertThatThrownBy(() -> Post.from(mockUser, postDto))
@@ -88,7 +88,7 @@ class PostTest {
         @DisplayName("post 생성 시 본문 내용이 null, 빈 공백인 경우 post 객체 생성에 실패한다.")
         void saveEntityFailWithInvalidContents(String input) {
             // given
-            PostDto postDto = new PostDto(1L, "title", input);
+            PostCreateDto postDto = new PostCreateDto(1L, "title", input);
 
             // when, then
             assertThatThrownBy(() -> Post.from(mockUser, postDto))
@@ -103,7 +103,7 @@ class PostTest {
         void saveEntityFailWithInvalidUserName(String input) {
             // given
             when(mockUser.getName()).thenReturn(input);
-            PostDto postDto = new PostDto(mockUser.getId(), "title", "contents");
+            PostCreateDto postDto = new PostCreateDto(mockUser.getId(), "title", "contents");
 
             //when
             assertThatThrownBy(() -> Post.from(mockUser, postDto))
@@ -132,7 +132,7 @@ class PostTest {
             when(mockUser.getId()).thenReturn(1L);
             when(mockUser.getName()).thenReturn("mock user");
 
-            PostDto postDto = new PostDto(mockUser.getId(), "title", "contents");
+            PostCreateDto postDto = new PostCreateDto(mockUser.getId(), "title", "contents");
 
             //when
             Post post = Post.from(mockUser, postDto);
