@@ -130,7 +130,6 @@ public class PostControllerTest {
                 .andExpect(jsonPath("$.userId").value(userId))
                 .andDo(document("insert-post",
                         requestFields(
-                                fieldWithPath("postId").type(JsonFieldType.NUMBER).description(2L),
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목2"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용2"),
                                 fieldWithPath("userId").type(JsonFieldType.NUMBER).description(userId)
