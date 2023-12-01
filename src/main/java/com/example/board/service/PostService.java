@@ -50,6 +50,5 @@ public class PostService {
             throw new BaseException(ErrorMessage.WRITER_NOT_MATCHED);
         }
         return post.update(postUpdateDto);
-
     }
 }
