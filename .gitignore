@@ -223,3 +223,4 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/gradle,java,macos,windows,visualstudiocode,intellij+all
 
 .idea/
+HELP.md
