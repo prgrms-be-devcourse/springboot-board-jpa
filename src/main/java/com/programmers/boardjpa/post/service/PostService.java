@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PostService {
-    private final PostMapper postMapper;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
@@ -31,7 +30,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND, id));
 
-        return postMapper.toPostResponseDto(post);
+        return PostMapper.toPostResponseDto(post);
     }
 
     @Transactional
@@ -39,11 +38,11 @@ public class PostService {
         User user = userRepository.findById(postInsertRequestDto.userId())
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND, postInsertRequestDto.userId()));
 
-        Post post = postMapper.postInsertRequestDtoToPost(postInsertRequestDto, user);
+        Post post = PostMapper.postInsertRequestDtoToPost(postInsertRequestDto, user);
 
         postRepository.save(post);
 
-        return postMapper.toPostResponseDto(post);
+        return PostMapper.toPostResponseDto(post);
     }
 
     @Transactional
@@ -53,12 +52,12 @@ public class PostService {
 
         post.changeTitleAndContent(postUpdateRequestDto.title(), postUpdateRequestDto.content());
 
-        return postMapper.toPostResponseDto(post);
+        return PostMapper.toPostResponseDto(post);
     }
 
     public PostPageResponseDto getPosts(PageRequest pageRequest) {
         Page<Post> postList = postRepository.findAllWithUser(pageRequest);
 
-        return postMapper.toPostPageResponseDto(postList);
+        return PostMapper.toPostPageResponseDto(postList);
     }
 }

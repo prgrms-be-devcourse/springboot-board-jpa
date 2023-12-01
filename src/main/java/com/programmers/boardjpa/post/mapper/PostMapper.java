@@ -6,14 +6,12 @@ import com.programmers.boardjpa.post.dto.PostResponseDto;
 import com.programmers.boardjpa.post.entity.Post;
 import com.programmers.boardjpa.user.entity.User;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class PostMapper {
 
-    public PostResponseDto toPostResponseDto(Post post) {
+    public static PostResponseDto toPostResponseDto(Post post) {
         return PostResponseDto.builder()
                 .postId(post.getId())
                 .content(post.getContent())
@@ -24,8 +22,8 @@ public class PostMapper {
                 .build();
     }
 
-    public PostPageResponseDto toPostPageResponseDto(Page<Post> postList) {
-        List<PostResponseDto> data = postList.map(this::toPostResponseDto).toList();
+    public static PostPageResponseDto toPostPageResponseDto(Page<Post> postList) {
+        List<PostResponseDto> data = postList.map(PostMapper::toPostResponseDto).toList();
 
         return PostPageResponseDto.builder()
                 .data(data)
@@ -34,7 +32,7 @@ public class PostMapper {
                 .build();
     }
 
-    public Post postInsertRequestDtoToPost(PostInsertRequestDto postInsertRequestDto, User user) {
+    public static Post postInsertRequestDtoToPost(PostInsertRequestDto postInsertRequestDto, User user) {
         return Post.builder()
                 .title(postInsertRequestDto.title())
                 .content(postInsertRequestDto.content())
