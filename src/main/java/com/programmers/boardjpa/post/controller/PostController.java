@@ -23,8 +23,8 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostResponseDto>> getPosts(Pageable pageable) {
-        return ResponseEntity.ok(postService.getPosts(pageable));
+    public ResponseEntity<PostPageResponseDto> getPosts(@RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(postService.getPosts(PageRequest.of(page, size)));
     }
 
     @PostMapping
