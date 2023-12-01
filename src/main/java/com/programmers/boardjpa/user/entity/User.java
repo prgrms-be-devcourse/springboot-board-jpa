@@ -29,11 +29,10 @@ public class User extends BaseEntity {
     private int age;
 
     @Column(name = "hobby")
-    @Enumerated(EnumType.STRING)
-    private Hobby hobby;
+    private String hobby;
 
     @Builder
-    public User(String name, int age, Hobby hobby) {
+    public User(String name, int age, String hobby) {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
