@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<Response<?>> baseExceptionHandle(BaseException e) {
         log.info("error: {}", e.getMessage());
