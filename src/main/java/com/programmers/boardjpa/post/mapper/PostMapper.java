@@ -24,6 +24,7 @@ public class PostMapper {
         return Post.builder()
                 .title(postInsertRequestDto.title())
                 .content(postInsertRequestDto.content())
+                .user(user)
                 .build();
     }
 }

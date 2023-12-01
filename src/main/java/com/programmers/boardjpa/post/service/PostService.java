@@ -9,6 +9,8 @@ import com.programmers.boardjpa.post.exception.PostException;
 import com.programmers.boardjpa.post.mapper.PostMapper;
 import com.programmers.boardjpa.post.repository.PostRepository;
 import com.programmers.boardjpa.user.entity.User;
+import com.programmers.boardjpa.user.exception.UserErrorCode;
+import com.programmers.boardjpa.user.exception.UserException;
 import com.programmers.boardjpa.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +37,7 @@ public class PostService {
     @Transactional
     public PostResponseDto insertPost(PostInsertRequestDto postInsertRequestDto) {
         User user = userRepository.findById(postInsertRequestDto.userId())
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 user가 존재하지 않습니다. ID : " + postInsertRequestDto.userId()));
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND, postInsertRequestDto.userId()));
 
         Post post = postMapper.postInsertRequestDtoToPost(postInsertRequestDto, user);
 

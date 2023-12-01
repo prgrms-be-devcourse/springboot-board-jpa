@@ -33,11 +33,4 @@ public class User extends BaseEntity {
         this.age = age;
         this.hobby = hobby;
     }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Post> posts = new ArrayList<>();
-
-    public void addPost(Post post) {
-        post.addUser(this);
-    }
 }
