@@ -40,20 +40,20 @@ public class PostController {
 
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<PostResponse>>> getPosts(
-		@RequestParam(required = false, value = "page", defaultValue = "1") Integer page) {
+		@RequestParam(required = false, value = "page", defaultValue = "1") Integer page) { // todo : Pageable 적용
 		List<PostResponse> postResponses = postService.getPosts(page);
 		return ResponseEntity.ok(ApiResponse.ok(postResponses));
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest) {
+	public ResponseEntity<ApiResponse<PostResponse>> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest) {
 		PostResponse post = postService.createPost(postCreateRequest);
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequestUri()
 			.path("/{id}")
 			.buildAndExpand(post.postId())
 			.toUri();
-		return ResponseEntity.created(location).build();
+		return ResponseEntity.created(location).body(ApiResponse.created(post));
 	}
 
 	@PutMapping("/{id}")
