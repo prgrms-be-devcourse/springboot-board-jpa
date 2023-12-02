@@ -3,7 +3,6 @@ package com.programmers.springboard.controller;
 import java.net.URI;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,7 +69,6 @@ public class MemberController {
 	@DeleteMapping
 	public ResponseEntity<ApiResponse<Void>> deleteMembers(@RequestParam List<Long> ids) {
 		memberService.deleteMembers(ids);
-		ApiResponse<Void> response = ApiResponse.noContent();
-		return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+		return ResponseEntity.ok(ApiResponse.noContent());
 	}
 }

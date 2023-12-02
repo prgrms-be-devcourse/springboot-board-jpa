@@ -1,16 +1,14 @@
 package com.programmers.springboard.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
 public class CustomException extends RuntimeException {
-	private int code;
-	private String message;
+	private final String code;
 
-	@Override
-	public String getMessage() {
-		return message;
+	public CustomException(String code, String message) {
+		super(message);
+		this.code = code;
 	}
+
 }

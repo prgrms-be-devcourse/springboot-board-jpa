@@ -2,6 +2,6 @@ package com.programmers.springboard.exception;
 
 public class PostNotFoundException extends CustomException {
 	public PostNotFoundException() {
-		super(4002, "post not found");
+		super("ERR400002", "Post not found");
 	}
 }

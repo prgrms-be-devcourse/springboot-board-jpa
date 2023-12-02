@@ -3,7 +3,6 @@ package com.programmers.springboard.request;
 import com.programmers.springboard.entity.Member;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record MemberCreateRequest(
@@ -17,10 +16,7 @@ public record MemberCreateRequest(
 
 	@NotBlank(message = "비밀번호를 입력하세요")
 	@Size(max = 30, message = "비밀번호는 30자 미만입니다.")
-	String password,
-
-	@NotNull(message = "그룹 아이디를 입력해주세요")
-	Long groupId
+	String password
 ) {
 	public Member toEntity() {
 		return new Member(name, loginId, password);

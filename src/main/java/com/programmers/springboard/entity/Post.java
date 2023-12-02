@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Where(clause = "is_deleted = FALSE")
 public class Post extends BaseEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
