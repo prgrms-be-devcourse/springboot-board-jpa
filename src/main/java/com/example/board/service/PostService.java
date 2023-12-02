@@ -31,7 +31,6 @@ public class PostService {
     }
 
     public PageResponse<PostResponse> getPosts(PostSearchCondition condition, PageCondition pageCondition) {
-        pageCondition.updateValidPageCondition(); //? 질문
         Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
         Page<PostResponse> posts = postRepository.findAll(condition, pageable).map(PostConverter::toPostResponse);
         return PageResponse.of(posts);
