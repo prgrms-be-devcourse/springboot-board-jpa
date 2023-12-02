@@ -6,16 +6,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 public class Member extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,14 +21,23 @@ public class Member extends BaseEntity {
 	@Column(name = "name", nullable = false, length = 30)
 	private String name;
 
-	@Column(name = "age", nullable = false)
-	private int age;
+	@Column(name = "login_id", nullable = false)
+	private String loginId;
 
-	@Column(name = "hobby")
-	private String hobby;
+	@Column(name = "password")
+	private String password;
 
-	public void updateMemberNameAndHobby(String name, String hobby) {
+	@Column(name = "role")
+	private Role role;
+
+	public Member(String name, String loginId, String password) {
 		this.name = name;
-		this.hobby = hobby;
+		this.loginId = loginId;
+		this.password = password;
+		this.role = Role.ROLE_USER;
+	}
+
+	public void changePassword(String password) {
+		this.password = password;
 	}
 }

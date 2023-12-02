@@ -9,7 +9,9 @@ import com.programmers.springboard.entity.Member;
 import com.programmers.springboard.exception.MemberNotFoundException;
 import com.programmers.springboard.repository.MemberRepository;
 import com.programmers.springboard.request.MemberCreateRequest;
+import com.programmers.springboard.request.MemberLoginRequest;
 import com.programmers.springboard.request.MemberUpdateRequest;
+import com.programmers.springboard.response.MemberLoginResponse;
 import com.programmers.springboard.response.MemberResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -23,10 +25,12 @@ public class MemberService {
 
 	private final MemberRepository memberRepository;
 
-	@Transactional(readOnly = true)
-	public List<MemberResponse> getMembers() {
-		List<Member> members = memberRepository.findAll();
-		return members.stream().map(MemberResponse::of).toList();
+	public MemberLoginResponse login(MemberLoginRequest request) {
+		// JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(request.loginId(), request.password());
+		// Authentication authenticated = authenticationManager.authenticate(authenticationToken);
+		// JwtAuthentication authentication = (JwtAuthentication)authenticated.getPrincipal();
+		// Member member = (Member)authenticated.getDetails();
+		return new MemberLoginResponse("token", 1L, List.of("group"));
 	}
 
 	@Transactional(readOnly = true)
@@ -37,24 +41,20 @@ public class MemberService {
 	}
 
 	public MemberResponse createMember(MemberCreateRequest request) {
-		Member member = memberRepository.save(Member.builder()
-			.name(request.name())
-			.age(request.age())
-			.hobby(request.hobby())
-			.build());
-		return MemberResponse.of(member);
+		Member savedMember = memberRepository.save(request.toEntity());
+		return MemberResponse.of(savedMember);
 	}
 
 	public MemberResponse updateMember(Long id, MemberUpdateRequest request) {
 		Member member = memberRepository.findById(id)
 			.orElseThrow(MemberNotFoundException::new);
-		member.updateMemberNameAndHobby(request.name(), request.hobby());
+		member.changePassword(request.password());
 		return MemberResponse.of(member);
 	}
 
-	public void deleteMember(Long id) {
-		Member member = memberRepository.findById(id)
-			.orElseThrow(MemberNotFoundException::new);
-		memberRepository.delete(member);
+	public void deleteMembers(List<Long> ids) {
+		List<Member> members = memberRepository.findAllById(ids);  // todo : 만약 없는 회원이라면?
+		memberRepository.deleteAll(members);
 	}
+
 }

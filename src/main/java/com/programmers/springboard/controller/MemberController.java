@@ -3,6 +3,7 @@ package com.programmers.springboard.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.programmers.springboard.request.MemberCreateRequest;
+import com.programmers.springboard.request.MemberLoginRequest;
 import com.programmers.springboard.request.MemberUpdateRequest;
+import com.programmers.springboard.response.ApiResponse;
+import com.programmers.springboard.response.MemberLoginResponse;
 import com.programmers.springboard.response.MemberResponse;
 import com.programmers.springboard.service.MemberService;
 
@@ -32,40 +36,41 @@ public class MemberController {
 		this.memberService = memberService;
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<MemberResponse> getMember(@PathVariable Long id) {
-		MemberResponse memberResponse = memberService.getMemberById(id);
-		return ResponseEntity.ok(memberResponse);
+	@PostMapping("/sign-in")
+	public ResponseEntity<ApiResponse<MemberLoginResponse>> login(@Valid @RequestBody MemberLoginRequest request) {
+		MemberLoginResponse response = memberService.login(request);
+		return ResponseEntity.ok(ApiResponse.ok(response));
 	}
 
-	@GetMapping
-	public ResponseEntity<List<MemberResponse>> getMembers(
-		@RequestParam(required = false, value = "page", defaultValue = "1") Integer page) {
-		List<MemberResponse> memberResponseList = memberService.getMembers();
-		return ResponseEntity.ok(memberResponseList);
+	@GetMapping("/{id}")
+	public ResponseEntity<ApiResponse<MemberResponse>> getMember(@PathVariable Long id) {
+		MemberResponse memberResponse = memberService.getMemberById(id);
+		return ResponseEntity.ok(ApiResponse.ok(memberResponse));
 	}
 
 	@PostMapping
-	public ResponseEntity<MemberResponse> createMember(@Valid @RequestBody MemberCreateRequest memberCreateRequest) {
+	public ResponseEntity<ApiResponse<MemberResponse>> createMember(
+		@Valid @RequestBody MemberCreateRequest memberCreateRequest) {
 		MemberResponse member = memberService.createMember(memberCreateRequest);
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequestUri()
 			.path("/{id}")
 			.buildAndExpand(member.id())
 			.toUri();
-		return ResponseEntity.created(location).build();
+		return ResponseEntity.created(location).body(ApiResponse.created(member));
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<MemberResponse> updateMember(@PathVariable Long id,
+	public ResponseEntity<ApiResponse<MemberResponse>> updateMember(@PathVariable Long id,
 		@Valid @RequestBody MemberUpdateRequest memberUpdateRequest) {
 		MemberResponse member = memberService.updateMember(id, memberUpdateRequest);
-		return ResponseEntity.ok().body(member);
+		return ResponseEntity.ok(ApiResponse.ok(member));
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
-		memberService.deleteMember(id);
-		return ResponseEntity.noContent().build();
+	@DeleteMapping
+	public ResponseEntity<ApiResponse<Void>> deleteMembers(@RequestParam List<Long> ids) {
+		memberService.deleteMembers(ids);
+		ApiResponse<Void> response = ApiResponse.noContent();
+		return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
 	}
 }
