@@ -2,10 +2,7 @@ package com.example.board.service;
 
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
-import com.example.board.dto.request.post.CreatePostRequest;
-import com.example.board.dto.request.post.DeletePostRequest;
-import com.example.board.dto.request.post.PostSearchCondition;
-import com.example.board.dto.request.post.UpdatePostRequest;
+import com.example.board.dto.request.post.*;
 import com.example.board.dto.response.ResponseStatus;
 import com.example.board.exception.CustomException;
 import com.example.board.repository.post.PostRepository;
@@ -59,12 +56,13 @@ class PostServiceTest {
     @Test
     void 게시글_목록을_조회할_수_있다() {
         // given
-        Pageable pageable = PageRequest.of(1, 1);
+        PageCondition pageCondition = new PageCondition(1, 1);
+        Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
         PostSearchCondition condition = new PostSearchCondition(null, null, null);
         given(postRepository.findAll(eq(condition), eq(pageable))).willReturn(new PageImpl<>(Collections.emptyList(), pageable, 0));
 
         // when
-        postService.getPosts(condition, pageable);
+        postService.getPosts(condition, pageCondition);
 
         // then
         verify(postRepository).findAll(eq(condition), eq(pageable));

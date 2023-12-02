@@ -7,8 +7,6 @@ import com.example.board.dto.response.PostResponse;
 import com.example.board.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +39,7 @@ public class PostController {
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<PostResponse>>> getPosts(@ModelAttribute @Valid PostSearchCondition searchCondition,
                                                                             @ModelAttribute @Valid PageCondition pageCondition) {
-        pageCondition.updateValidPageCondition(); //? 질문
-        Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
-        PageResponse<PostResponse> post = postService.getPosts(searchCondition, pageable);
+        PageResponse<PostResponse> post = postService.getPosts(searchCondition, pageCondition);
         return ResponseEntity.ok(ApiResponse.success(post));
     }
 
