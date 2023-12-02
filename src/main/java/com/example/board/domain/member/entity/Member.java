@@ -1,16 +1,14 @@
 package com.example.board.domain.member.entity;
 
 import com.example.board.domain.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -25,6 +23,9 @@ public class Member extends BaseEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -34,11 +35,20 @@ public class Member extends BaseEntity {
     @Column(name = "hobby", nullable = false)
     private String hobby;
 
-    public Member(String email, String name, int age, String hobby) {
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public Member(String email, String name,  int age, String hobby) {
         this.email = email;
         this.name = name;
+        this.password = "test1234!";
         this.age = age;
         this.hobby = hobby;
+        this.role = Role.ROLE_USER;
+    }
+
+    public List<GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     public void updateNameAndHobby(String name, String hobby) {
