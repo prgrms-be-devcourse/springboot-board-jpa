@@ -21,12 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final RedisService redisService;
 
     @Transactional
     public Long save(PostCreateDto postDto) {
         User user = userRepository.findById(postDto.userId()).orElseThrow(() ->
                 new BaseException(ErrorMessage.USER_NOT_FOUND)
         );
+        redisService.postInfoChecking(user);
         return postRepository.save(Post.from(user, postDto)).getId();
     }
 
