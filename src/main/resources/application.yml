@@ -7,7 +7,16 @@ server:
 
 spring:
   profiles:
-    default: prod
+    default: dev
+
+jwt:
+  #  header: token
+  issuer: prgrms
+  access-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  access-expiry-seconds: 30000
+  refresh-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  refresh-expiry-seconds: 60000
+
 ---
 
 spring:
@@ -19,6 +28,10 @@ spring:
     url: jdbc:h2:~/board;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   jpa:
     hibernate:
       ddl-auto: create-drop

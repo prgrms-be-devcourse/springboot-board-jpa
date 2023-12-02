@@ -8,6 +8,7 @@ import com.example.board.exception.ErrorCode;
 import com.example.board.repository.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -24,16 +25,18 @@ class UserServiceTest {
 
     private final UserRepository userRepository;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     public UserServiceTest() {
         this.userRepository = Mockito.mock(UserRepository.class);
-        this.userService = new UserService(userRepository);
+        this.passwordEncoder = mock(PasswordEncoder.class);
+        this.userService = new UserService(userRepository, passwordEncoder);
     }
 
     @Test
     void 유저를_생성한다() {
         // given
-        CreateUserRequest requestDto = new CreateUserRequest("빙봉", 30, "러닝");
+        CreateUserRequest requestDto = new CreateUserRequest("빙봉", "password", 30, "러닝");
         User user = generateUser();
         given(userRepository.save(any(User.class))).willReturn(user);
 
@@ -47,7 +50,7 @@ class UserServiceTest {
     @Test
     void 중복된_이름의_유저를_생성할_수_없다() {
         // given
-        CreateUserRequest requestDto = new CreateUserRequest("빙봉", 30, "러닝");
+        CreateUserRequest requestDto = new CreateUserRequest("빙봉", "password", 30, "러닝");
         User user = generateUser();
 
         given(userRepository.findByNameAndDeletedAt(any(String.class), eq(null))).willReturn(Collections.singletonList(user));

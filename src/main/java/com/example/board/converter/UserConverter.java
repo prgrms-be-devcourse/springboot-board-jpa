@@ -4,12 +4,14 @@ import com.example.board.domain.User;
 import com.example.board.dto.request.user.CreateUserRequest;
 import com.example.board.dto.response.AuthorResponse;
 import com.example.board.dto.response.UserResponse;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserConverter {
 
-    public static User toUser(CreateUserRequest requestDto) {
+    public static User toUser(CreateUserRequest requestDto, PasswordEncoder passwordEncoder) {
         return User.builder()
                 .name(requestDto.name())
+                .password(passwordEncoder.encode(requestDto.password()))
                 .age(requestDto.age())
                 .hobby(requestDto.hobby())
                 .build();

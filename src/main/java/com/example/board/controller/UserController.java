@@ -1,6 +1,8 @@
 package com.example.board.controller;
 
 import com.example.board.dto.request.user.CreateUserRequest;
+import com.example.board.dto.request.user.SignInRequest;
+import com.example.board.dto.request.user.SignInResponse;
 import com.example.board.dto.request.user.UpdateUserRequest;
 import com.example.board.dto.response.ApiResponse;
 import com.example.board.dto.response.UserResponse;
@@ -20,6 +22,11 @@ import java.net.URI;
 public class UserController {
 
     private final UserService userService;
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<ApiResponse<SignInResponse>> signIn(@RequestBody @Valid SignInRequest requestDto) {
+        return ResponseEntity.ok().body(ApiResponse.success(HttpStatus.OK, userService.signIn(requestDto)));
+    }
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> createPost(@RequestBody @Valid CreateUserRequest requestDto) {

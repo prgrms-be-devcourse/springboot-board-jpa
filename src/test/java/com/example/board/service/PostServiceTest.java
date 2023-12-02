@@ -2,20 +2,16 @@ package com.example.board.service;
 
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
-import com.example.board.dto.request.post.CreatePostRequest;
-import com.example.board.dto.request.post.DeletePostRequest;
-import com.example.board.dto.request.post.PostSearchCondition;
-import com.example.board.dto.request.post.UpdatePostRequest;
+import com.example.board.dto.request.post.*;
 import com.example.board.exception.CustomException;
 import com.example.board.exception.ErrorCode;
 import com.example.board.repository.post.PostRepository;
 import com.example.board.repository.user.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -46,7 +42,7 @@ class PostServiceTest {
         User author = generateAuthor();
         Post post = generatePost();
         CreatePostRequest requestDto = new CreatePostRequest("마라톤 꿀팁", "매일매일 달리세요", author.getId());
-        given(userService.getAvailableUser(eq(author.getId()))).willReturn(author);
+        given(userService.getAvailableUserById(eq(author.getId()))).willReturn(author);
         given(postRepository.save(any(Post.class))).willReturn(post);
 
         // when
@@ -59,15 +55,17 @@ class PostServiceTest {
     @Test
     void 게시글_목록을_조회할_수_있다() {
         // given
-        Pageable pageable = PageRequest.of(1, 1);
-        PostSearchCondition condition = new PostSearchCondition(null, null, null);
-        given(postRepository.findAll(eq(condition), eq(pageable))).willReturn(new PageImpl<>(Collections.emptyList(), pageable, 0));
+        PostSearchCondition searchCondition = new PostSearchCondition(null, null, null);
+        PageCondition pageCondition = new PageCondition(1, 1);
+        Pageable pageable = PageRequest.of(pageCondition.getPage(), pageCondition.getSize());
+        given(postRepository.findAll(eq(searchCondition), eq(pageable))).willReturn(List.of());
+        given(postRepository.countAll(eq(searchCondition))).willReturn(0L);
 
         // when
-        postService.getPosts(condition, pageable);
+        postService.getPosts(searchCondition, pageCondition);
 
         // then
-        verify(postRepository).findAll(eq(condition), eq(pageable));
+        verify(postRepository).findAll(eq(searchCondition), eq(pageable));
     }
 
     @Test

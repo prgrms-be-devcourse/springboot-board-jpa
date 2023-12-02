@@ -35,4 +35,13 @@ public class Post extends BaseEntity {
     public Boolean isSameAuthorId(Long authorId) {
         return author.getId().equals(authorId);
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

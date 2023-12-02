@@ -1,15 +1,26 @@
 ### 유저 생성
-POST http://localhost:8080/v1/users
+POST http://localhost:8080/api/v1/users
 Content-Type: application/json
 
 {
-  "name": "빙봉빙",
+  "name": "bingbong",
+  "password": "123123123",
   "age": 30
 }
 
-### 게시글 생성
-POST http://localhost:8080/v1/posts
+### 유저 로그인
+POST http://localhost:8080/api/v1/users/sign-in
 Content-Type: application/json
+
+{
+  "name": "bingbong",
+  "password": "123123123"
+}
+
+### 게시글 생성
+POST http://localhost:8080/api/v1/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE1MTcyNzMsImV4cCI6MTcwMTU0NzI3MywibmFtZSI6ImJpbmdib25nIiwicm9sZXMiOlsiVVNFUiJdfQ.9DtT7Vi_luOJiE8WLkd1f2Pz5lfFYhx_RrpgLVbXtrCYIaa0MzD00uxMsQAvJEflxMkApROj7T5Fi81iT9X4zg
 
 {
   "title": "제목 111",
@@ -18,7 +29,7 @@ Content-Type: application/json
 }
 
 ### 게시글 생성
-POST http://localhost:8080/v1/posts
+POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
 
 {
@@ -28,7 +39,7 @@ Content-Type: application/json
 }
 
 ### 게시글 생성
-POST http://localhost:8080/v1/posts
+POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
 
 {
@@ -38,7 +49,7 @@ Content-Type: application/json
 }
 
 ### 게시글 생성
-POST http://localhost:8080/v1/posts
+POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
 
 {
@@ -48,7 +59,7 @@ Content-Type: application/json
 }
 
 ### 잘못된 게시글 생성
-POST http://localhost:8080/v1/posts
+POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
 
 {
@@ -58,4 +69,4 @@ Content-Type: application/json
 }
 
 ### 게시글 전체 조회
-GET http://localhost:8080/v1/posts?page=-1&size=-1
+GET http://localhost:8080/api/v1/posts?page=-1&size=-1

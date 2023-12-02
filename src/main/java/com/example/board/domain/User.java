@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users", indexes = @Index(name = "idx_name", columnList = "name"))
+@Table(name = "users", indexes = @Index(name = "idx_user_name", columnList = "name"))
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,6 +21,9 @@ public class User extends BaseEntity {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @Column(name = "age", nullable = false)
     private Integer age;
@@ -47,5 +50,17 @@ public class User extends BaseEntity {
 
     public boolean isDeleted() {
         return this.deletedAt != null;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", age=" + age +
+                ", hobby='" + hobby + '\'' +
+                ", deletedAt=" + deletedAt +
+                '}';
     }
 }

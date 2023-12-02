@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -32,12 +33,14 @@ class UserControllerTest {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    UserControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, UserRepository userRepository) {
+    UserControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @AfterEach
@@ -48,7 +51,7 @@ class UserControllerTest {
     @Test
     void 유저를_생성한다() throws Exception {
         // given
-        CreateUserRequest requestDto = new CreateUserRequest("빙봉씨", 30, "러닝");
+        CreateUserRequest requestDto = new CreateUserRequest("빙봉씨", "password", 30, "러닝");
 
         // when & then
         mockMvc.perform(post("/v1/users")
@@ -75,9 +78,9 @@ class UserControllerTest {
     @Test
     void 유저를_조회한다() throws Exception {
         // given
-        CreateUserRequest requestDto = new CreateUserRequest("삥뽕씨", 30, "러닝");
+        CreateUserRequest requestDto = new CreateUserRequest("삥뽕씨", "password", 30, "러닝");
 
-        User user = userRepository.save(UserConverter.toUser(requestDto));
+        User user = userRepository.save(UserConverter.toUser(requestDto, passwordEncoder));
 
         // when & then
         mockMvc.perform(get("/v1/users/{id}", user.getId()))
@@ -104,8 +107,8 @@ class UserControllerTest {
     @Test
     void 유저를_수정한다() throws Exception {
         // given
-        CreateUserRequest createDto = new CreateUserRequest("빙봉씨", 20, "러닝");
-        User user = userRepository.save(UserConverter.toUser(createDto));
+        CreateUserRequest createDto = new CreateUserRequest("빙봉씨", "password", 20, "러닝");
+        User user = userRepository.save(UserConverter.toUser(createDto, passwordEncoder));
 
         UpdateUserRequest updateDto = new UpdateUserRequest("삥뽕씨", 30, "러닝");
 
@@ -131,9 +134,9 @@ class UserControllerTest {
     @Test
     void 유저를_삭제한다() throws Exception {
         // given
-        CreateUserRequest createDto = new CreateUserRequest("삥뽕씨", 20, "러닝");
+        CreateUserRequest createDto = new CreateUserRequest("삥뽕씨", "password", 20, "러닝");
 
-        User user = userRepository.save(UserConverter.toUser(createDto));
+        User user = userRepository.save(UserConverter.toUser(createDto, passwordEncoder));
 
         // when & then
         mockMvc.perform(delete("/v1/users/{id}", user.getId()))

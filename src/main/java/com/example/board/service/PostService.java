@@ -28,7 +28,7 @@ public class PostService {
     private final UserService userService;
 
     public Long createPost(CreatePostRequest requestDto) {
-        final User user = userService.getAvailableUser(requestDto.authorId());
+        final User user = userService.getAvailableUserById(requestDto.authorId());
         final Post post = postRepository.save(PostConverter.toPost(requestDto, user));
         return post.getId();
     }
