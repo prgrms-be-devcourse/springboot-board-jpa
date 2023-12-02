@@ -18,16 +18,16 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "age", nullable = false)
     private Integer age;
 
-    @Column
+    @Column(name = "hobby")
     private String hobby;
 
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(name = "deletedAt", columnDefinition = "TIMESTAMP")
     private LocalDateTime deletedAt;
 
     @Builder.Default
