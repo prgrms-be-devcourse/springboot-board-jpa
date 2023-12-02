@@ -6,18 +6,16 @@ import com.example.board.domain.member.dto.MemberUpdateRequest;
 import com.example.board.domain.member.service.MemberService;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
+import com.example.board.global.security.UserService;
+import com.example.board.global.jwt.Jwt;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
@@ -26,6 +24,22 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class MemberController {
 
     private final MemberService memberService;
+    private final UserService userService;
+    private final Jwt jwt;
+
+    @GetMapping("/user/{username}/token")
+    public String getToken(@PathVariable String username) {
+        UserDetails userDetails = userService.loadUserByUsername(username);
+        String[] roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toArray(String[]::new);
+        return jwt.sign(Jwt.Claims.from(userDetails.getUsername(), roles));
+    }
+
+    @GetMapping("/user/token/verify")
+    public Map<String, Object> verify(@RequestHeader("token") String token) {
+        return jwt.verify(token).asMap();
+    }
 
     @PostMapping
     public ResponseEntity<MemberResponse> createMember(@Valid @RequestBody MemberCreateRequest request) {
