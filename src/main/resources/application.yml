@@ -8,6 +8,7 @@ server:
 spring:
   profiles:
     default: dev
+    include: secret
 
 ---
 

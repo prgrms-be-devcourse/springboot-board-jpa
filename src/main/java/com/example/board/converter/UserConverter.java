@@ -1,14 +1,16 @@
 package com.example.board.converter;
 
+import com.example.board.auth.dto.request.SignUpRequest;
 import com.example.board.domain.User;
-import com.example.board.dto.request.user.CreateUserRequest;
 import com.example.board.dto.response.AuthorResponse;
 import com.example.board.dto.response.UserResponse;
 
 public class UserConverter {
 
-    public static User toUser(CreateUserRequest requestDto) {
+    public static User toUser(SignUpRequest requestDto) {
         return User.builder()
+                .email(requestDto.email())
+                .password(requestDto.password())
                 .name(requestDto.name())
                 .age(requestDto.age())
                 .hobby(requestDto.hobby())
