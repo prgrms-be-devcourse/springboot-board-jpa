@@ -10,6 +10,7 @@ public enum ResponseStatus {
 
     // 400 bad request
     BAD_REQUEST(HttpStatus.BAD_REQUEST, 40000, "잘못된 요청입니다."),
+    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, 40001, "입력값이 올바르지 않습니다."),
 
     // 404 not found
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, 40401, "유저를 찾을 수 없습니다."),
