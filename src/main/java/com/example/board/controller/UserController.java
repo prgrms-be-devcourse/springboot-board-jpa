@@ -1,5 +1,6 @@
 package com.example.board.controller;
 
+import com.example.board.annotation.AuthUser;
 import com.example.board.dto.request.user.UpdateUserRequest;
 import com.example.board.dto.response.ApiResponse;
 import com.example.board.dto.response.UserResponse;
@@ -16,6 +17,12 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<UserResponse>> getMyInfo(@AuthUser Long id) {
+        UserResponse response = userService.getUser(id);
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable Long id) {
         UserResponse user = userService.getUser(id);
@@ -27,7 +34,6 @@ public class UserController {
                                                         @RequestBody @Valid UpdateUserRequest requestDto) {
         userService.updateUser(id, requestDto);
         return ResponseEntity.ok(ApiResponse.success());
-
     }
 
     @DeleteMapping("/{id}")
