@@ -65,9 +65,9 @@ class UserControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공 여부"),
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("생성된 유저의 ID"),
-                                fieldWithPath("datetime").type(JsonFieldType.STRING).description("응답 시간")
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("생성된 유저의 ID")
                         )
                 ));
     }
@@ -89,12 +89,12 @@ class UserControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공 여부"),
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
                                 fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("유저 ID"),
                                 fieldWithPath("data.name").type(JsonFieldType.STRING).description("유저 이름"),
                                 fieldWithPath("data.age").type(JsonFieldType.NUMBER).description("유저 나이"),
                                 fieldWithPath("data.hobby").optional().type(JsonFieldType.STRING).description("유저 취미"),
-                                fieldWithPath("datetime").type(JsonFieldType.STRING).description("응답 시간"),
                                 fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("유저 생성 시간"),
                                 fieldWithPath("data.updatedAt").type(JsonFieldType.STRING).description("유저 수정 시간")
                         )
@@ -113,7 +113,7 @@ class UserControllerTest {
         mockMvc.perform(put("/v1/users/{id}", user.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDto)))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andDo(document("user/update",
                         preprocessResponse(prettyPrint()),
                         pathParameters(
@@ -121,8 +121,8 @@ class UserControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공 여부"),
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
-                                fieldWithPath("datetime").type(JsonFieldType.STRING).description("응답 시간"),
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
                                 fieldWithPath("data").type(JsonFieldType.NULL).description("응답 데이터")
                         )
                 ));
@@ -137,7 +137,7 @@ class UserControllerTest {
 
         // when & then
         mockMvc.perform(delete("/v1/users/{id}", user.getId()))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andDo(document("user/delete",
                         preprocessResponse(prettyPrint()),
                         pathParameters(
@@ -145,8 +145,8 @@ class UserControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공 여부"),
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
-                                fieldWithPath("datetime").type(JsonFieldType.STRING).description("응답 시간"),
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
                                 fieldWithPath("data").type(JsonFieldType.NULL).description("응답 데이터")
                         )
                 ));

@@ -1,45 +1,30 @@
 package com.example.board.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
-import org.springframework.http.HttpStatus;
-
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class ApiResponse<T> {
 
-    private Boolean isSuccess;
-    private int statusCode;
-    private T data;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime datetime;
+    private final Boolean isSuccess;
+    private final Integer code;
+    private final String message;
+    private final T data;
 
-    private ApiResponse(Boolean isSuccess, int statusCode) {
-        this.isSuccess = isSuccess;
-        this.statusCode = statusCode;
-        this.datetime = LocalDateTime.now();
+    public static <T> ApiResponse<T> success() {
+        return new ApiResponse<>(true, ResponseStatus.OK.getCode(), ResponseStatus.OK.getMessage(), null);
     }
 
-    private ApiResponse(Boolean isSuccess, int statusCode, T data) {
-        this.isSuccess = isSuccess;
-        this.statusCode = statusCode;
-        this.data = data;
-        this.datetime = LocalDateTime.now();
+    public static <T> ApiResponse<T> success(T data) {
+        return new ApiResponse<>(true, ResponseStatus.OK.getCode(), ResponseStatus.OK.getMessage(), data);
     }
 
-    public static <T> ApiResponse<T> success(HttpStatus status) {
-        return new ApiResponse<>(true, status.value());
+    public static <T> ApiResponse<T> success(ResponseStatus status, T data) {
+        return new ApiResponse<>(true, status.getCode(), status.getMessage(), data);
     }
 
-    public static <T> ApiResponse<T> success(HttpStatus status, T data) {
-        return new ApiResponse<>(true, status.value(), data);
-    }
-
-    public static <T> ApiResponse<T> fail(HttpStatus status, T data) {
-        return new ApiResponse<>(false, status.value(), data);
+    public static <T> ApiResponse<T> fail(ResponseStatus status, T data) {
+        return new ApiResponse<>(false, status.getCode(), status.getMessage(), data);
     }
 }

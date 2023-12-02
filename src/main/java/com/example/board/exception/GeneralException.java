@@ -1,18 +1,19 @@
 package com.example.board.exception;
 
+import com.example.board.dto.response.ResponseStatus;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class GeneralException extends RuntimeException{
-    private ErrorCode errorCode;
+public class GeneralException extends RuntimeException {
+    private ResponseStatus errorResponseStatus;
 
-    public GeneralException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public GeneralException(ResponseStatus errorResponseStatus) {
+        super(errorResponseStatus.getMessage());
+        this.errorResponseStatus = errorResponseStatus;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
+    public ResponseStatus getErrorResponseStatus() {
+        return errorResponseStatus;
     }
 }

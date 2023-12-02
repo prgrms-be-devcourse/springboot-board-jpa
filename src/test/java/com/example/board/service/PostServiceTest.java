@@ -6,8 +6,8 @@ import com.example.board.dto.request.post.CreatePostRequest;
 import com.example.board.dto.request.post.DeletePostRequest;
 import com.example.board.dto.request.post.PostSearchCondition;
 import com.example.board.dto.request.post.UpdatePostRequest;
+import com.example.board.dto.response.ResponseStatus;
 import com.example.board.exception.CustomException;
-import com.example.board.exception.ErrorCode;
 import com.example.board.repository.post.PostRepository;
 import com.example.board.repository.user.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -112,7 +112,7 @@ class PostServiceTest {
         // when & then
         assertThatThrownBy(() -> postService.updatePost(post.getId(), requestDto))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.AUTHOR_NOT_MATCH.getMessage());
+                .hasMessage(ResponseStatus.AUTHOR_NOT_MATCH.getMessage());
     }
 
     @Test
@@ -124,7 +124,7 @@ class PostServiceTest {
         // when & then
         assertThatThrownBy(() -> postService.updatePost(1L, requestDto))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.POST_NOT_FOUND.getMessage());
+                .hasMessage(ResponseStatus.POST_NOT_FOUND.getMessage());
     }
 
     @Test
@@ -150,7 +150,7 @@ class PostServiceTest {
         // when & then
         assertThatThrownBy(() -> postService.deletePost(1L, requestDto))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.POST_NOT_FOUND.getMessage());
+                .hasMessage(ResponseStatus.POST_NOT_FOUND.getMessage());
     }
 
     @Test
@@ -163,7 +163,7 @@ class PostServiceTest {
         // when & then
         assertThatThrownBy(() -> postService.deletePost(post.getId(), requestDto))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.AUTHOR_NOT_MATCH.getMessage());
+                .hasMessage(ResponseStatus.AUTHOR_NOT_MATCH.getMessage());
     }
 
     User generateAuthor() {

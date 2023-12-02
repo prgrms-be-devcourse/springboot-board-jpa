@@ -478,13 +478,13 @@ Host: localhost:8080
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
 Location: http://localhost:8080/v1/posts/2
 Content-Type: application/json;charset=UTF-8
-Content-Length: 98
+Content-Length: 87
 
 {
   "isSuccess" : true,
-  "statusCode" : 201,
-  "data" : 2,
-  "datetime" : "2023-11-25 02:31:56"
+  "code" : 20000,
+  "message" : "요청 성공",
+  "data" : 2
 }</code></pre>
 </div>
 </div>
@@ -509,19 +509,19 @@ Content-Length: 98
 <td class="tableblock halign-left valign-top"><p class="tableblock">성공 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>statusCode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상태 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 메세지</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">응답 데이터</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datetime</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">응답 시간</p></td>
 </tr>
 </tbody>
 </table>
@@ -578,11 +578,12 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 427
+Content-Length: 416
 
 {
   "isSuccess" : true,
-  "statusCode" : 200,
+  "code" : 20000,
+  "message" : "요청 성공",
   "data" : {
     "totalPages" : 1,
     "currentPage" : 1,
@@ -591,14 +592,13 @@ Content-Length: 427
       "id" : 5,
       "title" : "빙봉의 마라톤 꿀팁",
       "content" : "러닝화를 사세요.",
-      "createdAt" : "2023-11-25T02:31:56.908388",
+      "createdAt" : "2023-12-02T14:37:10.153934",
       "author" : {
         "id" : 5,
         "name" : "빙봉씨"
       }
     } ]
-  },
-  "datetime" : "2023-11-25 02:31:56"
+  }
 }</code></pre>
 </div>
 </div>
@@ -623,14 +623,14 @@ Content-Length: 427
 <td class="tableblock halign-left valign-top"><p class="tableblock">성공 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>statusCode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상태 코드</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datetime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">응답 시간</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 메세지</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
@@ -726,22 +726,22 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 317
+Content-Length: 306
 
 {
   "isSuccess" : true,
-  "statusCode" : 200,
+  "code" : 20000,
+  "message" : "요청 성공",
   "data" : {
     "id" : 1,
     "title" : "빙봉의 마라톤 꿀팁",
     "content" : "러닝화를 사세요.",
-    "createdAt" : "2023-11-25T02:31:56.698578",
+    "createdAt" : "2023-12-02T14:37:09.934484",
     "author" : {
       "id" : 1,
       "name" : "빙봉씨"
     }
-  },
-  "datetime" : "2023-11-25 02:31:56"
+  }
 }</code></pre>
 </div>
 </div>
@@ -766,14 +766,14 @@ Content-Length: 317
 <td class="tableblock halign-left valign-top"><p class="tableblock">성공 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>statusCode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상태 코드</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datetime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">응답 시간</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 메세지</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
@@ -869,15 +869,15 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="title">Response</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 101
+Content-Length: 90
 
 {
   "isSuccess" : true,
-  "statusCode" : 204,
-  "data" : null,
-  "datetime" : "2023-11-25 02:31:56"
+  "code" : 20000,
+  "message" : "요청 성공",
+  "data" : null
 }</code></pre>
 </div>
 </div>
@@ -902,19 +902,19 @@ Content-Length: 101
 <td class="tableblock halign-left valign-top"><p class="tableblock">성공 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>statusCode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상태 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 메세지</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">응답 데이터</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datetime</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">응답 시간</p></td>
 </tr>
 </tbody>
 </table>
@@ -959,15 +959,15 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="title">Response</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 101
+Content-Length: 90
 
 {
   "isSuccess" : true,
-  "statusCode" : 204,
-  "data" : null,
-  "datetime" : "2023-11-25 02:31:56"
+  "code" : 20000,
+  "message" : "요청 성공",
+  "data" : null
 }</code></pre>
 </div>
 </div>
@@ -992,19 +992,19 @@ Content-Length: 101
 <td class="tableblock halign-left valign-top"><p class="tableblock">성공 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>statusCode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상태 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 메세지</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">응답 데이터</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datetime</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">응답 시간</p></td>
 </tr>
 </tbody>
 </table>

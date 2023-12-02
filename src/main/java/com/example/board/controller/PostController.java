@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,39 +34,36 @@ public class PostController {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(location);
 
-        ApiResponse<Long> apiResponse = ApiResponse.success(HttpStatus.CREATED, id);
-        return new ResponseEntity<>(apiResponse, headers, apiResponse.getStatusCode());
+        ApiResponse<Long> apiResponse = ApiResponse.success(id);
+        return ResponseEntity.created(location).body(apiResponse);
     }
 
     @GetMapping
-    public ApiResponse<PageResponse<PostResponse>> getPosts(@ModelAttribute @Valid PostSearchCondition searchCondition,
-                                                            @ModelAttribute @Valid PageCondition pageCondition) {
+    public ResponseEntity<ApiResponse<PageResponse<PostResponse>>> getPosts(@ModelAttribute @Valid PostSearchCondition searchCondition,
+                                                                            @ModelAttribute @Valid PageCondition pageCondition) {
         pageCondition.updateValidPageCondition(); //? 질문
-        System.out.println(pageCondition.getPage() + " " + pageCondition.getSize());
         Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
         PageResponse<PostResponse> post = postService.getPosts(searchCondition, pageable);
-        return ApiResponse.success(HttpStatus.OK, post);
+        return ResponseEntity.ok(ApiResponse.success(post));
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<PostResponse> getPost(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<PostResponse>> getPost(@PathVariable Long id) {
         PostResponse post = postService.getPost(id);
-        return ApiResponse.success(HttpStatus.OK, post);
+        return ResponseEntity.ok(ApiResponse.success(post));
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
-    public ApiResponse<Void> updatePost(@PathVariable Long id,
-                                        @RequestBody @Valid UpdatePostRequest requestDto) {
+    public ResponseEntity<ApiResponse<Void>> updatePost(@PathVariable Long id,
+                                                        @RequestBody @Valid UpdatePostRequest requestDto) {
         postService.updatePost(id, requestDto);
-        return ApiResponse.success(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok(ApiResponse.success());
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public ApiResponse<Void> deletePost(@PathVariable Long id,
-                                        @RequestBody @Valid DeletePostRequest requestDto) {
+    public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long id,
+                                                        @RequestBody @Valid DeletePostRequest requestDto) {
         postService.deletePost(id, requestDto);
-        return ApiResponse.success(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok(ApiResponse.success());
     }
 }

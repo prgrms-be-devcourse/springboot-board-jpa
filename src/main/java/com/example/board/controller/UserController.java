@@ -8,7 +8,6 @@ import com.example.board.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,28 +32,27 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(location);
 
-        ApiResponse<Long> apiResponse = ApiResponse.success(HttpStatus.CREATED, id);
-        return new ResponseEntity<>(apiResponse, headers, apiResponse.getStatusCode());
+        ApiResponse<Long> apiResponse = ApiResponse.success(id);
+        return ResponseEntity.created(location).body(apiResponse);
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<UserResponse> getUser(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable Long id) {
         UserResponse user = userService.getUser(id);
-        return ApiResponse.success(HttpStatus.OK, user);
+        return ResponseEntity.ok(ApiResponse.success(user));
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
-    public ApiResponse<Void> updateUser(@PathVariable Long id,
-                                        @RequestBody @Valid UpdateUserRequest requestDto) {
+    public ResponseEntity<ApiResponse<Void>> updateUser(@PathVariable Long id,
+                                                        @RequestBody @Valid UpdateUserRequest requestDto) {
         userService.updateUser(id, requestDto);
-        return ApiResponse.success(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok(ApiResponse.success());
+
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public ApiResponse<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return ApiResponse.success(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok(ApiResponse.success());
     }
 }

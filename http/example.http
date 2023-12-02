@@ -58,4 +58,4 @@ Content-Type: application/json
 }
 
 ### 게시글 전체 조회
-GET http://localhost:8080/v1/posts?createdAtTo=2023-11-23
+GET http://localhost:8080/v1/posts?createdAtTo=2023-12-01

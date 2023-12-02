@@ -4,9 +4,9 @@ import com.example.board.converter.UserConverter;
 import com.example.board.domain.User;
 import com.example.board.dto.request.user.CreateUserRequest;
 import com.example.board.dto.request.user.UpdateUserRequest;
+import com.example.board.dto.response.ResponseStatus;
 import com.example.board.dto.response.UserResponse;
 import com.example.board.exception.CustomException;
-import com.example.board.exception.ErrorCode;
 import com.example.board.repository.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,14 +45,14 @@ public class UserService {
     private void validateUserName(String name) {
         List<User> user = userRepository.findByNameAndDeletedAt(name, null);
         if (!user.isEmpty()) {
-            throw new CustomException(ErrorCode.DUPLICATED_USER_NAME);
+            throw new CustomException(ResponseStatus.DUPLICATED_USER_NAME);
         }
     }
 
     public User getAvailableUser(Long id) {
-        final User user = userRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        final User user = userRepository.findById(id).orElseThrow(() -> new CustomException(ResponseStatus.USER_NOT_FOUND));
         if (user.isDeleted()) {
-            throw new CustomException(ErrorCode.ALREADY_DELETED_USER);
+            throw new CustomException(ResponseStatus.ALREADY_DELETED_USER);
         }
         return user;
     }

@@ -76,9 +76,9 @@ class PostControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공 여부"),
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
-                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("응답 데이터"),
-                                fieldWithPath("datetime").type(JsonFieldType.STRING).description("응답 시간")
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("응답 데이터")
                         )
                 ));
     }
@@ -99,8 +99,8 @@ class PostControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공 여부"),
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
-                                fieldWithPath("datetime").type(JsonFieldType.STRING).description("응답 시간"),
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
                                 fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
@@ -139,8 +139,8 @@ class PostControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공 여부"),
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
-                                fieldWithPath("datetime").type(JsonFieldType.STRING).description("응답 시간"),
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
                                 fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
                                 fieldWithPath("data.currentPage").type(JsonFieldType.NUMBER).description("현재 페이지"),
@@ -166,7 +166,7 @@ class PostControllerTest {
         mockMvc.perform(put("/v1/posts/{id}", post.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequestDto)))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andDo(document("post/update",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -180,9 +180,9 @@ class PostControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공 여부"),
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
-                                fieldWithPath("data").type(JsonFieldType.NULL).description("응답 데이터"),
-                                fieldWithPath("datetime").type(JsonFieldType.STRING).description("응답 시간")
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
+                                fieldWithPath("data").type(JsonFieldType.NULL).description("응답 데이터")
                         )
                 ));
     }
@@ -196,7 +196,7 @@ class PostControllerTest {
         mockMvc.perform(delete("/v1/posts/{id}", post.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(deletePostRequest)))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andDo(document("post/delete",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -208,9 +208,9 @@ class PostControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공 여부"),
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("상태 코드"),
-                                fieldWithPath("data").type(JsonFieldType.NULL).description("응답 데이터"),
-                                fieldWithPath("datetime").type(JsonFieldType.STRING).description("응답 시간")
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
+                                fieldWithPath("data").type(JsonFieldType.NULL).description("응답 데이터")
                         )
                 ));
     }
