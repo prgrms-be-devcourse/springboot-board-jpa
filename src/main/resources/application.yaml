@@ -6,6 +6,11 @@ spring:
     password: root
   jpa:
     show-sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6830
+
 
 ---
 

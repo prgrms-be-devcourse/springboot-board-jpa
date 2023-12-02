@@ -13,5 +13,10 @@ services:
       MYSQL_PASSWORD: "root"
       MYSQL_ROOT_PASSWORD: "root"
       MYSQL_DATABASE: "board"
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6830:6379"
+
 volumes:
   data_volume:
