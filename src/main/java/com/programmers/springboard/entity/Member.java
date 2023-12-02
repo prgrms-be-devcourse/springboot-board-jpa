@@ -1,7 +1,12 @@
 package com.programmers.springboard.entity;
 
+import java.util.List;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,5 +55,15 @@ public class Member extends BaseEntity {
 
 	public void changePassword(String password) {
 		this.password = password;
+	}
+
+	public List<GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority(role.name()));
+	}
+
+	public void checkPassword(PasswordEncoder passwordEncoder, String credentials) {
+		if (!passwordEncoder.matches(credentials, this.password)) {
+			throw new RuntimeException("로그인 실패");
+		}
 	}
 }

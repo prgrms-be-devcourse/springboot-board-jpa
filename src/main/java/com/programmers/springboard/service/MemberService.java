@@ -53,7 +53,7 @@ public class MemberService {
 	}
 
 	public void deleteMembers(List<Long> ids) {
-		List<Member> members = memberRepository.findAllById(ids);  // todo : 만약 없는 회원이라면?
+		List<Member> members = memberRepository.findAllById(ids);
 		memberRepository.deleteAll(members);
 	}
 
