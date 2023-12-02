@@ -30,6 +30,7 @@ public class PostService {
         return post.getId();
     }
 
+    @Transactional(readOnly = true)
     public PageResponse<PostResponse> getPosts(PostSearchCondition condition, PageCondition pageCondition) {
         Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
         Page<PostResponse> posts = postRepository.findAll(condition, pageable).map(PostConverter::toPostResponse);
