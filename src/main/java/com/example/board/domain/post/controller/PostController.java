@@ -6,10 +6,12 @@ import com.example.board.domain.post.dto.PostPageCondition;
 import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.service.PostService;
+import com.example.board.global.security.jwt.JwtAuthentication;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,8 +25,8 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<PostResponse> createPost(@RequestParam String email, @Valid @RequestBody PostCreateRequest request) {
-        PostResponse post = postService.createPost(email, request);
+    public ResponseEntity<PostResponse> createPost(@AuthenticationPrincipal JwtAuthentication authentication, @Valid @RequestBody PostCreateRequest request) {
+        PostResponse post = postService.createPost(authentication.username(), request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(post.id())
@@ -41,10 +43,10 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<PageResponseDto<PostResponse>> getPostsByCondition(
-        @RequestParam(defaultValue = "1") Integer page,
-        @RequestParam(defaultValue = "10") Integer size,
-        @RequestParam(value = "email", defaultValue = "", required = false) String email,
-        @RequestParam(value = "title", defaultValue = "", required = false) String title
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(value = "email", defaultValue = "", required = false) String email,
+            @RequestParam(value = "title", defaultValue = "", required = false) String title
     ) {
         PostPageCondition condition = new PostPageCondition(page, size, email, title);
         Page<PostResponse> posts = postService.findPostsByCondition(condition);
@@ -54,16 +56,15 @@ public class PostController {
     @PatchMapping("/{id}")
     public ResponseEntity<PostResponse> updatePost(
             @PathVariable Long id,
-            @RequestParam String email,
+            @AuthenticationPrincipal JwtAuthentication authentication,
             @Valid @RequestBody PostUpdateRequest request) {
-
-        PostResponse post = postService.updatePost(id, email, request);
+        PostResponse post = postService.updatePost(id, authentication.username(), request);
         return ResponseEntity.ok(post);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePostById(@PathVariable Long id, @RequestParam String email) {
-        postService.deletePostById(id, email);
+    public ResponseEntity<Void> deletePostById(@PathVariable Long id, @AuthenticationPrincipal JwtAuthentication authentication) {
+        postService.deletePostById(id, authentication.username());
         return ResponseEntity.noContent().build();
     }
 
@@ -74,8 +75,8 @@ public class PostController {
     }
 
     @DeleteMapping("/writer")
-    public ResponseEntity<Void> deleteAllPostsByWriter(@RequestParam String email) {
-        postService.deleteAllPostsByWriter(email);
+    public ResponseEntity<Void> deleteAllPostsByWriter(@AuthenticationPrincipal JwtAuthentication authentication) {
+        postService.deleteAllPostsByWriter(authentication.username());
         return ResponseEntity.noContent().build();
     }
 }
