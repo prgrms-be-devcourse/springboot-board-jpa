@@ -18,7 +18,7 @@ public record MemberCreateRequest(
 	@Size(max = 30, message = "비밀번호는 30자 미만입니다.")
 	String password
 ) {
-	public Member toEntity() {
-		return new Member(name, loginId, password);
+	public Member toEntity(String encodedPassword) {
+		return new Member(name, loginId, encodedPassword);
 	}
 }

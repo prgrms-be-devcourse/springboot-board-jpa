@@ -2,9 +2,14 @@ package com.programmers.springboard.service;
 
 import java.util.List;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.programmers.springboard.config.jwt.JwtAuthentication;
+import com.programmers.springboard.config.jwt.JwtAuthenticationToken;
 import com.programmers.springboard.entity.Member;
 import com.programmers.springboard.exception.MemberNotFoundException;
 import com.programmers.springboard.repository.MemberRepository;
@@ -24,13 +29,15 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberService {
 
 	private final MemberRepository memberRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final AuthenticationManager authenticationManager;
 
 	public MemberLoginResponse login(MemberLoginRequest request) {
-		// JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(request.loginId(), request.password());
-		// Authentication authenticated = authenticationManager.authenticate(authenticationToken);
-		// JwtAuthentication authentication = (JwtAuthentication)authenticated.getPrincipal();
-		// Member member = (Member)authenticated.getDetails();
-		return new MemberLoginResponse("token", 1L, List.of("group"));
+		JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(request.loginId(), request.password());
+		Authentication authenticated = authenticationManager.authenticate(authenticationToken);
+		JwtAuthentication authentication = (JwtAuthentication) authenticated.getPrincipal();
+		Member member = (Member) authenticated.getDetails();
+		return new MemberLoginResponse(authentication.getToken() , member.getId(), member.getRole().name());
 	}
 
 	@Transactional(readOnly = true)
@@ -41,14 +48,17 @@ public class MemberService {
 	}
 
 	public MemberResponse createMember(MemberCreateRequest request) {
-		Member savedMember = memberRepository.save(request.toEntity());
+		String encodedPassword = passwordEncoder.encode(request.password());
+		Member member = request.toEntity(encodedPassword);
+		Member savedMember = memberRepository.save(member);
 		return MemberResponse.of(savedMember);
 	}
 
 	public MemberResponse updateMember(Long id, MemberUpdateRequest request) {
 		Member member = memberRepository.findById(id)
 			.orElseThrow(MemberNotFoundException::new);
-		member.changePassword(request.password());
+		String encodedPassword = passwordEncoder.encode(request.password());
+		member.changePassword(encodedPassword);
 		return MemberResponse.of(member);
 	}
 

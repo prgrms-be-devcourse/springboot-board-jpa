@@ -8,6 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.programmers.springboard.exception.LoginFailException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -63,7 +65,7 @@ public class Member extends BaseEntity {
 
 	public void checkPassword(PasswordEncoder passwordEncoder, String credentials) {
 		if (!passwordEncoder.matches(credentials, this.password)) {
-			throw new RuntimeException("로그인 실패");
+			throw new LoginFailException();
 		}
 	}
 }

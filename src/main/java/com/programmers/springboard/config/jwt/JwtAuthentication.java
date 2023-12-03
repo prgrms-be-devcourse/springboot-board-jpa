@@ -1,8 +1,11 @@
 package com.programmers.springboard.config.jwt;
 
+import lombok.Getter;
+
+@Getter
 public class JwtAuthentication {
-	public final String token;
-	public final String username;
+	private final String token;
+	private final String username;
 
 	JwtAuthentication(String token, String username) {
 		validationToken(token);
