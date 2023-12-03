@@ -1,4 +1,4 @@
-package com.example.board.global.jwt;
+package com.example.board.global.security.jwt;
 
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
@@ -13,13 +13,9 @@ import java.util.Map;
 public class Jwt {
 
     private final String issuer;
-
     private final String clientSecret;
-
     private final int expirySeconds;
-
     private final Algorithm algorithm;
-
     private final JWTVerifier jwtVerifier;
 
     public Jwt(String issuer, String clientSecret, int expirySeconds) {

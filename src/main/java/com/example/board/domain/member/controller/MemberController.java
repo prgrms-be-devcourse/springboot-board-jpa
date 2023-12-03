@@ -1,22 +1,17 @@
 package com.example.board.domain.member.controller;
 
-import com.example.board.domain.member.dto.MemberCreateRequest;
-import com.example.board.domain.member.dto.MemberResponse;
-import com.example.board.domain.member.dto.MemberUpdateRequest;
+import com.example.board.domain.member.dto.*;
 import com.example.board.domain.member.service.MemberService;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-
-import com.example.board.global.security.UserService;
-import com.example.board.global.jwt.Jwt;
+import com.example.board.global.security.jwt.JwtAuthentication;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,26 +19,21 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class MemberController {
 
     private final MemberService memberService;
-    private final UserService userService;
-    private final Jwt jwt;
 
-    @GetMapping("/user/{username}/token")
-    public String getToken(@PathVariable String username) {
-        UserDetails userDetails = userService.loadUserByUsername(username);
-        String[] roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .toArray(String[]::new);
-        return jwt.sign(Jwt.Claims.from(userDetails.getUsername(), roles));
+    @PostMapping("/login")
+    public ResponseEntity<MemberResponse> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(memberService.loginMember(request));
     }
 
-    @GetMapping("/user/token/verify")
-    public Map<String, Object> verify(@RequestHeader("token") String token) {
-        return jwt.verify(token).asMap();
+    @GetMapping("/me")
+    public ResponseEntity<MemberResponse> me(@AuthenticationPrincipal JwtAuthentication authentication) {
+        MemberDetailResponse member = memberService.findMemberByEmail(authentication.username());
+        return ResponseEntity.ok(new MemberResponse(authentication.token(), authentication.username(), member.id()));
     }
 
     @PostMapping
-    public ResponseEntity<MemberResponse> createMember(@Valid @RequestBody MemberCreateRequest request) {
-        MemberResponse member = memberService.createMember(request);
+    public ResponseEntity<MemberDetailResponse> createMember(@Valid @RequestBody MemberCreateRequest request) {
+        MemberDetailResponse member = memberService.createMember(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(member.id())
@@ -53,20 +43,20 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberResponse> getMemberById(@PathVariable Long id) {
-        MemberResponse member = memberService.findMemberById(id);
+    public ResponseEntity<MemberDetailResponse> getMemberById(@PathVariable Long id) {
+        MemberDetailResponse member = memberService.findMemberById(id);
         return ResponseEntity.ok(member);
     }
 
     @GetMapping
-    public ResponseEntity<List<MemberResponse>> getAllMembers() {
-        List<MemberResponse> members = memberService.findAllMembers();
+    public ResponseEntity<List<MemberDetailResponse>> getAllMembers() {
+        List<MemberDetailResponse> members = memberService.findAllMembers();
         return ResponseEntity.ok(members);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<MemberResponse> updateMember(@PathVariable Long id, @Valid @RequestBody MemberUpdateRequest request) {
-        MemberResponse member = memberService.updateMember(id, request);
+    public ResponseEntity<MemberDetailResponse> updateMember(@PathVariable Long id, @Valid @RequestBody MemberUpdateRequest request) {
+        MemberDetailResponse member = memberService.updateMember(id, request);
         return ResponseEntity.ok(member);
     }
 

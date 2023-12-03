@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,13 +39,19 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Member(String email, String name,  int age, String hobby) {
+    public Member(String email, String name, String password, int age, String hobby) {
         this.email = email;
         this.name = name;
-        this.password = "test1234!";
+        this.password = password;
         this.age = age;
         this.hobby = hobby;
         this.role = Role.ROLE_USER;
+    }
+
+    public void checkPassword(PasswordEncoder passwordEncoder, String credentials) {
+        if (!passwordEncoder.matches(credentials, password)) {
+            throw new IllegalArgumentException("Bad credentials");
+        }
     }
 
     public List<GrantedAuthority> getAuthorities() {
