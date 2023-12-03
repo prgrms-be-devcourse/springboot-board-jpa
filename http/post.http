@@ -1,0 +1,31 @@
+### 게시글 작성
+POST http://localhost:8080/api/v1/posts
+Content-Type: application/json
+
+{
+  "title": "title",
+  "content" : "content",
+  "memberId" : 1
+}
+
+### 게시글 조회
+GET http://localhost:8080/api/v1/posts/1
+
+### 게시글 페이징 조회
+GET http://localhost:8080/api/v1/posts?page=0&size=10
+
+### 게시글 검색 & 페이징 조회
+GET http://localhost:8080/api/v1/posts?title=검색할제목&page=0&size=10
+
+### 게시글 수정
+PUT http://localhost:8080/api/v1/posts/1
+Content-Type: application/json
+
+{
+  "title": "updated-title",
+  "content" : "updated-content"
+}
+
+### 게시글 삭제
+DELETE http://localhost:8080/api/v1/posts?ids=1
+
