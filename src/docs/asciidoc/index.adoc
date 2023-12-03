@@ -12,3 +12,4 @@ endif::[]
 
 include::member.adoc[]
 include::post.adoc[]
+include::comment.adoc[]

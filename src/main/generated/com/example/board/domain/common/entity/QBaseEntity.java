@@ -23,6 +23,8 @@ public class QBaseEntity extends EntityPathBase<BaseEntity> {
 
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
+    public final StringPath updatedBy = createString("updatedBy");
+
     public QBaseEntity(String variable) {
         super(BaseEntity.class, forVariable(variable));
     }
