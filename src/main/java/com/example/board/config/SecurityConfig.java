@@ -1,5 +1,6 @@
 package com.example.board.config;
 
+import com.example.board.jwt.ExceptionHandlerFilter;
 import com.example.board.jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -20,6 +21,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,6 +43,7 @@ public class SecurityConfig {
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandlerFilter, JwtAuthFilter.class)
                 .build();
     }
 }

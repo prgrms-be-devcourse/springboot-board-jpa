@@ -1,5 +1,6 @@
 package com.example.board.dto.response;
 
+import com.example.board.exception.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
@@ -35,7 +36,7 @@ public class ApiResponse<T> {
         return new ApiResponse<>(true, data);
     }
 
-    public static <T> ApiResponse<T> fail(T data) {
+    public static ApiResponse<ErrorResponse> fail(ErrorResponse data) {
         return new ApiResponse<>(false, data);
     }
 }
