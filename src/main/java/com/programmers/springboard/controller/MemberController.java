@@ -1,5 +1,6 @@
 package com.programmers.springboard.controller;
 
+import com.programmers.springboard.request.SignupRequest;
 import com.programmers.springboard.entity.Member;
 import com.programmers.springboard.jwt.JwtAuthentication;
 import com.programmers.springboard.jwt.JwtAuthenticationToken;
@@ -20,7 +21,7 @@ public class MemberController {
     private final MemberService memberService;
     private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/user/login")
+    @PostMapping("/users/login")
     public MemberResponse login(@RequestBody LoginRequest request){
 
         JwtAuthenticationToken authToken = new JwtAuthenticationToken(request.principal(), request.credentials());
@@ -32,9 +33,20 @@ public class MemberController {
         return new MemberResponse(principal.getToken(), principal.getUsername(), member.getGroups().getName());
     }
 
-    @GetMapping("/user/me")
+    @GetMapping("/users/me")
     public MemberResponse me(@AuthenticationPrincipal JwtAuthentication jwtAuthentication){
         Member member = memberService.getMemberByLoginId(jwtAuthentication.getUsername());
         return new MemberResponse(jwtAuthentication.getToken(), jwtAuthentication.getUsername(), member.getGroups().getName());
+    }
+
+    @PostMapping("/users/signup")
+    public MemberResponse signup(@RequestBody SignupRequest request){
+        Member member = memberService.signup(request);
+        return new MemberResponse(null, member.getLoginId(), member.getGroups().getName());
+    }
+
+    @PatchMapping("/users/{member-id}/group/{group-id}")
+    public void editMemberGroup(@PathVariable(value = "member-id") Long memberId, @PathVariable(value = "group-id") Long groupId){
+        memberService.editMemberGroup(memberId, groupId);
     }
 }

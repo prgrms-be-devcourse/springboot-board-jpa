@@ -1,6 +1,8 @@
 insert into permission(id, name) values(99, 'ROLE_ADMIN');
+insert into permission(id, name) values(98, 'ROLE_USER');
 
-insert into groups(id, name) values(999, 'ADMIN');
+insert into groups(id, name) values(999, 'ADMIN_GROUP');
+insert into groups(id, name) values(998, 'USER_GROUP');
 
 insert into group_permission(id, groups_id, permission_id) values(9999, 999, 99);
 

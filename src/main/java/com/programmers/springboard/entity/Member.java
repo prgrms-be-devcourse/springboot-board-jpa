@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,6 +30,8 @@ public class Member extends BaseEntity {
 
 	private String hobby;
 
+	private LocalDateTime loginAt;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Groups groups;
 
@@ -35,5 +39,13 @@ public class Member extends BaseEntity {
 		if(!passwordEncoder.matches(credentials, passwd)){
 			throw new IllegalArgumentException("Bad credentials");
 		}
+	}
+
+    public void changeGroup(Groups groups) {
+		this.groups = groups;
+    }
+
+	public void changeLoginAt(){
+		loginAt = LocalDateTime.now();
 	}
 }

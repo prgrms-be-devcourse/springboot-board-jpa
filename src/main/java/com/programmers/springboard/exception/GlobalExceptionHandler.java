@@ -21,7 +21,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 		logger.warn("Method argument not valid : ", ex);
 
-		ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
+		ErrorResponse errorResponse = new ErrorResponse("400/00001", "잘못된 요청입니다.");
 		List<FieldError> fieldErrors = ex.getFieldErrors();
 		fieldErrors.forEach(error -> errorResponse.addValidation(error.getField(), error.getDefaultMessage()));
 
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
 		HttpStatusCode statusCode, WebRequest request) {
 		logger.error("exception occured : ", ex);
-		ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버 장애가 발생했습니다.");
+		ErrorResponse errorResponse = new ErrorResponse("500/00001", "서버 장애가 발생했습니다.");
 		return createResponseEntity(errorResponse, headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
 	}
 }
