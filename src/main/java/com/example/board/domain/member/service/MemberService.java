@@ -1,5 +1,7 @@
 package com.example.board.domain.member.service;
 
+import com.example.board.domain.email.entity.EmailAuth;
+import com.example.board.domain.email.repository.EmailAuthRepository;
 import com.example.board.domain.member.dto.*;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.repository.MemberRepository;
@@ -8,6 +10,7 @@ import com.example.board.domain.role.entity.RoleType;
 import com.example.board.domain.role.repository.RoleRepository;
 import com.example.board.global.exception.CustomException;
 import com.example.board.global.exception.ErrorCode;
+import com.example.board.global.security.jwt.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

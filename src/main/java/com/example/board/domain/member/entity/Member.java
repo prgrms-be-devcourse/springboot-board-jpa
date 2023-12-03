@@ -51,6 +51,7 @@ public class Member extends BaseEntity {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+        this.isDeleted = false;
         addRoles(roles);
     }
 

@@ -26,7 +26,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         List<Post> content = queryFactory.selectFrom(post)
             .where(
                 titleEq(condition.getTitle()),
-                emailEq(condition.getEmail())
+                    nameEq(condition.getName())
             )
             .orderBy(post.createdAt.desc())
             .offset(pageable.getOffset())
@@ -37,7 +37,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             .select(post.count())
             .from(post)
             .where(titleEq(condition.getTitle()),
-                emailEq(condition.getEmail()));
+                    nameEq(condition.getName()));
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
@@ -46,7 +46,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         return hasText(title) ? post.title.contains(title) : null;
     }
 
-    private BooleanExpression emailEq(String email) {
-        return hasText(email) ? post.member.email.contains(email) : null;
+    private BooleanExpression nameEq(String name) {
+        return hasText(name) ? post.member.name.contains(name) : null;
     }
 }

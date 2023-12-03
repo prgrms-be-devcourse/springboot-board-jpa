@@ -28,7 +28,6 @@ public class CommentResponse {
     private String updatedBy;
     private List<CommentResponse> children;
 
-
     public void setChildren(List<CommentResponse> children) {
         this.children = children;
     }
@@ -42,8 +41,7 @@ public class CommentResponse {
     }
 
     public static CommentResponse from(Comment comment) {
-        return
-            new CommentResponse(
+        return new CommentResponse(
                 comment.getId(),
                 comment.getPost().getId(),
                 comment.getContent(),
