@@ -1,0 +1,31 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  # MySQL
+  datasource:
+    url: jdbc:mysql://localhost:3307/proddb?useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: prodpassword
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
+jwt:
+  header: token
+  issuer: programmers
+  client-secret: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  expiry-seconds: 3600
+
+
