@@ -30,31 +30,29 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
-    public Long signUp(CreateUserRequest requestDto) {
+    public SignInResponse signUp(CreateUserRequest requestDto) {
         validateUserName(requestDto.name());
+
         final User user = UserConverter.toUser(requestDto, passwordEncoder);
-        return userRepository.save(user).getId();
+        final Long userId = userRepository.save(user).getId();
+
+        return generateTokens(userId);
     }
 
+    @Transactional(readOnly = true)
     public SignInResponse signIn(SignInRequest requestDto) {
         final User user = getAvailableUserByName(requestDto.name());
+
         if (!passwordEncoder.matches(requestDto.password(), user.getPassword())) {
             throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }
 
-        JwtPayload payload = new JwtPayload(user.getId(), List.of("USER"));
-
-        final String accessToken = jwtProvider.generateAccessToken(payload);
-        final String refreshToken = jwtProvider.generateRefreshToken(payload);
-        //TODO: refreshToken 캐시에 저장
-
-        return SignInResponse.of(accessToken, refreshToken);
+        return generateTokens(user.getId());
     }
 
     public UserResponse getMyInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof Long) {
-            final Long userId = (Long) authentication.getPrincipal();
+        if (authentication != null && authentication.getPrincipal() instanceof Long userId) {
             final User user = getAvailableUserById(userId);
             return UserConverter.toUserResponse(user);
         } else {
@@ -100,5 +98,15 @@ public class UserService {
             throw new CustomException(ErrorCode.ALREADY_DELETED_USER);
         }
         return user;
+    }
+
+    private SignInResponse generateTokens(Long id) {
+        JwtPayload payload = new JwtPayload(id, List.of("USER"));
+
+        final String accessToken = jwtProvider.generateAccessToken(payload);
+        final String refreshToken = jwtProvider.generateRefreshToken(payload);
+        //TODO: refreshToken 캐시에 저장
+
+        return SignInResponse.of(accessToken, refreshToken);
     }
 }
