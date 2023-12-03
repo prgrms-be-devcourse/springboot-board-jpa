@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.programmers.springboard.config.jwt.JwtAuthentication;
 import com.programmers.springboard.config.jwt.JwtAuthenticationToken;
 import com.programmers.springboard.entity.Member;
+import com.programmers.springboard.exception.DuplicateIdException;
 import com.programmers.springboard.exception.MemberNotFoundException;
 import com.programmers.springboard.repository.MemberRepository;
 import com.programmers.springboard.request.MemberCreateRequest;
@@ -49,10 +50,17 @@ public class MemberService {
 	}
 
 	public MemberResponse createMember(MemberCreateRequest request) {
+		validateDuplicateId(request);
 		String encodedPassword = passwordEncoder.encode(request.password());
 		Member member = request.toEntity(encodedPassword);
 		Member savedMember = memberRepository.save(member);
 		return MemberResponse.of(savedMember);
+	}
+
+	private void validateDuplicateId(MemberCreateRequest request) {
+		if (memberRepository.findByLoginId(request.loginId()).isPresent()) {
+			throw new DuplicateIdException();
+		}
 	}
 
 	public MemberResponse updateMember(Long id, MemberUpdateRequest request) {
