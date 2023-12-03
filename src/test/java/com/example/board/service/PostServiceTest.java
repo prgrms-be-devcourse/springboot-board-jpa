@@ -2,9 +2,12 @@ package com.example.board.service;
 
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
-import com.example.board.dto.request.post.*;
+import com.example.board.dto.request.post.CreatePostRequest;
+import com.example.board.dto.request.post.PageCondition;
+import com.example.board.dto.request.post.PostSearchCondition;
+import com.example.board.dto.request.post.UpdatePostRequest;
+import com.example.board.exception.CustomError;
 import com.example.board.exception.CustomException;
-import com.example.board.exception.ErrorCode;
 import com.example.board.repository.post.PostRepository;
 import com.example.board.repository.user.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -110,7 +113,7 @@ class PostServiceTest {
         // when & then
         assertThatThrownBy(() -> postService.updatePost(post.getId(), requestDto))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.AUTHOR_NOT_MATCH.getMessage());
+                .hasMessage(CustomError.AUTHOR_NOT_MATCH.getMessage());
     }
 
     @Test
@@ -122,7 +125,7 @@ class PostServiceTest {
         // when & then
         assertThatThrownBy(() -> postService.updatePost(1L, requestDto))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.POST_NOT_FOUND.getMessage());
+                .hasMessage(CustomError.POST_NOT_FOUND.getMessage());
     }
 
     @Test
@@ -148,7 +151,7 @@ class PostServiceTest {
         // when & then
         assertThatThrownBy(() -> postService.deletePost(1L, requestDto))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.POST_NOT_FOUND.getMessage());
+                .hasMessage(CustomError.POST_NOT_FOUND.getMessage());
     }
 
     @Test
@@ -161,7 +164,7 @@ class PostServiceTest {
         // when & then
         assertThatThrownBy(() -> postService.deletePost(post.getId(), requestDto))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.AUTHOR_NOT_MATCH.getMessage());
+                .hasMessage(CustomError.AUTHOR_NOT_MATCH.getMessage());
     }
 
     User generateAuthor() {

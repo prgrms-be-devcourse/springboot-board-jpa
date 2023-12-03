@@ -11,5 +11,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByName(String name);
 
+    Optional<User> findByIdAndDeletedAt(Long id, LocalDateTime deletedAt);
+
     List<User> findByNameAndDeletedAt(String name, LocalDateTime deletedAt);
 }

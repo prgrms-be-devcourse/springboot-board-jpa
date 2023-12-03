@@ -36,32 +36,32 @@ public class PostController {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(location);
 
-        return new ResponseEntity<>(ApiResponse.success(HttpStatus.CREATED, id), headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(ApiResponse.success(id), headers, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<PostResponse>>> getPosts(@ModelAttribute @Valid PostSearchCondition searchCondition,
                                                                             @ModelAttribute @Valid PageCondition pageCondition) {
         PageResponse<PostResponse> post = postService.getPosts(searchCondition, pageCondition);
-        return new ResponseEntity<>(ApiResponse.success(HttpStatus.OK, post), HttpStatus.OK);
+        return new ResponseEntity<>(ApiResponse.success(post), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<PostResponse>> getPost(@PathVariable Long id) {
         PostResponse post = postService.getPost(id);
-        return new ResponseEntity<>(ApiResponse.success(HttpStatus.OK, post), HttpStatus.OK);
+        return new ResponseEntity<>(ApiResponse.success(post), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> updatePost(@PathVariable Long id,
                                                         @RequestBody @Valid UpdatePostRequest requestDto) {
         postService.updatePost(id, requestDto);
-        return new ResponseEntity<>(ApiResponse.success(HttpStatus.NO_CONTENT), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(ApiResponse.success(), HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long id) {
         postService.deletePost(id);
-        return new ResponseEntity<>(ApiResponse.success(HttpStatus.NO_CONTENT), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(ApiResponse.success(), HttpStatus.NO_CONTENT);
     }
 }

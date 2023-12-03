@@ -7,14 +7,12 @@ import com.example.board.dto.request.user.SignInRequest;
 import com.example.board.dto.request.user.SignInResponse;
 import com.example.board.dto.request.user.UpdateUserRequest;
 import com.example.board.dto.response.UserResponse;
+import com.example.board.exception.CustomError;
 import com.example.board.exception.CustomException;
-import com.example.board.exception.ErrorCode;
 import com.example.board.jwt.JwtPayload;
 import com.example.board.jwt.JwtProvider;
 import com.example.board.repository.user.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserService {
 
+    private final AuthService authService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
@@ -44,21 +43,15 @@ public class UserService {
         final User user = getAvailableUserByName(requestDto.name());
 
         if (!passwordEncoder.matches(requestDto.password(), user.getPassword())) {
-            throw new CustomException(ErrorCode.WRONG_PASSWORD);
+            throw new CustomException(CustomError.WRONG_PASSWORD);
         }
 
         return generateTokens(user.getId());
     }
 
     public UserResponse getMyInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof Long userId) {
-            final User user = getAvailableUserById(userId);
-            return UserConverter.toUserResponse(user);
-        } else {
-            //TODO
-        }
-        return null;
+        final User user = getAvailableUserById(authService.getCurrentUserId());
+        return UserConverter.toUserResponse(user);
     }
 
     @Transactional(readOnly = true)
@@ -80,22 +73,22 @@ public class UserService {
     private void validateUserName(String name) {
         List<User> user = userRepository.findByNameAndDeletedAt(name, null);
         if (!user.isEmpty()) {
-            throw new CustomException(ErrorCode.DUPLICATED_USER_NAME);
+            throw new CustomException(CustomError.DUPLICATED_USER_NAME);
         }
     }
 
     public User getAvailableUserById(Long id) {
-        final User user = userRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        final User user = userRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.USER_NOT_FOUND));
         if (user.isDeleted()) {
-            throw new CustomException(ErrorCode.ALREADY_DELETED_USER);
+            throw new CustomException(CustomError.ALREADY_DELETED_USER);
         }
         return user;
     }
 
     private User getAvailableUserByName(String name) {
-        final User user = userRepository.findByName(name).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        final User user = userRepository.findByName(name).orElseThrow(() -> new CustomException(CustomError.USER_NOT_FOUND));
         if (user.isDeleted()) {
-            throw new CustomException(ErrorCode.ALREADY_DELETED_USER);
+            throw new CustomException(CustomError.ALREADY_DELETED_USER);
         }
         return user;
     }

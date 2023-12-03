@@ -3,8 +3,8 @@ package com.example.board.service;
 import com.example.board.domain.User;
 import com.example.board.dto.request.user.CreateUserRequest;
 import com.example.board.dto.request.user.UpdateUserRequest;
+import com.example.board.exception.CustomError;
 import com.example.board.exception.CustomException;
-import com.example.board.exception.ErrorCode;
 import com.example.board.repository.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -58,7 +58,7 @@ class UserServiceTest {
         // when & then
         assertThatThrownBy(() -> userService.signUp(requestDto))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.DUPLICATED_USER_NAME.getMessage());
+                .hasMessage(CustomError.DUPLICATED_USER_NAME.getMessage());
     }
 
     @Test
@@ -82,7 +82,7 @@ class UserServiceTest {
         // when & then
         assertThatThrownBy(() -> userService.getUser(0L))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
+                .hasMessage(CustomError.USER_NOT_FOUND.getMessage());
     }
 
     @Test
@@ -100,7 +100,7 @@ class UserServiceTest {
         // when & then
         assertThatThrownBy(() -> userService.getUser(user.getId()))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.ALREADY_DELETED_USER.getMessage());
+                .hasMessage(CustomError.ALREADY_DELETED_USER.getMessage());
     }
 
     @Test
@@ -126,7 +126,7 @@ class UserServiceTest {
         // when & then
         assertThatThrownBy(() -> userService.updateUser(0L, updateDto))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
+                .hasMessage(CustomError.USER_NOT_FOUND.getMessage());
     }
 
     @Test
@@ -145,7 +145,7 @@ class UserServiceTest {
         // when & then
         assertThatThrownBy(() -> userService.updateUser(user.getId(), updateDto))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.ALREADY_DELETED_USER.getMessage());
+                .hasMessage(CustomError.ALREADY_DELETED_USER.getMessage());
     }
 
     @Test
@@ -170,7 +170,7 @@ class UserServiceTest {
         // when & then
         assertThatThrownBy(() -> userService.deleteUser(userId))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
+                .hasMessage(CustomError.USER_NOT_FOUND.getMessage());
     }
 
     @Test
@@ -186,7 +186,7 @@ class UserServiceTest {
         // when & then
         assertThatThrownBy(() -> userService.deleteUser(user.getId()))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.ALREADY_DELETED_USER.getMessage());
+                .hasMessage(CustomError.ALREADY_DELETED_USER.getMessage());
     }
 
     User generateUser() {

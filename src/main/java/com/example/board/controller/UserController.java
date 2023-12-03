@@ -26,18 +26,18 @@ public class UserController {
      */
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponse<SignInResponse>> signUp(@RequestBody @Valid CreateUserRequest requestDto) {
-        return new ResponseEntity<>(ApiResponse.success(HttpStatus.CREATED, userService.signUp(requestDto)), HttpStatus.CREATED);
+        return new ResponseEntity<>(ApiResponse.success(userService.signUp(requestDto)), HttpStatus.CREATED);
     }
 
     @PostMapping("/sign-in")
     public ResponseEntity<ApiResponse<SignInResponse>> signIn(@RequestBody @Valid SignInRequest requestDto) {
-        return new ResponseEntity<>(ApiResponse.success(HttpStatus.OK, userService.signIn(requestDto)), HttpStatus.OK);
+        return new ResponseEntity<>(ApiResponse.success(userService.signIn(requestDto)), HttpStatus.OK);
     }
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserResponse>> getMyInfo() {
         UserResponse user = userService.getMyInfo();
-        return new ResponseEntity<>(ApiResponse.success(HttpStatus.OK, user), HttpStatus.OK);
+        return new ResponseEntity<>(ApiResponse.success(user), HttpStatus.OK);
     }
 
     /**
@@ -48,7 +48,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable Long id) {
         UserResponse user = userService.getUser(id);
-        return new ResponseEntity<>(ApiResponse.success(HttpStatus.OK, user), HttpStatus.OK);
+        return new ResponseEntity<>(ApiResponse.success(user), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -56,13 +56,13 @@ public class UserController {
     public ResponseEntity<ApiResponse<Void>> updateUser(@PathVariable Long id,
                                                         @RequestBody @Valid UpdateUserRequest requestDto) {
         userService.updateUser(id, requestDto);
-        return new ResponseEntity<>(ApiResponse.success(HttpStatus.NO_CONTENT), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(ApiResponse.success(), HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}") //! ids 받아서 처리하는 경우가 더 많음
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return new ResponseEntity<>(ApiResponse.success(HttpStatus.NO_CONTENT), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(ApiResponse.success(), HttpStatus.NO_CONTENT);
     }
 }
