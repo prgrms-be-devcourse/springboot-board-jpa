@@ -1,0 +1,132 @@
+package com.example.board.domain.email.service;
+
+import com.example.board.domain.email.entity.EmailAuth;
+import com.example.board.domain.email.repository.EmailAuthRepository;
+import com.example.board.domain.member.repository.MemberRepository;
+import com.example.board.global.exception.CustomException;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Random;
+
+import static com.example.board.global.exception.ErrorCode.*;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class MailService {
+
+    @Value("${spring.mail.username}")
+    private String hostEmail;
+    private final JavaMailSender javaMailSender;
+    private final EmailAuthRepository emailAuthRepository;
+    private final MemberRepository memberRepository;
+    private final String authKey = createAuthKey();
+
+
+    @Transactional
+    public void sendSignUpMail(String email) {
+        if (emailAuthRepository.existsByEmailAndPurpose(email, "SIGN-UP")) {
+            throw new CustomException(ALREADY_AUTH_KEY_EXIST);
+        }
+        sendMail(email, "SIGN-UP");
+    }
+
+    @Transactional
+    public void sendResetPasswordMail(String email) {
+        if (emailAuthRepository.existsByEmailAndPurpose(email, "RESET-PASSWORD")) {
+            throw new CustomException(ALREADY_AUTH_KEY_EXIST);
+        }
+        memberRepository.findByEmail(email)
+            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        sendMail(email, "RESET-PASSWORD");
+    }
+
+    public MimeMessage createMessage(String email, String purpose) throws MessagingException, UnsupportedEncodingException {
+        return setMessage(email, purpose);
+    }
+
+    private String createAuthKey() {
+        int length = 6;
+        try {
+            Random random = SecureRandom.getInstanceStrong();
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < length; i++) {
+                builder.append(random.nextInt(10));
+            }
+            return builder.toString();
+        } catch (NoSuchAlgorithmException e) {
+            log.error(e.getMessage());
+            throw new CustomException(SEND_MAIL_FAILED);
+        }
+    }
+
+    private void sendMail(String email, String purpose){
+        MimeMessage message = null;
+        try {
+            message = createMessage(email, purpose);
+        } catch (MessagingException e) {
+            throw new CustomException(MESSAGING_FAILED);
+        } catch (UnsupportedEncodingException e) {
+            throw new CustomException(UNSUPPORTED_ENCODING);
+        }
+
+        try {
+            javaMailSender.send(message);
+            emailAuthRepository.save(new EmailAuth(authKey, email, purpose));
+        } catch (Exception e) {
+            throw new CustomException(SEND_MAIL_FAILED);
+        }
+    }
+
+    private MimeMessage setMessage(String email, String purpose) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        message.addRecipients(MimeMessage.RecipientType.TO, email);
+        String msgg = "";
+
+        switch (purpose) {
+            case "RESET-PASSWORD":
+                message.setSubject("[Zerozae] 비밀번호 재설정 인증코드 입니다.");
+                msgg += "<h1>안녕하세요</h1>";
+                msgg += "<h1>Zerozae의 게시판 입니다.</h1>";
+                msgg += "<br>";
+                msgg += "<p>아래 인증코드를 비밀번호 재설정 페이지에 입력해주세요</p>";
+                msgg += "<br>";
+                msgg += "<br>";
+                msgg += "<div align='center' style='border:1px solid black'>";
+                msgg += "<h3 style='color:blue'>비밀번호 재설정을 하기 위한 사전인증코드 입니다</h3>";
+                msgg += "<div style='font-size:130%'>";
+                msgg += "<strong>" + authKey + "</strong></div><br/>";
+                msgg += "</div>";
+                break;
+
+            case "SIGN-UP":
+                message.setSubject("[Zerozae] 게시판 회원가입 인증코드 입니다.");
+                msgg += "<h1>안녕하세요</h1>";
+                msgg += "<h1>Zerozae의 게시판 입니다.</h1>";
+                msgg += "<br>";
+                msgg += "<p>아래 인증코드를 회원가입 페이지에 입력해주세요</p>";
+                msgg += "<br>";
+                msgg += "<br>";
+                msgg += "<div align='center' style='border:1px solid black'>";
+                msgg += "<h3 style='color:blue'>회원가입 인증코드 입니다</h3>";
+                msgg += "<div style='font-size:130%'>";
+                msgg += "<strong>" + authKey + "</strong></div><br/>" ;
+                msgg += "</div>";
+                break;
+        }
+        message.setText(msgg, "utf-8", "html");
+        message.setFrom(new InternetAddress(hostEmail, "zerozae"));
+        return message;
+    }
+}
