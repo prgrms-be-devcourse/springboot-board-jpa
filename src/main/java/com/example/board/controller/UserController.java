@@ -40,6 +40,8 @@ public class UserController {
         return new ResponseEntity<>(ApiResponse.success(user), HttpStatus.OK);
     }
 
+    //TODO: 토큰 재발급 기능 구현
+
     /**
      * TODO: 파일 분리 필요
      * 어드민 사이드 API =================================================================================================
