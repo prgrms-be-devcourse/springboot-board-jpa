@@ -1,17 +1,19 @@
 package com.example.board.domain.member.entity;
 
 import com.example.board.domain.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.board.domain.role.entity.Role;
+import com.example.board.global.exception.CustomException;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.example.board.global.exception.ErrorCode.INVALID_PASSWORD;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,6 +27,9 @@ public class Member extends BaseEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -34,11 +39,25 @@ public class Member extends BaseEntity {
     @Column(name = "hobby", nullable = false)
     private String hobby;
 
-    public Member(String email, String name, int age, String hobby) {
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<MemberRole> roles = new ArrayList<>();
+
+    public Member(String email, String password, String name, int age, String hobby, List<Role> roles) {
         this.email = email;
+        this.password = password;
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+        addRoles(roles);
+    }
+
+    private void addRoles(List<Role> roles) {
+        this.roles = roles.stream()
+                .map(role -> new MemberRole(this, role))
+                .collect(Collectors.toList());
     }
 
     public void updateNameAndHobby(String name, String hobby) {
@@ -46,7 +65,16 @@ public class Member extends BaseEntity {
         this.hobby = hobby;
     }
 
-    public boolean isSameEmail(String email) {
-        return Objects.equals(email, this.email);
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    public void delete() {
+        this.isDeleted = true;
+    }
+
+    public void checkPassword(PasswordEncoder passwordEncoder, String credentials) {
+        if (!passwordEncoder.matches(credentials, password))
+            throw new CustomException(INVALID_PASSWORD);
     }
 }

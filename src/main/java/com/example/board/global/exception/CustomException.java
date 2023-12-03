@@ -4,11 +4,11 @@ import lombok.Getter;
 import static com.example.board.global.exception.ErrorCode.defaultError;
 
 @Getter
-public class BusinessException extends RuntimeException {
+public class CustomException extends RuntimeException {
 
     private ErrorCode errorCode = defaultError();
 
-    public BusinessException(ErrorCode errorCode) {
+    public CustomException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }

@@ -7,7 +7,7 @@ import com.example.board.domain.post.dto.PostPageCondition;
 import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.repository.PostRepository;
-import com.example.board.global.exception.BusinessException;
+import com.example.board.global.exception.CustomException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,12 +36,12 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        member = Member.builder()
-            .email("test@gmail.com")
-            .name("홍길동")
-            .age(22)
-            .hobby("배드민턴")
-            .build();
+        member = new Member(
+                "test@gmail.com",
+                "홍길동",
+                22,
+                "배드민턴"
+        );
 
         memberRepository.save(member);
     }
@@ -72,7 +72,7 @@ class PostServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> postService.createPost(notExistEmail, postCreateRequest))
-            .isInstanceOf(BusinessException.class);
+            .isInstanceOf(CustomException.class);
     }
 
     @Test
@@ -96,7 +96,7 @@ class PostServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> postService.findPostById(notExistId))
-            .isInstanceOf(BusinessException.class);
+            .isInstanceOf(CustomException.class);
     }
 
     @Test
@@ -180,7 +180,7 @@ class PostServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> postService.updatePost(originPost.id(), notExistEmail, request))
-            .isInstanceOf(BusinessException.class);
+            .isInstanceOf(CustomException.class);
     }
 
     @Test
@@ -202,7 +202,7 @@ class PostServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> postService.deletePostById(notExistId, member.getEmail()))
-                .isInstanceOf(BusinessException.class);
+                .isInstanceOf(CustomException.class);
     }
 
     @Test

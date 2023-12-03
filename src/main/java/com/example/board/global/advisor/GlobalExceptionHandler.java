@@ -1,6 +1,6 @@
 package com.example.board.global.advisor;
 
-import com.example.board.global.exception.BusinessException;
+import com.example.board.global.exception.CustomException;
 import java.util.Objects;
 
 import com.example.board.global.exception.ErrorCode;
@@ -31,8 +31,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(status).body(errorResponse);
     }
 
-    @ExceptionHandler(BusinessException.class)
-    protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex) {
+    @ExceptionHandler(CustomException.class)
+    protected ResponseEntity<ErrorResponse> handleBusinessException(CustomException ex) {
         log.warn("Business Exception : {}", ex.getMessage());
         ErrorCode errorCode = ex.getErrorCode();
         ErrorResponse errorResponse = new ErrorResponse(errorCode.getMessage());

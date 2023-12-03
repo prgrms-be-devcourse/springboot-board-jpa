@@ -5,7 +5,7 @@ import com.example.board.domain.member.dto.MemberResponse;
 import com.example.board.domain.member.dto.MemberUpdateRequest;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.repository.MemberRepository;
-import com.example.board.global.exception.BusinessException;
+import com.example.board.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +43,7 @@ public class MemberService {
 
     public MemberResponse updateMember(Long id, MemberUpdateRequest request) {
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(MEMBER_UPDATE_FAILED));
+                .orElseThrow(() -> new CustomException(MEMBER_UPDATE_FAILED));
         member.updateNameAndHobby(request.name(), request.hobby());
         return MemberResponse.from(member);
     }
@@ -59,12 +59,12 @@ public class MemberService {
 
     private void validateDuplicateEmail(String email) {
         if (memberRepository.existsMemberByEmail(email)) {
-            throw new BusinessException(DUPLICATE_EMAIL);
+            throw new CustomException(DUPLICATE_EMAIL);
         }
     }
 
     private Member getMemberEntity(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
     }
 }

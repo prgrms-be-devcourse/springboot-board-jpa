@@ -5,7 +5,7 @@ import com.example.board.domain.member.dto.MemberResponse;
 import com.example.board.domain.member.dto.MemberUpdateRequest;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.repository.MemberRepository;
-import com.example.board.global.exception.BusinessException;
+import com.example.board.global.exception.CustomException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ class MemberServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> memberService.createMember(request))
-            .isInstanceOf(BusinessException.class);
+            .isInstanceOf(CustomException.class);
     }
     
     @Test
@@ -78,7 +78,7 @@ class MemberServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> memberService.findMemberById(notExistId))
-            .isInstanceOf(BusinessException.class);
+            .isInstanceOf(CustomException.class);
     }
 
     @Test

@@ -9,7 +9,7 @@ import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.entity.Post;
 import com.example.board.domain.post.repository.PostRepository;
 
-import com.example.board.global.exception.BusinessException;
+import com.example.board.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -73,17 +73,17 @@ public class PostService {
     private void validateWriter(String email, Post post) {
         getMemberEntity(email);
         if (!post.isSameMember(email)) {
-            throw new BusinessException(WRITER_MISMATCH);
+            throw new CustomException(WRITER_MISMATCH);
         }
     }
 
     private Post getPostEntity(Long id) {
         return postRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(POST_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
     }
 
     private Member getMemberEntity(String email) {
         return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
     }
 }
