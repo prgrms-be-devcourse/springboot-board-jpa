@@ -33,7 +33,7 @@ public class AuthService {
     public void signup(SignUpRequest requestDto) {
         if (isUserExistsByEmail(requestDto.email()))
             throw new CustomException(ResponseStatus.DUPLICATED_USER_EMAIL);
-        if (requestDto.isPasswordEqualsToPasswordConfirm())
+        if (!requestDto.isPasswordEqualsToPasswordConfirm())
             throw new CustomException(ResponseStatus.PASSWORD_CONFIRM_NOT_MATCHED);
 
         final User user = UserConverter.toUser(requestDto);
