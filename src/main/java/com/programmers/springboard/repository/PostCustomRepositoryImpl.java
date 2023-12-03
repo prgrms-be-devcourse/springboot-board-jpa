@@ -12,6 +12,7 @@ import com.programmers.springboard.entity.Post;
 import com.programmers.springboard.entity.QMember;
 import com.programmers.springboard.entity.QPost;
 import com.programmers.springboard.request.PostSearchRequest;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -26,20 +27,28 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
 		QPost post = QPost.post;
 		QMember member = QMember.member;
 
+		// 검색 조건절
+		BooleanBuilder whereClause = new BooleanBuilder();
+		if (request.title() != null) {
+			whereClause.and(post.title.contains(request.title()));
+		}
+
+		// 게시글 목록 조회
 		List<Post> posts = jpaQueryFactory
 			.selectFrom(post)
 			.leftJoin(post.member, member).fetchJoin()
-			.where(post.title.contains(request.title()))
+			.where(whereClause)
 			.orderBy(post.createdAt.desc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
 
+		// 게시글 수
 		long totalCount = Optional.ofNullable(
 			jpaQueryFactory
 				.select(post.count())
 				.from(post)
-				.where(post.title.contains(request.title()))
+				.where(whereClause)
 				.fetchOne()
 		).orElse(0L);
 
