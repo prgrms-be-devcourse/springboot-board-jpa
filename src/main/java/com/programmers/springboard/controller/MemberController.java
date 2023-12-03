@@ -23,30 +23,34 @@ import com.programmers.springboard.response.MemberLoginResponse;
 import com.programmers.springboard.response.MemberResponse;
 import com.programmers.springboard.service.MemberService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
+@Tag(name = "회원 컨트롤러")
 @RestController
 @RequestMapping("/api/v1/members")
+@RequiredArgsConstructor
 public class MemberController {
 
 	private final MemberService memberService;
 
-	public MemberController(MemberService memberService) {
-		this.memberService = memberService;
-	}
-
+	@Operation(summary = "회원 로그인", description = "회원의 로그인 정보를 검증하고 토큰을 반환합니다.")
 	@PostMapping("/sign-in")
 	public ResponseEntity<ApiResponse<MemberLoginResponse>> login(@Valid @RequestBody MemberLoginRequest request) {
 		MemberLoginResponse response = memberService.login(request);
 		return ResponseEntity.ok(ApiResponse.ok(response));
 	}
 
+	@Operation(summary = "회원 조회", description = "ID를 기반으로 특정 회원의 정보를 조회합니다.")
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<MemberResponse>> getMember(@PathVariable Long id) {
 		MemberResponse memberResponse = memberService.getMemberById(id);
 		return ResponseEntity.ok(ApiResponse.ok(memberResponse));
 	}
 
+	@Operation(summary = "회원 가입", description = "새로운 회원을 생성합니다.")
 	@PostMapping
 	public ResponseEntity<ApiResponse<MemberResponse>> createMember(
 		@Valid @RequestBody MemberCreateRequest memberCreateRequest) {
@@ -59,6 +63,7 @@ public class MemberController {
 		return ResponseEntity.created(location).body(ApiResponse.created(member));
 	}
 
+	@Operation(summary = "회원 정보 업데이트", description = "ID를 기반으로 특정 회원의 정보를 업데이트합니다.")
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<MemberResponse>> updateMember(@PathVariable Long id,
 		@Valid @RequestBody MemberUpdateRequest memberUpdateRequest) {
@@ -66,6 +71,7 @@ public class MemberController {
 		return ResponseEntity.ok(ApiResponse.ok(member));
 	}
 
+	@Operation(summary = "회원 삭제", description = "하나 이상의 회원을 삭제합니다.")
 	@DeleteMapping
 	public ResponseEntity<ApiResponse<Void>> deleteMembers(@RequestParam List<Long> ids) {
 		memberService.deleteMembers(ids);
