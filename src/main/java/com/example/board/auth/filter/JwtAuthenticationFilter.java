@@ -24,14 +24,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws IOException, ServletException {
-        log.info("JwtAuthenticationFilter.doFilterInternal");
-        String token = resolveToken(request);
-
-        if (token != null && jwtTokenProvider.validateAccessToken(token)) {
+        try {
+            String token = resolveToken(request);
+            jwtTokenProvider.validateAccessToken(token);
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        } else {
-            log.info("토큰이 존재하지 않습니다.");
+        } catch (Exception e) {
+            request.setAttribute("exception", e);
         }
         filterChain.doFilter(request, response);
     }
