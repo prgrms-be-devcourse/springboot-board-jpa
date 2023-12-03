@@ -8,9 +8,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import com.programmers.springboard.member.domain.QMember;
 import com.programmers.springboard.post.domain.Post;
-import com.programmers.springboard.entity.QMember;
-import com.programmers.springboard.entity.QPost;
+import com.programmers.springboard.post.domain.QPost;
 import com.programmers.springboard.post.dto.PostSearchRequest;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
