@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users", indexes = @Index(name = "idx_name", columnList = "name"))
+@Table(name = "users")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +32,10 @@ public class User extends BaseEntity {
 
     @Column(name = "hobby")
     private String hobby;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
 
     @Column(name = "deletedAt", columnDefinition = "TIMESTAMP")
     private LocalDateTime deletedAt;
