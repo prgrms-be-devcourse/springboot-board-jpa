@@ -1,14 +1,43 @@
-### 유저 생성
-POST http://localhost:8080/v1/users
+### 회원가입
+POST http://localhost:8080/api/v1/signup
 Content-Type: application/json
 
 {
-  "name": "빙봉빙",
-  "age": 30
+  "email": "hello@prgrm.com",
+  "password": "password1234",
+  "passwordConfirm": "password1234",
+  "name": "hello",
+  "age": 100,
+  "hobby": "coding"
 }
 
+### 로그인
+POST http://localhost:8080/api/v1/login
+Content-Type: application/json
+
+{
+  "email": "daeng@prgrm.com",
+  "password": "password1234"
+}
+
+### 관리자 로그인 (Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiYXV0aCI6IlJPTEVfQURNSU4iLCJleHAiOjExNzAxNjAwNzg5fQ.TtLFqRU4OPS7CMSjUEZBPUP8MdWX8hJgyG210A1rD7s) <- 임시토큰
+POST http://localhost:8080/api/v1/login
+Content-Type: application/json
+
+{
+  "email": "admin@admin.com",
+  "password": "admin1234"
+}
+
+
+
+### 본인 정보 조회 (토큰 필요)
+GET http://localhost:8080/api/v1/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTE3MDE1ODA0OTF9.7v_nkqqYJsTRhjcr_C8EOQyZgca2sk7umRdK0haUxiY
+
+
 ### 게시글 생성
-POST http://localhost:8080/v1/posts
+POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
 
 {
@@ -18,7 +47,7 @@ Content-Type: application/json
 }
 
 ### 게시글 생성
-POST http://localhost:8080/v1/posts
+POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
 
 {
@@ -28,7 +57,7 @@ Content-Type: application/json
 }
 
 ### 게시글 생성
-POST http://localhost:8080/v1/posts
+POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
 
 {
@@ -38,7 +67,7 @@ Content-Type: application/json
 }
 
 ### 게시글 생성
-POST http://localhost:8080/v1/posts
+POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
 
 {
@@ -48,14 +77,15 @@ Content-Type: application/json
 }
 
 ### 잘못된 게시글 생성
-POST http://localhost:8080/v1/posts
+POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
 
 {
   "title": "제목",
   "content": "게시글",
-  "authorId": 1
+  "authorId": 2
 }
 
 ### 게시글 전체 조회
-GET http://localhost:8080/v1/posts?createdAtTo=2023-12-01
+GET http://localhost:8080/api/v1/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiYXV0aCI6IlJPTEVfQURNSU4iLCJleHAiOjExNzAxNTg5NjMzfQ.vKG04V7hF7KzpmZofpzK1f6NqOKo7YLhn3_0i2ueXCI
