@@ -8,7 +8,6 @@ import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.entity.Post;
 import com.example.board.domain.post.repository.PostRepository;
-
 import com.example.board.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -38,8 +37,10 @@ public class PostService {
     }
 
     public void updatePostViewById(Long id) {
-        Post post = getPostEntity(id);
-        post.increaseView();
+        if (!postRepository.existsById(id)) {
+            throw new BusinessException(POST_NOT_FOUND);
+        }
+        postRepository.updateView(id);
     }
 
     @Transactional(readOnly = true)
