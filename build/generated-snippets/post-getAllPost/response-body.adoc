@@ -1,0 +1,4 @@
+[source,json,options="nowrap"]
+----
+{"code":0,"data":{"content":[{"postId":3,"title":"제목","content":"컨텐츠","user":{"userId":3,"name":"username","age":26,"hobby":"testHobby"},"createdAt":"2023-11-18T21:25:14.072675","createdBy":"username"}],"pageable":{"pageNumber":0,"pageSize":10,"sort":{"empty":true,"sorted":false,"unsorted":true},"offset":0,"paged":true,"unpaged":false},"last":true,"totalElements":1,"totalPages":1,"first":true,"size":10,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},"numberOfElements":1,"empty":false},"success":true}
+----

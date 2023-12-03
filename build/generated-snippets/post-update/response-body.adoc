@@ -1,0 +1,4 @@
+[source,json,options="nowrap"]
+----
+{"code":0,"data":"성공","success":true}
+----

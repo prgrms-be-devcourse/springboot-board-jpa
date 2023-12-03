@@ -1,0 +1,48 @@
+|===
+|Path|Type|Description
+
+|`+code+`
+|`+Number+`
+|응답 코드
+
+|`+data.postId+`
+|`+Number+`
+|포스트 ID
+
+|`+data.title+`
+|`+String+`
+|제목
+
+|`+data.content+`
+|`+String+`
+|컨텐츠
+
+|`+data.user.userId+`
+|`+Number+`
+|유저 ID
+
+|`+data.user.name+`
+|`+String+`
+|유저 이름
+
+|`+data.user.age+`
+|`+Number+`
+|유저 나이
+
+|`+data.user.hobby+`
+|`+String+`
+|유저 취미
+
+|`+data.createdAt+`
+|`+String+`
+|작성 시간
+
+|`+data.createdBy+`
+|`+String+`
+|작성자
+
+|`+success+`
+|`+Boolean+`
+|성공 여부
+
+|===

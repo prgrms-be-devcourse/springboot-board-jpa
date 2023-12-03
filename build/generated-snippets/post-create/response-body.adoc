@@ -1,0 +1,4 @@
+[source,json,options="nowrap"]
+----
+{"code":0,"data":{"postId":4,"title":"title","content":"content","user":{"userId":4,"name":"username","age":26,"hobby":"testHobby"},"createdAt":"2023-11-18T21:25:14.113386","createdBy":"username"},"success":true}
+----

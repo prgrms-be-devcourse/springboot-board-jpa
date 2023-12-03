@@ -1,0 +1,12 @@
+|===
+|Path|Type|Description
+
+|`+title+`
+|`+String+`
+|제목
+
+|`+content+`
+|`+String+`
+|컨텐츠
+
+|===
