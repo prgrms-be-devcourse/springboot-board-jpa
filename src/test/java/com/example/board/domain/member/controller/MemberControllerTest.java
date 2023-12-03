@@ -1,7 +1,7 @@
 package com.example.board.domain.member.controller;
 
 import com.example.board.domain.member.dto.MemberCreateRequest;
-import com.example.board.domain.member.dto.MemberResponse;
+import com.example.board.domain.member.dto.MemberDetailResponse;
 import com.example.board.domain.member.dto.MemberUpdateRequest;
 import com.example.board.domain.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,10 +22,7 @@ import java.util.List;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,7 +41,7 @@ class MemberControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private MemberCreateRequest memberCreateRequest = new MemberCreateRequest("test@gmail.com", "홍길동", 22, "배드민턴");
+    private MemberCreateRequest memberCreateRequest = new MemberCreateRequest("test@gmail.com", "홍길동", "test1234!",22, "배드민턴");
 
     @AfterEach
     void tearDown() {
@@ -54,7 +51,7 @@ class MemberControllerTest {
     @Test
     void 회원_생성_호출_테스트() throws Exception {
         // Given
-        MemberResponse response = new MemberResponse(
+        MemberDetailResponse response = new MemberDetailResponse(
                 1L,
                 memberCreateRequest.email(),
                 memberCreateRequest.name(),
@@ -91,7 +88,7 @@ class MemberControllerTest {
     void 회원_아이디_조회_호출_테스트() throws Exception {
         // Given
         Long id = 1L;
-        MemberResponse response = new MemberResponse(
+        MemberDetailResponse response = new MemberDetailResponse(
                 id,
                 "test@gmail.com",
                 "홍길동",
@@ -120,7 +117,7 @@ class MemberControllerTest {
     @Test
     void 회원_전체_조회_호출_테스트() throws Exception {
         // Given
-        List<MemberResponse> responses = List.of(new MemberResponse(
+        List<MemberDetailResponse> responses = List.of(new MemberDetailResponse(
                 1L,
                 "test@gmail.com",
                 "홍길동",
@@ -151,14 +148,14 @@ class MemberControllerTest {
         // Given
         Long id = 1L;
         MemberUpdateRequest request = new MemberUpdateRequest("길동이", "수영");
-        MemberResponse memberResponse = new MemberResponse(
+        MemberDetailResponse memberDetailResponse = new MemberDetailResponse(
             id,
             "test@gmail.com",
             request.name(),
             22,
             request.hobby());
 
-        given(memberService.updateMember(id,request)).willReturn(memberResponse);
+        given(memberService.updateMember(id,request)).willReturn(memberDetailResponse);
 
         // When & Then
         mvc.perform(patch("/api/v1/members/{id}", id)
