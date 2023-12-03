@@ -17,9 +17,9 @@ spring:
       on-profile: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${aws.rds.url}
-    username: ${aws.rds.id}
-    password: ${aws.rds.pw}
+    url: jdbc:mysql://${AWS_RDS_URL}
+    username: ${AWS_RDS_USERNAME}
+    password: ${AWS_RDS_PASSWORD}
   jpa:
     open-in-view: false
     hibernate:

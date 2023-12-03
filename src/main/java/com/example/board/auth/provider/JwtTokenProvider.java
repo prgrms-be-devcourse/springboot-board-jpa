@@ -33,9 +33,9 @@ public class JwtTokenProvider {
     private final Date accessExpirationDate;
 
     public JwtTokenProvider(
-            @Value("${jwt.secret}") String secretKey,
-            @Value("${jwt.expirationTimes.access}") Long accessExpirationTimes,
-            @Value("${jwt.expirationTimes.refresh}") Long refreshExpirationTimes
+            @Value("${JWT_SECRET_KEY}") String secretKey,
+            @Value("${JWT_ACCESS_TOKEN_EXPIRATION_TIME}") Long accessExpirationTimes,
+            @Value("${JWT_REFRESH_TOKEN_EXPIRATION_TIME}") Long refreshExpirationTimes
     ) {
         this.accessExpirationDate = new Date(System.currentTimeMillis() + accessExpirationTimes);
         byte[] secretByteKey = Base64.getDecoder().decode(secretKey);
