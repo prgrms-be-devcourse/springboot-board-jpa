@@ -7,8 +7,7 @@ server:
 
 spring:
   profiles:
-    default: dev
-    include: secret
+    default: prod
 
 ---
 
@@ -18,9 +17,9 @@ spring:
       on-profile: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/app
-    username: root
-    password: rootpassword
+    url: jdbc:mysql://${aws.rds.url}
+    username: ${aws.rds.id}
+    password: ${aws.rds.pw}
   jpa:
     open-in-view: false
     hibernate:
@@ -44,8 +43,8 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    driver-class-name: org.h2.Driver
     url: jdbc:h2:~/board;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
     username: sa
     password:
   jpa:
@@ -56,6 +55,10 @@ spring:
     properties:
       hibernate.format_sql: true
     database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
 logging:
   level:
