@@ -1,10 +1,12 @@
 package com.programmers.springboard.repository;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.programmers.springboard.entity.Post;
+import com.programmers.springboard.request.PostSearchRequest;
 
 public interface PostCustomRepository {
 
-	public List<Post> getPosts(Integer page);
+	Page<Post> findPostsByCustomCondition(PostSearchRequest request, Pageable pageable);
 }

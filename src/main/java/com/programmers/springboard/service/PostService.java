@@ -2,6 +2,8 @@ package com.programmers.springboard.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,7 @@ import com.programmers.springboard.repository.MemberRepository;
 import com.programmers.springboard.repository.PostCustomRepository;
 import com.programmers.springboard.repository.PostRepository;
 import com.programmers.springboard.request.PostCreateRequest;
+import com.programmers.springboard.request.PostSearchRequest;
 import com.programmers.springboard.request.PostUpdateRequest;
 import com.programmers.springboard.response.PostResponse;
 
@@ -30,11 +33,9 @@ public class PostService {
 	private final MemberRepository memberRepository;
 
 	@Transactional(readOnly = true)
-	public List<PostResponse> getPosts(int page) {
-		return postCustomRepository.getPosts(page)
-			.stream()
-			.map(PostResponse::of)
-			.toList();
+	public Page<PostResponse> getPosts(PostSearchRequest request, Pageable pageable) {
+		Page<Post> posts = postCustomRepository.findPostsByCustomCondition(request, pageable);
+		return posts.map(PostResponse::of);
 	}
 
 	@Transactional(readOnly = true)
