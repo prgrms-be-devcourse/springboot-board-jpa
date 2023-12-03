@@ -14,16 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.programmers.springboard.entity.Member;
-import com.programmers.springboard.exception.DuplicateIdException;
-import com.programmers.springboard.exception.LoginFailException;
-import com.programmers.springboard.exception.MemberNotFoundException;
-import com.programmers.springboard.repository.MemberRepository;
-import com.programmers.springboard.request.MemberCreateRequest;
-import com.programmers.springboard.request.MemberLoginRequest;
-import com.programmers.springboard.request.MemberUpdateRequest;
-import com.programmers.springboard.response.MemberLoginResponse;
-import com.programmers.springboard.response.MemberResponse;
+import com.programmers.springboard.member.domain.Member;
+import com.programmers.springboard.member.exception.DuplicateIdException;
+import com.programmers.springboard.member.exception.LoginFailException;
+import com.programmers.springboard.member.exception.MemberNotFoundException;
+import com.programmers.springboard.member.repository.MemberRepository;
+import com.programmers.springboard.member.dto.MemberCreateRequest;
+import com.programmers.springboard.member.dto.MemberLoginRequest;
+import com.programmers.springboard.member.dto.MemberUpdateRequest;
+import com.programmers.springboard.member.dto.MemberLoginResponse;
+import com.programmers.springboard.member.dto.MemberResponse;
+import com.programmers.springboard.member.service.MemberService;
 
 @SpringBootTest
 class MemberServiceTest {
