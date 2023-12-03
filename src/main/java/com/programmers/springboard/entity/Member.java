@@ -1,5 +1,6 @@
 package com.programmers.springboard.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
@@ -45,6 +46,9 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
+	@Column(name = "last_login_date")
+	private LocalDateTime lastLoginDate;
+
 	@Column(name = "is_deleted")
 	private Boolean isDeleted = false;
 
@@ -53,6 +57,7 @@ public class Member extends BaseEntity {
 		this.loginId = loginId;
 		this.password = password;
 		this.role = Role.ROLE_USER;
+		this.lastLoginDate = LocalDateTime.now();
 	}
 
 	public void changePassword(String password) {
@@ -68,4 +73,9 @@ public class Member extends BaseEntity {
 			throw new LoginFailException();
 		}
 	}
+
+	public void updateLastLoginDate() {
+		this.lastLoginDate = LocalDateTime.now();
+	}
+
 }

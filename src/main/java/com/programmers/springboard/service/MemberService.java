@@ -37,6 +37,10 @@ public class MemberService {
 		Authentication authenticated = authenticationManager.authenticate(authenticationToken);
 		JwtAuthentication authentication = (JwtAuthentication) authenticated.getPrincipal();
 		Member member = (Member) authenticated.getDetails();
+
+		// 마지막 로그인 날짜를 현재 시간으로 업데이트
+		member.updateLastLoginDate();
+		memberRepository.save(member);
 		return new MemberLoginResponse(authentication.getToken() , member.getId(), member.getRole().name());
 	}
 
