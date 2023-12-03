@@ -1,7 +1,7 @@
 package com.example.board.domain.member.service;
 
 import com.example.board.domain.member.dto.MemberCreateRequest;
-import com.example.board.domain.member.dto.MemberResponse;
+import com.example.board.domain.member.dto.MemberDetailResponse;
 import com.example.board.domain.member.dto.MemberUpdateRequest;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.repository.MemberRepository;
@@ -25,7 +25,7 @@ class MemberServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    private MemberCreateRequest request = new MemberCreateRequest("test1@gmail.com", "홍길동", 22, "농구");;
+    private MemberCreateRequest request = new MemberCreateRequest("test1@gmail.com", "홍길동", "test1234!",22, "농구");;
 
     @AfterEach
     void tearDown() {
@@ -37,7 +37,7 @@ class MemberServiceTest {
         // Given
 
         // When
-        MemberResponse savedMember = memberService.createMember(request);
+        MemberDetailResponse savedMember = memberService.createMember(request);
 
         // Then
         assertThat(savedMember.email()).isEqualTo(request.email());
@@ -59,10 +59,10 @@ class MemberServiceTest {
     @Test
     void 회원_아이디_조회_테스트() {
         // Given
-        MemberResponse savedMember = memberService.createMember(request);
+        MemberDetailResponse savedMember = memberService.createMember(request);
 
         // When
-        MemberResponse findMember = memberService.findMemberById(savedMember.id());
+        MemberDetailResponse findMember = memberService.findMemberById(savedMember.id());
 
         // Then
         assertThat(findMember.email()).isEqualTo(savedMember.email());
@@ -87,7 +87,7 @@ class MemberServiceTest {
         memberService.createMember(request);
 
         // When
-        List<MemberResponse> findMembers = memberService.findAllMembers();
+        List<MemberDetailResponse> findMembers = memberService.findAllMembers();
         
         // Then
         assertThat(findMembers).hasSize(1);
@@ -97,11 +97,11 @@ class MemberServiceTest {
     @Test
     void 회원_수정_테스트() {
         // Given
-        MemberResponse originMember = memberService.createMember(request);
+        MemberDetailResponse originMember = memberService.createMember(request);
         MemberUpdateRequest request = new MemberUpdateRequest("길동이", "수영");
 
         // When
-        MemberResponse updatedMember = memberService.updateMember(originMember.id(), request);
+        MemberDetailResponse updatedMember = memberService.updateMember(originMember.id(), request);
 
         // Then
         assertThat(updatedMember.name()).isEqualTo(request.name());
@@ -111,7 +111,7 @@ class MemberServiceTest {
     @Test
     void 회원_아이디로_삭제_테스트() {
         // Given
-        MemberResponse savedMember = memberService.createMember(request);
+        MemberDetailResponse savedMember = memberService.createMember(request);
 
         // When
         memberService.deleteMemberById(savedMember.id());

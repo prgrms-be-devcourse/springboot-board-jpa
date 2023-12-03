@@ -36,7 +36,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        member = new Member("test@gmail.com", "홍길동", 22, "배드민턴");
+        member = new Member("test@gmail.com", "홍길동", "test1234!", 22, "배드민턴");
         memberRepository.save(member);
     }
 
