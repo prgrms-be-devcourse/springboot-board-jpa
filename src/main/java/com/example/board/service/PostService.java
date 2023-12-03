@@ -3,7 +3,10 @@ package com.example.board.service;
 import com.example.board.converter.PostConverter;
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
-import com.example.board.dto.request.post.*;
+import com.example.board.dto.request.post.CreatePostRequest;
+import com.example.board.dto.request.post.PageCondition;
+import com.example.board.dto.request.post.PostSearchCondition;
+import com.example.board.dto.request.post.UpdatePostRequest;
 import com.example.board.dto.response.PageResponse;
 import com.example.board.dto.response.PostResponse;
 import com.example.board.dto.response.ResponseStatus;
@@ -24,8 +27,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserService userService;
 
-    public Long createPost(CreatePostRequest requestDto) {
-        final User user = userService.getAvailableUser(requestDto.authorId());
+    public Long createPost(Long id, CreatePostRequest requestDto) {
+        final User user = userService.getAvailableUser(id);
         final Post post = postRepository.save(PostConverter.toPost(requestDto, user));
         return post.getId();
     }
@@ -43,19 +46,19 @@ public class PostService {
         return PostConverter.toPostResponse(post);
     }
 
-    public void updatePost(Long id, UpdatePostRequest requestDto) {
-        final Post post = postRepository.findByIdWithAuthor(id).orElseThrow(() -> new CustomException(ResponseStatus.POST_NOT_FOUND));
+    public void updatePost(Long userId, Long postId, UpdatePostRequest requestDto) {
+        final Post post = postRepository.findByIdWithAuthor(postId).orElseThrow(() -> new CustomException(ResponseStatus.POST_NOT_FOUND));
 
-        if (!post.isSameAuthorId(requestDto.authorId()))
+        if (!post.isSameAuthorId(userId))
             throw new CustomException(ResponseStatus.AUTHOR_NOT_MATCH);
 
         post.update(requestDto.title(), requestDto.content());
     }
 
-    public void deletePost(Long id, DeletePostRequest requestDto) {
-        final Post post = postRepository.findByIdWithAuthor(id).orElseThrow(() -> new CustomException(ResponseStatus.POST_NOT_FOUND));
+    public void deletePost(Long userId, Long postId) {
+        final Post post = postRepository.findByIdWithAuthor(postId).orElseThrow(() -> new CustomException(ResponseStatus.POST_NOT_FOUND));
 
-        if (!post.isSameAuthorId(requestDto.authorId()))
+        if (!post.isSameAuthorId(userId))
             throw new CustomException(ResponseStatus.AUTHOR_NOT_MATCH);
 
         postRepository.delete(post);
