@@ -25,9 +25,9 @@ spring:
           writetimeout: 5000
     auth-code-expiration-millis: 1800000
 
-  jwt:
-    secret_key: {secretKey 입력}
-    token-validity-in-milliseconds: 600000
+jwt:
+  secret_key: {secretKey 입력}
+  token-validity-in-milliseconds: 600000
 
 ---
 
