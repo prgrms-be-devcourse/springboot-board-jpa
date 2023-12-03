@@ -20,15 +20,12 @@ Content-Type: application/json
 ### 내 정보 조회
 GET http://localhost:8080/api/v1/users/me
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE2MDg3OTAsImV4cCI6MTcwMTYwODgxMCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.M1HxQd-L8jqjHAyfUk9Zaoj7OJVCC9IbJ_492P0PjRC_3kGD-KXUlqRIKRI_ALkvA_6xm_mdmFAo-qu8sbA7iA
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE2NDUxNTUsImV4cCI6MTcwMTY0NTE3NSwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.xKSoLZ5JXdAvWTFLAWifugJ5dBImTm5oJMkp9XOr2THdv8uWmp7ozOrCs4KUtFG1RIFuIxu1kfbEXgr669pDCA
 
 ### accessToken 재발급
 POST http://localhost:8080/api/v1/users/refresh
 Content-Type: application/json
-
-{
-  "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE2MDg2MjYsImV4cCI6MTcwMTY2ODYyNiwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.ZpP0Fh9UGZw9ZZWDk16ptl29TX1OL1QeTaSJDmpzF15fMr8u3ZgP57AmXTy2Xpx_uuFmkEHekldgX57DOHY7PA"
-}
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE2NDUxNDQsImV4cCI6MTcwMTY0NTIwNCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.V_-7vRaEb_necy5XqQstQVy5RmgGBMB5GKkpfnkN8_GSGkmJYlRCYzz29sRI1tVpA3eRPWlsJDs-zc9RVZ3Yqg
 
 ### 게시글 생성
 POST http://localhost:8080/api/v1/posts

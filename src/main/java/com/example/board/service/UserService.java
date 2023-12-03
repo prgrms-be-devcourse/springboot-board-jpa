@@ -3,7 +3,6 @@ package com.example.board.service;
 import com.example.board.converter.UserConverter;
 import com.example.board.domain.User;
 import com.example.board.dto.request.user.CreateUserRequest;
-import com.example.board.dto.request.user.RefreshRequest;
 import com.example.board.dto.request.user.SignInRequest;
 import com.example.board.dto.request.user.UpdateUserRequest;
 import com.example.board.dto.response.SignInResponse;
@@ -50,18 +49,13 @@ public class UserService {
         return generateTokens(user.getId());
     }
 
-    public SignInResponse refresh(RefreshRequest requestDto) {
-        final String refreshToken = requestDto.refreshToken();
-        JwtPayload payload = jwtProvider.validateAndParseJwtPayload(refreshToken);
-        //TODO: isValidRefreshToken - 캐시에 저장되어 있는 토큰 값과 비교
-
-        userRepository.findByIdAndDeletedAt(payload.getUserId(), null)
-                .orElseThrow(() -> new CustomException(CustomError.LOGIN_REQUIRED));
-
-        final String accessToken = jwtProvider.generateAccessToken(new JwtPayload(payload.getUserId(), payload.getRoles()));
+    public SignInResponse refresh() {
+        final String accessToken = jwtProvider.generateAccessToken(
+                new JwtPayload(authService.getCurrentUserId(), authService.getCurrentUserRoles())
+        );
         return SignInResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .refreshToken(null)
                 .build();
     }
 

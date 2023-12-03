@@ -53,9 +53,18 @@ public class JwtProvider {
                 .compact();
     }
 
-    public JwtPayload validateAndParseJwtPayload(String token) {
+    public JwtPayload validateAndParseAccessTokenPayload(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(accessSecretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return new JwtPayload(claims.get("userId", Long.class), claims.get("roles", List.class));
+    }
+
+    public JwtPayload validateAndParseRefreshTokenPayload(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(refreshSecretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

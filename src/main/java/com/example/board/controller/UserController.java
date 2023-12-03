@@ -1,7 +1,6 @@
 package com.example.board.controller;
 
 import com.example.board.dto.request.user.CreateUserRequest;
-import com.example.board.dto.request.user.RefreshRequest;
 import com.example.board.dto.request.user.SignInRequest;
 import com.example.board.dto.request.user.UpdateUserRequest;
 import com.example.board.dto.response.ApiResponse;
@@ -36,8 +35,8 @@ public class UserController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<ApiResponse<SignInResponse>> refresh(@RequestBody @Valid RefreshRequest requestDto) {
-        return new ResponseEntity<>(ApiResponse.success(userService.refresh(requestDto)), HttpStatus.OK);
+    public ResponseEntity<ApiResponse<SignInResponse>> refresh() {
+        return new ResponseEntity<>(ApiResponse.success(userService.refresh()), HttpStatus.OK);
     }
 
     @GetMapping("/me")
