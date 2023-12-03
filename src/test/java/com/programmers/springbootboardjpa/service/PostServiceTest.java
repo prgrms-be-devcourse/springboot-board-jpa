@@ -4,7 +4,9 @@ import com.programmers.springbootboardjpa.dto.PostServiceRequestDto;
 import com.programmers.springbootboardjpa.dto.PostServiceResponseDto;
 import com.programmers.springbootboardjpa.entity.User;
 import com.programmers.springbootboardjpa.repository.UserRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -42,11 +44,6 @@ class PostServiceTest {
                 .content(CONTENT)
                 .userId(user.getUserId())
                 .build();
-    }
-
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
     }
 
     @Test
