@@ -1,5 +1,8 @@
 package com.programmers.springboard.request;
 
+import com.programmers.springboard.entity.Member;
+import com.programmers.springboard.entity.Post;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -12,4 +15,7 @@ public record PostCreateRequest(
 	String content,
 	@NotNull(message = "멤버 아이디를 입력해주세요") Long memberId
 ) {
+	public Post toEntity(Member member) {
+		return new Post(title, content, member);
+	}
 }

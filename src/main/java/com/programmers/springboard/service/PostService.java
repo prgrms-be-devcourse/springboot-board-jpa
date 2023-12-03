@@ -47,11 +47,7 @@ public class PostService {
 
 	public PostResponse createPost(PostCreateRequest request) {
 		Member member = memberRepository.findById(request.memberId()).orElseThrow(MemberNotFoundException::new);
-		Post post = postRepository.save(Post.builder()
-			.content(request.content())
-			.title(request.title())
-			.member(member)
-			.build());
+		Post post = postRepository.save(request.toEntity(member));
 		return PostResponse.of(post);
 	}
 
