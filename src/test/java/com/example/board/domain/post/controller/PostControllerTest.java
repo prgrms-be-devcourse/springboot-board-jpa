@@ -1,11 +1,17 @@
 package com.example.board.domain.post.controller;
 
 
+import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.post.dto.PostCreateRequest;
 import com.example.board.domain.post.dto.PostPageCondition;
 import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
+import com.example.board.domain.post.entity.Post;
 import com.example.board.domain.post.service.PostService;
+import com.example.board.global.security.config.SecurityConfig;
+import com.example.board.global.security.details.MemberDetails;
+import com.example.board.global.security.jwt.filter.JwtFilter;
+import com.example.board.global.security.jwt.provider.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +19,25 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.example.board.factory.post.PostFactory.createPost;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -33,9 +46,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureRestDocs
-@AutoConfigureMockMvc
-@MockBean(JpaMetamodelMappingContext.class)
-@WebMvcTest(PostController.class)
+@AutoConfigureMockMvc(addFilters = false)
+@WebMvcTest(value = PostController.class,
+    excludeFilters = {
+            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class),
+            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtFilter.class),
+            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtTokenProvider.class)
+    }
+)
 class PostControllerTest {
 
     @Autowired
@@ -47,28 +65,39 @@ class PostControllerTest {
     @MockBean
     private PostService postService;
 
+    private final Post post = createPost();
+    private final Member member = post.getMember();
+
     @Test
+    @WithMockUser
     void 게시글_저장_호출_테스트() throws Exception {
         // Given
-        String email = "test@gmail.com";
-        PostCreateRequest request = new PostCreateRequest("제목1", "내용1");
+        PostCreateRequest request = new PostCreateRequest(post.getTitle(), post.getContent());
         PostResponse response = new PostResponse(
                 1L,
-                "제목1",
-                "내용1",
+                post.getTitle(),
+                post.getContent(),
                 0,
-                "홍길동",
+                member.getName(),
                 LocalDateTime.now().toString(),
-                LocalDateTime.now().toString()
+                LocalDateTime.now().toString(),
+                member.getName()
         );
 
-        given(postService.createPost(email, request)).willReturn(response);
+        long expectedUserId = 1;
+        MemberDetails memberDetails = new MemberDetails(Long.toString(expectedUserId),
+                "username",
+                "password",
+                List.of());
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(memberDetails,"", memberDetails.getAuthorities()));
+
+        given(postService.createPost(anyLong(), any(PostCreateRequest.class))).willReturn(response);
 
         // When & Then
         mvc.perform(post("/api/v1/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("email", email)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("post-create",
@@ -83,7 +112,8 @@ class PostControllerTest {
                                 fieldWithPath("view").type(JsonFieldType.NUMBER).description("게시글 조회수"),
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("게시글 작성자"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시글 생성 시간"),
-                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("게시글 수정 시간")
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("게시글 수정 시간"),
+                                fieldWithPath("updatedBy").type(JsonFieldType.STRING).description("게시글 수정자")
                         )
                 ));
     }
@@ -94,19 +124,20 @@ class PostControllerTest {
         Long id = 1L;
         PostResponse response = new PostResponse(
                 1L,
-                "제목1",
-                "내용1",
+                post.getTitle(),
+                post.getContent(),
                 0,
-                "홍길동",
+                member.getName(),
                 LocalDateTime.now().toString(),
-                LocalDateTime.now().toString()
+                LocalDateTime.now().toString(),
+                member.getName()
         );
 
-        given(postService.findPostById(id)).willReturn(response);
+        given(postService.findPostByIdAndUpdateView(id)).willReturn(response);
 
         // When & Then
         mvc.perform(get("/api/v1/posts/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-findById",
@@ -117,7 +148,8 @@ class PostControllerTest {
                                 fieldWithPath("view").type(JsonFieldType.NUMBER).description("게시글 조회수"),
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("게시글 작성자"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시글 생성 시간"),
-                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("게시글 수정 시간")
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("게시글 수정 시간"),
+                                fieldWithPath("updatedBy").type(JsonFieldType.STRING).description("게시글 수정자")
                         )
                 ));
     }
@@ -127,15 +159,16 @@ class PostControllerTest {
         // Given
         List<PostResponse> posts = List.of(new PostResponse(
                 1L,
-                "제목1",
-                "내용1",
+                post.getTitle(),
+                post.getContent(),
                 0,
-                "홍길동",
+                member.getName(),
                 LocalDateTime.now().toString(),
-                LocalDateTime.now().toString()
+                LocalDateTime.now().toString(),
+                member.getName()
         ));
         PageRequest pageable = PageRequest.of(0, 10);
-        Page<PostResponse> pageResponse = PageableExecutionUtils.getPage(posts, pageable, () -> posts.size());
+        Page<PostResponse> pageResponse = PageableExecutionUtils.getPage(posts, pageable, posts::size);
         given(postService.findPostsByCondition(any(PostPageCondition.class))).willReturn(pageResponse);
 
         // When & Then
@@ -145,37 +178,27 @@ class PostControllerTest {
                 .andDo(print())
                 .andDo(document("post-findAll",
                         responseFields(
-                                fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
-                                fieldWithPath("content[].title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                fieldWithPath("content[].content").type(JsonFieldType.STRING).description("게시글 내용"),
-                                fieldWithPath("content[].view").type(JsonFieldType.NUMBER).description("게시글 조회수"),
-                                fieldWithPath("content[].name").type(JsonFieldType.STRING).description("게시글 작성자"),
-                                fieldWithPath("content[].createdAt").type(JsonFieldType.STRING).description("게시글 생성 시간"),
-                                fieldWithPath("content[].updatedAt").type(JsonFieldType.STRING).description("게시글 수정 시간"),
-                                fieldWithPath("pageable.pageNumber").type(JsonFieldType.NUMBER).description("페이지 번호"),
-                                fieldWithPath("pageable.pageSize").type(JsonFieldType.NUMBER).description("페이지 당 개수"),
-                                fieldWithPath("pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("정렬 필드가 비어 있는지 여부"),
-                                fieldWithPath("pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬이 적용된 상태인지 여부"),
-                                fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("정렬이 적용되지 않은 상태인지 여부"),
-                                fieldWithPath("pageable.offset").type(JsonFieldType.NUMBER).description("페이지 오프셋 (시작 인덱스)"),
-                                fieldWithPath("pageable.paged").type(JsonFieldType.BOOLEAN).description("페이징이 적용된 상태인지 여부"),
-                                fieldWithPath("pageable.unpaged").type(JsonFieldType.BOOLEAN).description("페이징이 적용되지 않은 상태인지 여부"),
-                                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부"),
-                                fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
-                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("전체 데이터 개수"),
-                                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
-                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("페이지 크기"),
-                                fieldWithPath("number").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
-                                fieldWithPath("sort.empty").type(JsonFieldType.BOOLEAN).description("정렬 필드가 비어 있는지 여부"),
-                                fieldWithPath("sort.sorted").type(JsonFieldType.BOOLEAN).description("현재 정렬된 상태인지 여부"),
-                                fieldWithPath("sort.unsorted").type(JsonFieldType.BOOLEAN).description("현재 정렬되지 않은 상태인지 여부"),
-                                fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description("현재 페이지의 데이터 개수"),
-                                fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("응답이 비어 있는지 여부")
+                                fieldWithPath("currentPage").type(JsonFieldType.NUMBER).description("현재 페이지"),
+                                fieldWithPath("pageSize").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                                fieldWithPath("startIndex").type(JsonFieldType.NUMBER).description("시작 인덱스"),
+                                fieldWithPath("endIndex").type(JsonFieldType.NUMBER).description("끝 인덱스"),
+                                fieldWithPath("hasPreviousPage").type(JsonFieldType.BOOLEAN).description("이전 페이지 존재 유무"),
+                                fieldWithPath("hasNextPage").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 유무"),
+                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("총 데이터 개수"),
+                                fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                                fieldWithPath("data[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("data[].content").type(JsonFieldType.STRING).description("게시글 내용"),
+                                fieldWithPath("data[].view").type(JsonFieldType.NUMBER).description("게시글 조회수"),
+                                fieldWithPath("data[].name").type(JsonFieldType.STRING).description("게시글 작성자 이름"),
+                                fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("게시글 작성 날짜"),
+                                fieldWithPath("data[].updatedAt").type(JsonFieldType.STRING).description("게시글 수정 날짜"),
+                                fieldWithPath("data[].updatedBy").type(JsonFieldType.STRING).description("게시글 수정자")
                         )
                 ));
     }
 
     @Test
+    @WithMockUser
     void 게시글_수정_호출_테스트() throws Exception {
         // Given
         Long id = 1L;
@@ -186,18 +209,19 @@ class PostControllerTest {
                 request.title(),
                 request.content(),
                 0,
-                "홍길동",
+                member.getName(),
                 LocalDateTime.now().toString(),
-                LocalDateTime.now().toString()
+                LocalDateTime.now().toString(),
+                member.getName()
         );
 
-        given(postService.updatePost(id, email, request)).willReturn(response);
+        given(postService.updatePost(id, request)).willReturn(response);
 
         // When & Then
         mvc.perform(patch("/api/v1/posts/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("email", email)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("email", email)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("post-update",
@@ -212,19 +236,34 @@ class PostControllerTest {
                                 fieldWithPath("view").type(JsonFieldType.NUMBER).description("게시글 조회수"),
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("게시글 작성자"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시글 생성 시간"),
-                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("게시글 수정 시간")
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("게시글 수정 시간"),
+                                fieldWithPath("updatedBy").type(JsonFieldType.STRING).description("게시글 수정자")
                         )
                 ));
     }
 
     @Test
+    @WithMockUser
     void 게시글_아이디로_삭제_호출_테스트() throws Exception {
         // Given
-        Long id = 1L;
+        Long memberId = 1L;
         String email = "test@gmail.com";
 
+        MemberDetails memberDetails = new MemberDetails(Long.toString(memberId),
+                "username",
+                "password",
+                List.of());
+
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(new UsernamePasswordAuthenticationToken(
+                        memberDetails,
+                        "",
+                        memberDetails.getAuthorities()
+                ));
+
         // When & Then
-        mvc.perform(delete("/api/v1/posts/{id}", id)
+        mvc.perform(delete("/api/v1/posts/{id}", memberId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("email", email))
                 .andExpect(status().isNoContent())
@@ -233,6 +272,7 @@ class PostControllerTest {
     }
 
     @Test
+    @WithMockUser
     void 게시글_전체_삭제_호출_테스트() throws Exception{
         // Given
 

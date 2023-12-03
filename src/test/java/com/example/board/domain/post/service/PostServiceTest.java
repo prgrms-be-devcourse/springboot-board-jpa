@@ -2,91 +2,61 @@ package com.example.board.domain.post.service;
 
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.repository.MemberRepository;
-import com.example.board.domain.post.dto.PostCreateRequest;
 import com.example.board.domain.post.dto.PostPageCondition;
 import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
+import com.example.board.domain.post.entity.Post;
 import com.example.board.domain.post.repository.PostRepository;
+import com.example.board.factory.post.PostFactory;
 import com.example.board.global.exception.CustomException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 
+import java.util.List;
+import java.util.Optional;
+
+import static com.example.board.factory.member.MemberFactory.createMemberWithRoleUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class PostServiceTest {
 
-    @Autowired
+    @InjectMocks
     private PostService postService;
 
-    @Autowired
+    @Mock
     private PostRepository postRepository;
 
-    @Autowired
+    @Mock
     private MemberRepository memberRepository;
 
-    private Member member;
+    private Member member = createMemberWithRoleUser();
 
-    private PostCreateRequest postCreateRequest = new PostCreateRequest("제목1", "내용1");
-
-    @BeforeEach
-    void setUp() {
-        member = new Member(
-                "test@gmail.com",
-                "홍길동",
-                22,
-                "배드민턴"
-        );
-
-        memberRepository.save(member);
-    }
-
-    @AfterEach
-    void tearDown() {
-        postRepository.deleteAll();
-        memberRepository.deleteAll();
-    }
-
-    @Test
-    void 게시글_생성_테스트() {
-        // Given
-
-        // When
-        PostResponse savedPost = postService.createPost(member.getEmail(), postCreateRequest);
-
-        // Then
-        assertThat(savedPost.title()).isEqualTo(postCreateRequest.title());
-        assertThat(savedPost.content()).isEqualTo(postCreateRequest.content());
-        assertThat(savedPost.name()).isEqualTo(member.getName());
-    }
-
-    @Test
-    void 게시글_생성_실패_테스트() {
-        // Given
-        String notExistEmail = "notExist123@gmail.com";
-
-        // When & Then
-        assertThatThrownBy(() -> postService.createPost(notExistEmail, postCreateRequest))
-            .isInstanceOf(CustomException.class);
-    }
+    private Post post = PostFactory.createPostWithMember(member);
 
     @Test
     void 게시글_아이디로_조회_테스트() {
         // Given
-        PostResponse savedPost = postService.createPost(member.getEmail(), postCreateRequest);
+        given(postRepository.findByIdWithPessimisticLock(post.getId())).willReturn(Optional.of(post));
 
         // When
-        PostResponse findPost = postService.findPostById(savedPost.id());
+        PostResponse findPost = postService.findPostByIdAndUpdateView(post.getId());
 
         // Then
-        assertThat(savedPost.title()).isEqualTo(findPost.title());
-        assertThat(savedPost.content()).isEqualTo(findPost.content());
-        assertThat(savedPost.name()).isEqualTo(findPost.name());
+        assertThat(findPost.title()).isEqualTo(post.getTitle());
+        assertThat(findPost.content()).isEqualTo(post.getContent());
+        assertThat(findPost.name()).isEqualTo(member.getName());
     }
 
     @Test
@@ -95,76 +65,96 @@ class PostServiceTest {
         Long notExistId = 2L;
 
         // When & Then
-        assertThatThrownBy(() -> postService.findPostById(notExistId))
+        assertThatThrownBy(() -> postService.findPostByIdAndUpdateView(notExistId))
             .isInstanceOf(CustomException.class);
     }
 
     @Test
     void 게시글_전체_조회_테스트() {
         // Given
-        postService.createPost(member.getEmail(), postCreateRequest);
-        PostPageCondition condition = PostPageCondition.builder()
-            .page(1)
-            .size(10)
-            .build();
+        PostPageCondition condition = new PostPageCondition(1, 10, null, null);
+        Post newPost = Post.builder()
+                .id(2L)
+                .title("게시글 2번")
+                .content("게시글 2번 내용")
+                .member(member)
+                .build();
+
+        List<Post> posts = List.of(
+                post,
+                newPost
+        );
+        Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize());
+        Page<Post> resultPage = PageableExecutionUtils.getPage(posts, pageable, posts::size);
+        given(postRepository.findPostsByCondition(condition)).willReturn(resultPage);
 
         // When
-        Page<PostResponse> posts = postService.findPostsByCondition(condition);
+        Page<PostResponse> responses = postService.findPostsByCondition(condition);
 
         // Then
-        assertThat(posts.getTotalElements()).isEqualTo(1);
-        assertThat(posts.getContent().get(0).title()).isEqualTo(postCreateRequest.title());
-        assertThat(posts.getContent().get(0).content()).isEqualTo(postCreateRequest.content());
+        assertThat(responses.getContent().size()).isEqualTo(2);
     }
 
     @Test
     void 게시글_제목으로_조회_테스트() {
         // Given
-        PostCreateRequest request = new PostCreateRequest("제목2", "내용2");
-        postService.createPost(member.getEmail(), postCreateRequest);
-        postService.createPost(member.getEmail(), request);
-        PostPageCondition condition = PostPageCondition.builder()
-            .page(1)
-            .size(10)
-            .title("제목1")
-            .build();
+        PostPageCondition condition = new PostPageCondition(1, 10, null, "게시글 1번");
+        Post newPost = Post.builder()
+                .id(2L)
+                .title("게시글 2번")
+                .content("게시글 2번 내용")
+                .member(member)
+                .build();
+
+        List<Post> posts = List.of(
+                post,
+                newPost
+        );
+        Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize());
+        Page<Post> resultPage = PageableExecutionUtils.getPage(List.of(posts.get(0)), pageable, posts::size);
+        given(postRepository.findPostsByCondition(condition)).willReturn(resultPage);
 
         // When
-        Page<PostResponse> posts = postService.findPostsByCondition(condition);
+        Page<PostResponse> responses = postService.findPostsByCondition(condition);
 
         // Then
-        assertThat(posts.getTotalElements()).isEqualTo(1);
-        assertThat(posts.getContent().get(0).title()).isEqualTo(postCreateRequest.title());
-        assertThat(posts.getContent().get(0).content()).isEqualTo(postCreateRequest.content());
+        assertThat(responses.getContent().size()).isEqualTo(1);
     }
 
     @Test
     void 게시글_작성자_이메일로_조회_테스트() {
         // Given
-        postService.createPost(member.getEmail(), postCreateRequest);
-        PostPageCondition condition = PostPageCondition.builder()
-            .page(1)
-            .size(10)
-            .email("test@gmail.com")
-            .build();
+        PostPageCondition condition = new PostPageCondition(1, 10, "홍길동", null);
+        Post newPost = Post.builder()
+                .id(2L)
+                .title("게시글 2번")
+                .content("게시글 2번 내용")
+                .member(member)
+                .build();
+
+        List<Post> posts = List.of(
+                post,
+                newPost
+        );
+        Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize());
+        Page<Post> resultPage = PageableExecutionUtils.getPage(posts, pageable, posts::size);
+        given(postRepository.findPostsByCondition(condition)).willReturn(resultPage);
 
         // When
-        Page<PostResponse> posts = postService.findPostsByCondition(condition);
+        Page<PostResponse> responses = postService.findPostsByCondition(condition);
 
         // Then
-        assertThat(posts.getTotalElements()).isEqualTo(1);
-        assertThat(posts.getContent().get(0).title()).isEqualTo(postCreateRequest.title());
-        assertThat(posts.getContent().get(0).content()).isEqualTo(postCreateRequest.content());
+        assertThat(responses.getContent().size()).isEqualTo(2);
     }
 
     @Test
     void 게시글_수정_테스트() {
         // Given
-        PostResponse originPost = postService.createPost(member.getEmail(), postCreateRequest);
         PostUpdateRequest request = new PostUpdateRequest("수정된 제목", "수정된 내용");
+        given(postRepository.findByIdWithPessimisticLock(post.getId())).willReturn(Optional.of(post));
 
         // When
-        PostResponse updatedPost = postService.updatePost(originPost.id(), member.getEmail(), request);
+        PostResponse updatedPost = postService.updatePost(post.getId(), request);
 
         // Then
         assertThat(updatedPost.title()).isEqualTo(request.title());
@@ -174,46 +164,58 @@ class PostServiceTest {
     @Test
     void 게시글_수정_실패_테스트() {
         // Given
-        String notExistEmail = "notExist123@gmail.com";
-        PostResponse originPost = postService.createPost(member.getEmail(), postCreateRequest);
+        Long notExistId = 2L;
         PostUpdateRequest request = new PostUpdateRequest("수정된 제목", "수정된 내용");
+        given(postRepository.findByIdWithPessimisticLock(notExistId)).willReturn(Optional.empty());
 
         // When & Then
-        assertThatThrownBy(() -> postService.updatePost(originPost.id(), notExistEmail, request))
+        assertThatThrownBy(() -> postService.updatePost(notExistId, request))
             .isInstanceOf(CustomException.class);
     }
 
     @Test
     void 게시글_아이디로_삭제_테스트() {
         // Given
-        PostResponse originPost = postService.createPost(member.getEmail(), postCreateRequest);
+        given(postRepository.findById(post.getId())).willReturn(Optional.of(post));
 
         // When
-        postService.deletePostById(originPost.id(), member.getEmail());
+        postService.deletePostById(post.getId());
 
         // Then
-        assertThat(postRepository.findAll()).hasSize(0);
+        verify(postRepository, times(1)).deleteById(post.getId());
     }
 
     @Test
     void 게시글_아이디로_삭제_실패_테스트() {
         // Given
         Long notExistId = 2L;
+        given(postRepository.findById(notExistId)).willReturn(Optional.empty());
 
         // When & Then
-        assertThatThrownBy(() -> postService.deletePostById(notExistId, member.getEmail()))
+        assertThatThrownBy(() -> postService.deletePostById(notExistId))
                 .isInstanceOf(CustomException.class);
+    }
+
+    @Test
+    void 게시글_아이디_리스트로_다건_삭제_테스트() {
+        // Given
+        List<Long> postIds = List.of(1L);
+
+        // When
+        postService.deletePostsByIds(postIds);
+
+        // Then
+        verify(postRepository,times(1)).deletePostsByIds(postIds);
     }
 
     @Test
     void 게시글_전체_삭제_테스트() {
         // Given
-        postService.createPost(member.getEmail(), postCreateRequest);
 
         // When
         postService.deleteAllPosts();
 
         // Then
-        assertThat(postRepository.findAll()).hasSize(0);
+        verify(postRepository, times(1)).deleteAll();
     }
 }
