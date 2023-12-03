@@ -74,7 +74,7 @@ public class WebSecurityConfig {
 				.requestMatchers(new AntPathRequestMatcher("/api/v1/members/**")).hasAnyRole("USER", "ADMIN") // 회원 조회, 수정, 삭제는 USER, ADMIN 권한만 허용
 
 				// 나머지 요청에 대한 규칙
-				.anyRequest().authenticated() // 나머지 모든 요청은 인증 필요
+				.anyRequest().permitAll() // 나머지 모든 요청은 인증 필요
 			)
 			// 예외 처리
 			.exceptionHandling(exceptionHandling -> exceptionHandling

@@ -21,11 +21,17 @@ import lombok.extern.slf4j.Slf4j;
 public class JpaAuditingConfig implements AuditorAware<String> {
 	@Override
 	public Optional<String> getCurrentAuditor() {
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-		String token = request.getHeader("token");
-		if(token != null) {
-			String username = getUsernameFromToken(token);
-			return Optional.ofNullable(username);
+		try {
+			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+			String token = request.getHeader("token");
+			if (token != null) {
+				String username = getUsernameFromToken(token);
+				return Optional.ofNullable(username);
+			}
+		} catch (IllegalStateException e) {
+			// HTTP 요청 컨텍스트가 없는 경우 (예: 배치 작업)
+			// 여기서는 정적 사용자 이름을 반환하거나 다른 로직 적용
+			return Optional.of("default_auditor"); // 예시: 정적 사용자 이름
 		}
 		return Optional.empty();
 	}
