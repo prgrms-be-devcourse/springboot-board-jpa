@@ -24,6 +24,10 @@ spring:
       ddl-auto: none
     show-sql: true
 
+  batch:
+    jdbc:
+      initialize-schema: always
+
 jwt:
   header: token
   issuer: programmers

@@ -22,6 +22,11 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: none
+
+  batch:
+    jdbc:
+      initialize-schema: always
+
 jwt:
   header: token
   issuer: programmers

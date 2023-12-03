@@ -25,6 +25,10 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
+  
+  batch:
+    jdbc:
+      initialize-schema: always
 
 jwt:
   header: token
