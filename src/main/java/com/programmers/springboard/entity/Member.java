@@ -52,6 +52,9 @@ public class Member extends BaseEntity {
 	@Column(name = "is_deleted")
 	private Boolean isDeleted = false;
 
+	@Column(name = "is_activated")
+	private Boolean isActivated = true;
+
 	public Member(String name, String loginId, String password) {
 		this.name = name;
 		this.loginId = loginId;
@@ -76,6 +79,10 @@ public class Member extends BaseEntity {
 
 	public void updateLastLoginDate() {
 		this.lastLoginDate = LocalDateTime.now();
+	}
+
+	public void deactivate() {
+		this.isActivated = false;
 	}
 
 }

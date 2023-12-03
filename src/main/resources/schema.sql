@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS member
     role            varchar(30) NOT NULL,
     last_login_date TIMESTAMP,
     is_deleted      BOOLEAN DEFAULT FALSE,
+    is_activated    BOOLEAN DEFAULT TRUE,
     created_at      TIMESTAMP,
     created_by      VARCHAR(255),
     updated_at      TIMESTAMP,
