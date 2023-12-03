@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -53,8 +54,9 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers("/api/v1/members/me").hasAnyRole("USER", "ADMIN")
-                                .anyRequest().permitAll()
+                                .requestMatchers("/api/v1/members/sign-up", "/api/v1/members/login").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/posts/**").permitAll()
+                                .anyRequest().permitAll() // 아직 api가 정리되지 않아 우선 모두 접근 가능하게했습니다.
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(AbstractHttpConfigurer::disable)
