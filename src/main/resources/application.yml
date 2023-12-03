@@ -47,7 +47,7 @@ jwt:
   issuer: prgrms
   access-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
   access-expiry-seconds: 20
-  refresh-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  refresh-secret-key: 9d7b9414e08670871c20af2837ce27ee6e670b0e1fe204a73e492a2f74dddc6c90001087689aefa2f27a4422c23cfa8f68ccbc8e764acd762ceaa3bdc76a3d2e
   refresh-expiry-seconds: 60
 
 ---
@@ -81,5 +81,5 @@ jwt:
   issuer: prgrms
   access-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
   access-expiry-seconds: 7200
-  refresh-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  refresh-secret-key: 9d7b9414e08670871c20af2837ce27ee6e670b0e1fe204a73e492a2f74dddc6c90001087689aefa2f27a4422c23cfa8f68ccbc8e764acd762ceaa3bdc76a3d2e
   refresh-expiry-seconds: 1209600
