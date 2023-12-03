@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users", indexes = @Index(name = "idx_name", columnList = "name"))
+@Table(name = "users")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,16 +18,26 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "age", nullable = false)
     private Integer age;
 
-    @Column
+    @Column(name = "hobby")
     private String hobby;
 
-    @Column(columnDefinition = "TIMESTAMP")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
+
+    @Column(name = "deletedAt", columnDefinition = "TIMESTAMP")
     private LocalDateTime deletedAt;
 
     @Builder.Default
@@ -38,6 +48,10 @@ public class User extends BaseEntity {
         this.name = name;
         this.age = age;
         this.hobby = hobby;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
     }
 
     public void delete() {

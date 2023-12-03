@@ -1,13 +1,10 @@
 package com.example.board.dto.request.post;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PageCondition {
     private static final Integer DEFAULT_PAGE = 1;
     private static final Integer DEFAULT_SIZE = 10;
@@ -15,7 +12,7 @@ public class PageCondition {
     private Integer page;
     private Integer size;
 
-    public void updateValidPageCondition() {
+    public PageCondition() {
         page = isValidPage(page) ? page : DEFAULT_PAGE;
         size = isValidSize(size) ? size : DEFAULT_SIZE;
     }
