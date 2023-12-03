@@ -20,13 +20,14 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final Converter converter;
+    private final Converter converter; // ...
 
-    @Transactional
+    @Transactional(readOnly = true) // flush를 굳이 하지 않는다. , 굳이 필요한가?, Transactional - 전파
     public PostDto findById(Long id) {
         return postRepository.findById(id)
                 .map(converter::convertPostDto)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+                // 외부 의존적이 예외, 커스텀 예외를 만들.
     }
 
     @Transactional

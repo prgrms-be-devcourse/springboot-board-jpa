@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Converter {
-
+    // 정적 팩토리 메서드...
     // entity -> dto
     public PostDto convertPostDto(Post post) {
         return PostDto.builder()

@@ -19,8 +19,10 @@ import org.springframework.data.domain.PageRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-@SpringBootTest
+@SpringBootTest // 굳이 모든 bean을 긁어오지 말고 필요한 값들만 가져와보자
 class PostServiceTest {
+
+    // yml 파일 test 분리, db qn
 
     @Autowired
     private PostService postService;
@@ -39,7 +41,7 @@ class PostServiceTest {
         user = User.builder()
                 .name("박씨")
                 .age(22)
-                .hobby(Hobby.SPORTS).build();
+                .hobby("SPORTS").build();
 
         userRepository.save(user);
 
@@ -70,7 +72,7 @@ class PostServiceTest {
         Page<PostDto> findDtos = postService.getAll(page);
         assertThat(findDtos.getTotalElements()).isEqualTo(1L);
     }
-
+    // 테스트 대상을 명확하게 구분해보자 , ex update 대상 존재 x
     @Test
     void update() {
         PostRequestDto requestDto = PostRequestDto.builder()

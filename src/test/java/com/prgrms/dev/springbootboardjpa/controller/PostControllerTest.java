@@ -56,7 +56,7 @@ class PostControllerTest {
         user = User.builder()
                 .name("박씨")
                 .age(22)
-                .hobby(Hobby.SPORTS).build();
+                .hobby("SPORTS").build();
 
         userRepository.save(user);
 
@@ -66,7 +66,7 @@ class PostControllerTest {
                 .build();
 
         postDto = postService.create(postRequestDto, user.getId());
-    }
+    } // 분리해보기
 
     @Test
     void create() throws Exception {
@@ -106,29 +106,29 @@ class PostControllerTest {
                 .content("수정된 콘텐츠")
                 .build();
 
-            mockMvc.perform(post("/api/v1/posts/{id}", postDto.id())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(requestDto)))
-                    .andExpect(status().isOk())
-                    .andDo(document("post-update",
-                            requestFields(
-                                    fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
-                                    fieldWithPath("content").type(JsonFieldType.STRING).description("content")
-                            ),
-                            responseFields(
-                                    fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("status code"),
-                                    fieldWithPath("data").type(JsonFieldType.OBJECT).description("data"),
-                                    fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
-                                    fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
-                                    fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
-                                    fieldWithPath("data.userDto").type(JsonFieldType.OBJECT).description("userDto"),
-                                    fieldWithPath("data.userDto.id").type(JsonFieldType.NUMBER).description("userDto.id"),
-                                    fieldWithPath("data.userDto.name").type(JsonFieldType.STRING).description("userDto.name"),
-                                    fieldWithPath("data.userDto.hobby").type(JsonFieldType.STRING).description("userDto.hobby"),
-                                    fieldWithPath("data.userDto.age").type(JsonFieldType.NUMBER).description("userDto.age"),
-                                    fieldWithPath("responseTime").type(JsonFieldType.STRING).description("response time")
-                            )
-                    ));
+        mockMvc.perform(post("/api/v1/posts/{id}", postDto.id())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andExpect(status().isOk())
+                .andDo(document("post-update",
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("content")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("status code"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("data"),
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
+                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("title"),
+                                fieldWithPath("data.content").type(JsonFieldType.STRING).description("content"),
+                                fieldWithPath("data.userDto").type(JsonFieldType.OBJECT).description("userDto"),
+                                fieldWithPath("data.userDto.id").type(JsonFieldType.NUMBER).description("userDto.id"),
+                                fieldWithPath("data.userDto.name").type(JsonFieldType.STRING).description("userDto.name"),
+                                fieldWithPath("data.userDto.hobby").type(JsonFieldType.STRING).description("userDto.hobby"),
+                                fieldWithPath("data.userDto.age").type(JsonFieldType.NUMBER).description("userDto.age"),
+                                fieldWithPath("responseTime").type(JsonFieldType.STRING).description("response time")
+                        )
+                ));
     }
 
     @Test
@@ -165,6 +165,10 @@ class PostControllerTest {
                         )
                 ));
     }
+    // 인코딩, 해싱, 암호화 ............. end ..
+    // 헉...
+
+    // paging -> 수많은 데이터 =>
 
     @Test
     void getAll() throws Exception {
@@ -208,7 +212,7 @@ class PostControllerTest {
                                 fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("현재 페이지 번호").ignored(),
                                 fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("현재 페이지의 요소 수").ignored(),
                                 fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("데이터가 비어 있는지 여부").ignored()
-                        )
+                        ) // 필요한 정보만 표현하는 방식을 고민
                 ));
     }
 }
