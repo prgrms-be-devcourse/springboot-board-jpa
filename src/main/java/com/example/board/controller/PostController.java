@@ -10,6 +10,7 @@ import com.example.board.dto.response.PostResponse;
 import com.example.board.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,32 +32,36 @@ public class PostController {
                 .fromPath("/v1/posts/{id}")
                 .buildAndExpand(id)
                 .toUri();
-        return ResponseEntity.created(location).body(ApiResponse.success(HttpStatus.CREATED, id));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(location);
+
+        return new ResponseEntity<>(ApiResponse.success(HttpStatus.CREATED, id), headers, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<PostResponse>>> getPosts(@ModelAttribute @Valid PostSearchCondition searchCondition,
                                                                             @ModelAttribute @Valid PageCondition pageCondition) {
         PageResponse<PostResponse> post = postService.getPosts(searchCondition, pageCondition);
-        return ResponseEntity.ok().body(ApiResponse.success(HttpStatus.OK, post));
+        return new ResponseEntity<>(ApiResponse.success(HttpStatus.OK, post), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<PostResponse>> getPost(@PathVariable Long id) {
         PostResponse post = postService.getPost(id);
-        return ResponseEntity.ok().body(ApiResponse.success(HttpStatus.OK, post));
+        return new ResponseEntity<>(ApiResponse.success(HttpStatus.OK, post), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> updatePost(@PathVariable Long id,
                                                         @RequestBody @Valid UpdatePostRequest requestDto) {
         postService.updatePost(id, requestDto);
-        return ResponseEntity.ok().body(ApiResponse.success(HttpStatus.OK));
+        return new ResponseEntity<>(ApiResponse.success(HttpStatus.NO_CONTENT), HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long id) {
         postService.deletePost(id);
-        return ResponseEntity.ok().body(ApiResponse.success(HttpStatus.OK));
+        return new ResponseEntity<>(ApiResponse.success(HttpStatus.NO_CONTENT), HttpStatus.NO_CONTENT);
     }
 }
