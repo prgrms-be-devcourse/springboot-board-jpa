@@ -5,7 +5,6 @@ import com.example.board.converter.UserConverter;
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
 import com.example.board.dto.request.post.CreatePostRequest;
-import com.example.board.dto.request.post.DeletePostRequest;
 import com.example.board.dto.request.post.UpdatePostRequest;
 import com.example.board.dto.request.user.CreateUserRequest;
 import com.example.board.repository.post.PostRepository;

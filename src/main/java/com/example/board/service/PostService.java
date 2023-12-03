@@ -3,7 +3,10 @@ package com.example.board.service;
 import com.example.board.converter.PostConverter;
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
-import com.example.board.dto.request.post.*;
+import com.example.board.dto.request.post.CreatePostRequest;
+import com.example.board.dto.request.post.PageCondition;
+import com.example.board.dto.request.post.PostSearchCondition;
+import com.example.board.dto.request.post.UpdatePostRequest;
 import com.example.board.dto.response.PageResponse;
 import com.example.board.dto.response.PostResponse;
 import com.example.board.exception.CustomException;
@@ -24,11 +27,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
 
-    private final PostRepository postRepository;
+    private final AuthService authService;
     private final UserService userService;
+    private final PostRepository postRepository;
 
     public Long createPost(CreatePostRequest requestDto) {
-        final User user = userService.getAvailableUserById(requestDto.authorId());
+        final User user = userService.getAvailableUserById(authService.getCurrentUserId());
         final Post post = postRepository.save(PostConverter.toPost(requestDto, user));
         return post.getId();
     }
@@ -53,19 +57,18 @@ public class PostService {
     public void updatePost(Long id, UpdatePostRequest requestDto) {
         final Post post = postRepository.findByIdWithAuthor(id).orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
-        if (!post.isSameAuthorId(requestDto.authorId()))
+        if (!post.isSameAuthorId(authService.getCurrentUserId()))
             throw new CustomException(ErrorCode.AUTHOR_NOT_MATCH);
 
         post.updateTitleAndContent(requestDto.title(), requestDto.content());
     }
 
-    public void deletePost(Long id, DeletePostRequest requestDto) {
+    public void deletePost(Long id) {
         final Post post = postRepository.findByIdWithAuthor(id).orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
-        if (!post.isSameAuthorId(requestDto.authorId()))
+        if (!post.isSameAuthorId(authService.getCurrentUserId()))
             throw new CustomException(ErrorCode.AUTHOR_NOT_MATCH);
 
         postRepository.delete(post);
     }
-
 }

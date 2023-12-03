@@ -1,67 +1,79 @@
-### 유저 생성
+### 유저1 생성
 POST http://localhost:8080/api/v1/users/sign-up
 Content-Type: application/json
 
 {
   "name": "bingbong",
-  "password": "123123123",
+  "password": "bingbong",
   "age": 30
 }
 
-### 유저 로그인
+### 유저1 로그인
 POST http://localhost:8080/api/v1/users/sign-in
 Content-Type: application/json
 
 {
   "name": "bingbong",
-  "password": "123123123"
-}
-
-### 게시글 생성
-POST http://localhost:8080/api/v1/posts
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE1NzYyMjksImV4cCI6MTcwMTYwNjIyOSwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.CO5U3QmQTTrInxpSZUFENFd-wB1JDzyd9vf_SsdtLuewwprujZC942R2FueNwnlYsP-BzYVefPKq00Zr3nUmGQ
-
-{
-  "title": "제목 111",
-  "content": "게시글 1",
-  "authorId": 1
+  "password": "bingbong"
 }
 
 ### 내 정보 조회
 GET http://localhost:8080/api/v1/users/me
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE1Nzg5MjUsImV4cCI6MTcwMTYwODkyNSwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.kqzVj9A6JK82FbeNz_B9YeUN98ZvyViI4tiBZwbKVU6Vw4IiCbxpI6yWazIhgAQzuHSKKNuraEPE0BCeny03qw
-
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE1ODI2NjIsImV4cCI6MTcwMTYxMjY2MiwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.Y-Ig7xw-S8-eFR_-QrmSAaC29iDfOUy3wFPklVR7O0oKJpIFqbKOqjzRTm1vCbuvQXca0d6nwbr0e8BkD1drdg
 
 ### 게시글 생성
 POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE1ODI2NjIsImV4cCI6MTcwMTYxMjY2MiwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.Y-Ig7xw-S8-eFR_-QrmSAaC29iDfOUy3wFPklVR7O0oKJpIFqbKOqjzRTm1vCbuvQXca0d6nwbr0e8BkD1drdg
 
 {
-  "title": "제목 222",
-  "content": "게시글 2",
-  "authorId": 1
+  "title": "빙봉 제목",
+  "content": "빙봉 내용"
 }
 
-### 게시글 생성
-POST http://localhost:8080/api/v1/posts
+### 유저2 생성
+POST http://localhost:8080/api/v1/users/sign-up
 Content-Type: application/json
 
 {
-  "title": "제목 333",
-  "content": "게시글 3",
-  "authorId": 1
+  "name": "hanna",
+  "password": "hannalee",
+  "age": 25
 }
 
-### 게시글 생성
-POST http://localhost:8080/api/v1/posts
+### 유저2 로그인
+POST http://localhost:8080/api/v1/users/sign-in
 Content-Type: application/json
 
 {
-  "title": "제목 444",
-  "content": "게시글 4",
-  "authorId": 1
+  "name": "hanna",
+  "password": "hannalee"
+}
+
+### 내 정보 조회
+GET http://localhost:8080/api/v1/users/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE1ODI3MTEsImV4cCI6MTcwMTYxMjcxMSwidXNlcklkIjoyLCJyb2xlcyI6WyJVU0VSIl19.23HAS_4JWVqCk0Kz9otLVA1dEImj1V2ECDDNfwkkb7zxk4zeObu9VlzoU2CJabv2-HIxnj7cehcVUcjyxinCBg
+
+### 게시글 생성
+POST http://localhost:8080/api/v1/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE1ODI3MTEsImV4cCI6MTcwMTYxMjcxMSwidXNlcklkIjoyLCJyb2xlcyI6WyJVU0VSIl19.23HAS_4JWVqCk0Kz9otLVA1dEImj1V2ECDDNfwkkb7zxk4zeObu9VlzoU2CJabv2-HIxnj7cehcVUcjyxinCBg
+
+{
+  "title": "한나 제목",
+  "content": "한나 내용"
+}
+
+### 남의 게시글 수정
+PUT http://localhost:8080/api/v1/posts/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE1ODI3MTEsImV4cCI6MTcwMTYxMjcxMSwidXNlcklkIjoyLCJyb2xlcyI6WyJVU0VSIl19.23HAS_4JWVqCk0Kz9otLVA1dEImj1V2ECDDNfwkkb7zxk4zeObu9VlzoU2CJabv2-HIxnj7cehcVUcjyxinCBg
+
+{
+  "title": "제목 수정",
+  "content": "내용 수정"
 }
 
 ### 잘못된 게시글 생성
@@ -69,9 +81,7 @@ POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
 
 {
-  "title": "제목",
-  "content": "게시글",
-  "authorId": 1
+  "title": "제목"
 }
 
 ### 게시글 전체 조회
