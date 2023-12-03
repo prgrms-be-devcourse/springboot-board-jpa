@@ -45,7 +45,7 @@ public class SecurityConfig {
     }
 
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtConfig.getHeader(), jwt());
+        return new JwtAuthenticationFilter(jwt());
     }
 
     @Bean

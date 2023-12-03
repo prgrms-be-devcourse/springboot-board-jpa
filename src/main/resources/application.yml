@@ -30,7 +30,6 @@ server:
   port: 8080
 
 jwt:
-  header: token
   issuer: prgrms
   client-secret: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
   expiry-seconds: 600

@@ -2,8 +2,6 @@ package com.example.board.global.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -26,18 +24,14 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends GenericFilterBean {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final String headerKey;
     private final Jwt jwt;  // jwt 디코딩에 이용
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
-
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            String token = getToken(req);
+            String token = getToken(request);
             if (token != null) {
                 try {
                     Jwt.Claims claims = verify(token);
@@ -49,7 +43,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                     if (isNotEmpty(username) && authorities.size() > 0) {
                         JwtAuthenticationToken authentication
                                 = new JwtAuthenticationToken(new JwtAuthentication(token, username), null, authorities);
-                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req)); // 필수는 아니라함
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); // 필수는 아니라함
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
 
@@ -61,12 +55,13 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             log.debug("SecurityContextHolder not populated with security token, as it already contained : {}",
                     SecurityContextHolder.getContext().getAuthentication());
         }
-        chain.doFilter(req, res);
+        filterChain.doFilter(request, response);
     }
 
     private String getToken(HttpServletRequest request) {
-        String token = request.getHeader(headerKey);
-        if (isNotEmpty(token)) {
+        String authorization = request.getHeader("Authorization");
+        if (isNotEmpty(authorization) && authorization.startsWith("Bearer ")) {
+            String token = authorization.substring(7);
             log.debug("Jwt token detected : {}", token);
             try {
                 return URLDecoder.decode(token, StandardCharsets.UTF_8);
