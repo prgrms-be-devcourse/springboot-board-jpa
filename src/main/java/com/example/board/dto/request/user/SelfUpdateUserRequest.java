@@ -2,7 +2,7 @@ package com.example.board.dto.request.user;
 
 import jakarta.validation.constraints.*;
 
-public record UpdateUserRequest(
+public record SelfUpdateUserRequest(
 
         @NotBlank(message = "이름은 필수 입력값입니다.")
         @Size(min = 2, max = 10, message = "이름은 2 ~ 10자 사이로 입력해 주세요.")

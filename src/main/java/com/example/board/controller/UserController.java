@@ -1,9 +1,9 @@
 package com.example.board.controller;
 
 import com.example.board.annotation.AuthUser;
-import com.example.board.dto.request.user.UpdateUserRequest;
+import com.example.board.dto.request.user.SelfUpdateUserRequest;
 import com.example.board.dto.response.ApiResponse;
-import com.example.board.dto.response.UserResponse;
+import com.example.board.dto.response.UserSummaryResponse;
 import com.example.board.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,27 +18,26 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<UserResponse>> getMyInfo(@AuthUser Long id) {
-        UserResponse response = userService.getUser(id);
+    public ResponseEntity<ApiResponse<UserSummaryResponse>> getMyInfo(@AuthUser Long id) {
+        UserSummaryResponse response = userService.getUser(id);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable Long id) {
-        UserResponse user = userService.getUser(id);
-        return ResponseEntity.ok(ApiResponse.success(user));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> updateUser(@PathVariable Long id,
-                                                        @RequestBody @Valid UpdateUserRequest requestDto) {
+    @PatchMapping("/me")
+    public ResponseEntity<ApiResponse<Void>> updateUser(@AuthUser Long id, @RequestBody @Valid SelfUpdateUserRequest requestDto) {
         userService.updateUser(id, requestDto);
         return ResponseEntity.ok(ApiResponse.success());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
+    @DeleteMapping("/me")
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@AuthUser Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok(ApiResponse.success());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<UserSummaryResponse>> getUser(@PathVariable Long id) {
+        UserSummaryResponse user = userService.getUser(id);
+        return ResponseEntity.ok(ApiResponse.success(user));
     }
 }

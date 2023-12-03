@@ -2,9 +2,9 @@ package com.example.board.service;
 
 import com.example.board.converter.UserConverter;
 import com.example.board.domain.User;
-import com.example.board.dto.request.user.UpdateUserRequest;
+import com.example.board.dto.request.user.SelfUpdateUserRequest;
 import com.example.board.dto.response.ResponseStatus;
-import com.example.board.dto.response.UserResponse;
+import com.example.board.dto.response.UserSummaryResponse;
 import com.example.board.exception.CustomException;
 import com.example.board.repository.user.UserRepository;
 import lombok.AllArgsConstructor;
@@ -19,12 +19,12 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public UserResponse getUser(Long id) {
+    public UserSummaryResponse getUser(Long id) {
         final User user = getAvailableUser(id);
-        return UserConverter.toUserResponse(user);
+        return UserConverter.toUserSummaryResponse(user);
     }
 
-    public void updateUser(Long id, UpdateUserRequest requestDto) {
+    public void updateUser(Long id, SelfUpdateUserRequest requestDto) {
         final User user = getAvailableUser(id);
         user.update(requestDto.name(), requestDto.age(), requestDto.hobby());
     }
