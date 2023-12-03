@@ -9,14 +9,6 @@ spring:
   profiles:
     default: dev
 
-jwt:
-  #  header: token
-  issuer: prgrms
-  access-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
-  access-expiry-seconds: 30000
-  refresh-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
-  refresh-expiry-seconds: 60000
-
 ---
 
 spring:
@@ -51,6 +43,13 @@ logging:
           jdbc:
             bind: trace
 
+jwt:
+  issuer: prgrms
+  access-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  access-expiry-seconds: 20
+  refresh-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  refresh-expiry-seconds: 60
+
 ---
 
 spring:
@@ -77,3 +76,10 @@ logging:
       hibernate:
         type: info
         sql: info
+
+jwt:
+  issuer: prgrms
+  access-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  access-expiry-seconds: 7200
+  refresh-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  refresh-expiry-seconds: 1209600

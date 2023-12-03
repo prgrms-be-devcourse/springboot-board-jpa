@@ -20,7 +20,15 @@ Content-Type: application/json
 ### 내 정보 조회
 GET http://localhost:8080/api/v1/users/me
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE1ODI2NjIsImV4cCI6MTcwMTYxMjY2MiwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.Y-Ig7xw-S8-eFR_-QrmSAaC29iDfOUy3wFPklVR7O0oKJpIFqbKOqjzRTm1vCbuvQXca0d6nwbr0e8BkD1drdg
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE2MDg3OTAsImV4cCI6MTcwMTYwODgxMCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.M1HxQd-L8jqjHAyfUk9Zaoj7OJVCC9IbJ_492P0PjRC_3kGD-KXUlqRIKRI_ALkvA_6xm_mdmFAo-qu8sbA7iA
+
+### accessToken 재발급
+POST http://localhost:8080/api/v1/users/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE2MDg2MjYsImV4cCI6MTcwMTY2ODYyNiwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.ZpP0Fh9UGZw9ZZWDk16ptl29TX1OL1QeTaSJDmpzF15fMr8u3ZgP57AmXTy2Xpx_uuFmkEHekldgX57DOHY7PA"
+}
 
 ### 게시글 생성
 POST http://localhost:8080/api/v1/posts

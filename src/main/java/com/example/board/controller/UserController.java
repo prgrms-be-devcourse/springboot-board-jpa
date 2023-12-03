@@ -1,10 +1,11 @@
 package com.example.board.controller;
 
 import com.example.board.dto.request.user.CreateUserRequest;
+import com.example.board.dto.request.user.RefreshRequest;
 import com.example.board.dto.request.user.SignInRequest;
-import com.example.board.dto.request.user.SignInResponse;
 import com.example.board.dto.request.user.UpdateUserRequest;
 import com.example.board.dto.response.ApiResponse;
+import com.example.board.dto.response.SignInResponse;
 import com.example.board.dto.response.UserResponse;
 import com.example.board.service.UserService;
 import jakarta.validation.Valid;
@@ -34,13 +35,16 @@ public class UserController {
         return new ResponseEntity<>(ApiResponse.success(userService.signIn(requestDto)), HttpStatus.OK);
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<ApiResponse<SignInResponse>> refresh(@RequestBody @Valid RefreshRequest requestDto) {
+        return new ResponseEntity<>(ApiResponse.success(userService.refresh(requestDto)), HttpStatus.OK);
+    }
+
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserResponse>> getMyInfo() {
         UserResponse user = userService.getMyInfo();
         return new ResponseEntity<>(ApiResponse.success(user), HttpStatus.OK);
     }
-
-    //TODO: 토큰 재발급 기능 구현
 
     /**
      * TODO: 파일 분리 필요

@@ -37,6 +37,7 @@ public class SecurityConfig {
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/*/users/sign-up", HttpMethod.POST.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/*/users/sign-in", HttpMethod.POST.toString())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/*/users/refresh", HttpMethod.POST.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/*/users", HttpMethod.POST.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/*/posts", HttpMethod.GET.toString())).permitAll()
                         .anyRequest().authenticated()

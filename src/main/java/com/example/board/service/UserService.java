@@ -3,9 +3,10 @@ package com.example.board.service;
 import com.example.board.converter.UserConverter;
 import com.example.board.domain.User;
 import com.example.board.dto.request.user.CreateUserRequest;
+import com.example.board.dto.request.user.RefreshRequest;
 import com.example.board.dto.request.user.SignInRequest;
-import com.example.board.dto.request.user.SignInResponse;
 import com.example.board.dto.request.user.UpdateUserRequest;
+import com.example.board.dto.response.SignInResponse;
 import com.example.board.dto.response.UserResponse;
 import com.example.board.exception.CustomError;
 import com.example.board.exception.CustomException;
@@ -47,6 +48,21 @@ public class UserService {
         }
 
         return generateTokens(user.getId());
+    }
+
+    public SignInResponse refresh(RefreshRequest requestDto) {
+        final String refreshToken = requestDto.refreshToken();
+        JwtPayload payload = jwtProvider.validateAndParseJwtPayload(refreshToken);
+        //TODO: isValidRefreshToken - 캐시에 저장되어 있는 토큰 값과 비교
+
+        userRepository.findByIdAndDeletedAt(payload.getUserId(), null)
+                .orElseThrow(() -> new CustomException(CustomError.LOGIN_REQUIRED));
+
+        final String accessToken = jwtProvider.generateAccessToken(new JwtPayload(payload.getUserId(), payload.getRoles()));
+        return SignInResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
     public UserResponse getMyInfo() {
@@ -100,6 +116,9 @@ public class UserService {
         final String refreshToken = jwtProvider.generateRefreshToken(payload);
         //TODO: refreshToken 캐시에 저장
 
-        return SignInResponse.of(accessToken, refreshToken);
+        return SignInResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 }
