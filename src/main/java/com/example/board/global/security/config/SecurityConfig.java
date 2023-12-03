@@ -79,42 +79,6 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
 
             );
-
         return http.build();
-        //        http
-//            .httpBasic()
-//                .disable()
-//            .csrf()
-//                .disable()
-//            .formLogin()
-//                .disable()
-//            .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//
-//            .and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//                .accessDeniedHandler(jwtAccessDeniedHandler)
-//
-//            .and()
-//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(jwtExceptionFilter, JwtFilter.class)
-//                .userDetailsService(memberDetailsService)
-//
-//                .authorizeRequests()
-//                    .antMatchers(HttpMethod.PATCH, "/api/v1/members/{id}").access("@memberGuard.check(#id)")
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/members/list").hasAuthority("ADMIN")
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/members/{id}").access("@memberGuard.check(#id)")
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/members").hasAuthority("ADMIN")
-//
-//                    .antMatchers(HttpMethod.PATCH, "/api/v1/posts/{id}").access("@postGuard.check(#id)")
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/posts/list").hasAuthority("ADMIN")
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/posts/{id}").access("@postGuard.check(#id)")
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/posts").hasAuthority("ADMIN")
-//
-//                    .antMatchers(HttpMethod.PATCH, "/api/v1/comments/{commentId}").access("@commentGuard.check(#commentId)")
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/comments/{commentId}").access("@commentGuard.check(#commentId)")
-//                .anyRequest().permitAll();
-//        return http.build();
     }
 }
