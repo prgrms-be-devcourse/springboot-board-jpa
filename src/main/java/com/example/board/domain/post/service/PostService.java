@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static com.example.board.global.exception.ErrorCode.*;
 
 @Service
@@ -25,21 +27,18 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
-    public PostResponse createPost(String email, PostCreateRequest request) {
-        Member member = getMemberEntity(email);
+    public PostResponse createPost(Long memberId, PostCreateRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+
         Post post = postRepository.save(request.toEntity(member));
         return PostResponse.from(post);
     }
 
-    @Transactional(readOnly = true)
-    public PostResponse findPostById(Long id) {
-        Post post = getPostEntity(id);
-        return PostResponse.from(post);
-    }
-
-    public void updatePostViewById(Long id) {
-        Post post = getPostEntity(id);
+    public PostResponse findPostByIdAndUpdateView(Long id) {
+        Post post = getPostWithPessimisticLock(id);
         post.increaseView();
+        return PostResponse.from(post);
     }
 
     @Transactional(readOnly = true)
@@ -48,42 +47,28 @@ public class PostService {
         return posts.map(PostResponse::from);
     }
 
-    public PostResponse updatePost(Long id, String email, PostUpdateRequest request) {
-        Post post = getPostEntity(id);
-        validateWriter(email, post);
+    public PostResponse updatePost(Long id, PostUpdateRequest request) {
+        Post post = getPostWithPessimisticLock(id);
         post.updatePost(request.title(), request.content());
         return PostResponse.from(post);
     }
 
-    public void deletePostById(Long id, String email) {
-        Post post = getPostEntity(id);
-        validateWriter(email, post);
+    public void deletePostById(Long id) {
+        postRepository.findById(id)
+                .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
         postRepository.deleteById(id);
+    }
+
+    public void deletePostsByIds(List<Long> postIds) {
+        postRepository.deletePostsByIds(postIds);
     }
 
     public void deleteAllPosts() {
         postRepository.deleteAll();
     }
 
-    public void deleteAllPostsByWriter(String email) {
-        Member member = getMemberEntity(email);
-        postRepository.deleteAllByMember(member);
-    }
-
-    private void validateWriter(String email, Post post) {
-        getMemberEntity(email);
-        if (!post.isSameMember(email)) {
-            throw new CustomException(WRITER_MISMATCH);
-        }
-    }
-
-    private Post getPostEntity(Long id) {
-        return postRepository.findById(id)
+    private Post getPostWithPessimisticLock(Long id) {
+        return postRepository.findByIdWithPessimisticLock(id)
                 .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
-    }
-
-    private Member getMemberEntity(String email) {
-        return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
     }
 }
