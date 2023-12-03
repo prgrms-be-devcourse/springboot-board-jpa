@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
@@ -29,4 +30,10 @@ public class Member extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Groups groups;
+
+	public void checkPassword(PasswordEncoder passwordEncoder, String credentials){
+		if(!passwordEncoder.matches(credentials, passwd)){
+			throw new IllegalArgumentException("Bad credentials");
+		}
+	}
 }

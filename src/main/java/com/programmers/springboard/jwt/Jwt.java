@@ -6,6 +6,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -45,11 +47,12 @@ public class Jwt {
         return new Claims(jwtVerifier.verify(token));
     }
 
+    @Getter
     static public class Claims {
-        String username;
-        String[] roles;
-        Date iat;
-        Date exp;
+        private String username;
+        private String[] roles;
+        private Date iat;
+        private Date exp;
 
         private Claims(){}
 
