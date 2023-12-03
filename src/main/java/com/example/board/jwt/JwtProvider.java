@@ -59,7 +59,7 @@ public class JwtProvider {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-        return JwtPayload.of(claims.get("id", Long.class), claims.get("roles", List.class));
+        return new JwtPayload(claims.get("userId", Long.class), claims.get("roles", List.class));
     }
 
     private Date convertToDate(LocalDateTime localDateTime) {

@@ -6,8 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,17 +25,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (accessToken != null) {
             try {
                 JwtPayload payload = jwtProvider.validateAndParseJwtPayload(accessToken);
-
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        payload.getId(),
-                        null,
-                        payload.getRoles().stream()
-                                .map(SimpleGrantedAuthority::new)
-                                .toList());
-
+                JwtAuthToken authentication = new JwtAuthToken(payload.getUserId(), payload.getRoles());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (Exception e) {
-                //TODO
+                //TODO: 예외 처리
+                e.printStackTrace();
             }
         }
 
@@ -45,6 +37,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private String parseBearerToken(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION)).filter(token -> token.substring(0, 7).equalsIgnoreCase("Bearer ")).map(token -> token.substring(7)).orElse(null);
+        return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
+                .filter(token -> token.startsWith("Bearer "))
+                .map(token -> token.substring(7))
+                .orElse(null);
     }
 }

@@ -1,5 +1,5 @@
 ### 유저 생성
-POST http://localhost:8080/api/v1/users
+POST http://localhost:8080/api/v1/users/sign-up
 Content-Type: application/json
 
 {
@@ -20,13 +20,19 @@ Content-Type: application/json
 ### 게시글 생성
 POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE1MTcyNzMsImV4cCI6MTcwMTU0NzI3MywibmFtZSI6ImJpbmdib25nIiwicm9sZXMiOlsiVVNFUiJdfQ.9DtT7Vi_luOJiE8WLkd1f2Pz5lfFYhx_RrpgLVbXtrCYIaa0MzD00uxMsQAvJEflxMkApROj7T5Fi81iT9X4zg
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE1NzYyMjksImV4cCI6MTcwMTYwNjIyOSwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.CO5U3QmQTTrInxpSZUFENFd-wB1JDzyd9vf_SsdtLuewwprujZC942R2FueNwnlYsP-BzYVefPKq00Zr3nUmGQ
 
 {
   "title": "제목 111",
   "content": "게시글 1",
   "authorId": 1
 }
+
+### 내 정보 조회
+GET http://localhost:8080/api/v1/users/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE1Nzg5MjUsImV4cCI6MTcwMTYwODkyNSwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.kqzVj9A6JK82FbeNz_B9YeUN98ZvyViI4tiBZwbKVU6Vw4IiCbxpI6yWazIhgAQzuHSKKNuraEPE0BCeny03qw
+
 
 ### 게시글 생성
 POST http://localhost:8080/api/v1/posts

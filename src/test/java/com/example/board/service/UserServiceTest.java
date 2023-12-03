@@ -41,7 +41,7 @@ class UserServiceTest {
         given(userRepository.save(any(User.class))).willReturn(user);
 
         // when
-        userService.createUser(requestDto);
+        userService.signUp(requestDto);
 
         // then
         verify(userRepository).save(any(User.class));
@@ -56,7 +56,7 @@ class UserServiceTest {
         given(userRepository.findByNameAndDeletedAt(any(String.class), eq(null))).willReturn(Collections.singletonList(user));
 
         // when & then
-        assertThatThrownBy(() -> userService.createUser(requestDto))
+        assertThatThrownBy(() -> userService.signUp(requestDto))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.DUPLICATED_USER_NAME.getMessage());
     }

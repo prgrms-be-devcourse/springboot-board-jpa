@@ -13,6 +13,8 @@ import com.example.board.jwt.JwtPayload;
 import com.example.board.jwt.JwtProvider;
 import com.example.board.repository.user.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +30,19 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
+    public Long signUp(CreateUserRequest requestDto) {
+        validateUserName(requestDto.name());
+        final User user = UserConverter.toUser(requestDto, passwordEncoder);
+        return userRepository.save(user).getId();
+    }
+
     public SignInResponse signIn(SignInRequest requestDto) {
-        User user = getAvailableUserByName(requestDto.name());
+        final User user = getAvailableUserByName(requestDto.name());
         if (!passwordEncoder.matches(requestDto.password(), user.getPassword())) {
             throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }
 
-        JwtPayload payload = JwtPayload.of(user.getId(), List.of("USER"));
+        JwtPayload payload = new JwtPayload(user.getId(), List.of("USER"));
 
         final String accessToken = jwtProvider.generateAccessToken(payload);
         final String refreshToken = jwtProvider.generateRefreshToken(payload);
@@ -43,10 +51,16 @@ public class UserService {
         return SignInResponse.of(accessToken, refreshToken);
     }
 
-    public Long createUser(CreateUserRequest requestDto) {
-        validateUserName(requestDto.name());
-        User user = UserConverter.toUser(requestDto, passwordEncoder);
-        return userRepository.save(user).getId();
+    public UserResponse getMyInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof Long) {
+            final Long userId = (Long) authentication.getPrincipal();
+            final User user = getAvailableUserById(userId);
+            return UserConverter.toUserResponse(user);
+        } else {
+            //TODO
+        }
+        return null;
     }
 
     @Transactional(readOnly = true)
