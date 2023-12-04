@@ -32,7 +32,8 @@ server:
 jwt:
   issuer: prgrms
   client-secret: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
-  expiry-seconds: 600
+  accessExpirySeconds: 60
+  refreshExpirySeconds: 86400
 
 ---
 
