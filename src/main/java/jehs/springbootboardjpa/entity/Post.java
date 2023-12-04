@@ -34,6 +34,7 @@ public class Post extends BaseEntity {
     private User user;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "post_type")
     private PostType postType;
 
     public void updatePost(PostUpdateRequest postUpdateRequest, User user) {
