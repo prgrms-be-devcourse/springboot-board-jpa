@@ -38,8 +38,7 @@ public class PostController {
     } // body에서 전부 받는 방식으로
 
     //수정
-    // post, put, patch ... HTTP 메서드 - 멱등성
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ApiResponse<PostDto> update(@RequestBody PostRequestDto requestDto, @PathVariable Long id) {
         PostDto update = postService.update(requestDto, id);
         return ApiResponse.ok(update);
