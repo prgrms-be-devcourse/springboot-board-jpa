@@ -7,7 +7,7 @@ import com.prgrms.dev.springbootboardjpa.domain.user.User;
 import com.prgrms.dev.springbootboardjpa.domain.user.UserRepository;
 import com.prgrms.dev.springbootboardjpa.dto.PostCreateRequestDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostDto;
-import com.prgrms.dev.springbootboardjpa.dto.PostRequestDto;
+import com.prgrms.dev.springbootboardjpa.dto.PostUpdateRequestDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -47,7 +47,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto update(PostRequestDto requestDto, Long id) {
+    public PostDto update(PostUpdateRequestDto requestDto, Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
 

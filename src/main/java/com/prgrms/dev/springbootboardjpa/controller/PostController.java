@@ -3,7 +3,7 @@ package com.prgrms.dev.springbootboardjpa.controller;
 import com.prgrms.dev.springbootboardjpa.ApiResponse;
 import com.prgrms.dev.springbootboardjpa.dto.PostCreateRequestDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostDto;
-import com.prgrms.dev.springbootboardjpa.dto.PostRequestDto;
+import com.prgrms.dev.springbootboardjpa.dto.PostUpdateRequestDto;
 import com.prgrms.dev.springbootboardjpa.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,12 +36,12 @@ public class PostController {
     public ApiResponse<PostDto> create(@RequestBody PostCreateRequestDto postCreateRequestDto) {
         PostDto postDto = postService.create(postCreateRequestDto);
         return ApiResponse.ok(postDto);
-    } // body에서 전부 받는 방식으로
+    }
 
     //수정
     @PutMapping("/{id}")
-    public ApiResponse<PostDto> update(@RequestBody PostRequestDto requestDto, @PathVariable Long id) {
-        PostDto update = postService.update(requestDto, id);
+    public ApiResponse<PostDto> update(@RequestBody PostUpdateRequestDto postUpdateRequestDto, @PathVariable Long id) {
+        PostDto update = postService.update(postUpdateRequestDto, id);
         return ApiResponse.ok(update);
     }
 
