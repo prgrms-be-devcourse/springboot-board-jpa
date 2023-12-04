@@ -5,9 +5,11 @@ import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.repository.MemberRepository;
 import com.example.board.global.exception.BusinessException;
 import com.example.board.global.security.jwt.JwtAuthentication;
+import com.example.board.global.security.jwt.JwtAuthenticationProvider;
 import com.example.board.global.security.jwt.JwtAuthenticationToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +26,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-
+    private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
     public MemberDetailResponse createMember(MemberCreateRequest request) {
         validateDuplicateEmail(request.email());
@@ -33,12 +35,15 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberResponse loginMember(LoginRequest request) {
+    public LoginResponse loginMember(LoginRequest request) {
         JwtAuthenticationToken authToken = new JwtAuthenticationToken(request.principal(), request.credentials());
-        JwtAuthenticationToken authenticated = (JwtAuthenticationToken) authenticationManager.authenticate(authToken);
+        Authentication authenticated = authenticationManager.authenticate(authToken);
         JwtAuthentication principal = (JwtAuthentication) authenticated.getPrincipal();
         Member member = (Member) authenticated.getDetails();
-        return new MemberResponse(principal.token(), principal.username(), member.getId());
+
+        String accessToken = principal.accessToken();
+        String refreshToken = jwtAuthenticationProvider.generateToken(member.getEmail(), member.getAuthorities(), "refresh");
+        return new LoginResponse(accessToken, refreshToken, principal.username(), member.getId());
     }
 
     @Transactional(readOnly = true)
@@ -46,14 +51,6 @@ public class MemberService {
         Member member = getMemberEntity(id);
         return MemberDetailResponse.from(member);
     }
-
-    @Transactional(readOnly = true)
-    public MemberDetailResponse findMemberByEmail(String email) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
-        return MemberDetailResponse.from(member);
-    }
-
 
     @Transactional(readOnly = true)
     public List<MemberDetailResponse> findAllMembers() {

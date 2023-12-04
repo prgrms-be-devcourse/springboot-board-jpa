@@ -1,12 +1,16 @@
 package com.example.board.global.security.jwt;
 
+import com.example.board.global.exception.BusinessException;
+import com.example.board.global.exception.ErrorCode;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
 @Getter
+@Slf4j
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
     private final Object principal;
@@ -31,7 +35,8 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     @Override
     public void setAuthenticated(boolean authenticated) {
         if (authenticated) {
-            throw new IllegalArgumentException("Cannot set this token to trusted.");
+            log.warn("Cannot set this token to trusted.");
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
         super.setAuthenticated(false);
     }

@@ -1,7 +1,9 @@
 package com.example.board.global.security.jwt;
 
 import com.example.board.domain.member.entity.Member;
-import com.example.board.global.security.UserService;
+import com.example.board.domain.member.repository.MemberRepository;
+import com.example.board.global.exception.BusinessException;
+import com.example.board.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -9,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,7 +21,8 @@ import java.util.List;
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private final Jwt jwt;
-    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final MemberRepository memberRepository;
 
     @Override
     public boolean supports(Class<?> authentication) {
@@ -36,11 +40,13 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private Authentication processUserAuthentication(String principal, String credential) {
         try {
-            Member member = userService.login(principal, credential);
+            Member member = findMember(principal, credential);
             List<GrantedAuthority> authorities = member.getAuthorities();
-            String token = getToken(member.getEmail(), authorities);
+
+            String accessToken = generateToken(member.getEmail(), authorities, "access");
+
             JwtAuthenticationToken authenticated = new JwtAuthenticationToken(
-                    new JwtAuthentication(token, member.getEmail()),
+                    new JwtAuthentication(member.getEmail(), accessToken),
                     null,
                     authorities
             );
@@ -53,10 +59,18 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         }
     }
 
-    private String getToken(String username, List<GrantedAuthority> authorities) {
+    // Token 발급
+    public String generateToken(String username, List<GrantedAuthority> authorities, String tokenType) {
         String[] roles = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .toArray(String[]::new);
-        return jwt.sign(Jwt.Claims.from(username, roles));
+        return jwt.sign(Jwt.Claims.from(username, roles), tokenType);
+    }
+
+    public Member findMember(String username, String credentials) {
+        Member member = memberRepository.findByEmail(username)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+        member.checkPassword(passwordEncoder, credentials);
+        return member;
     }
 }

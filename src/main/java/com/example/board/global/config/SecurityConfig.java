@@ -31,8 +31,8 @@ public class SecurityConfig {
         return new Jwt(
                 jwtConfig.getIssuer(),
                 jwtConfig.getClientSecret(),
-                jwtConfig.getExpirySeconds()
-        );
+                jwtConfig.getAccessExpirySeconds(),
+                jwtConfig.getRefreshExpirySeconds());
     }
 
     @Bean

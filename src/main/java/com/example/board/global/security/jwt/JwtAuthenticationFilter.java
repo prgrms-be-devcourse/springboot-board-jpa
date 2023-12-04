@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = getToken(request);
             if (token != null) {
                 try {
-                    Jwt.Claims claims = verify(token);
+                    Jwt.Claims claims = verify(token, "access");
                     log.debug("Jwt parse result : {}", claims);
 
                     String username = claims.username;
@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     if (isNotEmpty(username) && authorities.size() > 0) {
                         JwtAuthenticationToken authentication
-                                = new JwtAuthenticationToken(new JwtAuthentication(token, username), null, authorities);
+                                = new JwtAuthenticationToken(new JwtAuthentication(username, token), null, authorities);
                         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); // 필수는 아니라함
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
@@ -72,8 +72,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private Jwt.Claims verify(String token) {
-        return jwt.verify(token);
+    private Jwt.Claims verify(String token, String tokenType) {
+        return jwt.verify(token, tokenType);
     }
 
     private List<GrantedAuthority> getAuthorities(Jwt.Claims claims) {

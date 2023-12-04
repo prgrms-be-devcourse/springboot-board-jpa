@@ -19,7 +19,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/login")
-    public ResponseEntity<MemberResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(memberService.loginMember(request));
     }
 
