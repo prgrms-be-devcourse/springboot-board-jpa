@@ -2,7 +2,7 @@ package jehs.springbootboardjpa.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class UserException extends RuntimeException{
+public class UserException extends RuntimeException {
 
     private final HttpStatus httpStatus;
 
@@ -11,7 +11,7 @@ public class UserException extends RuntimeException{
         this.httpStatus = userErrorMessage.getHttpStatus();
     }
 
-    public HttpStatus getHttpStatus(){
+    public HttpStatus getHttpStatus() {
         return httpStatus;
     }
 }
