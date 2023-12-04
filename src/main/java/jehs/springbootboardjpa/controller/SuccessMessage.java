@@ -5,12 +5,12 @@ import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SuccessMessage {
+public class SuccessMessage<T> {
 
-    private String message;
-    private Object data;
+    private final String message;
+    private T data;
 
-    public SuccessMessage(String message, Object data) {
+    public SuccessMessage(String message, T data) {
         this.message = message;
         this.data = data;
     }
