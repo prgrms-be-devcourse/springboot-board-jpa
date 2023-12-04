@@ -2,7 +2,11 @@ spring:
   profiles:
     active: dev
 
-
+jwt:
+  header: token
+  issuer: prgrms
+  client-secret: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  expiry-seconds: 60
 
 ---
 
@@ -28,11 +32,6 @@ spring:
   sql:
     init:
       mode: always
-jwt:
-  header: token
-  issuer: prgrms
-  client-secret: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
-  expiry-seconds: 60
 
 ---
 
@@ -54,5 +53,3 @@ spring:
     hibernate:
       ddl-auto: update
     generate-ddl: true
-
-
