@@ -2,6 +2,7 @@ package com.prgrms.dev.springbootboardjpa.converter;
 
 import com.prgrms.dev.springbootboardjpa.domain.post.Post;
 import com.prgrms.dev.springbootboardjpa.domain.user.User;
+import com.prgrms.dev.springbootboardjpa.dto.PostCreateRequestDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostRequestDto;
 import com.prgrms.dev.springbootboardjpa.dto.UserDto;
@@ -25,6 +26,14 @@ public class Converter {
         return Post.builder()
                 .title(postDto.title())
                 .content(postDto.content())
+                .build();
+    }
+
+    // dto -> entity
+    public Post convertPost(PostCreateRequestDto postCreateRequestDto) {
+        return Post.builder()
+                .title(postCreateRequestDto.title())
+                .content(postCreateRequestDto.content())
                 .build();
     }
 

@@ -5,6 +5,7 @@ import com.prgrms.dev.springbootboardjpa.domain.post.Post;
 import com.prgrms.dev.springbootboardjpa.domain.post.PostRepository;
 import com.prgrms.dev.springbootboardjpa.domain.user.User;
 import com.prgrms.dev.springbootboardjpa.domain.user.UserRepository;
+import com.prgrms.dev.springbootboardjpa.dto.PostCreateRequestDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostRequestDto;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,9 +38,9 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto create(PostRequestDto requestDto, Long userId) {
-        Post post = converter.convertPost(requestDto);
-        User user = userRepository.findById(userId)
+    public PostDto create(PostCreateRequestDto postCreateRequestDto) {
+        Post post = converter.convertPost(postCreateRequestDto);
+        User user = userRepository.findById(postCreateRequestDto.userId())
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다"));
         post.setUser(user);
         return converter.convertPostDto(postRepository.save(post));

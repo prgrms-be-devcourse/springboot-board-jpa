@@ -1,6 +1,7 @@
 package com.prgrms.dev.springbootboardjpa.controller;
 
 import com.prgrms.dev.springbootboardjpa.ApiResponse;
+import com.prgrms.dev.springbootboardjpa.dto.PostCreateRequestDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostRequestDto;
 import com.prgrms.dev.springbootboardjpa.service.PostService;
@@ -32,8 +33,8 @@ public class PostController {
 
     //생성
     @PostMapping
-    public ApiResponse<PostDto> create(@RequestBody PostRequestDto postRequestDto, @RequestParam Long userId) {
-        PostDto postDto = postService.create(postRequestDto, userId);
+    public ApiResponse<PostDto> create(@RequestBody PostCreateRequestDto postCreateRequestDto) {
+        PostDto postDto = postService.create(postCreateRequestDto);
         return ApiResponse.ok(postDto);
     } // body에서 전부 받는 방식으로
 
