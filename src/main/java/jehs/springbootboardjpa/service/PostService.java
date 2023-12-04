@@ -22,6 +22,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserService userService;
 
+    @Transactional
     public void createPost(PostCreateRequest postCreateRequest) {
         User user = userService.getUserById(postCreateRequest.getUserId());
         postRepository.save(postCreateRequest.toEntity(user));
