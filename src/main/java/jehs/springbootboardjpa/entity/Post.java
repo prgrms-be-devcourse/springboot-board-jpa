@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "posts")
 @Getter
@@ -38,6 +40,7 @@ public class Post extends BaseEntity {
         validateUser(user);
         this.title = postUpdateRequest.getTitle();
         this.content = postUpdateRequest.getContent();
+        this.setUpdatedAt(LocalDateTime.now());
     }
 
     private void validateUser(User updateUser) {
