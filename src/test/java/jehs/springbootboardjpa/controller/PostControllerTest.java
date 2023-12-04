@@ -168,28 +168,8 @@ class PostControllerTest {
                                 fieldWithPath("data.content[].userResponse.name").description("게시자 이름"),
                                 fieldWithPath("data.content[].userResponse.age").description("게시자 나이"),
                                 fieldWithPath("data.content[].userResponse.hobby").description("게시자 취미"),
-                                fieldWithPath("data.pageable").description("페이징 정보").optional(),
-                                fieldWithPath("data.pageable.pageNumber").description("현재 페이지 번호"),
-                                fieldWithPath("data.pageable.pageSize").description("페이지 크기"),
-                                fieldWithPath("data.pageable.sort").description("정렬 정보").optional(),
-                                fieldWithPath("data.pageable.sort.empty").description("정렬이 비어있는지 여부"),
-                                fieldWithPath("data.pageable.sort.unsorted").description("정렬되지 않았는지 여부"),
-                                fieldWithPath("data.pageable.sort.sorted").description("정렬되었는지 여부"),
-                                fieldWithPath("data.pageable.offset").description("현재 페이지의 시작 오프셋"),
-                                fieldWithPath("data.pageable.unpaged").description("페이징되지 않은지 여부"),
-                                fieldWithPath("data.pageable.paged").description("페이징된지 여부"),
-                                fieldWithPath("data.last").description("마지막 페이지 여부"),
                                 fieldWithPath("data.totalPages").description("전체 페이지 수"),
-                                fieldWithPath("data.totalElements").description("전체 엘리먼트 수"),
-                                fieldWithPath("data.first").description("첫 번째 페이지 여부"),
-                                fieldWithPath("data.size").description("현재 페이지의 엘리먼트 수"),
-                                fieldWithPath("data.number").description("현재 페이지 번호"),
-                                fieldWithPath("data.sort").description("정렬 정보").optional(),
-                                fieldWithPath("data.sort.empty").description("정렬이 비어있는지 여부"),
-                                fieldWithPath("data.sort.unsorted").description("정렬되지 않았는지 여부"),
-                                fieldWithPath("data.sort.sorted").description("정렬되었는지 여부"),
-                                fieldWithPath("data.numberOfElements").description("현재 페이지의 엘리먼트 수"),
-                                fieldWithPath("data.empty").description("데이터가 비어있는지 여부")
+                                fieldWithPath("data.totalElements").description("전체 엘리먼트 수")
                         ))
                 );
     }
