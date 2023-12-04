@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionMessage> handleException(Exception e) {
         log.error(e.getMessage());
-        ExceptionMessage exceptionMessage = new ExceptionMessage(e.getClass().getSimpleName(), e.getMessage());
+        ExceptionMessage exceptionMessage = new ExceptionMessage("Internal Server Error", "서버 내부 에러가 발생했습니다.");
         return new ResponseEntity<>(exceptionMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
