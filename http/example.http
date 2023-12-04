@@ -27,6 +27,11 @@ POST http://localhost:8080/api/v1/users/refresh
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE2NDk3ODQsImV4cCI6MTcwMTY0OTg0NCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.THlu44SufwJjuvn363BK1hBFapF0aLLGuEAg-E9aMB5bPKacacLf1dmaOJhnxF9wPYWuFvyHnpxzMTzOysN1vQ
 
+### 유저가 어드민 API 접근
+GET http://localhost:8080/api/v1/users/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJwcmdybXMiLCJpYXQiOjE3MDE2NTA5MTEsImV4cCI6MTcwMTY1MDk0MSwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl19.4kmrzS-87o_yApPoFi9Nu92yr3X7zoSqdMmP1Yos8sSf4ET_k6sVk3nK0gfZ8xYS6raG3g8ANZB-incsyJ0djQ
+
 ### 게시글 생성
 POST http://localhost:8080/api/v1/posts
 Content-Type: application/json
