@@ -48,7 +48,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostsResponse getAllPostsWithUser(int page, int size) {
         return new PostsResponse(
-                postRepository.findAllWithUser(PageRequest.of(page, size, Sort.by("id").descending()))
+                postRepository.findAllWithUser(PageRequest.of(page, size))
         );
     }
 
