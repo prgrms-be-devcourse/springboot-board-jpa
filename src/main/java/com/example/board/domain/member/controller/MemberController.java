@@ -1,14 +1,13 @@
 package com.example.board.domain.member.controller;
 
-import com.example.board.domain.member.dto.*;
+import com.example.board.domain.member.dto.MemberDetailResponse;
+import com.example.board.domain.member.dto.MemberUpdateRequest;
 import com.example.board.domain.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -17,22 +16,6 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
-
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        return ResponseEntity.ok(memberService.loginMember(request));
-    }
-
-    @PostMapping("/sign-up")
-    public ResponseEntity<MemberDetailResponse> signUp(@Valid @RequestBody MemberCreateRequest request) {
-        MemberDetailResponse member = memberService.createMember(request);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(member.id())
-                .toUri();
-        return ResponseEntity.created(location)
-                .body(member);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<MemberDetailResponse> getMemberById(@PathVariable Long id) {

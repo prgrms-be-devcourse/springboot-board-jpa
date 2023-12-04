@@ -3,10 +3,7 @@ package com.example.board.global.security.jwt;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.board.global.exception.BusinessException;
-import com.example.board.global.exception.ErrorCode;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -33,11 +30,11 @@ public class Jwt {
     }
 
     // 토큰 생성 메서드(토큰을 만드는데 필요한 데이터를 claims로 받음)
-    public String sign(Claims claims, String tokenType) {
+    public String sign(Claims claims) {
         JWTCreator.Builder builder = com.auth0.jwt.JWT.create();
         builder.withIssuer(issuer);
         builder.withIssuedAt(new Date());
-        if (tokenType.equals("access")) {
+        if (claims.tokenType.equals("access")) {
             if (accessExpirySeconds > 0) {
                 builder.withExpiresAt(new Date(System.currentTimeMillis() + accessExpirySeconds * 1_000L));
             }
@@ -48,20 +45,14 @@ public class Jwt {
         }
         builder.withClaim("username", claims.username);
         builder.withArrayClaim("roles", claims.roles);
-        builder.withClaim("type", tokenType);
+        builder.withClaim("type", claims.tokenType);
         return builder.sign(algorithm);
     }
 
     // 토큰을 decode해서 claim을 반환하는 메서드
-    public Claims verify(String token, String expectedTokenType) {
+    public Claims verify(String token) {
         DecodedJWT decodedJWT = jwtVerifier.verify(token);
-
-        // 토큰 타입 검증
-        String tokenType = decodedJWT.getClaim("type").asString();
-        if (!expectedTokenType.equals(tokenType)) {
-            throw new BusinessException(ErrorCode.NOT_EXPECTED_TOKEN_TYPE);
-        }
-        return new Claims(jwtVerifier.verify(token));
+        return new Claims(decodedJWT);
     }
 
     // jwt를 만들거나 검증할 때 필요한 정보를 전달하기 위한 클래스
@@ -70,26 +61,23 @@ public class Jwt {
         String[] roles;
         Date iat;
         Date exp;
+        String tokenType;
 
         private Claims(){}
 
         Claims(DecodedJWT decodedJWT) {
-            Claim username = decodedJWT.getClaim("username");
-            if (!username.isNull()) {
-                this.username = username.asString();
-            }
-            Claim roles = decodedJWT.getClaim("roles");
-            if (!roles.isNull()) {
-                this.roles = roles.asArray(String.class);
-            }
+            this.username = decodedJWT.getClaim("username").asString();
+            this.roles = decodedJWT.getClaim("roles").asArray(String.class);
             this.iat = decodedJWT.getIssuedAt();
             this.exp = decodedJWT.getExpiresAt();
+            this.tokenType = decodedJWT.getClaim("type").asString();
         }
 
-        public static Claims from(String username, String[] roles) {
+        public static Claims from(String username, String[] roles, String tokenType) {
             Claims claims = new Claims();
             claims.username = username;
             claims.roles = roles;
+            claims.tokenType = tokenType;
             return claims;
         }
 

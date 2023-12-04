@@ -1,5 +1,7 @@
 package com.example.board.global.security.jwt;
 
+import com.example.board.global.exception.BusinessException;
+import com.example.board.global.exception.ErrorCode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,8 +36,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = getToken(request);
             if (token != null) {
                 try {
-                    Jwt.Claims claims = verify(token, "access");
+                    Jwt.Claims claims = verify(token);
                     log.debug("Jwt parse result : {}", claims);
+
+                    String requestURI = request.getRequestURI();
+                    if (claims.tokenType.equals("refresh") && !requestURI.equals("/api/v1/reissue")) {
+                        throw new BusinessException(ErrorCode.NOT_EXPECTED_TOKEN_TYPE);
+                    }
 
                     String username = claims.username;
                     List<GrantedAuthority> authorities = getAuthorities(claims);
@@ -72,8 +79,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private Jwt.Claims verify(String token, String tokenType) {
-        return jwt.verify(token, tokenType);
+    private Jwt.Claims verify(String token) {
+        return jwt.verify(token);
     }
 
     private List<GrantedAuthority> getAuthorities(Jwt.Claims claims) {
