@@ -15,37 +15,25 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/posts")
 public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SuccessMessage> getPost(@PathVariable(name = "id") Long postId) {
-        PostResponse postResponse = postService.getPostResponseById(postId);
-        return new ResponseEntity<>(new SuccessMessage("성공적으로 게시글이 조회되었습니다.", postResponse), HttpStatus.OK);
+    @GetMapping("/api/v1/posts/{id}")
     }
 
-    @GetMapping
-    public ResponseEntity<SuccessMessage> getAllPosts(@PageableDefault Pageable pageable) {
-        Page<PostResponse> postResponses = postService.getAllPostsWithUser(pageable);
-        return new ResponseEntity<>(new SuccessMessage("성공적으로 모든 게시글이 조회되었습니다.", postResponses), HttpStatus.OK);
+    @GetMapping("/api/v1/posts")
     }
 
-    @GetMapping("/cursor")
-    public ResponseEntity<SuccessMessage> getAllPostsByCursor(@PageableDefault Pageable pageable, @RequestParam(name = "cursorId") Long cursorId) {
-        Slice<PostResponse> postResponses = postService.getAllPostsWithUserByCursor(pageable, cursorId);
-        return new ResponseEntity<>(new SuccessMessage("성공적으로 모든 게시글이 조회되었습니다.", postResponses), HttpStatus.OK);
+    @GetMapping("/api/v1/posts/cursor")
     }
 
-    @PostMapping
-    public ResponseEntity<SuccessMessage> createPost(@RequestBody PostCreateRequest postCreateRequest) {
+    @PostMapping("/api/v1/posts")
         postService.createPost(postCreateRequest);
         return new ResponseEntity<>(new SuccessMessage("성공적으로 게시글이 생성되었습니다."), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<SuccessMessage> updatePost(@PathVariable(name = "id") Long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
+    @PatchMapping("/api/v1/posts/{id}")
         postService.updatePost(postId, postUpdateRequest);
         return new ResponseEntity<>(new SuccessMessage("성공적으로 게시글이 수정되었습니다."), HttpStatus.OK);
     }
