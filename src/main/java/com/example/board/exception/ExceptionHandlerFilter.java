@@ -1,9 +1,6 @@
-package com.example.board.jwt;
+package com.example.board.exception;
 
 import com.example.board.dto.response.ApiResponse;
-import com.example.board.exception.CustomError;
-import com.example.board.exception.CustomException;
-import com.example.board.exception.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,5 +1,6 @@
 package com.example.board.config;
 
+import com.example.board.exception.CustomAuthenticationEntryPoint;
 import com.example.board.exception.ExceptionHandlerFilter;
 import com.example.board.jwt.JwtAuthFilter;
 import com.example.board.jwt.JwtRefreshAuthFilter;
@@ -31,6 +32,11 @@ public class SecurityConfig {
     }
 
     @Bean
+    public CustomAuthenticationEntryPoint customAuthenticationEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
@@ -42,6 +48,9 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/api/*/users", HttpMethod.POST.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/*/posts", HttpMethod.GET.toString())).permitAll()
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(customAuthenticationEntryPoint())
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, BasicAuthenticationFilter.class)
