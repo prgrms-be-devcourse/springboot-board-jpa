@@ -4,7 +4,7 @@ import com.prgrms.dev.springbootboardjpa.domain.post.Post;
 import com.prgrms.dev.springbootboardjpa.domain.user.User;
 import com.prgrms.dev.springbootboardjpa.dto.PostCreateRequestDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostDto;
-import com.prgrms.dev.springbootboardjpa.dto.PostRequestDto;
+import com.prgrms.dev.springbootboardjpa.dto.PostUpdateRequestDto;
 import com.prgrms.dev.springbootboardjpa.dto.UserDto;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,7 @@ public class Converter {
     }
 
     // dto -> entity
-    public Post convertPost(PostRequestDto postDto) {
+    public Post convertPost(PostUpdateRequestDto postDto) {
         return Post.builder()
                 .title(postDto.title())
                 .content(postDto.content())
