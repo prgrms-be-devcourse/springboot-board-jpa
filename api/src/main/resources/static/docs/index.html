@@ -456,10 +456,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/posts HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 47
+Content-Length: 46
 Host: localhost:8080
 
-{"title":"test","content":"test","memberId":10}</code></pre>
+{"title":"test","content":"test","memberId":5}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -499,9 +499,9 @@ Host: localhost:8080
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
 Location: http://localhost:8080/api/v1/posts/15
 Content-Type: application/json
-Content-Length: 84
+Content-Length: 83
 
-{"postId":15,"title":"test","content":"test","memberId":10,"memberName":"홍길동"}</code></pre>
+{"postId":15,"title":"test","content":"test","memberId":5,"memberName":"홍길동"}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -585,7 +585,7 @@ Host: localhost:8080</code></pre>
 Content-Type: application/json
 Content-Length: 835
 
-[{"postId":4,"title":"test","content":"test","memberId":8,"memberName":"홍길동"},{"postId":5,"title":"test","content":"test","memberId":8,"memberName":"홍길동"},{"postId":6,"title":"test","content":"test","memberId":8,"memberName":"홍길동"},{"postId":7,"title":"test","content":"test","memberId":8,"memberName":"홍길동"},{"postId":8,"title":"test","content":"test","memberId":8,"memberName":"홍길동"},{"postId":9,"title":"test","content":"test","memberId":8,"memberName":"홍길동"},{"postId":10,"title":"test","content":"test","memberId":8,"memberName":"홍길동"},{"postId":11,"title":"test","content":"test","memberId":8,"memberName":"홍길동"},{"postId":12,"title":"test","content":"test","memberId":8,"memberName":"홍길동"},{"postId":13,"title":"test","content":"test","memberId":8,"memberName":"홍길동"}]</code></pre>
+[{"postId":4,"title":"test","content":"test","memberId":4,"memberName":"홍길동"},{"postId":5,"title":"test","content":"test","memberId":4,"memberName":"홍길동"},{"postId":6,"title":"test","content":"test","memberId":4,"memberName":"홍길동"},{"postId":7,"title":"test","content":"test","memberId":4,"memberName":"홍길동"},{"postId":8,"title":"test","content":"test","memberId":4,"memberName":"홍길동"},{"postId":9,"title":"test","content":"test","memberId":4,"memberName":"홍길동"},{"postId":10,"title":"test","content":"test","memberId":4,"memberName":"홍길동"},{"postId":11,"title":"test","content":"test","memberId":4,"memberName":"홍길동"},{"postId":12,"title":"test","content":"test","memberId":4,"memberName":"홍길동"},{"postId":13,"title":"test","content":"test","memberId":4,"memberName":"홍길동"}]</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -651,7 +651,7 @@ Host: localhost:8080</code></pre>
 Content-Type: application/json
 Content-Length: 82
 
-{"postId":1,"title":"test","content":"test","memberId":2,"memberName":"홍길동"}</code></pre>
+{"postId":1,"title":"test","content":"test","memberId":1,"memberName":"홍길동"}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -747,7 +747,7 @@ Host: localhost:8080
 Content-Type: application/json
 Content-Length: 82
 
-{"postId":3,"title":"fix!","content":"fix!","memberId":6,"memberName":"홍길동"}</code></pre>
+{"postId":3,"title":"fix!","content":"fix!","memberId":3,"memberName":"홍길동"}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -819,7 +819,7 @@ Host: localhost:8080</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-11-22 15:54:07 +0900
+Last updated 2023-12-05 01:23:51 +0900
 </div>
 </div>
 </body>
