@@ -25,4 +25,8 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Post> posts;
+
+    public boolean isSameName(String name) {
+        return this.getName().equals(name);
+    }
 }

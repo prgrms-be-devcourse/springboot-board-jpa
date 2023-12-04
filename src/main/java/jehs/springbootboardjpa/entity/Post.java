@@ -41,7 +41,7 @@ public class Post extends BaseEntity {
     }
 
     private void validateUser(User updateUser) {
-        if (!updateUser.getId().equals(this.user.getId())) {
+        if (!updateUser.isSameName(this.getUser().getName())) {
             throw new PostException(PostErrorMessage.NOT_POST_BY_USER);
         }
     }
