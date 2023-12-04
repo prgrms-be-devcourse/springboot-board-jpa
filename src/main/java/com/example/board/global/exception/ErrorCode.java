@@ -30,7 +30,8 @@ public enum ErrorCode {
     NOT_EQUALS_RESET_PASSWORD(HttpStatus.BAD_REQUEST, "재설정하려는 비밀번호가 일치하지 않습니다."),
     MESSAGING_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 메시지 생성에 실패했습니다."),
     UNSUPPORTED_ENCODING(HttpStatus.BAD_REQUEST, "이메일 인증키 전송 중 인코딩을 지원하지 않는 오류가 발생했습니다"),
-    SEND_MAIL_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 인증키 전송에 실패했습니다 다시 시도해주세요.");
+    SEND_MAIL_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 인증키 전송에 실패했습니다 다시 시도해주세요."),
+    REFRESH_TOKEN_NOT_EXIST(HttpStatus.NOT_FOUND, "Refresh 토큰이 존재하지 않습니다.");
 
     private final HttpStatus status;
     private final String message;

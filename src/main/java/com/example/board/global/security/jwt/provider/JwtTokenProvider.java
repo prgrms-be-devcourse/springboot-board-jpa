@@ -8,7 +8,9 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import jakarta.annotation.PostConstruct;
+import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,15 +31,20 @@ public class JwtTokenProvider {
     private static final String AUTHORITY_KEY = "auth";
     private static final String AUTHORITY_EMAIL = "email";
 
-    private final long tokenValidityInMilliseconds;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final long accessTokenValidityInMilliseconds;
+    private final long refreshTokenValidityInMilliseconds;
     private final String secret;
     private Key key;
 
     public JwtTokenProvider(
-        @Value("${jwt.token-validity-in-milliseconds}") long tokenValidityInMilliseconds,
+        RedisTemplate<String, String> redisTemplate,
+        @Value("${jwt.access-validity-in-milliseconds}") long accessTokenValidityInMilliseconds,
+        @Value("${jwt.refresh-validity-in-milliseconds}") long refreshTokenValidityInMilliseconds,
         @Value("${jwt.secret_key}") String secret) {
-
-        this.tokenValidityInMilliseconds = tokenValidityInMilliseconds;
+        this.redisTemplate = redisTemplate;
+        this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds;
+        this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds;
         this.secret = secret;
     }
 
@@ -47,7 +54,7 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(Authentication authentication) {
+    public String createToken(Authentication authentication, String purpose) {
         MemberDetails principal = (MemberDetails) authentication.getPrincipal();
 
         String authorities = principal.getAuthorities().stream()
@@ -55,9 +62,14 @@ public class JwtTokenProvider {
             .collect(Collectors.joining(","));
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + this.tokenValidityInMilliseconds);
+        Date validity;
+        if(purpose.equals("access")) {
+            validity = new Date(now.getTime() + this.accessTokenValidityInMilliseconds);
+        }else {
+            validity = new Date(now.getTime() + this.refreshTokenValidityInMilliseconds);
+        }
 
-        return Jwts.builder()
+        String token = Jwts.builder()
             .setSubject(authentication.getName())
             .addClaims(Map.of(
                 AUTHORITY_ID, principal.getId(),
@@ -68,6 +80,16 @@ public class JwtTokenProvider {
             .setIssuedAt(now)
             .setExpiration(validity)
             .compact();
+
+        if(purpose.equals("refresh")) {
+            redisTemplate.opsForValue().set(
+                authentication.getName(),
+                token,
+                refreshTokenValidityInMilliseconds,
+                TimeUnit.MILLISECONDS
+            );
+        }
+        return token;
     }
 
     public Authentication getAuthentication(String token) {
@@ -83,8 +105,12 @@ public class JwtTokenProvider {
                 .map(SimpleGrantedAuthority::new)
                 .toList();
 
-        MemberDetails principal = new MemberDetails((String) claims.get(AUTHORITY_ID), (String) claims.get(
-            AUTHORITY_EMAIL) ,null, authorities);
+        MemberDetails principal = new MemberDetails(
+            (String) claims.get(AUTHORITY_ID),
+            (String) claims.get(AUTHORITY_EMAIL),
+            null,
+            authorities
+        );
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 

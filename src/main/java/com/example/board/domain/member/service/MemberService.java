@@ -60,8 +60,8 @@ public class MemberService {
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
         member.checkPassword(passwordEncoder, loginRequest.password());
-        String accessToken = getToken(loginRequest);
-        return LoginResponse.from(loginRequest.email(), accessToken);
+        List<String> tokens = getToken(loginRequest);
+        return LoginResponse.from(loginRequest.email(), tokens.get(0), tokens.get(1));
     }
 
     @Transactional
@@ -122,14 +122,16 @@ public class MemberService {
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
     }
 
-    private String getToken(LoginRequest loginRequest) {
+    private List<String> getToken(LoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.email(),
                         loginRequest.password()
                 );
         Authentication authenticate = authenticationManager.getObject().authenticate(authenticationToken);
-        return jwtTokenProvider.createToken(authenticate);
+        String accessToken = jwtTokenProvider.createToken(authenticate, "access");
+        String refreshToken = jwtTokenProvider.createToken(authenticate, "refresh");
+        return List.of(accessToken, refreshToken);
     }
 
     private void validateEmailAuthKey(MemberCreateRequest request) {

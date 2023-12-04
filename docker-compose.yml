@@ -13,3 +13,30 @@ services:
       - "3307:3306"
     volumes:
       - ./data/:/var/lib/mysql
+
+#  redis:
+#    image: redis
+#    container_name: zerozae_redis
+#    restart: always
+#    hostname: redis
+#    ports:
+#      - 6379:6379
+#
+#  app:
+#    image: redis:latest
+#    restart: always
+#    container_name: board_redis
+#    ports:
+#      - 8080:8080
+#    depends_on:
+#      - redis
+  redis:
+    image: redis:alpine
+    command: redis-server --port 6379
+    container_name: redis_boot
+    hostname: redis_boot
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    ports:
+      - 6379:6379
