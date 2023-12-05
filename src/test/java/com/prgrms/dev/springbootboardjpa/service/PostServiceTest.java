@@ -1,11 +1,11 @@
 package com.prgrms.dev.springbootboardjpa.service;
 
 import com.prgrms.dev.springbootboardjpa.domain.post.PostRepository;
-import com.prgrms.dev.springbootboardjpa.domain.user.Hobby;
 import com.prgrms.dev.springbootboardjpa.domain.user.User;
 import com.prgrms.dev.springbootboardjpa.domain.user.UserRepository;
+import com.prgrms.dev.springbootboardjpa.dto.PostCreateRequestDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostDto;
-import com.prgrms.dev.springbootboardjpa.dto.PostRequestDto;
+import com.prgrms.dev.springbootboardjpa.dto.PostUpdateRequestDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,12 +46,12 @@ class PostServiceTest {
 
         userRepository.save(user);
 
-        PostRequestDto postRequestDto = PostRequestDto.builder()
+        PostCreateRequestDto postRequestDto = PostCreateRequestDto.builder()
                 .title("테스트")
                 .content("테스트 콘")
                 .build();
 
-        postDto = postService.create(postRequestDto, user.getId());
+        postDto = postService.create(postRequestDto);
     }
 
     @Test
@@ -73,10 +73,11 @@ class PostServiceTest {
         Page<PostDto> findDtos = postService.getAll(page);
         assertThat(findDtos.getTotalElements()).isEqualTo(1L);
     }
+
     // 테스트 대상을 명확하게 구분해보자 , ex update 대상 존재 x
     @Test
     void update() {
-        PostRequestDto requestDto = PostRequestDto.builder()
+        PostUpdateRequestDto requestDto = PostUpdateRequestDto.builder()
                 .title("수정된 이름")
                 .content("수정된 콘텐츠")
                 .build();

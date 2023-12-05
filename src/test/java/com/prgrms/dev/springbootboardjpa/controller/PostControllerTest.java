@@ -2,11 +2,10 @@ package com.prgrms.dev.springbootboardjpa.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgrms.dev.springbootboardjpa.domain.post.PostRepository;
-import com.prgrms.dev.springbootboardjpa.domain.user.Hobby;
 import com.prgrms.dev.springbootboardjpa.domain.user.User;
 import com.prgrms.dev.springbootboardjpa.domain.user.UserRepository;
+import com.prgrms.dev.springbootboardjpa.dto.PostCreateRequestDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostDto;
-import com.prgrms.dev.springbootboardjpa.dto.PostRequestDto;
 import com.prgrms.dev.springbootboardjpa.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +44,7 @@ class PostControllerTest {
     @Autowired
     private UserRepository userRepository;
 
-    private PostRequestDto postRequestDto;
+    private PostCreateRequestDto postRequestDto;
     private PostDto postDto;
     private User user;
 
@@ -60,12 +59,12 @@ class PostControllerTest {
 
         userRepository.save(user);
 
-        postRequestDto = PostRequestDto.builder()
+        postRequestDto = PostCreateRequestDto.builder()
                 .title("테스트")
                 .content("테스트 콘")
                 .build();
 
-        postDto = postService.create(postRequestDto, user.getId());
+        postDto = postService.create(postRequestDto);
     } // 분리해보기
 
     @Test
@@ -101,7 +100,7 @@ class PostControllerTest {
 
     @Test
     void update() throws Exception {
-        PostRequestDto requestDto = PostRequestDto.builder()
+        PostCreateRequestDto requestDto = PostCreateRequestDto.builder()
                 .title("수정된 이름")
                 .content("수정된 콘텐츠")
                 .build();
