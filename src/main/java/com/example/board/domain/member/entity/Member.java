@@ -4,6 +4,7 @@ import com.example.board.domain.common.entity.BaseEntity;
 import com.example.board.domain.role.entity.Role;
 import com.example.board.global.exception.CustomException;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,9 @@ public class Member extends BaseEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
+    @Column(name = "last_updated_password")
+    private LocalDateTime lastUpdatedPassword;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<MemberRole> roles = new ArrayList<>();
 
@@ -53,6 +57,7 @@ public class Member extends BaseEntity {
         this.age = age;
         this.hobby = hobby;
         this.isDeleted = false;
+        this.lastUpdatedPassword = LocalDateTime.now();
         addRoles(roles);
     }
 
@@ -69,6 +74,7 @@ public class Member extends BaseEntity {
 
     public void updatePassword(String newPassword) {
         this.password = newPassword;
+        this.lastUpdatedPassword = LocalDateTime.now();
     }
 
     public void delete() {

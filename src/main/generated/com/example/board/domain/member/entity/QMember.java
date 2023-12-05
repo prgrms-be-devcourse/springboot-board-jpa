@@ -35,6 +35,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public final BooleanPath isDeleted = createBoolean("isDeleted");
 
+    public final DateTimePath<java.time.LocalDateTime> lastUpdatedPassword = createDateTime("lastUpdatedPassword", java.time.LocalDateTime.class);
+
     public final StringPath name = createString("name");
 
     public final StringPath password = createString("password");

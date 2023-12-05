@@ -8,6 +8,10 @@ spring:
       schema-locations: classpath:sql/schema.sql
       data-locations: classpath:sql/data.sql
 
+  batch:
+    jdbc:
+      initialize-schema: always
+
   mail:
     host: smtp.gmail.com
     port: 587

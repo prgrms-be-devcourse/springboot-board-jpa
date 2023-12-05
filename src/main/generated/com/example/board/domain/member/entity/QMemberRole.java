@@ -22,6 +22,8 @@ public class QMemberRole extends EntityPathBase<MemberRole> {
 
     public static final QMemberRole memberRole = new QMemberRole("memberRole");
 
+    public final NumberPath<Long> id = createNumber("id", Long.class);
+
     public final QMember member;
 
     public final com.example.board.domain.role.entity.QRole role;

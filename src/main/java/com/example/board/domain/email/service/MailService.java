@@ -33,23 +33,16 @@ public class MailService {
     private final MemberRepository memberRepository;
     private final String authKey = createAuthKey();
 
-
     @Transactional
-    public void sendSignUpMail(String email) {
-        if (emailAuthRepository.existsByEmailAndPurpose(email, "SIGN-UP")) {
+    public void sendMail(String email , String purpose) {
+        if(purpose.equals("RESET-PASSWORD")) {
+            memberRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        }
+        if (emailAuthRepository.existsByEmailAndPurpose(email, "UPDATE-PASSWORD")) {
             throw new CustomException(ALREADY_AUTH_KEY_EXIST);
         }
-        sendMail(email, "SIGN-UP");
-    }
-
-    @Transactional
-    public void sendResetPasswordMail(String email) {
-        if (emailAuthRepository.existsByEmailAndPurpose(email, "RESET-PASSWORD")) {
-            throw new CustomException(ALREADY_AUTH_KEY_EXIST);
-        }
-        memberRepository.findByEmail(email)
-            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        sendMail(email, "RESET-PASSWORD");
+        setMailMessageAndSendMail(email, purpose);
     }
 
     public MimeMessage createMessage(String email, String purpose) throws MessagingException, UnsupportedEncodingException {
@@ -71,7 +64,7 @@ public class MailService {
         }
     }
 
-    private void sendMail(String email, String purpose){
+    private void setMailMessageAndSendMail(String email, String purpose){
         MimeMessage message = null;
         try {
             message = createMessage(email, purpose);
@@ -122,6 +115,19 @@ public class MailService {
                 msgg += "<h3 style='color:blue'>회원가입 인증코드 입니다</h3>";
                 msgg += "<div style='font-size:130%'>";
                 msgg += "<strong>" + authKey + "</strong></div><br/>" ;
+                msgg += "</div>";
+                break;
+
+            case "UPDATE-PASSWORD":
+                message.setSubject("[Zerozae] 게시판 비밀번호 변경 주기 알림 메일 입니다.");
+                msgg += "<h1>안녕하세요</h1>";
+                msgg += "<h1>Zerozae의 게시판 입니다.</h1>";
+                msgg += "<br>";
+                msgg += "<p>회원님은 지난 6개월간 비밀번호 변경을 하지 않으셨습니다.</p>";
+                msgg += "<br>";
+                msgg += "<br>";
+                msgg += "<div align='center' style='border:1px solid black'>";
+                msgg += "<h3 style='color:blue'>비밀번호 변경을 권장 드립니다.</h3>";
                 msgg += "</div>";
                 break;
         }

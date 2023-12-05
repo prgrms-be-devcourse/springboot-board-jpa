@@ -78,6 +78,9 @@ dependencies {
     // restdocs
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    // batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
 }
 
 asciidoctor {

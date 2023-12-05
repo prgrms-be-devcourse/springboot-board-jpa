@@ -35,14 +35,14 @@ public class MemberController {
 
     @PostMapping("/email/sign-up")
     public ResponseEntity<Void> sendSignUpMail(@RequestParam(name = "email") String email) {
-        mailService.sendSignUpMail(email);
+        mailService.sendMail(email, "SIGN-UP");
         return ResponseEntity.noContent()
                 .build();
     }
 
     @PostMapping("/email/password")
     public ResponseEntity<Void> sendResetPasswordMail(@RequestParam(name = "email") String email) {
-        mailService.sendResetPasswordMail(email);
+        mailService.sendMail(email, "RESET-PASSWORD");
         return ResponseEntity.noContent()
                 .build();
     }
