@@ -1,6 +1,7 @@
 spring:
   profiles:
     active: prod
+    include: secret
 
   sql:
     init:
@@ -12,32 +13,10 @@ spring:
     jdbc:
       initialize-schema: always
 
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: {Google 계정 입력}
-    password: {Google 계정에서 발급받은 앱 비밀번호 입력}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
-    auth-code-expiration-millis: 1800000
-
   data:
     redis:
       host: localhost
       port: 6379
-
-jwt:
-  secret_key: {secretKey 입력}
-  access-validity-in-milliseconds: 600000
-  refresh-validity-in-milliseconds: 1209600000
 
 ---
 

@@ -26,6 +26,7 @@ data
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+application-secret.yml
 
 ### NetBeans ###
 /nbproject/private/
