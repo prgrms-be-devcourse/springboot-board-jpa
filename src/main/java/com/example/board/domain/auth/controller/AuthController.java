@@ -1,8 +1,8 @@
-package com.example.board.domain.common.token.controller;
+package com.example.board.domain.auth.controller;
 
-import com.example.board.domain.common.token.dto.TokenReissueRequest;
-import com.example.board.domain.common.token.dto.TokenResponse;
-import com.example.board.domain.common.token.service.AuthService;
+import com.example.board.domain.auth.dto.TokenReissueRequest;
+import com.example.board.domain.auth.dto.TokenResponse;
+import com.example.board.domain.auth.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

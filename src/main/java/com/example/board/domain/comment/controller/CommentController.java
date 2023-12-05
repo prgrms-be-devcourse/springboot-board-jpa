@@ -22,19 +22,19 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/{postId}")
-    public ResponseEntity<Long> createComment(
+    public ResponseEntity<CommentResponse> createComment(
         @PathVariable("postId") Long postId,
         @Valid @RequestBody CommentCreateRequest commentCreateRequest
     ){
         Long currentUserId = SecurityUtil.getCurrentUserIdCheck();
-        Long commentId = commentService.createComment(postId, currentUserId, commentCreateRequest);
+        CommentResponse comment = commentService.createComment(postId, currentUserId, commentCreateRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
-            .buildAndExpand(commentId)
+            .buildAndExpand(comment.getCommentId())
             .toUri();
 
         return ResponseEntity.created(location)
-            .body(commentId);
+            .body(comment);
     }
 
     @GetMapping("/{postId}")
@@ -44,13 +44,12 @@ public class CommentController {
     }
 
     @PatchMapping("/{commentId}")
-    public ResponseEntity<Void> updateComment(
+    public ResponseEntity<CommentResponse> updateComment(
         @PathVariable(name = "commentId") Long commentId,
         @Valid @RequestBody CommentUpdateRequest request) {
 
-        commentService.updateComment(commentId, request);
-        return ResponseEntity.noContent()
-            .build();
+        CommentResponse comment = commentService.updateComment(commentId, request);
+        return ResponseEntity.ok(comment);
     }
 
     @DeleteMapping("/{commentId}")

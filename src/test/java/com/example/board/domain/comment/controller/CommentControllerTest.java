@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -68,7 +69,7 @@ class CommentControllerTest {
         CommentCreateRequest request = new CommentCreateRequest(1L, "댓글 1");
         Long expectedPostId = 1L;
         Long expectedUserId = 1L;
-        Long expectedCommentId = 1L;
+
         MemberDetails memberDetails = new MemberDetails(Long.toString(expectedUserId),
             "username",
             "password",
@@ -76,7 +77,18 @@ class CommentControllerTest {
         SecurityContextHolder.getContext().setAuthentication(
             new UsernamePasswordAuthenticationToken(memberDetails,"", memberDetails.getAuthorities()));
 
-        given(commentService.createComment(expectedPostId, expectedUserId, request)).willReturn(expectedCommentId);
+        CommentResponse commentResponse = new CommentResponse(
+            1L,
+            expectedPostId,
+            request.content(),
+            member.getName(),
+            request.parentId(),
+            LocalDateTime.now().toString(),
+            LocalDateTime.now().toString(),
+            member.getEmail(),
+            new ArrayList<>()
+        );
+        given(commentService.createComment(expectedPostId, expectedUserId, request)).willReturn(commentResponse);
 
         // When & Then
         mvc.perform(post("/api/v1/comments/{postId}", post.getId())
@@ -88,6 +100,17 @@ class CommentControllerTest {
                 requestFields(
                     fieldWithPath("parentId").type(JsonFieldType.NUMBER).description("댓글 부모 아이디"),
                     fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")
+                ),
+                responseFields(
+                    fieldWithPath("commentId").type(JsonFieldType.NUMBER).description("댓글 아이디"),
+                    fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                    fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용"),
+                    fieldWithPath("writer").type(JsonFieldType.STRING).description("댓글 작성자"),
+                    fieldWithPath("parentId").type(JsonFieldType.NUMBER).description("부모 댓글 아이디"),
+                    fieldWithPath("createdAt").type(JsonFieldType.STRING).description("댓글 작성 날짜"),
+                    fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("댓글 수정 날짜"),
+                    fieldWithPath("updatedBy").type(JsonFieldType.STRING).description("댓글 수정자"),
+                    fieldWithPath("children").type(JsonFieldType.ARRAY).description("자식 댓글 목록")
                 )
             ));
     }
@@ -135,17 +158,42 @@ class CommentControllerTest {
     void 댓글_수정_테스트() throws Exception {
         // Given
         Long commentId = 1L;
+        Long expectedPostId = 1L;
+        Long parentId = 1L;
         CommentUpdateRequest request = new CommentUpdateRequest("댓글 수정입니다 !");
+        CommentResponse commentResponse = new CommentResponse(
+            1L,
+            expectedPostId,
+            request.content(),
+            member.getName(),
+            parentId,
+            LocalDateTime.now().toString(),
+            LocalDateTime.now().toString(),
+            member.getEmail(),
+            new ArrayList<>()
+        );
+        given(commentService.updateComment(commentId, request)).willReturn(commentResponse);
 
         // When & Then
         mvc.perform(patch("/api/v1/comments/{commentId}", commentId)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isNoContent())
+            .andExpect(status().isOk())
             .andDo(print())
             .andDo(document("comment-update",
                 requestFields(
                     fieldWithPath("content").type(JsonFieldType.STRING).description("수정 댓글 내용")
+                ),
+                responseFields(
+                    fieldWithPath("commentId").type(JsonFieldType.NUMBER).description("댓글 아이디"),
+                    fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                    fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용"),
+                    fieldWithPath("writer").type(JsonFieldType.STRING).description("댓글 작성자"),
+                    fieldWithPath("parentId").type(JsonFieldType.NUMBER).description("부모 댓글 아이디"),
+                    fieldWithPath("createdAt").type(JsonFieldType.STRING).description("댓글 작성 날짜"),
+                    fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("댓글 수정 날짜"),
+                    fieldWithPath("updatedBy").type(JsonFieldType.STRING).description("댓글 수정자"),
+                    fieldWithPath("children").type(JsonFieldType.ARRAY).description("자식 댓글 목록")
                 )
             ));
     }

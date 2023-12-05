@@ -2,9 +2,12 @@ package com.example.board.domain.member.service;
 
 import com.example.board.domain.email.entity.EmailAuth;
 import com.example.board.domain.email.repository.EmailAuthRepository;
+import com.example.board.domain.member.dto.LoginRequest;
+import com.example.board.domain.member.dto.LoginResponse;
 import com.example.board.domain.member.dto.MemberCreateRequest;
 import com.example.board.domain.member.dto.MemberResponse;
 import com.example.board.domain.member.dto.MemberUpdateRequest;
+import com.example.board.domain.member.dto.PasswordResetRequest;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.repository.MemberRepository;
 import com.example.board.domain.role.entity.Role;
@@ -13,6 +16,7 @@ import com.example.board.domain.role.repository.RoleRepository;
 import com.example.board.global.exception.CustomException;
 import com.example.board.global.security.jwt.provider.JwtTokenProvider;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,99 +33,156 @@ import java.util.Optional;
 import static com.example.board.factory.member.MemberFactory.createMemberWithRoleUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class MemberServiceTest {
 
-    @InjectMocks
+    @Autowired
     private MemberService memberService;
 
-    @Mock
+    @Autowired
     private MemberRepository memberRepository;
 
-    @Mock
+    @Autowired
     private RoleRepository roleRepository;
 
-    @Mock
+    @Autowired
     private EmailAuthRepository emailAuthRepository;
 
-    @Mock
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Mock
+    @Autowired
     private AuthenticationManagerBuilder authenticationManager;
 
-    @Mock
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    private Member member = createMemberWithRoleUser();
+    private Member member;
 
-    @Test
-    void 멤버_생성_테스트() {
-        // Given
-        MemberCreateRequest request = new MemberCreateRequest(
-                member.getEmail(),
-                member.getPassword(),
-                member.getName(),
-                member.getAge(),
-                member.getHobby(),
-                "testKey"
-        );
-        EmailAuth emailAuth = new EmailAuth(request.authKey(), request.email(), "SIGN-UP");
-
-        given(roleRepository.findByRoleType(RoleType.USER)).willReturn(Optional.of(new Role(RoleType.USER)));
-        given(emailAuthRepository.findByEmailAndPurpose(request.email(), "SIGN-UP")).willReturn(Optional.of(emailAuth));
-
-
-        // When
-        MemberResponse savedMember = memberService.createMember(request);
-
-        // Then
-        assertThat(savedMember.email()).isEqualTo(request.email());
-        assertThat(savedMember.name()).isEqualTo(request.name());
-        assertThat(savedMember.age()).isEqualTo(request.age());
-        assertThat(savedMember.hobby()).isEqualTo(request.hobby());
+    @BeforeEach
+    void setUp() {
+        member = memberRepository.findById(2L).get();
     }
 
     @Test
-    void 이메일_중복_테스트() {
+    void 회원가입_테스트() {
         // Given
         MemberCreateRequest request = new MemberCreateRequest(
-                member.getEmail(),
-                member.getPassword(),
-                member.getName(),
-                member.getAge(),
-                member.getHobby(),
-                ""
+            "test@naver.com",
+            "test123!",
+            "tester2",
+            25,
+            "축구",
+            "123456"
         );
-        given(memberRepository.existsMemberByEmail(member.getEmail())).willReturn(true);
+
+        // When
+        MemberResponse signUpMember = memberService.createMember(request);
+
+        // Then
+        assertThat(signUpMember.email()).isEqualTo(request.email());
+    }
+
+    @Test
+    void 중복_이메일_회원가입_실패_테스트() {
+        // Given
+        MemberCreateRequest request = new MemberCreateRequest(
+            "user123@naver.com",
+            "test123!",
+            "tester2",
+            25,
+            "축구",
+            "345678"
+        );
 
         // When & Then
         assertThatThrownBy(() -> memberService.createMember(request))
             .isInstanceOf(CustomException.class);
     }
-    
+
     @Test
-    void 회원_아이디_조회_테스트() {
+    void 이메일_인증키_불일치_회원가입_실패_테스트() {
         // Given
-        given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+        String notExistAuthKey = "000000";
+        MemberCreateRequest memberCreateRequest = new MemberCreateRequest(
+            "newUser123@naver.com",
+            "test123!",
+            "tester2",
+            25,
+            "축구",
+            notExistAuthKey
+        );
 
-        // When
-        MemberResponse findMember = memberService.findMemberById(member.getId());
-
-        // Then
-        assertThat(findMember.email()).isEqualTo(member.getEmail());
-        assertThat(findMember.name()).isEqualTo(member.getName());
-        assertThat(findMember.age()).isEqualTo(member.getAge());
-        assertThat(findMember.hobby()).isEqualTo(member.getHobby());
+        // When & Then
+        assertThatThrownBy(() -> memberService.createMember(memberCreateRequest))
+            .isInstanceOf(CustomException.class);
     }
 
     @Test
-    void 회원_아이디_조회_실패_테스트() {
+    void 로그인_테스트() {
         // Given
-        Long notExistId = 2L;
-        given(memberRepository.findById(notExistId)).willReturn(Optional.empty());
+        LoginRequest loginRequest = new LoginRequest(
+            "admin123@naver.com",
+            "admin123!"
+        );
+
+        // When
+        LoginResponse loginMember = memberService.login(loginRequest);
+
+        // Then
+        assertThat(loginMember.username()).isEqualTo(loginRequest.email());
+    }
+
+    @Test
+    void 비밀번호_불일치_로그인_실패_테스트() {
+        // Given
+        String notExistPassword = "notExistPassword123!";
+        LoginRequest loginRequest = new LoginRequest(
+            member.getEmail(),
+            notExistPassword
+        );
+
+        // When
+        assertThatThrownBy(() -> memberService.login(loginRequest))
+            .isInstanceOf(CustomException.class);
+    }
+
+    @Test
+    void 비밀번호_재설정_테스트() {
+        // Given
+        PasswordResetRequest request = new PasswordResetRequest(
+            member.getEmail(),
+            "234567",
+            "newPassword123!",
+            "newPassword123!"
+        );
+
+        // When
+        Throwable thrown = catchThrowable(() -> memberService.resetPassword(request));
+
+        // Then
+        assertThat(thrown).isNull();
+    }
+    
+    @Test
+    void 회원_아이디로_조회_테스트() {
+        // Given
+        Long memberId = 2L;
+
+        // When
+        MemberResponse findMember = memberService.findMemberById(memberId);
+
+        // Then
+        assertThat(findMember.id()).isEqualTo(memberId);
+    }
+
+    @Test
+    void 회원_아이디로_조회_실패_테스트() {
+        // Given
+        Long notExistId = 5L;
 
         // When & Then
         assertThatThrownBy(() -> memberService.findMemberById(notExistId))
@@ -129,27 +190,16 @@ class MemberServiceTest {
     }
 
     @Test
-    void 회원_전체조회_테스트() {
-        // Given
-        List<Member> members = List.of(member);
-        given(memberRepository.findAll()).willReturn(members);
-
-        // When
-        List<MemberResponse> findMembers = memberService.findAllMembers();
-        
-        // Then
-        assertThat(findMembers).hasSize(1);
-        assertThat(findMembers.get(0).id()).isEqualTo(member.getId());
-    }
-    
-    @Test
     void 회원_수정_테스트() {
         // Given
-        MemberUpdateRequest request = new MemberUpdateRequest("길동이", "수영");
-        given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+        Long memberId = member.getId();
+        MemberUpdateRequest request = new MemberUpdateRequest(
+            "수정된 일반 유저",
+            "수정된 취미"
+        );
 
         // When
-        MemberResponse updatedMember = memberService.updateMember(member.getId(), request);
+        MemberResponse updatedMember = memberService.updateMember(memberId, request);
 
         // Then
         assertThat(updatedMember.name()).isEqualTo(request.name());

@@ -40,6 +40,20 @@ public class CommentResponse {
         );
     }
 
+    public static CommentResponse toDto(Comment comment) {
+        return new CommentResponse(
+            comment.getId(),
+            comment.getPost().getId(),
+            comment.getContent(),
+            comment.getWriter().getName(),
+            comment.getParent() != null ? comment.getParent().getId() : null,
+            comment.getCreatedAt() == null ? LocalDateTime.now().format(FORMATTER_YYYY_MM_DD) : comment.getCreatedAt().format(FORMATTER_YYYY_MM_DD),
+            comment.getUpdatedAt() == null ? LocalDateTime.now().format(FORMATTER_YYYY_MM_DD) : comment.getUpdatedAt().format(FORMATTER_YYYY_MM_DD),
+            comment.getUpdatedBy(),
+            new ArrayList<>()
+        );
+    }
+
     public static CommentResponse from(Comment comment) {
         return new CommentResponse(
                 comment.getId(),

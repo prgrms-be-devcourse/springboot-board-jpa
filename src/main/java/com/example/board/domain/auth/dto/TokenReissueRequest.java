@@ -1,4 +1,4 @@
-package com.example.board.domain.common.token.dto;
+package com.example.board.domain.auth.dto;
 
 public record TokenReissueRequest(
     String refreshToken

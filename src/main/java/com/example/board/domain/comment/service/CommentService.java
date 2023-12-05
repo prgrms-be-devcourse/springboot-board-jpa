@@ -11,11 +11,10 @@ import com.example.board.domain.post.entity.Post;
 import com.example.board.domain.post.repository.PostRepository;
 import com.example.board.global.exception.CustomException;
 import com.example.board.global.exception.ErrorCode;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +25,7 @@ public class CommentService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
-    public Long createComment(Long postId, Long writerId, CommentCreateRequest request) {
+    public CommentResponse createComment(Long postId, Long writerId, CommentCreateRequest request) {
         Member writer = memberRepository.findById(writerId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
@@ -45,7 +44,7 @@ public class CommentService {
             parent
         );
         commentRepository.save(comment);
-        return comment.getId();
+        return CommentResponse.toDto(comment);
     }
 
     @Transactional(readOnly = true)
@@ -57,10 +56,11 @@ public class CommentService {
         return CommentResponse.toDtoList(comments);
     }
 
-    public void updateComment(Long commentId, CommentUpdateRequest request) {
+    public CommentResponse updateComment(Long commentId, CommentUpdateRequest request) {
         Comment comment = commentRepository.findById(commentId)
             .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         comment.update(request.content());
+        return CommentResponse.toDto(comment);
     }
 
     public void deleteCommentByCommentId(Long id) {

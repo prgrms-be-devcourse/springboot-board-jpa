@@ -1,6 +1,6 @@
-package com.example.board.domain.common.token.service;
+package com.example.board.domain.auth.service;
 
-import com.example.board.domain.common.token.dto.TokenResponse;
+import com.example.board.domain.auth.dto.TokenResponse;
 import com.example.board.global.exception.CustomException;
 import com.example.board.global.exception.ErrorCode;
 import com.example.board.global.security.jwt.provider.JwtTokenProvider;

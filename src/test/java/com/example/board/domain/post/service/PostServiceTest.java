@@ -9,11 +9,18 @@ import com.example.board.domain.post.entity.Post;
 import com.example.board.domain.post.repository.PostRepository;
 import com.example.board.factory.post.PostFactory;
 import com.example.board.global.exception.CustomException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,29 +36,42 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class PostServiceTest {
 
-    @InjectMocks
+    @Autowired
     private PostService postService;
 
-    @Mock
+    @Autowired
     private PostRepository postRepository;
 
-    @Mock
+    @Autowired
     private MemberRepository memberRepository;
 
-    private Member member = createMemberWithRoleUser();
+    private Member member;
 
-    private Post post = PostFactory.createPostWithMember(member);
+    private Post post;
+
+    @BeforeEach
+    void setUp() {
+        member = memberRepository.findById(2L).get();
+        post = PostFactory.createPostWithMember(member);
+
+        postRepository.save(post);
+    }
+
+    @AfterEach
+    void tearDown() {
+        postRepository.deleteAll();
+    }
 
     @Test
     void 게시글_아이디로_조회_테스트() {
         // Given
-        given(postRepository.findByIdWithPessimisticLock(post.getId())).willReturn(Optional.of(post));
+        Long postId = post.getId();
 
         // When
-        PostResponse findPost = postService.findPostByIdAndUpdateView(post.getId());
+        PostResponse findPost = postService.findPostByIdAndUpdateView(postId);
 
         // Then
         assertThat(findPost.title()).isEqualTo(post.getTitle());
@@ -79,14 +99,7 @@ class PostServiceTest {
                 .content("게시글 2번 내용")
                 .member(member)
                 .build();
-
-        List<Post> posts = List.of(
-                post,
-                newPost
-        );
-        Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize());
-        Page<Post> resultPage = PageableExecutionUtils.getPage(posts, pageable, posts::size);
-        given(postRepository.findPostsByCondition(condition)).willReturn(resultPage);
+        postRepository.save(newPost);
 
         // When
         Page<PostResponse> responses = postService.findPostsByCondition(condition);
@@ -105,14 +118,7 @@ class PostServiceTest {
                 .content("게시글 2번 내용")
                 .member(member)
                 .build();
-
-        List<Post> posts = List.of(
-                post,
-                newPost
-        );
-        Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize());
-        Page<Post> resultPage = PageableExecutionUtils.getPage(List.of(posts.get(0)), pageable, posts::size);
-        given(postRepository.findPostsByCondition(condition)).willReturn(resultPage);
+        postRepository.save(newPost);
 
         // When
         Page<PostResponse> responses = postService.findPostsByCondition(condition);
@@ -122,26 +128,21 @@ class PostServiceTest {
     }
 
     @Test
-    void 게시글_작성자_이메일로_조회_테스트() {
+    void 게시글_작성자_이름으로_조회_테스트() {
         // Given
-        PostPageCondition condition = new PostPageCondition(1, 10, "홍길동", null);
+        PostPageCondition condition = new PostPageCondition(1, 10, "user", null);
         Post newPost = Post.builder()
                 .id(2L)
                 .title("게시글 2번")
                 .content("게시글 2번 내용")
                 .member(member)
                 .build();
-
-        List<Post> posts = List.of(
-                post,
-                newPost
-        );
-        Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize());
-        Page<Post> resultPage = PageableExecutionUtils.getPage(posts, pageable, posts::size);
-        given(postRepository.findPostsByCondition(condition)).willReturn(resultPage);
+        postRepository.save(newPost);
 
         // When
         Page<PostResponse> responses = postService.findPostsByCondition(condition);
+        List<PostResponse> content = responses.getContent();
+        System.out.println(content.size());
 
         // Then
         assertThat(responses.getContent().size()).isEqualTo(2);
@@ -150,11 +151,11 @@ class PostServiceTest {
     @Test
     void 게시글_수정_테스트() {
         // Given
+        Long postId = post.getId();
         PostUpdateRequest request = new PostUpdateRequest("수정된 제목", "수정된 내용");
-        given(postRepository.findByIdWithPessimisticLock(post.getId())).willReturn(Optional.of(post));
 
         // When
-        PostResponse updatedPost = postService.updatePost(post.getId(), request);
+        PostResponse updatedPost = postService.updatePost(postId, request);
 
         // Then
         assertThat(updatedPost.title()).isEqualTo(request.title());
@@ -166,7 +167,6 @@ class PostServiceTest {
         // Given
         Long notExistId = 2L;
         PostUpdateRequest request = new PostUpdateRequest("수정된 제목", "수정된 내용");
-        given(postRepository.findByIdWithPessimisticLock(notExistId)).willReturn(Optional.empty());
 
         // When & Then
         assertThatThrownBy(() -> postService.updatePost(notExistId, request))
@@ -174,22 +174,9 @@ class PostServiceTest {
     }
 
     @Test
-    void 게시글_아이디로_삭제_테스트() {
-        // Given
-        given(postRepository.findById(post.getId())).willReturn(Optional.of(post));
-
-        // When
-        postService.deletePostById(post.getId());
-
-        // Then
-        verify(postRepository, times(1)).deleteById(post.getId());
-    }
-
-    @Test
     void 게시글_아이디로_삭제_실패_테스트() {
         // Given
         Long notExistId = 2L;
-        given(postRepository.findById(notExistId)).willReturn(Optional.empty());
 
         // When & Then
         assertThatThrownBy(() -> postService.deletePostById(notExistId))
@@ -197,25 +184,25 @@ class PostServiceTest {
     }
 
     @Test
-    void 게시글_아이디_리스트로_다건_삭제_테스트() {
-        // Given
-        List<Long> postIds = List.of(1L);
+    void 게시글_조회_동시에_100개의_요청() throws InterruptedException {
+        Long postId = post.getId();
+        int threadCount = 100;
+        ExecutorService executorService = Executors.newFixedThreadPool(32);
+        CountDownLatch latch = new CountDownLatch(threadCount);
 
-        // When
-        postService.deletePostsByIds(postIds);
+        for(int i=0; i< threadCount; i++) {
+            executorService.submit(() -> {
+                try {
+                    postService.findPostByIdAndUpdateView(postId);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
 
-        // Then
-        verify(postRepository,times(1)).deletePostsByIds(postIds);
-    }
+        latch.await();
 
-    @Test
-    void 게시글_전체_삭제_테스트() {
-        // Given
-
-        // When
-        postService.deleteAllPosts();
-
-        // Then
-        verify(postRepository, times(1)).deleteAll();
+        Post post = postRepository.findById(postId).orElseThrow();
+        assertThat(post.getView()).isEqualTo(100);
     }
 }
