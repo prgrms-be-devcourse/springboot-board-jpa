@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class EmailAuth {
 
     @Id
-    @Column(name = "email_key", nullable = false)
-    private String key;
+    @Column(name = "auth_key", nullable = false)
+    private String authKey;
 
     @Column(nullable = false)
     private String email;
@@ -22,8 +22,8 @@ public class EmailAuth {
     @Column(nullable = false)
     private String purpose;
 
-    public EmailAuth(String key, String email, String purpose) {
-        this.key = key;
+    public EmailAuth(String authKey, String email, String purpose) {
+        this.authKey = authKey;
         this.email = email;
         this.purpose = purpose;
     }

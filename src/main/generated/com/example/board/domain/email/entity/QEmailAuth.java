@@ -19,9 +19,9 @@ public class QEmailAuth extends EntityPathBase<EmailAuth> {
 
     public static final QEmailAuth emailAuth = new QEmailAuth("emailAuth");
 
-    public final StringPath email = createString("email");
+    public final StringPath authKey = createString("authKey");
 
-    public final StringPath key = createString("key");
+    public final StringPath email = createString("email");
 
     public final StringPath purpose = createString("purpose");
 

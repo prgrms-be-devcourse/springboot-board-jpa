@@ -137,7 +137,7 @@ public class MemberService {
     private void validateEmailAuthKey(MemberCreateRequest request) {
         EmailAuth emailAuth = emailAuthRepository.findByEmailAndPurpose(request.email(), "SIGN-UP")
                 .orElseThrow(() -> new CustomException(ErrorCode.VALIDATE_EMAIL_FAILED));
-        if (!emailAuth.getKey().equals(request.authKey())) {
+        if (!emailAuth.getAuthKey().equals(request.authKey())) {
             throw new CustomException(ErrorCode.VALIDATE_EMAIL_FAILED);
         }
     }
@@ -145,7 +145,7 @@ public class MemberService {
     private void validateEmailAuthKey(PasswordResetRequest request) {
         EmailAuth emailAuth = emailAuthRepository.findByEmailAndPurpose(request.email(), "RESET-PASSWORD")
                 .orElseThrow(() -> new CustomException(ErrorCode.VALIDATE_EMAIL_FAILED));
-        if (!emailAuth.getKey().equals(request.authKey())) {
+        if (!emailAuth.getAuthKey().equals(request.authKey())) {
             throw new CustomException(ErrorCode.VALIDATE_EMAIL_FAILED);
         }
     }
