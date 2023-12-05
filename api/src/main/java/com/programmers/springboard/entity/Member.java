@@ -32,6 +32,10 @@ public class Member extends BaseEntity {
 
 	private LocalDateTime loginAt;
 
+	@Enumerated(EnumType.STRING)
+	@Builder.Default
+	private MemberStatus status = MemberStatus.ACTIVE;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Groups groups;
 
@@ -47,5 +51,13 @@ public class Member extends BaseEntity {
 
 	public void changeLoginAt(){
 		loginAt = LocalDateTime.now();
+	}
+
+	public void changeMemberStatusInActive() {
+		status = MemberStatus.INACTIVE;
+	}
+
+	public void changeMemberStatusActive() {
+		status = MemberStatus.ACTIVE;
 	}
 }
