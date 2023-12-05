@@ -28,9 +28,9 @@ CREATE TABLE role IF NOT EXISTS (
 );
 
 CREATE TABLE member_role IF NOT EXISTS (
+    member_role_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     member_id INT UNSIGNED,
     role_id INT UNSIGNED,
-    PRIMARY KEY (member_id, role_id)
 );
 
 CREATE TABLE comment IF NOT EXISTS (
