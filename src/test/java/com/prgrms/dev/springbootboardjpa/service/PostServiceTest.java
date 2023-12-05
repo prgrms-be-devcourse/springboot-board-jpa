@@ -47,6 +47,7 @@ class PostServiceTest {
         userRepository.save(user);
 
         PostCreateRequestDto postRequestDto = PostCreateRequestDto.builder()
+                .userId(user.getId())
                 .title("테스트")
                 .content("테스트 콘")
                 .build();
