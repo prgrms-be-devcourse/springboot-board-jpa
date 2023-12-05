@@ -3,19 +3,15 @@ package com.prgrms.dev.springbootboardjpa.domain.post;
 import com.prgrms.dev.springbootboardjpa.domain.BaseEntity;
 import com.prgrms.dev.springbootboardjpa.domain.user.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Objects;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // jpa reflection 생성자 필요 -> ... , 상속
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "posts") // 넵
 public class Post extends BaseEntity {
-    // GenerateType -> ...
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
