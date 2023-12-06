@@ -11,6 +11,6 @@ public record PostCreateRequestDto(Long userId, String title, String content) {
     }
 
     private void validateNull(String input) {
-        if(input.isEmpty() || input.isBlank()) throw new NullPointerException("NPE");
+        if(input.isEmpty() || input.isBlank()) throw new IllegalArgumentException("값을 입력 해야 합니다.");
     }
 }

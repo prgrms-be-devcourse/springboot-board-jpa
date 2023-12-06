@@ -8,8 +8,8 @@ import com.prgrms.dev.springbootboardjpa.domain.user.UserRepository;
 import com.prgrms.dev.springbootboardjpa.dto.PostCreateRequestDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostDto;
 import com.prgrms.dev.springbootboardjpa.dto.PostUpdateRequestDto;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
+import com.prgrms.dev.springbootboardjpa.exception.PostNotFoundException;
+import com.prgrms.dev.springbootboardjpa.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,17 +22,16 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final Converter converter; // ...
+    private final Converter converter;
 
     @Transactional(readOnly = true) // flush를 굳이 하지 않는다. , 굳이 필요한가?, Transactional - 전파
     public PostDto findById(Long id) {
         return postRepository.findById(id)
                 .map(converter::convertPostDto)
-                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
-                // 외부 의존적이 예외, 커스텀 예외를 만들.
+                .orElseThrow(PostNotFoundException::new);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PostDto> getAll(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(converter::convertPostDto);
@@ -42,7 +41,7 @@ public class PostService {
     public PostDto create(PostCreateRequestDto postCreateRequestDto) {
         Post post = converter.convertPost(postCreateRequestDto);
         User user = userRepository.findById(postCreateRequestDto.userId())
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다"));
+                .orElseThrow(UserNotFoundException::new);
         post.setUser(user);
         return converter.convertPostDto(postRepository.save(post));
     }
@@ -50,8 +49,7 @@ public class PostService {
     @Transactional
     public PostDto update(PostUpdateRequestDto requestDto, Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
-
+                .orElseThrow(PostNotFoundException::new);
         post.update(requestDto.title(), requestDto.content());
         return converter.convertPostDto(post);
     }
