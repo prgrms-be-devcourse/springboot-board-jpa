@@ -1,12 +1,8 @@
 package jehs.springbootboardjpa.controller;
 
-import jehs.springbootboardjpa.dto.PostCreateRequest;
-import jehs.springbootboardjpa.dto.PostResponse;
-import jehs.springbootboardjpa.dto.PostUpdateRequest;
-import jehs.springbootboardjpa.dto.PostsResponse;
+import jehs.springbootboardjpa.dto.*;
 import jehs.springbootboardjpa.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +36,7 @@ public class PostController {
     }
 
     @GetMapping("/api/v1/posts/cursor")
-    public ResponseEntity<SuccessMessage<Slice<PostResponse>>> getAllPostsByCursor(@RequestParam(name = "size") int size, @RequestParam(name = "cursorId") Long cursorId) {
+    public ResponseEntity<SuccessMessage<PostsCursorResponse>> getAllPostsByCursor(@RequestParam(name = "size") int size, @RequestParam(name = "cursorId") Long cursorId) {
         return new ResponseEntity<>(
                 new SuccessMessage<>(
                         "성공적으로 모든 게시글이 조회되었습니다.",

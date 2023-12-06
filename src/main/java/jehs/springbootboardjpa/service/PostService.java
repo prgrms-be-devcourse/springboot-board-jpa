@@ -1,16 +1,13 @@
 package jehs.springbootboardjpa.service;
 
-import jehs.springbootboardjpa.dto.PostCreateRequest;
-import jehs.springbootboardjpa.dto.PostResponse;
-import jehs.springbootboardjpa.dto.PostUpdateRequest;
-import jehs.springbootboardjpa.dto.PostsResponse;
+import jehs.springbootboardjpa.dto.*;
 import jehs.springbootboardjpa.entity.Post;
 import jehs.springbootboardjpa.entity.User;
 import jehs.springbootboardjpa.exception.PostErrorMessage;
 import jehs.springbootboardjpa.exception.PostException;
 import jehs.springbootboardjpa.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,8 +50,9 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Slice<PostResponse> getAllPostsWithUserByCursor(int size, Long cursorId) {
-        return postRepository.findAllWithUserByCursor(cursorId, PageRequest.of(0, size))
-                .map(PostResponse::new);
+    public PostsCursorResponse getAllPostsWithUserByCursor(int size, Long cursorId) {
+        return new PostsCursorResponse(
+                postRepository.findAllWithUserByCursor(cursorId, PageRequest.of(0, size))
+        );
     }
 }
