@@ -1,0 +1,88 @@
+plugins {
+    id 'java'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}/html5") {
+        into 'static/docs'
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    asciidoctorExt
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // querydsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    // restdocs
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // jwt
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+    // mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+}
+
+asciidoctor {
+    dependsOn test
+    inputs.dir snippetsDir
+}
+
+asciidoctor.doFirst {
+    delete file("src/main/resources/static/docs")
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+}
+
+build {
+    dependsOn copyDocument
+}
+
+test {
+    useJUnitPlatform()
+    outputs.dir snippetsDir
+}
+
+tasks.named('bootBuildImage') {
+    builder = 'paketobuildpacks/builder-jammy-base:latest'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
