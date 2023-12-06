@@ -18,4 +18,5 @@ public class AuditorConfig implements AuditorAware<String> {
 
 		return Optional.ofNullable(authentication.getName());
 	}
+
 }

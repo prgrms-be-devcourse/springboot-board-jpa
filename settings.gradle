@@ -1,3 +1,4 @@
 rootProject.name = 'spring-board'
 include 'api'
 include 'batch'
+include 'core'

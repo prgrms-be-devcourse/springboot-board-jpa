@@ -21,6 +21,7 @@ public class MemberController {
     private final MemberService memberService;
     private final AuthenticationManager authenticationManager;
 
+
     @PostMapping("/users/login")
     public MemberResponse login(@RequestBody LoginRequest request){
 
