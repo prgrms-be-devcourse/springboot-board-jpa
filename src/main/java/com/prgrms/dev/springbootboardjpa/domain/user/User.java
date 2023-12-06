@@ -46,11 +46,11 @@ public class User extends BaseEntity {
     }
 
     private void validateNull(String input) {
-        if(input.isEmpty() || input.isBlank()) throw new NullPointerException("NPE");
+        if(input.isEmpty() || input.isBlank()) throw new IllegalArgumentException("값을 입력 해야 합니다.");
     }
 
     private void validateAge(int age) {
-        if(age <= 0 || age >= 200) throw new NullPointerException("NPE");
+        if(age <= 0 || age >= 200) throw new IllegalArgumentException("나이는 1~199세 사이의 값 이어야 합니다.");
     }
 
 }
