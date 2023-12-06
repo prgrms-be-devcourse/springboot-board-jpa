@@ -20,10 +20,7 @@ public record SignUpRequest(
         @NotNull(message = "나이는 필수 입력값입니다.")
         @Min(value = 1, message = "나이는 1살 이상으로 입력해 주세요.")
         @Max(value = 100, message = "나이는 100살 이하로 입력해 주세요.")
-        Integer age,
-
-        @Size(min = 2, max = 20, message = "취미는 2 ~ 20자 사이로 입력해 주세요.")
-        String hobby
+        Integer age
 ) {
     public boolean isPasswordEqualsToPasswordConfirm() {
         return password.equals(passwordConfirm);

@@ -15,7 +15,6 @@ public class UserConverter {
                 .password(requestDto.password())
                 .name(requestDto.name())
                 .age(requestDto.age())
-                .hobby(requestDto.hobby())
                 .role(Role.USER)
                 .build();
     }
@@ -26,7 +25,6 @@ public class UserConverter {
                 .email(user.getEmail())
                 .name(user.getName())
                 .age(user.getAge())
-                .hobby(user.getHobby())
                 .build();
     }
 
@@ -36,7 +34,6 @@ public class UserConverter {
                 .email(user.getEmail())
                 .name(user.getName())
                 .age(user.getAge())
-                .hobby(user.getHobby())
                 .role(user.getRole())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())

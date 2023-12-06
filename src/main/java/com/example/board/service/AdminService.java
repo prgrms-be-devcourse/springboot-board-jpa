@@ -40,7 +40,7 @@ public class AdminService {
 
     public List<UserDetailResponse> updateUser(Long id, AdminUpdateUserRequest requestDto) {
         User user = userRepository.findById(id).orElseThrow(() -> new CustomException(ResponseStatus.USER_NOT_FOUND));
-        user.update(requestDto.name(), requestDto.age(), requestDto.hobby());
+        user.update(requestDto.name(), requestDto.age());
         return List.of(UserConverter.toUserDetailResponse(user));
     }
 

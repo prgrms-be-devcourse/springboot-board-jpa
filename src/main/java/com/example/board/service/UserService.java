@@ -26,7 +26,7 @@ public class UserService {
 
     public void updateUser(Long id, SelfUpdateUserRequest requestDto) {
         final User user = getAvailableUser(id);
-        user.update(requestDto.name(), requestDto.age(), requestDto.hobby());
+        user.update(requestDto.name(), requestDto.age());
     }
 
     public void deleteUser(Long id) {
