@@ -10,7 +10,7 @@ import java.util.Objects;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "posts") // 넵
+@Table(name = "posts")
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -45,14 +45,16 @@ public class Post extends BaseEntity {
     }
 
     public void update(String title, String content) {
-        validateNull(title);
-        validateNull(content);
-        this.title = title;
-        this.content = content;
-    } //service
+        if(validateNull(title) && validateNull(content)) {
+            throw new IllegalArgumentException("값을 입력 해야 합니다.");
+        }
+        if(!validateNull(title)) this.title = title;
+        if(!validateNull(content)) this.content = content;
+    }
 
-    private void validateNull(String input) {
-        if(input.isEmpty() || input.isBlank()) throw new NullPointerException("NPE");
+    private boolean validateNull(String input) {
+        if(input.isEmpty() || input.isBlank()) return true;
+        else return false;
     }
 
 }
