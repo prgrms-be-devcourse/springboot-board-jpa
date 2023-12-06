@@ -28,6 +28,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.test.context.ActiveProfiles;
 
 import static com.example.board.factory.member.MemberFactory.createMemberWithRoleUser;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,6 +38,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
+@ActiveProfiles("dev")
 class PostServiceTest {
 
     @Autowired

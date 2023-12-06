@@ -29,6 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.test.context.ActiveProfiles;
 
 import static com.example.board.factory.member.MemberFactory.createMemberWithRoleUser;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,6 +38,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
+@ActiveProfiles("dev")
 class MemberServiceTest {
 
     @Autowired
@@ -65,6 +67,8 @@ class MemberServiceTest {
     @BeforeEach
     void setUp() {
         member = memberRepository.findById(2L).get();
+        emailAuthRepository.save(new EmailAuth("123456", "test@naver.com", "SIGN-UP"));
+        emailAuthRepository.save(new EmailAuth("234567", "user123@naver.com", "RESET-PASSWORD"));
     }
 
     @Test

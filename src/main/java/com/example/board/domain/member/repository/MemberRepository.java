@@ -2,6 +2,8 @@ package com.example.board.domain.member.repository;
 
 import com.example.board.domain.member.entity.Member;
 
+import io.lettuce.core.dynamic.annotation.Param;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,11 +22,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @EntityGraph(attributePaths = "roles")
     Optional<Member> findMemberWithRolesByEmail(String email);
 
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Member m WHERE m.id IN :memberIds")
-    void deleteMembersByIds(List<Long> memberIds);
-
     @Query("SELECT m FROM Member m WHERE m.id IN :memberIds")
     List<Member> findMembersByIds(List<Long> memberIds);
+
+    @Query("SELECT m FROM Member m WHERE m.lastUpdatedPassword <= :sixMonthsAgo and m.isDeleted = false")
+    List<Member> findNotUpdatePasswordMemberByMonth(@Param("sixMonthsAgo") LocalDateTime sixMonthsAgo);
 }

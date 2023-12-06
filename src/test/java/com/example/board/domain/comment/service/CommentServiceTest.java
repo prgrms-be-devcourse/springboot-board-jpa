@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static com.example.board.factory.comment.CommentFactory.createComment;
 import static com.example.board.factory.post.PostFactory.createPost;
@@ -33,6 +34,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
+@ActiveProfiles("dev")
 class CommentServiceTest {
 
     @Autowired

@@ -2,10 +2,12 @@ package com.example.board.global.batch.mail;
 
 import com.example.board.domain.email.service.MailService;
 import com.example.board.domain.member.entity.Member;
+import com.example.board.domain.member.repository.MemberRepository;
 import jakarta.persistence.EntityManagerFactory;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -18,12 +20,13 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
+import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+@Slf4j
 @Configuration
-@EnableBatchProcessing
 @RequiredArgsConstructor
 public class SendUpdatePasswordMailConfig {
 
@@ -31,8 +34,8 @@ public class SendUpdatePasswordMailConfig {
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManagerFactory;
-    private final EntityManagerFactory entityManagerFactory;
     private final MailService mailService;
+    private final MemberRepository memberRepository;
 
     @Bean
     public Job SendUpdatePasswordMailJob() {
@@ -44,6 +47,7 @@ public class SendUpdatePasswordMailConfig {
     @JobScope
     @Bean
     public Step sendUpdatePasswordMailStep() {
+        log.info("execute Step");
         return new StepBuilder("sendUpdatePasswordMailStep", jobRepository)
             .<Member, Void>chunk(CHUNK_SIZE, transactionManagerFactory)
             .reader(memberItemReader())
@@ -55,20 +59,15 @@ public class SendUpdatePasswordMailConfig {
     @StepScope
     @Bean
     public ItemReader<Member> memberItemReader() {
+        log.info("execute Reader");
         LocalDateTime sixMonthsAgo = LocalDateTime.now().minusMonths(6);
-        String query = "SELECT m FROM Member m WHERE m.lastUpdatedPassword <= :sixMonthsAgo and is_deleted = false";
-        return new JpaPagingItemReaderBuilder<Member>()
-            .name("memberItemReader")
-            .entityManagerFactory(entityManagerFactory)
-            .queryString(query)
-            .parameterValues(Collections.singletonMap("sixMonthsAgo", sixMonthsAgo))
-            .pageSize(10)
-            .build();
+        return new ListItemReader<>( memberRepository.findNotUpdatePasswordMemberByMonth(sixMonthsAgo));
     }
 
     @StepScope
     @Bean
     public ItemProcessor<Member, Void> memberItemProcessor() {
+        log.info("execute Processor");
         return member -> {
             mailService.sendMail(member.getEmail(), "UPDATE-PASSWORD");
             return null;
@@ -78,6 +77,7 @@ public class SendUpdatePasswordMailConfig {
     @StepScope
     @Bean
     public ItemWriter<Void> memberItemWriter() {
+        log.info("execute Writer");
         return items -> {};
     }
 }
