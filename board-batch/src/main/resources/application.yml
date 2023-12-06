@@ -1,0 +1,24 @@
+server:
+  port: 8081
+
+spring:
+  profiles:
+    active: prod
+    include: core
+
+  batch:
+    jdbc:
+      initialize-schema: always
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev

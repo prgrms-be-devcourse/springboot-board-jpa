@@ -1,4 +1,4 @@
-package com.example.board.global.batch.mail;
+package com.example.boardbatch.batch.mail;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

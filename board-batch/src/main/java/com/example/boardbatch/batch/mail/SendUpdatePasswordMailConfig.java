@@ -1,4 +1,4 @@
-package com.example.board.global.batch.mail;
+package com.example.boardbatch.batch.mail;
 
 import com.example.board.domain.email.service.MailService;
 import com.example.board.domain.member.entity.Member;
