@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 public class PostsResponse {
-    
+
     private final List<PostResponse> content;
     private final int totalPages;
     private final long totalElements;
