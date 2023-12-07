@@ -1,0 +1,47 @@
+ifndef::snippets[]
+:snippets: build/generated-snippets
+endif::[]
+
+== 단건 조회
+
+.Reqeust
+include::{snippets}/post-findOne/http-request.adoc[]
+include::{snippets}/post-findOne/request-fields.adoc[]
+
+.Response
+include::{snippets}/post-findOne/http-response.adoc[]
+include::{snippets}/post-findOne/response-body.adoc[]
+
+== 전체 조회
+
+.Request
+
+include::{snippets}/post-getAll/http-request.adoc[]
+include::{snippets}/post-getAll/response-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-getAll/http-response.adoc[]
+include::{snippets}/post-getAll/response-body.adoc[]
+
+== 생성
+
+.Request
+
+include::{snippets}/post-create/http-request.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-create/http-response.adoc[]
+include::{snippets}/post-create/response-body.adoc[]
+
+== 수정
+
+include::{snippets}/post-update/http-request.adoc[]
+include::{snippets}/post-update/response-fields.adoc[]
+
+.Response
+
+include::{snippets}/post-update/http-response.adoc[]
+include::{snippets}/post-update/response-body.adoc[]
