@@ -46,5 +46,4 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(update);
     }
 
-    // 서로 다른 리턴 값을 줄 때 컴파일 시점에서 잡아줄 수 있는 에러 ...
 }

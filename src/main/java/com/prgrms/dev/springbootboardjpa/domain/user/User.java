@@ -16,24 +16,19 @@ import java.util.List;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Post> posts = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-
     @Column(name = "name", length = 20, nullable = false)
     private String name;
-
     @Column(name = "hobby", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Hobby hobby; // 자유도 높은 컬럼, Enum 위험 -> 관리하는데 조심, MySQL에서의 ENUM 관리
-
+    private Hobby hobby;
     @Column(name = "age", nullable = false)
-    private int age; // 나이 검증
-
-    // cascadeType -> ...
-    // 연관 관계, cascade, orphan
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Post> posts = new ArrayList<>(); // 다른 의견
+    private int age;
 
     @Builder
     public User(String name, String hobby, int age) {
@@ -46,11 +41,11 @@ public class User extends BaseEntity {
     }
 
     private void validateNull(String input) {
-        if(input.isEmpty() || input.isBlank()) throw new IllegalArgumentException("값을 입력 해야 합니다.");
+        if (input.isEmpty() || input.isBlank()) throw new IllegalArgumentException("값을 입력 해야 합니다.");
     }
 
     private void validateAge(int age) {
-        if(age <= 0 || age >= 200) throw new IllegalArgumentException("나이는 1~199세 사이의 값 이어야 합니다.");
+        if (age <= 0 || age >= 200) throw new IllegalArgumentException("나이는 1~199세 사이의 값 이어야 합니다.");
     }
 
 }

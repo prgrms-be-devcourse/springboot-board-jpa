@@ -24,7 +24,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final Converter converter;
 
-    @Transactional(readOnly = true) // flush를 굳이 하지 않는다. , 굳이 필요한가?, Transactional - 전파
+    @Transactional(readOnly = true)
     public PostDto findById(Long id) {
         return postRepository.findById(id)
                 .map(converter::convertPostDto)
