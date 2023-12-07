@@ -9,4 +9,4 @@ public record SignupRequest (
         @NotBlank (message = "이름은 공백이 될 수 없습니다") String name,
         Integer age,
         String hobby,
-        @NotNull Long GroupId){}
+        @NotNull Long groupId){}

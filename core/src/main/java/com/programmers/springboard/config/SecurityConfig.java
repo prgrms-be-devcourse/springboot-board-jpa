@@ -1,17 +1,16 @@
 package com.programmers.springboard.config;
 
-import com.programmers.springboard.entity.Member;
 import com.programmers.springboard.jwt.Jwt;
 import com.programmers.springboard.jwt.JwtAuthenticationFilter;
 import com.programmers.springboard.jwt.JwtAuthenticationProvider;
+import com.programmers.springboard.repository.PostRepository;
 import com.programmers.springboard.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Configuration
 @EnableWebSecurity
@@ -33,11 +31,15 @@ public class SecurityConfig {
     private final ApplicationContext applicationContext;
     private final JwtConfigure jwtConfigure;
 
+    private final PostRepository postRepository;
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return web -> {
             web.ignoring()
-                    .requestMatchers( new AntPathRequestMatcher("/assets/**"),
+                    .requestMatchers(
+
+                            new AntPathRequestMatcher("/assets/**"),
                             new AntPathRequestMatcher("/h2-console/**"));
         };
     }
@@ -75,12 +77,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers(new AntPathRequestMatcher("/**")).hasAnyRole("USER","ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
-                        .anyRequest().authenticated()
-                )
                 .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(new AntPathRequestMatcher("/api/v1/posts/{postId}", HttpMethod.DELETE.name())).hasAuthority("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/v1/posts/{postId}", HttpMethod.PUT.name())).hasAuthority("ADMIN")
+
+                        .requestMatchers(new AntPathRequestMatcher("/api/v1/users/{member-id}/group/{group-id}", HttpMethod.PUT.name())).hasAuthority("ADMIN")
+                        .anyRequest().permitAll()
+                )
                 .headers(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)

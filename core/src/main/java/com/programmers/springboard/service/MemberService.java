@@ -1,18 +1,15 @@
 package com.programmers.springboard.service;
 
 import com.programmers.springboard.entity.Groups;
+import com.programmers.springboard.entity.Member;
 import com.programmers.springboard.exception.GroupNotFoundException;
+import com.programmers.springboard.exception.MemberNotFoundException;
 import com.programmers.springboard.repository.GroupRepository;
+import com.programmers.springboard.repository.MemberRepository;
 import com.programmers.springboard.request.SignupRequest;
-import com.programmers.springboard.response.MemberResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.programmers.springboard.entity.Member;
-import com.programmers.springboard.exception.MemberNotFoundException;
-import com.programmers.springboard.repository.MemberRepository;
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -44,7 +41,7 @@ public class MemberService {
 	}
 
 	public Member signup(SignupRequest request) {
-		Groups group = getGroup(request.GroupId());
+		Groups group = getGroup(request.groupId());
 		String encodedPw = passwordEncoder.encode(request.passwd());
 		Member member = Member.builder()
 				.name(request.name())

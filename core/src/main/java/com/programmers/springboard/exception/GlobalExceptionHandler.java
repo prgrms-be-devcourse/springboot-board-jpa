@@ -1,7 +1,5 @@
 package com.programmers.springboard.exception;
 
-import java.util.List;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -12,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleCustomException(CustomException ex) {
 		logger.warn("custom exception occured : ", ex);
 		ErrorResponse errorResponse = new ErrorResponse(ex.getCode(), ex.getMessage());
-		return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ex.getCode()));
+		return new ResponseEntity<>(errorResponse, HttpStatusCode.valueOf(Integer.parseInt(ex.getCode().substring(0,3))));
 	}
 
 	@Override
