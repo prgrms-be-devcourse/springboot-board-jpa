@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -55,6 +54,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 }
                 catch (Exception e){
                     log.warn("Jwt Processing failed: {}", e.getMessage());
+                    request.setAttribute("exception", e);
                 }
             }
         } else {
@@ -74,6 +74,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 return URLDecoder.decode(token, "UTF-8");
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
+                request.setAttribute("exception", e);
             }
         }
         return null;

@@ -3,7 +3,6 @@ package com.programmers.springboard.config;
 import com.programmers.springboard.jwt.Jwt;
 import com.programmers.springboard.jwt.JwtAuthenticationFilter;
 import com.programmers.springboard.jwt.JwtAuthenticationProvider;
-import com.programmers.springboard.repository.PostRepository;
 import com.programmers.springboard.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
@@ -19,6 +18,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -30,8 +30,7 @@ public class SecurityConfig {
 
     private final ApplicationContext applicationContext;
     private final JwtConfigure jwtConfigure;
-
-    private final PostRepository postRepository;
+    private final AuthenticationEntryPoint entryPoint;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
@@ -91,7 +90,8 @@ public class SecurityConfig {
                 .rememberMe(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterAfter(jwtAuthenticationFilter(), SecurityContextPersistenceFilter.class);
+                .addFilterAfter(jwtAuthenticationFilter(), SecurityContextPersistenceFilter.class)
+                .exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint));
 
         return http.build();
     }
