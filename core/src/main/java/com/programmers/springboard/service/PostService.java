@@ -1,10 +1,5 @@
 package com.programmers.springboard.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.programmers.springboard.entity.Member;
 import com.programmers.springboard.entity.Post;
 import com.programmers.springboard.exception.PostNotFoundException;
@@ -13,9 +8,12 @@ import com.programmers.springboard.repository.PostRepository;
 import com.programmers.springboard.request.PostCreateRequest;
 import com.programmers.springboard.request.PostUpdateRequest;
 import com.programmers.springboard.response.PostResponse;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -53,7 +51,7 @@ public class PostService {
 	public PostResponse updatePost(Long id, PostUpdateRequest request) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(PostNotFoundException::new);
-		post.changePost(request.title(), request.content());
+		post.changePostTitleContent(request.title(), request.content());
 		return PostResponse.of(post);
 	}
 

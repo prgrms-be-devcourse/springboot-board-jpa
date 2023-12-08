@@ -1,16 +1,9 @@
 package com.programmers.springboard.entity;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Where(clause = "is_deleted = FALSE")
 public class Post extends BaseEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false, length = 60)
@@ -40,9 +33,10 @@ public class Post extends BaseEntity {
 	private Boolean isDeleted = false;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
  	private Member member;
 
-	public void changePost(String title, String content) {
+	public void changePostTitleContent(String title, String content) {
 		this.title = title;
 		this.content = content;
 	}

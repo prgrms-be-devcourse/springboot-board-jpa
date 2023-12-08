@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 public class Groups {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @OneToMany(mappedBy = "groups")

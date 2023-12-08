@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Member extends BaseEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String loginId;
@@ -37,6 +37,7 @@ public class Member extends BaseEntity {
 	private MemberStatus status = MemberStatus.ACTIVE;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "groups_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Groups groups;
 
 	public void checkPassword(PasswordEncoder passwordEncoder, String credentials){
