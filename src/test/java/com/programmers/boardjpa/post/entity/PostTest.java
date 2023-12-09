@@ -1,5 +1,6 @@
 package com.programmers.boardjpa.post.entity;
 
+import com.programmers.boardjpa.post.exception.PostErrorCode;
 import com.programmers.boardjpa.post.exception.PostException;
 import com.programmers.boardjpa.user.entity.User;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +21,6 @@ public class PostTest {
         // when - then
         assertThatThrownBy(() -> new Post(title, content, user))
                 .isInstanceOf(PostException.class)
-                .hasMessageContaining("title 길이가 올바르지 않습니다.");
+                .hasFieldOrPropertyWithValue("errorCode", PostErrorCode.INVALID_TITLE_ERROR);
     }
 }

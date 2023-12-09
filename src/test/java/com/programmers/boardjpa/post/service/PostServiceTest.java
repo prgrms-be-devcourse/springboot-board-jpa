@@ -145,7 +145,7 @@ public class PostServiceTest {
         // when - then
         assertThatThrownBy(() -> postService.getPost(newPostId))
                 .isInstanceOf(PostException.class)
-                .hasMessageContaining("해당하는 Post를 찾을 수 없습니다. : " + newPostId);
+                .hasFieldOrPropertyWithValue("errorCode", PostErrorCode.NOT_FOUND);
     }
 
     @Test
