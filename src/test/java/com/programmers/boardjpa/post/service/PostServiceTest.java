@@ -40,8 +40,8 @@ public class PostServiceTest {
     private final Long postId = 1L;
 
     @Test
-    @DisplayName("DB에서 특정 Post를 가져올 수 있다.")
-    void getAPostInDB() throws Exception {
+    @DisplayName("특정 Post를 가져올 수 있다.")
+    void testGetPost() throws Exception {
         // given
         User user = User.builder()
                 .name("user")
@@ -69,8 +69,8 @@ public class PostServiceTest {
     }
 
     @Test
-    @DisplayName("새로운 Post를 생성하여 DB에 넣어줄 수 있다.")
-    void insertAPostToDB() throws Exception {
+    @DisplayName("새로운 Post를 생성하여 저장해 줄 수 있다.")
+    void testInsertPost() throws Exception {
         // given
         long userId = 1L;
 
@@ -97,8 +97,8 @@ public class PostServiceTest {
     }
 
     @Test
-    @DisplayName("DB 내 특정 Post를 업데이트 할 수 있다.")
-    void updateAPostInDB() {
+    @DisplayName("특정 Post를 업데이트 할 수 있다.")
+    void testUpdatePost() {
         // given
         long postId = 1L;
 
@@ -118,8 +118,8 @@ public class PostServiceTest {
     }
 
     @Test
-    @DisplayName("DB에서 모든 Posts를 가져올 수 있다.")
-    void getAllPostsInDB() {
+    @DisplayName("모든 Posts를 가져올 수 있다.")
+    void testGetAllPosts() {
         PageRequest pageRequest = PageRequest.of(1, 10);
 
         when(postRepository.findAllWithUser(pageRequest))
@@ -135,7 +135,7 @@ public class PostServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 Post에 대한 게시글 조회는 예외를 발생시킨다.")
-    void getAPostInDBThrowPostNotFoundException() throws Exception {
+    void testGetPostThrowPostNotFoundException() throws Exception {
         // given
         long newPostId = 2L;
 
@@ -150,7 +150,7 @@ public class PostServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 User에 대한 게시글 작성은 예외를 발생시킨다.")
-    void insertAPostToDBThrowUserNotFoundException() throws Exception {
+    void testInsertAPostThrowUserNotFoundException() throws Exception {
         // given
         long userId = 1L;
 
@@ -167,7 +167,7 @@ public class PostServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 Post를 업데이트할 때 예외가 발생한다.")
-    void updateAPostInDBThrowPostNotFoundException() throws Exception {
+    void testUpdatePostThrowPostNotFoundException() throws Exception {
         // given
         long postId = 1L;
 
