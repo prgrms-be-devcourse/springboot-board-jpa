@@ -26,6 +26,6 @@ public class ExceptionController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> catchDefaultException(Exception e) {
         log.error(e.getMessage(), e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("알 수 없는 에러가 발생했습니다!");
     }
 }
