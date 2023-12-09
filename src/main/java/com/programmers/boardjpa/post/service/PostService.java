@@ -28,7 +28,7 @@ public class PostService {
 
     public PostResponseDto getPost(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND, id));
+                .orElseThrow(() -> new PostException(PostErrorCode.NOT_FOUND, id));
 
         return PostMapper.toPostResponseDto(post);
     }
@@ -48,7 +48,7 @@ public class PostService {
     @Transactional
     public PostResponseDto updatePost(Long id, PostUpdateRequestDto postUpdateRequestDto) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND, id));
+                .orElseThrow(() -> new PostException(PostErrorCode.NOT_FOUND, id));
 
         post.changeTitleAndContent(postUpdateRequestDto.title(), postUpdateRequestDto.content());
 

@@ -140,7 +140,7 @@ public class PostServiceTest {
         long newPostId = 2L;
 
         when(postRepository.findById(newPostId))
-                .thenThrow(new PostException(PostErrorCode.POST_NOT_FOUND, newPostId));
+                .thenThrow(new PostException(PostErrorCode.NOT_FOUND, newPostId));
 
         // when - then
         assertThatThrownBy(() -> postService.getPost(newPostId))
@@ -172,7 +172,7 @@ public class PostServiceTest {
         long postId = 1L;
 
         when(postRepository.findById(postId))
-                        .thenThrow(new PostException(PostErrorCode.POST_NOT_FOUND, postId));
+                        .thenThrow(new PostException(PostErrorCode.NOT_FOUND, postId));
 
         // when - then
         assertThatThrownBy(() -> postService.getPost(postId))
