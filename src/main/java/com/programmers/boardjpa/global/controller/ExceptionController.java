@@ -19,7 +19,7 @@ public class ExceptionController {
 
     @ExceptionHandler(UserException.class)
     public ResponseEntity<String> catchUserException(UserException e) {
-        log.error(e.getErrorCode().getErrorMessage(), e);
+        log.warn(e.getErrorCode().getErrorMessage(), e);
         return ResponseEntity.status(e.getErrorCode().getErrorHttpStatus()).body(e.getErrorCode().getErrorMessage());
     }
 

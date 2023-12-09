@@ -38,7 +38,12 @@ public class PostService {
     @Transactional
     public PostResponseDto insertPost(PostInsertRequestDto postInsertRequestDto) {
         User user = userRepository.findById(postInsertRequestDto.userId())
-                .orElseThrow(() -> new UserException(UserErrorCode.NOT_FOUND, postInsertRequestDto.userId()));
+                .orElseThrow(() -> {
+                    log.error("해당하는 User가 존재하지 않아 Post를 생성할 수 없습니다.");
+                    return new UserException(UserErrorCode.NOT_FOUND, postInsertRequestDto.userId());
+                });
+
+
 
         Post post = PostMapper.postInsertRequestDtoToPost(postInsertRequestDto, user);
 
