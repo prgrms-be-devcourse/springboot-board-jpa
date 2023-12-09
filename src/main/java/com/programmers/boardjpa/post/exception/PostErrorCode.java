@@ -8,11 +8,15 @@ public enum PostErrorCode {
     NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 Post를 찾을 수 없습니다."),
     INVALID_TITLE_ERROR(HttpStatus.BAD_REQUEST, "title 길이가 올바르지 않습니다.");
 
-    private final HttpStatus errorCode;
-    private final String errorMessage;
+    private final HttpStatus errorHttpStatus;
+    private String errorMessage;
 
     PostErrorCode(HttpStatus errorCode, String errorMessage) {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
+    }
+
+    public void addIdToMessage(Long id) {
+        this.errorMessage = errorMessage + " : " + id;
     }
 }
