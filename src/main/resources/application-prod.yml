@@ -1,7 +1,0 @@
-JWT_SECRET_KEY: ldOcRiIgyRNKapQ88JSl8fLk7bn0BBK/snm8E9zVmL8=
-JWT_ACCESS_TOKEN_EXPIRATION_TIME: 1800000
-JWT_REFRESH_TOKEN_EXPIRATION_TIME: 259200000
-
-AWS_RDS_URL: board-db.cpuyggotahuc.ap-northeast-2.rds.amazonaws.com/borad?createDatabaseIfNotExist=true
-AWS_RDS_USERNAME: root
-AWS_RDS_PASSWORD: root1234

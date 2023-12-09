@@ -2,6 +2,7 @@ package com.example.board.auth.provider;
 
 import com.example.board.auth.domain.CustomUserDetails;
 import com.example.board.auth.dto.response.JwtToken;
+import com.example.board.auth.exception.TokenException;
 import com.example.board.dto.response.ResponseStatus;
 import com.example.board.exception.CustomException;
 import io.jsonwebtoken.*;
@@ -68,15 +69,15 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(accessToken);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            throw new CustomException(ResponseStatus.INVALID_SIGNATURE_TOKEN);
+            throw new TokenException(ResponseStatus.INVALID_SIGNATURE_TOKEN);
         } catch (ExpiredJwtException e) {
-            throw new CustomException(ResponseStatus.EXPIRED_TOKEN);
+            throw new TokenException(ResponseStatus.EXPIRED_TOKEN);
         } catch (UnsupportedJwtException e) {
-            throw new CustomException(ResponseStatus.UNSUPPORTED_TOKEN);
+            throw new TokenException(ResponseStatus.UNSUPPORTED_TOKEN);
         } catch (IllegalArgumentException e) {
-            throw new CustomException(ResponseStatus.EMPTY_CLAIMS_TOKEN);
+            throw new TokenException(ResponseStatus.EMPTY_CLAIMS_TOKEN);
         } catch (Exception e) {
-            throw new CustomException(ResponseStatus.TOKEN_PROCESSING_ERROR);
+            throw new TokenException(ResponseStatus.TOKEN_PROCESSING_ERROR);
         }
     }
 
