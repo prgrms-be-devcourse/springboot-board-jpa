@@ -162,7 +162,7 @@ public class PostServiceTest {
         // when - then
         assertThatThrownBy(() -> postService.insertPost(insertRequestDto))
                 .isInstanceOf(UserException.class)
-                .hasMessageContaining("해당하는 User를 찾을 수 없습니다. : " + userId);
+                .hasFieldOrPropertyWithValue("errorCode", UserErrorCode.NOT_FOUND);
     }
 
     @Test
@@ -177,7 +177,7 @@ public class PostServiceTest {
         // when - then
         assertThatThrownBy(() -> postService.getPost(postId))
                 .isInstanceOf(PostException.class)
-                .hasMessageContaining("해당하는 Post를 찾을 수 없습니다. : " + postId);
+                .hasFieldOrPropertyWithValue("errorCode", PostErrorCode.NOT_FOUND);
 
         verify(postRepository).findById(postId);
     }

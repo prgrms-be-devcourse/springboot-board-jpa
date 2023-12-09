@@ -1,5 +1,6 @@
 package com.programmers.boardjpa.user.entity;
 
+import com.programmers.boardjpa.user.exception.UserErrorCode;
 import com.programmers.boardjpa.user.exception.UserException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,6 @@ public class UserTest {
         // when - then
         assertThatThrownBy(() -> new User(name, age, hobby))
                 .isInstanceOf(UserException.class)
-                .hasMessageContaining("올바르지 않은 나이 범위입니다.");
+                .hasFieldOrPropertyWithValue("errorCode", UserErrorCode.INVALID_AGE_RANGE);
     }
 }
