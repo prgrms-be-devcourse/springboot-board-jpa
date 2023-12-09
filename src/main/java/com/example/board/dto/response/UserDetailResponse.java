@@ -11,7 +11,6 @@ public record UserDetailResponse(
         String email,
         String name,
         Integer age,
-        String hobby,
         Role role,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
