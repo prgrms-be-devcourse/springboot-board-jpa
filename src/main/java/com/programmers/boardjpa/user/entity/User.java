@@ -1,8 +1,7 @@
 package com.programmers.boardjpa.user.entity;
 
 import com.programmers.boardjpa.global.common.BaseEntity;
-import com.programmers.boardjpa.user.exception.UserErrorCode;
-import com.programmers.boardjpa.user.exception.UserException;
+import com.programmers.boardjpa.user.entity.vo.Age;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,26 +21,20 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "text")
     private String name;
 
+    @Embedded
     @Column(name = "age")
-    private int age;
+    private Age age;
 
     @Column(name = "hobby")
     private String hobby;
 
     @Builder
     public User(String name, int age, String hobby) {
-        validateAge(age);
         this.name = name;
-        this.age = age;
+        this.age = new Age(age);
         this.hobby = hobby;
-    }
-
-    private void validateAge(int age) {
-        if (age < MIN_AGE || age > MAX_AGE) {
-            throw new UserException(UserErrorCode.INVALID_AGE_RANGE);
-        }
     }
 }
