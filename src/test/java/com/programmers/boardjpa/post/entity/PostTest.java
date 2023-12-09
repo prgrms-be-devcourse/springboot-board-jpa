@@ -13,7 +13,7 @@ public class PostTest {
     @DisplayName("Post 생성 시 잘못된 제목 길이는 예외를 발생시킨다.")
     void testInvalidTitleErrorException() {
         // given
-        String title = "asdhiqwhiufhweifhweuifhewuifheuwifhewuifhewuifhewuifhyuawfhuyrbvudsyfbvudsyfbvhgudfysghfuydghfdsuyhgydfshgufydhgfduighfduighfdusghusfidhguisdfhuifdshhdfsuighdfusihgfdhguifdhsguihdfiughfduihgufdsighfdsuhguisehrguheuyghrseuighuisdhguifdhguidfhgufidhgduhdfgughdufa";
+        String title = "a".repeat(256);
         String content = "content for post";
         User user = new User("김뫄뫄", 10, "NETFLIX");
 
