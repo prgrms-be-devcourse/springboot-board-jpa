@@ -5,15 +5,14 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class UserException extends RuntimeException {
-    private final HttpStatus errorCode;
+    private final UserErrorCode errorCode;
 
     public UserException(UserErrorCode errorCode) {
-        super(errorCode.getErrorMessage());
-        this.errorCode = errorCode.getErrorCode();
+        this.errorCode = errorCode;
     }
 
     public UserException(UserErrorCode errorCode, Long id) {
-        super(errorCode.getErrorMessage() + " : " + id);
-        this.errorCode = errorCode.getErrorCode();
+        this.errorCode = errorCode;
+        this.errorCode.addIdToMessage(id);
     }
 }

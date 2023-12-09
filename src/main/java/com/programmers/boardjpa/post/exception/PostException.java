@@ -4,14 +4,14 @@ import lombok.Getter;
 
 @Getter
 public class PostException extends RuntimeException {
-    private final HttpStatus errorCode;
+    private final PostErrorCode errorCode;
 
     public PostException(PostErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 
     public PostException(PostErrorCode errorCode, Long id) {
-        super(errorCode.getErrorMessage() + " : " + id);
-        this.errorCode = errorCode.getErrorCode();
+        this.errorCode = errorCode;
+        this.errorCode.addIdToMessage(id);
     }
 }

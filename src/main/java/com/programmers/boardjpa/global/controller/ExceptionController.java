@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionController {
     @ExceptionHandler(PostException.class)
     public ResponseEntity<String> catchPostException(PostException e) {
-        log.error(e.getMessage(), e);
-        return ResponseEntity.status(e.getErrorCode()).body(e.getMessage());
+        log.error(e.getErrorCode().getErrorMessage(), e);
+        return ResponseEntity.status(e.getErrorCode().getErrorHttpStatus()).body(e.getErrorCode().getErrorMessage());
     }
 
     @ExceptionHandler(UserException.class)
     public ResponseEntity<String> catchUserException(UserException e) {
-        log.error(e.getMessage(), e);
-        return ResponseEntity.status(e.getErrorCode()).body(e.getMessage());
+        log.error(e.getErrorCode().getErrorMessage(), e);
+        return ResponseEntity.status(e.getErrorCode().getErrorHttpStatus()).body(e.getErrorCode().getErrorMessage());
     }
 
     @ExceptionHandler(Exception.class)

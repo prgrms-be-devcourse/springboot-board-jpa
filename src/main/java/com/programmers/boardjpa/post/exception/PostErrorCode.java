@@ -11,8 +11,8 @@ public enum PostErrorCode {
     private final HttpStatus errorHttpStatus;
     private String errorMessage;
 
-    PostErrorCode(HttpStatus errorCode, String errorMessage) {
-        this.errorCode = errorCode;
+    PostErrorCode(HttpStatus errorHttpStatus, String errorMessage) {
+        this.errorHttpStatus = errorHttpStatus;
         this.errorMessage = errorMessage;
     }
 
