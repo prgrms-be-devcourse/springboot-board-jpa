@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +24,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<String>> handleException(Exception e) {
+        log.error("handleException", e);
         return ResponseEntity.internalServerError().body(ApiResponse.fail(ResponseStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
 
@@ -34,7 +36,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-
         Map<String, List<String>> errors = ex.getFieldErrors().stream()
                 .collect(Collectors.groupingBy(
                         FieldError::getField,
@@ -42,5 +43,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .status(status)
                 .body(ApiResponse.fail(ResponseStatus.INVALID_INPUT_VALUE, errors));
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        return ResponseEntity.internalServerError().body(ApiResponse.fail(ResponseStatus.BAD_REQUEST, ex.getMessage()));
     }
 }

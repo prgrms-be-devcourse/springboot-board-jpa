@@ -1,5 +1,6 @@
 package com.example.board.auth.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.*;
 
 public record SignUpRequest(
@@ -22,6 +23,7 @@ public record SignUpRequest(
         @Max(value = 100, message = "나이는 100살 이하로 입력해 주세요.")
         Integer age
 ) {
+    @JsonIgnore
     public boolean isPasswordEqualsToPasswordConfirm() {
         return password.equals(passwordConfirm);
     }
