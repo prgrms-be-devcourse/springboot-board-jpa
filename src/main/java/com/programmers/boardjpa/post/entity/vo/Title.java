@@ -4,9 +4,11 @@ import com.programmers.boardjpa.post.exception.PostErrorCode;
 import com.programmers.boardjpa.post.exception.PostException;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Title {
     private static final int MIN_TITLE_LEN = 0;
