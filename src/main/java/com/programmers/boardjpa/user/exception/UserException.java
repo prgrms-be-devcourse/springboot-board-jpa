@@ -1,7 +1,6 @@
 package com.programmers.boardjpa.user.exception;
 
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public class UserException extends RuntimeException {
