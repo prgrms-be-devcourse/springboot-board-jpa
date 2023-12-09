@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum ResponseStatus {
     // 200 ok
     OK(HttpStatus.OK, 20000, "요청 성공"),
+    TOKEN_REGENERATED(HttpStatus.OK, 20001, "토큰이 재발급 되었습니다."),
 
     // 400 bad request
     BAD_REQUEST(HttpStatus.BAD_REQUEST, 40000, "잘못된 요청입니다."),
@@ -32,9 +33,10 @@ public enum ResponseStatus {
 
     // 404 not found
     NOT_FOUND(HttpStatus.NOT_FOUND, 40400, "요청을 찾을 수 없습니다."),
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, 40401, "유저를 찾을 수 없습니다."),
-    ALREADY_DELETED_USER(HttpStatus.BAD_REQUEST, 40402, "이미 탈퇴한 유저입니다."),
-    POST_NOT_FOUND(HttpStatus.NOT_FOUND, 40404, "게시글을 찾을 수 없습니다."),
+    REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, 40401, "리프레시 토큰을 찾을 수 없습니다."),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, 40410, "유저를 찾을 수 없습니다."),
+    ALREADY_DELETED_USER(HttpStatus.BAD_REQUEST, 40411, "이미 탈퇴한 유저입니다."),
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, 40412, "게시글을 찾을 수 없습니다."),
 
     // 409 conflict
     DUPLICATED_USER_EMAIL(HttpStatus.CONFLICT, 40901, "이미 존재하는 이메일입니다."),
