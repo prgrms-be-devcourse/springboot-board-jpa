@@ -157,7 +157,7 @@ public class PostServiceTest {
         PostInsertRequestDto insertRequestDto = new PostInsertRequestDto("title", "content", userId);
 
         when(userRepository.findById(userId))
-                .thenThrow(new UserException(UserErrorCode.USER_NOT_FOUND, userId));
+                .thenThrow(new UserException(UserErrorCode.NOT_FOUND, userId));
         
         // when - then
         assertThatThrownBy(() -> postService.insertPost(insertRequestDto))

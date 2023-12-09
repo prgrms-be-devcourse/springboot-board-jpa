@@ -36,7 +36,7 @@ public class PostService {
     @Transactional
     public PostResponseDto insertPost(PostInsertRequestDto postInsertRequestDto) {
         User user = userRepository.findById(postInsertRequestDto.userId())
-                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND, postInsertRequestDto.userId()));
+                .orElseThrow(() -> new UserException(UserErrorCode.NOT_FOUND, postInsertRequestDto.userId()));
 
         Post post = PostMapper.postInsertRequestDtoToPost(postInsertRequestDto, user);
 
