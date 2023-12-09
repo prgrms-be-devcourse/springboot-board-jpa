@@ -30,9 +30,6 @@ public class User extends BaseEntity {
     @Column(name = "age", nullable = false)
     private Integer age;
 
-    @Column(name = "hobby")
-    private String hobby;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
@@ -44,10 +41,16 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
-    public void update(String name, Integer age, String hobby) {
+    public void update(String name, Integer age) {
         this.name = name;
         this.age = age;
-        this.hobby = hobby;
+    }
+
+    public void update(String email, String name, Integer age, Role role) {
+        this.email = email;
+        this.name = name;
+        this.age = age;
+        this.role = role;
     }
 
     public void updatePassword(String password) {

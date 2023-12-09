@@ -7,7 +7,6 @@ public record UserSummaryResponse(
         Long id,
         String email,
         String name,
-        Integer age,
-        String hobby
+        Integer age
 ) {
 }

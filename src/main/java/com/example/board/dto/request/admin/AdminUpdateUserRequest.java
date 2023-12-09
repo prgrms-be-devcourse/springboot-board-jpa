@@ -18,9 +18,6 @@ public record AdminUpdateUserRequest(
         @Max(value = 100, message = "나이는 100살 이하로 입력해 주세요.")
         Integer age,
 
-        @Size(min = 2, max = 20, message = "취미는 2 ~ 20자 사이로 입력해 주세요.")
-        String hobby,
-        
         Role role
 ) {
 }

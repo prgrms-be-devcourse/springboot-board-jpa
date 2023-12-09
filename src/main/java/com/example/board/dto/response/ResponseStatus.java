@@ -31,6 +31,7 @@ public enum ResponseStatus {
     MISSING_AUTHORIZATION_CLAIM(HttpStatus.FORBIDDEN, 40301, "토큰에 권한 정보가 누락되었습니다."),
 
     // 404 not found
+    NOT_FOUND(HttpStatus.NOT_FOUND, 40400, "요청을 찾을 수 없습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, 40401, "유저를 찾을 수 없습니다."),
     ALREADY_DELETED_USER(HttpStatus.BAD_REQUEST, 40402, "이미 탈퇴한 유저입니다."),
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, 40404, "게시글을 찾을 수 없습니다."),
