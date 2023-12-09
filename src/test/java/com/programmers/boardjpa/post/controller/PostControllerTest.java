@@ -63,7 +63,7 @@ public class PostControllerTest {
 
     @Test
     @DisplayName("PostService로부터 특정한 id의 Post를 가져와 보여줄 수 있다.")
-    void getPostInService() throws Exception {
+    void testGetPostInService() throws Exception {
         mockMvc.perform(get("/posts/{id}", postId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -86,7 +86,7 @@ public class PostControllerTest {
 
     @Test
     @DisplayName("PostService로부터 모든 Post를 가져와 보여줄 수 있다.")
-    void getPostsInService() throws Exception {
+    void testGetPostsInService() throws Exception {
         mockMvc.perform(get("/posts")
                         .param("page", String.valueOf(0))
                         .param("size", String.valueOf(10))
@@ -114,7 +114,7 @@ public class PostControllerTest {
 
     @Test
     @DisplayName("PostService에 컨트롤러에서 받은 값들에 대한 Post를 생성하고 그 Post를 보여줄 수 있다.")
-    void insertPostInService() throws Exception {
+    void testInsertPostInService() throws Exception {
         // given
         PostInsertRequestDto postInsertRequestDto = new PostInsertRequestDto("제목2", "내용2", userId);
 
@@ -147,7 +147,7 @@ public class PostControllerTest {
 
     @Test
     @DisplayName("PostService에서 특정 Post를 수정하고 그 Post를 보여줄 수 있다.")
-    void updatePostInService() throws Exception {
+    void testUpdatePostInService() throws Exception {
         // given
         PostUpdateRequestDto postUpdateRequestDto = new PostUpdateRequestDto("새로운 제목", "새로운 내용");
 
