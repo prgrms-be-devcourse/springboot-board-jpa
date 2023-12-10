@@ -4,6 +4,7 @@ import com.example.board.domain.member.dto.MemberCreateRequest;
 import com.example.board.domain.member.dto.MemberDetailResponse;
 import com.example.board.domain.member.dto.MemberUpdateRequest;
 import com.example.board.domain.member.entity.Member;
+import com.example.board.domain.member.entity.Role;
 import com.example.board.domain.member.repository.MemberRepository;
 import com.example.board.global.exception.BusinessException;
 import org.junit.jupiter.api.AfterEach;
@@ -25,8 +26,7 @@ class MemberServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    private MemberCreateRequest request = new MemberCreateRequest("test1@gmail.com", "홍길동", "test1234!",22, "농구");;
-
+    private MemberCreateRequest request = new MemberCreateRequest("test1@gmail.com", "홍길동", "test1234!",22, "농구");
     @AfterEach
     void tearDown() {
         memberRepository.deleteAll();
