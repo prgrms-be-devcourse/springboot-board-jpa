@@ -39,13 +39,13 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Member(String email, String name, String password, int age, String hobby) {
+    public Member(String email, String name, String password, int age, String hobby, Role role) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.age = age;
         this.hobby = hobby;
-        this.role = Role.ROLE_USER;
+        this.role = role;
     }
 
     public void checkPassword(PasswordEncoder passwordEncoder, String credentials) {

@@ -1,6 +1,7 @@
 package com.example.board.domain.member.dto;
 
 import com.example.board.domain.member.entity.Member;
+import com.example.board.domain.member.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -37,7 +38,8 @@ public record MemberCreateRequest(
                         name,
                         passwordEncoder.encode(password),
                         age,
-                        hobby
+                        hobby,
+                        Role.ROLE_USER
                 );
         }
 }
