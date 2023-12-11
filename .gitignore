@@ -38,4 +38,4 @@ out/
 .vscode/
 
 ### yml
-**/application-prod.yml
+**/application-*.yml

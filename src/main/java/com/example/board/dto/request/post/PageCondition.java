@@ -1,10 +1,8 @@
 package com.example.board.dto.request.post;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class PageCondition {
     private static final Integer DEFAULT_PAGE = 1;
     private static final Integer DEFAULT_SIZE = 10;
@@ -12,9 +10,9 @@ public class PageCondition {
     private Integer page;
     private Integer size;
 
-    public PageCondition() {
-        page = isValidPage(page) ? page : DEFAULT_PAGE;
-        size = isValidSize(size) ? size : DEFAULT_SIZE;
+    public PageCondition(Integer page, Integer size) {
+        this.page = isValidPage(page) ? page : DEFAULT_PAGE;
+        this.size = isValidSize(size) ? size : DEFAULT_SIZE;
     }
 
     private Boolean isValidPage(Integer page) {

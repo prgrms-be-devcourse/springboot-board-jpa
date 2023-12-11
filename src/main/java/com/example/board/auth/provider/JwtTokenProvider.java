@@ -32,6 +32,7 @@ public class JwtTokenProvider {
 
     private final Key secret;
     private final Date accessExpirationDate;
+    private final Date refreshExpirationDate;
 
     public JwtTokenProvider(
             @Value("${JWT_SECRET_KEY}") String secretKey,
@@ -39,6 +40,7 @@ public class JwtTokenProvider {
             @Value("${JWT_REFRESH_TOKEN_EXPIRATION_TIME}") Long refreshExpirationTimes
     ) {
         this.accessExpirationDate = new Date(System.currentTimeMillis() + accessExpirationTimes);
+        this.refreshExpirationDate = new Date(System.currentTimeMillis() + refreshExpirationTimes);
         byte[] secretByteKey = Base64.getDecoder().decode(secretKey);
         this.secret = Keys.hmacShaKeyFor(secretByteKey);
     }
@@ -47,7 +49,7 @@ public class JwtTokenProvider {
         return JwtToken.builder()
                 .grantType("Bearer")
                 .accessToken(generateAccessToken(authentication))
-                .refreshToken("none")
+                .refreshToken(generateRefreshToken())
                 .build();
     }
 
@@ -64,6 +66,14 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String generateRefreshToken() {
+
+        return Jwts.builder()
+                .setExpiration(refreshExpirationDate)
+                .signWith(secret, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     public boolean validateAccessToken(String accessToken) {
         try {
             Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(accessToken);
@@ -71,7 +81,7 @@ public class JwtTokenProvider {
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             throw new TokenException(ResponseStatus.INVALID_SIGNATURE_TOKEN);
         } catch (ExpiredJwtException e) {
-            throw new TokenException(ResponseStatus.EXPIRED_TOKEN);
+            throw new ExpiredJwtException(null, null, ResponseStatus.EXPIRED_TOKEN.getMessage());
         } catch (UnsupportedJwtException e) {
             throw new TokenException(ResponseStatus.UNSUPPORTED_TOKEN);
         } catch (IllegalArgumentException e) {
