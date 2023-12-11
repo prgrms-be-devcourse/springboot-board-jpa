@@ -39,8 +39,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("",
-                        "/",
+                .requestMatchers(
                         "/health",
                         "/h2-console/**",
                         "/swagger-ui.html",
@@ -61,16 +60,6 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("",
-                                "/",
-                                "/health",
-                                "/h2-console/**",
-                                "/swagger-ui.html",
-                                "/v3/api-docs",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/api/v1/login",
-                                "/api/v1/signup").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
