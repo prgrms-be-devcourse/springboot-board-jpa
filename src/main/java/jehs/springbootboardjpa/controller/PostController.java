@@ -1,6 +1,7 @@
 package jehs.springbootboardjpa.controller;
 
 import jehs.springbootboardjpa.dto.*;
+import jehs.springbootboardjpa.entity.Post;
 import jehs.springbootboardjpa.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class PostController {
     }
 
     @GetMapping("/api/v1/posts")
-    public ResponseEntity<SuccessMessage<PostsResponse>> getAllPosts(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size) {
+    public ResponseEntity<SuccessMessage<ListResponse<Post, PostResponse>>> getAllPosts(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size) {
         return new ResponseEntity<>(
                 new SuccessMessage<>(
                         "성공적으로 모든 게시글이 조회되었습니다.",
