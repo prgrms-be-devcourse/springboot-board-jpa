@@ -1,0 +1,47 @@
+= REST Docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+ifndef::snippets[]
+:snippets: build/generated-snippets
+endif::[]
+
+=== 특정 게시글 조회
+http-request
+include::{snippets}/getPostById/http-request.adoc[]
+http-response
+include::{snippets}/getPostById/http-response.adoc[]
+response-fields
+include::{snippets}/getPostById/response-fields.adoc[]
+
+=== 모든 게시글 조회
+http-request
+include::{snippets}/getAllPosts/http-request.adoc[]
+http-response
+include::{snippets}/getAllPosts/http-response.adoc[]
+response-fields
+include::{snippets}/getAllPosts/response-fields.adoc[]
+
+=== 게시글 생성
+http-request
+include::{snippets}/createPost/http-request.adoc[]
+request-fields
+include::{snippets}/createPost/request-fields.adoc[]
+http-response
+include::{snippets}/createPost/http-response.adoc[]
+response-fields
+include::{snippets}/createPost/response-fields.adoc[]
+
+=== 게시글 수정
+http-request
+include::{snippets}/updatePost/http-request.adoc[]
+request-fields
+include::{snippets}/updatePost/request-fields.adoc[]
+http-response
+include::{snippets}/updatePost/http-response.adoc[]
+response-fields
+include::{snippets}/updatePost/response-fields.adoc[]
