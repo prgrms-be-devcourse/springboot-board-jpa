@@ -1,6 +1,7 @@
 package jehs.springbootboardjpa.entity;
 
 import jakarta.persistence.*;
+import jehs.springbootboardjpa.entity.vo.Age;
 import lombok.Getter;
 
 import java.util.List;
@@ -17,8 +18,8 @@ public class User extends BaseEntity {
     @Column(name = "name", nullable = false, length = 59)
     private String name;
 
-    @Column(name = "age")
-    private Long age;
+    @Embedded
+    private Age age;
 
     @Column(name = "hobby", length = 59)
     private String hobby;

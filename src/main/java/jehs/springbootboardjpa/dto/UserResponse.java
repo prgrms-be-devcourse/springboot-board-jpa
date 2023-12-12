@@ -14,7 +14,7 @@ public class UserResponse {
     public UserResponse(User user) {
         this.id = user.getId();
         this.name = user.getName();
-        this.age = user.getAge();
+        this.age = user.getAge().getValue();
         this.hobby = user.getHobby();
     }
 }
