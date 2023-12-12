@@ -45,18 +45,9 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-tasks.named('asciidoctor') {
-    inputs.dir snippetsDir
-    dependsOn test
-}
-
 asciidoctor {
     dependsOn test
     inputs.dir snippetsDir
-}
-
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')
 }
 
 bootJar {
