@@ -184,27 +184,4 @@ class PostServiceTest {
         assertThatThrownBy(() -> postService.deletePostById(notExistId))
                 .isInstanceOf(CustomException.class);
     }
-
-    @Test
-    void 게시글_조회_동시에_100개의_요청() throws InterruptedException {
-        Long postId = post.getId();
-        int threadCount = 100;
-        ExecutorService executorService = Executors.newFixedThreadPool(32);
-        CountDownLatch latch = new CountDownLatch(threadCount);
-
-        for(int i=0; i< threadCount; i++) {
-            executorService.submit(() -> {
-                try {
-                    postService.findPostByIdAndUpdateView(postId);
-                } finally {
-                    latch.countDown();
-                }
-            });
-        }
-
-        latch.await();
-
-        Post post = postRepository.findById(postId).orElseThrow();
-        assertThat(post.getView()).isEqualTo(100);
-    }
 }

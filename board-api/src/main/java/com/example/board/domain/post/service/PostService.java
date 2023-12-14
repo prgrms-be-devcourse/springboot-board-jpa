@@ -36,7 +36,8 @@ public class PostService {
     }
 
     public PostResponse findPostByIdAndUpdateView(Long id) {
-        Post post = getPostWithPessimisticLock(id);
+        Post post = postRepository.findById(id)
+            .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
         post.increaseView();
         return PostResponse.from(post);
     }
@@ -48,7 +49,8 @@ public class PostService {
     }
 
     public PostResponse updatePost(Long id, PostUpdateRequest request) {
-        Post post = getPostWithPessimisticLock(id);
+        Post post = postRepository.findByIdWithPessimisticLock(id)
+            .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
         post.updatePost(request.title(), request.content());
         return PostResponse.from(post);
     }
@@ -65,10 +67,5 @@ public class PostService {
 
     public void deleteAllPosts() {
         postRepository.deleteAll();
-    }
-
-    private Post getPostWithPessimisticLock(Long id) {
-        return postRepository.findByIdWithPessimisticLock(id)
-                .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
     }
 }
