@@ -1,25 +1,27 @@
 package com.example.board.domain.email.service;
 
-import com.example.board.domain.email.entity.EmailAuth;
-import com.example.board.domain.email.repository.EmailAuthRepository;
+import static com.example.board.global.exception.ErrorCode.ALREADY_AUTH_KEY_EXIST;
+import static com.example.board.global.exception.ErrorCode.MEMBER_NOT_FOUND;
+import static com.example.board.global.exception.ErrorCode.MESSAGING_FAILED;
+import static com.example.board.global.exception.ErrorCode.SEND_MAIL_FAILED;
+import static com.example.board.global.exception.ErrorCode.UNSUPPORTED_ENCODING;
+
 import com.example.board.domain.member.repository.MemberRepository;
 import com.example.board.global.exception.CustomException;
+import com.example.board.global.util.RedisService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Random;
-
-import static com.example.board.global.exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -28,9 +30,13 @@ public class MailService {
 
     @Value("${spring.mail.username}")
     private String hostEmail;
+
+    @Value("${spring.mail.emailExpirationTimeInMilliseconds}")
+    private long emailExpirationTime;
+
     private final JavaMailSender javaMailSender;
-    private final EmailAuthRepository emailAuthRepository;
     private final MemberRepository memberRepository;
+    private final RedisService redisService;
     private final String authKey = createAuthKey();
 
     @Transactional
@@ -39,7 +45,7 @@ public class MailService {
             memberRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         }
-        if (emailAuthRepository.existsByEmailAndPurpose(email, "UPDATE-PASSWORD")) {
+        if (redisService.existData(email + ":UPDATE-PASSWORD")) {
             throw new CustomException(ALREADY_AUTH_KEY_EXIST);
         }
         setMailMessageAndSendMail(email, purpose);
@@ -65,7 +71,7 @@ public class MailService {
     }
 
     private void setMailMessageAndSendMail(String email, String purpose){
-        MimeMessage message = null;
+        MimeMessage message;
         try {
             message = createMessage(email, purpose);
         } catch (MessagingException e) {
@@ -76,7 +82,7 @@ public class MailService {
 
         try {
             javaMailSender.send(message);
-            emailAuthRepository.save(new EmailAuth(authKey, email, purpose));
+            redisService.setEmail(email, authKey, emailExpirationTime, purpose);
         } catch (Exception e) {
             throw new CustomException(SEND_MAIL_FAILED);
         }

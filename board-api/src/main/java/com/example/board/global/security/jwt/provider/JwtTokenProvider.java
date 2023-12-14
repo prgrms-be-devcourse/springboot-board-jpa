@@ -3,6 +3,7 @@ package com.example.board.global.security.jwt.provider;
 import com.example.board.global.exception.CustomException;
 import com.example.board.global.exception.ErrorCode;
 import com.example.board.global.security.details.MemberDetails;
+import com.example.board.global.util.RedisService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -32,6 +33,7 @@ public class JwtTokenProvider {
     private static final String AUTHORITY_EMAIL = "email";
 
     private final RedisTemplate<String, String> redisTemplate;
+    private final RedisService redisService;
     private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
     private final String secret;
@@ -39,10 +41,12 @@ public class JwtTokenProvider {
 
     public JwtTokenProvider(
         RedisTemplate<String, String> redisTemplate,
+        RedisService redisService,
         @Value("${jwt.access-validity-in-milliseconds}") long accessTokenValidityInMilliseconds,
         @Value("${jwt.refresh-validity-in-milliseconds}") long refreshTokenValidityInMilliseconds,
         @Value("${jwt.secret_key}") String secret) {
         this.redisTemplate = redisTemplate;
+        this.redisService = redisService;
         this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds;
         this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds;
         this.secret = secret;
@@ -82,12 +86,13 @@ public class JwtTokenProvider {
             .compact();
 
         if(purpose.equals("refresh")) {
-            redisTemplate.opsForValue().set(
-                authentication.getName(),
-                token,
-                refreshTokenValidityInMilliseconds,
-                TimeUnit.MILLISECONDS
-            );
+//            redisTemplate.opsForValue().set(
+//                authentication.getName(),
+//                token,
+//                refreshTokenValidityInMilliseconds,
+//                TimeUnit.MILLISECONDS
+//            );
+            redisService.setRefresh(authentication.getName(), token, refreshTokenValidityInMilliseconds);
         }
         return token;
     }

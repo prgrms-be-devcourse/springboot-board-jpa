@@ -11,6 +11,7 @@ import com.example.board.domain.role.repository.RoleRepository;
 import com.example.board.global.exception.CustomException;
 import com.example.board.global.exception.ErrorCode;
 import com.example.board.global.security.jwt.provider.JwtTokenProvider;
+import com.example.board.global.util.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -34,6 +35,7 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RoleRepository roleRepository;
     private final EmailAuthRepository emailAuthRepository;
+    private final RedisService redisService;
 
     public MemberResponse createMember(MemberCreateRequest request) {
         validateDuplicateEmail(request.email());
@@ -51,7 +53,8 @@ public class MemberService {
         );
 
         memberRepository.save(member);
-        emailAuthRepository.deleteByEmail(member.getEmail());
+        redisService.deleteEmail(member.getEmail(), "SIGN-UP");
+//        emailAuthRepository.deleteByEmail(member.getEmail());
         return MemberResponse.from(member);
     }
 
