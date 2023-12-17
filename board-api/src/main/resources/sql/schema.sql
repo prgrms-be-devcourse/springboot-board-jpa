@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS member (
     last_updated_password TIMESTAMP(6), # 회원의 마지막 비밀번호 변경 시점
     created_at TIMESTAMP(6), # 회원 생성 시각
     updated_at TIMESTAMP(6), # 회원 수정 시각
-    updated_by VARCHAR(25) # 회원을 마지막으로 수정한 수정자
+    updated_by VARCHAR(25), # 회원을 마지막으로 수정한 수정자
+    INDEX idx_email (email) # 이메일을 참조하는 인덱스 추가
 );
 
 -- 게시물 정보를 저장하는 테이블
@@ -22,7 +23,9 @@ CREATE TABLE IF NOT EXISTS post (
     created_at TIMESTAMP(6), # 게시물 생성 시각
     updated_at TIMESTAMP(6), # 게시물 수정 시각
     updated_by VARCHAR(25), # 게시물을 마지막으로 수정한 수정자
-    member_id INT UNSIGNED NOT NULL # 회원을 참조하는 외래 키
+    member_id INT UNSIGNED NOT NULL, # 회원을 참조하는 외래 키
+    INDEX idx_member_id (member_id), # 회원을 참조하는 외래 키에 대한 인덱스 추가
+    INDEX idx_title (title) # 제목을 참조하는 인덱스 추가
 );
 
 -- 역할 정보를 저장하는 테이블
@@ -47,7 +50,8 @@ CREATE TABLE IF NOT EXISTS comment (
      parent_id INT, # 부모 댓글을 참조하는 외래 키
      created_at TIMESTAMP(6), # 댓글 생성 시각
      updated_at TIMESTAMP(6), # 댓글 수정 시각
-     updated_by VARCHAR(25) # 댓글을 마지막으로 업데이트한 수정자
+     updated_by VARCHAR(25), # 댓글을 마지막으로 업데이트한 수정자
+     INDEX idx_post_id (post_id) # 게시물을 참조하는 외래 키에 대한 인덱스 추가
 );
 
 -- 이메일 인증 정보를 저장하는 테이블
