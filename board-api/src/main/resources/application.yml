@@ -1,7 +1,8 @@
 spring:
   profiles:
     active: prod
-    include: core
+  config:
+    import: optional:file:./board-api-privates/application-core.yml
 
 logging:
   level:

@@ -29,7 +29,7 @@ out/
 application-core.yml
 data_new/
 **/src/main/generated/
-
+board-api-privates/application-core.yml
 
 ### NetBeans ###
 /nbproject/private/
