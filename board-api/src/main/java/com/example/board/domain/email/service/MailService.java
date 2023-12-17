@@ -45,7 +45,10 @@ public class MailService {
             memberRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         }
-        if (redisService.existData(email + ":UPDATE-PASSWORD")) {
+        if (redisService.existData(email + ":UPDATE-PASSWORD") ||
+            (redisService.existData(email + ":RESET-PASSWORD")) ||
+            (redisService.existData(email + ":SIGN-UP"))
+        ) {
             throw new CustomException(ALREADY_AUTH_KEY_EXIST);
         }
         setMailMessageAndSendMail(email, purpose);

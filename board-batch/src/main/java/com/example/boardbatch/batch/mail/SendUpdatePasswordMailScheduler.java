@@ -23,7 +23,7 @@ public class SendUpdatePasswordMailScheduler {
     private final Job sendUpdatePasswordMailJob;
     private final JobLauncher jobLauncher;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 8 * * ?")
     public void runSendUpdatePasswordMailJob() {
         JobParameters jobParameters = new JobParametersBuilder()
             .addLong("time", System.currentTimeMillis())

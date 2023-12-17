@@ -25,7 +25,7 @@ public class RedisService {
 
     public void setEmail(String key, String value, long duration, String purpose) {
         ValueOperations<String, String> valueOperations = template.opsForValue();
-        Duration expireDuration = Duration.ofSeconds(duration);
+        Duration expireDuration = Duration.ofMillis(duration);
         String keyWithPurpose = key + ":" + purpose;
         log.info("set Email with key = {} , value = {} , expireDuration = {}", keyWithPurpose, value, expireDuration);
         valueOperations.set(keyWithPurpose, value, expireDuration);
@@ -33,7 +33,7 @@ public class RedisService {
 
     public void setRefresh(String key, String value, long duration) {
         ValueOperations<String, String> valueOperations = template.opsForValue();
-        Duration expireDuration = Duration.ofSeconds(duration);
+        Duration expireDuration = Duration.ofMillis(duration);
         log.info("set Refresh with key = {} , value = {} , expireDuration = {}", key, value, expireDuration);
         valueOperations.set(key, value, expireDuration);
     }
