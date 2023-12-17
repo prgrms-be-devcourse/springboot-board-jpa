@@ -1,8 +1,16 @@
 package com.example.board.domain.member.service;
 
-import com.example.board.domain.email.entity.EmailAuth;
-import com.example.board.domain.email.repository.EmailAuthRepository;
-import com.example.board.domain.member.dto.*;
+import static com.example.board.global.exception.ErrorCode.DUPLICATE_EMAIL;
+import static com.example.board.global.exception.ErrorCode.MEMBER_NOT_FOUND;
+import static com.example.board.global.exception.ErrorCode.MEMBER_UPDATE_FAILED;
+import static com.example.board.global.exception.ErrorCode.ROLE_NOT_FOUND;
+
+import com.example.board.domain.member.dto.LoginRequest;
+import com.example.board.domain.member.dto.LoginResponse;
+import com.example.board.domain.member.dto.MemberCreateRequest;
+import com.example.board.domain.member.dto.MemberResponse;
+import com.example.board.domain.member.dto.MemberUpdateRequest;
+import com.example.board.domain.member.dto.PasswordResetRequest;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.repository.MemberRepository;
 import com.example.board.domain.role.entity.Role;
@@ -12,6 +20,7 @@ import com.example.board.global.exception.CustomException;
 import com.example.board.global.exception.ErrorCode;
 import com.example.board.global.security.jwt.provider.JwtTokenProvider;
 import com.example.board.global.util.RedisService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,10 +28,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static com.example.board.global.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,12 +39,11 @@ public class MemberService {
     private final AuthenticationManagerBuilder authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final RoleRepository roleRepository;
-    private final EmailAuthRepository emailAuthRepository;
     private final RedisService redisService;
 
     public MemberResponse createMember(MemberCreateRequest request) {
         validateDuplicateEmail(request.email());
-        validateEmailAuthKey(request);
+        validateEmailAuthKeyWithSignUp(request);
         List<Role> roles = List.of(roleRepository.findByRoleType(RoleType.USER)
                 .orElseThrow(() -> new CustomException(ROLE_NOT_FOUND)));
 
@@ -54,7 +58,6 @@ public class MemberService {
 
         memberRepository.save(member);
         redisService.deleteEmail(member.getEmail(), "SIGN-UP");
-//        emailAuthRepository.deleteByEmail(member.getEmail());
         return MemberResponse.from(member);
     }
 
@@ -71,11 +74,11 @@ public class MemberService {
     public void resetPassword(PasswordResetRequest request) {
         Member member = memberRepository.findByEmail(request.email())
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        validateEmailAuthKey(request);
+        validateEmailAuthKeyWithResetPassword(request);
         validatePasswordEqualsVerifyPassword(request);
 
         member.updatePassword(passwordEncoder.encode(request.password()));
-        emailAuthRepository.deleteByEmail(request.email());
+        redisService.deleteEmail(member.getEmail(), "RESET-PASSWORD");
     }
 
     @Transactional(readOnly = true)
@@ -137,18 +140,16 @@ public class MemberService {
         return List.of(accessToken, refreshToken);
     }
 
-    private void validateEmailAuthKey(MemberCreateRequest request) {
-        EmailAuth emailAuth = emailAuthRepository.findByEmailAndPurpose(request.email(), "SIGN-UP")
-                .orElseThrow(() -> new CustomException(ErrorCode.VALIDATE_EMAIL_FAILED));
-        if (!emailAuth.getAuthKey().equals(request.authKey())) {
+    private void validateEmailAuthKeyWithSignUp(MemberCreateRequest request) {
+        String authKey = redisService.getData(request.email() + ":SIGN-UP");
+        if (!authKey.equals(request.authKey()) || authKey.isBlank()) {
             throw new CustomException(ErrorCode.VALIDATE_EMAIL_FAILED);
         }
     }
 
-    private void validateEmailAuthKey(PasswordResetRequest request) {
-        EmailAuth emailAuth = emailAuthRepository.findByEmailAndPurpose(request.email(), "RESET-PASSWORD")
-                .orElseThrow(() -> new CustomException(ErrorCode.VALIDATE_EMAIL_FAILED));
-        if (!emailAuth.getAuthKey().equals(request.authKey())) {
+    private void validateEmailAuthKeyWithResetPassword(PasswordResetRequest request) {
+        String authKey = redisService.getData(request.email() + ":RESET-PASSWORD");
+        if (!authKey.equals(request.authKey()) || authKey.isBlank()) {
             throw new CustomException(ErrorCode.VALIDATE_EMAIL_FAILED);
         }
     }

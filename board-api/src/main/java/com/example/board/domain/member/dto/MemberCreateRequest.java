@@ -1,6 +1,5 @@
 package com.example.board.domain.member.dto;
 
-import com.example.board.domain.member.entity.Member;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

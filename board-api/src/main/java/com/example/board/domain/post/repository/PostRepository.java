@@ -1,15 +1,17 @@
 package com.example.board.domain.post.repository;
 
-import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.post.entity.Post;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.QueryHint;
-import org.springframework.data.jpa.repository.*;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface PostRepository extends JpaRepository<Post, Long>, CustomPostRepository {
 
