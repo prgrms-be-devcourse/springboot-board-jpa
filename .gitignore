@@ -28,7 +28,7 @@ out/
 !**/src/test/**/out/
 application-core.yml
 data_new/
-board-api/src/main/generated/
+**/src/main/generated/
 
 
 ### NetBeans ###
