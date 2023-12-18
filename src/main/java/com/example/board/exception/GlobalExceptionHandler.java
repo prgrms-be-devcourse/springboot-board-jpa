@@ -1,5 +1,6 @@
 package com.example.board.exception;
 
+import com.example.board.auth.exception.TokenException;
 import com.example.board.dto.response.ApiResponse;
 import com.example.board.dto.response.ResponseStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(errorResponseStatus.getHttpStatus()).body(ApiResponse.fail(errorResponseStatus));
     }
 
+    @ExceptionHandler(TokenException.class)
+    public ResponseEntity<ApiResponse<Object>> handleTokenException(TokenException e) {
+        ResponseStatus errorResponseStatus = e.getErrorResponseStatus();
+        return ResponseEntity.status(errorResponseStatus.getHttpStatus()).body(ApiResponse.fail(errorResponseStatus));
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Map<String, List<String>> errors = ex.getFieldErrors().stream()
@@ -49,4 +56,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return ResponseEntity.internalServerError().body(ApiResponse.fail(ResponseStatus.BAD_REQUEST, ex.getMessage()));
     }
+
+
 }
