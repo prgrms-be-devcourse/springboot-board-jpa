@@ -5,8 +5,8 @@ import com.example.board.converter.UserConverter;
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
 import com.example.board.dto.request.admin.AdminUpdateUserRequest;
+import com.example.board.dto.response.CustomResponseStatus;
 import com.example.board.dto.response.PostResponse;
-import com.example.board.dto.response.ResponseStatus;
 import com.example.board.dto.response.UserDetailResponse;
 import com.example.board.exception.CustomException;
 import com.example.board.repository.post.PostRepository;
@@ -39,7 +39,7 @@ public class AdminService {
     }
 
     public List<UserDetailResponse> updateUser(Long id, AdminUpdateUserRequest requestDto) {
-        User user = userRepository.findById(id).orElseThrow(() -> new CustomException(ResponseStatus.USER_NOT_FOUND));
+        User user = userRepository.findById(id).orElseThrow(() -> new CustomException(CustomResponseStatus.USER_NOT_FOUND));
         user.update(requestDto.email(), requestDto.name(), requestDto.age(), requestDto.role());
         return List.of(UserConverter.toUserDetailResponse(user));
     }
@@ -55,7 +55,7 @@ public class AdminService {
 
     @Transactional(readOnly = true)
     public List<PostResponse> getPosts(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ResponseStatus.USER_NOT_FOUND));
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(CustomResponseStatus.USER_NOT_FOUND));
         return user.getPosts().stream()
                 .map(PostConverter::toPostResponse)
                 .toList();

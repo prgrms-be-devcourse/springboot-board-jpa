@@ -1,6 +1,6 @@
 package com.example.board.annotation;
 
-import com.example.board.dto.response.ResponseStatus;
+import com.example.board.dto.response.CustomResponseStatus;
 import com.example.board.exception.CustomException;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
@@ -28,7 +28,7 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(authentication.getPrincipal() instanceof UserDetails)) {
-            throw new CustomException(ResponseStatus.USER_NOT_FOUND);
+            throw new CustomException(CustomResponseStatus.USER_NOT_FOUND);
         }
 
         return Long.parseLong(authentication.getName());

@@ -1,7 +1,7 @@
 package com.example.board.auth.exception;
 
 import com.example.board.dto.response.ApiResponse;
-import com.example.board.dto.response.ResponseStatus;
+import com.example.board.dto.response.CustomResponseStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         // 토큰 필터는 통과했으나 권한이 없는 요청에 대한 처리
         log.warn("Not Authenticated Request. Request Uri : {}", request.getRequestURI());
 
-        final ApiResponse<Object> apiResponse = ApiResponse.fail(ResponseStatus.NOT_FOUND);
+        final ApiResponse<Object> apiResponse = ApiResponse.fail(CustomResponseStatus.NOT_FOUND);
         String responseBody = objectMapper.writeValueAsString(apiResponse);
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

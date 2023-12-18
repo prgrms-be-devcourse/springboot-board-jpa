@@ -15,22 +15,22 @@ public class ApiResponse<T> {
     private final T result;
 
     public static <T> ApiResponse<T> success() {
-        return new ApiResponse<>(true, ResponseStatus.OK.getCode(), ResponseStatus.OK.getMessage(), null);
+        return new ApiResponse<>(true, CustomResponseStatus.OK.getCode(), CustomResponseStatus.OK.getMessage(), null);
     }
 
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(true, ResponseStatus.OK.getCode(), ResponseStatus.OK.getMessage(), data);
+        return new ApiResponse<>(true, CustomResponseStatus.OK.getCode(), CustomResponseStatus.OK.getMessage(), data);
     }
 
-    public static <T> ApiResponse<T> success(ResponseStatus status, T result) {
+    public static <T> ApiResponse<T> success(CustomResponseStatus status, T result) {
         return new ApiResponse<>(true, status.getCode(), status.getMessage(), result);
     }
 
-    public static <T> ApiResponse<T> fail(ResponseStatus status) {
+    public static <T> ApiResponse<T> fail(CustomResponseStatus status) {
         return new ApiResponse<>(false, status.getCode(), status.getMessage(), null);
     }
 
-    public static <T> ApiResponse<T> fail(ResponseStatus status, T result) {
+    public static <T> ApiResponse<T> fail(CustomResponseStatus status, T result) {
         return new ApiResponse<>(false, status.getCode(), status.getMessage(), result);
     }
 }

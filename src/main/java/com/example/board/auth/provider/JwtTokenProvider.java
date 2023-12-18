@@ -3,7 +3,7 @@ package com.example.board.auth.provider;
 import com.example.board.auth.domain.CustomUserDetails;
 import com.example.board.auth.dto.response.TokenResponse;
 import com.example.board.auth.exception.TokenException;
-import com.example.board.dto.response.ResponseStatus;
+import com.example.board.dto.response.CustomResponseStatus;
 import com.example.board.exception.CustomException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -82,15 +82,15 @@ public class JwtTokenProvider {
         try {
             Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(accessToken);
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            throw new TokenException(ResponseStatus.INVALID_SIGNATURE_TOKEN);
+            throw new TokenException(CustomResponseStatus.INVALID_SIGNATURE_TOKEN);
         } catch (ExpiredJwtException e) {
-            throw new TokenException(ResponseStatus.EXPIRED_TOKEN);
+            throw new TokenException(CustomResponseStatus.EXPIRED_TOKEN);
         } catch (UnsupportedJwtException e) {
-            throw new TokenException(ResponseStatus.UNSUPPORTED_TOKEN);
+            throw new TokenException(CustomResponseStatus.UNSUPPORTED_TOKEN);
         } catch (IllegalArgumentException e) {
-            throw new TokenException(ResponseStatus.EMPTY_CLAIMS_TOKEN);
+            throw new TokenException(CustomResponseStatus.EMPTY_CLAIMS_TOKEN);
         } catch (Exception e) {
-            throw new TokenException(ResponseStatus.TOKEN_PROCESSING_ERROR);
+            throw new TokenException(CustomResponseStatus.TOKEN_PROCESSING_ERROR);
         }
     }
 
@@ -98,10 +98,10 @@ public class JwtTokenProvider {
         Claims claims = parseClaims(accessToken);
 
         if (claims.getSubject() == null) {
-            throw new CustomException(ResponseStatus.UNAUTHORIZED);
+            throw new CustomException(CustomResponseStatus.UNAUTHORIZED);
         }
         if (claims.get("auth") == null) {
-            throw new CustomException(ResponseStatus.MISSING_AUTHORIZATION_CLAIM);
+            throw new CustomException(CustomResponseStatus.MISSING_AUTHORIZATION_CLAIM);
         }
 
         Collection<? extends GrantedAuthority> authorities =

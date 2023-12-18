@@ -2,7 +2,7 @@ package com.example.board.auth.filter;
 
 import com.example.board.auth.exception.TokenException;
 import com.example.board.auth.utils.HttpResponseUtil;
-import com.example.board.dto.response.ResponseStatus;
+import com.example.board.dto.response.CustomResponseStatus;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,12 +24,12 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         } catch (TokenException e) {
             // 토큰 필터에서 발생한 예외 처리
             log.warn("Exception while token filter processing. Request Uri : {}", request.getRequestURI());
-            final ResponseStatus responseStatus = e.getErrorResponseStatus();
+            final CustomResponseStatus responseStatus = e.getErrorResponseStatus();
             HttpResponseUtil.setResponse(response, responseStatus);
         } catch (Exception e) {
             // 예상치 못한 예외 처리
             log.error("Unexpected Exception. Request Uri : {}", request.getRequestURI(), e);
-            HttpResponseUtil.setResponse(response, ResponseStatus.INTERNAL_SERVER_ERROR);
+            HttpResponseUtil.setResponse(response, CustomResponseStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

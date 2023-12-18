@@ -2,7 +2,7 @@ package com.example.board.exception;
 
 import com.example.board.auth.exception.TokenException;
 import com.example.board.dto.response.ApiResponse;
-import com.example.board.dto.response.ResponseStatus;
+import com.example.board.dto.response.CustomResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -26,18 +26,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<String>> handleException(Exception e) {
         log.error("handleException", e);
-        return ResponseEntity.internalServerError().body(ApiResponse.fail(ResponseStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
+        return ResponseEntity.internalServerError().body(ApiResponse.fail(CustomResponseStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ApiResponse<String>> handleCustomException(CustomException e) {
-        ResponseStatus errorResponseStatus = e.getErrorResponseStatus();
+        CustomResponseStatus errorResponseStatus = e.getErrorResponseStatus();
         return ResponseEntity.status(errorResponseStatus.getHttpStatus()).body(ApiResponse.fail(errorResponseStatus));
     }
 
     @ExceptionHandler(TokenException.class)
     public ResponseEntity<ApiResponse<Object>> handleTokenException(TokenException e) {
-        ResponseStatus errorResponseStatus = e.getErrorResponseStatus();
+        CustomResponseStatus errorResponseStatus = e.getErrorResponseStatus();
         return ResponseEntity.status(errorResponseStatus.getHttpStatus()).body(ApiResponse.fail(errorResponseStatus));
     }
 
@@ -49,12 +49,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         Collectors.mapping(FieldError::getDefaultMessage, Collectors.toList())));
         return ResponseEntity
                 .status(status)
-                .body(ApiResponse.fail(ResponseStatus.INVALID_INPUT_VALUE, errors));
+                .body(ApiResponse.fail(CustomResponseStatus.INVALID_INPUT_VALUE, errors));
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        return ResponseEntity.internalServerError().body(ApiResponse.fail(ResponseStatus.BAD_REQUEST, ex.getMessage()));
+        return ResponseEntity.internalServerError().body(ApiResponse.fail(CustomResponseStatus.BAD_REQUEST, ex.getMessage()));
     }
 
 

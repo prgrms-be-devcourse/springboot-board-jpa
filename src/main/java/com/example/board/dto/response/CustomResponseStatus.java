@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public enum ResponseStatus {
+public enum CustomResponseStatus {
     // 200 ok
     OK(HttpStatus.OK, 20000, "요청 성공"),
     TOKEN_REGENERATED(HttpStatus.OK, 20001, "토큰이 재발급 되었습니다."),
@@ -50,7 +50,7 @@ public enum ResponseStatus {
     private final Integer code;
     private final String message;
 
-    ResponseStatus(HttpStatus httpStatus, Integer code, String message) {
+    CustomResponseStatus(HttpStatus httpStatus, Integer code, String message) {
         this.httpStatus = httpStatus;
         this.code = code;
         this.message = message;

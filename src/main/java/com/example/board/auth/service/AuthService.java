@@ -10,7 +10,7 @@ import com.example.board.auth.provider.JwtTokenProvider;
 import com.example.board.auth.repository.RefreshTokenRepository;
 import com.example.board.converter.UserConverter;
 import com.example.board.domain.User;
-import com.example.board.dto.response.ResponseStatus;
+import com.example.board.dto.response.CustomResponseStatus;
 import com.example.board.exception.CustomException;
 import com.example.board.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +37,9 @@ public class AuthService {
 
     public void signup(SignUpRequest requestDto) {
         if (isUserExistsByEmail(requestDto.email()))
-            throw new CustomException(ResponseStatus.DUPLICATED_USER_EMAIL);
+            throw new CustomException(CustomResponseStatus.DUPLICATED_USER_EMAIL);
         if (!requestDto.isPasswordEqualsToPasswordConfirm())
-            throw new CustomException(ResponseStatus.PASSWORD_CONFIRM_NOT_MATCHED);
+            throw new CustomException(CustomResponseStatus.PASSWORD_CONFIRM_NOT_MATCHED);
 
         final User user = UserConverter.toUser(requestDto);
         user.updatePassword(passwordEncoder.encode(user.getPassword()));
@@ -48,7 +48,7 @@ public class AuthService {
 
     public TokenResponse login(LoginRequest requestDto) {
         User user = userRepository.findByEmailAndDeletedAt(requestDto.email(), null)
-                .orElseThrow(() -> new CustomException(ResponseStatus.USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(CustomResponseStatus.USER_NOT_FOUND));
         // 인증을 위한 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getId(), requestDto.password());
         try {
@@ -59,13 +59,13 @@ public class AuthService {
             refreshTokenRepository.save(new TokenInfo(String.valueOf(user.getId()), tokenResponse.refreshToken(), tokenResponse.accessToken()));
             return tokenResponse;
         } catch (BadCredentialsException e) {
-            throw new CustomException(ResponseStatus.PASSWORD_NOT_MATCHED);
+            throw new CustomException(CustomResponseStatus.PASSWORD_NOT_MATCHED);
         }
     }
 
     public TokenResponse reissue(ReissueRequest requestDto) {
         final TokenInfo tokenInfo = refreshTokenRepository.findByRefreshToken(requestDto.refreshToken())
-                .orElseThrow(() -> new TokenException(ResponseStatus.REFRESH_TOKEN_NOT_FOUND));
+                .orElseThrow(() -> new TokenException(CustomResponseStatus.REFRESH_TOKEN_NOT_FOUND));
 
         // refresh token 유효성 재검증
         final String refreshToken = tokenInfo.getRefreshToken();

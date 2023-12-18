@@ -2,7 +2,7 @@ package com.example.board.auth.service;
 
 import com.example.board.auth.domain.CustomUserDetails;
 import com.example.board.domain.User;
-import com.example.board.dto.response.ResponseStatus;
+import com.example.board.dto.response.CustomResponseStatus;
 import com.example.board.exception.CustomException;
 import com.example.board.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 
         User user = userRepository.findById(Long.parseLong(id))
-                .orElseThrow(() -> new CustomException(ResponseStatus.USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(CustomResponseStatus.USER_NOT_FOUND));
 
         return CustomUserDetails.builder()
                 .id(id)
