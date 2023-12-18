@@ -1,7 +1,6 @@
 package com.example.board.auth.filter;
 
 import com.example.board.auth.provider.JwtTokenProvider;
-import com.example.board.auth.repository.RefreshTokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,16 +13,16 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
+    private final String[] excludePath;
 
-    private final RefreshTokenRepository refreshTokenRepository;
-
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, RefreshTokenRepository refreshTokenRepository) {
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, String[] excludePath) {
         this.jwtTokenProvider = jwtTokenProvider;
-        this.refreshTokenRepository = refreshTokenRepository;
+        this.excludePath = excludePath;
     }
 
     @Override
@@ -41,5 +40,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        log.info("Ignored request path : {}", path);
+        return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }
 }
