@@ -1,10 +1,10 @@
 package com.example.board.auth.service;
 
-import com.example.board.auth.domain.RefreshToken;
+import com.example.board.auth.domain.TokenInfo;
 import com.example.board.auth.dto.request.LoginRequest;
+import com.example.board.auth.dto.request.ReissueRequest;
 import com.example.board.auth.dto.request.SignUpRequest;
-import com.example.board.auth.dto.response.JwtToken;
-import com.example.board.auth.dto.response.LoginResponse;
+import com.example.board.auth.dto.response.TokenResponse;
 import com.example.board.auth.exception.TokenException;
 import com.example.board.auth.provider.JwtTokenProvider;
 import com.example.board.auth.repository.RefreshTokenRepository;
@@ -46,7 +46,7 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public LoginResponse login(LoginRequest requestDto) {
+    public TokenResponse login(LoginRequest requestDto) {
         User user = userRepository.findByEmailAndDeletedAt(requestDto.email(), null)
                 .orElseThrow(() -> new CustomException(ResponseStatus.USER_NOT_FOUND));
         // 인증을 위한 AuthenticationToken 생성
@@ -55,27 +55,32 @@ public class AuthService {
             // AuthenticationProvider 에 의해 내부적으로 CustomUserDetailService 호출, 인증 성공 시 Authentication 객체 반환
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-            final JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
-            refreshTokenRepository.save(new RefreshToken(String.valueOf(user.getId()), jwtToken.getRefreshToken(), jwtToken.getAccessToken()));
-
-            return new LoginResponse(jwtToken);
+            final TokenResponse tokenResponse = jwtTokenProvider.generateToken(authentication);
+            refreshTokenRepository.save(new TokenInfo(String.valueOf(user.getId()), tokenResponse.refreshToken(), tokenResponse.accessToken()));
+            return tokenResponse;
         } catch (BadCredentialsException e) {
             throw new CustomException(ResponseStatus.PASSWORD_NOT_MATCHED);
         }
     }
 
-    public void saveTokenInfo(Long userId, String refreshToken, String accessToken) {
-        refreshTokenRepository.save(new RefreshToken(String.valueOf(userId), refreshToken, accessToken));
-    }
+    public TokenResponse reissue(ReissueRequest requestDto) {
+        final TokenInfo tokenInfo = refreshTokenRepository.findByRefreshToken(requestDto.refreshToken())
+                .orElseThrow(() -> new TokenException(ResponseStatus.REFRESH_TOKEN_NOT_FOUND));
 
-    public void removeRefreshToken(String accessToken) {
-        final RefreshToken refreshToken = refreshTokenRepository.findByAccessToken(accessToken).orElseThrow(() -> new TokenException(ResponseStatus.REFRESH_TOKEN_NOT_FOUND));
-        refreshTokenRepository.delete(refreshToken);
+        // refresh token 유효성 재검증
+        final String refreshToken = tokenInfo.getRefreshToken();
+        jwtTokenProvider.validateToken(refreshToken);
+
+        // token 재발급
+        final TokenResponse tokenResponse = jwtTokenProvider.regenerateToken(tokenInfo.getAccessToken());
+        // redis 에 저장된 token 정보 업데이트
+        tokenInfo.updateTokens(tokenResponse.refreshToken(), tokenResponse.accessToken());
+        refreshTokenRepository.save(tokenInfo);
+        return tokenResponse;
     }
 
     private boolean isUserExistsByEmail(String email) {
         Optional<User> user = userRepository.findByEmailAndDeletedAt(email, null);
-        return !user.isEmpty();
+        return user.isPresent();
     }
-
 }
