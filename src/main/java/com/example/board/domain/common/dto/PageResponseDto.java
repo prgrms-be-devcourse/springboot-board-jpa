@@ -8,8 +8,16 @@ import java.util.List;
 
 @Builder
 public record PageResponseDto<T>(
-        List<T> content, int page, int size, long totalCount, int start, int end, boolean prev, boolean next,
-        Integer prevPage, Integer nextPage
+        List<T> contents,
+        int page,
+        int size,
+        long totalCount,
+        int start,
+        int end,
+        boolean prev,
+        boolean next,
+        Integer prevPage,
+        Integer nextPage
 ) {
     public static <T> PageResponseDto<T> of(Page<T> pagedData) {
         Pageable pageable = pagedData.getPageable();
@@ -29,7 +37,7 @@ public record PageResponseDto<T>(
         Integer nextPage = pageIndex + 1 > totalPage ? null : pageIndex + 1;
 
         return PageResponseDto.<T>builder()
-                .content(pagedData.getContent())
+                .contents(pagedData.getContent())
                 .page(pageIndex)
                 .size(pageSize)
                 .totalCount(pagedData.getTotalElements())
