@@ -1,8 +1,9 @@
 package com.example.board.auth.controller;
 
 import com.example.board.auth.dto.request.LoginRequest;
+import com.example.board.auth.dto.request.ReissueRequest;
 import com.example.board.auth.dto.request.SignUpRequest;
-import com.example.board.auth.dto.response.LoginResponse;
+import com.example.board.auth.dto.response.TokenResponse;
 import com.example.board.auth.service.AuthService;
 import com.example.board.dto.response.ApiResponse;
 import jakarta.validation.Valid;
@@ -27,8 +28,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody @Valid LoginRequest requestDto) {
-        LoginResponse responseDto = authService.login(requestDto);
+    public ResponseEntity<ApiResponse<TokenResponse>> login(@RequestBody @Valid LoginRequest requestDto) {
+        TokenResponse responseDto = authService.login(requestDto);
+        return ResponseEntity.ok(ApiResponse.success(responseDto));
+    }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<ApiResponse<TokenResponse>> reissue(@RequestBody @Valid ReissueRequest requestDto) {
+        TokenResponse responseDto = authService.reissue(requestDto);
         return ResponseEntity.ok(ApiResponse.success(responseDto));
     }
 }

@@ -1,7 +1,7 @@
 package com.example.board.auth.provider;
 
 import com.example.board.auth.domain.CustomUserDetails;
-import com.example.board.auth.dto.response.JwtToken;
+import com.example.board.auth.dto.response.TokenResponse;
 import com.example.board.auth.exception.TokenException;
 import com.example.board.dto.response.ResponseStatus;
 import com.example.board.exception.CustomException;
@@ -30,27 +30,32 @@ public class JwtTokenProvider {
     private static final String AUTHORITIES_CLAIM = "auth";
     private static final String AUTHORITIES_SEPARATOR = ",";
 
+    private final Long accessExpirationTimes;
+    private final Long refreshExpirationTimes;
     private final Key secret;
-    private final Date accessExpirationDate;
-    private final Date refreshExpirationDate;
 
     public JwtTokenProvider(
             @Value("${JWT_SECRET_KEY}") String secretKey,
             @Value("${JWT_ACCESS_TOKEN_EXPIRATION_TIME}") Long accessExpirationTimes,
             @Value("${JWT_REFRESH_TOKEN_EXPIRATION_TIME}") Long refreshExpirationTimes
     ) {
-        this.accessExpirationDate = new Date(System.currentTimeMillis() + accessExpirationTimes);
-        this.refreshExpirationDate = new Date(System.currentTimeMillis() + refreshExpirationTimes);
+
+        this.accessExpirationTimes = accessExpirationTimes;
+        this.refreshExpirationTimes = refreshExpirationTimes;
         byte[] secretByteKey = Base64.getDecoder().decode(secretKey);
         this.secret = Keys.hmacShaKeyFor(secretByteKey);
     }
 
-    public JwtToken generateToken(Authentication authentication) {
-        return JwtToken.builder()
-                .grantType("Bearer")
-                .accessToken(generateAccessToken(authentication))
-                .refreshToken(generateRefreshToken())
-                .build();
+    public TokenResponse generateToken(Authentication authentication) {
+        return new TokenResponse(
+                "Bearer",
+                generateAccessToken(authentication),
+                generateRefreshToken());
+    }
+
+    public TokenResponse regenerateToken(String accessToken) {
+        final Authentication authentication = getAuthentication(accessToken);
+        return generateToken(authentication);
     }
 
     public String generateAccessToken(Authentication authentication) {
@@ -61,27 +66,25 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_CLAIM, authorities)
-                .setExpiration(accessExpirationDate)
+                .setExpiration(new Date(System.currentTimeMillis() + accessExpirationTimes))
                 .signWith(secret, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String generateRefreshToken() {
-
         return Jwts.builder()
-                .setExpiration(refreshExpirationDate)
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationTimes))
                 .signWith(secret, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public boolean validateAccessToken(String accessToken) {
+    public void validateToken(String accessToken) {
         try {
             Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(accessToken);
-            return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             throw new TokenException(ResponseStatus.INVALID_SIGNATURE_TOKEN);
         } catch (ExpiredJwtException e) {
-            throw new ExpiredJwtException(null, null, ResponseStatus.EXPIRED_TOKEN.getMessage());
+            throw new TokenException(ResponseStatus.EXPIRED_TOKEN);
         } catch (UnsupportedJwtException e) {
             throw new TokenException(ResponseStatus.UNSUPPORTED_TOKEN);
         } catch (IllegalArgumentException e) {
