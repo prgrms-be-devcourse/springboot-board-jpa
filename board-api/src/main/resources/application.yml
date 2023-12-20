@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: prod
   config:
     import: optional:file:./board-api-privates/application-core.yml
 

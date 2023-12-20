@@ -1,13 +1,16 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.1.5'
     id 'io.spring.dependency-management' version '1.1.3'
+}
+
+allprojects {
+    group = 'com.example'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '17'
+    repositories {
+        mavenCentral()
+    }
 }
 
 subprojects {
@@ -15,15 +18,12 @@ subprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
 
-    group = 'com.example'
-    version = '0.0.1-SNAPSHOT'
-    sourceCompatibility = '17'
-
     repositories {
         mavenCentral()
     }
 
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
         annotationProcessor 'org.projectlombok:lombok'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -47,4 +47,11 @@ project(':board-batch') {
     dependencies {
         implementation project(':board-api')
     }
+}
+
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
 }

@@ -1,0 +1,3 @@
+[submodule "board-api-privates"]
+	path = board-api-privates
+	url = git@github.com:park0jae/board-api-privates.git
