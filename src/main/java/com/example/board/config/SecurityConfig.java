@@ -60,10 +60,10 @@ public class SecurityConfig {
                         .authenticationEntryPoint(customAuthenticationEntryPoint())
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, BasicAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandlerFilter, JwtAuthFilter.class)
-                .addFilterBefore(jwtRefreshAuthFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilter, BasicAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandlerFilter, JwtRefreshAuthFilter.class)
+                .addFilterBefore(jwtRefreshAuthFilter, BasicAuthenticationFilter.class)
                 .build();
     }
 }
