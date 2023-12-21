@@ -65,3 +65,5 @@ logging:
         sql: debug
         orm:
           jdbc.bind: trace
+
+JWT_SECRET_KEY: zSfW7FImL7m8U9HNt1wB+msNlmy+l4srKdl5zenFi5Y=
