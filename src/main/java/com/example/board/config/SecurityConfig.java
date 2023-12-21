@@ -17,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -38,15 +41,19 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        List<RequestMatcher> permitAllMatchers = List.of(
+                new AntPathRequestMatcher("/api/*/users/sign-up", HttpMethod.POST.toString()),
+                new AntPathRequestMatcher("/api/*/users/sign-in", HttpMethod.POST.toString()),
+                new AntPathRequestMatcher("/api/*/users", HttpMethod.POST.toString()),
+                new AntPathRequestMatcher("/api/*/posts", HttpMethod.GET.toString())
+        );
+
         return http
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/*/users/sign-up", HttpMethod.POST.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/*/users/sign-in", HttpMethod.POST.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/*/users", HttpMethod.POST.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/*/posts", HttpMethod.GET.toString())).permitAll()
+                        .requestMatchers(permitAllMatchers.toArray(new RequestMatcher[0])).permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
