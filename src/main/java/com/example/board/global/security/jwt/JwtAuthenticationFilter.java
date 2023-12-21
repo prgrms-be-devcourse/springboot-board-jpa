@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     log.debug("Jwt parse result : {}", claims);
 
                     String requestURI = request.getRequestURI();
-                    if (claims.tokenType.equals("refresh") && !requestURI.equals("/api/v1/reissue")) {
+                    if (claims.tokenType.equals(TokenType.REFRESH.name()) && !requestURI.equals("/api/v1/reissue")) {
                         throw new BusinessException(ErrorCode.NOT_EXPECTED_TOKEN_TYPE);
                     }
 

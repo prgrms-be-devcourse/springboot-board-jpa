@@ -43,7 +43,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             Member member = findMember(principal, credential);
             List<GrantedAuthority> authorities = member.getAuthorities();
 
-            String accessToken = generateToken(member.getEmail(), authorities, "access");
+            String accessToken = generateToken(member.getEmail(), authorities, TokenType.ACCESS);
 
             JwtAuthenticationToken authenticated = new JwtAuthenticationToken(
                     new JwtAuthentication(member.getEmail(), accessToken),
@@ -60,7 +60,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     }
 
     // Token 발급
-    public String generateToken(String username, List<GrantedAuthority> authorities, String tokenType) {
+    public String generateToken(String username, List<GrantedAuthority> authorities, TokenType tokenType) {
         String[] roles = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .toArray(String[]::new);

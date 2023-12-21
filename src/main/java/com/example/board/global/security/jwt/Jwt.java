@@ -34,7 +34,7 @@ public class Jwt {
         JWTCreator.Builder builder = com.auth0.jwt.JWT.create();
         builder.withIssuer(issuer);
         builder.withIssuedAt(new Date());
-        if (claims.tokenType.equals("access")) {
+        if (claims.tokenType.equals(TokenType.ACCESS)) {
             if (accessExpirySeconds > 0) {
                 builder.withExpiresAt(new Date(System.currentTimeMillis() + accessExpirySeconds * 1_000L));
             }
@@ -45,7 +45,7 @@ public class Jwt {
         }
         builder.withClaim("username", claims.username);
         builder.withArrayClaim("roles", claims.roles);
-        builder.withClaim("type", claims.tokenType);
+        builder.withClaim("type", claims.tokenType.name());
         return builder.sign(algorithm);
     }
 
@@ -61,7 +61,7 @@ public class Jwt {
         String[] roles;
         Date iat;
         Date exp;
-        String tokenType;
+        TokenType tokenType;
 
         private Claims(){}
 
@@ -70,10 +70,10 @@ public class Jwt {
             this.roles = decodedJWT.getClaim("roles").asArray(String.class);
             this.iat = decodedJWT.getIssuedAt();
             this.exp = decodedJWT.getExpiresAt();
-            this.tokenType = decodedJWT.getClaim("type").asString();
+            this.tokenType = TokenType.valueOf(decodedJWT.getClaim("type").asString());
         }
 
-        public static Claims from(String username, String[] roles, String tokenType) {
+        public static Claims from(String username, String[] roles, TokenType tokenType) {
             Claims claims = new Claims();
             claims.username = username;
             claims.roles = roles;

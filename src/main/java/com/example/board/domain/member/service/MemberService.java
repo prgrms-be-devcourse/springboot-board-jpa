@@ -7,6 +7,7 @@ import com.example.board.global.exception.BusinessException;
 import com.example.board.global.security.jwt.JwtAuthentication;
 import com.example.board.global.security.jwt.JwtAuthenticationProvider;
 import com.example.board.global.security.jwt.JwtAuthenticationToken;
+import com.example.board.global.security.jwt.TokenType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -42,7 +43,7 @@ public class MemberService {
         Member member = (Member) authenticated.getDetails();
 
         String accessToken = principal.accessToken();
-        String refreshToken = jwtAuthenticationProvider.generateToken(member.getEmail(), member.getAuthorities(), "refresh");
+        String refreshToken = jwtAuthenticationProvider.generateToken(member.getEmail(), member.getAuthorities(), TokenType.REFRESH);
         return new LoginResponse(accessToken, refreshToken, principal.username(), member.getId());
     }
 
