@@ -29,7 +29,8 @@ public class SecurityConfig {
     private final AuthenticationEntryPoint authenticationEntryPoint;
 
     private static final String[] EXCLUDE_PATH = {
-            "/health",
+            "/favicon.ico",
+            "/actuator/health",
             "/v3/api-docs",
             "/v3/api-docs/**",
             "/swagger-ui/",
