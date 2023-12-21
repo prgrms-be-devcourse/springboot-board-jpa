@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
@@ -66,14 +67,14 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_CLAIM, authorities)
-                .setExpiration(new Date(System.currentTimeMillis() + accessExpirationTimes))
+                .setExpiration(Date.from(Instant.now().plusSeconds(accessExpirationTimes)))
                 .signWith(secret, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String generateRefreshToken() {
         return Jwts.builder()
-                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationTimes))
+                .setExpiration(Date.from(Instant.now().plusSeconds(refreshExpirationTimes)))
                 .signWith(secret, SignatureAlgorithm.HS256)
                 .compact();
     }
