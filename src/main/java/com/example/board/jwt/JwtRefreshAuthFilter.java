@@ -59,6 +59,6 @@ public class JwtRefreshAuthFilter extends OncePerRequestFilter {
         return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
                 .filter(token -> token.startsWith("Bearer "))
                 .map(token -> token.substring(7))
-                .orElse(null);
+                .orElseThrow(() -> new CustomException(CustomError.INVALID_TOKEN));
     }
 }
