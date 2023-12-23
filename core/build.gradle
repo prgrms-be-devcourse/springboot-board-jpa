@@ -1,24 +1,6 @@
-plugins {
-    id 'java'
-}
+bootJar { enabled = false }
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-
-java {
-    sourceCompatibility = '17'
-}
-
-repositories {
-    mavenCentral()
-}
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-    asciidoctorExt
-}
+jar { enabled = true }
 
 dependencies {
     // queryDsl

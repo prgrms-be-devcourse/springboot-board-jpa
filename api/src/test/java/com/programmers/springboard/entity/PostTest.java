@@ -1,9 +1,9 @@
 package com.programmers.springboard.entity;
 
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.core.Is.*;
-
 import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 class PostTest {
 
@@ -25,7 +25,7 @@ class PostTest {
 		Member member = new Member();
 		Post post = new Post(1L, "Original Title", "Original Content", false, member);
 
-		post.changePost("Updated Title", "Updated Content");
+		post.changePostTitleContent("Updated Title", "Updated Content");
 
 		assertThat(post.getTitle(), is("Updated Title"));
 		assertThat(post.getContent(), is("Updated Content"));

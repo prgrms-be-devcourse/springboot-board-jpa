@@ -34,10 +34,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
-tasks.named('bootBuildImage') {
-    builder = 'paketobuildpacks/builder-jammy-base:latest'
-}
-
 tasks.named('test') {
     outputs.dir snippetsDir
     useJUnitPlatform()
