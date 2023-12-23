@@ -1,12 +1,7 @@
 package com.programmers.springboard.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -39,12 +34,6 @@ public class Member extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "groups_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Groups groups;
-
-	public void checkPassword(PasswordEncoder passwordEncoder, String credentials){
-		if(!passwordEncoder.matches(credentials, passwd)){
-			throw new IllegalArgumentException("Bad credentials");
-		}
-	}
 
     public void changeGroup(Groups groups) {
 		this.groups = groups;

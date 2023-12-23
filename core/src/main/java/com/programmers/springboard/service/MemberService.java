@@ -35,7 +35,10 @@ public class MemberService {
 		Member member = memberRepository.findByLoginId(username)
 				.orElseThrow(MemberNotFoundException::new);
 
-		member.checkPassword(passwordEncoder, credentials);
+		if(!passwordEncoder.matches(credentials, member.getPasswd())){
+			throw new IllegalArgumentException("Bad credentials");
+		}
+
 		member.changeLoginAt();
 		return member;
 	}
