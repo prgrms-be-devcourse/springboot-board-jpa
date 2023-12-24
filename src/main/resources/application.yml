@@ -1,44 +1,4 @@
 spring:
   profiles:
-    active: prod
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: dev
-  datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    show-sql: true
-    hibernate:
-      ddl-auto: create-drop
-
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: prod
-  datasource:
-    url: jdbc:mysql://localhost:3307/proddb?useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: prodpassword
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    open-in-view: false
-    properties:
-        hibernate:
-          dialect: org.hibernate.dialect.MySQL8Dialect
-          show_sql: true
-    hibernate:
-      ddl-auto: update
-    generate-ddl: true
-
+    active: dev
 

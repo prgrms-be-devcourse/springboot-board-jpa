@@ -1,168 +1,131 @@
 package com.programmers.springboard.service;
 
 import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.core.Is.*;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.programmers.springboard.entity.Member;
-import com.programmers.springboard.entity.Post;
-import com.programmers.springboard.exception.PostNotFoundException;
-import com.programmers.springboard.repository.PostCustomRepository;
-import com.programmers.springboard.repository.PostRepository;
-import com.programmers.springboard.request.PostCreateRequest;
-import com.programmers.springboard.request.PostUpdateRequest;
-import com.programmers.springboard.response.PostResponse;
+import com.programmers.springboard.member.domain.Member;
+import com.programmers.springboard.post.domain.Post;
+import com.programmers.springboard.member.repository.MemberRepository;
+import com.programmers.springboard.post.repository.PostRepository;
+import com.programmers.springboard.post.dto.PostCreateRequest;
+import com.programmers.springboard.post.dto.PostSearchRequest;
+import com.programmers.springboard.post.dto.PostUpdateRequest;
+import com.programmers.springboard.post.dto.PostResponse;
+import com.programmers.springboard.post.service.PostService;
 
+@SpringBootTest
 class PostServiceTest {
 
-	@Mock
-	private PostCustomRepository postCustomRepository;
-	@Mock
-	private PostRepository postRepository;
-	@Mock
-	private MemberService memberService;
-
-	@InjectMocks
+	private static Member member;
+	private static Post post;
+	@Autowired
 	private PostService postService;
+	@Autowired
+	private PostRepository postRepository;
+	@Autowired
+	private MemberRepository memberRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@BeforeEach
 	void setUp() {
-		MockitoAnnotations.openMocks(this);
+		String encodedPassword = passwordEncoder.encode("test1234");
+		Member memberToSave = new Member("testuser", "testid", encodedPassword);
+		member = memberRepository.save(memberToSave);
+		Post postToSave = new Post("testtitle", "testcontent", member);
+		post = postRepository.save(postToSave);
+	}
+
+	@AfterEach
+	void cleanUp() {
+		memberRepository.deleteAll();
+		postRepository.deleteAll();
 	}
 
 	@Test
-	void 포스트를_작성합니다() {
+	void 게시글_생성_성공() {
 		// Given
-		PostCreateRequest request = new PostCreateRequest("test", "test", 0L);
-		Member member = Member.builder().id(1L).build();
-		Post post = new Post(1L, "title", "content", false, member);
-
-		when(postRepository.save(any())).thenReturn(post);
-		when(memberService.getMemberById(any())).thenReturn(member);
+		PostCreateRequest request = new PostCreateRequest("Test Title", "Test Content", member.getId());
 
 		// When
-		PostResponse response = postService.createPost(request);
+		PostResponse createdPost = postService.createPost(request);
 
 		// Then
-		assertThat(response.postId(), Matchers.is(post.getId()));
+		assertThat(createdPost.title(), is(request.title()));
+		assertThat(createdPost.content(), is(request.content()));
+		postRepository.deleteById(createdPost.postId());
 	}
 
 	@Test
-	void 포스트를_수정합니다() {
+	void 게시글_조회_성공() {
 		// Given
-		PostUpdateRequest request = new PostUpdateRequest("test", "test");
-		Member member = Member.builder().id(1L).build();
-		Post post = new Post(1L, "title", "content", false, member);
-
-		when(postRepository.findById(any())).thenReturn(Optional.of(post));
 
 		// When
-		PostResponse response = postService.updatePost(post.getId(), request);
+		PostResponse foundPost = postService.getPostById(post.getId());
 
 		// Then
-		assertThat(response.title(), Matchers.is("test"));
-		assertThat(response.content(), Matchers.is("test"));
+		assertThat(foundPost.title(), is(post.getTitle()));
+		assertThat(foundPost.content(), is(post.getContent()));
 	}
 
 	@Test
-	void 포스트를_삭제합니다() {
+	void 게시글_수정_성공() {
 		// Given
-		Member member = Member.builder().id(1L).build();
-		Post post = new Post(1L, "title", "content", false, member);
-
-		when(postRepository.findById(any())).thenReturn(Optional.of(post));
+		PostUpdateRequest updateRequest = new PostUpdateRequest("Updated Title", "Updated Content");
 
 		// When
-		postService.deletePost(post.getId());
+		PostResponse updatedPost = postService.updatePost(post.getId(), updateRequest);
 
 		// Then
-		verify(postRepository).delete(any());
+		assertThat(updatedPost.title(), is(updateRequest.title()));
+		assertThat(updatedPost.content(), is(updateRequest.content()));
 	}
 
 	@Test
-	void 포스트를_페이지_조회합니다() {
+	void 게시글_페이징_조회_성공() {
 		// Given
-		Member member = Member.builder().id(1L).build();
-		Post post = new Post(1L, "title", "content", false, member);
-
-		when(postCustomRepository.getPosts(any())).thenReturn(List.of(post, post, post));
+		createAndSaveTestPosts();
+		PageRequest pageRequest = PageRequest.of(0, 10);
+		PostSearchRequest searchRequest = new PostSearchRequest(null);
 
 		// When
-		List<PostResponse> responses = postService.getPosts(1);
+		Page<PostResponse> result = postService.getPosts(searchRequest, pageRequest);
 
 		// Then
-		verify(postCustomRepository).getPosts(any());
-		assertThat(responses, hasSize(3));
+		assertThat(result.getSize(), is(pageRequest.getPageSize()));
+		assertThat(result.getNumber(), is(pageRequest.getPageNumber()));
+		postRepository.deleteAll();
+	}
+
+	private void createAndSaveTestPosts() {
+		for (int i = 0; i < 15; i++) {
+			PostCreateRequest request = new PostCreateRequest("Title " + i, "Content " + i, member.getId());
+			postService.createPost(request);
+		}
 	}
 
 	@Test
-	void 포스트를_단건_조회합니다() {
+	void 게시글_삭제_성공() {
 		// Given
-		Member member = Member.builder().id(1L).build();
-		Post post = new Post(1L, "title", "content", false, member);
-
-		when(postRepository.findById(any())).thenReturn(Optional.of(post));
 
 		// When
-		PostResponse response = postService.getPostById(post.getId());
+		postService.deletePosts(List.of(post.getId()));
 
 		// Then
-		assertThat(response.postId(), is(post.getId()));
-		assertThat(response.title(), is(post.getTitle()));
-		assertThat(response.content(), is(post.getContent()));
+		Optional<Post> deletedPost = postRepository.findById(post.getId());
+		assertThat(deletedPost.isPresent(), is(false));
 	}
 
-	@Test
-	void 존재하지_않는_포스트를_조회합니다_실패() {
-		// given
-		Member member = Member.builder().id(1L).build();
-		Post post = new Post(1L, "title", "content", false, member);
-
-		when(postRepository.findById(any())).thenReturn(Optional.empty());
-
-		// when // then
-		assertThrows(PostNotFoundException.class, () -> {
-			postService.getPostById(post.getId());
-		});
-	}
-
-	@Test
-	void 존재하지_않는_포스트를_수정합니다_실패() {
-		// given
-		Member member = Member.builder().id(1L).build();
-		Post post = new Post(1L, "title", "content", false, member);
-		PostUpdateRequest request = new PostUpdateRequest("test", "test");
-
-		when(postRepository.findById(any())).thenReturn(Optional.empty());
-
-		// when // then
-		assertThrows(PostNotFoundException.class, () -> {
-			postService.updatePost(post.getId(), request);
-		});
-	}
-
-	@Test
-	void 존재하지_않는_포스트를_삭제합니다_실패() {
-		// given
-		Member member = Member.builder().id(1L).build();
-		Post post = new Post(1L, "title", "content", false, member);
-
-		when(postRepository.findById(any())).thenReturn(Optional.empty());
-
-		// when // then
-		assertThrows(PostNotFoundException.class, () -> {
-			postService.deletePost(post.getId());
-		});
-	}
 }

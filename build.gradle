@@ -48,6 +48,19 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+	// security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	implementation 'com.auth0:java-jwt:4.4.0'
+
+	// batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+	// swagger
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
 }
 
 tasks.named('bootBuildImage') {
