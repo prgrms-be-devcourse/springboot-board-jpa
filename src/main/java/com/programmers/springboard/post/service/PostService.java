@@ -8,24 +8,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.programmers.springboard.member.domain.Member;
-import com.programmers.springboard.post.domain.Post;
 import com.programmers.springboard.member.exception.MemberNotFoundException;
-import com.programmers.springboard.post.exception.PostNotFoundException;
 import com.programmers.springboard.member.repository.MemberRepository;
-import com.programmers.springboard.post.repository.PostCustomRepository;
-import com.programmers.springboard.post.repository.PostRepository;
+import com.programmers.springboard.post.domain.Post;
 import com.programmers.springboard.post.dto.PostCreateRequest;
+import com.programmers.springboard.post.dto.PostResponse;
 import com.programmers.springboard.post.dto.PostSearchRequest;
 import com.programmers.springboard.post.dto.PostUpdateRequest;
-import com.programmers.springboard.post.dto.PostResponse;
+import com.programmers.springboard.post.exception.PostNotFoundException;
+import com.programmers.springboard.post.repository.PostCustomRepository;
+import com.programmers.springboard.post.repository.PostRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-@Slf4j
 public class PostService {
 
 	private final PostRepository postRepository;
