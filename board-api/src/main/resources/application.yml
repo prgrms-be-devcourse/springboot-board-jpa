@@ -1,0 +1,33 @@
+spring:
+  config:
+    import: optional:file:./board-api-privates/application-core.yml
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+      data-locations: classpath:sql/data.sql
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema-h2.sql
+      data-locations: classpath:sql/data.sql

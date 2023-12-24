@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+spring:
+  profiles:
+    active: prod
+  config:
+    import: optional:file:./board-api-privates/application-core.yml
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev

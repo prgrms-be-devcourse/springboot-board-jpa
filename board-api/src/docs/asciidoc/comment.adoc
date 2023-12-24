@@ -1,0 +1,34 @@
+[[Comment]]
+== 댓글 API
+
+==== 댓글 생성
+
+**HTTP request**
+include::{snippets}/comment-create/http-request.adoc[]
+
+**HTTP Response**
+include::{snippets}/comment-create/http-response.adoc[]
+
+**Request-Fields**
+include::{snippets}/comment-create/request-fields.adoc[]
+
+
+==== 댓글 전체 조회
+**HTTP request**
+include::{snippets}/comment-findAll/http-request.adoc[]
+
+**HTTP Response**
+include::{snippets}/comment-findAll/http-response.adoc[]
+
+**Response-Fields**
+include::{snippets}/comment-findAll/response-fields.adoc[]
+
+==== 댓글 수정
+**HTTP request**
+include::{snippets}/comment-update/http-request.adoc[]
+
+**HTTP Response**
+include::{snippets}/comment-update/http-response.adoc[]
+
+**Request-Fields**
+include::{snippets}/comment-create/request-fields.adoc[]

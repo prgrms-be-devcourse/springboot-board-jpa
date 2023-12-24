@@ -16,7 +16,6 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
-data
 
 ### IntelliJ IDEA ###
 .idea
@@ -26,10 +25,6 @@ data
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-application-core.yml
-data_new/
-**/src/main/generated/
-board-api-privates/application-core.yml
 
 ### NetBeans ###
 /nbproject/private/
