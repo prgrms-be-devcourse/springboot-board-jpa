@@ -5,18 +5,14 @@ server:
       enabled: true
       force: true
 
-logging:
-  level:
-    org:
-      hibernate:
-        type: trace
-        sql: debug
-        orm:
-          jdbc.bind: trace
-
 spring:
   profiles:
-    default: dev
+    default: prod
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 ---
 
@@ -26,17 +22,20 @@ spring:
       on-profile: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/app
-    username: root
-    password: rootpassword
+    url: jdbc:mysql://${AWS_RDS_URL}
+    username: ${AWS_RDS_USERNAME}
+    password: ${AWS_RDS_PASSWORD}
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: create
-    show-sql: true
-    properties:
-      hibernate.format_sql: true
+      ddl-auto: none
     database-platform: org.hibernate.dialect.MySQL8Dialect
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: info
 
 ---
 
@@ -45,8 +44,8 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    driver-class-name: org.h2.Driver
     url: jdbc:h2:~/board;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
     username: sa
     password:
   jpa:
@@ -57,3 +56,14 @@ spring:
     properties:
       hibernate.format_sql: true
     database-platform: org.hibernate.dialect.H2Dialect
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: info
+        sql: debug
+        orm:
+          jdbc.bind: trace
+
+JWT_SECRET_KEY: zSfW7FImL7m8U9HNt1wB+msNlmy+l4srKdl5zenFi5Y=

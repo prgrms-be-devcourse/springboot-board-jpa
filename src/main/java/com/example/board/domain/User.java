@@ -2,44 +2,59 @@ package com.example.board.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users", indexes = @Index(name = "idx_name", columnList = "name"))
+@Table(name = "users")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@EntityListeners(AuditingEntityListener.class)
 public class User extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "age", nullable = false)
     private Integer age;
 
-    @Column
-    private String hobby;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
 
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(name = "deletedAt", columnDefinition = "TIMESTAMP")
     private LocalDateTime deletedAt;
 
     @Builder.Default
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
-    public void update(String name, Integer age, String hobby) {
+    public void update(String name, Integer age) {
         this.name = name;
         this.age = age;
-        this.hobby = hobby;
+    }
+
+    public void update(String email, String name, Integer age, Role role) {
+        this.email = email;
+        this.name = name;
+        this.age = age;
+        this.role = role;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
     }
 
     public void delete() {
