@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-public record MemberCreateRequest(
+public record AdminCreateRequest(
         @Email
         @NotBlank(message = "이메일은 필수 항목입니다.")
         String email,
@@ -39,7 +39,7 @@ public record MemberCreateRequest(
                         passwordEncoder.encode(password),
                         age,
                         hobby,
-                        Role.ROLE_USER
+                        Role.ROLE_ADMIN
                 );
         }
 }

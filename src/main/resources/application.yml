@@ -26,6 +26,14 @@ spring:
       hibernate:
         show_sql: false
         default_batch_fetch_size: 100
+server:
+  port: 8080
+
+jwt:
+  issuer: prgrms
+  client-secret: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  accessExpirySeconds: 60
+  refreshExpirySeconds: 86400
 
 ---
 

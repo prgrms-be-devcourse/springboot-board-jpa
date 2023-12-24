@@ -1,6 +1,7 @@
 package com.example.board.domain.post.service;
 
 import com.example.board.domain.member.entity.Member;
+import com.example.board.domain.member.entity.Role;
 import com.example.board.domain.member.repository.MemberRepository;
 import com.example.board.domain.post.dto.PostCreateRequest;
 import com.example.board.domain.post.dto.PostPageCondition;
@@ -36,13 +37,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        member = Member.builder()
-            .email("test@gmail.com")
-            .name("홍길동")
-            .age(22)
-            .hobby("배드민턴")
-            .build();
-
+        member = new Member("test@gmail.com", "홍길동", "test1234!", 22, "배드민턴", Role.ROLE_USER);
         memberRepository.save(member);
     }
 
@@ -104,8 +99,6 @@ class PostServiceTest {
         // Given
         postService.createPost(member.getEmail(), postCreateRequest);
         PostPageCondition condition = PostPageCondition.builder()
-            .page(1)
-            .size(10)
             .build();
 
         // When
@@ -124,8 +117,6 @@ class PostServiceTest {
         postService.createPost(member.getEmail(), postCreateRequest);
         postService.createPost(member.getEmail(), request);
         PostPageCondition condition = PostPageCondition.builder()
-            .page(1)
-            .size(10)
             .title("제목1")
             .build();
 
@@ -143,8 +134,6 @@ class PostServiceTest {
         // Given
         postService.createPost(member.getEmail(), postCreateRequest);
         PostPageCondition condition = PostPageCondition.builder()
-            .page(1)
-            .size(10)
             .email("test@gmail.com")
             .build();
 

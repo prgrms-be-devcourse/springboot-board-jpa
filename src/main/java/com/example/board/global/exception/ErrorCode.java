@@ -13,7 +13,8 @@ public enum ErrorCode {
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시물이 존재하지 않습니다."),
     WRITER_MISMATCH(HttpStatus.BAD_REQUEST, "게시글 작성자가 일치하지 않습니다."),
     POST_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "게시글 수정에 실패했습니다."),
-    MEMBER_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "회원 수정에 실패했습니다.");
+    MEMBER_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "회원 수정에 실패했습니다."),
+    NOT_EXPECTED_TOKEN_TYPE(HttpStatus.BAD_REQUEST, "토큰 타입을 확인해주세요.");
 
     private final HttpStatus status;
     private final String message;

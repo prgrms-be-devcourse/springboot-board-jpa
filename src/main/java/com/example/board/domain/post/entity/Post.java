@@ -2,16 +2,7 @@ package com.example.board.domain.post.entity;
 
 import com.example.board.domain.common.entity.BaseEntity;
 import com.example.board.domain.member.entity.Member;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import java.util.Objects;
-
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -45,10 +36,6 @@ public class Post extends BaseEntity {
     public void updatePost(String title, String content) {
         this.title = title;
         this.content = content;
-    }
-
-    public void increaseView() {
-        this.view += 1;
     }
 
     public boolean isSameMember(String email) {
