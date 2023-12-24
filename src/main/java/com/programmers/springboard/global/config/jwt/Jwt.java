@@ -49,7 +49,7 @@ public final class Jwt {
 		return new Claims(jwtVerifier.verify(token));
 	}
 
-	static public class Claims {
+	public static class Claims {
 		String username;
 		String[] roles;
 		Date iat;

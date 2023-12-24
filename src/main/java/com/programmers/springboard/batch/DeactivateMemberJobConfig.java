@@ -1,4 +1,4 @@
-package com.programmers.springboard.global.config;
+package com.programmers.springboard.batch;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
