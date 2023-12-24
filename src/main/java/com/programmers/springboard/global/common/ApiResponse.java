@@ -11,12 +11,12 @@ public class ApiResponse<T> {
 	private final String statusCode;
 	private final T data;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-	private final LocalDateTime serverDatetime;
+	private final LocalDateTime serverDateTime;
 
 	public ApiResponse(String statusCode, T data) {
 		this.statusCode = statusCode;
 		this.data = data;
-		this.serverDatetime = LocalDateTime.now();
+		this.serverDateTime = LocalDateTime.now();
 	}
 
 	public static <T> ApiResponse<T> ok(T data) {
