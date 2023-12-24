@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: dev
+    include: core
+
+server:
+  port: 8080
