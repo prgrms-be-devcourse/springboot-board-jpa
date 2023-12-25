@@ -5,11 +5,8 @@ import com.example.board.dto.request.post.PostSearchCondition;
 import com.example.board.dto.request.post.SortType;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -29,30 +26,31 @@ public class PostQuerydslRepositoryImpl implements PostQuerydslRepository {
     }
 
     @Override
-    public Page<Post> findAll(PostSearchCondition condition, Pageable pageable) {
-        JPAQuery<Post> query = queryFactory
-                .selectFrom(post)
-                .leftJoin(post.author, user)
-                .where(createFilterCondition(condition));
-
-        JPAQuery<Long> countQuery = queryFactory
+    public Long countAll(PostSearchCondition condition) {
+        return queryFactory
                 .select(post.count())
                 .from(post)
-                .where(createFilterCondition(condition));
+                .where(createFilterCondition(condition))
+                .fetchOne();
+    }
 
-        List<Post> posts = query
+    @Override
+    public List<Post> findAll(PostSearchCondition condition, Pageable pageable) {
+        return queryFactory
+                .selectFrom(post)
+                .leftJoin(post.author, user)
+                .where(createFilterCondition(condition))
                 .orderBy(createSortCondition(condition.sortType()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-
-        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
     }
 
     private OrderSpecifier<?> createSortCondition(SortType sortType) {
         if (sortType == null) {
             return post.id.desc();
         }
+
         return switch (sortType) {
             case LATEST -> post.id.desc();
             case OLDEST -> post.id.asc();
@@ -62,17 +60,18 @@ public class PostQuerydslRepositoryImpl implements PostQuerydslRepository {
     private BooleanExpression[] createFilterCondition(PostSearchCondition condition) {
         LocalDate createdAtFrom = condition.createdAtFrom();
         LocalDate createdAtTo = condition.createdAtTo();
+
         return new BooleanExpression[]{
-                createdAtGoe(createdAtFrom != null ? createdAtFrom.atStartOfDay() : null),
-                createdAtLoe(createdAtTo != null ? createdAtTo.atTime(23, 59, 59) : null)
+                createdAtGoe(createdAtFrom == null ? null : condition.startOfDayFrom()),
+                createdAtLoe(createdAtTo == null ? null : condition.endOfDayTo())
         };
     }
 
     private BooleanExpression createdAtGoe(LocalDateTime createdAt) {
-        return createdAt != null ? post.createdAt.goe(createdAt) : null;
+        return createdAt == null ? null : post.createdAt.goe(createdAt);
     }
 
     private BooleanExpression createdAtLoe(LocalDateTime createdAt) {
-        return createdAt != null ? post.createdAt.loe(createdAt) : null;
+        return createdAt == null ? null : post.createdAt.loe(createdAt);
     }
 }

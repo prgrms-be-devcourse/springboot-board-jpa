@@ -2,34 +2,36 @@ package com.example.board.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users", indexes = @Index(name = "idx_name", columnList = "name"))
+@Table(name = "users", indexes = @Index(name = "idx_user_name", columnList = "name"))
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@EntityListeners(AuditingEntityListener.class)
 public class User extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "age", nullable = false)
     private Integer age;
 
-    @Column
+    @Column(name = "hobby")
     private String hobby;
 
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(name = "deleted_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime deletedAt;
 
     @Builder.Default
@@ -48,5 +50,17 @@ public class User extends BaseEntity {
 
     public boolean isDeleted() {
         return this.deletedAt != null;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", age=" + age +
+                ", hobby='" + hobby + '\'' +
+                ", deletedAt=" + deletedAt +
+                '}';
     }
 }

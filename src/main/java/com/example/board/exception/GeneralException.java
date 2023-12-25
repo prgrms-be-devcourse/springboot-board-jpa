@@ -4,15 +4,15 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class GeneralException extends RuntimeException{
-    private ErrorCode errorCode;
+public class GeneralException extends RuntimeException {
+    private CustomError customError;
 
-    public GeneralException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public GeneralException(CustomError customError) {
+        super(customError.getMessage());
+        this.customError = customError;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
+    public CustomError getCustomError() {
+        return customError;
     }
 }

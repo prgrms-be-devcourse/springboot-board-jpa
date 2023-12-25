@@ -4,61 +4,71 @@ import com.example.board.converter.PostConverter;
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
 import com.example.board.dto.request.post.CreatePostRequest;
-import com.example.board.dto.request.post.DeletePostRequest;
+import com.example.board.dto.request.post.PageCondition;
 import com.example.board.dto.request.post.PostSearchCondition;
 import com.example.board.dto.request.post.UpdatePostRequest;
 import com.example.board.dto.response.PageResponse;
 import com.example.board.dto.response.PostResponse;
+import com.example.board.exception.CustomError;
 import com.example.board.exception.CustomException;
-import com.example.board.exception.ErrorCode;
 import com.example.board.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class PostService {
 
-    private final PostRepository postRepository;
+    private final AuthService authService;
     private final UserService userService;
+    private final PostRepository postRepository;
 
     public Long createPost(CreatePostRequest requestDto) {
-        final User user = userService.getAvailableUser(requestDto.authorId());
+        final User user = userService.getAvailableUserById(authService.getCurrentUserId());
         final Post post = postRepository.save(PostConverter.toPost(requestDto, user));
         return post.getId();
     }
 
-    public PageResponse<PostResponse> getPosts(PostSearchCondition condition, Pageable pageable) {
-        Page<PostResponse> posts = postRepository.findAll(condition, pageable).map(PostConverter::toPostResponse);
-        return PageResponse.of(posts);
+    @Transactional(readOnly = true)
+    public PageResponse<PostResponse> getPosts(PostSearchCondition condition, PageCondition pageCondition) {
+        Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
+
+        List<PostResponse> posts = postRepository.findAll(condition, pageable).stream()
+                .map(PostConverter::toPostResponse)
+                .collect(Collectors.toList());
+
+        return PageResponse.of(PageableExecutionUtils.getPage(posts, pageable, () -> postRepository.countAll(condition)));
     }
 
     @Transactional(readOnly = true)
     public PostResponse getPost(Long id) {
-        final Post post = postRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+        final Post post = postRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.POST_NOT_FOUND));
         return PostConverter.toPostResponse(post);
     }
 
     public void updatePost(Long id, UpdatePostRequest requestDto) {
-        final Post post = postRepository.findByIdWithAuthor(id).orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+        final Post post = postRepository.findByIdWithAuthor(id).orElseThrow(() -> new CustomException(CustomError.POST_NOT_FOUND));
 
-        if (!post.isSameAuthorId(requestDto.authorId()))
-            throw new CustomException(ErrorCode.AUTHOR_NOT_MATCH);
+        if (!post.isSameAuthorId(authService.getCurrentUserId()))
+            throw new CustomException(CustomError.AUTHOR_NOT_MATCH);
 
-        post.update(requestDto.title(), requestDto.content());
+        post.updateTitleAndContent(requestDto.title(), requestDto.content());
     }
 
-    public void deletePost(Long id, DeletePostRequest requestDto) {
-        final Post post = postRepository.findByIdWithAuthor(id).orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+    public void deletePost(Long id) {
+        final Post post = postRepository.findByIdWithAuthor(id).orElseThrow(() -> new CustomException(CustomError.POST_NOT_FOUND));
 
-        if (!post.isSameAuthorId(requestDto.authorId()))
-            throw new CustomException(ErrorCode.AUTHOR_NOT_MATCH);
+        if (!post.isSameAuthorId(authService.getCurrentUserId()))
+            throw new CustomException(CustomError.AUTHOR_NOT_MATCH);
 
         postRepository.delete(post);
     }
-
 }

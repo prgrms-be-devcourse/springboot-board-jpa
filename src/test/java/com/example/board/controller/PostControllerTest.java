@@ -5,7 +5,6 @@ import com.example.board.converter.UserConverter;
 import com.example.board.domain.Post;
 import com.example.board.domain.User;
 import com.example.board.dto.request.post.CreatePostRequest;
-import com.example.board.dto.request.post.DeletePostRequest;
 import com.example.board.dto.request.post.UpdatePostRequest;
 import com.example.board.dto.request.user.CreateUserRequest;
 import com.example.board.repository.post.PostRepository;
@@ -19,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 
@@ -40,13 +40,15 @@ class PostControllerTest {
     private final ObjectMapper objectMapper;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    PostControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, PostRepository postRepository, UserRepository userRepository) {
+    PostControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, PostRepository postRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @AfterEach
@@ -223,7 +225,7 @@ class PostControllerTest {
     }
 
     private User generateUserByName(String name) {
-        CreateUserRequest requestDto = new CreateUserRequest(name, 20, "러닝");
-        return userRepository.save(UserConverter.toUser(requestDto));
+        CreateUserRequest requestDto = new CreateUserRequest(name, "password", 20, "러닝");
+        return userRepository.save(UserConverter.toUser(requestDto, passwordEncoder));
     }
 }

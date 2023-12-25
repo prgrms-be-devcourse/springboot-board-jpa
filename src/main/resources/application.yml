@@ -5,6 +5,34 @@ server:
       enabled: true
       force: true
 
+spring:
+  profiles:
+    default: dev
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/board;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+
 logging:
   level:
     org:
@@ -12,11 +40,16 @@ logging:
         type: trace
         sql: debug
         orm:
-          jdbc.bind: trace
-
-spring:
-  profiles:
-    default: dev
+          jdbc:
+            bind: trace
+      springframework:
+        security: DEBUG
+jwt:
+  issuer: prgrms
+  access-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  access-expiry-seconds: 30
+  refresh-secret-key: 9d7b9414e08670871c20af2837ce27ee6e670b0e1fe204a73e492a2f74dddc6c90001087689aefa2f27a4422c23cfa8f68ccbc8e764acd762ceaa3bdc76a3d2e
+  refresh-expiry-seconds: 60
 
 ---
 
@@ -30,30 +63,24 @@ spring:
     username: root
     password: rootpassword
   jpa:
-    open-in-view: false
     hibernate:
-      ddl-auto: create
-    show-sql: true
+      ddl-auto: none
+    show-sql: false
     properties:
-      hibernate.format_sql: true
+      hibernate:
+        format_sql: true
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
----
+logging:
+  level:
+    org:
+      hibernate:
+        type: info
+        sql: info
 
-spring:
-  config:
-    activate:
-      on-profile: dev
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/board;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password:
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    properties:
-      hibernate.format_sql: true
-    database-platform: org.hibernate.dialect.H2Dialect
+jwt:
+  issuer: prgrms
+  access-secret-key: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  access-expiry-seconds: 7200
+  refresh-secret-key: 9d7b9414e08670871c20af2837ce27ee6e670b0e1fe204a73e492a2f74dddc6c90001087689aefa2f27a4422c23cfa8f68ccbc8e764acd762ceaa3bdc76a3d2e
+  refresh-expiry-seconds: 1209600

@@ -1,14 +1,15 @@
 package com.example.board.controller;
 
-import com.example.board.dto.request.post.*;
+import com.example.board.dto.request.post.CreatePostRequest;
+import com.example.board.dto.request.post.PageCondition;
+import com.example.board.dto.request.post.PostSearchCondition;
+import com.example.board.dto.request.post.UpdatePostRequest;
 import com.example.board.dto.response.ApiResponse;
 import com.example.board.dto.response.PageResponse;
 import com.example.board.dto.response.PostResponse;
 import com.example.board.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,55 +20,48 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/posts")
+@RequestMapping("/api/v1/posts")
 public class PostController {
 
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Long>> createPost(@RequestBody @Valid CreatePostRequest requestDto,
-                                                        UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<ApiResponse<Long>> createPost(@RequestBody @Valid CreatePostRequest requestDto) {
         Long id = postService.createPost(requestDto);
-        URI location = uriComponentsBuilder.path("/v1/posts/{id}")
+        URI location = UriComponentsBuilder
+                .fromPath("/v1/posts/{id}")
                 .buildAndExpand(id)
                 .toUri();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(location);
 
-        ApiResponse<Long> apiResponse = ApiResponse.success(HttpStatus.CREATED, id);
-        return new ResponseEntity<>(apiResponse, headers, apiResponse.getStatusCode());
+        return new ResponseEntity<>(ApiResponse.success(id), headers, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ApiResponse<PageResponse<PostResponse>> getPosts(@ModelAttribute @Valid PostSearchCondition searchCondition,
-                                                            @ModelAttribute @Valid PageCondition pageCondition) {
-        pageCondition.updateValidPageCondition(); //? 질문
-        System.out.println(pageCondition.getPage() + " " + pageCondition.getSize());
-        Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
-        PageResponse<PostResponse> post = postService.getPosts(searchCondition, pageable);
-        return ApiResponse.success(HttpStatus.OK, post);
+    public ResponseEntity<ApiResponse<PageResponse<PostResponse>>> getPosts(@ModelAttribute @Valid PostSearchCondition searchCondition,
+                                                                            @ModelAttribute @Valid PageCondition pageCondition) {
+        PageResponse<PostResponse> post = postService.getPosts(searchCondition, pageCondition);
+        return new ResponseEntity<>(ApiResponse.success(post), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<PostResponse> getPost(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<PostResponse>> getPost(@PathVariable Long id) {
         PostResponse post = postService.getPost(id);
-        return ApiResponse.success(HttpStatus.OK, post);
+        return new ResponseEntity<>(ApiResponse.success(post), HttpStatus.OK);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
-    public ApiResponse<Void> updatePost(@PathVariable Long id,
-                                        @RequestBody @Valid UpdatePostRequest requestDto) {
+    public ResponseEntity<ApiResponse<Void>> updatePost(@PathVariable Long id,
+                                                        @RequestBody @Valid UpdatePostRequest requestDto) {
         postService.updatePost(id, requestDto);
-        return ApiResponse.success(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(ApiResponse.success(), HttpStatus.NO_CONTENT);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public ApiResponse<Void> deletePost(@PathVariable Long id,
-                                        @RequestBody @Valid DeletePostRequest requestDto) {
-        postService.deletePost(id, requestDto);
-        return ApiResponse.success(HttpStatus.NO_CONTENT);
+    public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long id) {
+        postService.deletePost(id);
+        return new ResponseEntity<>(ApiResponse.success(), HttpStatus.NO_CONTENT);
     }
 }
