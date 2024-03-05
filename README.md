@@ -13,3 +13,5 @@ Spring Boot JPA - Rest API를 강의를 듣고, 게시판 구현 미션을 수�
 1.  여러분 repo는 알아서 해주시고 😀(본인 레포니 main으로 하셔두 되져)
 2.  prgrms-be-devcourse/spring-board 레포로 PR시 branch는 본인 username을 적어주세요 :)  
 base repo : `여기repo` base : `username` ← head repo : `여러분repo` compare : `main`
+
+안녕하세요.
