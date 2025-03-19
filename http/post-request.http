@@ -1,0 +1,31 @@
+### 게시물 생성
+POST http://localhost:8080/api/v1/posts
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "제목",
+  "content": "내용",
+  "userId": 1
+}
+
+### 게시물 수정
+PATCH http://localhost:8080/api/v1/posts/1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "제목 수정",
+  "content": "내용 수정"
+}
+
+### 게시물 단건 조회
+GET http://localhost:8080/api/v1/posts/1
+Accept: application/json
+Content-Type: application/json
+
+
+### 게시물 다건 조회
+GET http://localhost:8080/api/v1/posts?page=0&size=4
+Accept: application/json
+Content-Type: application/json
