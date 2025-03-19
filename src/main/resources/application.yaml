@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/board
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6830
+
+
+---
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/board_test
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+  config:
+    activate:
+      on-profile: test
